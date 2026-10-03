@@ -1,66 +1,37 @@
-# DISI v0.1
+# DISI Dashboard
 
-Dodgers International Signing Intelligence — database foundation.
+Dodgers International Signing Intelligence executive dashboard prototype.
 
-## What this migration creates
+## What it reads
 
-- Players and aliases
-- MLB organizations
-- International signing transactions
-- Signing-market/regime context
-- Trainer/academy relationships
-- Scouting evaluations and FV/20–80 grades
-- Seasonal performance records
-- Development milestones
-- MLB outcomes
-- Market snapshots
-- League translation factors
-- Model predictions
-- Signing-pool portfolio scenarios
-- Field/entity-level provenance via Sources + Evidence
-- Public-read/private-write RLS baseline
-- Two analytical views
+The live dashboard reads these Supabase views created in the DISI SQL sequence:
 
-## Important modeling rules
+- `v_dodgers_portfolio_signals`
+- `v_dodgers_executive_dashboard_feed`
+- `v_dodgers_executive_findings_v2`
 
-1. Unknown values stay NULL. A missing signing bonus is never treated as zero.
-2. Acquisition pathway is explicit so a 16-year-old Dominican amateur is not modeled as equivalent to an established NPB/KBO professional.
-3. Observed facts and model predictions are stored separately.
-4. Every important externally sourced value can be linked to evidence and a confidence level.
-5. Signing-regime context is stored by club/year because MLB rules and penalties change the economics of comparisons.
+If Supabase environment variables are missing or the fetch fails, the app falls back to the verified sample values from the current 17-player mature tracked cohort. The UI clearly labels that mode as **Verified sample mode**.
 
-## Install
+## Setup
 
-Open the DISI Supabase project:
+1. Copy `.env.example` to `.env.local`.
+2. In Supabase, open **Connect** and copy your Project URL and **publishable key**.
+3. Fill `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+4. Run `npm install` then `npm run dev`.
+5. For production, add the same two environment variables to Vercel.
 
-SQL Editor -> New query -> paste `001_disi_core_schema.sql` -> Run.
+Do not put a Supabase secret key or service-role key in any `NEXT_PUBLIC_` variable.
 
-Then run the three verification queries at the bottom of the file.
+## Data API note
 
-## Included migrations
+DISI's views already use explicit `GRANT SELECT` statements. Current Supabase projects require explicit grants for new public-schema objects to be reachable through the Data API. RLS and grants are separate controls.
 
-### 001_disi_core_schema.sql
-Creates the normalized database, provenance layer, signing-regime context, scouting/performance/development tables, transaction layer, model-output tables, RLS, and analytical views.
+## Database lineage
 
-### 002_dodgers_seed_cohort.sql
-Loads an initial Dodgers-specific research cohort spanning 2015–2026, including:
-- verified/reported signing bonuses
-- international signing environments
-- source records and evidence
-- acquisition pathways
-- NPB context for Roki Sasaki
-- trainer relationships for Emil Morales, Ezequiel Melburne and Rubel Arias
-- an example transaction record for Arnaldo Lantigua
+The complete SQL history is preserved under `database/`.
 
-Run 001 first, then 002.
+- `database/sql/` contains the canonical 001–011 build sequence.
+- `database/repairs/` contains the 004a–004c troubleshooting scripts used during the initial manual Supabase build.
+- `database/README.md` explains the purpose and execution order of every layer.
 
-## Next analytical migration
-
-`003_observed_outcomes_and_development.sql`
-
-This will add mature outcomes and development milestones, then support the first real DISI analyses:
-- MLB reach rate
-- development velocity
-- bonus efficiency
-- organizational value vs. player career value
-- signing-regime comparisons
+The uploaded `002_dodgers_seed_cohort(1).sql` was an incomplete fragment, so the repository uses the full corrected canonical `002_dodgers_seed_cohort.sql` from the DISI build instead.

@@ -1,0 +1,151 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DISI Preview</title><style>:root {
+  --bg: #07111f;
+  --bg2: #0b1729;
+  --panel: rgba(15, 29, 49, .82);
+  --panel-strong: #0e1c30;
+  --line: rgba(174, 204, 238, .16);
+  --text: #f4f8fc;
+  --muted: #93a8bf;
+  --blue: #2f7df6;
+  --blue2: #61a6ff;
+  --red: #ef4351;
+  --green: #40d39c;
+  --gold: #ffcf6a;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 82% -10%, rgba(47,125,246,.26), transparent 31rem),
+    radial-gradient(circle at 0% 22%, rgba(239,67,81,.08), transparent 25rem),
+    linear-gradient(180deg, #07111f 0%, #091625 46%, #07111f 100%);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+main { overflow: hidden; }
+.shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+.hero { padding: 44px 0 32px; }
+.hero-topline { display: flex; justify-content: space-between; align-items: center; margin-bottom: 64px; }
+.brand-mark {
+  display: inline-grid; place-items: center; width: 62px; height: 34px;
+  border: 1px solid rgba(97,166,255,.35); border-radius: 10px;
+  font-size: 13px; font-weight: 900; letter-spacing: .15em; color: #dcecff;
+  background: linear-gradient(135deg, rgba(47,125,246,.28), rgba(47,125,246,.08));
+}
+.data-badge { font-size: 12px; color: var(--muted); border: 1px solid var(--line); padding: 8px 11px; border-radius: 999px; }
+.data-badge.live { color: #baf4df; border-color: rgba(64,211,156,.35); background: rgba(64,211,156,.08); }
+.hero-grid { display: grid; grid-template-columns: 1.65fr .75fr; gap: 50px; align-items: end; }
+.kicker, .eyebrow { color: var(--blue2); text-transform: uppercase; letter-spacing: .12em; font-weight: 800; font-size: 11px; }
+h1 { font-size: clamp(44px, 6vw, 79px); line-height: .95; letter-spacing: -.055em; margin: 14px 0 22px; max-width: 850px; }
+.lede { color: #b4c5d7; max-width: 780px; font-size: 18px; line-height: 1.65; margin: 0; }
+.method-card { border-left: 2px solid var(--red); padding: 6px 0 6px 24px; }
+.method-card strong { display: block; margin: 11px 0 10px; font-size: 18px; line-height: 1.35; }
+.method-card p { color: var(--muted); line-height: 1.55; margin: 0; font-size: 14px; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 22px 0 16px; }
+.kpi-card, .panel, .case-card { border: 1px solid var(--line); background: var(--panel); backdrop-filter: blur(14px); box-shadow: 0 20px 50px rgba(0,0,0,.14); }
+.kpi-card { border-radius: 17px; padding: 23px; min-height: 150px; display: flex; flex-direction: column; justify-content: flex-end; }
+.kpi-value { font-size: 36px; font-weight: 850; letter-spacing: -.045em; margin: 11px 0 6px; }
+.kpi-note { color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+.split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px 0; }
+.panel { border-radius: 20px; padding: 28px; }
+.section-heading { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; margin-bottom: 26px; }
+.section-heading h2 { margin: 8px 0 0; font-size: 25px; letter-spacing: -.025em; }
+.big-stat { font-size: 34px; font-weight: 850; color: var(--blue2); }
+.allocation-stack { height: 24px; border-radius: 999px; overflow: hidden; background: #18283d; border: 1px solid var(--line); }
+.allocation-premium { height: 100%; background: linear-gradient(90deg, var(--red), #ff7883); }
+.legend-row { display: flex; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 12px; margin-top: 10px; }
+.callout { margin-top: 26px; padding: 15px 16px; border-radius: 13px; background: rgba(47,125,246,.09); border: 1px solid rgba(97,166,255,.18); color: #c7d7e8; font-size: 13px; line-height: 1.55; }
+.callout strong { color: white; }
+.bars { display: grid; gap: 18px; }
+.bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 7px; }
+.bar-label span { color: #c4d3e2; }
+.bar-track { height: 8px; border-radius: 999px; background: #16263a; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--blue), var(--blue2)); }
+
+.findings-panel { margin-top: 16px; }
+.micro-note { color: var(--muted); font-size: 12px; }
+.findings-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); overflow: hidden; border-radius: 15px; }
+.finding { background: var(--panel-strong); padding: 24px; min-height: 290px; }
+.finding-number { color: rgba(97,166,255,.5); font-size: 12px; font-weight: 900; letter-spacing: .1em; }
+.finding-category { display: block; color: var(--blue2); font-size: 10px; letter-spacing: .12em; font-weight: 850; margin: 28px 0 12px; }
+.finding h3 { font-size: 17px; line-height: 1.35; margin: 0 0 15px; }
+.finding p { color: #aebfd0; line-height: 1.55; font-size: 13px; }
+.finding small { display: block; color: #6f879f; line-height: 1.5; margin-top: 18px; }
+
+.case-section { padding: 42px 0 20px; }
+.case-heading { margin-bottom: 18px; }
+.case-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.case-card { border-radius: 20px; padding: 25px; }
+.case-card-top { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.year-pill { display: inline-block; border-radius: 7px; background: rgba(97,166,255,.11); color: var(--blue2); padding: 5px 8px; font-size: 10px; font-weight: 850; }
+.case-card h3 { font-size: 26px; margin: 10px 0 5px; letter-spacing: -.03em; }
+.case-card-top p { color: var(--muted); margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; }
+.war-block { text-align: right; }
+.war-block strong { display: block; font-size: 34px; letter-spacing: -.05em; }
+.war-block span { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.case-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 18px 0; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.case-metrics div { background: #0d1b2d; padding: 13px; }
+.case-metrics span { display: block; color: #7990a8; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px; }
+.case-metrics strong { font-size: 12px; line-height: 1.3; }
+.context-box { padding: 15px; border-radius: 12px; background: rgba(255,207,106,.055); border: 1px solid rgba(255,207,106,.15); }
+.context-title { color: var(--gold); text-transform: uppercase; letter-spacing: .1em; font-size: 9px; font-weight: 850; margin-bottom: 10px; }
+.context-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+.context-grid span { padding: 6px 8px; border-radius: 7px; background: rgba(255,255,255,.04); color: #d3dde7; font-size: 10px; }
+.signal-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+.signal-row span { padding: 7px 9px; border-radius: 999px; background: rgba(47,125,246,.1); border: 1px solid rgba(97,166,255,.15); color: #afd2ff; font-size: 9px; text-transform: uppercase; letter-spacing: .06em; }
+.caution { color: #738aa1; font-size: 11px; line-height: 1.55; margin: 15px 0 0; }
+
+.footer { border-top: 1px solid var(--line); margin-top: 42px; padding: 26px 0 46px; display: flex; justify-content: space-between; gap: 30px; color: #748aa1; font-size: 11px; line-height: 1.5; }
+.footer div { display: flex; gap: 13px; }
+.footer strong { color: #cbd9e7; }
+.footer p { max-width: 540px; margin: 0; text-align: right; }
+
+@media (max-width: 900px) {
+  .hero-grid, .split-grid { grid-template-columns: 1fr; }
+  .hero-topline { margin-bottom: 42px; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .findings-grid { grid-template-columns: repeat(2, 1fr); }
+  .case-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .shell { width: min(100% - 24px, 1180px); }
+  .hero { padding-top: 24px; }
+  .hero-topline { margin-bottom: 34px; }
+  h1 { font-size: 44px; }
+  .lede { font-size: 16px; }
+  .kpi-grid, .findings-grid { grid-template-columns: 1fr; }
+  .kpi-card { min-height: 125px; }
+  .panel, .case-card { padding: 20px; }
+  .legend-row, .footer { flex-direction: column; }
+  .footer p { text-align: left; }
+}
+</style></head><body><main>
+<header class="hero shell"><div class="hero-topline"><span class="brand-mark">DISI</span><span class="data-badge">Verified sample mode</span></div><div class="hero-grid"><div><p class="kicker">Dodgers International Signing Intelligence</p><h1>From signing capital to championship-window value.</h1><p class="lede">A public-data decision-support prototype separating talent identification, development, asset disposition, trade return, and competitive context.</p></div><aside class="method-card"><span class="eyebrow">Methodology guardrail</span><strong>Tracked mature sample ≠ organization-wide hit rate.</strong><p>Missing outcomes are audited explicitly, trade packages use shared attribution, and current findings are descriptive rather than causal.</p></aside></div></header>
+<section class="shell kpi-grid">
+<div class="kpi-card"><div class="eyebrow">Mature tracked signings</div><div class="kpi-value">17</div><div class="kpi-note">Five-year-mature, audited sample</div></div>
+<div class="kpi-card"><div class="eyebrow">Verified MLB reach</div><div class="kpi-value">23.5%</div><div class="kpi-note">4 of 17 tracked signings</div></div>
+<div class="kpi-card"><div class="eyebrow">Tracked bonus capital</div><div class="kpi-value">$52.6M</div><div class="kpi-note">71.2% concentrated in $5M+ bonuses</div></div>
+<div class="kpi-card"><div class="eyebrow">Later career WAR</div><div class="kpi-value">39.0</div><div class="kpi-note">5.0 LAD regular-season WAR from tracked trade returns</div></div></section>
+<section class="shell split-grid"><article class="panel"><div class="section-heading"><div><span class="eyebrow">Capital allocation</span><h2>Premium spend concentration</h2></div><span class="big-stat">71.2%</span></div><div class="allocation-stack"><div class="allocation-premium" style="width:71.2%"></div></div><div class="legend-row"><span>$5M+ bonuses: $37.5M</span><span>Sub-$5M: $15.1M</span></div><div class="callout"><strong>Observed result:</strong> the $5M+ group accounts for 71.2% of tracked mature bonus spend and 0.0 observed career WAR.</div></article>
+<article class="panel"><div class="section-heading"><div><span class="eyebrow">Identification outcome</span><h2>Later WAR by MLB-reaching asset</h2></div></div><div class="bars">
+<div class="bar-row"><div class="bar-label"><span>Yordan Alvarez</span><strong>30.9</strong></div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div>
+<div class="bar-row"><div class="bar-label"><span>Oneil Cruz</span><strong>8.2</strong></div><div class="bar-track"><div class="bar-fill" style="width:26.5%"></div></div></div>
+<div class="bar-row"><div class="bar-label"><span>Yusniel Diaz</span><strong>0.0</strong></div><div class="bar-track"><div class="bar-fill" style="width:2%"></div></div></div>
+<div class="bar-row"><div class="bar-label"><span>Ramon Rosso</span><strong>-0.1</strong></div><div class="bar-track"><div class="bar-fill" style="width:2%"></div></div></div>
+</div></article></section>
+<section class="shell panel findings-panel"><div class="section-heading"><div><span class="eyebrow">Executive readout</span><h2>What the tracked sample is actually saying</h2></div><span class="micro-note">Public-data prototype</span></div><div class="findings-grid">
+<article class="finding"><span class="finding-number">01</span><span class="finding-category">CAPITAL ALLOCATION</span><h3>Premium bonus concentration did not translate into observed career WAR in the tracked mature sample.</h3><p>$37.5M of $52.642M (71.2%) went to $5M+ signings, which produced 0.0 observed career WAR.</p><small>Small, selectively tracked sample; descriptive rather than causal.</small></article>
+<article class="finding"><span class="finding-number">02</span><span class="finding-category">TALENT IDENTIFICATION</span><h3>The mature tracked sample contains MLB talent identified by Los Angeles that realized its MLB debut elsewhere.</h3><p>4 of 4 verified MLB players debuted for another organization.</p><small>Debuting elsewhere does not mean the asset failed; trade return and competitive context must be evaluated separately.</small></article>
+<article class="finding"><span class="finding-number">03</span><span class="finding-category">ASSET CONVERSION</span><h3>Most MLB-reaching assets were converted through trades rather than lost outright.</h3><p>3 were traded before MLB debut; 1 was released before MLB debut.</p><small>Shared-package returns cannot be assigned fully to one prospect.</small></article>
+<article class="finding"><span class="finding-number">04</span><span class="finding-category">COMPETITIVE CONTEXT</span><h3>International prospect capital was deployed in materially different competitive situations.</h3><p>Fields: playoff-push depth. Watson: October bullpen optimization. Machado: critical shortstop replacement.</p><small>Competitive context explains why equal WAR does not imply equal organizational value.</small></article>
+</div></section>
+<section class="shell case-section"><div class="section-heading case-heading"><div><span class="eyebrow">Asset conversion cases</span><h2>Four MLB-reaching signings, four different value paths</h2></div></div><div class="case-grid">
+<article class="case-card"><div class="case-card-top"><div><span class="year-pill">2016</span><h3>Yordan Alvarez</h3><p>Elite Identification</p></div><div class="war-block"><strong>30.9</strong><span>later career WAR</span></div></div><div class="case-metrics"><div><span>Signing bonus</span><strong>$2.0M</strong></div><div><span>WAR / $1M</span><strong>15.45</strong></div><div><span>Disposition</span><strong>Traded Before Mlb Debut</strong></div><div><span>Return</span><strong>Josh Fields</strong></div></div><div class="context-box"><div class="context-title">Competitive context</div><div class="context-grid"><span>Playoff Push Depth</span><span>Urgency 4/5</span><span>Multi Year Control</span><span>2.0 LAD WAR</span></div></div><div class="signal-row"><span>Large Ex Post Value Gap</span><span>Sole Outgoing Asset</span></div><p class="caution">The tracked international signing was the sole outgoing asset, so the observed return can be associated directly with this disposition, while still requiring context beyond WAR.</p></article><article class="case-card"><div class="case-card-top"><div><span class="year-pill">2015</span><h3>Oneil Cruz</h3><p>High Value Identification</p></div><div class="war-block"><strong>8.2</strong><span>later career WAR</span></div></div><div class="case-metrics"><div><span>Signing bonus</span><strong>$950K</strong></div><div><span>WAR / $1M</span><strong>8.63</strong></div><div><span>Disposition</span><strong>Traded Before Mlb Debut</strong></div><div><span>Return</span><strong>Tony Watson</strong></div></div><div class="context-box"><div class="context-title">Competitive context</div><div class="context-grid"><span>October Bullpen Optimization</span><span>Urgency 3/5</span><span>Same Season Rental</span><span>0.4 LAD WAR</span></div></div><div class="signal-row"><span>Postseason Optimization Conversion</span><span>Shared Package Return</span></div><p class="caution">The tracked international signing was one component of a multi-player package; the full incoming return must not be attributed to this player alone.</p></article><article class="case-card"><div class="case-card-top"><div><span class="year-pill">2015</span><h3>Yusniel Diaz</h3><p>Mlb Reach Identification</p></div><div class="war-block"><strong>0.0</strong><span>later career WAR</span></div></div><div class="case-metrics"><div><span>Signing bonus</span><strong>$15.5M</strong></div><div><span>WAR / $1M</span><strong>0.00</strong></div><div><span>Disposition</span><strong>Traded Before Mlb Debut</strong></div><div><span>Return</span><strong>Manny Machado</strong></div></div><div class="context-box"><div class="context-title">Competitive context</div><div class="context-grid"><span>Division Race Star Replacement</span><span>Urgency 5/5</span><span>Same Season Rental</span><span>2.6 LAD WAR</span></div></div><div class="signal-row"><span>High Leverage Package Conversion</span><span>Shared Package Return</span></div><p class="caution">The tracked international signing was one component of a multi-player package; the full incoming return must not be attributed to this player alone.</p></article><article class="case-card"><div class="case-card-top"><div><span class="year-pill">2015</span><h3>Ramon Rosso</h3><p>Mlb Reach Identification</p></div><div class="war-block"><strong>-0.1</strong><span>later career WAR</span></div></div><div class="case-metrics"><div><span>Signing bonus</span><strong>$62K</strong></div><div><span>WAR / $1M</span><strong>-1.61</strong></div><div><span>Disposition</span><strong>Released Before Mlb Debut</strong></div><div><span>Return</span><strong>No direct return</strong></div></div><div class="signal-row"><span>Talent Identified But No Direct Return</span></div><p class="caution">No trade return was realized by Los Angeles; later MLB reach occurred after the player left the organization.</p></article></div></section><footer class="shell footer"><div><strong>DISI v0.1</strong><span>Public-data baseball operations portfolio prototype</span></div><p>Next analytical expansion: complete historical signing census, development milestones, trainer networks, comparable-player models, and pool optimization.</p></footer></main></body></html>

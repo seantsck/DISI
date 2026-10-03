@@ -1,0 +1,25 @@
+{
+  "canonical_sql": [
+    "001_disi_core_schema.sql",
+    "002_dodgers_seed_cohort.sql",
+    "003_observed_outcomes_and_asset_value.sql",
+    "004_dodgers_analytics_views.sql",
+    "005_outcome_completeness_and_rosso.sql",
+    "006_complete_mature_outcome_audit.sql",
+    "007_mature_bonus_efficiency_analysis.sql",
+    "008_mature_asset_realization.sql",
+    "009_trade_package_asset_conversion.sql",
+    "010_competitive_context_value.sql",
+    "011_executive_dashboard_layer.sql"
+  ],
+  "repair_history": [
+    "004a_diagnose_zero_cohort.sql",
+    "004b_repair_dodgers_signings.sql",
+    "004c_repair_observed_outcomes.sql"
+  ],
+  "notes": {
+    "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
+    "canonical_build_count": 11,
+    "repair_count": 3
+  }
+}

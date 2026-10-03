@@ -71,49 +71,49 @@ insert into public.signing_environments (
   club_bonus_pool_usd, pool_after_trades_usd, max_individual_bonus_usd,
   overage_tax_rate, tradeable_pool_space, penalty_status, rules_summary
 )
-select id, 2015, '2015-16', 'AGGRESSIVE_OVERAGE',
+select id, 2015, '2015-16', 'AGGRESSIVE_OVERAGE'::public.signing_regime,
        2020300, 700000, null, 1.0, true,
        'Maximum overage penalty; future individual-bonus restriction triggered',
        'Dodgers exceeded the pool by more than 15%, paid a 100% tax on overage, and were barred from bonuses above $300,000 in the next two periods.'
 from lad
 union all
-select id, 2017, '2017-18', 'PENALTY_RESTRICTED',
+select id, 2017, '2017-18', 'PENALTY_RESTRICTED'::public.signing_regime,
        null, null, 300000, null, null,
        'Individual signing bonus capped at $300,000',
        'Restriction resulted from the 2015-16 overage.'
 from lad
 union all
-select id, 2018, '2018-19', 'MODERN_HARD_POOL',
+select id, 2018, '2018-19', 'MODERN_HARD_POOL'::public.signing_regime,
        4983500, null, null, null, true,
        null,
        'Hard-cap pool system; Dodgers were no longer one of the clubs under the grandfathered $300,000 individual cap.'
 from lad
 union all
-select id, 2022, '2021-22', 'MODERN_HARD_POOL',
+select id, 2022, '2021-22', 'MODERN_HARD_POOL'::public.signing_regime,
        4644000, null, null, null, true,
        null,
        'Pool was reduced by $500,000 after the Trevor Bauer free-agent signing.'
 from lad
 union all
-select id, 2023, '2023', 'MODERN_HARD_POOL',
+select id, 2023, '2023', 'MODERN_HARD_POOL'::public.signing_regime,
        4144000, null, null, null, true,
        null,
        'MLB.com reported a $4.144M base signing pool.'
 from lad
 union all
-select id, 2024, '2024', 'MODERN_HARD_POOL',
+select id, 2024, '2024', 'MODERN_HARD_POOL'::public.signing_regime,
        5284000, null, null, null, true,
        null,
        'MLB.com reported a $5.284M base signing pool.'
 from lad
 union all
-select id, 2025, '2025', 'MODERN_HARD_POOL',
+select id, 2025, '2025', 'MODERN_HARD_POOL'::public.signing_regime,
        5146200, null, null, null, true,
        null,
        'Initial pool. Additional pool capacity was required to accommodate Roki Sasaki''s reported $6.5M bonus.'
 from lad
 union all
-select id, 2026, '2026', 'MODERN_HARD_POOL',
+select id, 2026, '2026', 'MODERN_HARD_POOL'::public.signing_regime,
        6679200, null, null, null, true,
        null,
        'MLB.com reported $6.6792M available to Los Angeles.'
