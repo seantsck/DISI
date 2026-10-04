@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.8
+Product renamed to **DISI — Dodgers International Signings Research Database**, rebuilt as a research database rather than a case-study landing page.
+
+Application
+- `/signings` is now a server-side sortable, filterable, paginated research table. Every column header sorts with datatype-aware ordering (Postgres types; NULLs always last; enum codes sorted alphabetically). Search covers names and aliases, accent-insensitive. Filters: year / range, market (incl. unknown), position, pathway, audit status, MLB reached (yes / no / unknown), direct Dodgers-franchise debut, record scope, class coverage, organization scope. All state is in the URL. Rows link to player pages.
+- New `/players` directory (A–Z browsing; country, position, first-signing era, MLB reached, Dodgers-franchise debut, audit status) and `/players/[slug]` dossiers: biography, acquisition costs by component, prospect rank, MLB outcome, bWAR with through-season and observation history, chronological timeline, trainer relationships, package-aware transactions with competitive context, and every source with tier, publication and access dates.
+- Global player search in the header (`/api/player-search`).
+- Homepage redesigned: plain description, database-status figures, recent signing records, section index; historical MLB outcomes moved to a secondary findings list. Removed the marketing headline. No MLB rate is shown unless classes pass the rate-eligibility rules.
+- `/research` rebuilt as Research & Data Coverage: per-year expected vs. tracked class size, the source behind each expected size, known-bonus / audit / bWAR counts, class status, a typed research queue and the source-priority table.
+- Markets, Development, Asset Conversion and League pages read the new bWAR-aware views and link every player name.
+- “WAR” replaced by “bWAR” wherever the value is Baseball-Reference WAR, with a methodology note on player pages.
+- Data-backed pages render per request so they never serve a build-time snapshot.
+
+Database — `017_research_database_layer.sql`
+- Canonical unique `players.slug` with collision handling and a trigger for new players.
+- `source_tiers` and `sources.source_tier`, encoding the ingestion source priority.
+- Official 2025 (29) and 2024 (19) Dodgers class releases and the 2022 MLB.com report (30) registered as the sources for those expected class sizes.
+- `player_metric_observations` for metric-specific provenance (`CAREER_BWAR`, `CAREER_FWAR`) with a trigger that rejects mismatched providers; `v_player_war` exposes `career_bwar`, `bwar_source_id`, `bwar_observed_through_date`, `career_fwar`, `fwar_source_id`, `fwar_observed_through_date`. 44 Baseball-Reference-cited legacy values backfilled; one MLB.com-cited value held back.
+- `outcomes.career_war` kept for compatibility; existing universe / known-outcome views gain appended bWAR and slug columns and now select by franchise key.
+- New security-invoker research views for signing records, player directory, dossier, timeline, transactions, sources, class coverage, research tasks, database status, market / pathway summaries and filter facets.
+
+Engineering
+- Version bumped from the stale 0.4.0 to 0.8.0.
+- Added ESLint (flat config), `checkJs` typechecking, unit tests and a PGlite database test that runs the full migration chain, reruns 017 and checks data rules and RLS.
+- Added `docs/INGESTION.md`.
+
 ## v0.7
 - Added 39 sourced positive MLB outcomes across historical and modern Dodgers international acquisitions.
 - Added Brooklyn/Los Angeles Dodgers franchise identity.
