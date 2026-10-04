@@ -36,3 +36,14 @@ DISI preserves provenance and uncertainty, leaves missing values as `NULL`, sepa
 ## Supabase CLI note
 
 These SQL files were originally applied manually in Supabase SQL Editor. Do not move them directly into `supabase/migrations/` and assume Supabase CLI migration history will match. If the project later moves to CLI-managed migrations, create a clean baseline migration and keep this folder as historical source material.
+
+12. `012_historical_census_framework.sql` — extends signing years backward, adds coverage metadata, and seeds verified Dodgers international acquisitions back to 1979.
+13. `013_league_benchmark_seed.sql` — starts league-wide benchmarking with MLB Pipeline 2013/2014 Top 30 signing trackers.
+
+v0.4 removes all application fallback/mock data. The web UI renders only database-returned records.
+
+14. `014_portfolio_universe_and_source_pipeline.sql` — expands the Dodgers signing universe, reconstructs modern classes, adds source provenance/coverage, and adds league organization-period signing volume and pool-spend data.
+
+15. `015_outcome_audit_operations.sql` — converts the portfolio universe into a transparent outcome-research queue with class and market audit progress.
+
+16. `016_historical_positive_outcomes_and_rate_guardrail.sql` — adds 39 verified MLB-reaching outcomes, franchise-aware debut classification, and class-level rate eligibility safeguards.

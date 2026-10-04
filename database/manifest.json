@@ -10,7 +10,12 @@
     "008_mature_asset_realization.sql",
     "009_trade_package_asset_conversion.sql",
     "010_competitive_context_value.sql",
-    "011_executive_dashboard_layer.sql"
+    "011_executive_dashboard_layer.sql",
+    "012_historical_census_framework.sql",
+    "013_league_benchmark_seed.sql",
+    "014_portfolio_universe_and_source_pipeline.sql",
+    "015_outcome_audit_operations.sql",
+    "016_historical_positive_outcomes_and_rate_guardrail.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -19,7 +24,11 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 11,
-    "repair_count": 3
+    "canonical_build_count": 16,
+    "repair_count": 3,
+    "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
+    "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
+    "v0_6": "181-player research universe with explicit outcome audit operations and queue.",
+    "v0_7": "39 positive MLB outcome audits, Dodgers franchise identity, rate-eligibility guardrail, historical MLB outcome homepage."
   }
 }
