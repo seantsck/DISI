@@ -26,6 +26,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 15. `015_outcome_audit_operations.sql` — converts the portfolio universe into a transparent outcome-research queue with class and market audit progress.
 16. `016_historical_positive_outcomes_and_rate_guardrail.sql` — adds 39 verified MLB-reaching outcomes, franchise-aware debut classification, and class-level rate eligibility safeguards.
 17. `017_research_database_layer.sql` — research-database layer for the web application (details below).
+18. `018_signing_class_coverage_and_backfill.sql` — signing populations, class-membership provenance and the 2022 / 2024 / 2025 backfill (details below).
 
 ## 017 research-database layer
 
@@ -36,6 +37,16 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Backward compatibility.** `outcomes.career_war` is kept. `v_dodgers_portfolio_universe` and `v_dodgers_known_mlb_outcomes` keep every existing column and append `player_slug`, `career_bwar`, `bwar_observed_through_date`, `bwar_observed_through_season`; the universe now selects franchise `DODGERS` rather than abbreviation `LAD`.
 - **Research views** (all `security_invoker`, select-only for `anon`/`authenticated`): `v_player_war`, `v_signing_records`, `v_player_directory`, `v_player_dossier`, `v_player_trainers`, `v_player_transactions`, `v_player_timeline`, `v_player_sources`, `v_class_research_coverage`, `v_research_tasks`, `v_database_status`, `v_market_research_summary`, `v_pathway_research_summary`, `v_signing_filter_options`, `v_player_filter_options`.
 - **Rerunnable.** Every statement is idempotent; `npm run test:db` runs 017 twice and checks that nothing changes.
+
+## 018 signing populations and class backfill
+
+- **Population scope.** `signing_populations` defines each counted population (`OPENING_CLASS`, `FULL_SIGNING_PERIOD`, `HISTORICAL_VERIFIED_SET`, `TOP_PROSPECT_SAMPLE`, `OTHER_DEFINED_POPULATION`) with its stated size, size source and stated composition. Only `FULL_SIGNING_PERIOD` rows may set `rate_analysis_suitable` (check constraint). Legacy `signing_census_coverage` rows carry an explicit `population_scope` and `population_note`.
+- **Announcement ≠ full period.** A complete opening class (2021, 2023, 2024, 2025) is not a complete signing period. No full-period population is complete today, so no class is rate-eligible.
+- **Membership provenance.** `signing_population_members` + `signing_population_member_sources` record why a signing belongs to a population (`membership_basis`) and which facts the source supports (`supports_fields`); a class-list source never verifies a bonus or a transaction date.
+- **Dates.** `signings.announced_date`, `signings.formal_transaction_date` and `signings.transaction_source_id` are new; `signing_date` is preserved and only filled where NULL.
+- **Conflicts and candidates.** `research_source_conflicts` holds explicit disagreements between sources; `signing_period_candidates` holds MLB transaction signees not yet classified as DISI signings.
+- **Rate views.** `v_dodgers_class_analysis_eligibility`, `v_dodgers_rate_eligible_player_analysis` (and so `v_dodgers_rate_eligible_summary`) only count members of complete, audited, mature full-period populations. `v_dodgers_opening_class_cohort_rates` labels opening-class statistics. Legacy tracked-sample rate views (004, 006) carry comments saying they are not organization rates.
+- **Rerunnable.** `npm run test:db` reruns the latest migration and checks nothing changes. Because 018 widens views created in 017, re-running 017 after 018 is not supported.
 
 ## Repair history
 

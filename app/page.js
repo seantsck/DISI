@@ -59,7 +59,7 @@ export default async function HomePage() {
             <Stat label="Tracked signings" value={status.tracked_signings.toLocaleString()} note={`${status.total_players.toLocaleString()} players in database incl. ${status.league_signing_records} league benchmark records`} />
             <Stat label="Years represented" value={status.years_represented} note={`${status.earliest_signing_year}–${status.latest_signing_year}; not every year is covered`} />
             <Stat label="Markets represented" value={status.markets_represented} note={`${status.signings_with_unknown_market} signings with unknown market`} />
-            <Stat label="Classes with known population" value={status.classes_with_known_population} note={`${status.complete_classes} fully reconstructed and declared complete`} />
+            <Stat label="Classes with known population" value={status.classes_with_known_population} note={`${status.opening_classes_complete} announced opening classes complete · ${status.full_periods_complete} full signing periods complete`} />
             <Stat label="Outcome audits completed" value={status.outcome_audits_completed} note={`${status.outcome_audit_queue} signings not yet audited (not failures)`} />
             <Stat label="Verified MLB outcomes" value={status.verified_mlb_outcomes} note={`${status.verified_no_mlb_outcomes} verified with no MLB debut`} />
             <Stat label="Known acquisition cost" value={money(status.known_acquisition_cost_usd)} note={`Sum over ${status.signings_with_known_cost} signings with a recorded cost; unknown costs are excluded, not $0`} />
@@ -69,7 +69,7 @@ export default async function HomePage() {
             <strong>No organization-wide MLB rate is shown here.</strong>{' '}
             {rateSummary?.rate_eligible_classes
               ? `${rateSummary.rate_eligible_classes} signing class(es) meet the rate-eligibility rules (complete signing population, complete outcome audit, five years mature): ${rateSummary.verified_mlb_players} of ${rateSummary.rate_eligible_signings} reached MLB (${pctFraction(rateSummary.verified_mlb_reach_rate)}). Other classes are excluded from any rate.`
-              : 'No signing class yet meets all three rate-eligibility rules (complete signing population, complete outcome audit, five years mature), so verified MLB players are reported as counts, not as a share of tracked signings.'}
+              : 'No full signing-period population yet meets all three rate-eligibility rules (complete population, complete outcome audit, five years mature). A complete announced opening class is not the full signing period, so verified MLB players are reported as counts, not as a share of tracked signings.'}
           </p>
         </section>
 

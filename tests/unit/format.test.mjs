@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { money, moneyExact, bwar, num, humanize, dateLabel, statusLabel, auditLabel, yesNoUnknown, MISSING } from '../../lib/format.js'
+import { money, moneyExact, bwar, num, humanize, dateLabel, statusLabel, auditLabel, yesNoUnknown, classStatusLabel, populationScopeLabel, MISSING } from '../../lib/format.js'
 
 test('missing values never render as zero', () => {
   for (const fn of [money, moneyExact, bwar, num, humanize, dateLabel]) {
@@ -40,4 +40,13 @@ test('labels', () => {
   assert.equal(statusLabel('ACTIVE_MLB_2026'), 'Active in MLB (2026)')
   assert.equal(statusLabel('HOF'), 'Retired · Hall of Fame')
   assert.equal(auditLabel('NOT_AUDITED'), 'Not audited')
+})
+
+test('population labels never call an opening class a complete class', () => {
+  assert.equal(classStatusLabel('OPENING_CLASS_COMPLETE'), 'Announced opening class complete')
+  assert.equal(classStatusLabel('COMPLETE'), 'Full signing period complete')
+  assert.equal(classStatusLabel('COUNT_CONFLICT'), 'Source count conflict')
+  assert.equal(populationScopeLabel('OPENING_CLASS'), 'Announced opening class')
+  assert.equal(populationScopeLabel('FULL_SIGNING_PERIOD'), 'Full signing period')
+  assert.equal(populationScopeLabel(null), MISSING)
 })

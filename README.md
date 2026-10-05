@@ -27,11 +27,26 @@ The application contains **no mock, sample or fallback baseball data**. If Supab
 - URL parameters: `q`, `org_scope` (`dodgers` default, `all`), `year`, `year_min`, `year_max`, `market` (`__none` = unknown), `position`, `pathway`, `audit`, `mlb` (`yes` / `no` / `unknown`), `dodgers_debut`, `record_scope`, `coverage`, `org`, `sort`, `dir`, `page`.
 - Table specifications live in `lib/specs.js`; URL parsing, validation and query construction live in `lib/table-state.js`. Adding a column means adding one spec entry and one cell.
 
+## Signing populations
+
+**An announcement total is not necessarily the full signing-period total.** A club's international-class release usually describes the players announced when the signing period opens; the club keeps signing players for the rest of the period. DISI therefore records which population a count describes:
+
+| Population | Meaning | Can be a rate denominator? |
+| --- | --- | --- |
+| Signing class | The class year a signing is counted in (`signings.signing_year`). | — |
+| Announced opening class (`OPENING_CLASS`) | Players named or counted in the club's opening announcement. | No. Statistics are labelled *opening-class cohort rates*. |
+| Full signing period (`FULL_SIGNING_PERIOD`) | Every international signing in the period (e.g. Jan 15 – Dec 15). | Yes, once complete, fully audited and five years mature. |
+| Top-prospect sample (`TOP_PROSPECT_SAMPLE`) | MLB Pipeline Top 30/50 trackers. | No. |
+| Historical verified set (`HISTORICAL_VERIFIED_SET`) | Individually verified historical signings. | No. |
+| Other defined population (`OTHER_DEFINED_POPULATION`) | E.g. a calendar-year count that spans two periods. | No. |
+
+A player can be announced in a class while the formal MLB transaction is dated later (Eduardo Rojas: announced January 2024, transaction May 30, 2024), so `announced_date` and `formal_transaction_date` are separate fields and `signing_date` is never rewritten.
+
 ## Data rules
 
 - Missing is never zero. Unaudited is never failure. Unknown acquisition cost is never `$0`.
 - A historical verified sample is not a census. MLB Pipeline Top 30/50 lists are prospect samples.
-- A class is **complete** only when a source declares the full class and every expected signee is in the database.
+- A population is **complete** only when a source states its size, every member is in the database, and no source conflict is open. A complete announced opening class is not a complete signing period.
 - Signing bonus, posting fee and transfer fee are separate. Multi-player trade returns are shown at package level.
 - Brooklyn and Los Angeles share franchise key `DODGERS`; historical organization names are preserved.
 - Career value is **bWAR** (Baseball-Reference WAR), stored with its source, observation date and through-season. FanGraphs fWAR, if added, is stored separately and never blended or substituted.
@@ -39,7 +54,7 @@ The application contains **no mock, sample or fallback baseball data**. If Supab
 ## Setup
 
 1. Copy `.env.example` to `.env.local` and set the Supabase Project URL and **publishable key**.
-2. Apply the SQL in `database/sql/` in manifest order in the Supabase SQL Editor (for an existing v0.7 project, run `017_research_database_layer.sql`).
+2. Apply the SQL in `database/sql/` in manifest order in the Supabase SQL Editor (for an existing v0.8 project, run `018_signing_class_coverage_and_backfill.sql`).
 3. `npm install`
 4. `npm run dev`
 
@@ -56,13 +71,13 @@ Never put a Supabase secret key or legacy service-role key in a `NEXT_PUBLIC_` v
 | --- | --- |
 | `npm run lint` | ESLint (flat config, `eslint-config-next/core-web-vitals`) |
 | `npm run typecheck` | `tsc` with `checkJs` over `app/`, `lib/` and `tests/` |
-| `npm test` | Unit tests plus the database test, which runs every canonical migration in PGlite (in-process Postgres), reruns 017, and checks data rules and the security model |
+| `npm test` | Unit tests plus the database test, which runs every canonical migration in PGlite (in-process Postgres), reruns the latest migration, and checks class totals, population and rate-eligibility rules, provenance and the security model |
 | `npm run build` | Production build |
 | `npm run check` | All of the above |
 
 ## Database lineage
 
-- `database/sql/` — canonical build sequence 001–017 (listed in `database/manifest.json`).
+- `database/sql/` — canonical build sequence 001–018 (listed in `database/manifest.json`).
 - `database/repairs/` — the 004a–004c troubleshooting scripts from the first manual Supabase build.
 - `database/README.md` — what each layer does.
 - `docs/INGESTION.md` — source priority and the workflow for adding classes, players, outcomes and bWAR.

@@ -16,7 +16,8 @@
     "014_portfolio_universe_and_source_pipeline.sql",
     "015_outcome_audit_operations.sql",
     "016_historical_positive_outcomes_and_rate_guardrail.sql",
-    "017_research_database_layer.sql"
+    "017_research_database_layer.sql",
+    "018_signing_class_coverage_and_backfill.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -25,12 +26,13 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 17,
+    "canonical_build_count": 18,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
     "v0_6": "181-player research universe with explicit outcome audit operations and queue.",
     "v0_7": "39 positive MLB outcome audits, Dodgers franchise identity, rate-eligibility guardrail, historical MLB outcome homepage.",
-    "v0_8": "Research-database layer: canonical player slugs, source tiers, metric-specific bWAR/fWAR provenance (player_metric_observations), official 2024/2025 class-size sources, and security-invoker research views for the signings table, player directory, player dossier, class coverage and research queue."
+    "v0_8": "Research-database layer: canonical player slugs, source tiers, metric-specific bWAR/fWAR provenance (player_metric_observations), official 2024/2025 class-size sources, and security-invoker research views for the signings table, player directory, player dossier, class coverage and research queue.",
+    "v0_9": "Signing populations (opening class vs full signing period vs samples), class-membership provenance, announced vs formal transaction dates, rate eligibility restricted to complete full-period populations, 2024 and 2025 announced classes completed, 2022 later-period backfill and source reconciliation."
   }
 }

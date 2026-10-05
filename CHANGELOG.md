@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.9
+Signing-population semantics and verified class backfill.
+
+Methodology
+- **Announcement total ≠ full signing-period total.** Coverage now names its population: announced opening class, full signing period, historical verified set, top-prospect sample or other defined population.
+- Organization MLB reach rates now require a complete, fully audited, five-year-mature *full signing-period* population. A complete opening class can never enable one; it can only produce a labelled opening-class cohort rate. Currently zero populations are rate-eligible.
+- Existing coverage rows were given an explicit, documented scope. The 2017 row (26 signings) turned out to describe the completed 2016-17 period, not the 2017-18 signings it was being compared with; it is now modelled as the 2016-17 population.
+- Announced date, formal MLB transaction date and signing class year are separate facts. `signing_date` is preserved and only filled where NULL.
+
+Data — `018_signing_class_coverage_and_backfill.sql`
+- 2024 announced class completed (19/19): added Eduardo Rojas (C, Venezuela; MLB transaction May 30, 2024). Allen Ajoti keeps MLB's canonical name; "Allan Atoji" is a sourced alias.
+- 2025 announced class completed (29/29): added Almonte, Arvelo, Gamez, Lara, A. Luna, Pacheco, Reyes, Romero, Sánchez, Savinon and Urena (alias "Antoni Ureña"). Totals: 12 VEN / 8 DOM / 4 MEX / 2 COL / 1 JPN / 1 PAN / 1 South Sudan; 16 P / 4 C / 6 IF / 3 OF.
+- 2022 expanded from 29 to 56 signings: three announced players with later transactions (Avilés, Albertus, Colón) and 24 later-period first-contract signings verified in MLB transaction histories. Rancer Adon (prior Rangers contract) was not added.
+- MLB person ids, formal transaction dates and missing birth facts filled for all 2022/2024/2025 players from MLB records; null markets filled from class lists only where they do not conflict.
+- New tables: `signing_populations`, `signing_population_members`, `signing_population_member_sources` (class-membership provenance with the facts each source supports), `research_source_conflicts`, `signing_period_candidates`.
+- New views: `v_dodgers_signing_population_coverage`, `v_dodgers_class_source_reconciliation`, `v_dodgers_signing_period_research_queue`, `v_dodgers_opening_class_cohort_rates`, `v_signing_population_coverage`, `v_signing_population_memberships`. Rate-eligibility, class-coverage, signing-record, status, timeline and provenance views updated in place with existing columns preserved.
+- Explicit source conflicts recorded (Ajoti position, Deng Thon birth country, Jose Lopez market, Luciano Romero market, Gudino class membership, the 2022 30-vs-31 count, seven 2025 players with 2024-12-16 transactions).
+
+Application
+- Research & Data Coverage shows populations and rate eligibility, the population research queue and flagged reconciliation rows. Player pages show announced and formal transaction dates and class memberships with their sources.
+- Version 0.9.0. DB tests extended (28 tests, including a positive control proving a genuinely complete full-period population becomes rate-eligible).
+
 ## v0.8
 Product renamed to **DISI — Dodgers International Signings Research Database**, rebuilt as a research database rather than a case-study landing page.
 

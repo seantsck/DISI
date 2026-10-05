@@ -3,7 +3,7 @@ import DataMode from '../components/DataMode'
 import DataUnavailable from '../components/DataUnavailable'
 import PlayerLink from '../components/PlayerLink'
 import { getResearchData, RESEARCH_TASK_TYPES } from '../../lib/data.js'
-import { humanize, classStatusLabel, pctFraction, dateLabel, MISSING } from '../../lib/format.js'
+import { humanize, classStatusLabel, populationScopeLabel, pctFraction, dateLabel, MISSING } from '../../lib/format.js'
 
 export const metadata = { title: 'Research & Data Coverage' }
 
@@ -20,7 +20,7 @@ const TASK_LABELS = {
 export default async function ResearchPage({ searchParams }) {
   const raw = (await searchParams).task
   const taskType = RESEARCH_TASK_TYPES.includes(raw) ? raw : undefined
-  const { live, error, classes, tasks, taskCounts, tiers } = await getResearchData(taskType)
+  const { live, error, classes, tasks, taskCounts, tiers, populations, reconciliation, periodQueue } = await getResearchData(taskType)
   const totalTasks = Object.values(taskCounts).reduce((a, b) => a + Number(b), 0)
 
   return (
@@ -29,7 +29,7 @@ export default async function ResearchPage({ searchParams }) {
         <div>
           <span className="eyebrow">Data operations</span>
           <h1>Research &amp; Data Coverage</h1>
-          <p>How complete each Dodgers signing class is, which source supports the expected class size, and what research remains. A class is marked complete only when a source declares the full class and every expected signee is in the database.</p>
+          <p>How complete each Dodgers signing population is, which source supports its size, and what research remains. An announced opening class is not the full signing period: clubs keep signing players after the opening announcement, so only a complete full-period population can support an organization MLB reach rate.</p>
         </div>
         <DataMode live={live} error={error} />
       </header>
@@ -37,6 +37,101 @@ export default async function ResearchPage({ searchParams }) {
       {!live && <DataUnavailable error={error} />}
 
       {live && <>
+        <section className="table-panel">
+          <div className="table-head">
+            <div><span className="eyebrow">Populations</span><h2>Signing populations and rate eligibility</h2></div>
+            <span className="micro-note">Announcement total is not necessarily the full signing-period total</span>
+          </div>
+          <div className="table-scroll">
+            <table className="research-table">
+              <thead>
+                <tr>
+                  <th className="num">Class year</th><th>Population</th><th>Period</th><th className="num">Expected</th>
+                  <th className="num">Tracked</th><th className="num">Coverage</th><th>Completeness</th><th>Source</th>
+                  <th>Organization rate analysis</th>
+                </tr>
+              </thead>
+              <tbody>
+                {populations.map((p) => (
+                  <tr key={p.population_key}>
+                    <td className="num">{p.signing_year}</td>
+                    <td>
+                      <strong>{populationScopeLabel(p.population_scope)}</strong>
+                      {p.provisional_members > 0 && <small className="muted block">{p.provisional_members} provisional</small>}
+                    </td>
+                    <td>{p.period_label}</td>
+                    <td className="num">{p.expected_population ?? MISSING}</td>
+                    <td className="num">{p.tracked_population}</td>
+                    <td className="num">{p.coverage_rate == null ? MISSING : pctFraction(p.coverage_rate, 0)}</td>
+                    <td>
+                      {humanize(p.completeness_status)}
+                      {p.unresolved_conflicts > 0 && <small className="muted block">{p.unresolved_conflicts} unresolved conflict{p.unresolved_conflicts === 1 ? '' : 's'}</small>}
+                    </td>
+                    <td className="source-cell">
+                      {p.source_url
+                        ? <>
+                            <a className="source-link" href={p.source_url} target="_blank" rel="noopener noreferrer">{p.source_title || 'Source'}</a>
+                            <small className="muted block">{humanize(p.source_tier)}{p.source_published && ` · ${dateLabel(p.source_published)}`}</small>
+                          </>
+                        : <span className="muted">No source for the population size</span>}
+                    </td>
+                    <td>{p.rate_eligible ? 'Eligible' : humanize(p.rate_exclusion_reason)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="micro-note table-foot">Only a complete, fully audited, five-year-mature full signing-period population can produce an organization MLB reach rate. Statistics over an announced opening class are labelled opening-class cohort rates.</p>
+        </section>
+
+        <section className="table-panel">
+          <div className="table-head">
+            <div><span className="eyebrow">Signing periods</span><h2>Population research queue</h2></div>
+            <span className="micro-note">{periodQueue.length} highest-priority items</span>
+          </div>
+          <div className="table-scroll">
+            <table className="research-table">
+              <thead><tr><th className="num">Priority</th><th>Task</th><th className="num">Year</th><th>Player</th><th>Detail</th></tr></thead>
+              <tbody>
+                {periodQueue.map((t, i) => (
+                  <tr key={`${t.task_type}-${t.population_key || t.player_id || t.full_name}-${i}`}>
+                    <td className="num">{t.priority}</td>
+                    <td>{humanize(t.task_type)}</td>
+                    <td className="num">{t.signing_year ?? MISSING}</td>
+                    <td>{t.player_slug ? <PlayerLink slug={t.player_slug} name={t.full_name} /> : (t.full_name || <span className="muted">Population</span>)}</td>
+                    <td className="wrap">{t.detail}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="table-panel">
+          <div className="table-head">
+            <div><span className="eyebrow">Reconciliation</span><h2>Signings with unresolved class or source questions</h2></div>
+            <span className="micro-note">{reconciliation.length} flagged signings</span>
+          </div>
+          <div className="table-scroll">
+            <table className="research-table">
+              <thead><tr><th className="num">Year</th><th>Player</th><th>Classification</th><th>Announced</th><th>MLB transaction</th><th className="num">Sources</th><th>Conflicts</th></tr></thead>
+              <tbody>
+                {reconciliation.map((r) => (
+                  <tr key={`${r.signing_year}-${r.player_slug}`}>
+                    <td className="num">{r.signing_year}</td>
+                    <td><PlayerLink slug={r.player_slug} name={r.full_name} /></td>
+                    <td>{humanize(r.classification)}</td>
+                    <td>{dateLabel(r.announced_date)}</td>
+                    <td>{dateLabel(r.formal_transaction_date)}</td>
+                    <td className="num">{r.source_count}</td>
+                    <td>{(r.conflict_types || []).map(humanize).join(', ') || MISSING}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
         <section className="table-panel">
           <div className="table-head">
             <div><span className="eyebrow">By signing year</span><h2>Signing-class coverage</h2></div>

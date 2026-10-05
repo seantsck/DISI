@@ -6,8 +6,10 @@ export const metadata = { title: 'Methodology' }
 const rules = [
   ['Missing is never zero', 'Unknown bonuses, fees, dates, outcomes and biography fields stay NULL and display as “—” or “Unknown”. A sum of known costs never treats an unknown component as $0.'],
   ['Unaudited is never failure', 'A player is “not audited” until public records support either a verified MLB debut or a verified absence of one. Only audited players count as reaching or not reaching MLB.'],
-  ['Samples are not censuses', 'A historically verified set or an MLB Pipeline Top 30/50 tracker is a sample. A signing class is complete only when a source declares the full class and every expected signee is in the database.'],
-  ['Rates require eligible denominators', 'An MLB reach rate is shown only for classes with a complete signing population, a complete outcome audit and at least five years of maturity. Otherwise verified MLB players are reported as counts.'],
+  ['Samples are not censuses', 'A historically verified set or an MLB Pipeline Top 30/50 tracker is a sample. A population is complete only when a source states its size, every member is in the database and no source conflict is open.'],
+  ['Announcement total ≠ signing-period total', 'A club’s class announcement usually describes the players signed when the period opens; signing continues afterwards. A complete announced opening class is never treated as a complete signing period.'],
+  ['Rates require eligible denominators', 'An organization MLB reach rate requires a complete full signing-period population, a complete outcome audit and five years of maturity. Statistics over an opening class are labelled opening-class cohort rates. Otherwise verified MLB players are reported as counts.'],
+  ['Announced ≠ transacted', 'A player can be announced in a class while the formal MLB transaction is dated later. Announcement date, transaction date and class year are stored separately; a verified transaction date is never rewritten.'],
   ['Costs stay separate', 'Signing bonus, posting fee and transfer / acquisition fee are separate fields. Total known acquisition cost adds only the components that are known.'],
   ['Package-aware trades', 'The full return of a multi-player trade is shown at package level and is never assigned to one outgoing player.'],
   ['One franchise, historical names', 'Brooklyn and Los Angeles share franchise key DODGERS for value realization, while historical organization names (e.g. Brooklyn Dodgers, 1952 debut) are preserved.'],

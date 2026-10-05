@@ -6,7 +6,7 @@ import AuditBadge from '../../components/AuditBadge'
 import PlayerLink from '../../components/PlayerLink'
 import { getPlayerDossier } from '../../../lib/data.js'
 import {
-  money, moneyExact, num, bwar, humanize, dateLabel, yesNoUnknown, statusLabel, MISSING,
+  money, moneyExact, num, bwar, humanize, dateLabel, yesNoUnknown, statusLabel, populationScopeLabel, MISSING,
 } from '../../../lib/format.js'
 
 const loadDossier = cache(getPlayerDossier)
@@ -58,7 +58,7 @@ function timelineDate(event) {
 
 export default async function PlayerPage({ params }) {
   const { slug } = await params
-  const { live, error, player, signings, timeline, transactions, sources, trainers, metrics } = await loadDossier(slug)
+  const { live, error, player, signings, timeline, transactions, sources, trainers, metrics, memberships } = await loadDossier(slug)
 
   if (!live) {
     return (
@@ -164,7 +164,9 @@ export default async function PlayerPage({ params }) {
             <h3>{s.organization_name} · {s.signing_year}</h3>
             <dl className="fact-grid wide">
               <Fact label="Signing year">{s.signing_year}</Fact>
-              <Fact label="Exact signing date">{known(s.signing_date, dateLabel)}</Fact>
+              <Fact label="Signing date">{known(s.signing_date, dateLabel)}</Fact>
+              <Fact label="Announced in class">{s.announced_date ? dateLabel(s.announced_date) : <span className="unknown">Not recorded</span>}</Fact>
+              <Fact label="Formal MLB transaction">{s.formal_transaction_date ? dateLabel(s.formal_transaction_date) : <span className="unknown">Not verified</span>}</Fact>
               <Fact label="Signing market">{known(s.country_market)}</Fact>
               <Fact label="Acquisition pathway">{humanize(s.pathway)}</Fact>
               <Fact label="Source league">{known(s.source_league)}</Fact>
@@ -180,6 +182,24 @@ export default async function PlayerPage({ params }) {
               <Fact label="Record scope">{humanize(s.record_scope)}</Fact>
               <Fact label="Signing-class coverage">{known(s.coverage_type, humanize)}</Fact>
             </dl>
+            {memberships.some((m) => m.signing_id === s.signing_id) && (
+              <>
+                <h4 className="sub">Class membership</h4>
+                <ul className="plain-list">
+                  {memberships.filter((m) => m.signing_id === s.signing_id).map((m) => (
+                    <li key={m.population_key}>
+                      <strong>{populationScopeLabel(m.population_scope)}</strong> · {m.period_label}
+                      {m.membership_status === 'PROVISIONAL' && <span className="muted"> (provisional)</span>}
+                      <span className="muted">
+                        {' · '}{m.source_count} source{m.source_count === 1 ? '' : 's'}
+                        {m.membership_bases?.length ? `: ${m.membership_bases.map(humanize).join(', ')}` : ''}
+                        {' · population '}{humanize(m.completeness_status)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
             {s.signing_notes && <p className="note">{s.signing_notes}</p>}
           </div>
         ))}
