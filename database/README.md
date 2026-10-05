@@ -27,6 +27,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 16. `016_historical_positive_outcomes_and_rate_guardrail.sql` — adds 39 verified MLB-reaching outcomes, franchise-aware debut classification, and class-level rate eligibility safeguards.
 17. `017_research_database_layer.sql` — research-database layer for the web application (details below).
 18. `018_signing_class_coverage_and_backfill.sql` — signing populations, class-membership provenance and the 2022 / 2024 / 2025 backfill (details below).
+19. `019_mature_outcome_audit_expansion.sql` — evidence-based outcome audits, professional progress and outcome research views (details below; research in `database/research/019/`).
 
 ## 017 research-database layer
 
@@ -47,6 +48,15 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Conflicts and candidates.** `research_source_conflicts` holds explicit disagreements between sources; `signing_period_candidates` holds MLB transaction signees not yet classified as DISI signings.
 - **Rate views.** `v_dodgers_class_analysis_eligibility`, `v_dodgers_rate_eligible_player_analysis` (and so `v_dodgers_rate_eligible_summary`) only count members of complete, audited, mature full-period populations. `v_dodgers_opening_class_cohort_rates` labels opening-class statistics. Legacy tracked-sample rate views (004, 006) carry comments saying they are not organization rates.
 - **Rerunnable.** `npm run test:db` reruns the latest migration and checks nothing changes. Because 018 widens views created in 017, re-running 017 after 018 is not supported.
+
+## 019 outcome audits
+
+- **Outcome state.** `outcome_audits.outcome_state` says what an audit concluded: `REACHED_MLB`, `NO_MLB_CAREER_ENDED`, `NO_MLB_ACTIVE_IN_MINORS` or `NO_MLB_STATUS_UNKNOWN`. A check constraint keeps it consistent with `reached_mlb_verified`.
+- **Evidence required.** `outcome_evidence` records which facts each source supports. A deferred constraint trigger rejects any audit with `reached_mlb_verified = false` unless MLB-reach evidence exists for the player.
+- **Progress, not outcome.** `player_professional_progress` stores highest level, last affiliated season and team, final transaction and disposition, for audited *and* developing players. A progress row never implies an outcome.
+- **Policy.** New "no MLB" audits only for classes through 2021 (and "still active" only through 2020); recent classes get progress only. Existing audits were never overwritten.
+- **Rates.** Unchanged from 018: fully audited historical or tracked classes are reported as tracked-cohort outcomes (`v_dodgers_outcome_by_signing_class`) and never become organization rates.
+- **Reproducibility.** `database/research/019/` holds the artifacts, decisions, template and `build.mjs`; see its README.
 
 ## Repair history
 

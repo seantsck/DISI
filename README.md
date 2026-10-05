@@ -49,12 +49,13 @@ A player can be announced in a class while the formal MLB transaction is dated l
 - A population is **complete** only when a source states its size, every member is in the database, and no source conflict is open. A complete announced opening class is not a complete signing period.
 - Signing bonus, posting fee and transfer fee are separate. Multi-player trade returns are shown at package level.
 - Brooklyn and Los Angeles share franchise key `DODGERS`; historical organization names are preserved.
+- An outcome audit of "no MLB debut" needs evidence (enforced in the database) and says *how*: no longer in affiliated baseball, still active in the minors, or status unknown. Developing players get a progress record, not an outcome.
 - Career value is **bWAR** (Baseball-Reference WAR), stored with its source, observation date and through-season. FanGraphs fWAR, if added, is stored separately and never blended or substituted.
 
 ## Setup
 
 1. Copy `.env.example` to `.env.local` and set the Supabase Project URL and **publishable key**.
-2. Apply the SQL in `database/sql/` in manifest order in the Supabase SQL Editor (for an existing v0.8 project, run `018_signing_class_coverage_and_backfill.sql`).
+2. Apply the SQL in `database/sql/` in manifest order in the Supabase SQL Editor (for an existing v0.9 project, run `019_mature_outcome_audit_expansion.sql`).
 3. `npm install`
 4. `npm run dev`
 
@@ -72,12 +73,15 @@ Never put a Supabase secret key or legacy service-role key in a `NEXT_PUBLIC_` v
 | `npm run lint` | ESLint (flat config, `eslint-config-next/core-web-vitals`) |
 | `npm run typecheck` | `tsc` with `checkJs` over `app/`, `lib/` and `tests/` |
 | `npm test` | Unit tests plus the database test, which runs every canonical migration in PGlite (in-process Postgres), reruns the latest migration, and checks class totals, population and rate-eligibility rules, provenance and the security model |
+| `npm run research:test` | Offline tests for the research scripts (also included in `npm test`) |
 | `npm run build` | Production build |
 | `npm run check` | All of the above |
 
 ## Database lineage
 
-- `database/sql/` — canonical build sequence 001–018 (listed in `database/manifest.json`).
+- `database/sql/` — canonical build sequence 001–019 (listed in `database/manifest.json`).
+- `database/research/` — reviewed research artifacts and builders behind data migrations (019 onward).
+- `scripts/mlb/` — reproducible MLB Stats API / Baseball-Reference research scripts (see `scripts/mlb/README.md`). They output review artifacts and never write to a database.
 - `database/repairs/` — the 004a–004c troubleshooting scripts from the first manual Supabase build.
 - `database/README.md` — what each layer does.
 - `docs/INGESTION.md` — source priority and the workflow for adding classes, players, outcomes and bWAR.

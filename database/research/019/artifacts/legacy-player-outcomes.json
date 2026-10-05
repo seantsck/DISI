@@ -1,0 +1,695 @@
+{
+  "meta": {
+    "auditDate": "2026-10-05",
+    "command": "player-outcomes",
+    "recordCount": 13,
+    "rule": "Recommendations only. INSUFFICIENT_EVIDENCE is never a negative outcome; NO_MLB_ACTIVE_IN_MINORS is not a failure."
+  },
+  "records": [
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Nicaragua",
+      "continuedOutsideAffiliated": null,
+      "disposition": "RELEASED",
+      "finalTransaction": {
+        "date": "2020-07-01",
+        "description": "AZL Dodgers 1 released 2B Aldo Espinoza.",
+        "organization": "ACL Dodgers",
+        "typeCode": "REL"
+      },
+      "highestLevel": "ROK",
+      "highestLevelSeason": 2016,
+      "lastAffiliatedLevel": "ROK",
+      "lastAffiliatedSeason": 2019,
+      "lastAffiliatedTeam": "AZL Dodgers Lasorda",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Aldo Espinoza",
+      "mlbId": 665852,
+      "name": "Aldo Espinoza",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Final transaction REL on 2020-07-01; last affiliated season 2019 (ROK); no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "aldo-espinoza",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:19.687Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665852"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:20.144Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665852"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:20.887Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665852/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:21.712Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665852/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:22.409Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665852/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:23.222Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665852/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Dominican Republic",
+      "continuedOutsideAffiliated": null,
+      "disposition": "UNKNOWN",
+      "finalTransaction": null,
+      "highestLevel": "AAA",
+      "highestLevelSeason": 2022,
+      "lastAffiliatedLevel": "AAA",
+      "lastAffiliatedSeason": 2022,
+      "lastAffiliatedTeam": "Syracuse Mets",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Carlos Rincon",
+      "mlbId": 665779,
+      "name": "Carlos Rincon",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "No affiliated appearance since 2022; no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "carlos-rincon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:23.939Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665779"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:24.707Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665779"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:25.456Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665779/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:26.376Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665779/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:27.001Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665779/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:27.775Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665779/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Dominican Republic",
+      "continuedOutsideAffiliated": null,
+      "disposition": "RELEASED",
+      "finalTransaction": {
+        "date": "2018-01-05",
+        "description": "DSL Dodgers2 released LF Christopher Arias.",
+        "organization": "DSL LAD Mega",
+        "typeCode": "REL"
+      },
+      "highestLevel": "ROK",
+      "highestLevelSeason": 2017,
+      "lastAffiliatedLevel": "ROK",
+      "lastAffiliatedSeason": 2017,
+      "lastAffiliatedTeam": "DSL Dodgers 2",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Christopher Arias",
+      "mlbId": 665931,
+      "name": "Christopher Arias",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Final transaction REL on 2018-01-05; last affiliated season 2017 (ROK); no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "christopher-arias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:14.026Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665931"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:28.511Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665931"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:29.264Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665931/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:30.088Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665931/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:30.775Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665931/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:31.582Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665931/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "United States",
+      "continuedOutsideAffiliated": null,
+      "disposition": "RELEASED",
+      "finalTransaction": {
+        "date": "2017-02-15",
+        "description": "AZL Dodgers released SS Damaso Marte, Jr.",
+        "organization": "AZL Dodgers 2",
+        "typeCode": "REL"
+      },
+      "highestLevel": null,
+      "highestLevelSeason": null,
+      "lastAffiliatedLevel": null,
+      "lastAffiliatedSeason": null,
+      "lastAffiliatedTeam": null,
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Damaso Marte Jr.",
+      "mlbId": 666006,
+      "name": "Damaso Marte Jr.",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Final transaction REL on 2017-02-15; no affiliated games recorded; no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "damaso-marte-jr",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:32.293Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666006"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:33.056Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=666006"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:33.811Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666006/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:34.585Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666006/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:35.316Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666006/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:36.091Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666006/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Venezuela",
+      "continuedOutsideAffiliated": null,
+      "disposition": "RELEASED",
+      "finalTransaction": {
+        "date": "2019-11-17",
+        "description": "AZL Dodgers Lasorda released 3B Luis Rodriguez.",
+        "organization": "ACL Dodgers",
+        "typeCode": "REL"
+      },
+      "highestLevel": "ROK",
+      "highestLevelSeason": 2016,
+      "lastAffiliatedLevel": "ROK",
+      "lastAffiliatedSeason": 2019,
+      "lastAffiliatedTeam": "AZL Dodgers Lasorda",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Luis Rodriguez",
+      "mlbId": 665960,
+      "name": "Luis Rodriguez",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Final transaction REL on 2019-11-17; last affiliated season 2019 (ROK); no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "luis-rodriguez-2015",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:36.837Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665960"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:37.588Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665960"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:38.363Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665960/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:39.195Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665960/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:39.877Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665960/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:40.657Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665960/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Cuba",
+      "continuedOutsideAffiliated": null,
+      "disposition": "UNKNOWN",
+      "finalTransaction": null,
+      "highestLevel": "AAA",
+      "highestLevelSeason": 2021,
+      "lastAffiliatedLevel": "AAA",
+      "lastAffiliatedSeason": 2022,
+      "lastAffiliatedTeam": "Oklahoma City Dodgers",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Omar Estévez",
+      "mlbId": 666784,
+      "name": "Omar Estevez",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "No affiliated appearance since 2022; no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "omar-estevez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:41.367Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666784"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:42.153Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=666784"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:42.898Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666784/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:43.735Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666784/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:44.421Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666784/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:45.172Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666784/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Dominican Republic",
+      "continuedOutsideAffiliated": null,
+      "disposition": "RELEASED",
+      "finalTransaction": {
+        "date": "2021-08-03",
+        "description": "Vancouver Canadians released SS Ronny Brito.",
+        "organization": "Vancouver Canadians",
+        "typeCode": "REL"
+      },
+      "highestLevel": "A+",
+      "highestLevelSeason": 2019,
+      "lastAffiliatedLevel": "A+",
+      "lastAffiliatedSeason": 2021,
+      "lastAffiliatedTeam": "Vancouver Canadians",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Ronny Brito",
+      "mlbId": 665798,
+      "name": "Ronny Brito",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Final transaction REL on 2021-08-03; last affiliated season 2021 (A+); no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "ronny-brito",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:45.945Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665798"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:46.718Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665798"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:47.446Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665798/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:48.286Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665798/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:48.979Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665798/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:49.753Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665798/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Dominican Republic",
+      "continuedOutsideAffiliated": null,
+      "disposition": "RELEASED",
+      "finalTransaction": {
+        "date": "2020-07-01",
+        "description": "Rancho Cucamonga Quakes released LF Starling Heredia.",
+        "organization": "Rancho Cucamonga Quakes",
+        "typeCode": "REL"
+      },
+      "highestLevel": "A+",
+      "highestLevelSeason": 2019,
+      "lastAffiliatedLevel": "A+",
+      "lastAffiliatedSeason": 2019,
+      "lastAffiliatedTeam": "Rancho Cucamonga Quakes",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Starling Heredia",
+      "mlbId": 665752,
+      "name": "Starling Heredia",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Final transaction REL on 2020-07-01; last affiliated season 2019 (A+); no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "starling-heredia",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:50.476Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665752"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:51.260Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665752"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:52.012Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665752/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:52.859Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665752/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:53.529Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665752/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:54.287Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665752/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Cuba",
+      "continuedOutsideAffiliated": null,
+      "disposition": "UNKNOWN",
+      "finalTransaction": null,
+      "highestLevel": "AAA",
+      "highestLevelSeason": 2022,
+      "lastAffiliatedLevel": "AAA",
+      "lastAffiliatedSeason": 2022,
+      "lastAffiliatedTeam": "Oklahoma City Dodgers",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Yadier Álvarez",
+      "mlbId": 665751,
+      "name": "Yadier Álvarez",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "No affiliated appearance since 2022; no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2015,
+      "slug": "yadier-alvarez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:55.025Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665751"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:55.780Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665751"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:56.548Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665751/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:57.337Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665751/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:58.043Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665751/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:58.936Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665751/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Dominican Republic",
+      "continuedOutsideAffiliated": null,
+      "disposition": "UNKNOWN",
+      "finalTransaction": null,
+      "highestLevel": "AA",
+      "highestLevelSeason": 2024,
+      "lastAffiliatedLevel": "AA",
+      "lastAffiliatedSeason": 2025,
+      "lastAffiliatedTeam": "New Hampshire Fisher Cats",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Alex De Jesus",
+      "mlbId": 682942,
+      "name": "Alex De Jesus",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Last affiliated season 2025, no exit transaction; status unclear.",
+      "recommendation": "INSUFFICIENT_EVIDENCE",
+      "signingYear": 2018,
+      "slug": "alex-de-jesus",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:13:59.597Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682942"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:00.351Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=682942"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:01.105Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682942/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:01.962Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682942/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:02.611Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682942/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:03.394Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682942/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Venezuela",
+      "continuedOutsideAffiliated": null,
+      "disposition": "RELEASED",
+      "finalTransaction": {
+        "date": "2026-04-25",
+        "description": "Eugene Emeralds released C Diego Cartaya.",
+        "organization": "Eugene Emeralds",
+        "typeCode": "REL"
+      },
+      "highestLevel": "AAA",
+      "highestLevelSeason": 2024,
+      "lastAffiliatedLevel": "A+",
+      "lastAffiliatedSeason": 2026,
+      "lastAffiliatedTeam": "Eugene Emeralds",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Diego Cartaya",
+      "mlbId": 682616,
+      "name": "Diego Cartaya",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Final transaction REL on 2026-04-25; last affiliated season 2026 (A+); no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2018,
+      "slug": "diego-cartaya",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:14:04.150Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682616"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:04.911Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=682616"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:05.645Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682616/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:06.533Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682616/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:07.167Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682616/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:07.960Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682616/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": true,
+      "birthCountry": "Dominican Republic",
+      "continuedOutsideAffiliated": null,
+      "disposition": "ACTIVE",
+      "finalTransaction": null,
+      "highestLevel": "AAA",
+      "highestLevelSeason": 2024,
+      "lastAffiliatedLevel": "AAA",
+      "lastAffiliatedSeason": 2026,
+      "lastAffiliatedTeam": "Oklahoma City Comets",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Jerming Rosario",
+      "mlbId": 682645,
+      "name": "Jerming Rosario",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "Played affiliated AAA in 2026; no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_ACTIVE_IN_MINORS",
+      "signingYear": 2018,
+      "slug": "jerming-rosario",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:14:08.678Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682645"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:09.460Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=682645"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:10.203Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682645/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:10.975Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682645/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:11.715Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682645/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:12.616Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682645/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    },
+    {
+      "activeInAffiliatedBall": false,
+      "birthCountry": "Venezuela",
+      "continuedOutsideAffiliated": null,
+      "disposition": "UNKNOWN",
+      "finalTransaction": null,
+      "highestLevel": "A+",
+      "highestLevelSeason": 2024,
+      "lastAffiliatedLevel": "A+",
+      "lastAffiliatedSeason": 2024,
+      "lastAffiliatedTeam": "Great Lakes Loons",
+      "lastMlbSeason": null,
+      "mlbDebutDate": null,
+      "mlbDebutTeam": null,
+      "mlbFullName": "Luis Rodriguez",
+      "mlbId": 691177,
+      "name": "Luis Rodriguez",
+      "outsideAffiliatedSeasons": [],
+      "reachedMlb": false,
+      "reason": "No affiliated appearance since 2024; no MLB debut through 2026-10-05.",
+      "recommendation": "NO_MLB_CAREER_ENDED",
+      "signingYear": 2019,
+      "slug": "luis-rodriguez-2019",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:14:13.233Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/691177"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:13.995Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=691177"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:14.739Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/691177/stats?stats=yearByYear&group=hitting&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:15.604Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/691177/stats?stats=yearByYear&group=hitting&leagueListId=milb_all"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:16.244Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/691177/stats?stats=yearByYear&group=pitching&sportId=1"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:14:17.030Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/691177/stats?stats=yearByYear&group=pitching&leagueListId=milb_all"
+        }
+      ]
+    }
+  ]
+}

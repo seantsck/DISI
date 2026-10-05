@@ -20,7 +20,7 @@ const TASK_LABELS = {
 export default async function ResearchPage({ searchParams }) {
   const raw = (await searchParams).task
   const taskType = RESEARCH_TASK_TYPES.includes(raw) ? raw : undefined
-  const { live, error, classes, tasks, taskCounts, tiers, populations, reconciliation, periodQueue } = await getResearchData(taskType)
+  const { live, error, classes, tasks, taskCounts, tiers, populations, reconciliation, periodQueue, outcomeProgress, outcomeClasses } = await getResearchData(taskType)
   const totalTasks = Object.values(taskCounts).reduce((a, b) => a + Number(b), 0)
 
   return (
@@ -37,6 +37,43 @@ export default async function ResearchPage({ searchParams }) {
       {!live && <DataUnavailable error={error} />}
 
       {live && <>
+        {outcomeProgress && (
+          <section className="table-panel">
+            <div className="table-head">
+              <div><span className="eyebrow">Outcome audits</span><h2>Outcome audits by signing class</h2></div>
+              <span className="micro-note">
+                {outcomeProgress.audited} of {outcomeProgress.tracked_signings} audited · {outcomeProgress.mature_unaudited} mature signings still unaudited · {outcomeProgress.developing_unaudited} developing
+              </span>
+            </div>
+            <div className="table-scroll">
+              <table className="research-table">
+                <thead>
+                  <tr>
+                    <th className="num">Year</th><th className="num">Tracked</th><th className="num">Audited</th><th className="num">Reached MLB</th>
+                    <th className="num">No MLB (audited)</th><th className="num">Unaudited</th><th>Maturity</th><th>Tracked-cohort outcome</th><th>Organization rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {outcomeClasses.map((c) => (
+                    <tr key={c.signing_year}>
+                      <td className="num">{c.signing_year}</td>
+                      <td className="num">{c.tracked_players}</td>
+                      <td className="num">{c.audited}</td>
+                      <td className="num">{c.mlb_reached}</td>
+                      <td className="num">{c.verified_no_mlb}{c.no_mlb_still_active > 0 && <small className="muted block">{c.no_mlb_still_active} still active</small>}</td>
+                      <td className="num">{c.unresolved}</td>
+                      <td>{humanize(c.maturity_status)}</td>
+                      <td>{c.tracked_cohort_mlb_share == null ? <span className="muted">Not all audited</span> : `${pctFraction(c.tracked_cohort_mlb_share, 0)} of tracked players`}</td>
+                      <td>{c.organization_rate_allowed ? 'Allowed' : <span className="muted">Not allowed</span>}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="micro-note table-foot">A tracked-cohort outcome describes only the players DISI tracks for that class (often a historical sample or a partial class). It is not an organization-wide class rate unless a complete full signing-period population qualifies.</p>
+          </section>
+        )}
+
         <section className="table-panel">
           <div className="table-head">
             <div><span className="eyebrow">Populations</span><h2>Signing populations and rate eligibility</h2></div>

@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.10
+Reproducible research tooling and evidence-based outcome audits.
+
+Research scripts — `scripts/mlb/`
+- MLB Stats API and Baseball-Reference research commands: `org-signings`, `resolve-ids`, `player-outcomes`, `bref-war`, `reconcile-class`, `outcome-sql-values`, `export-queue` (read-only).
+- Polite pacing, retries with backoff, on-disk cache with retrieval timestamps, `--offline` reruns, deterministic sorted output, per-record source URLs and MLB ids. No credentials; no database writes.
+- 20 offline tests on sanitized fixtures (id parsing, transaction normalization, first-contract detection, duplicates, accents, dates, outcome rules, bWAR rounding, deterministic output, HTTP retry/cache).
+
+Data — `019_mature_outcome_audit_expansion.sql`
+- 35 new outcome audits through 2026-10-05: 2 verified MLB (Roger Cedeño, Carlos Frías, with Baseball-Reference bWAR 1.7 and −0.3) and 33 verified no-MLB with structured evidence. Audited outcomes 58 → 93; verified MLB 45 → 47; verified no-MLB 13 → 46.
+- 2018 and 2019 tracked classes fully audited (reported as tracked-cohort outcomes; no organization rate). Mature unaudited signings 42 → 7 (all 2021: five still developing, two with insufficient evidence).
+- MLB ids resolved for 60 players (57 Dodgers-transaction matches; three documented manual decisions). MLB spellings stored as aliases (e.g. "Willian Soto", "Jeremi Rodriguez").
+- Mexican League seasons are no longer counted as affiliated Triple-A.
+
+Schema
+- `outcome_audits.outcome_state` (`REACHED_MLB`, `NO_MLB_CAREER_ENDED`, `NO_MLB_ACTIVE_IN_MINORS`, `NO_MLB_STATUS_UNKNOWN`), consistent with the reached flag (check constraint).
+- `player_professional_progress` (highest level, last affiliated season/team, final transaction, disposition, active status, play outside affiliated baseball) for audited and developing players.
+- `outcome_evidence` (field-level provenance). A deferred constraint trigger refuses a "no MLB" audit without MLB-reach evidence. Existing audits keep their data; their source became evidence and they gained an outcome state.
+- Views: `v_dodgers_outcome_audit_progress`, `v_dodgers_mature_outcome_queue`, `v_dodgers_outcome_by_signing_class`; dossier and provenance views extended.
+
+Application
+- Player pages describe audited non-MLB outcomes in neutral terms (e.g. "Did not reach MLB through Oct 5, 2026; no longer in affiliated baseball") with highest level, last affiliated season, disposition and audit confidence; developing players show professional progress explicitly labelled as not an outcome.
+- Research & Data Coverage shows outcome audits by signing class with tracked-cohort shares and whether an organization rate is allowed.
+- Version 0.10.0.
+
 ## v0.9
 Signing-population semantics and verified class backfill.
 

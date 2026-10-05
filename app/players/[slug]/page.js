@@ -51,6 +51,30 @@ function AssetList({ assets }) {
   ))
 }
 
+/** Neutral wording for audited non-MLB outcomes; never a failure label. */
+function outcomeStateLabel(state, through) {
+  const date = through ? dateLabel(through) : 'the audit date'
+  switch (state) {
+    case 'NO_MLB_CAREER_ENDED': return `Did not reach MLB through ${date}; no longer in affiliated baseball`
+    case 'NO_MLB_ACTIVE_IN_MINORS': return `Still in affiliated baseball; no MLB debut through ${date}`
+    case 'NO_MLB_STATUS_UNKNOWN': return `No MLB debut through ${date}; current affiliated status not established`
+    default: return humanize(state)
+  }
+}
+
+function dispositionLabel(p) {
+  const when = p.final_transaction_date ? ` ${dateLabel(p.final_transaction_date)}` : ''
+  const by = p.final_organization ? ` by ${p.final_organization}` : ''
+  switch (p.disposition) {
+    case 'RELEASED': return `Released${when}${by}`
+    case 'FREE_AGENT': return `Became a free agent${when}`
+    case 'RETIRED': return `Retired${when}`
+    case 'ACTIVE': return 'Active in affiliated baseball'
+    case 'UNKNOWN': return <span className="unknown">Not recorded in transactions</span>
+    default: return <span className="unknown">{UNKNOWN}</span>
+  }
+}
+
 function timelineDate(event) {
   if (event.date_precision === 'DAY' && event.event_date) return dateLabel(event.event_date)
   return event.event_year ?? 'Date unknown'
@@ -135,6 +159,12 @@ export default async function PlayerPage({ params }) {
             <Fact label="Debut organization">{known(p.mlb_debut_org_name)}</Fact>
             <Fact label="Debut directly with Dodgers franchise">{p.mlb_debut_date ? yesNoUnknown(p.direct_dodgers_franchise_debut) : <span className="unknown">Not applicable</span>}</Fact>
             <Fact label="Current / final status">{known(p.current_status, statusLabel)}</Fact>
+            {p.outcome_state && p.outcome_state !== 'REACHED_MLB' && (
+              <Fact label="Outcome">{outcomeStateLabel(p.outcome_state, p.audited_through_date)}</Fact>
+            )}
+            {p.outcome_audit_status !== 'NOT_AUDITED' && (
+              <Fact label="Audit confidence">{p.audit_confidence ? humanize(p.audit_confidence) : <span className="unknown">{UNKNOWN}</span>}</Fact>
+            )}
             <Fact label="Career bWAR">
               {p.career_bwar == null ? <span className="unknown">{UNKNOWN}</span> : <>
                 {bwar(p.career_bwar)} <span className="muted">through {p.bwar_observed_through_season ?? dateLabel(p.bwar_observed_through_date)}</span>{' '}
@@ -148,6 +178,20 @@ export default async function PlayerPage({ params }) {
               </Fact>
             )}
           </dl>
+          {p.progress_as_of_date && (
+            <>
+              <h3 className="sub">
+                {p.outcome_audit_status === 'NOT_AUDITED' ? 'Professional progress (not an outcome)' : 'Professional record'}
+              </h3>
+              <dl className="fact-grid">
+                <Fact label="Highest level">{p.highest_level ? `${p.highest_level}${p.highest_level_season ? ` (${p.highest_level_season})` : ''}` : <span className="unknown">No affiliated games recorded</span>}</Fact>
+                <Fact label="Last affiliated season">{p.last_affiliated_season ? `${p.last_affiliated_season}${p.last_affiliated_team ? ` · ${p.last_affiliated_team}` : ''}` : <span className="unknown">{UNKNOWN}</span>}</Fact>
+                <Fact label="Disposition">{dispositionLabel(p)}</Fact>
+                <Fact label="Outside affiliated baseball">{p.continued_outside_affiliated ? 'Continued professionally (e.g. Mexican League)' : <span className="unknown">Not recorded</span>}</Fact>
+              </dl>
+              <p className="muted small-note">As of {dateLabel(p.progress_as_of_date)} from MLB / MiLB records; see Sources and provenance.</p>
+            </>
+          )}
           <p className="method-note">
             <strong>bWAR</strong> is Baseball-Reference Wins Above Replacement (also called rWAR). Other WAR implementations, such as
             FanGraphs fWAR, use different inputs and can differ for the same player. DISI stores each metric with its own source and

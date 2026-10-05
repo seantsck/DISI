@@ -53,9 +53,26 @@ A player can be announced in a class while the formal MLB transaction is dated l
 
 Example: the official 2025 release states 29 international amateur free agents and their position and country breakdown, but does not name them. The names came from secondary class tables (True Blue LA, Dodgers Digest) and each was verified against MLB transaction records. The opening class is complete at 29/29, but the full 2025 signing period is not: no source states its total, and MLB records show further signings later in the year (`signing_period_candidates`).
 
+## Research scripts
+
+The repeatable way to gather facts is `scripts/mlb/` (full reference in `scripts/mlb/README.md`). The scripts read public MLB Stats API and Baseball-Reference data, cache every response with its retrieval time, and write review artifacts to `research-output/`. They never write to a database.
+
+```bash
+npm run research:test                                   # offline tests for the scripts
+node scripts/mlb/org-signings.mjs --year 2025 --start 2025-01-15 --end 2025-12-15
+node scripts/mlb/resolve-ids.mjs --input players.json
+node scripts/mlb/player-outcomes.mjs --input players.json --audit-date 2026-10-05
+node scripts/mlb/bref-war.mjs --input mlb-players.json
+node scripts/mlb/reconcile-class.mjs --list class.txt --signings research-output/org-signings-119-2025/org-signings.json
+node scripts/mlb/outcome-sql-values.mjs --outcomes a.json --bwar bref-war.json --audit-date 2026-10-05 --out values.sql
+```
+
+Workflow: run the research → review the JSON / CSV artifacts and the decisions report → record manual decisions (e.g. identity) in a decisions file → generate VALUES → build a migration from a template (see `database/research/019/`) → run `npm test` (the DB test applies every migration in PGlite and re-runs the latest) → apply in the Supabase SQL Editor.
+
 ## Recording outcomes
 
-- **Outcome audit:** `outcome_audits` with `audited_through_date`, `reached_mlb_verified` (`true` or `false`), `source_id`, `confidence`. A player without an audit row is "not audited", which is different from "did not reach MLB".
+- **Outcome audit:** `outcome_audits` with `audited_through_date`, `reached_mlb_verified`, `outcome_state`, `source_id`, `confidence`. A player without an audit row is "not audited", which is different from "did not reach MLB". A "no MLB" audit must have `outcome_evidence` supporting `MLB_REACH` (the database enforces it) and should state *why*: final release / free agency / retirement, two seasons without affiliated play, or still active. If the evidence does not establish that, leave the player unaudited.
+- **Progress:** `player_professional_progress` holds highest level, last affiliated season and team, final transaction and disposition. Record it for developing players too; it is not an outcome.
 - **MLB debut:** `outcomes.mlb_debut_date` and `mlb_debut_organization_id` from Baseball-Reference. Use the historical organization row (e.g. `BRO` for a Brooklyn debut).
 - **bWAR:** insert into `player_metric_observations` with `metric_key = 'CAREER_BWAR'`, the Baseball-Reference page as `source_id`, `observed_through_date` (the date you read the value) and `observed_through_season`. Add a new row on each refresh instead of overwriting, so active players keep their history. The database rejects bWAR citing any non-Baseball-Reference source.
 - **fWAR:** same table with `metric_key = 'CAREER_FWAR'` and a FanGraphs source. It is displayed separately and never replaces bWAR.

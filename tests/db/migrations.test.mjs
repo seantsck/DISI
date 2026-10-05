@@ -56,6 +56,10 @@ test('the latest migration is rerunnable without changing data', async () => {
       (select count(*) from signing_population_member_sources)::int as member_sources,
       (select count(*) from research_source_conflicts)::int as conflicts,
       (select count(*) from signing_period_candidates)::int as candidates,
+      (select count(*) from player_professional_progress)::int as progress,
+      (select count(*) from outcome_evidence)::int as outcome_evidence,
+      (select string_agg(player_id::text || reached_mlb_verified || coalesce(outcome_state, ''), ',' order by player_id) from outcome_audits) as audits,
+      (select count(*) from outcomes)::int as outcomes,
       (select string_agg(coalesce(source_id::text,'') || tracked_signings || coalesce(population_scope, ''), ',' order by id) from signing_census_coverage) as coverage`)
   const beforeRun = await snapshot()
   await db.exec(readSql(latest))
@@ -115,7 +119,7 @@ test('bWAR is backfilled only from Baseball-Reference-cited values', async () =>
     from player_metric_observations m
     join outcomes o on o.player_id = m.player_id
     join sources s on s.id = m.source_id
-    where m.metric_key = 'CAREER_BWAR'`)
+    where m.metric_key = 'CAREER_BWAR' and m.notes like 'Backfilled in 017%'`)
   assert.equal(r.n, 44)
   assert.equal(r.mismatched, 0)
   assert.equal(r.non_bref, 0)
@@ -501,6 +505,174 @@ test('anon cannot write any 018 table', async () => {
     await tx.query('set local role anon')
     const n = (await tx.query('select count(*)::int as n from v_dodgers_class_source_reconciliation')).rows[0].n
     assert.ok(n > 100)
+    await tx.rollback()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 019: evidence-based outcome audits, professional progress, outcome views
+// ---------------------------------------------------------------------------
+
+const dossier = (name) => one('select * from v_player_dossier where full_name = $1', [name])
+
+test('019 adds 35 evidence-backed audits: 2 verified MLB, 33 verified no MLB', async () => {
+  const p = await one('select * from v_dodgers_outcome_audit_progress')
+  assert.equal(p.audited, 93)
+  assert.equal(p.verified_mlb, 47)
+  assert.equal(p.verified_no_mlb, 46)
+  assert.equal(p.unaudited, 127)
+  assert.equal(p.mature_unaudited, 7)
+  const states = await rows(`select outcome_state, count(*)::int as n from outcome_audits group by 1 order by 1`)
+  assert.ok(states.every((s) => s.outcome_state !== null), 'every audit has an outcome state')
+})
+
+test('an unaudited player is never treated as reached_mlb = false, even with progress data', async () => {
+  const r = await one(`select
+      count(*) filter (where pp.research_recommendation = 'NO_MLB_CAREER_ENDED')::int as researched_negative,
+      count(*) filter (where r.reached_mlb_verified is not null)::int as with_value,
+      count(*) filter (where r.outcome_audit_status <> 'NOT_AUDITED')::int as audited
+    from v_signing_records r
+    join player_professional_progress pp on pp.player_id = r.player_id
+    where r.is_dodgers_franchise and r.signing_year >= 2022`)
+  assert.ok(r.researched_negative > 0, 'there are recent players whose research points to no MLB')
+  assert.equal(r.with_value, 0, 'they stay unaudited: reached_mlb_verified is NULL, not false')
+  assert.equal(r.audited, 0)
+})
+
+test('recent and developing players are not negative outcomes', async () => {
+  const r = await one(`select count(*)::int as n from outcome_audits oa join signings s on s.player_id = oa.player_id
+    join organizations o on o.id = s.organization_id and o.franchise_key = 'DODGERS'
+    where not oa.reached_mlb_verified and s.signing_year >= 2022`)
+  assert.equal(r.n, 0)
+  const developing = await rows(`select full_name, unaudited_reason from v_dodgers_mature_outcome_queue where signing_year = 2021 order by full_name`)
+  assert.equal(developing.length, 7)
+  assert.ok(developing.every((d) => ['STILL_DEVELOPING', 'INSUFFICIENT_EVIDENCE'].includes(d.unaudited_reason)))
+})
+
+test('a verified no-MLB audit cannot exist without outcome evidence', async () => {
+  // A player with no outcome evidence at all (not part of the 019 research).
+  const player = await one(`select p.id as player_id from players p
+    where not exists (select 1 from outcome_evidence e where e.player_id = p.id)
+      and not exists (select 1 from outcome_audits oa where oa.player_id = p.id) limit 1`)
+  await db.transaction(async (tx) => {
+    await tx.query('set constraints all immediate')
+    await assert.rejects(
+      tx.query(`insert into outcome_audits (player_id, audited_through_date, reached_mlb_verified, outcome_state)
+                values ($1, '2026-10-05', false, 'NO_MLB_CAREER_ENDED')`, [player.player_id]),
+      /no MLB_REACH outcome evidence/,
+    )
+    await tx.rollback()
+  })
+  await db.transaction(async (tx) => {
+    await tx.query(`insert into outcome_evidence (player_id, source_id, supports_fields)
+                    select $1, id, array['MLB_REACH'] from sources where url like 'https://statsapi.mlb.com/api/v1/people/%' limit 1`, [player.player_id])
+    await tx.query('set constraints all immediate')
+    await tx.query(`insert into outcome_audits (player_id, audited_through_date, reached_mlb_verified, outcome_state)
+                    values ($1, '2026-10-05', false, 'NO_MLB_CAREER_ENDED')`, [player.player_id])
+    await tx.rollback()
+  })
+  const all = await one(`select count(*)::int as n from outcome_audits oa where not oa.reached_mlb_verified
+    and not exists (select 1 from outcome_evidence e where e.player_id = oa.player_id and 'MLB_REACH' = any(e.supports_fields))`)
+  assert.equal(all.n, 0, 'every existing negative audit has evidence')
+})
+
+test('outcome state must agree with the reached flag', async () => {
+  const player = await one(`select player_id from outcome_audits where reached_mlb_verified limit 1`)
+  await assert.rejects(
+    db.query(`update outcome_audits set outcome_state = 'NO_MLB_CAREER_ENDED' where player_id = $1`, [player.player_id]),
+    /check constraint/,
+  )
+})
+
+test('new MLB outcomes: Roger Cedeno and Carlos Frias with Baseball-Reference bWAR', async () => {
+  const cedeno = await dossier('Roger Cedeno')
+  assert.equal(cedeno.outcome_state, 'REACHED_MLB')
+  assert.equal(cedeno.mlb_debut_date.toISOString().slice(0, 10), '1995-06-20')
+  assert.equal(cedeno.mlb_debut_org, 'LAD')
+  assert.equal(cedeno.direct_dodgers_franchise_debut, true)
+  assert.equal(Number(cedeno.career_bwar), 1.7)
+  assert.match(cedeno.bwar_source_url, /^https:\/\/www\.baseball-reference\.com\/data\/war_daily_bat\.txt$/)
+  assert.equal(cedeno.bwar_observed_through_season, 2005)
+  assert.equal(cedeno.current_status, 'LAST_MLB_2005')
+  const frias = await dossier('Carlos Frias')
+  assert.equal(Number(frias.career_bwar), -0.3)
+  assert.equal(frias.continued_outside_affiliated, true, 'later Mexican League play is recorded separately')
+  const identity = await one(`select status, resolution from research_source_conflicts where conflict_key = 'IDENTITY:roger-cedeno'`)
+  assert.equal(identity.status, 'RESOLVED')
+  assert.match(identity.resolution, /Venezuela/)
+})
+
+test('negative evidence is structured: level, last season, disposition, sources', async () => {
+  const osuna = await dossier('Lenix Osuna')
+  assert.equal(osuna.outcome_state, 'NO_MLB_CAREER_ENDED')
+  assert.equal(osuna.highest_level, 'A+', 'Mexican League seasons are not counted as affiliated Triple-A')
+  assert.equal(osuna.continued_outside_affiliated, true)
+  assert.ok(osuna.outcome_evidence_count >= 3)
+  const pitre = await dossier('Gersel Pitre')
+  assert.equal(pitre.disposition, 'RELEASED')
+  assert.equal(pitre.last_affiliated_season, 2019)
+  assert.equal(pitre.audit_confidence, 'VERIFIED')
+  const fields = await rows(`select distinct unnest(e.supports_fields) as f from outcome_evidence e
+    join players p on p.id = e.player_id where p.full_name = 'Gersel Pitre' order by 1`)
+  assert.deepEqual(fields.map((f) => f.f), ['ACTIVE_STATUS', 'DISPOSITION', 'FINAL_TRANSACTION', 'HIGHEST_LEVEL', 'LAST_AFFILIATED_SEASON', 'MLB_DEBUT_DATE', 'MLB_DEBUT_ORGANIZATION', 'MLB_REACH'])
+})
+
+test('existing audits are preserved; only their outcome state and progress are added', async () => {
+  const rosario = await dossier('Jerming Rosario')
+  assert.equal(rosario.reached_mlb_verified, false)
+  assert.match(rosario.audit_note, /Active with Triple-A Oklahoma City/)
+  assert.equal(rosario.outcome_state, 'NO_MLB_ACTIVE_IN_MINORS')
+  assert.equal(rosario.highest_level, 'AAA')
+  const dejesus = await dossier('Alex De Jesus')
+  assert.equal(dejesus.outcome_state, 'NO_MLB_STATUS_UNKNOWN', 'insufficient status evidence is labelled, not guessed')
+})
+
+test('2018 and 2019 tracked classes are fully audited but remain tracked-cohort outcomes', async () => {
+  const classes = await rows(`select * from v_dodgers_outcome_by_signing_class where signing_year in (2018, 2019) order by signing_year`)
+  for (const c of classes) {
+    assert.equal(c.unresolved, 0, `${c.signing_year} fully audited`)
+    assert.equal(c.all_tracked_audited, true)
+    assert.equal(c.organization_rate_allowed, false, 'no qualifying full signing-period population')
+    assert.equal(c.cohort_label, 'TRACKED_COHORT_OUTCOME')
+    assert.notEqual(c.tracked_cohort_mlb_share, null)
+  }
+  assert.deepEqual(classes.map((c) => [c.signing_year, c.tracked_players]), [[2018, 10], [2019, 4]])
+})
+
+test('a fully audited historical sample still cannot become an organization rate', async () => {
+  const historical = await rows(`select * from v_dodgers_outcome_by_signing_class where signing_year <= 2012`)
+  assert.ok(historical.every((c) => c.unresolved === 0), 'the historical verified set is fully audited')
+  assert.ok(historical.every((c) => c.organization_rate_allowed === false))
+  const pop = await one(`select rate_eligible, rate_exclusion_reason from v_dodgers_signing_population_coverage where population_key = 'DODGERS-1951-2012-HISTORICAL'`)
+  assert.equal(pop.rate_eligible, false)
+  assert.equal(pop.rate_exclusion_reason, 'SCOPE_NOT_A_FULL_SIGNING_PERIOD')
+  const summary = await one('select rate_eligible_classes from v_dodgers_rate_eligible_summary')
+  assert.equal(Number(summary.rate_eligible_classes), 0)
+})
+
+test('every bWAR observation still cites Baseball-Reference', async () => {
+  const r = await one(`select count(*)::int as n, count(*) filter (where s.url !~* '^https?://(www\\.)?baseball-reference\\.com/')::int as other
+    from player_metric_observations m join sources s on s.id = m.source_id where m.metric_key = 'CAREER_BWAR'`)
+  assert.equal(r.n, 46)
+  assert.equal(r.other, 0)
+})
+
+test('anon cannot write the 019 tables', async () => {
+  for (const sql of [
+    `insert into player_professional_progress (player_id, as_of_date) select id, '2026-10-05' from players limit 1`,
+    `delete from outcome_evidence`,
+    `update outcome_audits set outcome_state = null`,
+  ]) {
+    await db.transaction(async (tx) => {
+      await tx.query('set local role anon')
+      await assert.rejects(tx.query(sql), /permission denied/)
+      await tx.rollback()
+    })
+  }
+  await db.transaction(async (tx) => {
+    await tx.query('set local role anon')
+    const n = (await tx.query('select count(*)::int as n from v_dodgers_mature_outcome_queue')).rows[0].n
+    assert.equal(n, 7)
     await tx.rollback()
   })
 })

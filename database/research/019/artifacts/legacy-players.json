@@ -1,0 +1,80 @@
+[
+ {
+  "name": "Aldo Espinoza",
+  "slug": "aldo-espinoza",
+  "signingYear": 2015,
+  "mlbId": 665852
+ },
+ {
+  "name": "Carlos Rincon",
+  "slug": "carlos-rincon",
+  "signingYear": 2015,
+  "mlbId": 665779
+ },
+ {
+  "name": "Christopher Arias",
+  "slug": "christopher-arias",
+  "signingYear": 2015,
+  "mlbId": 665931
+ },
+ {
+  "name": "Damaso Marte Jr.",
+  "slug": "damaso-marte-jr",
+  "signingYear": 2015,
+  "mlbId": 666006
+ },
+ {
+  "name": "Luis Rodriguez",
+  "slug": "luis-rodriguez-2015",
+  "signingYear": 2015,
+  "mlbId": 665960
+ },
+ {
+  "name": "Omar Estevez",
+  "slug": "omar-estevez",
+  "signingYear": 2015,
+  "mlbId": 666784
+ },
+ {
+  "name": "Ronny Brito",
+  "slug": "ronny-brito",
+  "signingYear": 2015,
+  "mlbId": 665798
+ },
+ {
+  "name": "Starling Heredia",
+  "slug": "starling-heredia",
+  "signingYear": 2015,
+  "mlbId": 665752
+ },
+ {
+  "name": "Yadier Álvarez",
+  "slug": "yadier-alvarez",
+  "signingYear": 2015,
+  "mlbId": 665751
+ },
+ {
+  "name": "Alex De Jesus",
+  "slug": "alex-de-jesus",
+  "signingYear": 2018,
+  "mlbId": 682942
+ },
+ {
+  "name": "Diego Cartaya",
+  "slug": "diego-cartaya",
+  "signingYear": 2018,
+  "mlbId": 682616
+ },
+ {
+  "name": "Jerming Rosario",
+  "slug": "jerming-rosario",
+  "signingYear": 2018,
+  "mlbId": 682645
+ },
+ {
+  "name": "Luis Rodriguez",
+  "slug": "luis-rodriguez-2019",
+  "signingYear": 2019,
+  "mlbId": 691177
+ }
+]

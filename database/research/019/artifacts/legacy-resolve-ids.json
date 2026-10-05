@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "command": "resolve-ids",
+    "recordCount": 1,
+    "rule": "Only DODGERS_TRANSACTION_MATCH is a proposed resolution; every other status requires manual research.",
+    "team": 119
+  },
+  "records": [
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1999-05-01",
+          "date": "2015-07-02",
+          "description": "Los Angeles Dodgers signed free agent OF Christopher Arias to a minor league contract.",
+          "fullName": "Christopher Arias",
+          "mlbDebutDate": null,
+          "mlbId": 665931
+        }
+      ],
+      "name": "Christopher Arias",
+      "signingYear": 2015,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:52.347Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:13.154Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:13.455Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2016-01-01&endDate=2016-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:13:14.026Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665931"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    }
+  ]
+}

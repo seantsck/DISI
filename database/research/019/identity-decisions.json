@@ -1,0 +1,14 @@
+{
+  "roger-cedeno": {
+    "basis": "NAME_SEARCH_CORROBORATED",
+    "note": "MLB name search; birth year 1974, Venezuela, outfielder and a Los Angeles Dodgers MLB debut (1995) match the 1991 Dodgers signing record."
+  },
+  "carlos-frias": {
+    "basis": "NAME_SEARCH_CORROBORATED",
+    "note": "MLB name search; birth year 1989, Dominican Republic, right-handed pitcher and a Los Angeles Dodgers MLB debut (2014) match the 2007 Dodgers signing record."
+  },
+  "jerami-rodriguez": {
+    "basis": "DODGERS_TRANSACTION_SPELLING_VARIANT",
+    "note": "Dodgers signed free agent RHP \"Jeremi Rodriguez\" on 2018-07-02 (MLB id 682951), the same date and position as the DISI 2018 signing of Jerami Rodriguez; treated as a spelling variant."
+  }
+}

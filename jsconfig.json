@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "ES2023"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "ES2023"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
@@ -13,8 +17,21 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "types": ["node", "react"]
+    "types": [
+      "node",
+      "react"
+    ]
   },
-  "include": ["types.d.ts", "app/**/*.js", "lib/**/*.js", "tests/**/*.mjs"],
-  "exclude": ["node_modules", ".next"]
+  "include": [
+    "types.d.ts",
+    "app/**/*.js",
+    "lib/**/*.js",
+    "tests/**/*.mjs",
+    "scripts/**/*.mjs",
+    "database/research/**/*.mjs"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
 }

@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "command": "bref-war",
+    "formula": "career bWAR = sum(war_daily_bat.WAR) + sum(war_daily_pitch.WAR) by mlb_ID",
+    "found": 2,
+    "observedThroughDate": "Use the retrievedAt of the source files.",
+    "requested": 2
+  },
+  "records": [
+    {
+      "brefId": "cedenro01",
+      "careerBwar": 1.7,
+      "firstYear": 1995,
+      "lastYear": 2005,
+      "mlbId": 112155,
+      "observedThroughSeason": 2005,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:22:01.003Z",
+          "url": "https://www.baseball-reference.com/data/war_daily_bat.txt"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:22:01.887Z",
+          "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt"
+        }
+      ]
+    },
+    {
+      "brefId": "friasca01",
+      "careerBwar": -0.3,
+      "firstYear": 2014,
+      "lastYear": 2016,
+      "mlbId": 516910,
+      "observedThroughSeason": 2016,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:22:01.003Z",
+          "url": "https://www.baseball-reference.com/data/war_daily_bat.txt"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:22:01.887Z",
+          "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt"
+        }
+      ]
+    }
+  ]
+}

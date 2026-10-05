@@ -1,0 +1,974 @@
+[
+ {
+  "name": "Roger Cedeno",
+  "signingYear": 1991,
+  "mlbId": 112155,
+  "slug": "roger-cedeno"
+ },
+ {
+  "name": "Carlos Frias",
+  "signingYear": 2007,
+  "mlbId": 516910,
+  "slug": "carlos-frias"
+ },
+ {
+  "name": "Julian Leon",
+  "signingYear": 2012,
+  "mlbId": 624645,
+  "slug": "julian-leon"
+ },
+ {
+  "name": "Lenix Osuna",
+  "signingYear": 2012,
+  "mlbId": 624646,
+  "slug": "lenix-osuna"
+ },
+ {
+  "name": "William Soto",
+  "signingYear": 2012,
+  "mlbId": 624648,
+  "slug": "william-soto"
+ },
+ {
+  "name": "Gersel Pitre",
+  "signingYear": 2013,
+  "mlbId": 649957,
+  "slug": "gersel-pitre"
+ },
+ {
+  "name": "Hendrik Clementina",
+  "signingYear": 2013,
+  "mlbId": 649955,
+  "slug": "hendrik-clementina"
+ },
+ {
+  "name": "Julio Lugo (prospect)",
+  "signingYear": 2013,
+  "mlbId": 649956,
+  "slug": "julio-lugo-prospect"
+ },
+ {
+  "name": "Misja Harcksen",
+  "signingYear": 2013,
+  "mlbId": 649958,
+  "slug": "misja-harcksen"
+ },
+ {
+  "name": "Shakir Albert",
+  "signingYear": 2013,
+  "mlbId": 649954,
+  "slug": "shakir-albert"
+ },
+ {
+  "name": "Christian Suarez",
+  "signingYear": 2018,
+  "mlbId": 682949,
+  "slug": "christian-suarez"
+ },
+ {
+  "name": "Ender Avendano",
+  "signingYear": 2018,
+  "mlbId": 682937,
+  "slug": "ender-avendano"
+ },
+ {
+  "name": "Gregory Pereira",
+  "signingYear": 2018,
+  "mlbId": 682946,
+  "slug": "gregory-pereira"
+ },
+ {
+  "name": "Jerami Rodriguez",
+  "signingYear": 2018,
+  "mlbId": 682951,
+  "slug": "jerami-rodriguez"
+ },
+ {
+  "name": "Luis Izturis",
+  "signingYear": 2018,
+  "mlbId": 682950,
+  "slug": "luis-izturis"
+ },
+ {
+  "name": "Miguel Droz",
+  "signingYear": 2018,
+  "mlbId": 682940,
+  "slug": "miguel-droz"
+ },
+ {
+  "name": "Rafael Tua",
+  "signingYear": 2018,
+  "mlbId": 682948,
+  "slug": "rafael-tua"
+ },
+ {
+  "name": "Lesther Medrano",
+  "signingYear": 2019,
+  "mlbId": 692327,
+  "slug": "lesther-medrano"
+ },
+ {
+  "name": "Roque Gutierrez",
+  "signingYear": 2019,
+  "mlbId": 692262,
+  "slug": "roque-gutierrez"
+ },
+ {
+  "name": "Yeiner Fernandez",
+  "signingYear": 2019,
+  "mlbId": 691558,
+  "slug": "yeiner-fernandez"
+ },
+ {
+  "name": "Brian Diaz",
+  "signingYear": 2021,
+  "mlbId": 699070,
+  "slug": "brian-diaz"
+ },
+ {
+  "name": "Carlos Avila",
+  "signingYear": 2021,
+  "mlbId": 699066,
+  "slug": "carlos-avila"
+ },
+ {
+  "name": "Christian Romero",
+  "signingYear": 2021,
+  "mlbId": 699071,
+  "slug": "christian-romero"
+ },
+ {
+  "name": "Dailoui Abad",
+  "signingYear": 2021,
+  "mlbId": 699060,
+  "slug": "dailoui-abad"
+ },
+ {
+  "name": "Elio Campos",
+  "signingYear": 2021,
+  "mlbId": 699069,
+  "slug": "elio-campos"
+ },
+ {
+  "name": "Isaac Barreto",
+  "signingYear": 2021,
+  "mlbId": 699064,
+  "slug": "isaac-barreto"
+ },
+ {
+  "name": "Jesus Galiz",
+  "signingYear": 2021,
+  "mlbId": 694188,
+  "slug": "jesus-galiz"
+ },
+ {
+  "name": "Jhonny Jimenez",
+  "signingYear": 2021,
+  "mlbId": 699075,
+  "slug": "jhonny-jimenez"
+ },
+ {
+  "name": "Jorge Carpintero",
+  "signingYear": 2021,
+  "mlbId": 699058,
+  "slug": "jorge-carpintero"
+ },
+ {
+  "name": "Juan Alonso",
+  "signingYear": 2021,
+  "mlbId": 699076,
+  "slug": "juan-alonso"
+ },
+ {
+  "name": "Kelvin Ramirez",
+  "signingYear": 2021,
+  "mlbId": 699062,
+  "slug": "kelvin-ramirez"
+ },
+ {
+  "name": "Luis Guerra",
+  "signingYear": 2021,
+  "mlbId": 699065,
+  "slug": "luis-guerra"
+ },
+ {
+  "name": "Maximo Martinez",
+  "signingYear": 2021,
+  "mlbId": 699059,
+  "slug": "maximo-martinez"
+ },
+ {
+  "name": "Michael Vilchez",
+  "signingYear": 2021,
+  "mlbId": 699074,
+  "slug": "michael-vilchez"
+ },
+ {
+  "name": "Miguel Bastardo",
+  "signingYear": 2021,
+  "mlbId": 699072,
+  "slug": "miguel-bastardo"
+ },
+ {
+  "name": "Missael Soto",
+  "signingYear": 2021,
+  "mlbId": 699057,
+  "slug": "missael-soto"
+ },
+ {
+  "name": "Pedro Santillan",
+  "signingYear": 2021,
+  "mlbId": 699063,
+  "slug": "pedro-santillan"
+ },
+ {
+  "name": "Rayne Doncon",
+  "signingYear": 2021,
+  "mlbId": 699061,
+  "slug": "rayne-doncon"
+ },
+ {
+  "name": "Roger Lasso",
+  "signingYear": 2021,
+  "mlbId": 699068,
+  "slug": "roger-lasso"
+ },
+ {
+  "name": "Sebastian Jimenez",
+  "signingYear": 2021,
+  "mlbId": 699067,
+  "slug": "sebastian-jimenez"
+ },
+ {
+  "name": "Thayron Liranzo",
+  "signingYear": 2021,
+  "mlbId": 699073,
+  "slug": "thayron-liranzo"
+ },
+ {
+  "name": "Wilman Diaz",
+  "signingYear": 2021,
+  "mlbId": 694180,
+  "slug": "wilman-diaz"
+ },
+ {
+  "name": "Abel Lorenzo",
+  "signingYear": 2022,
+  "mlbId": 806867,
+  "slug": "abel-lorenzo"
+ },
+ {
+  "name": "Accimias Morales",
+  "signingYear": 2022,
+  "mlbId": 703193,
+  "slug": "accimias-morales"
+ },
+ {
+  "name": "Agustin Acosta",
+  "signingYear": 2022,
+  "mlbId": 802528,
+  "slug": "agustin-acosta"
+ },
+ {
+  "name": "Aldrin Batista",
+  "signingYear": 2022,
+  "mlbId": 702881,
+  "slug": "aldrin-batista"
+ },
+ {
+  "name": "Alexander Albertus",
+  "signingYear": 2022,
+  "mlbId": 800316,
+  "slug": "alexander-albertus"
+ },
+ {
+  "name": "Anderson Estevez",
+  "signingYear": 2022,
+  "mlbId": 802740,
+  "slug": "anderson-estevez"
+ },
+ {
+  "name": "Angel Cruz",
+  "signingYear": 2022,
+  "mlbId": 807654,
+  "slug": "angel-cruz"
+ },
+ {
+  "name": "Arod McKenzie",
+  "signingYear": 2022,
+  "mlbId": 803242,
+  "slug": "arod-mckenzie"
+ },
+ {
+  "name": "Ben Serunkuma",
+  "signingYear": 2022,
+  "mlbId": 805205,
+  "slug": "ben-serunkuma"
+ },
+ {
+  "name": "Callum Wallace",
+  "signingYear": 2022,
+  "mlbId": 800527,
+  "slug": "callum-wallace"
+ },
+ {
+  "name": "Daniel Arrias",
+  "signingYear": 2022,
+  "mlbId": 800328,
+  "slug": "daniel-arrias"
+ },
+ {
+  "name": "Domingo Geronimo",
+  "signingYear": 2022,
+  "mlbId": 800383,
+  "slug": "domingo-geronimo"
+ },
+ {
+  "name": "Edgar Aviles",
+  "signingYear": 2022,
+  "mlbId": 800530,
+  "slug": "edgar-aviles"
+ },
+ {
+  "name": "Edgar Gomez",
+  "signingYear": 2022,
+  "mlbId": 807626,
+  "slug": "edgar-gomez"
+ },
+ {
+  "name": "Edgar Leon",
+  "signingYear": 2022,
+  "mlbId": 800453,
+  "slug": "edgar-leon"
+ },
+ {
+  "name": "Eduardo Guerrero",
+  "signingYear": 2022,
+  "mlbId": 800370,
+  "slug": "eduardo-guerrero"
+ },
+ {
+  "name": "Enrike Sevilya",
+  "signingYear": 2022,
+  "mlbId": 800288,
+  "slug": "enrike-sevilya"
+ },
+ {
+  "name": "Erick Nava",
+  "signingYear": 2022,
+  "mlbId": 812748,
+  "slug": "erick-nava"
+ },
+ {
+  "name": "Franderly Morel",
+  "signingYear": 2022,
+  "mlbId": 806918,
+  "slug": "franderly-morel"
+ },
+ {
+  "name": "Ilmerson Colon",
+  "signingYear": 2022,
+  "mlbId": 805623,
+  "slug": "ilmerson-colon"
+ },
+ {
+  "name": "Javier Bartolozzi",
+  "signingYear": 2022,
+  "mlbId": 812745,
+  "slug": "javier-bartolozzi"
+ },
+ {
+  "name": "Javier Pena",
+  "signingYear": 2022,
+  "mlbId": 800351,
+  "slug": "javier-pena"
+ },
+ {
+  "name": "Jecsua Liborius",
+  "signingYear": 2022,
+  "mlbId": 807403,
+  "slug": "jecsua-liborius"
+ },
+ {
+  "name": "Jeral Perez",
+  "signingYear": 2022,
+  "mlbId": 800419,
+  "slug": "jeral-perez"
+ },
+ {
+  "name": "Jeremy Castro",
+  "signingYear": 2022,
+  "mlbId": 812746,
+  "slug": "jeremy-castro"
+ },
+ {
+  "name": "Jholbran Herder",
+  "signingYear": 2022,
+  "mlbId": 800408,
+  "slug": "jholbran-herder"
+ },
+ {
+  "name": "Jose Gonzalez",
+  "signingYear": 2022,
+  "mlbId": 806919,
+  "slug": "jose-gonzalez"
+ },
+ {
+  "name": "Jose Torrez",
+  "signingYear": 2022,
+  "mlbId": 807404,
+  "slug": "jose-torrez"
+ },
+ {
+  "name": "Joseilyn Gonzalez",
+  "signingYear": 2022,
+  "mlbId": 805120,
+  "slug": "joseilyn-gonzalez"
+ },
+ {
+  "name": "Juan Hernandez",
+  "signingYear": 2022,
+  "mlbId": 806638,
+  "slug": "juan-hernandez"
+ },
+ {
+  "name": "Kosuke Matsuda",
+  "signingYear": 2022,
+  "mlbId": 800494,
+  "slug": "kosuke-matsuda"
+ },
+ {
+  "name": "Luciano Romero",
+  "signingYear": 2022,
+  "mlbId": 800355,
+  "slug": "luciano-romero"
+ },
+ {
+  "name": "Mairoshendrick Martinus",
+  "signingYear": 2022,
+  "mlbId": 800302,
+  "slug": "mairoshendrick-martinus"
+ },
+ {
+  "name": "Marco Corcho",
+  "signingYear": 2022,
+  "mlbId": 806866,
+  "slug": "marco-corcho"
+ },
+ {
+  "name": "Miguel Dominguez",
+  "signingYear": 2022,
+  "mlbId": 800399,
+  "slug": "miguel-dominguez"
+ },
+ {
+  "name": "Natanael Castillo",
+  "signingYear": 2022,
+  "mlbId": 800390,
+  "slug": "natanael-castillo"
+ },
+ {
+  "name": "Nicolas Cruz",
+  "signingYear": 2022,
+  "mlbId": 800395,
+  "slug": "nicolas-cruz"
+ },
+ {
+  "name": "Oswaldo Osorio",
+  "signingYear": 2022,
+  "mlbId": 800424,
+  "slug": "oswaldo-osorio"
+ },
+ {
+  "name": "Paris Johnson",
+  "signingYear": 2022,
+  "mlbId": 807379,
+  "slug": "paris-johnson"
+ },
+ {
+  "name": "Peter Bonilla",
+  "signingYear": 2022,
+  "mlbId": 800361,
+  "slug": "peter-bonilla"
+ },
+ {
+  "name": "Railin Familia",
+  "signingYear": 2022,
+  "mlbId": 812747,
+  "slug": "railin-familia"
+ },
+ {
+  "name": "Raynerd Ortega",
+  "signingYear": 2022,
+  "mlbId": 800380,
+  "slug": "raynerd-ortega"
+ },
+ {
+  "name": "Ricardo Montero",
+  "signingYear": 2022,
+  "mlbId": 805110,
+  "slug": "ricardo-montero"
+ },
+ {
+  "name": "Rodmar Angela",
+  "signingYear": 2022,
+  "mlbId": 806791,
+  "slug": "rodmar-angela"
+ },
+ {
+  "name": "Roiger Mujica",
+  "signingYear": 2022,
+  "mlbId": 800487,
+  "slug": "roiger-mujica"
+ },
+ {
+  "name": "Samuel Munoz",
+  "signingYear": 2022,
+  "mlbId": 703153,
+  "slug": "samuel-munoz"
+ },
+ {
+  "name": "Sean Linan",
+  "signingYear": 2022,
+  "mlbId": 800344,
+  "slug": "sean-linan"
+ },
+ {
+  "name": "Steven Castillo",
+  "signingYear": 2022,
+  "mlbId": 800481,
+  "slug": "steven-castillo"
+ },
+ {
+  "name": "Tim Fischer",
+  "signingYear": 2022,
+  "mlbId": 808444,
+  "slug": "tim-fischer"
+ },
+ {
+  "name": "Umar Male",
+  "signingYear": 2022,
+  "mlbId": 805773,
+  "slug": "umar-male"
+ },
+ {
+  "name": "Victor Rodrigues",
+  "signingYear": 2022,
+  "mlbId": 800332,
+  "slug": "victor-rodrigues"
+ },
+ {
+  "name": "Yhonaider Gudino",
+  "signingYear": 2022,
+  "mlbId": 800521,
+  "slug": "yhonaider-gudino"
+ },
+ {
+  "name": "Yorfran Medina",
+  "signingYear": 2022,
+  "mlbId": 800337,
+  "slug": "yorfran-medina"
+ },
+ {
+  "name": "Yoryi Simarra",
+  "signingYear": 2022,
+  "mlbId": 800366,
+  "slug": "yoryi-simarra"
+ },
+ {
+  "name": "Yuliangel De La Cruz",
+  "signingYear": 2022,
+  "mlbId": 800447,
+  "slug": "yuliangel-de-la-cruz"
+ },
+ {
+  "name": "Anderson Jerez",
+  "signingYear": 2023,
+  "mlbId": 808214,
+  "slug": "anderson-jerez"
+ },
+ {
+  "name": "Arnaldo Lantigua",
+  "signingYear": 2023,
+  "mlbId": 806984,
+  "slug": "arnaldo-lantigua"
+ },
+ {
+  "name": "Daniel Mielcarek",
+  "signingYear": 2023,
+  "mlbId": 808028,
+  "slug": "daniel-mielcarek"
+ },
+ {
+  "name": "Eduardo Quintero",
+  "signingYear": 2023,
+  "mlbId": 808234,
+  "slug": "eduardo-quintero"
+ },
+ {
+  "name": "Elias Medina",
+  "signingYear": 2023,
+  "mlbId": 808257,
+  "slug": "elias-medina"
+ },
+ {
+  "name": "Erick Batista",
+  "signingYear": 2023,
+  "mlbId": 808209,
+  "slug": "erick-batista"
+ },
+ {
+  "name": "Harold Gonzalez",
+  "signingYear": 2023,
+  "mlbId": 808339,
+  "slug": "harold-gonzalez"
+ },
+ {
+  "name": "Javier Herrera",
+  "signingYear": 2023,
+  "mlbId": 808223,
+  "slug": "javier-herrera"
+ },
+ {
+  "name": "Jesus Tillero",
+  "signingYear": 2023,
+  "mlbId": 808313,
+  "slug": "jesus-tillero"
+ },
+ {
+  "name": "Joendry Vargas",
+  "signingYear": 2023,
+  "mlbId": 806959,
+  "slug": "joendry-vargas"
+ },
+ {
+  "name": "Luis Carias",
+  "signingYear": 2023,
+  "mlbId": 808218,
+  "slug": "luis-carias"
+ },
+ {
+  "name": "Robinson Ventura",
+  "signingYear": 2023,
+  "mlbId": 808332,
+  "slug": "robinson-ventura"
+ },
+ {
+  "name": "Samuel Sanchez",
+  "signingYear": 2023,
+  "mlbId": 808247,
+  "slug": "samuel-sanchez"
+ },
+ {
+  "name": "Alexis Dominguez",
+  "signingYear": 2024,
+  "mlbId": 821826,
+  "slug": "alexis-dominguez"
+ },
+ {
+  "name": "Allen Ajoti",
+  "signingYear": 2024,
+  "mlbId": 821808,
+  "slug": "allen-ajoti"
+ },
+ {
+  "name": "Angel Ramirez",
+  "signingYear": 2024,
+  "mlbId": 821633,
+  "slug": "angel-ramirez"
+ },
+ {
+  "name": "Axel Perez",
+  "signingYear": 2024,
+  "mlbId": 821612,
+  "slug": "axel-perez"
+ },
+ {
+  "name": "Carlos Sardina",
+  "signingYear": 2024,
+  "mlbId": 821658,
+  "slug": "carlos-sardina"
+ },
+ {
+  "name": "Christian Muniz",
+  "signingYear": 2024,
+  "mlbId": 821650,
+  "slug": "christian-muniz"
+ },
+ {
+  "name": "David Romero",
+  "signingYear": 2024,
+  "mlbId": 821661,
+  "slug": "david-romero"
+ },
+ {
+  "name": "Eduardo Rojas",
+  "signingYear": 2024,
+  "mlbId": 821672,
+  "slug": "eduardo-rojas"
+ },
+ {
+  "name": "Emil Morales",
+  "signingYear": 2024,
+  "mlbId": 815896,
+  "slug": "emil-morales"
+ },
+ {
+  "name": "Erny Orellana",
+  "signingYear": 2024,
+  "mlbId": 821786,
+  "slug": "erny-orellana"
+ },
+ {
+  "name": "Euri Rosa",
+  "signingYear": 2024,
+  "mlbId": 821817,
+  "slug": "euri-rosa"
+ },
+ {
+  "name": "Francisco Espinoza",
+  "signingYear": 2024,
+  "mlbId": 821689,
+  "slug": "francisco-espinoza"
+ },
+ {
+  "name": "Heudy Pena",
+  "signingYear": 2024,
+  "mlbId": 821263,
+  "slug": "heudy-pena"
+ },
+ {
+  "name": "Jose Lopez",
+  "signingYear": 2024,
+  "mlbId": 821653,
+  "slug": "jose-lopez"
+ },
+ {
+  "name": "Leider Padilla",
+  "signingYear": 2024,
+  "mlbId": 821636,
+  "slug": "leider-padilla"
+ },
+ {
+  "name": "Michael Ramirez",
+  "signingYear": 2024,
+  "mlbId": 821679,
+  "slug": "michael-ramirez"
+ },
+ {
+  "name": "Rafy Peguero",
+  "signingYear": 2024,
+  "mlbId": 821801,
+  "slug": "rafy-peguero"
+ },
+ {
+  "name": "Reyli Mariano",
+  "signingYear": 2024,
+  "mlbId": 821697,
+  "slug": "reyli-mariano"
+ },
+ {
+  "name": "Yojackson Laya",
+  "signingYear": 2024,
+  "mlbId": 821684,
+  "slug": "yojackson-laya"
+ },
+ {
+  "name": "Adrian Torres",
+  "signingYear": 2025,
+  "mlbId": 830397,
+  "slug": "adrian-torres"
+ },
+ {
+  "name": "Alexis Reyes",
+  "signingYear": 2025,
+  "mlbId": 829490,
+  "slug": "alexis-reyes"
+ },
+ {
+  "name": "Andres Luna",
+  "signingYear": 2025,
+  "mlbId": 831322,
+  "slug": "andres-luna"
+ },
+ {
+  "name": "Aneudy Almonte",
+  "signingYear": 2025,
+  "mlbId": 825160,
+  "slug": "aneudy-almonte"
+ },
+ {
+  "name": "Antoni Urena",
+  "signingYear": 2025,
+  "mlbId": 829482,
+  "slug": "antoni-urena"
+ },
+ {
+  "name": "Bryan Lara",
+  "signingYear": 2025,
+  "mlbId": 832440,
+  "slug": "bryan-lara"
+ },
+ {
+  "name": "Carlos Ramirez",
+  "signingYear": 2025,
+  "mlbId": 830439,
+  "slug": "carlos-ramirez"
+ },
+ {
+  "name": "Cesar Sanchez",
+  "signingYear": 2025,
+  "mlbId": 829479,
+  "slug": "cesar-sanchez"
+ },
+ {
+  "name": "Degerson Diaz",
+  "signingYear": 2025,
+  "mlbId": 830481,
+  "slug": "degerson-diaz"
+ },
+ {
+  "name": "Derik Aquino",
+  "signingYear": 2025,
+  "mlbId": 830468,
+  "slug": "derik-aquino"
+ },
+ {
+  "name": "Devlyn Bautista",
+  "signingYear": 2025,
+  "mlbId": 830426,
+  "slug": "devlyn-bautista"
+ },
+ {
+  "name": "Ezequiel Aparicio",
+  "signingYear": 2025,
+  "mlbId": 830452,
+  "slug": "ezequiel-aparicio"
+ },
+ {
+  "name": "Hendry Arvelo",
+  "signingYear": 2025,
+  "mlbId": 829498,
+  "slug": "hendry-arvelo"
+ },
+ {
+  "name": "Ivan Pacheco",
+  "signingYear": 2025,
+  "mlbId": 830612,
+  "slug": "ivan-pacheco"
+ },
+ {
+  "name": "Jhon Gil",
+  "signingYear": 2025,
+  "mlbId": 830459,
+  "slug": "jhon-gil"
+ },
+ {
+  "name": "Jhosman Theran",
+  "signingYear": 2025,
+  "mlbId": 830420,
+  "slug": "jhosman-theran"
+ },
+ {
+  "name": "Jose Rivas",
+  "signingYear": 2025,
+  "mlbId": 830449,
+  "slug": "jose-rivas"
+ },
+ {
+  "name": "Jose Villegas",
+  "signingYear": 2025,
+  "mlbId": 830413,
+  "slug": "jose-villegas"
+ },
+ {
+  "name": "Joseph Deng Thon",
+  "signingYear": 2025,
+  "mlbId": 830188,
+  "slug": "joseph-deng-thon"
+ },
+ {
+  "name": "Juan Macero",
+  "signingYear": 2025,
+  "mlbId": 830471,
+  "slug": "juan-macero"
+ },
+ {
+  "name": "Luis Gamez",
+  "signingYear": 2025,
+  "mlbId": 830800,
+  "slug": "luis-gamez"
+ },
+ {
+  "name": "Luis Luna",
+  "signingYear": 2025,
+  "mlbId": 830463,
+  "slug": "luis-luna"
+ },
+ {
+  "name": "Luis Tovar",
+  "signingYear": 2025,
+  "mlbId": 830434,
+  "slug": "luis-tovar"
+ },
+ {
+  "name": "Moises Acacio",
+  "signingYear": 2025,
+  "mlbId": 830432,
+  "slug": "moises-acacio"
+ },
+ {
+  "name": "Moises Rangel",
+  "signingYear": 2025,
+  "mlbId": 830404,
+  "slug": "moises-rangel"
+ },
+ {
+  "name": "Ricardo Roman",
+  "signingYear": 2025,
+  "mlbId": 830429,
+  "slug": "ricardo-roman"
+ },
+ {
+  "name": "Samuel Savinon",
+  "signingYear": 2025,
+  "mlbId": 829493,
+  "slug": "samuel-savinon"
+ },
+ {
+  "name": "Shai Romero",
+  "signingYear": 2025,
+  "mlbId": 829476,
+  "slug": "shai-romero"
+ },
+ {
+  "name": "Ariel Reynoso",
+  "signingYear": 2026,
+  "mlbId": 837605,
+  "slug": "ariel-reynoso"
+ },
+ {
+  "name": "Ezequiel Melburne",
+  "signingYear": 2026,
+  "mlbId": 836606,
+  "slug": "ezequiel-melburne"
+ },
+ {
+  "name": "Jose Requena",
+  "signingYear": 2026,
+  "mlbId": 837769,
+  "slug": "jose-requena"
+ },
+ {
+  "name": "Jose Victorino",
+  "signingYear": 2026,
+  "mlbId": 837652,
+  "slug": "jose-victorino"
+ },
+ {
+  "name": "Rubel Arias",
+  "signingYear": 2026,
+  "mlbId": 837601,
+  "slug": "rubel-arias"
+ }
+]
