@@ -97,9 +97,29 @@ function timelineDate(event) {
   return event.event_year ?? 'Date unknown'
 }
 
+/** Classifications where the source's own level label is the interesting fact. */
+const SHOW_SOURCE_LABEL = new Set(['DSL_LEAGUE_NAME', 'AZ_LEAGUE_NAME', 'FL_LEAGUE_NAME', 'SPORT_ID_15_SHORT_SEASON', 'FOREIGN_PRO_LEAGUE', 'UNKNOWN_ROOKIE_LEAGUE', 'UNRECOGNIZED_SPORT'])
+
+/** Canonical level with the original source label preserved beside it. */
+function levelCell(s) {
+  return <>
+    {s.level_label || humanize(s.level)}
+    {(s.level_classification === 'UNKNOWN_ROOKIE_LEAGUE' || s.level_classification === 'UNRECOGNIZED_SPORT') && <span className="muted"> (unclassified)</span>}
+    {SHOW_SOURCE_LABEL.has(s.level_classification) && s.source_level && (
+      <span className="muted" title={s.detail?.classificationRule || undefined}> (source: {s.source_level})</span>
+    )}
+  </>
+}
+
+/** An exact date, or the labelled season it is evidenced by — never a fabricated day. */
+function milestoneWhen(m) {
+  if (m.milestone_date) return <>{dateLabel(m.milestone_date)} <span className="muted">(exact date)</span></>
+  return <span className="muted">season {m.season_year ?? MISSING} · exact date not recorded</span>
+}
+
 export default async function PlayerPage({ params }) {
   const { slug } = await params
-  const { live, error, player, signings, timeline, transactions, sources, trainers, metrics, memberships } = await loadDossier(slug)
+  const { live, error, player, signings, timeline, transactions, sources, trainers, metrics, memberships, devStints, devMilestones, devSummary } = await loadDossier(slug)
 
   if (!live) {
     return (
@@ -248,6 +268,32 @@ export default async function PlayerPage({ params }) {
 
       <section className="panel section-gap">
         <h2>Development</h2>
+        {devSummary && (
+          <dl className="fact-grid wide">
+            <Fact label="Current development status (a classification, not a grade)">
+              {humanize(devSummary.current_development_status)}
+              {devSummary.current_development_season ? <span className="muted"> · last recorded season {devSummary.current_development_season}</span> : null}
+            </Fact>
+            <Fact label="Highest affiliated level">
+              {devSummary.highest_affiliated_level ? humanize(devSummary.highest_affiliated_level) : <span className="unknown">{UNKNOWN}</span>}
+            </Fact>
+            <Fact label="First Double-A">
+              {devSummary.first_aa_date ? <>{dateLabel(devSummary.first_aa_date)} <span className="muted">(exact date)</span></>
+                : devSummary.first_aa_season != null ? <>{devSummary.first_aa_season} <span className="muted">(season recorded; exact date not recorded)</span></>
+                : <span className="unknown">{UNKNOWN}</span>}
+            </Fact>
+            <Fact label="First Triple-A">
+              {devSummary.first_aaa_date ? <>{dateLabel(devSummary.first_aaa_date)} <span className="muted">(exact date)</span></>
+                : devSummary.first_aaa_season != null ? <>{devSummary.first_aaa_season} <span className="muted">(season recorded; exact date not recorded)</span></>
+                : <span className="unknown">{UNKNOWN}</span>}
+            </Fact>
+            <Fact label="Signing → MLB (exact dates only)">
+              {devSummary.years_signing_to_mlb_exact != null
+                ? <>{num(devSummary.years_signing_to_mlb_exact, 2)} yrs <span className="muted">({devSummary.days_signing_to_mlb_exact} days)</span></>
+                : <span className="unknown">Not calculable — needs both the signing date and an exact MLB debut date</span>}
+            </Fact>
+          </dl>
+        )}
         {hasProgress ? (
           <>
             <h3 className="sub">
@@ -262,6 +308,45 @@ export default async function PlayerPage({ params }) {
             <p className="muted small-note">As of {dateLabel(p.progress_as_of_date)} from MLB / MiLB records; see Sources and provenance.</p>
           </>
         ) : <p className="unknown">No professional-progress record yet.</p>}
+        <h3 className="sub">Season-by-season record</h3>
+        {devStints.length === 0 ? (
+          <p className="unknown">No professional seasons recorded in the sources reviewed. Absence of data is not evidence he did not play.</p>
+        ) : (
+          <table className="compact-table">
+            <thead><tr><th>Year</th><th className="num">Age</th><th>Organization</th><th>Team</th><th>League</th><th>Level</th><th className="num">Line</th><th>Game dates</th></tr></thead>
+            <tbody>{devStints.map((s) => (
+              <tr key={s.stint_id}>
+                <td>{s.season}</td>
+                <td className="num">{s.age_during_season ?? MISSING}</td>
+                <td>{s.organization_name ?? <span className="unknown">Unresolved</span>}</td>
+                <td>{s.affiliate_team ?? <span className="unknown">Not recorded</span>}</td>
+                <td>{s.league_name ?? <span className="unknown">Not recorded</span>}</td>
+                <td>{levelCell(s)}</td>
+                <td className="num">{s.line_summary ?? MISSING}</td>
+                <td>{s.first_game_date ? <>{dateLabel(s.first_game_date)} – {dateLabel(s.last_game_date)}</> : <span className="unknown">None recorded</span>}</td>
+              </tr>
+            ))}</tbody>
+          </table>
+        )}
+        {devStints.length > 0 && (
+          <p className="muted small-note">
+            One row per team, league and level within a season. First/last game dates appear only where a dated
+            game-level record supports them; season splits alone are never rendered as dates.
+          </p>
+        )}
+        <h3 className="sub">Development milestones</h3>
+        {devMilestones.length === 0 ? <p className="unknown">No development milestones recorded.</p> : (
+          <ul className="plain-list">
+            {devMilestones.map((m, i) => (
+              <li key={`${m.event_code}-${i}`}>
+                <strong>{humanize(m.event_code)}</strong> — {milestoneWhen(m)}
+                {m.affiliate ? ` · ${m.affiliate}` : ''}
+                {m.age_at_milestone != null ? ` · age ${num(m.age_at_milestone, 1)}` : ''}
+                <span className="muted"> · {humanize(m.evidence_basis)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
         <h3 className="sub">Trainer / academy relationships</h3>
         {trainers.length === 0 ? <p className="unknown">None recorded.</p> : (
           <ul className="plain-list">

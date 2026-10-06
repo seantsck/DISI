@@ -173,6 +173,10 @@ export function normalizeSeasonSplits(response) {
         teamName: sp.team?.name ?? null,
         league: sp.league?.name ?? null,
         games: sp.stat?.gamesPlayed ?? null,
+        // Full stat block (batting or pitching) for development-history work;
+        // outcome summaries ignore it.
+        stat: sp.stat ?? null,
+        age: Number.isFinite(Number(sp.stat?.age)) ? Number(sp.stat.age) : null,
         affiliated: !UNAFFILIATED_LEAGUES.has(sp.league?.name ?? ''),
       })
     }

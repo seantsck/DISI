@@ -29,6 +29,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 18. `018_signing_class_coverage_and_backfill.sql` — signing populations, class-membership provenance and the 2022 / 2024 / 2025 backfill (details below).
 19. `019_mature_outcome_audit_expansion.sql` — evidence-based outcome audits, professional progress and outcome research views (details below; research in `database/research/019/`).
 20. `020_player_identity_and_biography_enrichment.sql` — external identifiers, biography with field-level provenance, position at signing, derived ages and identity research views (details below; research in `database/research/020/`).
+21. `021_player_development_history.sql` — development-history dataset: stints, extended milestones, derived metrics, development status and research views (details below; research in `database/research/021/`).
 
 ## 017 research-database layer
 
@@ -70,6 +71,18 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Scope.** `v_database_status` adds `dodgers_players` / `league_benchmark_players`; `v_player_filter_options` adds `has_dodgers_signing` so Dodgers pages count Dodgers signees only.
 - **Coverage semantics.** `v_dodgers_player_identity_coverage` reports each identity field as present, resolved (evidence-backed, no open conflict), conflicted or unsourced; `v_player_bio` exposes `open_conflict_fields` and `sourced_fields`.
 - **Rerunnable**, fills NULLs only, never takes an id another player holds. See `database/research/020/README.md` for the rules, results and manual decisions.
+
+## 021 player development history
+
+- **Stints, not one row per season.** `player_season_stints` holds one row per player / team / league / level / season. A season with several affiliates, levels or organizations is several rows; it is never collapsed. Batting fields are only filled from hitting data and pitching fields only from pitching data; `ip` is decimal thirds (37.2 → 37.6667).
+- **Canonical levels.** `development_levels` + `development_level_era_map` classify every era separately, and the source label is preserved beside the classification (`source_level`, `level_classification`). The 019 correction holds: the Mexican League, NPB, KBO and Cuban professional are `FOREIGN_PRO` at every point in history, never affiliated AAA, whatever the MLB Stats API sport id said. Rookie leagues the source names only vaguely stay `OTHER` / `UNKNOWN_ROOKIE_LEAGUE` — unresolved, not invented.
+- **Milestones extended in place.** `development_milestones` gains `event_code` (vocabulary in `development_event_codes`), `date_precision` (`DAY` / `SEASON`), `season_year`, `evidence_basis`. A `SEASON` milestone never carries a date — no fabricated January 1 — and a `DAY` milestone always carries one. The legacy 003 MLB debut rows are tagged `LEGACY_OUTCOME_AUDIT`, not duplicated.
+- **Exact vs approximate.** `disi_development_days` / `disi_development_years` return NULL unless both endpoint dates exist. Season-based approximations are separate, clearly labelled columns and never blend with the exact ones.
+- **Status, not a grade.** `player_development_status` is a research classification (`ROOKIE_LEVEL` … `MLB`, `FOREIGN_PRO`, `OUT_OF_AFFILIATED_BASEBALL`, `UNKNOWN`). Unknown is never "not reached", lower levels are never a failure verdict, and `NOT_YET_DEBUTED` requires an unresolved identity.
+- **Organization per stint.** Ownership is resolved per season from a reviewed affiliation table, so post-trade development stays attributable: same-season two-org spells keep both stints and are queued for review, not asserted as a trade date.
+- **Views** (all security_invoker): `v_dodgers_player_development_summary`, `v_player_development_stints`, `v_player_development_milestones`, `v_dodgers_development_by_signing_class`, `v_dodgers_development_by_market`, `v_dodgers_development_by_bonus_band`, `v_dodgers_development_research_queue`, `v_dodgers_development_coverage`. Reach counts accept any evidence (exact date or labelled season); median elapsed times are exact-date only, with n columns saying how many.
+- **Sources.** Every stint row cites the endpoints it was built from (`source_urls`, `source_id`, `retrieved_at`, `as_of_date`); sources are registered with `disi_infer_source_tier`, and rows already registered by 019/020 keep their metadata.
+- **Rerunnable**: inserts are on-conflict, conflicts are detected inside the reviewed artifact only, and a rerun changes nothing. See `database/research/021/README.md` for the pipeline, results and limitations.
 
 ## Player identity (020)
 

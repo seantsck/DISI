@@ -1,0 +1,511 @@
+{
+  "meta": {
+    "asOf": "2026-10-06",
+    "conflicts": 0,
+    "milestones": 661,
+    "stints": 828
+  },
+  "records": [
+    {
+      "slug": "abel-lorenzo"
+    },
+    {
+      "slug": "accimias-morales"
+    },
+    {
+      "slug": "adrian-torres"
+    },
+    {
+      "slug": "agustin-acosta"
+    },
+    {
+      "slug": "aldo-espinoza"
+    },
+    {
+      "slug": "aldrin-batista"
+    },
+    {
+      "slug": "alex-de-jesus"
+    },
+    {
+      "slug": "alexander-albertus"
+    },
+    {
+      "slug": "alexis-dominguez"
+    },
+    {
+      "slug": "alexis-reyes"
+    },
+    {
+      "slug": "allen-ajoti"
+    },
+    {
+      "slug": "anderson-estevez"
+    },
+    {
+      "slug": "anderson-jerez"
+    },
+    {
+      "slug": "andres-luna"
+    },
+    {
+      "slug": "aneudy-almonte"
+    },
+    {
+      "slug": "angel-cruz"
+    },
+    {
+      "slug": "antoni-urena"
+    },
+    {
+      "slug": "ariel-reynoso"
+    },
+    {
+      "slug": "arnaldo-lantigua"
+    },
+    {
+      "slug": "arod-mckenzie"
+    },
+    {
+      "slug": "axel-perez"
+    },
+    {
+      "slug": "ben-serunkuma"
+    },
+    {
+      "slug": "brian-diaz"
+    },
+    {
+      "slug": "bryan-lara"
+    },
+    {
+      "slug": "callum-wallace"
+    },
+    {
+      "slug": "carlos-avila"
+    },
+    {
+      "slug": "carlos-frias"
+    },
+    {
+      "slug": "carlos-ramirez"
+    },
+    {
+      "slug": "carlos-rincon"
+    },
+    {
+      "slug": "carlos-sardina"
+    },
+    {
+      "slug": "cesar-sanchez"
+    },
+    {
+      "slug": "christian-muniz"
+    },
+    {
+      "slug": "christian-romero"
+    },
+    {
+      "slug": "christian-suarez"
+    },
+    {
+      "slug": "christopher-arias"
+    },
+    {
+      "slug": "dailoui-abad"
+    },
+    {
+      "slug": "daniel-arrias"
+    },
+    {
+      "slug": "daniel-mielcarek"
+    },
+    {
+      "slug": "david-romero"
+    },
+    {
+      "slug": "degerson-diaz"
+    },
+    {
+      "slug": "derik-aquino"
+    },
+    {
+      "slug": "devlyn-bautista"
+    },
+    {
+      "slug": "diego-cartaya"
+    },
+    {
+      "slug": "domingo-geronimo"
+    },
+    {
+      "slug": "edgar-aviles"
+    },
+    {
+      "slug": "edgar-leon"
+    },
+    {
+      "slug": "eduardo-guerrero"
+    },
+    {
+      "slug": "eduardo-quintero"
+    },
+    {
+      "slug": "eduardo-rojas"
+    },
+    {
+      "slug": "elias-medina"
+    },
+    {
+      "slug": "elio-campos"
+    },
+    {
+      "slug": "emil-morales"
+    },
+    {
+      "slug": "ender-avendano"
+    },
+    {
+      "slug": "enrike-sevilya"
+    },
+    {
+      "slug": "erick-batista"
+    },
+    {
+      "slug": "erick-nava"
+    },
+    {
+      "slug": "erny-orellana"
+    },
+    {
+      "slug": "euri-rosa"
+    },
+    {
+      "slug": "ezequiel-aparicio"
+    },
+    {
+      "slug": "ezequiel-melburne"
+    },
+    {
+      "slug": "francisco-espinoza"
+    },
+    {
+      "slug": "franderly-morel"
+    },
+    {
+      "slug": "gersel-pitre"
+    },
+    {
+      "slug": "gregory-pereira"
+    },
+    {
+      "slug": "harold-gonzalez"
+    },
+    {
+      "slug": "hendrik-clementina"
+    },
+    {
+      "slug": "hendry-arvelo"
+    },
+    {
+      "slug": "heudy-pena"
+    },
+    {
+      "slug": "ilmerson-colon"
+    },
+    {
+      "slug": "ivan-pacheco"
+    },
+    {
+      "slug": "javier-bartolozzi"
+    },
+    {
+      "slug": "javier-herrera"
+    },
+    {
+      "slug": "javier-pena"
+    },
+    {
+      "slug": "jecsua-liborius"
+    },
+    {
+      "slug": "jeral-perez"
+    },
+    {
+      "slug": "jerami-rodriguez"
+    },
+    {
+      "slug": "jeremy-castro"
+    },
+    {
+      "slug": "jerming-rosario"
+    },
+    {
+      "slug": "jesus-galiz"
+    },
+    {
+      "slug": "jesus-tillero"
+    },
+    {
+      "slug": "jholbran-herder"
+    },
+    {
+      "slug": "jhon-gil"
+    },
+    {
+      "slug": "jhonny-jimenez"
+    },
+    {
+      "slug": "jhosman-theran"
+    },
+    {
+      "slug": "joendry-vargas"
+    },
+    {
+      "slug": "jose-gonzalez"
+    },
+    {
+      "slug": "jose-lopez"
+    },
+    {
+      "slug": "jose-requena"
+    },
+    {
+      "slug": "jose-rivas"
+    },
+    {
+      "slug": "jose-torrez"
+    },
+    {
+      "slug": "jose-victorino"
+    },
+    {
+      "slug": "jose-villegas"
+    },
+    {
+      "slug": "joseilyn-gonzalez"
+    },
+    {
+      "slug": "joseph-deng-thon"
+    },
+    {
+      "slug": "juan-alonso"
+    },
+    {
+      "slug": "juan-hernandez"
+    },
+    {
+      "slug": "juan-macero"
+    },
+    {
+      "slug": "julian-leon"
+    },
+    {
+      "slug": "julio-lugo-prospect"
+    },
+    {
+      "slug": "kelvin-ramirez"
+    },
+    {
+      "slug": "leider-padilla"
+    },
+    {
+      "slug": "lenix-osuna"
+    },
+    {
+      "slug": "lesther-medrano"
+    },
+    {
+      "slug": "luciano-romero"
+    },
+    {
+      "slug": "luis-carias"
+    },
+    {
+      "slug": "luis-gamez"
+    },
+    {
+      "slug": "luis-guerra"
+    },
+    {
+      "slug": "luis-izturis"
+    },
+    {
+      "slug": "luis-luna"
+    },
+    {
+      "slug": "luis-rodriguez-2015"
+    },
+    {
+      "slug": "luis-rodriguez-2019"
+    },
+    {
+      "slug": "luis-tovar"
+    },
+    {
+      "slug": "mairoshendrick-martinus"
+    },
+    {
+      "slug": "marco-corcho"
+    },
+    {
+      "slug": "maximo-martinez"
+    },
+    {
+      "slug": "michael-ramirez"
+    },
+    {
+      "slug": "michael-vilchez"
+    },
+    {
+      "slug": "miguel-bastardo"
+    },
+    {
+      "slug": "miguel-dominguez"
+    },
+    {
+      "slug": "miguel-droz"
+    },
+    {
+      "slug": "misja-harcksen"
+    },
+    {
+      "slug": "missael-soto"
+    },
+    {
+      "slug": "moises-acacio"
+    },
+    {
+      "slug": "moises-rangel"
+    },
+    {
+      "slug": "natanael-castillo"
+    },
+    {
+      "slug": "nicolas-cruz"
+    },
+    {
+      "slug": "omar-estevez"
+    },
+    {
+      "slug": "oswaldo-osorio"
+    },
+    {
+      "slug": "paris-johnson"
+    },
+    {
+      "slug": "pedro-santillan"
+    },
+    {
+      "slug": "peter-bonilla"
+    },
+    {
+      "slug": "rafael-tua"
+    },
+    {
+      "slug": "rafy-peguero"
+    },
+    {
+      "slug": "railin-familia"
+    },
+    {
+      "slug": "rayne-doncon"
+    },
+    {
+      "slug": "raynerd-ortega"
+    },
+    {
+      "slug": "reyli-mariano"
+    },
+    {
+      "slug": "ricardo-montero"
+    },
+    {
+      "slug": "ricardo-roman"
+    },
+    {
+      "slug": "robinson-ventura"
+    },
+    {
+      "slug": "rodmar-angela"
+    },
+    {
+      "slug": "roger-cedeno"
+    },
+    {
+      "slug": "roger-lasso"
+    },
+    {
+      "slug": "roiger-mujica"
+    },
+    {
+      "slug": "ronny-brito"
+    },
+    {
+      "slug": "roque-gutierrez"
+    },
+    {
+      "slug": "rubel-arias"
+    },
+    {
+      "slug": "samuel-munoz"
+    },
+    {
+      "slug": "samuel-sanchez"
+    },
+    {
+      "slug": "samuel-savinon"
+    },
+    {
+      "slug": "sean-linan"
+    },
+    {
+      "slug": "shai-romero"
+    },
+    {
+      "slug": "shakir-albert"
+    },
+    {
+      "slug": "starling-heredia"
+    },
+    {
+      "slug": "steven-castillo"
+    },
+    {
+      "slug": "thayron-liranzo"
+    },
+    {
+      "slug": "tim-fischer"
+    },
+    {
+      "slug": "umar-male"
+    },
+    {
+      "slug": "victor-rodrigues"
+    },
+    {
+      "slug": "william-soto"
+    },
+    {
+      "slug": "wilman-diaz"
+    },
+    {
+      "slug": "yadier-alvarez"
+    },
+    {
+      "slug": "yeiner-fernandez"
+    },
+    {
+      "slug": "yojackson-laya"
+    },
+    {
+      "slug": "yorfran-medina"
+    },
+    {
+      "slug": "yoryi-simarra"
+    },
+    {
+      "slug": "yuliangel-de-la-cruz"
+    }
+  ]
+}

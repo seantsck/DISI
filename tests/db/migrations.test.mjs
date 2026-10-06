@@ -63,7 +63,15 @@ test('the latest migration is rerunnable without changing data', async () => {
       (select count(*) from outcome_evidence)::int as outcome_evidence,
       (select string_agg(player_id::text || reached_mlb_verified || coalesce(outcome_state, ''), ',' order by player_id) from outcome_audits) as audits,
       (select count(*) from outcomes)::int as outcomes,
-      (select string_agg(coalesce(source_id::text,'') || tracked_signings || coalesce(population_scope, ''), ',' order by id) from signing_census_coverage) as coverage`)
+      (select string_agg(coalesce(source_id::text,'') || tracked_signings || coalesce(population_scope, ''), ',' order by id) from signing_census_coverage) as coverage,
+      (select count(*) from player_season_stints)::int as stints,
+      (select string_agg(concat_ws('|', season::text, level::text, coalesce(affiliate_team, ''), coalesce(league_name, ''), coalesce(source_level, ''), level_classification, era::text, affiliated::text,
+        coalesce(g::text, ''), coalesce(pa::text, ''), coalesce(pg::text, ''), coalesce(ip::text, '')), ',' order by player_id, season, level, coalesce(affiliate_team, ''), coalesce(league_name, '')) from player_season_stints) as stint_values,
+      (select count(*) from development_milestones where event_code is not null)::int as coded_milestones,
+      (select string_agg(concat_ws('|', event_code, coalesce(milestone_date::text, ''), coalesce(season_year::text, ''), date_precision::text, coalesce(evidence_basis, '')), ','
+        order by player_id, event_code, coalesce(milestone_date::text, '9999'), coalesce(season_year, 0)) from development_milestones where event_code is not null) as milestone_values,
+      (select count(*) from player_development_status)::int as dev_status,
+      (select string_agg(status::text || basis || coalesce(status_season::text, '') || coalesce(note, ''), ',' order by player_id) from player_development_status) as dev_status_values`)
   const beforeRun = await snapshot()
   await db.exec(readSql(latest))
   assert.deepEqual(await snapshot(), beforeRun)
@@ -953,4 +961,235 @@ test('020 Dodgers-facing counts exclude other-club benchmark players unless all 
   assert.equal(cov.players, 220)
   const dir = await one(`select count(*)::int as n from v_player_directory where has_dodgers_signing`)
   assert.equal(dir.n, 220)
+})
+
+// ---------------------------------------------------------------------------
+// 021: player development history (stints, milestones, status, views)
+// ---------------------------------------------------------------------------
+
+test('021 stints: 828 rows over 167 players; a player-season with several teams, levels or organizations is several rows', async () => {
+  const t = await one(`select count(*)::int as n, count(distinct player_id)::int as players,
+    count(*) filter (where source_id is null)::int as null_source,
+    count(*) filter (where first_game_date is not null or last_game_date is not null)::int as dated,
+    count(*) filter (where game_date_basis is not null)::int as dated_basis
+    from player_season_stints`)
+  // No game logs were cached, so no stint claims a first/last game date: the
+  // absence is recorded, never fabricated.
+  assert.deepEqual([t.n, t.players, t.null_source, t.dated, t.dated_basis], [828, 167, 0, 0, 0])
+  const multi = await one(`select
+    (select count(*)::int from (select player_id, season from player_season_stints group by 1, 2 having count(*) > 1) x) as multi_stint,
+    (select count(*)::int from (select player_id, season from player_season_stints group by 1, 2 having count(distinct level) > 1) x) as multi_level,
+    (select count(*)::int from (select player_id, season from player_season_stints group by 1, 2 having count(distinct organization_id) > 1) x) as multi_org`)
+  assert.deepEqual([multi.multi_stint, multi.multi_level, multi.multi_org], [173, 140, 10])
+  // uniqueness holds even for rows whose source recorded no team/league name
+  const dup = await one(`select count(*)::int as n from (
+    select player_id, season, coalesce(affiliate_team, '') t, coalesce(league_name, '') l, level
+    from player_season_stints group by 1, 2, 3, 4, 5 having count(*) > 1) x`)
+  assert.equal(dup.n, 0)
+  const levels = Object.fromEntries((await rows(`select level::text, count(*)::int as n from player_season_stints group by 1`))
+    .map((r) => [r.level, r.n]))
+  assert.deepEqual(levels, {
+    INTERNATIONAL_ROOKIE: 334, COMPLEX_ROOKIE: 158, LOW_A: 122, HIGH_A: 71,
+    AA: 46, AAA: 32, MLB: 14, FOREIGN_PRO: 8, OTHER: 43,
+  })
+})
+
+test('021 preserves the source label beside the canonical level; unknown stays unknown', async () => {
+  // Lenix Osuna, 2017-2018: complex, Midwest, California and Mexican-league
+  // stints each keep the label the MLB Stats API filed them under.
+  const osuna = await rows(`select s.season, s.affiliate_team, s.league_name, s.source_level, s.level::text as level, s.affiliated
+    from player_season_stints s join players p on p.id = s.player_id
+    where p.slug = 'lenix-osuna' and s.season in (2017, 2018) order by s.season, s.affiliate_team nulls last, s.league_name`)
+  const byTeam = Object.fromEntries(osuna.map((r) => [`${r.season}|${r.affiliate_team}`, r]))
+  assert.deepEqual([byTeam['2017|AZL Dodgers'].source_level, byTeam['2017|AZL Dodgers'].level], ['ROK', 'COMPLEX_ROOKIE'])
+  assert.deepEqual([byTeam['2017|Great Lakes Loons'].source_level, byTeam['2017|Great Lakes Loons'].level], ['A', 'LOW_A'])
+  assert.deepEqual([byTeam['2017|Rancho Cucamonga Quakes'].source_level, byTeam['2017|Rancho Cucamonga Quakes'].level], ['A+', 'HIGH_A'])
+  assert.equal(byTeam['2017|Diablos Rojos del Mexico'].level, 'FOREIGN_PRO')
+  // 2018: four Mexican clubs (one with no recorded team name) are four stints
+  const mexican = osuna.filter((r) => r.league_name === 'Mexican League' && r.season === 2018)
+  assert.equal(mexican.length, 4)
+  assert.ok(mexican.some((r) => r.affiliate_team === null))
+  const unknown = await one(`select count(*)::int as n, count(*) filter (where level = 'OTHER')::int as other,
+    count(*) filter (where affiliated)::int as affiliated
+    from player_season_stints where level_classification = 'UNKNOWN_ROOKIE_LEAGUE'`)
+  assert.deepEqual([unknown.n, unknown.other, unknown.affiliated], [43, 43, 0])
+})
+
+test('021 keeps the 019 correction: the Mexican League is FOREIGN_PRO and never affiliated AAA', async () => {
+  const fp = await rows(`select s.league_name, s.source_level, s.affiliated, s.organization_id, s.level::text as level
+    from player_season_stints s where s.level = 'FOREIGN_PRO' order by s.league_name, s.affiliate_team nulls last`)
+  assert.equal(fp.length, 8)
+  for (const r of fp) {
+    assert.equal(r.league_name, 'Mexican League')
+    assert.equal(r.level, 'FOREIGN_PRO')
+    assert.equal(r.affiliated, false)
+    assert.equal(r.organization_id, null, 'Mexican clubs are not MLB organizations')
+    assert.equal(r.source_level, 'AAA', 'the MLB Stats API filed the Mexican League under the Triple-A sport id before 2021')
+  }
+  const bad = await one(`select count(*)::int as n from player_season_stints
+    where league_name = 'Mexican League' and (level <> 'FOREIGN_PRO' or affiliated)`)
+  assert.equal(bad.n, 0)
+})
+
+test('021 milestones: SEASON precision never fabricates a date, DAY always has one; legacy 003 debuts are tagged, not duplicated', async () => {
+  const m = await one(`select count(*)::int as n,
+    count(*) filter (where date_precision = 'SEASON' and milestone_date is not null)::int as fabricated,
+    count(*) filter (where date_precision = 'DAY' and milestone_date is null)::int as dayless,
+    count(*) filter (where date_precision = 'SEASON' and season_year is null)::int as seasonless
+    from development_milestones where event_code is not null`)
+  assert.deepEqual([m.n, m.fabricated, m.dayless, m.seasonless], [666, 0, 0, 0])
+  const oc = await one(`select count(*)::int as n,
+    count(*) filter (where milestone_date is null and season_year is not null)::int as season_only
+    from development_milestones where event_code = 'ORGANIZATION_CHANGE'`)
+  assert.deepEqual([oc.n, oc.season_only], [18, 18])
+  const legacy = await one(`select count(*)::int as n, count(*) filter (where date_precision = 'DAY')::int as day,
+    count(*) filter (where season_year is not null)::int as with_season
+    from development_milestones where evidence_basis = 'LEGACY_OUTCOME_AUDIT'`)
+  assert.deepEqual([legacy.n, legacy.day, legacy.with_season], [5, 5, 5])
+  const debuts = await one(`select count(*)::int as n, count(distinct player_id)::int as players
+    from development_milestones where event_code = 'MLB_DEBUT'`)
+  assert.deepEqual([debuts.n, debuts.players], [7, 7])
+  const exact = await rows(`select p.slug, m.milestone_date::text as d from development_milestones m
+    join players p on p.id = m.player_id
+    where m.event_code = 'MLB_DEBUT' and m.evidence_basis = 'MLB_PERSON_RECORD' order by 1`)
+  assert.deepEqual(exact, [
+    { slug: 'carlos-frias', d: '2014-08-04' },
+    { slug: 'roger-cedeno', d: '1995-06-20' },
+  ])
+})
+
+test('021 derived metrics: exact elapsed times need both endpoint dates; season approximations are separate, labelled columns', async () => {
+  const cedeno = await one(`select signing_date::text as signing, mlb_debut_date::text as debut,
+    days_signing_to_mlb_exact, years_signing_to_mlb_exact, approx_years_signing_to_mlb,
+    first_aa_season, mlb_debut_season
+    from v_dodgers_player_development_summary where player_slug = 'roger-cedeno'`)
+  assert.deepEqual([cedeno.signing, cedeno.debut, cedeno.days_signing_to_mlb_exact, Number(cedeno.years_signing_to_mlb_exact)],
+    ['1991-03-03', '1995-06-20', 1570, 4.29])
+  assert.equal(cedeno.approx_years_signing_to_mlb, 4)
+  assert.deepEqual([cedeno.first_aa_season, cedeno.mlb_debut_season], [1993, 1995])
+  // an exact elapsed time exists only where both endpoint dates exist
+  const bad = await one(`select count(*)::int as n from v_dodgers_player_development_summary
+    where days_signing_to_mlb_exact is not null and (signing_date is null or mlb_debut_date is null)`)
+  assert.equal(bad.n, 0)
+  // a season-labelled debut is evidence without a date: the AA debuts are all
+  // SEASON precision, and none of them invented a day
+  const aa = await one(`select count(*)::int as n, count(*) filter (where milestone_date is not null)::int as dated
+    from development_milestones where event_code = 'AA_DEBUT'`)
+  assert.ok(aa.n >= 25)
+  assert.equal(aa.dated, 0)
+})
+
+test('021 development status: a classification, not a grade; absence of data is never "not reached"', async () => {
+  const byStatus = Object.fromEntries((await rows(`select status::text, count(*)::int as n from player_development_status group by 1`))
+    .map((r) => [r.status, r.n]))
+  assert.deepEqual(byStatus, {
+    ROOKIE_LEVEL: 92, MLB: 47, A_BALL: 29, HIGH_A: 16, AAA: 14, AA: 12, OUT_OF_AFFILIATED_BASEBALL: 2,
+  })
+  // every player with stints has a status; 47 verified MLB audits are AUDITED_OUTCOME
+  const orphans = await one(`select count(*)::int as n from players p
+    where exists (select 1 from player_season_stints s where s.player_id = p.id)
+      and not exists (select 1 from player_development_status d where d.player_id = p.id)`)
+  assert.equal(orphans.n, 0)
+  const audited = await one(`select count(*)::int as n from player_development_status where basis = 'AUDITED_OUTCOME'`)
+  assert.equal(audited.n, 47)
+  // development outside affiliated baseball is information, not failure, and names the prior level
+  const ooa = await rows(`select p.slug, d.note from player_development_status d join players p on p.id = d.player_id
+    where d.status = 'OUT_OF_AFFILIATED_BASEBALL' order by 1`)
+  assert.deepEqual(ooa.map((r) => r.slug), ['edgar-leon', 'lenix-osuna'])
+  assert.ok(ooa.every((r) => /Highest affiliated level reached: (LOW_A|HIGH_A)/.test(r.note)))
+})
+
+test('021 signing-class measures are tracked-cohort counts: reach uses any evidence, medians need both dates', async () => {
+  const sasaki2025 = await one(`select tracked_players, reached_mlb, median_years_signing_to_mlb_exact, years_signing_to_mlb_n,
+    cohort_scope from v_dodgers_development_by_signing_class where signing_year = 2025`)
+  assert.deepEqual([sasaki2025.tracked_players, sasaki2025.reached_mlb, sasaki2025.years_signing_to_mlb_n], [29, 1, 1])
+  assert.equal(Number(sasaki2025.median_years_signing_to_mlb_exact), 0.15)
+  assert.equal(sasaki2025.cohort_scope, 'TRACKED_COHORT')
+  const class2023 = await one(`select tracked_players, reached_a, reached_high_a, reached_aa, reached_aaa, reached_mlb
+    from v_dodgers_development_by_signing_class where signing_year = 2023`)
+  assert.deepEqual([class2023.tracked_players, class2023.reached_a, class2023.reached_high_a, class2023.reached_aa, class2023.reached_aaa, class2023.reached_mlb],
+    [13, 7, 1, 1, 1, 0])
+  // the 2023 medians stay NULL: no player in that class has two exact endpoint dates yet
+  const medians = await one(`select median_years_signing_to_aa_exact, median_years_signing_to_mlb_exact
+    from v_dodgers_development_by_signing_class where signing_year = 2023`)
+  assert.deepEqual([medians.median_years_signing_to_aa_exact, medians.median_years_signing_to_mlb_exact], [null, null])
+})
+
+test('021 organization changes: per-stint ownership in the same season, plus a SEASON-precision milestone', async () => {
+  const batista = await rows(`select s.organization_name, s.level::text as level
+    from player_season_stints s join players p on p.id = s.player_id
+    where p.slug = 'aldrin-batista' and s.season = 2023 order by s.level_rank nulls last, s.organization_name`)
+  const orgs = [...new Set(batista.map((r) => r.organization_name))]
+  assert.deepEqual(orgs.sort(), ['Chicago White Sox', 'Los Angeles Dodgers'])
+  const oc = await one(`select m.season_year, m.affiliate, m.date_precision::text as precision, m.milestone_date
+    from development_milestones m join players p on p.id = m.player_id
+    where p.slug = 'aldrin-batista' and m.event_code = 'ORGANIZATION_CHANGE'`)
+  assert.deepEqual([oc.season_year, oc.affiliate, oc.precision, oc.milestone_date], [2023, 'Chicago White Sox', 'SEASON', null])
+  // the queue flags the unresolved two-org season for review without asserting a trade date
+  const flagged = await one(`select count(*)::int as n from v_dodgers_development_research_queue
+    where player_slug = 'aldrin-batista' and issue = 'MULTI_ORG_SEASON_UNVERIFIED'`)
+  assert.equal(flagged.n, 1)
+})
+
+test('021 MLB-reach counts are scope-explicit: 58 tracked = 47 Dodgers signings + 11 benchmark', async () => {
+  // "MLB players" always needs its scope: all tracked (Dodgers signings + benchmark players) vs the
+  // outcome-audited subset, which is Dodgers signings only by policy. bref_id is recorded only for
+  // players with an MLB debut, so it must cover the same 58.
+  const r = await one(`with scope as (
+      select p.id, coalesce(bool_or(o.franchise_key = 'DODGERS'), false) as dodgers
+      from players p
+      left join signings s on s.player_id = p.id
+      left join organizations o on o.id = s.organization_id
+      group by p.id)
+    select
+      (select count(*)::int from players where mlb_debut_date is not null) as all_tracked_mlb,
+      (select count(*)::int from players where bref_id is not null) as with_bref_id,
+      (select count(*)::int from scope sc join players p on p.id = sc.id where sc.dodgers and p.mlb_debut_date is not null) as dodgers_mlb,
+      (select count(*)::int from scope sc join players p on p.id = sc.id where not sc.dodgers and p.mlb_debut_date is not null) as benchmark_mlb,
+      (select count(*)::int from outcome_audits where reached_mlb_verified) as audited_mlb`)
+  assert.equal(r.with_bref_id, r.all_tracked_mlb, 'B-Ref id covers every tracked player with verified MLB reach')
+  assert.deepEqual([r.all_tracked_mlb, r.dodgers_mlb, r.benchmark_mlb, r.audited_mlb], [58, 47, 11, 47])
+  assert.equal(r.dodgers_mlb + r.benchmark_mlb, r.all_tracked_mlb)
+  assert.equal(r.audited_mlb, r.dodgers_mlb, 'only Dodgers signings carry verified MLB outcome audits')
+  // the Dodgers-scoped status view reports the same audited figure
+  const status = await one(`select verified_mlb_outcomes from v_database_status`)
+  assert.equal(status.verified_mlb_outcomes, 47)
+})
+
+test('021 coverage view: populations add up', async () => {
+  const c = await one(`select * from v_dodgers_development_coverage`)
+  assert.deepEqual([c.tracked_players, c.players_with_stints, c.players_without_stints], [268, 167, 101])
+  assert.equal(c.players_with_stints + c.players_without_stints, c.tracked_players)
+  assert.equal(c.players_with_mlb_history + c.non_mlb_players_with_history, c.players_with_stints)
+  assert.deepEqual([c.players_with_mlb_history, c.mlb_players_missing_pre_mlb_history], [2, 0])
+  assert.deepEqual([c.players_with_exact_first_aa_date, c.players_with_first_aa_season], [0, 25])
+  assert.deepEqual([c.players_with_exact_first_aaa_date, c.players_with_first_aaa_season], [0, 16])
+  assert.equal(c.players_with_signing_to_mlb_time, 6)
+})
+
+test('021 views are security_invoker and anon can read development data but cannot write it', async () => {
+  const names = ['v_dodgers_development_by_bonus_band', 'v_dodgers_development_by_market', 'v_dodgers_development_by_signing_class',
+    'v_dodgers_development_coverage', 'v_dodgers_development_research_queue', 'v_dodgers_player_development_summary',
+    'v_player_development_milestones', 'v_player_development_stints']
+  const views = await rows(`select relname, coalesce(reloptions::text, '') as opts from pg_class
+    where relname in (${names.map((_, i) => `$${i + 1}`).join(',')}) and relkind = 'v'`, names)
+  assert.equal(views.length, 8)
+  for (const v of views) assert.match(v.opts, /security_invoker=(true|on)/, `${v.relname} must be security_invoker`)
+  const tables = await rows(`select relname, relrowsecurity from pg_class where relname in
+    ('player_season_stints', 'player_development_status', 'development_levels', 'development_level_era_map', 'development_event_codes') and relkind = 'r'`)
+  assert.equal(tables.length, 5)
+  for (const t of tables) assert.equal(t.relrowsecurity, true)
+  await db.transaction(async (tx) => {
+    await tx.query('set local role anon')
+    const stints = (await tx.query('select count(*)::int as n from v_player_development_stints')).rows[0]
+    assert.equal(stints.n, 828)
+    const summary = (await tx.query('select count(*)::int as n from v_dodgers_player_development_summary')).rows[0]
+    assert.equal(summary.n, 268)
+    await assert.rejects(tx.query(
+      `insert into player_season_stints (player_id, season, affiliate_team, source_level, level, level_classification, era, affiliated, as_of_date)
+       select id, 2026, 'x', 'ROK', 'OTHER', 'UNKNOWN_ROOKIE_LEAGUE', 'MODERN_FOUR_LEVEL_2021_PLUS', false, '2026-10-06' from players limit 1`),
+      /permission denied/,
+    )
+    await tx.rollback()
+  })
 })

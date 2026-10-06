@@ -58,6 +58,16 @@ node scripts/mlb/resolve-fangraphs.mjs --identities research-output/020/player-i
 node scripts/mlb/identity-sql-values.mjs --players players.json --identities player-identities.json \
   --bref resolve-bref.json --fangraphs resolve-fangraphs.json --league-ids resolve-ids.json --out values.sql
 
+# Development history (021): season splits -> stints, optional game-log dates, first-appearance
+# milestones, then reviewed values for the migration.
+node scripts/mlb/player-seasons.mjs --input players.json --out research-output/021
+node scripts/mlb/player-game-levels.mjs --input players.json --out research-output/021 [--game-logs]
+node scripts/mlb/development-milestones.mjs --input players.json --out research-output/021
+node scripts/mlb/development-sql-values.mjs --seasons research-output/021/player-seasons.json \
+  --milestones research-output/021/development-milestones.json \
+  --game-levels research-output/021/player-game-levels.json --as-of 2026-10-06 \
+  --out database/research/021/values.sql
+
 # Turn REVIEWED artifacts into SQL VALUES blocks plus a decisions report.
 node scripts/mlb/outcome-sql-values.mjs --outcomes a.json,b.json --bwar bref-war.json \
   --identity identity-decisions.json --audit-date 2026-10-05 --out values.sql
@@ -85,4 +95,13 @@ Input files are JSON arrays: `[{ "name": "...", "signingYear": 2018, "mlbId": 68
 
 ## Tests
 
-`npm run research:test` (also part of `npm test`) runs offline against sanitized fixtures in `tests/fixtures/mlb/`.
+`npm run research:test` (also part of `npm test`) runs offline against sanitized fixtures in `tests/fixtures/mlb/`; `tests/unit/mlb-development.test.mjs` covers the development-history library the same way.
+
+## Development-history rules in `lib/development.mjs`
+
+- **Foreign professional leagues** (`FOREIGN_PRO_LEAGUES`): the Mexican League, NPB, KBO, Cuban professional and similar are `FOREIGN_PRO` in every era, never affiliated minor-league levels, whatever sport id the source filed them under (the API filed the Mexican League as Triple-A until 2020).
+- **Sport-id classification with source labels preserved**: ids 1/11/12/13/14 map to MLB/AAA/AA/HIGH_A/LOW_A, 15 short-season A to LOW_A with the original label kept, and 16 rookie-class splits by league name (DSL, Arizona/Florida complex, else `UNKNOWN_ROOKIE_LEAGUE` — unresolved, never invented).
+- **Stints** (`distillStints`): the hitting and pitching halves of one player/season/team/league split merge into a single two-way stint; different teams, leagues or levels never merge. Hitter fields are only filled from hitting data and pitcher fields only from pitching data; IP like `37.2` becomes 37.6667 (exact thirds).
+- **Organizations** (`resolveOrganization`): per season from the reviewed affiliation table; MLB club names map directly; foreign professional clubs resolve to organization NULL (`FOREIGN_PRO_CLUB`) with the club name recorded verbatim; anything unmapped is NULL and queued, never guessed.
+- **Milestones** (`buildMilestoneCandidates`): a date exists only where a dated record supports it — season-only evidence yields SEASON precision with no date, never January 1. Releases/retirements use the FINAL transaction of that type. An organization change is a season-precision event, never an inferred trade date.
+

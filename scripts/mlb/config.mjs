@@ -27,6 +27,9 @@ export function statsApi(base = config.statsApiBase) {
     mlbSeasons: (id, group) => `${base}/people/${id}/stats?stats=yearByYear&group=${group}&sportId=1`,
     milbSeasons: (id, group) => `${base}/people/${id}/stats?stats=yearByYear&group=${group}&leagueListId=milb_all`,
     peopleSearch: (name) => `${base}/people/search?names=${encodeURIComponent(name)}`,
+    // Game-level log for a season (used by player-game-levels to resolve exact
+    // first/last appearance dates where the API supports them).
+    gameLog: (id, group, season) => `${base}/people/${id}/stats?stats=gameLog&group=${group}&season=${season}`,
   }
 }
 
