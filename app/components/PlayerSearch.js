@@ -109,7 +109,8 @@ export default function PlayerSearch() {
             >
               <strong>{r.full_name}</strong>
               <span>
-                {[r.first_signing_year, r.primary_position, r.first_signing_market, (r.organizations || []).join('/')].filter(Boolean).join(' · ')}
+                {[r.first_signing_year, r.primary_position, r.first_signing_market, (r.organizations || []).join('/'),
+                  r.has_dodgers_signing === false ? 'league benchmark' : null].filter(Boolean).join(' · ')}
               </span>
               {r.aliases?.length > 0 && <small>also {r.aliases.join(', ')}</small>}
             </li>

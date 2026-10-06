@@ -1,0 +1,269 @@
+slug,name,status,brefId,mlbId,method,confidence,signals,note
+abel-lorenzo,Abel Lorenzo,NOT_APPLICABLE,,806867,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+accimias-morales,Accimias Morales,NOT_APPLICABLE,,703193,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+adrian-beltre,Adrian Beltre,RESOLVED,beltrad01,134181,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+adrian-rondon,Adrian Rondon,NOT_APPLICABLE,,660632,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+adrian-torres,Adrian Torres,NOT_APPLICABLE,,830397,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+agustin-acosta,Agustin Acosta,NOT_APPLICABLE,,802528,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+aldo-espinoza,Aldo Espinoza,NOT_APPLICABLE,,665852,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+aldrin-batista,Aldrin Batista,NOT_APPLICABLE,,702881,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+alex-de-jesus,Alex De Jesus,NOT_APPLICABLE,,682942,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+alexander-albertus,Alexander Albertus,NOT_APPLICABLE,,800316,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+alexis-dominguez,Alexis Dominguez,NOT_APPLICABLE,,821826,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+alexis-reyes,Alexis Reyes,NOT_APPLICABLE,,829490,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+allen-ajoti,Allen Ajoti,NOT_APPLICABLE,,821808,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+amado-nunez,Amado Nunez,NOT_APPLICABLE,,658535,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+anderson-espinoza,Anderson Espinoza,RESOLVED,espinan01,659262,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+anderson-estevez,Anderson Estevez,NOT_APPLICABLE,,802740,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+anderson-jerez,Anderson Jerez,NOT_APPLICABLE,,808214,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+andres-luna,Andres Luna,NOT_APPLICABLE,,831322,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+andy-pages,Andy Pages,RESOLVED,pagesan01,681624,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+aneudy-almonte,Aneudy Almonte,NOT_APPLICABLE,,825160,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+angel-cruz,Angel Cruz,NOT_APPLICABLE,,807654,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+angel-ramirez,Angel Ramirez,NOT_APPLICABLE,,821633,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+antoni-urena,Antoni Urena,NOT_APPLICABLE,,829482,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+antonio-arias,Antonio Arias,NOT_APPLICABLE,,660626,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+antonio-osuna,Antonio Osuna,RESOLVED,osunaan01,120107,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+ariel-reynoso,Ariel Reynoso,NOT_APPLICABLE,,837605,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+arnaldo-lantigua,Arnaldo Lantigua,NOT_APPLICABLE,,806984,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+arod-mckenzie,Arod McKenzie,NOT_APPLICABLE,,803242,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+arquimedes-gamboa,Arquimedes Gamboa,NOT_APPLICABLE,,660614,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+axel-perez,Axel Perez,NOT_APPLICABLE,,821612,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ben-serunkuma,Ben Serunkuma,NOT_APPLICABLE,,805205,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+brayan-hernandez,Brayan Hernandez,NOT_APPLICABLE,,659910,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+brian-diaz,Brian Diaz,NOT_APPLICABLE,,699070,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+bryan-lara,Bryan Lara,NOT_APPLICABLE,,832440,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+callum-wallace,Callum Wallace,NOT_APPLICABLE,,800527,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+carlos-avila,Carlos Avila,NOT_APPLICABLE,,699066,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+carlos-frias,Carlos Frias,RESOLVED,friasca01,516910,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+carlos-herrera,Carlos Herrera,NOT_APPLICABLE,,650508,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+carlos-hiciano,Carlos Hiciano,NOT_APPLICABLE,,645289,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+carlos-ramirez,Carlos Ramirez,NOT_APPLICABLE,,830439,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+carlos-rincon,Carlos Rincon,NOT_APPLICABLE,,665779,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+carlos-santana,Carlos Santana,RESOLVED,santaca01,467793,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+carlos-sardina,Carlos Sardina,NOT_APPLICABLE,,821658,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+cesar-sanchez,Cesar Sanchez,NOT_APPLICABLE,,829479,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+chan-ho-park,Chan Ho Park,RESOLVED,parkch01,120221,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+chico-fernandez,Chico Fernandez,RESOLVED,fernach01,114077,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+chin-lung-hu,Chin-lung Hu,RESOLVED,huch01,464341,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+christian-muniz,Christian Muniz,NOT_APPLICABLE,,821650,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+christian-romero,Christian Romero,NOT_APPLICABLE,,699071,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+christian-suarez,Christian Suarez,NOT_APPLICABLE,,682949,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+christopher-acosta,Christopher Acosta,NOT_APPLICABLE,,659261,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+christopher-arias,Christopher Arias,NOT_APPLICABLE,,665931,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+dailoui-abad,Dailoui Abad,NOT_APPLICABLE,,699060,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+damaso-marte-jr,Damaso Marte Jr.,NOT_APPLICABLE,,666006,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+daniel-arrias,Daniel Arrias,NOT_APPLICABLE,,800328,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+daniel-mielcarek,Daniel Mielcarek,NOT_APPLICABLE,,808028,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+david-romero,David Romero,NOT_APPLICABLE,,821661,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+degerson-diaz,Degerson Diaz,NOT_APPLICABLE,,830481,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+derik-aquino,Derik Aquino,NOT_APPLICABLE,,830468,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+dermis-garcia,Dermis Garcia,RESOLVED,garcide02,660650,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+devlyn-bautista,Devlyn Bautista,NOT_APPLICABLE,,830426,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+diego-cartaya,Diego Cartaya,NOT_APPLICABLE,,682616,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+diego-castillo,Diego Castillo,RESOLVED,castidi02,660636,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+domingo-geronimo,Domingo Geronimo,NOT_APPLICABLE,,800383,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+eddys-leonard,Eddys Leonard,RESOLVED,leonaed01,678760,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE,
+edgar-aviles,Edgar Aviles,NOT_APPLICABLE,,800530,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+edgar-gomez,Edgar Gomez,NOT_APPLICABLE,,807626,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+edgar-leon,Edgar Leon,NOT_APPLICABLE,,800453,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+eduardo-guerrero,Eduardo Guerrero,NOT_APPLICABLE,,800370,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+eduardo-quintero,Eduardo Quintero,NOT_APPLICABLE,,808234,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+eduardo-rojas,Eduardo Rojas,NOT_APPLICABLE,,821672,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+elian-herrera,Elian Herrera,RESOLVED,herreel01,467070,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+elias-medina,Elias Medina,NOT_APPLICABLE,,808257,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+elio-campos,Elio Campos,NOT_APPLICABLE,,699069,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+eloy-jimenez,Eloy Jimenez,RESOLVED,jimenel02,650391,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+emil-morales,Emil Morales,NOT_APPLICABLE,,815896,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+emmanuel-dejesus,Emmanuel DeJesus,NOT_FOUND,,,,,,"No Baseball-Reference entry named ""Emmanuel DeJesus""."
+ender-avendano,Ender Avendano,NOT_APPLICABLE,,682937,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+enrike-sevilya,Enrike Sevilya,NOT_APPLICABLE,,800288,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+erick-batista,Erick Batista,NOT_APPLICABLE,,808209,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+erick-julio,Erick Julio,NOT_APPLICABLE,,650510,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+erick-nava,Erick Nava,NOT_APPLICABLE,,812748,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+erling-moreno,Erling Moreno,NOT_APPLICABLE,,650400,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+erny-orellana,Erny Orellana,NOT_APPLICABLE,,821786,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+euri-rosa,Euri Rosa,NOT_APPLICABLE,,821817,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ezequiel-aparicio,Ezequiel Aparicio,NOT_APPLICABLE,,830452,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ezequiel-melburne,Ezequiel Melburne,NOT_APPLICABLE,,836606,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+fernando-valenzuela,Fernando Valenzuela,RESOLVED,valenfe01,123619,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+francisco-espinoza,Francisco Espinoza,NOT_APPLICABLE,,821689,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+franderly-morel,Franderly Morel,NOT_APPLICABLE,,806918,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+franklin-perez,Franklin Perez,NOT_APPLICABLE,,658530,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+franly-mallen,Franly Mallen,NOT_APPLICABLE,,650691,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+gersel-pitre,Gersel Pitre,NOT_APPLICABLE,,649957,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+gilbert-lara,Gilbert Lara,NOT_APPLICABLE,,658677,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+gleyber-torres,Gleyber Torres,RESOLVED,torregl01,650402,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+gregory-pereira,Gregory Pereira,NOT_APPLICABLE,,682946,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+greifer-andrade,Greifer Andrade,NOT_APPLICABLE,,650849,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+harold-gonzalez,Harold Gonzalez,NOT_APPLICABLE,,808339,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+hendrik-clementina,Hendrik Clementina,NOT_APPLICABLE,,649955,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+hendry-arvelo,Hendry Arvelo,NOT_APPLICABLE,,829498,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+heudy-pena,Heudy Pena,NOT_APPLICABLE,,821263,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+hideo-nomo,Hideo Nomo,RESOLVED,nomohi01,119827,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+huascar-ynoa,Huascar Ynoa,RESOLVED,ynoahu01,660623,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+hung-chih-kuo,Hung-Chih Kuo,RESOLVED,kuoho01,425539,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+hyo-jun-park,Hyo-Jun Park,RESOLVED,parkho01,660829,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+hyun-jin-ryu,Hyun-Jin Ryu,RESOLVED,ryuhy01,547943,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+ilmerson-colon,Ilmerson Colon,NOT_APPLICABLE,,805623,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+isaac-barreto,Isaac Barreto,NOT_APPLICABLE,,699064,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ismael-valdez,Ismael Valdez,RESOLVED,valdeis01,123595,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+ivan-pacheco,Ivan Pacheco,NOT_APPLICABLE,,830612,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+javier-bartolozzi,Javier Bartolozzi,NOT_APPLICABLE,,812745,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+javier-herrera,Javier Herrera,NOT_APPLICABLE,,808223,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+javier-pena,Javier Pena,NOT_APPLICABLE,,800351,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jecsua-liborius,Jecsua Liborius,NOT_APPLICABLE,,807403,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jeral-perez,Jeral Perez,NOT_APPLICABLE,,800419,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jerami-rodriguez,Jerami Rodriguez,NOT_APPLICABLE,,682951,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jeremy-castro,Jeremy Castro,NOT_APPLICABLE,,812746,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jerming-rosario,Jerming Rosario,NOT_APPLICABLE,,682645,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jesus-galiz,Jesus Galiz,NOT_APPLICABLE,,694188,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jesus-tillero,Jesus Tillero,NOT_APPLICABLE,,808313,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jhoandro-alfaro,Jhoandro Alfaro,NOT_APPLICABLE,,658532,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jholbran-herder,Jholbran Herder,NOT_APPLICABLE,,800408,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jhon-gil,Jhon Gil,NOT_APPLICABLE,,830459,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jhonny-jimenez,Jhonny Jimenez,NOT_APPLICABLE,,699075,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jhosman-theran,Jhosman Theran,NOT_APPLICABLE,,830420,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+joendry-vargas,Joendry Vargas,NOT_APPLICABLE,,806959,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jonathan-amundaray,Jonathan Amundaray,NOT_FOUND,,,,,,"No Baseball-Reference entry named ""Jonathan Amundaray""."
+jorbit-vivas,Jorbit Vivas,RESOLVED,vivasjo01,678391,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+jorge-carpintero,Jorge Carpintero,NOT_APPLICABLE,,699058,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-almonte,Jose Almonte,NOT_APPLICABLE,,650954,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-dominguez,Jose Dominguez,RESOLVED,dominjo01,523848,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+jose-gonzalez,Jose Gonzalez,NOT_APPLICABLE,,806919,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-herrera,Jose Herrera,RESOLVED,herrejo04,645444,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+jose-lopez,Jose Lopez,NOT_APPLICABLE,,821653,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-offerman,Jose Offerman,RESOLVED,offerjo01,119948,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+jose-requena,Jose Requena,NOT_APPLICABLE,,837769,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-rivas,Jose Rivas,NOT_APPLICABLE,,830449,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-torrez,Jose Torrez,NOT_APPLICABLE,,807404,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-victorino,Jose Victorino,NOT_APPLICABLE,,837652,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-villegas,Jose Villegas,NOT_APPLICABLE,,830413,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+jose-vizcaino,Jose Vizcaino,RESOLVED,vizcajo01,123743,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+joseilyn-gonzalez,Joseilyn Gonzalez,NOT_APPLICABLE,,805120,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+joseph-deng-thon,Joseph Deng Thon,NOT_APPLICABLE,,830188,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+josue-de-paula,Josue De Paula,RESOLVED,depaujo03,800543,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; CITED_BREF_PAGE_AGREES,
+juan-alonso,Juan Alonso,NOT_APPLICABLE,,699076,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+juan-castro,Juan Castro,RESOLVED,castrju01,112128,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+juan-deleon,Juan DeLeon,NOT_APPLICABLE,,660665,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+juan-guzman,Juan Guzman,RESOLVED,guzmaju01,115267,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+juan-hernandez,Juan Hernandez,NOT_APPLICABLE,,806638,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+juan-macero,Juan Macero,NOT_APPLICABLE,,830471,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+juan-meza,Juan Meza,NOT_APPLICABLE,,660565,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+julian-leon,Julian Leon,NOT_APPLICABLE,,624645,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+julio-lugo-prospect,Julio Lugo (prospect),NOT_APPLICABLE,,649956,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+julio-martinez,Julio Martinez,NOT_APPLICABLE,,660699,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+julio-urias,Julio Urias,RESOLVED,uriasju01,628711,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+karim-garcia,Karim Garcia,RESOLVED,garcika01,114588,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+keibert-ruiz,Keibert Ruiz,RESOLVED,ruizke01,660688,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+kelvin-ramirez,Kelvin Ramirez,NOT_APPLICABLE,,699062,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+kenley-jansen,Kenley Jansen,RESOLVED,janseke01,445276,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+kenny-hernandez,Kenny Hernandez,NOT_APPLICABLE,,660660,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+kosuke-matsuda,Kosuke Matsuda,NOT_APPLICABLE,,800494,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+leider-padilla,Leider Padilla,NOT_APPLICABLE,,821636,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+lenix-osuna,Lenix Osuna,NOT_APPLICABLE,,624646,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+lesther-medrano,Lesther Medrano,NOT_APPLICABLE,,692327,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+lewin-diaz,Lewin Diaz,RESOLVED,diazle01,650331,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+luciano-romero,Luciano Romero,NOT_APPLICABLE,,800355,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+luis-carias,Luis Carias,NOT_APPLICABLE,,808218,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+luis-gamez,Luis Gamez,NOT_APPLICABLE,,830800,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+luis-guerra,Luis Guerra,NOT_APPLICABLE,,699065,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+luis-izturis,Luis Izturis,NOT_APPLICABLE,,682950,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+luis-luna,Luis Luna,NOT_APPLICABLE,,830463,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+luis-rodriguez-2015,Luis Rodriguez (2015),NOT_APPLICABLE,,665960,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+luis-rodriguez-2019,Luis Rodriguez (2019),NOT_APPLICABLE,,691177,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+luis-tovar,Luis Tovar,NOT_APPLICABLE,,830434,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+mairoshendrick-martinus,Mairoshendrick Martinus,NOT_APPLICABLE,,800302,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+marco-corcho,Marco Corcho,NOT_APPLICABLE,,806866,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+marcos-diplan,Marcos Diplan,RESOLVED,diplama01,650959,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+marten-gasparini,Marten Gasparini,NOT_APPLICABLE,,645282,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+maximo-martinez,Maximo Martinez,NOT_APPLICABLE,,699059,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+michael-deleon,Michael DeLeon,NOT_APPLICABLE,,650958,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+michael-ramirez,Michael Ramirez,NOT_APPLICABLE,,821679,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+michael-vilchez,Michael Vilchez,NOT_APPLICABLE,,699074,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+micker-zapata,Micker Zapata,NOT_FOUND,,,,,,"No Baseball-Reference entry named ""Micker Zapata""."
+miguel-angel-sierra,Miguel Angel Sierra,NOT_APPLICABLE,,658531,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+miguel-bastardo,Miguel Bastardo,NOT_APPLICABLE,,699072,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+miguel-dominguez,Miguel Dominguez,NOT_APPLICABLE,,800399,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+miguel-droz,Miguel Droz,NOT_APPLICABLE,,682940,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+miguel-flames,Miguel Flames,NOT_APPLICABLE,,660560,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+miguel-vargas,Miguel Vargas,RESOLVED,vargami01,678246,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+misja-harcksen,Misja Harcksen,NOT_APPLICABLE,,649958,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+missael-soto,Missael Soto,NOT_APPLICABLE,,699057,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+moises-acacio,Moises Acacio,NOT_APPLICABLE,,830432,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+moises-rangel,Moises Rangel,NOT_APPLICABLE,,830404,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+natanael-castillo,Natanael Castillo,NOT_APPLICABLE,,800390,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+nelson-gomez,Nelson Gomez,NOT_APPLICABLE,,660617,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+nicolas-cruz,Nicolas Cruz,NOT_APPLICABLE,,800395,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+nicolas-pierre,Nicolas Pierre,NOT_APPLICABLE,,650693,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+omar-daal,Omar Daal,RESOLVED,daalom01,112984,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+omar-estevez,Omar Estevez,NOT_APPLICABLE,,666784,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+oneil-cruz,Oneil Cruz,RESOLVED,cruzon01,665833,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+oswaldo-osorio,Oswaldo Osorio,NOT_APPLICABLE,,800424,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+paris-johnson,Paris Johnson,NOT_APPLICABLE,,807379,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+pedro-astacio,Pedro Astacio,RESOLVED,astacpe01,110359,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+pedro-baez,Pedro Baez,RESOLVED,baezpe01,520980,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+pedro-gonzalez,Pedro Gonzalez,NOT_APPLICABLE,,660639,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+pedro-martinez,Pedro Martinez,RESOLVED,martipe02,118377,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+pedro-santillan,Pedro Santillan,NOT_APPLICABLE,,699063,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+peter-bonilla,Peter Bonilla,NOT_APPLICABLE,,800361,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+rafael-devers,Rafael Devers,RESOLVED,deverra01,646240,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES,
+rafael-tua,Rafael Tua,NOT_APPLICABLE,,682948,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+rafy-peguero,Rafy Peguero,NOT_APPLICABLE,,821801,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+railin-familia,Railin Familia,NOT_APPLICABLE,,812747,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ramon-martinez,Ramon Martinez,RESOLVED,martira02,118378,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+ramon-rosso,Ramon Rosso,RESOLVED,rossora01,665759,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+ramon-troncoso,Ramon Troncoso,RESOLVED,troncra01,470462,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+raul-mondesi,Raul Mondesi,RESOLVED,mondera01,119247,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+rayne-doncon,Rayne Doncon,NOT_APPLICABLE,,699061,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+raynerd-ortega,Raynerd Ortega,NOT_APPLICABLE,,800380,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+reyli-mariano,Reyli Mariano,NOT_APPLICABLE,,821697,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ricardo-montero,Ricardo Montero,NOT_APPLICABLE,,805110,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ricardo-rodriguez,Ricardo Rodriguez,NOT_APPLICABLE,,660616,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ricardo-roman,Ricardo Roman,NOT_APPLICABLE,,830429,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ricky-aracena,Ricky Aracena,NOT_APPLICABLE,,660615,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+roberto-clemente,Roberto Clemente,RESOLVED,clemero01,112391,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+robinson-ventura,Robinson Ventura,NOT_APPLICABLE,,808332,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+rodmar-angela,Rodmar Angela,NOT_APPLICABLE,,806791,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+roger-cedeno,Roger Cedeno,RESOLVED,cedenro01,112155,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+roger-lasso,Roger Lasso,NOT_APPLICABLE,,699068,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+roiger-mujica,Roiger Mujica,NOT_APPLICABLE,,800487,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+roki-sasaki,Roki Sasaki,RESOLVED,sasakro01,808963,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+ronny-brito,Ronny Brito,NOT_APPLICABLE,,665798,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+ronny-rafael,Ronny Rafael,NOT_APPLICABLE,,658665,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+roque-gutierrez,Roque Gutierrez,NOT_APPLICABLE,,692262,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+rubby-de-la-rosa,Rubby De La Rosa,RESOLVED,delarru01,523989,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+rubel-arias,Rubel Arias,NOT_APPLICABLE,,837601,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+samuel-munoz,Samuel Munoz,NOT_APPLICABLE,,703153,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+samuel-sanchez,Samuel Sanchez,NOT_APPLICABLE,,808247,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+samuel-savinon,Samuel Savinon,NOT_APPLICABLE,,829493,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+sandy-amoros,Sandy Amoros,RESOLVED,amorosa01,110222,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+sean-linan,Sean Linan,NOT_APPLICABLE,,800344,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+sebastian-jimenez,Sebastian Jimenez,NOT_APPLICABLE,,699067,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+shai-romero,Shai Romero,NOT_APPLICABLE,,829476,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+shakir-albert,Shakir Albert,NOT_APPLICABLE,,649954,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+starling-heredia,Starling Heredia,NOT_APPLICABLE,,665752,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+steven-castillo,Steven Castillo,NOT_APPLICABLE,,800481,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+thayron-liranzo,Thayron Liranzo,NOT_APPLICABLE,,699073,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+tim-fischer,Tim Fischer,NOT_APPLICABLE,,808444,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+tony-abreu,Tony Abreu,RESOLVED,abreuto01,473234,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+umar-male,Umar Male,NOT_APPLICABLE,,805773,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+victor-gonzalez,Victor Gonzalez,RESOLVED,gonzavi02,624647,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+victor-rodrigues,Victor Rodrigues,NOT_APPLICABLE,,800332,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+wilkerman-garcia,Wilkerman Garcia,NOT_APPLICABLE,,660564,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+william-soto,William Soto,NOT_APPLICABLE,,624648,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+willy-aybar,Willy Aybar,RESOLVED,aybarwi01,430632,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+wilman-diaz,Wilman Diaz,NOT_APPLICABLE,,694180,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yadier-alvarez,Yadier Álvarez,NOT_APPLICABLE,,665751,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yasiel-puig,Yasiel Puig,RESOLVED,puigya01,624577,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+yeiner-fernandez,Yeiner Fernandez,NOT_APPLICABLE,,691558,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yeltsin-gudino,Yeltsin Gudino,NOT_APPLICABLE,,650988,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yeremy-rosario,Yeremy Rosario,NOT_FOUND,,,,,,"No Baseball-Reference entry named ""Yeremy Rosario""."
+yeyson-yrizarry,Yeyson Yrizarry,NOT_FOUND,,,,,,"No Baseball-Reference entry named ""Yeyson Yrizarry""."
+yhonaider-gudino,Yhonaider Gudino,NOT_APPLICABLE,,800521,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yojackson-laya,Yojackson Laya,NOT_APPLICABLE,,821684,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yordan-alvarez,Yordan Alvarez,RESOLVED,alvaryo01,670541,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,
+yorfran-medina,Yorfran Medina,NOT_APPLICABLE,,800337,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yoryi-simarra,Yoryi Simarra,NOT_APPLICABLE,,800366,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yuliangel-de-la-cruz,Yuliangel De La Cruz,NOT_APPLICABLE,,800447,,,,No MLB debut; Baseball-Reference major-league ids apply to MLB players.
+yusniel-diaz,Yusniel Diaz,RESOLVED,diazyu01,666783,BREF_WAR_FILE_MLB_ID,VERIFIED,MLB_ID_IN_BREF_WAR_FILE; MLB_LAHMAN_XREF_AGREES; CITED_BREF_PAGE_AGREES,

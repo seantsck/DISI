@@ -1,5 +1,33 @@
 # Changelog
 
+## v0.11
+Canonical player identity and biography.
+
+Data — `020_player_identity_and_biography_enrichment.sql`
+- 268 players in the database: 220 Dodgers signees and 48 other-club benchmark players.
+- MLB ids 177 → 263 (Dodgers signees 220/220; other clubs 43/48). Hyo-Jun Park (Yankees 2014) linked to MLB's Hoy Park (660829) on the Yankees' 2014-07-02 signing transaction of "Hoy Jun Park", with both MLB spellings as aliases. Five other-club signees stay unresolved and queued.
+- Baseball-Reference ids 2 → 58 (every MLB player), from Baseball-Reference's WAR files and checked against MLB's Lahman cross-reference. FanGraphs ids 0 → 139 from MLB's cross-reference (no fWAR added).
+- Birth date 108 → 263; bats and throws 113 → 263; birth city 0 → 262; birth state/province 22; position at signing for 225 signings. Every value has its own field-level evidence row; nationality is not inferred.
+- Birth country corrected where a legacy value was really the signing country: Josue De Paula and Damaso Marte Jr. (United States), Isaac Barreto (Venezuela), Luciano Romero (Dominican Republic), Joseph Deng Thon (Sudan, the literal birth record; born before South Sudan's 2011 independence). Signing markets are unchanged; legacy values stay on the resolved conflict rows.
+- 28 accent-only respellings (e.g. Roger Cedeño, Julio Urías); slugs unchanged, previous spellings kept as aliases (aliases 19 → 50).
+
+Schema and views
+- `players.birth_state_province`, `players.current_position`, `players.mlb_debut_date`; `signings.position_at_signing` with its source.
+- `player_identity_resolutions` (query, candidates, signals, selection, confidence per id system); RLS select-only.
+- Coverage separates present, resolved (evidence-backed, no open conflict), conflicted and unsourced values; six legacy birth countries with no source are queued as unsourced.
+- `v_database_status` gains `dodgers_players` and `league_benchmark_players`; `v_player_filter_options` gains `has_dodgers_signing`.
+- Age functions and `v_signing_ages` (age at signing, announcement and formal transaction, each from its own date), `v_player_bio`, `v_player_identity_scope`, `v_dodgers_player_identity_coverage`, `v_dodgers_player_identity_research_queue`. Directory, filter options and dossier extended.
+
+Research scripts — `scripts/mlb/`
+- `player-identities`, `resolve-bref` (never selects an ambiguous or name-only match), `resolve-fangraphs`, `identity-sql-values`. `resolve-ids` now works for any club and handles `SGN` transactions and spacing variants.
+- 11 new offline identity tests.
+
+Application
+- Dodgers-facing counts are Dodgers-scoped: the homepage shows Dodgers players with benchmark players listed separately; `/players` defaults to Dodgers signees, labels its population, and scopes its filter counts.
+- Players index: separate signing-market and birth-country filters; bats, throws and signing-age-band filters; birth country and age-at-signing columns.
+- Player dossier reorganized into Identity, Acquisition, Development, MLB outcome, Disposition and Sources. Identity shows external ids, birthplace, handedness and size; Acquisition shows age at signing, announcement and formal transaction with the date each uses, and position at signing; MLB outcome shows age at debut.
+- Version 0.11.0.
+
 ## v0.10
 Reproducible research tooling and evidence-based outcome audits.
 

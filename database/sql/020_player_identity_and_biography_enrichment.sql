@@ -1,0 +1,3130 @@
+-- DISI v0.11
+-- 020_player_identity_and_biography_enrichment.sql
+-- Canonical player identity: external identifiers (MLB, Baseball-Reference,
+-- FanGraphs), biography fields with field-level provenance, position at
+-- signing, derived ages, and identity research views. Run after 019.
+--
+-- Built from reviewed research artifacts (database/research/020/), produced by
+-- scripts/mlb/player-identities.mjs, resolve-bref.mjs, resolve-fangraphs.mjs
+-- and identity-sql-values.mjs against the MLB Stats API person records
+-- (hydrate=xrefId) and Baseball-Reference's WAR data files. Retrieved 2026-10-05.
+--
+-- Identity rules:
+--   * Values only fill NULL fields. An existing value that a source contradicts
+--     is kept and the disagreement is recorded in research_source_conflicts.
+--   * An identifier is never written if another player already holds it.
+--   * Each biography field gets its own evidence row naming the field it
+--     supports. A source for birth date is not evidence for nationality,
+--     position or any other field.
+--   * Nationality is never derived from birth country; bats/throws are never
+--     derived from position. Neither is written here.
+--   * Names: full_name changes only when the reviewed source spelling differs
+--     from the DISI spelling by accents alone (same slug, same letters). The
+--     previous spelling becomes a PREVIOUS_DISI_SPELLING alias. Slugs never change.
+--   * Players are never merged. Unresolved identities stay NULL and appear in
+--     v_dodgers_player_identity_research_queue.
+--
+-- Rerunnable.
+
+begin;
+
+-- ===========================================================================
+-- 1. SCHEMA
+-- ===========================================================================
+
+alter table public.players add column if not exists birth_state_province text;
+alter table public.players add column if not exists current_position text;
+alter table public.players add column if not exists mlb_debut_date date;
+
+comment on column public.players.birth_country is
+  'Country of birth as recorded by the player record source. Not a signing market and not a nationality.';
+comment on column public.players.nationality is
+  'Nationality only where a source states it. Never derived from birth country.';
+comment on column public.players.birth_state_province is
+  'State / province of birth (MLB person record birthStateProvince).';
+comment on column public.players.current_position is
+  'Current primary position on the MLB person record as of retrieval. Distinct from primary_position (DISI research position) and signings.position_at_signing.';
+comment on column public.players.mlb_debut_date is
+  'MLB debut date on the MLB person record (identity attribute). The audited outcome lives in outcomes.mlb_debut_date; a disagreement is recorded as a conflict.';
+comment on column public.players.canonical_name is
+  'Canonical display spelling of the player''s name, including accents where the identity source records them. Alternative spellings are player_aliases.';
+
+alter table public.signings add column if not exists position_at_signing text;
+alter table public.signings add column if not exists position_at_signing_source_id uuid
+  references public.sources(id) on delete set null;
+comment on column public.signings.position_at_signing is
+  'Position named on the club''s signing transaction (MLB transaction description), not the player''s later position.';
+
+-- How each external identifier was (or was not) resolved, with the query,
+-- candidates and signals reviewed. One row per player per identifier system.
+create table if not exists public.player_identity_resolutions (
+  id uuid primary key default gen_random_uuid(),
+  player_id uuid not null references public.players(id) on delete cascade,
+  id_system text not null check (id_system in ('MLB','BASEBALL_REFERENCE','FANGRAPHS')),
+  external_id text,
+  status text not null check (status in (
+    'RESOLVED','AMBIGUOUS','NEEDS_REVIEW','CONFLICT','NOT_FOUND','NOT_APPLICABLE','NOT_AVAILABLE')),
+  method text,
+  confidence public.confidence_level,
+  signals text[] not null default array[]::text[],
+  candidates jsonb,
+  query jsonb,
+  source_id uuid references public.sources(id) on delete set null,
+  decided_on date not null,
+  note text,
+  created_at timestamptz not null default now(),
+  unique (player_id, id_system),
+  check (status <> 'RESOLVED' or external_id is not null),
+  check (status in ('RESOLVED','CONFLICT') or external_id is null)
+);
+create index if not exists player_identity_resolutions_status_idx
+  on public.player_identity_resolutions(id_system, status);
+
+alter table public.player_identity_resolutions enable row level security;
+revoke all on table public.player_identity_resolutions from anon, authenticated;
+grant select on table public.player_identity_resolutions to anon, authenticated;
+drop policy if exists public_read_player_identity_resolutions on public.player_identity_resolutions;
+create policy public_read_player_identity_resolutions
+on public.player_identity_resolutions
+for select
+to anon, authenticated
+using (true);
+
+-- Conflict types gain biography fields.
+alter table public.research_source_conflicts drop constraint if exists research_source_conflicts_conflict_type_check;
+alter table public.research_source_conflicts add constraint research_source_conflicts_conflict_type_check
+  check (conflict_type in ('NAME_SPELLING','POSITION','BIRTH_COUNTRY','COUNTRY_MARKET','CLASS_MEMBERSHIP',
+    'POPULATION_COUNT','PERIOD_ASSIGNMENT','POPULATION_DEFINITION','OUTCOME','IDENTITY',
+    'BIRTH_DATE','HANDEDNESS'));
+
+-- Age in completed years and in decimal years (truncated to one decimal) on a
+-- given date. NULL when either date is missing or the date precedes birth.
+create or replace function public.disi_age_years(p_birth date, p_on date)
+returns integer
+language sql
+immutable
+parallel safe
+set search_path = ''
+as $$
+  select case when p_birth is null or p_on is null or p_on < p_birth then null
+              else extract(year from age(p_on, p_birth))::int end
+$$;
+
+create or replace function public.disi_age_decimal(p_birth date, p_on date)
+returns numeric
+language sql
+immutable
+parallel safe
+set search_path = ''
+as $$
+  select case when p_birth is null or p_on is null or p_on < p_birth then null
+              else trunc(((p_on - p_birth) / 365.2425)::numeric, 1) end
+$$;
+
+create or replace function public.disi_signing_age_band(p_age_years integer)
+returns text
+language sql
+immutable
+parallel safe
+set search_path = ''
+as $$
+  select case
+    when p_age_years is null then null
+    when p_age_years <= 16 then '16_OR_YOUNGER'
+    when p_age_years = 17 then '17'
+    when p_age_years = 18 then '18'
+    when p_age_years <= 22 then '19_TO_22'
+    else '23_OR_OLDER'
+  end
+$$;
+
+-- ===========================================================================
+-- 2. REVIEWED RESEARCH DATA (scripts/mlb/identity-sql-values.mjs output)
+-- ===========================================================================
+
+create temporary table _m020_ids (slug text, mlb_id bigint, mlb_id_basis text, bref_id text, fangraphs_id text) on commit drop;
+insert into _m020_ids values
+('abel-lorenzo',806867,'EXISTING_DISI_ID',null,null),
+('accimias-morales',703193,'EXISTING_DISI_ID',null,null),
+('adrian-beltre',134181,'BREF_CITED_BREF_PAGE','beltrad01','639'),
+('adrian-rondon',660632,'CLUB_TRANSACTION_MATCH',null,'sa877519'),
+('adrian-torres',830397,'EXISTING_DISI_ID',null,null),
+('agustin-acosta',802528,'EXISTING_DISI_ID',null,null),
+('aldo-espinoza',665852,'EXISTING_DISI_ID',null,'sa917334'),
+('aldrin-batista',702881,'EXISTING_DISI_ID',null,null),
+('alex-de-jesus',682942,'EXISTING_DISI_ID',null,'sa3008842'),
+('alexander-albertus',800316,'EXISTING_DISI_ID',null,null),
+('alexis-dominguez',821826,'EXISTING_DISI_ID',null,null),
+('alexis-reyes',829490,'EXISTING_DISI_ID',null,null),
+('allen-ajoti',821808,'EXISTING_DISI_ID',null,null),
+('amado-nunez',658535,'CLUB_TRANSACTION_MATCH',null,'sa877349'),
+('anderson-espinoza',659262,'CLUB_TRANSACTION_MATCH','espinan01','18593'),
+('anderson-estevez',802740,'EXISTING_DISI_ID',null,null),
+('anderson-jerez',808214,'EXISTING_DISI_ID',null,null),
+('andres-luna',831322,'EXISTING_DISI_ID',null,null),
+('andy-pages',681624,'BREF_CITED_BREF_PAGE','pagesan01','24816'),
+('aneudy-almonte',825160,'EXISTING_DISI_ID',null,null),
+('angel-cruz',807654,'EXISTING_DISI_ID',null,null),
+('angel-ramirez',821633,'EXISTING_DISI_ID',null,null),
+('antoni-urena',829482,'EXISTING_DISI_ID',null,null),
+('antonio-arias',660626,'CLUB_TRANSACTION_MATCH',null,'sa873482'),
+('antonio-osuna',120107,'BREF_CITED_BREF_PAGE','osunaan01','249'),
+('ariel-reynoso',837605,'EXISTING_DISI_ID',null,null),
+('arnaldo-lantigua',806984,'EXISTING_DISI_ID',null,null),
+('arod-mckenzie',803242,'EXISTING_DISI_ID',null,null),
+('arquimedes-gamboa',660614,'CLUB_TRANSACTION_MATCH',null,'sa877497'),
+('axel-perez',821612,'EXISTING_DISI_ID',null,null),
+('ben-serunkuma',805205,'EXISTING_DISI_ID',null,null),
+('brayan-hernandez',659910,'CLUB_TRANSACTION_MATCH',null,'sa876536'),
+('brian-diaz',699070,'EXISTING_DISI_ID',null,'sa3016028'),
+('bryan-lara',832440,'EXISTING_DISI_ID',null,null),
+('callum-wallace',800527,'EXISTING_DISI_ID',null,null),
+('carlos-avila',699066,'EXISTING_DISI_ID',null,'sa3016161'),
+('carlos-frias',516910,'EXISTING_DISI_ID','friasca01','3547'),
+('carlos-herrera',650508,'CLUB_TRANSACTION_MATCH',null,'sa830140'),
+('carlos-hiciano',645289,'CLUB_TRANSACTION_MATCH',null,'sa828218'),
+('carlos-ramirez',830439,'EXISTING_DISI_ID',null,null),
+('carlos-rincon',665779,'EXISTING_DISI_ID',null,'sa917319'),
+('carlos-santana',467793,'BREF_CITED_BREF_PAGE','santaca01','2396'),
+('carlos-sardina',821658,'EXISTING_DISI_ID',null,null),
+('cesar-sanchez',829479,'EXISTING_DISI_ID',null,null),
+('chan-ho-park',120221,'BREF_CITED_BREF_PAGE','parkch01','1267'),
+('chico-fernandez',114077,'BREF_NAME_DEBUT_YEAR_DEBUT_TEAM','fernach01','1003994'),
+('chin-lung-hu',464341,'BREF_CITED_BREF_PAGE','huch01','5198'),
+('christian-muniz',821650,'EXISTING_DISI_ID',null,null),
+('christian-romero',699071,'EXISTING_DISI_ID',null,'sa3016260'),
+('christian-suarez',682949,'EXISTING_DISI_ID',null,'sa3009222'),
+('christopher-acosta',659261,'CLUB_TRANSACTION_MATCH',null,'sa872489'),
+('christopher-arias',665931,'EXISTING_DISI_ID',null,'sa3002839'),
+('dailoui-abad',699060,'EXISTING_DISI_ID',null,'sa3016027'),
+('damaso-marte-jr',666006,'EXISTING_DISI_ID',null,null),
+('daniel-arrias',800328,'EXISTING_DISI_ID',null,null),
+('daniel-mielcarek',808028,'EXISTING_DISI_ID',null,null),
+('david-romero',821661,'EXISTING_DISI_ID',null,null),
+('degerson-diaz',830481,'EXISTING_DISI_ID',null,null),
+('derik-aquino',830468,'EXISTING_DISI_ID',null,null),
+('dermis-garcia',660650,'CLUB_TRANSACTION_MATCH','garcide02','20926'),
+('devlyn-bautista',830426,'EXISTING_DISI_ID',null,null),
+('diego-cartaya',682616,'EXISTING_DISI_ID',null,'sa3008742'),
+('diego-castillo',660636,'CLUB_TRANSACTION_MATCH','castidi02','19906'),
+('domingo-geronimo',800383,'EXISTING_DISI_ID',null,null),
+('eddys-leonard',678760,'EXISTING_DISI_ID','leonaed01','24151'),
+('edgar-aviles',800530,'EXISTING_DISI_ID',null,null),
+('edgar-gomez',807626,'EXISTING_DISI_ID',null,null),
+('edgar-leon',800453,'EXISTING_DISI_ID',null,null),
+('eduardo-guerrero',800370,'EXISTING_DISI_ID',null,null),
+('eduardo-quintero',808234,'EXISTING_DISI_ID',null,null),
+('eduardo-rojas',821672,'EXISTING_DISI_ID',null,null),
+('elian-herrera',467070,'BREF_CITED_BREF_PAGE','herreel01','5432'),
+('elias-medina',808257,'EXISTING_DISI_ID',null,null),
+('elio-campos',699069,'EXISTING_DISI_ID',null,'sa3016645'),
+('eloy-jimenez',650391,'CLUB_TRANSACTION_MATCH','jimenel02','17484'),
+('emil-morales',815896,'EXISTING_DISI_ID',null,null),
+('ender-avendano',682937,'EXISTING_DISI_ID',null,'sa3009293'),
+('enrike-sevilya',800288,'EXISTING_DISI_ID',null,null),
+('erick-batista',808209,'EXISTING_DISI_ID',null,null),
+('erick-julio',650510,'CLUB_TRANSACTION_MATCH',null,'sa828333'),
+('erick-nava',812748,'EXISTING_DISI_ID',null,null),
+('erling-moreno',650400,'CLUB_TRANSACTION_MATCH',null,'sa827076'),
+('erny-orellana',821786,'EXISTING_DISI_ID',null,null),
+('euri-rosa',821817,'EXISTING_DISI_ID',null,null),
+('ezequiel-aparicio',830452,'EXISTING_DISI_ID',null,null),
+('ezequiel-melburne',836606,'EXISTING_DISI_ID',null,null),
+('fernando-valenzuela',123619,'BREF_CITED_BREF_PAGE','valenfe01','1013327'),
+('francisco-espinoza',821689,'EXISTING_DISI_ID',null,null),
+('franderly-morel',806918,'EXISTING_DISI_ID',null,null),
+('franklin-perez',658530,'CLUB_TRANSACTION_MATCH',null,'sa873722'),
+('franly-mallen',650691,'CLUB_TRANSACTION_MATCH',null,'sa827978'),
+('gersel-pitre',649957,'EXISTING_DISI_ID',null,'sa828176'),
+('gilbert-lara',658677,'CLUB_TRANSACTION_MATCH',null,'sa877337'),
+('gleyber-torres',650402,'CLUB_TRANSACTION_MATCH','torregl01','16997'),
+('gregory-pereira',682946,'EXISTING_DISI_ID',null,'sa3008844'),
+('greifer-andrade',650849,'CLUB_TRANSACTION_MATCH',null,'sa826675'),
+('harold-gonzalez',808339,'EXISTING_DISI_ID',null,null),
+('hendrik-clementina',649955,'EXISTING_DISI_ID',null,'sa828422'),
+('hendry-arvelo',829498,'EXISTING_DISI_ID',null,null),
+('heudy-pena',821263,'EXISTING_DISI_ID',null,null),
+('hideo-nomo',119827,'BREF_CITED_BREF_PAGE','nomohi01','666'),
+('huascar-ynoa',660623,'CLUB_TRANSACTION_MATCH','ynoahu01','20468'),
+('hung-chih-kuo',425539,'BREF_CITED_BREF_PAGE','kuoho01','7016'),
+('hyo-jun-park',660829,'MANUAL_LINKED_SIGNING_TRANSACTION','parkho01','18027'),
+('hyun-jin-ryu',547943,'BREF_CITED_BREF_PAGE','ryuhy01','14444'),
+('ilmerson-colon',805623,'EXISTING_DISI_ID',null,null),
+('isaac-barreto',699064,'EXISTING_DISI_ID',null,null),
+('ismael-valdez',123595,'BREF_CITED_BREF_PAGE','valdeis01','1283'),
+('ivan-pacheco',830612,'EXISTING_DISI_ID',null,null),
+('javier-bartolozzi',812745,'EXISTING_DISI_ID',null,null),
+('javier-herrera',808223,'EXISTING_DISI_ID',null,null),
+('javier-pena',800351,'EXISTING_DISI_ID',null,null),
+('jecsua-liborius',807403,'EXISTING_DISI_ID',null,null),
+('jeral-perez',800419,'EXISTING_DISI_ID',null,null),
+('jerami-rodriguez',682951,'EXISTING_DISI_ID',null,'sa3009721'),
+('jeremy-castro',812746,'EXISTING_DISI_ID',null,null),
+('jerming-rosario',682645,'EXISTING_DISI_ID',null,'sa3008678'),
+('jesus-galiz',694188,'EXISTING_DISI_ID',null,'sa3015700'),
+('jesus-tillero',808313,'EXISTING_DISI_ID',null,null),
+('jhoandro-alfaro',658532,'CLUB_TRANSACTION_MATCH',null,'sa877352'),
+('jholbran-herder',800408,'EXISTING_DISI_ID',null,null),
+('jhon-gil',830459,'EXISTING_DISI_ID',null,null),
+('jhonny-jimenez',699075,'EXISTING_DISI_ID',null,'sa3016506'),
+('jhosman-theran',830420,'EXISTING_DISI_ID',null,null),
+('joendry-vargas',806959,'EXISTING_DISI_ID',null,null),
+('jorbit-vivas',678391,'BREF_CITED_BREF_PAGE','vivasjo01','23917'),
+('jorge-carpintero',699058,'EXISTING_DISI_ID',null,null),
+('jose-almonte',650954,'CLUB_TRANSACTION_MATCH',null,'sa828294'),
+('jose-dominguez',523848,'BREF_CITED_BREF_PAGE','dominjo01','11571'),
+('jose-gonzalez',806919,'EXISTING_DISI_ID',null,null),
+('jose-herrera',645444,'CLUB_TRANSACTION_MATCH','herrejo04','17040'),
+('jose-lopez',821653,'EXISTING_DISI_ID',null,null),
+('jose-offerman',119948,'BREF_NAME_DEBUT_YEAR_DEBUT_TEAM','offerjo01','205'),
+('jose-requena',837769,'EXISTING_DISI_ID',null,null),
+('jose-rivas',830449,'EXISTING_DISI_ID',null,null),
+('jose-torrez',807404,'EXISTING_DISI_ID',null,null),
+('jose-victorino',837652,'EXISTING_DISI_ID',null,null),
+('jose-villegas',830413,'EXISTING_DISI_ID',null,null),
+('jose-vizcaino',123743,'BREF_CITED_BREF_PAGE','vizcajo01','577'),
+('joseilyn-gonzalez',805120,'EXISTING_DISI_ID',null,null),
+('joseph-deng-thon',830188,'EXISTING_DISI_ID',null,null),
+('josue-de-paula',800543,'EXISTING_DISI_ID','depaujo03','30871'),
+('juan-alonso',699076,'EXISTING_DISI_ID',null,'sa3016331'),
+('juan-castro',112128,'BREF_CITED_BREF_PAGE','castrju01','315'),
+('juan-deleon',660665,'CLUB_TRANSACTION_MATCH',null,'sa872565'),
+('juan-guzman',115267,'BREF_CITED_BREF_PAGE','guzmaju01','1005162'),
+('juan-hernandez',806638,'EXISTING_DISI_ID',null,null),
+('juan-macero',830471,'EXISTING_DISI_ID',null,null),
+('juan-meza',660565,'CLUB_TRANSACTION_MATCH',null,'sa877930'),
+('julian-leon',624645,'EXISTING_DISI_ID',null,'sa739577'),
+('julio-lugo-prospect',649956,'EXISTING_DISI_ID',null,'sa828896'),
+('julio-martinez',660699,'CLUB_TRANSACTION_MATCH',null,'sa872583'),
+('julio-urias',628711,'BREF_CITED_BREF_PAGE','uriasju01','14765'),
+('karim-garcia',114588,'BREF_CITED_BREF_PAGE','garcika01','1537'),
+('keibert-ruiz',660688,'BREF_CITED_BREF_PAGE','ruizke01','19610'),
+('kelvin-ramirez',699062,'EXISTING_DISI_ID',null,'sa3015492'),
+('kenley-jansen',445276,'BREF_CITED_BREF_PAGE','janseke01','3096'),
+('kenny-hernandez',660660,'CLUB_TRANSACTION_MATCH',null,'sa872522'),
+('kosuke-matsuda',800494,'EXISTING_DISI_ID',null,null),
+('leider-padilla',821636,'EXISTING_DISI_ID',null,null),
+('lenix-osuna',624646,'EXISTING_DISI_ID',null,'sa739579'),
+('lesther-medrano',692327,'EXISTING_DISI_ID',null,'sa3016470'),
+('lewin-diaz',650331,'CLUB_TRANSACTION_MATCH','diazle01','18365'),
+('luciano-romero',800355,'EXISTING_DISI_ID',null,null),
+('luis-carias',808218,'EXISTING_DISI_ID',null,null),
+('luis-gamez',830800,'EXISTING_DISI_ID',null,null),
+('luis-guerra',699065,'EXISTING_DISI_ID',null,'sa3015788'),
+('luis-izturis',682950,'EXISTING_DISI_ID',null,'sa3009295'),
+('luis-luna',830463,'EXISTING_DISI_ID',null,null),
+('luis-rodriguez-2015',665960,'EXISTING_DISI_ID',null,'sa917322'),
+('luis-rodriguez-2019',691177,'EXISTING_DISI_ID',null,'sa3014689'),
+('luis-tovar',830434,'EXISTING_DISI_ID',null,null),
+('mairoshendrick-martinus',800302,'EXISTING_DISI_ID',null,null),
+('marco-corcho',806866,'EXISTING_DISI_ID',null,null),
+('marcos-diplan',650959,'CLUB_TRANSACTION_MATCH','diplama01','17583'),
+('marten-gasparini',645282,'CLUB_TRANSACTION_MATCH',null,'sa830181'),
+('maximo-martinez',699059,'EXISTING_DISI_ID',null,'sa3016026'),
+('michael-deleon',650958,'CLUB_TRANSACTION_MATCH',null,'sa823925'),
+('michael-ramirez',821679,'EXISTING_DISI_ID',null,null),
+('michael-vilchez',699074,'EXISTING_DISI_ID',null,'sa3016605'),
+('miguel-angel-sierra',658531,'CLUB_TRANSACTION_MATCH',null,'sa872750'),
+('miguel-bastardo',699072,'EXISTING_DISI_ID',null,'sa3017597'),
+('miguel-dominguez',800399,'EXISTING_DISI_ID',null,null),
+('miguel-droz',682940,'EXISTING_DISI_ID',null,'sa3011704'),
+('miguel-flames',660560,'CLUB_TRANSACTION_MATCH',null,'sa872566'),
+('miguel-vargas',678246,'BREF_CITED_BREF_PAGE','vargami01','20178'),
+('misja-harcksen',649958,'EXISTING_DISI_ID',null,'sa834014'),
+('missael-soto',699057,'EXISTING_DISI_ID',null,'sa3016505'),
+('moises-acacio',830432,'EXISTING_DISI_ID',null,null),
+('moises-rangel',830404,'EXISTING_DISI_ID',null,null),
+('natanael-castillo',800390,'EXISTING_DISI_ID',null,null),
+('nelson-gomez',660617,'CLUB_TRANSACTION_MATCH',null,'sa873303'),
+('nicolas-cruz',800395,'EXISTING_DISI_ID',null,null),
+('nicolas-pierre',650693,'CLUB_TRANSACTION_MATCH',null,'sa827977'),
+('omar-daal',112984,'BREF_CITED_BREF_PAGE','daalom01','646'),
+('omar-estevez',666784,'EXISTING_DISI_ID',null,'sa914242'),
+('oneil-cruz',665833,'BREF_CITED_BREF_PAGE','cruzon01','21711'),
+('oswaldo-osorio',800424,'EXISTING_DISI_ID',null,null),
+('paris-johnson',807379,'EXISTING_DISI_ID',null,null),
+('pedro-astacio',110359,'BREF_CITED_BREF_PAGE','astacpe01','862'),
+('pedro-baez',520980,'BREF_CITED_BREF_PAGE','baezpe01','5420'),
+('pedro-gonzalez',660639,'CLUB_TRANSACTION_MATCH',null,'sa872568'),
+('pedro-martinez',118377,'BREF_CITED_BREF_PAGE','martipe02','200'),
+('pedro-santillan',699063,'EXISTING_DISI_ID',null,'sa3015493'),
+('peter-bonilla',800361,'EXISTING_DISI_ID',null,null),
+('rafael-devers',646240,'CLUB_TRANSACTION_MATCH','deverra01','17350'),
+('rafael-tua',682948,'EXISTING_DISI_ID',null,'sa3008692'),
+('rafy-peguero',821801,'EXISTING_DISI_ID',null,null),
+('railin-familia',812747,'EXISTING_DISI_ID',null,null),
+('ramon-martinez',118378,'BREF_CITED_BREF_PAGE','martira02','1008193'),
+('ramon-rosso',665759,'BREF_CITED_BREF_PAGE','rossora01','20368'),
+('ramon-troncoso',470462,'BREF_CITED_BREF_PAGE','troncra01','4685'),
+('raul-mondesi',119247,'BREF_CITED_BREF_PAGE','mondera01','1314'),
+('rayne-doncon',699061,'EXISTING_DISI_ID',null,'sa3016720'),
+('raynerd-ortega',800380,'EXISTING_DISI_ID',null,null),
+('reyli-mariano',821697,'EXISTING_DISI_ID',null,null),
+('ricardo-montero',805110,'EXISTING_DISI_ID',null,null),
+('ricardo-rodriguez',660616,'CLUB_TRANSACTION_MATCH',null,'sa877334'),
+('ricardo-roman',830429,'EXISTING_DISI_ID',null,null),
+('ricky-aracena',660615,'CLUB_TRANSACTION_MATCH',null,'sa877365'),
+('roberto-clemente',112391,'BREF_CITED_BREF_PAGE','clemero01','1002340'),
+('robinson-ventura',808332,'EXISTING_DISI_ID',null,null),
+('rodmar-angela',806791,'EXISTING_DISI_ID',null,null),
+('roger-cedeno',112155,'EXISTING_DISI_ID','cedenro01','869'),
+('roger-lasso',699068,'EXISTING_DISI_ID',null,'sa3015789'),
+('roiger-mujica',800487,'EXISTING_DISI_ID',null,null),
+('roki-sasaki',808963,'EXISTING_DISI_ID','sasakro01','35323'),
+('ronny-brito',665798,'EXISTING_DISI_ID',null,'sa917329'),
+('ronny-rafael',658665,'CLUB_TRANSACTION_MATCH',null,'sa872754'),
+('roque-gutierrez',692262,'EXISTING_DISI_ID',null,'sa3015440'),
+('rubby-de-la-rosa',523989,'BREF_CITED_BREF_PAGE','delarru01','3862'),
+('rubel-arias',837601,'EXISTING_DISI_ID',null,null),
+('samuel-munoz',703153,'EXISTING_DISI_ID',null,null),
+('samuel-sanchez',808247,'EXISTING_DISI_ID',null,null),
+('samuel-savinon',829493,'EXISTING_DISI_ID',null,null),
+('sandy-amoros',110222,'BREF_CITED_BREF_PAGE','amorosa01','1000212'),
+('sean-linan',800344,'EXISTING_DISI_ID',null,null),
+('sebastian-jimenez',699067,'EXISTING_DISI_ID',null,null),
+('shai-romero',829476,'EXISTING_DISI_ID',null,null),
+('shakir-albert',649954,'EXISTING_DISI_ID',null,'sa828423'),
+('starling-heredia',665752,'EXISTING_DISI_ID',null,'sa917328'),
+('steven-castillo',800481,'EXISTING_DISI_ID',null,null),
+('thayron-liranzo',699073,'EXISTING_DISI_ID',null,'sa3015790'),
+('tim-fischer',808444,'EXISTING_DISI_ID',null,null),
+('tony-abreu',473234,'BREF_CITED_BREF_PAGE','abreuto01','5053'),
+('umar-male',805773,'EXISTING_DISI_ID',null,null),
+('victor-gonzalez',624647,'BREF_CITED_BREF_PAGE','gonzavi02','16408'),
+('victor-rodrigues',800332,'EXISTING_DISI_ID',null,null),
+('wilkerman-garcia',660564,'CLUB_TRANSACTION_MATCH',null,'sa872548'),
+('william-soto',624648,'EXISTING_DISI_ID',null,'sa739645'),
+('willy-aybar',430632,'BREF_CITED_BREF_PAGE','aybarwi01','2192'),
+('wilman-diaz',694180,'EXISTING_DISI_ID',null,'sa3015694'),
+('yadier-alvarez',665751,'EXISTING_DISI_ID',null,'sa868984'),
+('yasiel-puig',624577,'BREF_CITED_BREF_PAGE','puigya01','14225'),
+('yeiner-fernandez',691558,'EXISTING_DISI_ID',null,'sa3015182'),
+('yeltsin-gudino',650988,'CLUB_TRANSACTION_MATCH',null,'sa830208'),
+('yhonaider-gudino',800521,'EXISTING_DISI_ID',null,null),
+('yojackson-laya',821684,'EXISTING_DISI_ID',null,null),
+('yordan-alvarez',670541,'BREF_CITED_BREF_PAGE','alvaryo01','19556'),
+('yorfran-medina',800337,'EXISTING_DISI_ID',null,null),
+('yoryi-simarra',800366,'EXISTING_DISI_ID',null,null),
+('yuliangel-de-la-cruz',800447,'EXISTING_DISI_ID',null,null),
+('yusniel-diaz',666783,'BREF_CITED_BREF_PAGE','diazyu01','18905');
+
+create temporary table _m020_bio (
+  slug text, canonical_name text, rename_full_name boolean, canonical_name_source text, mlb_full_name text,
+  birth_date date, birth_city text, birth_state_province text, birth_country text, raw_birth_country text,
+  bats text, throws text, height_in numeric, weight_lb numeric, current_position text, mlb_debut_date date, identity_url text
+) on commit drop;
+insert into _m020_bio values
+('abel-lorenzo','Abel Lorenzo',false,null,'Abel Lorenzo','2005-08-14','Bani',null,'Dominican Republic','Dominican Republic','L','R',71,160,'OF',null,'https://statsapi.mlb.com/api/v1/people/806867?hydrate=xrefId'),
+('accimias-morales','Accimias Morales',false,null,'Accimias Morales','2004-09-13','Maracay',null,'Venezuela','Venezuela','R','R',77,190,'RHP',null,'https://statsapi.mlb.com/api/v1/people/703193?hydrate=xrefId'),
+('adrian-beltre','Adrian Beltré',true,'BASEBALL_REFERENCE','Adrian Beltré','1979-04-07','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',71,220,'3B','1998-06-24','https://statsapi.mlb.com/api/v1/people/134181?hydrate=xrefId'),
+('adrian-rondon','Adrian Rondon',false,null,'Adrian Rondon','1998-07-07','San Pedro de Macoris',null,'Dominican Republic','Dominican Republic','R','R',73,190,'SS',null,'https://statsapi.mlb.com/api/v1/people/660632?hydrate=xrefId'),
+('adrian-torres','Adrian Torres',false,null,'Adrian Torres','2008-01-23','San Miguelito',null,'Panama','Panama','L','L',75,180,'LHP',null,'https://statsapi.mlb.com/api/v1/people/830397?hydrate=xrefId'),
+('agustin-acosta','Agustin Acosta',false,null,'Agustin Acosta','2004-09-07','Culiacan Rosales','SI','Mexico','Mexico','L','R',74,173,'OF',null,'https://statsapi.mlb.com/api/v1/people/802528?hydrate=xrefId'),
+('aldo-espinoza','Aldo Espinoza',false,null,'Aldo Espinoza','1998-09-11','Managua',null,'Nicaragua','Nicaragua','R','R',72,148,'2B',null,'https://statsapi.mlb.com/api/v1/people/665852?hydrate=xrefId'),
+('aldrin-batista','Aldrin Batista',false,null,'Aldrin Batista','2003-05-04','Azua',null,'Dominican Republic','Dominican Republic','R','R',74,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/702881?hydrate=xrefId'),
+('alex-de-jesus','Alex De Jesus',false,null,'Alex De Jesus','2002-03-22','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',73,170,'3B',null,'https://statsapi.mlb.com/api/v1/people/682942?hydrate=xrefId'),
+('alexander-albertus','Alexander Albertus',false,null,'Alexander Albertus','2004-10-27','Oranjestad',null,'Aruba','Aruba','R','R',73,176,'SS',null,'https://statsapi.mlb.com/api/v1/people/800316?hydrate=xrefId'),
+('alexis-dominguez','Alexis Dominguez',false,null,'Alexis Dominguez','2005-11-03','Puerto Plata',null,'Dominican Republic','Dominican Republic','R','R',77,183,'RHP',null,'https://statsapi.mlb.com/api/v1/people/821826?hydrate=xrefId'),
+('alexis-reyes','Alexis Reyes',false,null,'Alexis Reyes','2007-03-05','Barquisimeto',null,'Venezuela','Venezuela','R','R',75,190,'RHP',null,'https://statsapi.mlb.com/api/v1/people/829490?hydrate=xrefId'),
+('allen-ajoti','Allen Ajoti',false,null,'Allen Ajoti','2005-11-08','Lugazi',null,'Uganda','Uganda','R','R',73,205,'RHP',null,'https://statsapi.mlb.com/api/v1/people/821808?hydrate=xrefId'),
+('amado-nunez','Amado Nunez',false,null,'Amado Nunez','1997-10-10','Santiago',null,'Dominican Republic','Dominican Republic','R','R',74,178,'SS',null,'https://statsapi.mlb.com/api/v1/people/658535?hydrate=xrefId'),
+('anderson-espinoza','Anderson Espinoza',false,null,'Anderson Espinoza','1998-03-09','Caracas',null,'Venezuela','Venezuela','R','R',72,190,'RHP','2022-05-30','https://statsapi.mlb.com/api/v1/people/659262?hydrate=xrefId'),
+('anderson-estevez','Anderson Estevez',false,null,'Anderson Estevez','2004-12-12','San Pedro de Macoris',null,'Dominican Republic','Dominican Republic','R','R',74,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/802740?hydrate=xrefId'),
+('anderson-jerez','Anderson Jerez',false,null,'Anderson Jerez','2004-07-19','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',70,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/808214?hydrate=xrefId'),
+('andres-luna','Andres Luna',false,null,'Andres Luna','2007-10-12','San Jose de Ahome','SI','Mexico','Mexico','R','R',72,160,'RHP',null,'https://statsapi.mlb.com/api/v1/people/831322?hydrate=xrefId'),
+('andy-pages','Andy Pages',false,null,'Andy Pages','2000-12-08','Havana',null,'Cuba','Cuba','R','R',73,212,'OF','2024-04-16','https://statsapi.mlb.com/api/v1/people/681624?hydrate=xrefId'),
+('aneudy-almonte','Aneudy Almonte',false,null,'Aneudy Almonte','2007-08-31','Santiago',null,'Dominican Republic','Dominican Republic','L','L',73,160,'LHP',null,'https://statsapi.mlb.com/api/v1/people/825160?hydrate=xrefId'),
+('angel-cruz','Angel Cruz',false,null,'Angel Cruz','2004-10-12','Santiago',null,'Dominican Republic','Dominican Republic','R','R',70,218,'RHP',null,'https://statsapi.mlb.com/api/v1/people/807654?hydrate=xrefId'),
+('angel-ramirez','Angel Ramirez',false,null,'Angel Ramirez','2006-03-01','Tepic','NA','Mexico','Mexico','R','R',70,165,'RHP',null,'https://statsapi.mlb.com/api/v1/people/821633?hydrate=xrefId'),
+('antoni-urena','Antoni Urena',false,null,'Antoni Urena','2006-11-30','Santiago',null,'Dominican Republic','Dominican Republic','S','R',73,160,'SS',null,'https://statsapi.mlb.com/api/v1/people/829482?hydrate=xrefId'),
+('antonio-arias','Antonio Arias',false,null,'Antonio Arias','1998-06-12','San Juan de los Morros',null,'Venezuela','Venezuela','R','R',74,180,'OF',null,'https://statsapi.mlb.com/api/v1/people/660626?hydrate=xrefId'),
+('antonio-osuna','Antonio Osuna',false,null,'Antonio Osuna','1973-04-12','Guasave','Sinaloa','Mexico','Mexico','R','R',70,225,'RHP','1995-04-25','https://statsapi.mlb.com/api/v1/people/120107?hydrate=xrefId'),
+('ariel-reynoso','Ariel Reynoso',false,null,'Ariel Reynoso','2009-05-03','VIlla Altagracia',null,'Dominican Republic','Dominican Republic','S','R',71,174,'SS',null,'https://statsapi.mlb.com/api/v1/people/837605?hydrate=xrefId'),
+('arnaldo-lantigua','Arnaldo Lantigua',false,null,'Arnaldo Lantigua','2005-12-19','Puerto Plata',null,'Dominican Republic','Dominican Republic','R','R',74,200,'OF',null,'https://statsapi.mlb.com/api/v1/people/806984?hydrate=xrefId'),
+('arod-mckenzie','Arod McKenzie',false,null,'Arod McKenzie','2005-05-25','Panama City',null,'Panama','Panama','L','L',75,165,'LHP',null,'https://statsapi.mlb.com/api/v1/people/803242?hydrate=xrefId'),
+('arquimedes-gamboa','Arquímedes Gamboa',true,'MLB','Arquímedes Gamboa','1997-09-23','Guiria',null,'Venezuela','Venezuela','S','R',71,190,'SS',null,'https://statsapi.mlb.com/api/v1/people/660614?hydrate=xrefId'),
+('axel-perez','Axel Perez',false,null,'Axel Perez','2005-08-13','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',76,158,'RHP',null,'https://statsapi.mlb.com/api/v1/people/821612?hydrate=xrefId'),
+('ben-serunkuma','Ben Serunkuma',false,null,'Ben Serunkuma','2001-09-19','Kiwoko',null,'Uganda','Uganda','R','R',70,170,'RHP',null,'https://statsapi.mlb.com/api/v1/people/805205?hydrate=xrefId'),
+('brayan-hernandez','Brayan Hernandez',false,null,'Brayan Hernandez','1997-09-11','Rio Chico',null,'Venezuela','Venezuela','R','R',74,175,'OF',null,'https://statsapi.mlb.com/api/v1/people/659910?hydrate=xrefId'),
+('brian-diaz','Brian Diaz',false,null,'Brian Diaz','2003-06-05','Ciudad Bolivar',null,'Venezuela','Venezuela','R','R',73,179,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699070?hydrate=xrefId'),
+('bryan-lara','Bryan Lara',false,null,'Bryan Lara','2008-05-15','Salamanca','GT','Mexico','Mexico','R','R',74,200,'RHP',null,'https://statsapi.mlb.com/api/v1/people/832440?hydrate=xrefId'),
+('callum-wallace','Callum Wallace',false,null,'Callum Wallace','2004-04-06','Brisbane','QLD','Australia','Australia','R','R',75,190,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800527?hydrate=xrefId'),
+('carlos-avila','Carlos Avila',false,null,'Carlos Avila','2003-12-04','Barquisimeto',null,'Venezuela','Venezuela','L','R',71,180,'C',null,'https://statsapi.mlb.com/api/v1/people/699066?hydrate=xrefId'),
+('carlos-frias','Carlos Frías',true,'BASEBALL_REFERENCE','Carlos Frías','1989-11-13','Nagua',null,'Dominican Republic','Dominican Republic','R','R',76,195,'RHP','2014-08-04','https://statsapi.mlb.com/api/v1/people/516910?hydrate=xrefId'),
+('carlos-herrera','Carlos Herrera',false,null,'Carlos Herrera','1996-09-23','Caracas',null,'Venezuela','Venezuela','L','R',72,145,'SS',null,'https://statsapi.mlb.com/api/v1/people/650508?hydrate=xrefId'),
+('carlos-hiciano','Carlos Hiciano',false,null,'Carlos Hiciano','1996-10-29','San Francisco de Macoris',null,'Dominican Republic','Dominican Republic','R','R',74,175,'2B',null,'https://statsapi.mlb.com/api/v1/people/645289?hydrate=xrefId'),
+('carlos-ramirez','Carlos Ramirez',false,null,'Carlos Ramirez','2008-07-18','Barinas',null,'Venezuela','Venezuela','R','R',74,215,'RHP',null,'https://statsapi.mlb.com/api/v1/people/830439?hydrate=xrefId'),
+('carlos-rincon','Carlos Rincon',false,null,'Carlos Rincon','1997-10-14','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',75,190,'OF',null,'https://statsapi.mlb.com/api/v1/people/665779?hydrate=xrefId'),
+('carlos-santana','Carlos Santana',false,null,'Carlos Santana','1986-04-08','Santo Domingo',null,'Dominican Republic','Dominican Republic','S','R',70,210,'1B','2010-06-11','https://statsapi.mlb.com/api/v1/people/467793?hydrate=xrefId'),
+('carlos-sardina','Carlos Sardina',false,null,'Carlos Sardina','2007-03-10','Puerto Ordaz',null,'Venezuela','Venezuela','R','R',77,195,'RHP',null,'https://statsapi.mlb.com/api/v1/people/821658?hydrate=xrefId'),
+('cesar-sanchez','Cesar Sanchez',false,null,'Cesar Sanchez','2006-06-16','Hato Mayor',null,'Dominican Republic','Dominican Republic','R','R',75,190,'RHP',null,'https://statsapi.mlb.com/api/v1/people/829479?hydrate=xrefId'),
+('chan-ho-park','Chan Ho Park',false,null,'Chan Ho Park','1973-06-30','Kong Ju City',null,'South Korea','South Korea','R','R',74,210,'RHP','1994-04-08','https://statsapi.mlb.com/api/v1/people/120221?hydrate=xrefId'),
+('chico-fernandez','Chico Fernández',true,'BASEBALL_REFERENCE','Chico Fernandez','1932-03-02','Havana',null,'Cuba','Cuba','R','R',72,170,'SS','1956-07-14','https://statsapi.mlb.com/api/v1/people/114077?hydrate=xrefId'),
+('chin-lung-hu','Chin-lung Hu',false,null,'Chin-Lung Hu','1984-02-02','Tainan City',null,'Taiwan','Taiwan','R','R',71,190,'SS','2007-09-01','https://statsapi.mlb.com/api/v1/people/464341?hydrate=xrefId'),
+('christian-muniz','Christian Muniz',false,null,'Christian Muniz','2006-08-16','Chihuahua','CH','Mexico','Mexico','R','R',72,168,'RHP',null,'https://statsapi.mlb.com/api/v1/people/821650?hydrate=xrefId'),
+('christian-romero','Christian Romero',false,null,'Christian Romero','2002-12-11','Hermosillo','Sonora','Mexico','Mexico','R','R',75,195,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699071?hydrate=xrefId'),
+('christian-suarez','Christian Suarez',false,null,'Christian Suarez','2000-11-25','Maracay',null,'Venezuela','Venezuela','L','L',71,160,'LHP',null,'https://statsapi.mlb.com/api/v1/people/682949?hydrate=xrefId'),
+('christopher-acosta','Christopher Acosta',false,null,'Christopher Acosta','1998-01-15','La Vega',null,'Dominican Republic','Dominican Republic','R','R',76,180,'RHP',null,'https://statsapi.mlb.com/api/v1/people/659261?hydrate=xrefId'),
+('christopher-arias','Christopher Arias',false,null,'Christopher Arias','1999-05-01','Santo Domingo',null,'Dominican Republic','Dominican Republic','L','L',74,175,'OF',null,'https://statsapi.mlb.com/api/v1/people/665931?hydrate=xrefId'),
+('dailoui-abad','Dailoui Abad',false,null,'Dailoui Abad','2002-05-02','San Cristobal',null,'Dominican Republic','Dominican Republic','R','R',72,168,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699060?hydrate=xrefId'),
+('damaso-marte-jr','Damaso Marte Jr.',false,null,'Damaso Marte Jr.','1998-08-14','Orlando','FL','United States','USA','R','R',73,175,'SS',null,'https://statsapi.mlb.com/api/v1/people/666006?hydrate=xrefId'),
+('daniel-arrias','Daniel Arrias',false,null,'Daniel Arrias','2003-11-30','Ciudad Ojeda',null,'Venezuela','Venezuela','L','L',70,170,'OF',null,'https://statsapi.mlb.com/api/v1/people/800328?hydrate=xrefId'),
+('daniel-mielcarek','Daniel Mielcarek',false,null,'Daniel Mielcarek','2005-12-19','Samana',null,'Dominican Republic','Dominican Republic','S','R',75,185,'SS',null,'https://statsapi.mlb.com/api/v1/people/808028?hydrate=xrefId'),
+('david-romero','David Romero',false,null,'David Romero','2007-01-06','Caracas',null,'Venezuela','Venezuela','S','R',65,135,'2B',null,'https://statsapi.mlb.com/api/v1/people/821661?hydrate=xrefId'),
+('degerson-diaz','Degerson Diaz',false,null,'Degerson Diaz','2008-01-31','La Guaira',null,'Venezuela','Venezuela','R','R',70,150,'OF',null,'https://statsapi.mlb.com/api/v1/people/830481?hydrate=xrefId'),
+('derik-aquino','Derik Aquino',false,null,'Derik Aquino','2007-04-18','Monte Plata',null,'Dominican Republic','Dominican Republic','R','R',77,180,'RHP',null,'https://statsapi.mlb.com/api/v1/people/830468?hydrate=xrefId'),
+('dermis-garcia','Dérmis García',true,'BASEBALL_REFERENCE','Dérmis Garcia','1998-01-07','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',73,200,'3B','2022-07-12','https://statsapi.mlb.com/api/v1/people/660650?hydrate=xrefId'),
+('devlyn-bautista','Devlyn Bautista',false,null,'Devlyn Bautista','2006-12-04','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',74,180,'OF',null,'https://statsapi.mlb.com/api/v1/people/830426?hydrate=xrefId'),
+('diego-cartaya','Diego Cartaya',false,null,'Diego Cartaya','2001-09-07','Maracay',null,'Venezuela','Venezuela','R','R',73,217,'C',null,'https://statsapi.mlb.com/api/v1/people/682616?hydrate=xrefId'),
+('diego-castillo','Diego Castillo',false,null,'Diego Castillo','1997-10-28','Barquisimeto',null,'Venezuela','Venezuela','R','R',71,185,'SS','2022-04-07','https://statsapi.mlb.com/api/v1/people/660636?hydrate=xrefId'),
+('domingo-geronimo','Domingo Geronimo',false,null,'Domingo Geronimo','2004-10-07','Azua',null,'Dominican Republic','DOM','R','R',71,150,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800383?hydrate=xrefId'),
+('eddys-leonard','Eddys Leonard',false,null,'Eddys Leonard','2000-11-10','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',70,201,'SS','2026-08-04','https://statsapi.mlb.com/api/v1/people/678760?hydrate=xrefId'),
+('edgar-aviles','Edgar Aviles',false,null,'Edgar Aviles','2005-01-20','La Paz','BS','Mexico','MEX','R','R',74,150,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800530?hydrate=xrefId'),
+('edgar-gomez','Edgar Gomez',false,null,'Edgar Gomez','2005-04-07',null,null,'Mexico','Mexico','R','R',74,180,'RHP',null,'https://statsapi.mlb.com/api/v1/people/807626?hydrate=xrefId'),
+('edgar-leon','Edgar Leon',false,null,'Edgar Leon','2004-12-29','La Guaira',null,'Venezuela','Venezuela','R','R',75,208,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800453?hydrate=xrefId'),
+('eduardo-guerrero','Eduardo Guerrero',false,null,'Eduardo Guerrero','2005-05-09','Maracaibo',null,'Venezuela','Venezuela','S','R',74,165,'1B',null,'https://statsapi.mlb.com/api/v1/people/800370?hydrate=xrefId'),
+('eduardo-quintero','Eduardo Quintero',false,null,'Eduardo Quintero','2005-09-16','Ocumare del Tuy',null,'Venezuela','Venezuela','R','R',73,175,'OF',null,'https://statsapi.mlb.com/api/v1/people/808234?hydrate=xrefId'),
+('eduardo-rojas','Eduardo Rojas',false,null,'Eduardo Rojas','2007-02-14','Ciudad Guayana',null,'Venezuela','Venezuela','S','R',71,163,'C',null,'https://statsapi.mlb.com/api/v1/people/821672?hydrate=xrefId'),
+('elian-herrera','Elián Herrera',true,'BASEBALL_REFERENCE','Elian Herrera','1985-02-01','San Pedro de Macoris',null,'Dominican Republic','Dominican Republic','S','R',71,205,'3B','2012-05-15','https://statsapi.mlb.com/api/v1/people/467070?hydrate=xrefId'),
+('elias-medina','Elias Medina',false,null,'Elias Medina','2005-11-09','Bani',null,'Dominican Republic','Dominican Republic','R','R',71,171,'SS',null,'https://statsapi.mlb.com/api/v1/people/808257?hydrate=xrefId'),
+('elio-campos','Elio Campos',false,null,'Elio Campos','2004-01-02','Valencia',null,'Venezuela','Venezuela','R','R',69,157,'2B',null,'https://statsapi.mlb.com/api/v1/people/699069?hydrate=xrefId'),
+('eloy-jimenez','Eloy Jiménez',true,'BASEBALL_REFERENCE','Eloy Jiménez','1996-11-27','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',76,250,'DH','2019-03-28','https://statsapi.mlb.com/api/v1/people/650391?hydrate=xrefId'),
+('emil-morales','Emil Morales',false,null,'Emil Morales','2006-09-22','Las Palmas de Gran Canaria',null,'Spain','Spain','R','R',75,191,'SS',null,'https://statsapi.mlb.com/api/v1/people/815896?hydrate=xrefId'),
+('ender-avendano','Ender Avendano',false,null,'Ender Avendano','2002-03-07','Maracay',null,'Venezuela','Venezuela','R','R',68,145,'SS',null,'https://statsapi.mlb.com/api/v1/people/682937?hydrate=xrefId'),
+('enrike-sevilya','Enrike Sevilya',false,null,'Enrike Sevilya','2005-07-27','Moscow',null,null,'RU1','R','R',75,195,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800288?hydrate=xrefId'),
+('erick-batista','Erick Batista',false,null,'Erick Batista','2004-03-03','San Francisco de Macoris',null,'Dominican Republic','Dominican Republic','R','R',72,186,'RHP',null,'https://statsapi.mlb.com/api/v1/people/808209?hydrate=xrefId'),
+('erick-julio','Erick Julio',false,null,'Erick Julio','1996-09-22','Cartagena',null,'Colombia','Colombia','R','R',73,175,'RHP',null,'https://statsapi.mlb.com/api/v1/people/650510?hydrate=xrefId'),
+('erick-nava','Erick Nava',false,null,'Erick Nava','2005-01-09','Santa Barbara del Zulia',null,'Venezuela','Venezuela','R','R',72,190,'RHP',null,'https://statsapi.mlb.com/api/v1/people/812748?hydrate=xrefId'),
+('erling-moreno','Erling Moreno',false,null,'Erling Moreno','1997-01-13','Cartagena',null,'Colombia','Colombia','R','R',75,180,'RHP',null,'https://statsapi.mlb.com/api/v1/people/650400?hydrate=xrefId'),
+('erny-orellana','Erny Orellana',false,null,'Erny Orellana','2007-03-03','Quibor',null,'Venezuela','Venezuela','R','R',72,183,'OF',null,'https://statsapi.mlb.com/api/v1/people/821786?hydrate=xrefId'),
+('euri-rosa','Euri Rosa',false,null,'Euri Rosa','2007-07-04','Bajos De Haina',null,'Dominican Republic','Dominican Republic','R','R',70,165,'C',null,'https://statsapi.mlb.com/api/v1/people/821817?hydrate=xrefId'),
+('ezequiel-aparicio','Ezequiel Aparicio',false,null,'Ezequiel Aparicio','2008-02-24','Cumana',null,'Venezuela','Venezuela','R','R',69,180,'C',null,'https://statsapi.mlb.com/api/v1/people/830452?hydrate=xrefId'),
+('ezequiel-melburne','Ezequiel Melburne',false,null,'Ezequiel Melburne','2009-06-02','Santo Domingo',null,'Dominican Republic','Dominican Republic','S','R',75,170,'SS',null,'https://statsapi.mlb.com/api/v1/people/836606?hydrate=xrefId'),
+('fernando-valenzuela','Fernando Valenzuela',false,null,'Fernando Valenzuela','1960-11-01','Navojoa',null,'Mexico','Mexico','L','L',71,195,'LHP','1980-09-15','https://statsapi.mlb.com/api/v1/people/123619?hydrate=xrefId'),
+('francisco-espinoza','Francisco Espinoza',false,null,'Francisco Espinoza','2007-03-16','Acarigua',null,'Venezuela','Venezuela','R','R',73,206,'C',null,'https://statsapi.mlb.com/api/v1/people/821689?hydrate=xrefId'),
+('franderly-morel','Franderly Morel',false,null,'Franderly Morel','2003-09-12','Cotui',null,'Dominican Republic','Dominican Republic','L','L',74,160,'LHP',null,'https://statsapi.mlb.com/api/v1/people/806918?hydrate=xrefId'),
+('franklin-perez','Franklin Pérez',true,'MLB','Franklin Pérez','1997-12-06','Valencia',null,'Venezuela','Venezuela','R','R',75,197,'RHP',null,'https://statsapi.mlb.com/api/v1/people/658530?hydrate=xrefId'),
+('franly-mallen','Franly Mallen',false,null,'Franly Mallen','1997-05-27','Sabana Grande de Palenque',null,'Dominican Republic','Dominican Republic','R','R',73,160,'SS',null,'https://statsapi.mlb.com/api/v1/people/650691?hydrate=xrefId'),
+('gersel-pitre','Gersel Pitre',false,null,'Gersel Pitre','1996-07-23','Catia La Mar',null,'Venezuela','Venezuela','R','R',72,203,'C',null,'https://statsapi.mlb.com/api/v1/people/649957?hydrate=xrefId'),
+('gilbert-lara','Gilbert Lara',false,null,'Gilbert Lara','1997-10-30','Bani',null,'Dominican Republic','Dominican Republic','R','R',76,198,'SS',null,'https://statsapi.mlb.com/api/v1/people/658677?hydrate=xrefId'),
+('gleyber-torres','Gleyber Torres',false,null,'Gleyber Torres','1996-12-13','Caracas',null,'Venezuela','Venezuela','R','R',70,205,'2B','2018-04-22','https://statsapi.mlb.com/api/v1/people/650402?hydrate=xrefId'),
+('gregory-pereira','Gregory Pereira',false,null,'Gregory Pereira','2002-05-19','Guiria',null,'Venezuela','Venezuela','R','R',71,165,'OF',null,'https://statsapi.mlb.com/api/v1/people/682946?hydrate=xrefId'),
+('greifer-andrade','Greifer Andrade',false,null,'Greifer Andrade','1997-01-27','Paramo Tucani',null,'Venezuela','Venezuela','R','R',72,170,'SS',null,'https://statsapi.mlb.com/api/v1/people/650849?hydrate=xrefId'),
+('harold-gonzalez','Harold Gonzalez',false,null,'Harold Gonzalez','2006-08-29','Lagunillas',null,'Venezuela','Venezuela','R','R',70,175,'SS',null,'https://statsapi.mlb.com/api/v1/people/808339?hydrate=xrefId'),
+('hendrik-clementina','Hendrik Clementina',false,null,'Hendrik Clementina','1997-06-17','Willemstad',null,'Curacao','Curacao','R','R',74,250,'C',null,'https://statsapi.mlb.com/api/v1/people/649955?hydrate=xrefId'),
+('hendry-arvelo','Hendry Arvelo',false,null,'Hendry Arvelo','2006-12-03','Dajabon',null,'Dominican Republic','Dominican Republic','L','R',72,160,'2B',null,'https://statsapi.mlb.com/api/v1/people/829498?hydrate=xrefId'),
+('heudy-pena','Heudy Pena',false,null,'Heudy Pena','2007-03-09','San Cristobal',null,'Dominican Republic','Dominican Republic','L','R',72,156,'SS',null,'https://statsapi.mlb.com/api/v1/people/821263?hydrate=xrefId'),
+('hideo-nomo','Hideo Nomo',false,null,'Hideo Nomo','1968-08-31','Osaka',null,'Japan','Japan','R','R',74,220,'RHP','1995-05-02','https://statsapi.mlb.com/api/v1/people/119827?hydrate=xrefId'),
+('huascar-ynoa','Huascar Ynoa',false,null,'Huascar Ynoa','1998-05-28','Puerto Plata',null,'Dominican Republic','Dominican Republic','R','R',74,220,'RHP','2019-06-16','https://statsapi.mlb.com/api/v1/people/660623?hydrate=xrefId'),
+('hung-chih-kuo','Hung-Chih Kuo',false,null,'Hung-Chih Kuo','1981-07-23','Tainan City',null,'Taiwan','Taiwan','L','L',74,240,'LHP','2005-09-02','https://statsapi.mlb.com/api/v1/people/425539?hydrate=xrefId'),
+('hyo-jun-park','Hyo-Jun Park',false,null,'Hoy Park','1996-04-07','Seoul',null,'South Korea','Republic of Korea','L','R',72,200,'SS','2021-07-16','https://statsapi.mlb.com/api/v1/people/660829?hydrate=xrefId'),
+('hyun-jin-ryu','Hyun-Jin Ryu',false,null,'Hyun Jin Ryu','1987-03-25','Incheon',null,'South Korea','Republic of Korea','R','L',75,250,'LHP','2013-04-02','https://statsapi.mlb.com/api/v1/people/547943?hydrate=xrefId'),
+('ilmerson-colon','Ilmerson Colon',false,null,'Ilmerson Colon','2005-03-10','Lara',null,'Venezuela','Venezuela','L','L',74,167,'LHP',null,'https://statsapi.mlb.com/api/v1/people/805623?hydrate=xrefId'),
+('isaac-barreto','Isaac Barreto',false,null,'Isaac Barreto','2004-05-25','Maracaibo',null,'Venezuela','Venezuela','R','R',72,178,'OF',null,'https://statsapi.mlb.com/api/v1/people/699064?hydrate=xrefId'),
+('ismael-valdez','Ismael Valdez',false,null,'Ismael Valdez','1973-08-21','Ciudad Victoria','Tamaulipas','Mexico','Mexico','R','R',76,230,'RHP','1994-06-15','https://statsapi.mlb.com/api/v1/people/123595?hydrate=xrefId'),
+('ivan-pacheco','Ivan Pacheco',false,null,'Ivan Pacheco','2006-10-21','Cuauhtemoc','CH','Mexico','Mexico','R','R',71,150,'RHP',null,'https://statsapi.mlb.com/api/v1/people/830612?hydrate=xrefId'),
+('javier-bartolozzi','Javier Bartolozzi',false,null,'Javier Bartolozzi','2005-04-14','Ciudad Bolivar',null,'Venezuela','Venezuela','R','R',76,193,'RHP',null,'https://statsapi.mlb.com/api/v1/people/812745?hydrate=xrefId'),
+('javier-herrera','Javier Herrera',false,null,'Javier Herrera','2005-02-09','Punto Fijo',null,'Venezuela','Venezuela','S','R',70,160,'2B',null,'https://statsapi.mlb.com/api/v1/people/808223?hydrate=xrefId'),
+('javier-pena','Javier Pena',false,null,'Javier Pena','2004-09-10','Santiago',null,'Dominican Republic','DOM','R','R',72,185,'C',null,'https://statsapi.mlb.com/api/v1/people/800351?hydrate=xrefId'),
+('jecsua-liborius','Jecsua Liborius',false,null,'Jecsua Liborius','2005-05-28','Valencia',null,'Venezuela','Venezuela','R','R',73,190,'RHP',null,'https://statsapi.mlb.com/api/v1/people/807403?hydrate=xrefId'),
+('jeral-perez','Jeral Perez',false,null,'Jeral Perez','2004-11-06','La Romana',null,'Dominican Republic','Dominican Republic','R','R',70,179,'3B',null,'https://statsapi.mlb.com/api/v1/people/800419?hydrate=xrefId'),
+('jerami-rodriguez','Jerami Rodriguez',false,null,'Jeremi Rodriguez','2001-08-05','Barquisimeto',null,'Venezuela','Venezuela','R','R',73,165,'RHP',null,'https://statsapi.mlb.com/api/v1/people/682951?hydrate=xrefId'),
+('jeremy-castro','Jeremy Castro',false,null,'Jeremy Castro','2005-01-27','Hamburg',null,'Germany','Germany','R','R',74,180,'RHP',null,'https://statsapi.mlb.com/api/v1/people/812746?hydrate=xrefId'),
+('jerming-rosario','Jerming Rosario',false,null,'Jerming Rosario','2002-05-08','Peravia',null,'Dominican Republic','Dominican Republic','R','R',73,175,'RHP',null,'https://statsapi.mlb.com/api/v1/people/682645?hydrate=xrefId'),
+('jesus-galiz','Jesus Galiz',false,null,'Jesus Galiz','2003-12-19','Maracaibo',null,'Venezuela','Venezuela','R','R',70,183,'C',null,'https://statsapi.mlb.com/api/v1/people/694188?hydrate=xrefId'),
+('jesus-tillero','Jesus Tillero',false,null,'Jesus Tillero','2006-05-02','Coro',null,'Venezuela','Venezuela','R','R',72,190,'RHP',null,'https://statsapi.mlb.com/api/v1/people/808313?hydrate=xrefId'),
+('jhoandro-alfaro','Jhoandro Alfaro',false,null,'Jhoandro Alfaro','1997-11-04','Sincelejo',null,'Colombia','Colombia','S','R',73,180,'C',null,'https://statsapi.mlb.com/api/v1/people/658532?hydrate=xrefId'),
+('jholbran-herder','Jholbran Herder',false,null,'Jholbran Herder','2004-11-02','Guatire',null,'Venezuela','VEN','R','R',74,170,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800408?hydrate=xrefId'),
+('jhon-gil','Jhon Gil',false,null,'Jhon Gil','2007-12-15','Maracaibo',null,'Venezuela','Venezuela','R','R',69,160,'C',null,'https://statsapi.mlb.com/api/v1/people/830459?hydrate=xrefId'),
+('jhonny-jimenez','Jhonny Jimenez',false,null,'Jhonny Jimenez','2003-11-09','Bonao',null,'Dominican Republic','Dominican Republic','R','R',77,180,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699075?hydrate=xrefId'),
+('jhosman-theran','Jhosman Theran',false,null,'Jhosman Theran','2007-10-03','Cartagena',null,'Colombia','Colombia','R','R',74,200,'OF',null,'https://statsapi.mlb.com/api/v1/people/830420?hydrate=xrefId'),
+('joendry-vargas','Joendry Vargas',false,null,'Joendry Vargas','2005-11-08','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',75,175,'SS',null,'https://statsapi.mlb.com/api/v1/people/806959?hydrate=xrefId'),
+('jorbit-vivas','Jorbit Vivas',false,null,'Jorbit Vivas','2001-03-09','Puerto Cabello',null,'Venezuela','Venezuela','L','R',69,171,'3B','2025-05-02','https://statsapi.mlb.com/api/v1/people/678391?hydrate=xrefId'),
+('jorge-carpintero','Jorge Carpintero',false,null,'Jorge Carpintero','2004-04-21','Araya',null,'Venezuela','Venezuela','L','L',72,160,'LHP',null,'https://statsapi.mlb.com/api/v1/people/699058?hydrate=xrefId'),
+('jose-almonte','Jose Almonte',false,null,'Jose Almonte','1996-09-09','Santo Domingo Centro',null,'Dominican Republic','Dominican Republic','R','R',75,205,'OF',null,'https://statsapi.mlb.com/api/v1/people/650954?hydrate=xrefId'),
+('jose-dominguez','José Domínguez',true,'BASEBALL_REFERENCE','José Domínguez','1990-08-07','San Pedro de Maroris',null,'Dominican Republic','Dominican Republic','R','R',72,200,'RHP','2013-06-30','https://statsapi.mlb.com/api/v1/people/523848?hydrate=xrefId'),
+('jose-gonzalez','Jose Gonzalez',false,null,'Jose Gonzalez','2005-01-29','Maracaibo',null,'Venezuela','Venezuela','L','R',74,180,'OF',null,'https://statsapi.mlb.com/api/v1/people/806919?hydrate=xrefId'),
+('jose-herrera','José Herrera',true,'BASEBALL_REFERENCE','Jose Herrera','1997-02-24','San Carlos',null,'Venezuela','Venezuela','S','R',69,217,'C','2022-04-09','https://statsapi.mlb.com/api/v1/people/645444?hydrate=xrefId'),
+('jose-lopez','Jose Lopez',false,null,'Jose Lopez','2005-11-13','Maracay',null,'Venezuela','Venezuela','R','R',72,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/821653?hydrate=xrefId'),
+('jose-offerman','José Offerman',true,'BASEBALL_REFERENCE','Jose Offerman','1968-11-08','San Pedro de Macoris',null,'Dominican Republic','Dominican Republic','S','R',73,200,'SS','1990-08-19','https://statsapi.mlb.com/api/v1/people/119948?hydrate=xrefId'),
+('jose-requena','Jose Requena',false,null,'Jose Requena','2008-12-05','Caracas',null,'Venezuela','Venezuela','R','R',75,228,'OF',null,'https://statsapi.mlb.com/api/v1/people/837769?hydrate=xrefId'),
+('jose-rivas','Jose Rivas',false,null,'Jose Rivas','2008-03-27','Barcelona',null,'Venezuela','Venezuela','R','R',71,170,'C',null,'https://statsapi.mlb.com/api/v1/people/830449?hydrate=xrefId'),
+('jose-torrez','Jose Torrez',false,null,'Jose Torrez','2004-10-05','Sebaco',null,'Nicaragua','Nicaragua','R','R',73,195,'C',null,'https://statsapi.mlb.com/api/v1/people/807404?hydrate=xrefId'),
+('jose-victorino','Jose Victorino',false,null,'Jose Victorino','2009-02-05','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',73,189,'SS',null,'https://statsapi.mlb.com/api/v1/people/837652?hydrate=xrefId'),
+('jose-villegas','Jose Villegas',false,null,'Jose Villegas','2006-11-08','Caracas',null,'Venezuela','Venezuela','R','R',79,260,'RHP',null,'https://statsapi.mlb.com/api/v1/people/830413?hydrate=xrefId'),
+('jose-vizcaino','José Vizcaíno',true,'BASEBALL_REFERENCE','Jose Vizcaino','1968-03-26','San Cristobal',null,'Dominican Republic','Dominican Republic','S','R',73,190,'SS','1989-09-10','https://statsapi.mlb.com/api/v1/people/123743?hydrate=xrefId'),
+('joseilyn-gonzalez','Joseilyn Gonzalez',false,null,'Joseilyn Gonzalez','2002-04-08','Santiago',null,'Dominican Republic','Dominican Republic','R','R',71,160,'RHP',null,'https://statsapi.mlb.com/api/v1/people/805120?hydrate=xrefId'),
+('joseph-deng-thon','Joseph Deng Thon',false,null,'Joseph Deng Thon','2007-08-05','Juba',null,'Sudan','Sudan','R','R',78,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/830188?hydrate=xrefId'),
+('josue-de-paula','Josue De Paula',false,null,'Josue De Paula','2005-05-24','Brooklyn','NY','United States','USA','L','L',75,185,'DH','2026-09-11','https://statsapi.mlb.com/api/v1/people/800543?hydrate=xrefId'),
+('juan-alonso','Juan Alonso',false,null,'Juan Alonso','2003-11-03','Chitre',null,'Panama','Panama','R','R',71,180,'OF',null,'https://statsapi.mlb.com/api/v1/people/699076?hydrate=xrefId'),
+('juan-castro','Juan Castro',false,null,'Juan Castro','1972-06-20','Los Mochis','Sinaloa','Mexico','Mexico','R','R',71,190,'SS','1995-09-02','https://statsapi.mlb.com/api/v1/people/112128?hydrate=xrefId'),
+('juan-deleon','Juan DeLeon',false,null,'Juan De Leon','1997-09-13','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',74,185,'OF',null,'https://statsapi.mlb.com/api/v1/people/660665?hydrate=xrefId'),
+('juan-guzman','Juan Guzmán',true,'BASEBALL_REFERENCE','Juan Guzmán','1966-10-28','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',71,195,'RHP','1991-06-07','https://statsapi.mlb.com/api/v1/people/115267?hydrate=xrefId'),
+('juan-hernandez','Juan Hernandez',false,null,'Juan Hernandez','2002-11-19','Cotui',null,'Dominican Republic','Dominican Republic','R','R',74,187,'RHP',null,'https://statsapi.mlb.com/api/v1/people/806638?hydrate=xrefId'),
+('juan-macero','Juan Macero',false,null,'Juan Macero','2007-11-27','Caracas',null,'Venezuela','Venezuela','R','R',69,165,'SS',null,'https://statsapi.mlb.com/api/v1/people/830471?hydrate=xrefId'),
+('juan-meza','Juan Meza',false,null,'Juan Meza','1998-02-04','Barinas',null,'Venezuela','Venezuela','R','R',74,172,'RHP',null,'https://statsapi.mlb.com/api/v1/people/660565?hydrate=xrefId'),
+('julian-leon','Julian Leon',false,null,'Julian Leon','1996-01-24','Hermosillo','Sonora','Mexico','Mexico','R','R',71,235,'C',null,'https://statsapi.mlb.com/api/v1/people/624645?hydrate=xrefId'),
+('julio-lugo-prospect','Julio Lugo (prospect)',false,null,'Julio Lugo','1997-07-07','Bani',null,'Dominican Republic','Dominican Republic','R','R',76,180,'RHP',null,'https://statsapi.mlb.com/api/v1/people/649956?hydrate=xrefId'),
+('julio-martinez','Julio Martinez',false,null,'Julio Martinez','1997-12-15','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',74,195,'OF',null,'https://statsapi.mlb.com/api/v1/people/660699?hydrate=xrefId'),
+('julio-urias','Julio Urías',true,'BASEBALL_REFERENCE','Julio Urías','1996-08-12','Culiacan Rosales','Sinaloa','Mexico','Mexico','L','L',72,225,'LHP','2016-05-27','https://statsapi.mlb.com/api/v1/people/628711?hydrate=xrefId'),
+('karim-garcia','Karim García',true,'BASEBALL_REFERENCE','Karim Garcia','1975-10-29','Ciudad Obregon','Sonora','Mexico','Mexico','L','L',72,210,'OF','1995-09-02','https://statsapi.mlb.com/api/v1/people/114588?hydrate=xrefId'),
+('keibert-ruiz','Keibert Ruiz',false,null,'Keibert Ruiz','1998-07-20','Valencia',null,'Venezuela','Venezuela','S','R',71,238,'C','2020-08-16','https://statsapi.mlb.com/api/v1/people/660688?hydrate=xrefId'),
+('kelvin-ramirez','Kelvin Ramirez',false,null,'Kelvin Ramirez','2001-06-10','Cumana',null,'Venezuela','Venezuela','R','R',76,187,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699062?hydrate=xrefId'),
+('kenley-jansen','Kenley Jansen',false,null,'Kenley Jansen','1987-09-30','Willemstad',null,'Curacao','Curacao','S','R',77,265,'RHP','2010-07-24','https://statsapi.mlb.com/api/v1/people/445276?hydrate=xrefId'),
+('kenny-hernandez','Kenny Hernandez',false,null,'Kenny Hernandez','1998-08-13','Turmero',null,'Venezuela','Venezuela','L','R',72,194,'SS',null,'https://statsapi.mlb.com/api/v1/people/660660?hydrate=xrefId'),
+('kosuke-matsuda','Kosuke Matsuda',false,null,'Kosuke Matsuda','1998-10-14','Hakusan',null,'Japan','JPN','R','R',76,214,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800494?hydrate=xrefId'),
+('leider-padilla','Leider Padilla',false,null,'Leider Padilla','2006-11-25','Caracas',null,'Venezuela','Venezuela','R','R',72,176,'OF',null,'https://statsapi.mlb.com/api/v1/people/821636?hydrate=xrefId'),
+('lenix-osuna','Lenix Osuna',false,null,'Lenix Osuna','1995-11-11','Los Mochis',null,'Mexico','Mexico','R','R',73,220,'RHP',null,'https://statsapi.mlb.com/api/v1/people/624646?hydrate=xrefId'),
+('lesther-medrano','Lesther Medrano',false,null,'Lesther Medrano','2003-03-05','Managua',null,'Nicaragua','Nicaragua','R','R',74,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/692327?hydrate=xrefId'),
+('lewin-diaz','Lewin Díaz',true,'BASEBALL_REFERENCE','Lewin Díaz','1996-11-19','Santiago',null,'Dominican Republic','Dominican Republic','L','L',74,232,'1B','2020-08-15','https://statsapi.mlb.com/api/v1/people/650331?hydrate=xrefId'),
+('luciano-romero','Luciano Romero',false,null,'Luciano Romero','2005-01-08','La Romana',null,'Dominican Republic','DOM','R','R',74,190,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800355?hydrate=xrefId'),
+('luis-carias','Luis Carias',false,null,'Luis Carias','2004-09-30','Caracas',null,'Venezuela','Venezuela','R','R',76,170,'RHP',null,'https://statsapi.mlb.com/api/v1/people/808218?hydrate=xrefId'),
+('luis-gamez','Luis Gamez',false,null,'Luis Gamez','2006-08-30','Los Mochis','SI','Mexico','Mexico','R','R',71,181,'RHP',null,'https://statsapi.mlb.com/api/v1/people/830800?hydrate=xrefId'),
+('luis-guerra','Luis Guerra',false,null,'Luis Guerra','2003-10-04','Barcelona',null,'Venezuela','Venezuela','R','R',72,180,'SS',null,'https://statsapi.mlb.com/api/v1/people/699065?hydrate=xrefId'),
+('luis-izturis','Luis Izturis',false,null,'Luis Izturis','2001-07-13','Barquisimeto',null,'Venezuela','Venezuela','R','R',70,155,'SS',null,'https://statsapi.mlb.com/api/v1/people/682950?hydrate=xrefId'),
+('luis-luna','Luis Luna',false,null,'Luis Luna','2008-06-09','Monteria',null,'Colombia','Colombia','R','R',72,170,'SS',null,'https://statsapi.mlb.com/api/v1/people/830463?hydrate=xrefId'),
+('luis-rodriguez-2015','Luis Rodriguez (2015)',false,null,'Luis Rodriguez','1999-03-02','Cumana',null,'Venezuela','Venezuela','S','R',72,150,'SS',null,'https://statsapi.mlb.com/api/v1/people/665960?hydrate=xrefId'),
+('luis-rodriguez-2019','Luis Rodriguez (2019)',false,null,'Luis Rodriguez','2002-09-16','Quibor',null,'Venezuela','Venezuela','R','R',74,175,'OF',null,'https://statsapi.mlb.com/api/v1/people/691177?hydrate=xrefId'),
+('luis-tovar','Luis Tovar',false,null,'Luis Tovar','2007-10-06','Puerto La Cruz',null,'Venezuela','Venezuela','R','R',71,210,'3B',null,'https://statsapi.mlb.com/api/v1/people/830434?hydrate=xrefId'),
+('mairoshendrick-martinus','Mairoshendrick Martinus',false,null,'Mairo Martinus','2005-02-03','Willemstad',null,'Curacao','Curacao','R','R',73,161,'3B',null,'https://statsapi.mlb.com/api/v1/people/800302?hydrate=xrefId'),
+('marco-corcho','Marco Corcho',false,null,'Marco Corcho','2005-05-02','Cartagena',null,'Colombia','Colombia','R','R',74,200,'RHP',null,'https://statsapi.mlb.com/api/v1/people/806866?hydrate=xrefId'),
+('marcos-diplan','Marcos Diplán',true,'BASEBALL_REFERENCE','Marcos Diplán','1996-09-18','Santiago',null,'Dominican Republic','Dominican Republic','R','R',72,200,'RHP','2021-08-06','https://statsapi.mlb.com/api/v1/people/650959?hydrate=xrefId'),
+('marten-gasparini','Marten Gasparini',false,null,'Marten Gasparini','1997-05-24','Ruda',null,'Italy','Italy','L','R',72,165,'SS',null,'https://statsapi.mlb.com/api/v1/people/645282?hydrate=xrefId'),
+('maximo-martinez','Maximo Martinez',false,null,'Maximo Martinez','2004-06-21','Caracas',null,'Venezuela','Venezuela','R','R',74,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699059?hydrate=xrefId'),
+('michael-deleon','Michael DeLeon',false,null,'Michael De León','1997-01-14','Santo Domingo',null,'Dominican Republic','Dominican Republic','S','R',73,160,'3B',null,'https://statsapi.mlb.com/api/v1/people/650958?hydrate=xrefId'),
+('michael-ramirez','Michael Ramirez',false,null,'Michael Ramirez','2005-04-21','La Guaira',null,'Venezuela','Venezuela','L','L',72,160,'LHP',null,'https://statsapi.mlb.com/api/v1/people/821679?hydrate=xrefId'),
+('michael-vilchez','Michael Vilchez',false,null,'Michael Vilchez','2004-06-03','Willemstad',null,'Curacao','Curacao','R','R',75,180,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699074?hydrate=xrefId'),
+('miguel-angel-sierra','Miguel Angel Sierra',false,null,'Miguelangel Sierra','1997-12-02','Guarico',null,'Venezuela','Venezuela','R','R',71,201,'SS',null,'https://statsapi.mlb.com/api/v1/people/658531?hydrate=xrefId'),
+('miguel-bastardo','Miguel Bastardo',false,null,'Miguel Bastardo','2003-01-14','Cumana',null,'Venezuela','Venezuela','R','R',75,166,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699072?hydrate=xrefId'),
+('miguel-dominguez','Miguel Dominguez',false,null,'Miguel Dominguez','2004-02-20','La Chorrera',null,'Panama','PAN','R','R',72,195,'C',null,'https://statsapi.mlb.com/api/v1/people/800399?hydrate=xrefId'),
+('miguel-droz','Miguel Droz',false,null,'Miguel Droz','2001-10-02','Piritu',null,'Venezuela','Venezuela','R','R',72,170,'SS',null,'https://statsapi.mlb.com/api/v1/people/682940?hydrate=xrefId'),
+('miguel-flames','Miguel Flames',false,null,'Miguel Flames','1997-09-14','Maracay',null,'Venezuela','Venezuela','R','R',74,210,'1B',null,'https://statsapi.mlb.com/api/v1/people/660560?hydrate=xrefId'),
+('miguel-vargas','Miguel Vargas',false,null,'Miguel Vargas','1999-11-17','Havana',null,'Cuba','Cuba','R','R',74,225,'3B','2022-08-03','https://statsapi.mlb.com/api/v1/people/678246?hydrate=xrefId'),
+('misja-harcksen','Misja Harcksen',false,null,'Misja Harcksen','1995-04-19','Rotterdam',null,'Netherlands','Netherlands','R','R',74,165,'RHP',null,'https://statsapi.mlb.com/api/v1/people/649958?hydrate=xrefId'),
+('missael-soto','Missael Soto',false,null,'Missael Soto','2003-09-21','Peravia',null,'Dominican Republic','Dominican Republic','R','R',73,174,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699057?hydrate=xrefId'),
+('moises-acacio','Moises Acacio',false,null,'Moises Acacio','2008-01-24','Maracay',null,'Venezuela','Venezuela','R','R',71,155,'SS',null,'https://statsapi.mlb.com/api/v1/people/830432?hydrate=xrefId'),
+('moises-rangel','Moises Rangel',false,null,'Moises Rangel','2008-05-23','Maracaibo',null,'Venezuela','Venezuela','R','R',70,190,'C',null,'https://statsapi.mlb.com/api/v1/people/830404?hydrate=xrefId'),
+('natanael-castillo','Natanael Castillo',false,null,'Natanael Castillo','2004-11-06','San Isidro',null,'Dominican Republic','Dominican Republic','R','R',72,150,'SS',null,'https://statsapi.mlb.com/api/v1/people/800390?hydrate=xrefId'),
+('nelson-gomez','Nelson Gomez',false,null,'Nelson Gomez','1997-10-08','Los Hidalgos',null,'Dominican Republic','Dominican Republic','R','R',73,220,'3B',null,'https://statsapi.mlb.com/api/v1/people/660617?hydrate=xrefId'),
+('nicolas-cruz','Nicolas Cruz',false,null,'Nicolas Cruz','2004-04-23','Caracas',null,'Venezuela','VEN','R','R',71,160,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800395?hydrate=xrefId'),
+('nicolas-pierre','Nicolas Pierre',false,null,'Nic Pierre','1996-11-13','San Pedro de Macoris',null,'Dominican Republic','Dominican Republic','R','R',75,170,'OF',null,'https://statsapi.mlb.com/api/v1/people/650693?hydrate=xrefId'),
+('omar-daal','Omar Daal',false,null,'Omar Daal','1972-03-01','Maracaibo',null,'Venezuela','Venezuela','L','L',75,200,'LHP','1993-04-23','https://statsapi.mlb.com/api/v1/people/112984?hydrate=xrefId'),
+('omar-estevez','Omar Estévez',true,'MLB','Omar Estévez','1998-02-25','Matanzas',null,'Cuba','Cuba','R','R',70,185,'2B',null,'https://statsapi.mlb.com/api/v1/people/666784?hydrate=xrefId'),
+('oneil-cruz','Oneil Cruz',false,null,'Oneil Cruz','1998-10-04','Nizao',null,'Dominican Republic','Dominican Republic','L','R',79,248,'OF','2021-10-02','https://statsapi.mlb.com/api/v1/people/665833?hydrate=xrefId'),
+('oswaldo-osorio','Oswaldo Osorio',false,null,'Oswaldo Osorio','2005-04-12','San Felipe',null,'Venezuela','Venezuela','L','R',73,171,'1B',null,'https://statsapi.mlb.com/api/v1/people/800424?hydrate=xrefId'),
+('paris-johnson','Paris Johnson',false,null,'Paris Johnson','2005-03-09','Nassau',null,'Bahamas','Bahamas','R','R',74,205,'OF',null,'https://statsapi.mlb.com/api/v1/people/807379?hydrate=xrefId'),
+('pedro-astacio','Pedro Astacio',false,null,'Pedro Astacio','1968-11-28','Hato Mayor',null,'Dominican Republic','Dominican Republic','R','R',74,210,'RHP','1992-07-03','https://statsapi.mlb.com/api/v1/people/110359?hydrate=xrefId'),
+('pedro-baez','Pedro Báez',true,'BASEBALL_REFERENCE','Pedro Báez','1988-03-11','Bani',null,'Dominican Republic','Dominican Republic','R','R',72,232,'RHP','2014-05-05','https://statsapi.mlb.com/api/v1/people/520980?hydrate=xrefId'),
+('pedro-gonzalez','Pedro Gonzalez',false,null,'Pedro Gonzalez','1997-10-27','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',77,190,'OF',null,'https://statsapi.mlb.com/api/v1/people/660639?hydrate=xrefId'),
+('pedro-martinez','Pedro Martínez',true,'BASEBALL_REFERENCE','Pedro Martínez','1971-10-25','Manoguayabo',null,'Dominican Republic','Dominican Republic','R','R',71,195,'RHP','1992-09-24','https://statsapi.mlb.com/api/v1/people/118377?hydrate=xrefId'),
+('pedro-santillan','Pedro Santillan',false,null,'Pedro Santillan','2001-07-07','Chihuahua','CH','Mexico','Mexico','R','R',76,200,'RHP',null,'https://statsapi.mlb.com/api/v1/people/699063?hydrate=xrefId'),
+('peter-bonilla','Peter Bonilla',false,null,'Peter Bonilla','2004-12-16','Barcelona',null,'Spain','Spain','L','L',72,209,'LHP',null,'https://statsapi.mlb.com/api/v1/people/800361?hydrate=xrefId'),
+('rafael-devers','Rafael Devers',false,null,'Rafael Devers','1996-10-24','Sanchez',null,'Dominican Republic','Dominican Republic','L','R',72,235,'1B','2017-07-25','https://statsapi.mlb.com/api/v1/people/646240?hydrate=xrefId'),
+('rafael-tua','Rafael Tua',false,null,'Rafael Tua','2001-10-26','Barquisimeto',null,'Venezuela','Venezuela','R','R',70,145,'RHP',null,'https://statsapi.mlb.com/api/v1/people/682948?hydrate=xrefId'),
+('rafy-peguero','Rafy Peguero',false,null,'Rafy Peguero','2006-09-26','Newark','NJ','United States','USA','R','R',72,190,'OF',null,'https://statsapi.mlb.com/api/v1/people/821801?hydrate=xrefId'),
+('railin-familia','Railin Familia',false,null,'Railin Familia','2004-09-15','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',72,186,'C',null,'https://statsapi.mlb.com/api/v1/people/812747?hydrate=xrefId'),
+('ramon-martinez','Ramón Martínez',true,'BASEBALL_REFERENCE','Ramon Martinez','1968-03-22','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',76,170,'RHP','1988-08-13','https://statsapi.mlb.com/api/v1/people/118378?hydrate=xrefId'),
+('ramon-rosso','Ramón Rosso',true,'BASEBALL_REFERENCE','Ramón Rosso','1996-06-09','Santo Domingo Centro',null,'Dominican Republic','Dominican Republic','R','R',76,240,'RHP','2020-07-24','https://statsapi.mlb.com/api/v1/people/665759?hydrate=xrefId'),
+('ramon-troncoso','Ramón Troncoso',true,'BASEBALL_REFERENCE','Ramon Troncoso','1983-02-16','San Jose de Ocoa',null,'Dominican Republic','Dominican Republic','R','R',74,215,'RHP','2008-04-01','https://statsapi.mlb.com/api/v1/people/470462?hydrate=xrefId'),
+('raul-mondesi','Raúl Mondesí',true,'BASEBALL_REFERENCE','Raúl Mondesi','1971-03-12','San Cristobal',null,'Dominican Republic','Dominican Republic','R','R',71,225,'OF','1993-07-19','https://statsapi.mlb.com/api/v1/people/119247?hydrate=xrefId'),
+('rayne-doncon','Rayne Doncon',false,null,'Rayne Doncon','2003-09-22','San Pedro de Macoris',null,'Dominican Republic','Dominican Republic','R','R',73,176,'3B',null,'https://statsapi.mlb.com/api/v1/people/699061?hydrate=xrefId'),
+('raynerd-ortega','Raynerd Ortega',false,null,'Raynerd Ortega','2005-07-08','San Felix',null,'Venezuela','VEN','R','R',72,154,'SS',null,'https://statsapi.mlb.com/api/v1/people/800380?hydrate=xrefId'),
+('reyli-mariano','Reyli Mariano',false,null,'Reyli Mariano','2006-11-07','Santo Domingo',null,'Dominican Republic','Dominican Republic','S','R',67,140,'2B',null,'https://statsapi.mlb.com/api/v1/people/821697?hydrate=xrefId'),
+('ricardo-montero','Ricardo Montero',false,null,'Ricardo Montero','2004-02-17','San Cristobal',null,'Dominican Republic','Dominican Republic','R','R',78,237,'RHP',null,'https://statsapi.mlb.com/api/v1/people/805110?hydrate=xrefId'),
+('ricardo-rodriguez','Ricardo Rodriguez',false,null,'Ricardo Rodriguez','1997-12-20','Porlamar',null,'Venezuela','Venezuela','R','R',71,185,'C',null,'https://statsapi.mlb.com/api/v1/people/660616?hydrate=xrefId'),
+('ricardo-roman','Ricardo Roman',false,null,'Ricardo Roman','2006-08-17','Guanare',null,'Venezuela','Venezuela','R','R',70,175,'RHP',null,'https://statsapi.mlb.com/api/v1/people/830429?hydrate=xrefId'),
+('ricky-aracena','Ricky Aracena',false,null,'Ricky Aracena','1997-10-02','San Francisco de Macoris',null,'Dominican Republic','Dominican Republic','S','R',68,160,'SS',null,'https://statsapi.mlb.com/api/v1/people/660615?hydrate=xrefId'),
+('roberto-clemente','Roberto Clemente',false,null,'Roberto Clemente','1934-08-18','Carolina',null,'Puerto Rico','Puerto Rico','R','R',71,175,'OF','1955-04-17','https://statsapi.mlb.com/api/v1/people/112391?hydrate=xrefId'),
+('robinson-ventura','Robinson Ventura',false,null,'Robinson Ventura','2006-06-28','Punto Fijo',null,'Venezuela','Venezuela','R','R',73,169,'RHP',null,'https://statsapi.mlb.com/api/v1/people/808332?hydrate=xrefId'),
+('rodmar-angela','Rodmar Angela',false,null,'Rodmar Angela','2004-09-20','Willemstad',null,'Curacao','Curacao','L','L',69,180,'OF',null,'https://statsapi.mlb.com/api/v1/people/806791?hydrate=xrefId'),
+('roger-cedeno','Roger Cedeño',true,'BASEBALL_REFERENCE','Roger Cedeno','1974-08-16','Valencia',null,'Venezuela','Venezuela','S','R',73,245,'OF','1995-06-20','https://statsapi.mlb.com/api/v1/people/112155?hydrate=xrefId'),
+('roger-lasso','Roger Lasso',false,null,'Roger Lasso','2004-02-27','Panama City',null,'Panama','Panama','R','R',72,180,'OF',null,'https://statsapi.mlb.com/api/v1/people/699068?hydrate=xrefId'),
+('roiger-mujica','Roiger Mujica',false,null,'Roiger Mujica','2005-07-24','San Felipe',null,'Venezuela','Venezuela','R','R',74,234,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800487?hydrate=xrefId'),
+('roki-sasaki','Roki Sasaki',false,null,'Roki Sasaki','2001-11-03','Rikuzentakata',null,'Japan','Japan','R','R',74,187,'RHP','2025-03-19','https://statsapi.mlb.com/api/v1/people/808963?hydrate=xrefId'),
+('ronny-brito','Ronny Brito',false,null,'Ronny Brito','1999-03-22','San Francisco de Macoris',null,'Dominican Republic','Dominican Republic','R','R',72,165,'SS',null,'https://statsapi.mlb.com/api/v1/people/665798?hydrate=xrefId'),
+('ronny-rafael','Ronny Rafael',false,null,'Ronny Rafael','1997-10-14','Santo Domingo Este',null,'Dominican Republic','Dominican Republic','R','R',74,185,'OF',null,'https://statsapi.mlb.com/api/v1/people/658665?hydrate=xrefId'),
+('roque-gutierrez','Roque Gutierrez',false,null,'Roque Gutierrez','2002-09-07','Guasave','SI','Mexico','Mexico','R','R',69,177,'RHP',null,'https://statsapi.mlb.com/api/v1/people/692262?hydrate=xrefId'),
+('rubby-de-la-rosa','Rubby De La Rosa',false,null,'Rubby De La Rosa','1989-03-04','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',72,210,'RHP','2011-05-24','https://statsapi.mlb.com/api/v1/people/523989?hydrate=xrefId'),
+('rubel-arias','Rubel Arias',false,null,'Rubel Arias','2008-12-08','Santo Domingo',null,'Dominican Republic','Dominican Republic','L','L',73,178,'OF',null,'https://statsapi.mlb.com/api/v1/people/837601?hydrate=xrefId'),
+('samuel-munoz','Samuel Munoz',false,null,'Samuel Munoz','2004-09-22','Santo Domingo',null,'Dominican Republic','Dominican Republic','L','R',74,190,'OF',null,'https://statsapi.mlb.com/api/v1/people/703153?hydrate=xrefId'),
+('samuel-sanchez','Samuel Sanchez',false,null,'Samuel Sanchez','2005-10-21','El Tocoyo',null,'Venezuela','Venezuela','R','R',71,150,'RHP',null,'https://statsapi.mlb.com/api/v1/people/808247?hydrate=xrefId'),
+('samuel-savinon','Samuel Savinon',false,null,'Samuel Savinon','2006-11-28','Bonao',null,'Dominican Republic','Dominican Republic','R','R',78,230,'RHP',null,'https://statsapi.mlb.com/api/v1/people/829493?hydrate=xrefId'),
+('sandy-amoros','Sandy Amorós',true,'BASEBALL_REFERENCE','Sandy Amoros','1930-01-30','Havana',null,'Cuba','Cuba','L','L',67,170,'OF','1952-08-22','https://statsapi.mlb.com/api/v1/people/110222?hydrate=xrefId'),
+('sean-linan','Sean Linan',false,null,'Sean Paul Liñan','2004-11-07','Cartagena',null,'Colombia','Colombia','R','R',72,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800344?hydrate=xrefId'),
+('sebastian-jimenez','Sebastian Jimenez',false,null,'Sebastian Jimenez','2003-04-28','Puerto Ordaz',null,'Venezuela','Venezuela','L','L',75,182,'LHP',null,'https://statsapi.mlb.com/api/v1/people/699067?hydrate=xrefId'),
+('shai-romero','Shai Romero',false,null,'Shai Romero','2007-08-22','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',77,235,'RHP',null,'https://statsapi.mlb.com/api/v1/people/829476?hydrate=xrefId'),
+('shakir-albert','Shakir Albert',false,null,'Shakir Albert','1996-12-24','Willemstad',null,'Curacao','Curacao','R','R',72,185,'OF',null,'https://statsapi.mlb.com/api/v1/people/649954?hydrate=xrefId'),
+('starling-heredia','Starling Heredia',false,null,'Starling Heredia','1999-02-06','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',74,200,'OF',null,'https://statsapi.mlb.com/api/v1/people/665752?hydrate=xrefId'),
+('steven-castillo','Steven Castillo',false,null,'Steven Castillo','2004-09-15','Rivas',null,'Nicaragua','Nicaragua','R','R',74,195,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800481?hydrate=xrefId'),
+('thayron-liranzo','Thayron Liranzo',false,null,'Thayron Liranzo','2003-07-05','San Francisco de Macoris',null,'Dominican Republic','Dominican Republic','S','R',73,195,'C',null,'https://statsapi.mlb.com/api/v1/people/699073?hydrate=xrefId'),
+('tim-fischer','Tim Fischer',false,null,'Tim Fischer','2004-09-08','Regensburg',null,'Germany','Germany','R','R',75,195,'RHP',null,'https://statsapi.mlb.com/api/v1/people/808444?hydrate=xrefId'),
+('tony-abreu','Tony Abreu',false,null,'Tony Abreu','1984-11-13','Puerto Plata',null,'Dominican Republic','Dominican Republic','S','R',70,200,'2B','2007-05-22','https://statsapi.mlb.com/api/v1/people/473234?hydrate=xrefId'),
+('umar-male','Umar Male',false,null,'Umar Male','2001-05-14','Kasana',null,'Uganda','Uganda','R','R',70,175,'C',null,'https://statsapi.mlb.com/api/v1/people/805773?hydrate=xrefId'),
+('victor-gonzalez','Victor González',true,'BASEBALL_REFERENCE','Victor González','1995-11-16','Tuxpan','Nayarit','Mexico','Mexico','L','L',72,180,'LHP','2020-07-31','https://statsapi.mlb.com/api/v1/people/624647?hydrate=xrefId'),
+('victor-rodrigues','Victor Rodrigues',false,null,'Victor Rodrigues','2004-09-23','Maracay',null,'Venezuela','Venezuela','R','R',74,203,'C',null,'https://statsapi.mlb.com/api/v1/people/800332?hydrate=xrefId'),
+('wilkerman-garcia','Wilkerman Garcia',false,null,'Wilkerman Garcia','1998-04-01','Maracay',null,'Venezuela','Venezuela','S','R',72,176,'SS',null,'https://statsapi.mlb.com/api/v1/people/660564?hydrate=xrefId'),
+('william-soto','William Soto',false,null,'Willian Soto','1996-02-13','Punto Fijo',null,'Venezuela','Venezuela','R','R',76,185,'RHP',null,'https://statsapi.mlb.com/api/v1/people/624648?hydrate=xrefId'),
+('willy-aybar','Willy Aybar',false,null,'Willy Aybar','1983-03-09','Bani',null,'Dominican Republic','Dominican Republic','S','R',71,205,'3B','2005-08-31','https://statsapi.mlb.com/api/v1/people/430632?hydrate=xrefId'),
+('wilman-diaz','Wilman Diaz',false,null,'Wilman Diaz','2003-11-15','Maracay',null,'Venezuela','Venezuela','R','R',73,182,'SS',null,'https://statsapi.mlb.com/api/v1/people/694180?hydrate=xrefId'),
+('yadier-alvarez','Yadier Álvarez',false,null,'Yadier Álvarez','1996-03-07','Matanzas',null,'Cuba','Cuba','R','R',75,175,'RHP',null,'https://statsapi.mlb.com/api/v1/people/665751?hydrate=xrefId'),
+('yasiel-puig','Yasiel Puig',false,null,'Yasiel Puig','1990-12-07','Cienfuegos',null,'Cuba','Cuba','R','R',74,240,'OF','2013-06-03','https://statsapi.mlb.com/api/v1/people/624577?hydrate=xrefId'),
+('yeiner-fernandez','Yeiner Fernandez',false,null,'Yeiner Fernandez','2002-09-19','Barquisimeto',null,'Venezuela','Venezuela','R','R',69,170,'C',null,'https://statsapi.mlb.com/api/v1/people/691558?hydrate=xrefId'),
+('yeltsin-gudino','Yeltsin Gudino',false,null,'Yeltsin Gudino','1997-01-17','Maracay',null,'Venezuela','Venezuela','R','R',72,150,'SS',null,'https://statsapi.mlb.com/api/v1/people/650988?hydrate=xrefId'),
+('yhonaider-gudino','Yhonaider Gudino',false,null,'Yhonaider Gudino','2004-09-20','Villa de Cura',null,'Venezuela','Venezuela','R','R',70,150,'SS',null,'https://statsapi.mlb.com/api/v1/people/800521?hydrate=xrefId'),
+('yojackson-laya','Yojackson Laya',false,null,'Yojackson Laya','2006-11-12','La Guaira',null,'Venezuela','Venezuela','R','R',69,154,'SS',null,'https://statsapi.mlb.com/api/v1/people/821684?hydrate=xrefId'),
+('yordan-alvarez','Yordan Alvarez',false,null,'Yordan Alvarez','1997-06-27','Las Tunas',null,'Cuba','Cuba','L','R',76,237,'DH','2019-06-09','https://statsapi.mlb.com/api/v1/people/670541?hydrate=xrefId'),
+('yorfran-medina','Yorfran Medina',false,null,'Yorfran Medina','2005-01-25','Maracaibo',null,'Venezuela','Venezuela','R','R',76,195,'OF',null,'https://statsapi.mlb.com/api/v1/people/800337?hydrate=xrefId'),
+('yoryi-simarra','Yoryi Simarra',false,null,'Yoryi Simarra','2004-11-18','Cartagena',null,'Colombia','COL','R','R',73,174,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800366?hydrate=xrefId'),
+('yuliangel-de-la-cruz','Yuliangel De La Cruz',false,null,'Yuliangel De La Cruz','2005-01-24','Santo Domingo',null,'Dominican Republic','Dominican Republic','R','R',75,158,'RHP',null,'https://statsapi.mlb.com/api/v1/people/800447?hydrate=xrefId'),
+('yusniel-diaz','Yusniel Díaz',true,'MLB','Yusniel Díaz','1996-10-07','Havana',null,'Cuba','Cuba','R','R',72,215,'OF','2022-08-02','https://statsapi.mlb.com/api/v1/people/666783?hydrate=xrefId');
+
+create temporary table _m020_positions (slug text, signing_year int, position_at_signing text, transaction_date date, transaction_url text) on commit drop;
+insert into _m020_positions values
+('abel-lorenzo',2022,'C','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=806867'),
+('accimias-morales',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=703193'),
+('adrian-torres',2025,'LHP','2025-01-17','https://statsapi.mlb.com/api/v1/transactions?playerId=830397'),
+('agustin-acosta',2022,'OF','2022-02-21','https://statsapi.mlb.com/api/v1/transactions?playerId=802528'),
+('aldo-espinoza',2015,'2B','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665852'),
+('aldrin-batista',2022,'RHP','2022-06-01','https://statsapi.mlb.com/api/v1/transactions?playerId=702881'),
+('alex-de-jesus',2018,'INF','2018-07-03','https://statsapi.mlb.com/api/v1/transactions?playerId=682942'),
+('alexander-albertus',2022,'SS','2022-06-01','https://statsapi.mlb.com/api/v1/transactions?playerId=800316'),
+('alexis-dominguez',2024,'RHP','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821826'),
+('alexis-reyes',2025,'RHP','2024-12-16','https://statsapi.mlb.com/api/v1/transactions?playerId=829490'),
+('allen-ajoti',2024,'C','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821808'),
+('amado-nunez',2014,'SS','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=658535'),
+('anderson-estevez',2022,'RHP','2022-02-17','https://statsapi.mlb.com/api/v1/transactions?playerId=802740'),
+('anderson-jerez',2023,'RHP','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808214'),
+('andres-luna',2025,'RHP','2025-01-27','https://statsapi.mlb.com/api/v1/transactions?playerId=831322'),
+('aneudy-almonte',2025,'LHP','2024-12-16','https://statsapi.mlb.com/api/v1/transactions?playerId=825160'),
+('angel-cruz',2022,'RHP','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=807654'),
+('angel-ramirez',2024,'RHP','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821633'),
+('antoni-urena',2025,'SS','2024-12-16','https://statsapi.mlb.com/api/v1/transactions?playerId=829482'),
+('antonio-arias',2014,'OF','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660626'),
+('ariel-reynoso',2026,'SS','2026-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=837605'),
+('arnaldo-lantigua',2023,'OF','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=806984'),
+('arod-mckenzie',2022,'LHP','2022-02-20','https://statsapi.mlb.com/api/v1/transactions?playerId=803242'),
+('arquimedes-gamboa',2014,'SS','2014-07-17','https://statsapi.mlb.com/api/v1/transactions?playerId=660614'),
+('axel-perez',2024,'RHP','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821612'),
+('ben-serunkuma',2022,'RHP','2022-01-28','https://statsapi.mlb.com/api/v1/transactions?playerId=805205'),
+('brayan-hernandez',2014,'OF','2014-07-24','https://statsapi.mlb.com/api/v1/transactions?playerId=659910'),
+('brian-diaz',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699070'),
+('bryan-lara',2025,'RHP','2025-01-28','https://statsapi.mlb.com/api/v1/transactions?playerId=832440'),
+('callum-wallace',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800527'),
+('carlos-avila',2021,'C','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699066'),
+('carlos-herrera',2013,'SS','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650508'),
+('carlos-ramirez',2025,'RHP','2025-01-17','https://statsapi.mlb.com/api/v1/transactions?playerId=830439'),
+('carlos-rincon',2015,'OF','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665779'),
+('carlos-sardina',2024,'RHP','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821658'),
+('cesar-sanchez',2025,'RHP','2024-12-16','https://statsapi.mlb.com/api/v1/transactions?playerId=829479'),
+('christian-muniz',2024,'RHP','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821650'),
+('christian-romero',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699071'),
+('christian-suarez',2018,'LHP','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682949'),
+('christopher-acosta',2014,'RHP','2014-08-15','https://statsapi.mlb.com/api/v1/transactions?playerId=659261'),
+('christopher-arias',2015,'OF','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665931'),
+('dailoui-abad',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699060'),
+('damaso-marte-jr',2015,'SS','2015-07-07','https://statsapi.mlb.com/api/v1/transactions?playerId=666006'),
+('daniel-arrias',2022,'OF','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800328'),
+('daniel-mielcarek',2023,'SS','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808028'),
+('david-romero',2024,'2B','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821661'),
+('degerson-diaz',2025,'OF','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830481'),
+('derik-aquino',2025,'RHP','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830468'),
+('dermis-garcia',2014,'SS','2014-12-18','https://statsapi.mlb.com/api/v1/transactions?playerId=660650'),
+('devlyn-bautista',2025,'OF','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830426'),
+('diego-cartaya',2018,'C','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682616'),
+('diego-castillo',2014,'SS','2014-12-18','https://statsapi.mlb.com/api/v1/transactions?playerId=660636'),
+('domingo-geronimo',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800383'),
+('eddys-leonard',2017,'SS','2017-07-03','https://statsapi.mlb.com/api/v1/transactions?playerId=678760'),
+('edgar-aviles',2022,'RHP','2022-04-14','https://statsapi.mlb.com/api/v1/transactions?playerId=800530'),
+('edgar-gomez',2022,'RHP','2022-11-04','https://statsapi.mlb.com/api/v1/transactions?playerId=807626'),
+('edgar-leon',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800453'),
+('eduardo-guerrero',2022,'SS','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800370'),
+('eduardo-quintero',2023,'C','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808234'),
+('eduardo-rojas',2024,'C','2024-05-30','https://statsapi.mlb.com/api/v1/transactions?playerId=821672'),
+('elias-medina',2023,'SS','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808257'),
+('elio-campos',2021,'SS','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699069'),
+('eloy-jimenez',2013,'OF','2013-08-01','https://statsapi.mlb.com/api/v1/transactions?playerId=650391'),
+('emil-morales',2024,'SS','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=815896'),
+('ender-avendano',2018,'SS','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682937'),
+('enrike-sevilya',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800288'),
+('erick-batista',2023,'RHP','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808209'),
+('erick-julio',2013,'RHP','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650510'),
+('erick-nava',2022,'RHP','2022-08-05','https://statsapi.mlb.com/api/v1/transactions?playerId=812748'),
+('erling-moreno',2013,'RHP','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650400'),
+('erny-orellana',2024,'OF','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821786'),
+('euri-rosa',2024,'C','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821817'),
+('ezequiel-aparicio',2025,'C','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830452'),
+('ezequiel-melburne',2026,'SS','2026-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=836606'),
+('francisco-espinoza',2024,'C','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821689'),
+('franderly-morel',2022,'LHP','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=806918'),
+('franklin-perez',2014,'RHP','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=658530'),
+('franly-mallen',2013,'SS','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650691'),
+('gersel-pitre',2013,'C','2013-12-12','https://statsapi.mlb.com/api/v1/transactions?playerId=649957'),
+('gilbert-lara',2014,'SS','2014-07-10','https://statsapi.mlb.com/api/v1/transactions?playerId=658677'),
+('gleyber-torres',2013,'SS','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650402'),
+('gregory-pereira',2018,'OF','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682946'),
+('greifer-andrade',2013,'SS','2013-07-03','https://statsapi.mlb.com/api/v1/transactions?playerId=650849'),
+('harold-gonzalez',2023,'SS','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808339'),
+('hendrik-clementina',2013,'C','2013-12-13','https://statsapi.mlb.com/api/v1/transactions?playerId=649955'),
+('hendry-arvelo',2025,'2B','2024-12-16','https://statsapi.mlb.com/api/v1/transactions?playerId=829498'),
+('heudy-pena',2024,'SS','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821263'),
+('huascar-ynoa',2014,'RHP','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660623'),
+('hyo-jun-park',2014,'SS','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660829'),
+('hyun-jin-ryu',2012,'LHP','2012-12-09','https://statsapi.mlb.com/api/v1/transactions?playerId=547943'),
+('ilmerson-colon',2022,'LHP','2022-06-20','https://statsapi.mlb.com/api/v1/transactions?playerId=805623'),
+('isaac-barreto',2021,'OF','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699064'),
+('ivan-pacheco',2025,'RHP','2025-01-29','https://statsapi.mlb.com/api/v1/transactions?playerId=830612'),
+('javier-bartolozzi',2022,'RHP','2022-08-03','https://statsapi.mlb.com/api/v1/transactions?playerId=812745'),
+('javier-herrera',2023,'SS','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808223'),
+('javier-pena',2022,'C','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800351'),
+('jecsua-liborius',2022,'RHP','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=807403'),
+('jeral-perez',2022,'SS','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800419'),
+('jerami-rodriguez',2018,'RHP','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682951'),
+('jeremy-castro',2022,'RHP','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=812746'),
+('jerming-rosario',2018,'RHP','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682645'),
+('jesus-galiz',2021,'C','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=694188'),
+('jesus-tillero',2023,'RHP','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808313'),
+('jhoandro-alfaro',2014,'C','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=658532'),
+('jholbran-herder',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800408'),
+('jhon-gil',2025,'C','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830459'),
+('jhonny-jimenez',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699075'),
+('jhosman-theran',2025,'OF','2025-01-20','https://statsapi.mlb.com/api/v1/transactions?playerId=830420'),
+('joendry-vargas',2023,'SS','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=806959'),
+('jorbit-vivas',2017,'2B','2017-07-04','https://statsapi.mlb.com/api/v1/transactions?playerId=678391'),
+('jorge-carpintero',2021,'LHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699058'),
+('jose-almonte',2013,'OF','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650954'),
+('jose-gonzalez',2022,'OF','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=806919'),
+('jose-herrera',2013,'C','2013-07-08','https://statsapi.mlb.com/api/v1/transactions?playerId=645444'),
+('jose-lopez',2024,'RHP','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821653'),
+('jose-requena',2026,'OF','2026-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=837769'),
+('jose-rivas',2025,'C','2025-01-17','https://statsapi.mlb.com/api/v1/transactions?playerId=830449'),
+('jose-torrez',2022,'C','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=807404'),
+('jose-victorino',2026,'SS','2026-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=837652'),
+('jose-villegas',2025,'RHP','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830413'),
+('joseilyn-gonzalez',2022,'RHP','2022-06-01','https://statsapi.mlb.com/api/v1/transactions?playerId=805120'),
+('joseph-deng-thon',2025,'RHP','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830188'),
+('josue-de-paula',2022,'OF','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800543'),
+('juan-alonso',2021,'OF','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699076'),
+('juan-deleon',2014,'OF','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660665'),
+('juan-hernandez',2022,'RHP','2022-07-28','https://statsapi.mlb.com/api/v1/transactions?playerId=806638'),
+('juan-macero',2025,'SS','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830471'),
+('juan-meza',2014,'RHP','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660565'),
+('julian-leon',2012,'C','2012-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=624645'),
+('julio-lugo-prospect',2013,'OF','2013-12-18','https://statsapi.mlb.com/api/v1/transactions?playerId=649956'),
+('julio-martinez',2014,'OF','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660699'),
+('julio-urias',2012,'LHP','2012-08-17','https://statsapi.mlb.com/api/v1/transactions?playerId=628711'),
+('keibert-ruiz',2014,'C','2014-07-20','https://statsapi.mlb.com/api/v1/transactions?playerId=660688'),
+('kelvin-ramirez',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699062'),
+('kenny-hernandez',2014,'SS','2014-08-13','https://statsapi.mlb.com/api/v1/transactions?playerId=660660'),
+('kosuke-matsuda',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800494'),
+('leider-padilla',2024,'OF','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821636'),
+('lenix-osuna',2012,'RHP','2012-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=624646'),
+('lesther-medrano',2019,'RHP','2019-09-04','https://statsapi.mlb.com/api/v1/transactions?playerId=692327'),
+('lewin-diaz',2013,'OF','2013-11-21','https://statsapi.mlb.com/api/v1/transactions?playerId=650331'),
+('luciano-romero',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800355'),
+('luis-carias',2023,'RHP','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808218'),
+('luis-gamez',2025,'RHP','2025-01-30','https://statsapi.mlb.com/api/v1/transactions?playerId=830800'),
+('luis-guerra',2021,'SS','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699065'),
+('luis-izturis',2018,'SS','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682950'),
+('luis-luna',2025,'SS','2025-01-19','https://statsapi.mlb.com/api/v1/transactions?playerId=830463'),
+('luis-rodriguez-2015',2015,'INF','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665960'),
+('luis-rodriguez-2019',2019,'OF','2019-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=691177'),
+('luis-tovar',2025,'3B','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830434'),
+('mairoshendrick-martinus',2022,'SS','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800302'),
+('marco-corcho',2022,'RHP','2022-07-03','https://statsapi.mlb.com/api/v1/transactions?playerId=806866'),
+('maximo-martinez',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699059'),
+('michael-deleon',2013,'SS','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650958'),
+('michael-ramirez',2024,'LHP','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821679'),
+('michael-vilchez',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699074'),
+('miguel-angel-sierra',2014,'SS','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=658531'),
+('miguel-bastardo',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699072'),
+('miguel-dominguez',2022,'C','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800399'),
+('miguel-droz',2018,'SS','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682940'),
+('miguel-flames',2014,'C','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660560'),
+('miguel-vargas',2017,'3B','2017-09-07','https://statsapi.mlb.com/api/v1/transactions?playerId=678246'),
+('misja-harcksen',2013,'RHP','2013-12-26','https://statsapi.mlb.com/api/v1/transactions?playerId=649958'),
+('missael-soto',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699057'),
+('moises-acacio',2025,'SS','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830432'),
+('moises-rangel',2025,'C','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830404'),
+('natanael-castillo',2022,'SS','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800390'),
+('nelson-gomez',2014,'3B','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660617'),
+('nicolas-cruz',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800395'),
+('nicolas-pierre',2013,'OF','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650693'),
+('omar-estevez',2015,'2B','2015-11-21','https://statsapi.mlb.com/api/v1/transactions?playerId=666784'),
+('oneil-cruz',2015,'SS','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665833'),
+('oswaldo-osorio',2022,'SS','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800424'),
+('paris-johnson',2022,'OF','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=807379'),
+('pedro-baez',2007,'3B','2007-01-22','https://statsapi.mlb.com/api/v1/transactions?playerId=520980'),
+('pedro-gonzalez',2014,'OF','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660639'),
+('pedro-santillan',2021,'RHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699063'),
+('peter-bonilla',2022,'LHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800361'),
+('rafael-devers',2013,'3B','2013-08-09','https://statsapi.mlb.com/api/v1/transactions?playerId=646240'),
+('rafael-tua',2018,'RHP','2018-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=682948'),
+('rafy-peguero',2024,'OF','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821801'),
+('railin-familia',2022,'C','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=812747'),
+('ramon-rosso',2015,'RHP','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665759'),
+('rayne-doncon',2021,'SS','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699061'),
+('raynerd-ortega',2022,'SS','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800380'),
+('reyli-mariano',2024,'2B','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821697'),
+('ricardo-montero',2022,'RHP','2022-06-01','https://statsapi.mlb.com/api/v1/transactions?playerId=805110'),
+('ricardo-rodriguez',2014,'C','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660616'),
+('ricardo-roman',2025,'RHP','2025-01-18','https://statsapi.mlb.com/api/v1/transactions?playerId=830429'),
+('ricky-aracena',2014,'SS','2014-07-03','https://statsapi.mlb.com/api/v1/transactions?playerId=660615'),
+('robinson-ventura',2023,'RHP','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808332'),
+('rodmar-angela',2022,'OF','2022-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=806791'),
+('roger-lasso',2021,'OF','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699068'),
+('roiger-mujica',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800487'),
+('roki-sasaki',2025,'RHP','2025-01-22','https://statsapi.mlb.com/api/v1/transactions?playerId=808963'),
+('ronny-brito',2015,'SS','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665798'),
+('ronny-rafael',2014,'OF','2014-07-07','https://statsapi.mlb.com/api/v1/transactions?playerId=658665'),
+('rubby-de-la-rosa',2007,'RHP','2007-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=523989'),
+('rubel-arias',2026,'OF','2026-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=837601'),
+('samuel-munoz',2022,'1B','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=703153'),
+('samuel-sanchez',2023,'RHP','2023-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=808247'),
+('samuel-savinon',2025,'RHP','2024-12-16','https://statsapi.mlb.com/api/v1/transactions?playerId=829493'),
+('sean-linan',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800344'),
+('sebastian-jimenez',2021,'LHP','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699067'),
+('shai-romero',2025,'RHP','2024-12-16','https://statsapi.mlb.com/api/v1/transactions?playerId=829476'),
+('shakir-albert',2013,'OF','2013-12-02','https://statsapi.mlb.com/api/v1/transactions?playerId=649954'),
+('starling-heredia',2015,'OF','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665752'),
+('steven-castillo',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800481'),
+('thayron-liranzo',2021,'C','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=699073'),
+('tim-fischer',2022,'RHP','2022-07-06','https://statsapi.mlb.com/api/v1/transactions?playerId=808444'),
+('umar-male',2022,'C','2022-01-28','https://statsapi.mlb.com/api/v1/transactions?playerId=805773'),
+('victor-gonzalez',2012,'LHP','2012-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=624647'),
+('victor-rodrigues',2022,'C','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800332'),
+('wilkerman-garcia',2014,'SS','2014-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=660564'),
+('william-soto',2012,'RHP','2012-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=624648'),
+('wilman-diaz',2021,'SS','2021-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=694180'),
+('yadier-alvarez',2015,'RHP','2015-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=665751'),
+('yasiel-puig',2012,'OF','2012-06-29','https://statsapi.mlb.com/api/v1/transactions?playerId=624577'),
+('yeiner-fernandez',2019,'C','2019-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=691558'),
+('yeltsin-gudino',2013,'SS','2013-07-02','https://statsapi.mlb.com/api/v1/transactions?playerId=650988'),
+('yhonaider-gudino',2022,'SS','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800521'),
+('yojackson-laya',2024,'SS','2024-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=821684'),
+('yorfran-medina',2022,'OF','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800337'),
+('yoryi-simarra',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800366'),
+('yuliangel-de-la-cruz',2022,'RHP','2022-01-15','https://statsapi.mlb.com/api/v1/transactions?playerId=800447'),
+('yusniel-diaz',2015,'OF','2015-11-21','https://statsapi.mlb.com/api/v1/transactions?playerId=666783');
+
+create temporary table _m020_resolutions (
+  slug text, id_system text, external_id text, status text, method text, confidence text,
+  signals text[], candidates jsonb, query jsonb, source_url text, note text
+) on commit drop;
+insert into _m020_resolutions values
+('abel-lorenzo','MLB','806867','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":806867,"name":"Abel Lorenzo","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806867?hydrate=xrefId',null),
+('abel-lorenzo','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":806867}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('abel-lorenzo','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":806867}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806867?hydrate=xrefId',null),
+('accimias-morales','MLB','703193','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":703193,"name":"Accimias Morales","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/703193?hydrate=xrefId',null),
+('accimias-morales','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":703193}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('accimias-morales','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":703193}'::jsonb,'https://statsapi.mlb.com/api/v1/people/703193?hydrate=xrefId',null),
+('adrian-beltre','MLB','134181','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":134181,"name":"Adrian Beltre","signingYear":1994}'::jsonb,'https://statsapi.mlb.com/api/v1/people/134181?hydrate=xrefId',null),
+('adrian-beltre','BASEBALL_REFERENCE','beltrad01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"beltrad01","firstTeam":"LAD","firstYear":1998,"name":"Adrian Beltré"}]'::jsonb,'{"brefHint":"beltrad01","debutDate":"1998-06-24","debutTeam":"LAD","lahman":"beltrad01","mlbId":134181}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('adrian-beltre','FANGRAPHS','639','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":134181}'::jsonb,'https://statsapi.mlb.com/api/v1/people/134181?hydrate=xrefId',null),
+('adrian-rondon','MLB','660632','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1998-07-07","date":"2014-07-07","description":"Tampa Bay Rays signed SS Adrian Rondon.","fullName":"Adrian Rondon","mlbDebutDate":null,"mlbId":660632}]'::jsonb,'{"aliases":[],"club":"TB","mlbId":660632,"name":"Adrian Rondon","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660632?hydrate=xrefId',null),
+('adrian-rondon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660632}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('adrian-rondon','FANGRAPHS','sa877519','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660632}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660632?hydrate=xrefId',null),
+('adrian-torres','MLB','830397','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830397,"name":"Adrian Torres","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830397?hydrate=xrefId',null),
+('adrian-torres','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830397}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('adrian-torres','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830397}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830397?hydrate=xrefId',null),
+('agustin-acosta','MLB','802528','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":802528,"name":"Agustin Acosta","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/802528?hydrate=xrefId',null),
+('agustin-acosta','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":802528}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('agustin-acosta','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":802528}'::jsonb,'https://statsapi.mlb.com/api/v1/people/802528?hydrate=xrefId',null),
+('aldo-espinoza','MLB','665852','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":665852,"name":"Aldo Espinoza","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665852?hydrate=xrefId',null),
+('aldo-espinoza','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":665852}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('aldo-espinoza','FANGRAPHS','sa917334','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665852}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665852?hydrate=xrefId',null),
+('aldrin-batista','MLB','702881','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":702881,"name":"Aldrin Batista","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/702881?hydrate=xrefId',null),
+('aldrin-batista','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":702881}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('aldrin-batista','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":702881}'::jsonb,'https://statsapi.mlb.com/api/v1/people/702881?hydrate=xrefId',null),
+('alex-de-jesus','MLB','682942','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682942,"name":"Alex De Jesus","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682942?hydrate=xrefId',null),
+('alex-de-jesus','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682942}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('alex-de-jesus','FANGRAPHS','sa3008842','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682942}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682942?hydrate=xrefId',null),
+('alexander-albertus','MLB','800316','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800316,"name":"Alexander Albertus","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800316?hydrate=xrefId',null),
+('alexander-albertus','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800316}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('alexander-albertus','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800316}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800316?hydrate=xrefId',null),
+('alexis-dominguez','MLB','821826','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821826,"name":"Alexis Dominguez","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821826?hydrate=xrefId',null),
+('alexis-dominguez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821826}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('alexis-dominguez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821826}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821826?hydrate=xrefId',null),
+('alexis-reyes','MLB','829490','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":829490,"name":"Alexis Reyes","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829490?hydrate=xrefId',null),
+('alexis-reyes','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":829490}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('alexis-reyes','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":829490}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829490?hydrate=xrefId',null),
+('allen-ajoti','MLB','821808','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Allan Atoji"],"club":"LAD","mlbId":821808,"name":"Allen Ajoti","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821808?hydrate=xrefId',null),
+('allen-ajoti','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821808}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('allen-ajoti','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821808}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821808?hydrate=xrefId',null),
+('amado-nunez','MLB','658535','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-10-10","date":"2014-07-02","description":"Chicago White Sox signed free agent SS Amado Nunez to a minor league contract.","fullName":"Amado Nunez","mlbDebutDate":null,"mlbId":658535}]'::jsonb,'{"aliases":[],"club":"CWS","mlbId":658535,"name":"Amado Nunez","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658535?hydrate=xrefId',null),
+('amado-nunez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":658535}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('amado-nunez','FANGRAPHS','sa877349','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":658535}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658535?hydrate=xrefId',null),
+('anderson-espinoza','MLB','659262','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1998-03-09","date":"2014-08-15","description":"Boston Red Sox signed free agent Anderson Espinoza.","fullName":"Anderson Espinoza","mlbDebutDate":"2022-05-30","mlbId":659262}]'::jsonb,'{"aliases":[],"club":"BOS","mlbId":659262,"name":"Anderson Espinoza","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/659262?hydrate=xrefId',null),
+('anderson-espinoza','BASEBALL_REFERENCE','espinan01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"espinan01","firstTeam":"CHC","firstYear":2022,"name":"Anderson Espinoza"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"espinan01","mlbId":659262}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('anderson-espinoza','FANGRAPHS','18593','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":659262}'::jsonb,'https://statsapi.mlb.com/api/v1/people/659262?hydrate=xrefId',null),
+('anderson-estevez','MLB','802740','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":802740,"name":"Anderson Estevez","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/802740?hydrate=xrefId',null),
+('anderson-estevez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":802740}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('anderson-estevez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":802740}'::jsonb,'https://statsapi.mlb.com/api/v1/people/802740?hydrate=xrefId',null),
+('anderson-jerez','MLB','808214','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808214,"name":"Anderson Jerez","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808214?hydrate=xrefId',null),
+('anderson-jerez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808214}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('anderson-jerez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808214}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808214?hydrate=xrefId',null),
+('andres-luna','MLB','831322','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":831322,"name":"Andres Luna","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/831322?hydrate=xrefId',null),
+('andres-luna','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":831322}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('andres-luna','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":831322}'::jsonb,'https://statsapi.mlb.com/api/v1/people/831322?hydrate=xrefId',null),
+('andy-pages','MLB','681624','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":681624,"name":"Andy Pages","signingYear":2017}'::jsonb,'https://statsapi.mlb.com/api/v1/people/681624?hydrate=xrefId',null),
+('andy-pages','BASEBALL_REFERENCE','pagesan01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"pagesan01","firstTeam":"LAD","firstYear":2024,"name":"Andy Pages"}]'::jsonb,'{"brefHint":"pagesan01","debutDate":"2024-04-16","debutTeam":"LAD","lahman":"pagesan01","mlbId":681624}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('andy-pages','FANGRAPHS','24816','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":681624}'::jsonb,'https://statsapi.mlb.com/api/v1/people/681624?hydrate=xrefId',null),
+('aneudy-almonte','MLB','825160','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":825160,"name":"Aneudy Almonte","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/825160?hydrate=xrefId',null),
+('aneudy-almonte','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":825160}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('aneudy-almonte','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":825160}'::jsonb,'https://statsapi.mlb.com/api/v1/people/825160?hydrate=xrefId',null),
+('angel-cruz','MLB','807654','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":807654,"name":"Angel Cruz","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807654?hydrate=xrefId',null),
+('angel-cruz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":807654}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('angel-cruz','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":807654}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807654?hydrate=xrefId',null),
+('angel-ramirez','MLB','821633','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821633,"name":"Angel Ramirez","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821633?hydrate=xrefId',null),
+('angel-ramirez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821633}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('angel-ramirez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821633}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821633?hydrate=xrefId',null),
+('antoni-urena','MLB','829482','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Antoni Ureña"],"club":"LAD","mlbId":829482,"name":"Antoni Urena","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829482?hydrate=xrefId',null),
+('antoni-urena','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":829482}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('antoni-urena','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":829482}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829482?hydrate=xrefId',null),
+('antonio-arias','MLB','660626','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1998-06-12","date":"2014-07-02","description":"New York Yankees signed free agent CF Antonio Arias to a minor league contract.","fullName":"Antonio Arias","mlbDebutDate":null,"mlbId":660626}]'::jsonb,'{"aliases":[],"club":"NYY","mlbId":660626,"name":"Antonio Arias","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660626?hydrate=xrefId',null),
+('antonio-arias','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660626}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('antonio-arias','FANGRAPHS','sa873482','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660626}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660626?hydrate=xrefId',null),
+('antonio-osuna','MLB','120107','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":120107,"name":"Antonio Osuna","signingYear":1991}'::jsonb,'https://statsapi.mlb.com/api/v1/people/120107?hydrate=xrefId',null),
+('antonio-osuna','BASEBALL_REFERENCE','osunaan01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"osunaan01","firstTeam":"LAD","firstYear":1995,"name":"Antonio Osuna"}]'::jsonb,'{"brefHint":"osunaan01","debutDate":"1995-04-25","debutTeam":"LAD","lahman":"osunaan01","mlbId":120107}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('antonio-osuna','FANGRAPHS','249','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":120107}'::jsonb,'https://statsapi.mlb.com/api/v1/people/120107?hydrate=xrefId',null),
+('ariel-reynoso','MLB','837605','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":837605,"name":"Ariel Reynoso","signingYear":2026}'::jsonb,'https://statsapi.mlb.com/api/v1/people/837605?hydrate=xrefId',null),
+('ariel-reynoso','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":837605}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ariel-reynoso','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":837605}'::jsonb,'https://statsapi.mlb.com/api/v1/people/837605?hydrate=xrefId',null),
+('arnaldo-lantigua','MLB','806984','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":806984,"name":"Arnaldo Lantigua","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806984?hydrate=xrefId',null),
+('arnaldo-lantigua','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":806984}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('arnaldo-lantigua','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":806984}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806984?hydrate=xrefId',null),
+('arod-mckenzie','MLB','803242','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":803242,"name":"Arod McKenzie","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/803242?hydrate=xrefId',null),
+('arod-mckenzie','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":803242}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('arod-mckenzie','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":803242}'::jsonb,'https://statsapi.mlb.com/api/v1/people/803242?hydrate=xrefId',null),
+('arquimedes-gamboa','MLB','660614','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-09-23","date":"2014-07-17","description":"Philadelphia Phillies signed free agent SS Arquimedes Gamboa to a minor league contract.","fullName":"Arquímedes Gamboa","mlbDebutDate":null,"mlbId":660614}]'::jsonb,'{"aliases":[],"club":"PHI","mlbId":660614,"name":"Arquimedes Gamboa","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660614?hydrate=xrefId',null),
+('arquimedes-gamboa','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660614}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('arquimedes-gamboa','FANGRAPHS','sa877497','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660614}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660614?hydrate=xrefId',null),
+('axel-perez','MLB','821612','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821612,"name":"Axel Perez","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821612?hydrate=xrefId',null),
+('axel-perez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821612}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('axel-perez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821612}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821612?hydrate=xrefId',null),
+('ben-serunkuma','MLB','805205','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":805205,"name":"Ben Serunkuma","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805205?hydrate=xrefId',null),
+('ben-serunkuma','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":805205}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ben-serunkuma','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":805205}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805205?hydrate=xrefId',null),
+('brayan-hernandez','MLB','659910','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-09-11","date":"2014-07-24","description":"Seattle Mariners signed free agent OF Brayan Hernandez to a minor league contract.","fullName":"Brayan Hernandez","mlbDebutDate":null,"mlbId":659910}]'::jsonb,'{"aliases":[],"club":"SEA","mlbId":659910,"name":"Brayan Hernandez","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/659910?hydrate=xrefId',null),
+('brayan-hernandez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":659910}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('brayan-hernandez','FANGRAPHS','sa876536','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":659910}'::jsonb,'https://statsapi.mlb.com/api/v1/people/659910?hydrate=xrefId',null),
+('brian-diaz','MLB','699070','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699070,"name":"Brian Diaz","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699070?hydrate=xrefId',null),
+('brian-diaz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699070}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('brian-diaz','FANGRAPHS','sa3016028','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699070}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699070?hydrate=xrefId',null),
+('bryan-lara','MLB','832440','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":832440,"name":"Bryan Lara","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/832440?hydrate=xrefId',null),
+('bryan-lara','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":832440}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('bryan-lara','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":832440}'::jsonb,'https://statsapi.mlb.com/api/v1/people/832440?hydrate=xrefId',null),
+('callum-wallace','MLB','800527','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800527,"name":"Callum Wallace","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800527?hydrate=xrefId',null),
+('callum-wallace','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800527}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('callum-wallace','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800527}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800527?hydrate=xrefId',null),
+('carlos-avila','MLB','699066','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699066,"name":"Carlos Avila","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699066?hydrate=xrefId',null),
+('carlos-avila','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699066}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('carlos-avila','FANGRAPHS','sa3016161','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699066}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699066?hydrate=xrefId',null),
+('carlos-frias','MLB','516910','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Carlos Frías"],"club":"LAD","mlbId":516910,"name":"Carlos Frias","signingYear":2007}'::jsonb,'https://statsapi.mlb.com/api/v1/people/516910?hydrate=xrefId',null),
+('carlos-frias','BASEBALL_REFERENCE','friasca01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"friasca01","firstTeam":"LAD","firstYear":2014,"name":"Carlos Frías"}]'::jsonb,'{"brefHint":"friasca01","debutDate":"2014-08-04","debutTeam":"LAD","lahman":"friasca01","mlbId":516910}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('carlos-frias','FANGRAPHS','3547','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":516910}'::jsonb,'https://statsapi.mlb.com/api/v1/people/516910?hydrate=xrefId',null),
+('carlos-herrera','MLB','650508','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1996-09-23","date":"2013-07-02","description":"Colorado Rockies signed free agent SS Carlos Herrera to a minor league contract.","fullName":"Carlos Herrera","mlbDebutDate":null,"mlbId":650508}]'::jsonb,'{"aliases":[],"club":"COL","mlbId":650508,"name":"Carlos Herrera","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650508?hydrate=xrefId',null),
+('carlos-herrera','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650508}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('carlos-herrera','FANGRAPHS','sa830140','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650508}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650508?hydrate=xrefId',null),
+('carlos-hiciano','MLB','645289','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1996-10-29","date":"2013-07-02","description":"Oakland Athletics signed SS Carlos Hiciano.","fullName":"Carlos Hiciano","mlbDebutDate":null,"mlbId":645289}]'::jsonb,'{"aliases":[],"club":"OAK","mlbId":645289,"name":"Carlos Hiciano","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/645289?hydrate=xrefId',null),
+('carlos-hiciano','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":645289}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('carlos-hiciano','FANGRAPHS','sa828218','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":645289}'::jsonb,'https://statsapi.mlb.com/api/v1/people/645289?hydrate=xrefId',null),
+('carlos-ramirez','MLB','830439','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830439,"name":"Carlos Ramirez","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830439?hydrate=xrefId',null),
+('carlos-ramirez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830439}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('carlos-ramirez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830439}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830439?hydrate=xrefId',null),
+('carlos-rincon','MLB','665779','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":665779,"name":"Carlos Rincon","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665779?hydrate=xrefId',null),
+('carlos-rincon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":665779}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('carlos-rincon','FANGRAPHS','sa917319','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665779}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665779?hydrate=xrefId',null),
+('carlos-santana','MLB','467793','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":467793,"name":"Carlos Santana","signingYear":2004}'::jsonb,'https://statsapi.mlb.com/api/v1/people/467793?hydrate=xrefId',null),
+('carlos-santana','BASEBALL_REFERENCE','santaca01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"santaca01","firstTeam":"CLE","firstYear":2010,"name":"Carlos Santana"}]'::jsonb,'{"brefHint":"santaca01","debutDate":"2010-06-11","debutTeam":"CLE","lahman":"santaca01","mlbId":467793}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('carlos-santana','FANGRAPHS','2396','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":467793}'::jsonb,'https://statsapi.mlb.com/api/v1/people/467793?hydrate=xrefId',null),
+('carlos-sardina','MLB','821658','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Carlos Sardiña"],"club":"LAD","mlbId":821658,"name":"Carlos Sardina","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821658?hydrate=xrefId',null),
+('carlos-sardina','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821658}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('carlos-sardina','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821658}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821658?hydrate=xrefId',null),
+('cesar-sanchez','MLB','829479','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":829479,"name":"Cesar Sanchez","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829479?hydrate=xrefId',null),
+('cesar-sanchez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":829479}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('cesar-sanchez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":829479}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829479?hydrate=xrefId',null),
+('chan-ho-park','MLB','120221','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":120221,"name":"Chan Ho Park","signingYear":1994}'::jsonb,'https://statsapi.mlb.com/api/v1/people/120221?hydrate=xrefId',null),
+('chan-ho-park','BASEBALL_REFERENCE','parkch01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"parkch01","firstTeam":"LAD","firstYear":1994,"name":"Chan Ho Park"}]'::jsonb,'{"brefHint":"parkch01","debutDate":"1994-04-08","debutTeam":"LAD","lahman":"parkch01","mlbId":120221}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('chan-ho-park','FANGRAPHS','1267','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":120221}'::jsonb,'https://statsapi.mlb.com/api/v1/people/120221?hydrate=xrefId',null),
+('chico-fernandez','MLB','114077','RESOLVED','BREF_NAME_DEBUT_YEAR_DEBUT_TEAM','HIGH',array['NAME','DEBUT_YEAR','DEBUT_FRANCHISE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":114077,"name":"Chico Fernandez","signingYear":1951}'::jsonb,'https://statsapi.mlb.com/api/v1/people/114077?hydrate=xrefId',null),
+('chico-fernandez','BASEBALL_REFERENCE','fernach01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"fernach01","firstTeam":"BRO","firstYear":1956,"name":"Chico Fernández"}]'::jsonb,'{"brefHint":null,"debutDate":"1956-07-14","debutTeam":"BRO","lahman":"fernach01","mlbId":114077}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('chico-fernandez','FANGRAPHS','1003994','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":114077}'::jsonb,'https://statsapi.mlb.com/api/v1/people/114077?hydrate=xrefId',null),
+('chin-lung-hu','MLB','464341','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":464341,"name":"Chin-lung Hu","signingYear":2003}'::jsonb,'https://statsapi.mlb.com/api/v1/people/464341?hydrate=xrefId',null),
+('chin-lung-hu','BASEBALL_REFERENCE','huch01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"huch01","firstTeam":"LAD","firstYear":2007,"name":"Chin-lung Hu"}]'::jsonb,'{"brefHint":"huch01","debutDate":"2007-09-01","debutTeam":"LAD","lahman":"huch01","mlbId":464341}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('chin-lung-hu','FANGRAPHS','5198','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":464341}'::jsonb,'https://statsapi.mlb.com/api/v1/people/464341?hydrate=xrefId',null),
+('christian-muniz','MLB','821650','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Christian Muñiz"],"club":"LAD","mlbId":821650,"name":"Christian Muniz","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821650?hydrate=xrefId',null),
+('christian-muniz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821650}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('christian-muniz','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821650}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821650?hydrate=xrefId',null),
+('christian-romero','MLB','699071','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699071,"name":"Christian Romero","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699071?hydrate=xrefId',null),
+('christian-romero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699071}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('christian-romero','FANGRAPHS','sa3016260','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699071}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699071?hydrate=xrefId',null),
+('christian-suarez','MLB','682949','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682949,"name":"Christian Suarez","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682949?hydrate=xrefId',null),
+('christian-suarez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682949}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('christian-suarez','FANGRAPHS','sa3009222','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682949}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682949?hydrate=xrefId',null),
+('christopher-acosta','MLB','659261','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1998-01-15","date":"2014-08-15","description":"Boston Red Sox signed free agent RHP Christopher Acosta to a minor league contract.","fullName":"Christopher Acosta","mlbDebutDate":null,"mlbId":659261}]'::jsonb,'{"aliases":[],"club":"BOS","mlbId":659261,"name":"Christopher Acosta","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/659261?hydrate=xrefId',null),
+('christopher-acosta','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":659261}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('christopher-acosta','FANGRAPHS','sa872489','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":659261}'::jsonb,'https://statsapi.mlb.com/api/v1/people/659261?hydrate=xrefId',null),
+('christopher-arias','MLB','665931','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":665931,"name":"Christopher Arias","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665931?hydrate=xrefId',null),
+('christopher-arias','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":665931}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('christopher-arias','FANGRAPHS','sa3002839','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665931}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665931?hydrate=xrefId',null),
+('dailoui-abad','MLB','699060','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699060,"name":"Dailoui Abad","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699060?hydrate=xrefId',null),
+('dailoui-abad','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699060}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('dailoui-abad','FANGRAPHS','sa3016027','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699060}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699060?hydrate=xrefId',null),
+('damaso-marte-jr','MLB','666006','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":666006,"name":"Damaso Marte Jr.","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/666006?hydrate=xrefId',null),
+('damaso-marte-jr','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":666006}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('damaso-marte-jr','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":666006}'::jsonb,'https://statsapi.mlb.com/api/v1/people/666006?hydrate=xrefId',null),
+('daniel-arrias','MLB','800328','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800328,"name":"Daniel Arrias","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800328?hydrate=xrefId',null),
+('daniel-arrias','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800328}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('daniel-arrias','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800328}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800328?hydrate=xrefId',null),
+('daniel-mielcarek','MLB','808028','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808028,"name":"Daniel Mielcarek","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808028?hydrate=xrefId',null),
+('daniel-mielcarek','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808028}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('daniel-mielcarek','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808028}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808028?hydrate=xrefId',null),
+('david-romero','MLB','821661','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821661,"name":"David Romero","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821661?hydrate=xrefId',null),
+('david-romero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821661}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('david-romero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821661}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821661?hydrate=xrefId',null),
+('degerson-diaz','MLB','830481','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830481,"name":"Degerson Diaz","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830481?hydrate=xrefId',null),
+('degerson-diaz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830481}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('degerson-diaz','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830481}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830481?hydrate=xrefId',null),
+('derik-aquino','MLB','830468','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830468,"name":"Derik Aquino","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830468?hydrate=xrefId',null),
+('derik-aquino','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830468}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('derik-aquino','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830468}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830468?hydrate=xrefId',null),
+('dermis-garcia','MLB','660650','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1998-01-07","date":"2014-12-18","description":"New York Yankees signed free agent SS Dermis Garcia to a minor league contract.","fullName":"Dérmis Garcia","mlbDebutDate":"2022-07-12","mlbId":660650}]'::jsonb,'{"aliases":[],"club":"NYY","mlbId":660650,"name":"Dermis Garcia","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660650?hydrate=xrefId',null),
+('dermis-garcia','BASEBALL_REFERENCE','garcide02','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"garcide02","firstTeam":"OAK","firstYear":2022,"name":"Dérmis García"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"garcide02","mlbId":660650}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('dermis-garcia','FANGRAPHS','20926','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660650}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660650?hydrate=xrefId',null),
+('devlyn-bautista','MLB','830426','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830426,"name":"Devlyn Bautista","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830426?hydrate=xrefId',null),
+('devlyn-bautista','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830426}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('devlyn-bautista','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830426}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830426?hydrate=xrefId',null),
+('diego-cartaya','MLB','682616','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682616,"name":"Diego Cartaya","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682616?hydrate=xrefId',null),
+('diego-cartaya','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682616}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('diego-cartaya','FANGRAPHS','sa3008742','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682616}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682616?hydrate=xrefId',null),
+('diego-castillo','MLB','660636','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-10-28","date":"2014-12-18","description":"New York Yankees signed free agent SS Diego Castillo to a minor league contract.","fullName":"Diego Castillo","mlbDebutDate":"2022-04-07","mlbId":660636}]'::jsonb,'{"aliases":[],"club":"NYY","mlbId":660636,"name":"Diego Castillo","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660636?hydrate=xrefId',null),
+('diego-castillo','BASEBALL_REFERENCE','castidi02','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"castidi02","firstTeam":"PIT","firstYear":2022,"name":"Diego Castillo"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"castidi02","mlbId":660636}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('diego-castillo','FANGRAPHS','19906','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660636}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660636?hydrate=xrefId',null),
+('domingo-geronimo','MLB','800383','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800383,"name":"Domingo Geronimo","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800383?hydrate=xrefId',null),
+('domingo-geronimo','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800383}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('domingo-geronimo','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800383}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800383?hydrate=xrefId',null),
+('eddys-leonard','MLB','678760','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":678760,"name":"Eddys Leonard","signingYear":2017}'::jsonb,'https://statsapi.mlb.com/api/v1/people/678760?hydrate=xrefId',null),
+('eddys-leonard','BASEBALL_REFERENCE','leonaed01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE']::text[],'[{"brefId":"leonaed01","firstTeam":"SFG","firstYear":2026,"name":"Eddys Leonard"}]'::jsonb,'{"brefHint":null,"debutDate":"2026-08-04","debutTeam":"SFG","lahman":null,"mlbId":678760}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('eddys-leonard','FANGRAPHS','24151','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":678760}'::jsonb,'https://statsapi.mlb.com/api/v1/people/678760?hydrate=xrefId',null),
+('edgar-aviles','MLB','800530','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800530,"name":"Edgar Aviles","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800530?hydrate=xrefId',null),
+('edgar-aviles','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800530}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('edgar-aviles','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800530}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800530?hydrate=xrefId',null),
+('edgar-gomez','MLB','807626','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":807626,"name":"Edgar Gomez","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807626?hydrate=xrefId',null),
+('edgar-gomez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":807626}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('edgar-gomez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":807626}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807626?hydrate=xrefId',null),
+('edgar-leon','MLB','800453','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800453,"name":"Edgar Leon","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800453?hydrate=xrefId',null),
+('edgar-leon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800453}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('edgar-leon','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800453}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800453?hydrate=xrefId',null),
+('eduardo-guerrero','MLB','800370','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800370,"name":"Eduardo Guerrero","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800370?hydrate=xrefId',null),
+('eduardo-guerrero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800370}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('eduardo-guerrero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800370}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800370?hydrate=xrefId',null),
+('eduardo-quintero','MLB','808234','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808234,"name":"Eduardo Quintero","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808234?hydrate=xrefId',null),
+('eduardo-quintero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808234}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('eduardo-quintero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808234}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808234?hydrate=xrefId',null),
+('eduardo-rojas','MLB','821672','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821672,"name":"Eduardo Rojas","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821672?hydrate=xrefId',null),
+('eduardo-rojas','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821672}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('eduardo-rojas','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821672}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821672?hydrate=xrefId',null),
+('elian-herrera','MLB','467070','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":467070,"name":"Elian Herrera","signingYear":2003}'::jsonb,'https://statsapi.mlb.com/api/v1/people/467070?hydrate=xrefId',null),
+('elian-herrera','BASEBALL_REFERENCE','herreel01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"herreel01","firstTeam":"LAD","firstYear":2012,"name":"Elián Herrera"}]'::jsonb,'{"brefHint":"herreel01","debutDate":"2012-05-15","debutTeam":"LAD","lahman":"herreel01","mlbId":467070}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('elian-herrera','FANGRAPHS','5432','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":467070}'::jsonb,'https://statsapi.mlb.com/api/v1/people/467070?hydrate=xrefId',null),
+('elias-medina','MLB','808257','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808257,"name":"Elias Medina","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808257?hydrate=xrefId',null),
+('elias-medina','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808257}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('elias-medina','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808257}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808257?hydrate=xrefId',null),
+('elio-campos','MLB','699069','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699069,"name":"Elio Campos","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699069?hydrate=xrefId',null),
+('elio-campos','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699069}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('elio-campos','FANGRAPHS','sa3016645','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699069}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699069?hydrate=xrefId',null),
+('eloy-jimenez','MLB','650391','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1996-11-27","date":"2013-08-01","description":"Chicago Cubs signed free agent OF Eloy Jimenez to a minor league contract.","fullName":"Eloy Jiménez","mlbDebutDate":"2019-03-28","mlbId":650391}]'::jsonb,'{"aliases":[],"club":"CHC","mlbId":650391,"name":"Eloy Jimenez","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650391?hydrate=xrefId',null),
+('eloy-jimenez','BASEBALL_REFERENCE','jimenel02','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"jimenel02","firstTeam":"CHW","firstYear":2019,"name":"Eloy Jiménez"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"jimenel02","mlbId":650391}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('eloy-jimenez','FANGRAPHS','17484','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650391}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650391?hydrate=xrefId',null),
+('emil-morales','MLB','815896','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":815896,"name":"Emil Morales","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/815896?hydrate=xrefId',null),
+('emil-morales','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":815896}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('emil-morales','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":815896}'::jsonb,'https://statsapi.mlb.com/api/v1/people/815896?hydrate=xrefId',null),
+('emmanuel-dejesus','MLB',null,'NOT_FOUND',null,null,array[]::text[],'[]'::jsonb,'{"club":"BOS","name":"Emmanuel DeJesus","signingYear":2013}'::jsonb,null,'No MLB transaction or name-search match with the signing club; left for manual identity research.'),
+('emmanuel-dejesus','BASEBALL_REFERENCE',null,'NOT_FOUND',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":null}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No Baseball-Reference entry named "Emmanuel DeJesus".'),
+('ender-avendano','MLB','682937','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682937,"name":"Ender Avendano","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682937?hydrate=xrefId',null),
+('ender-avendano','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682937}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ender-avendano','FANGRAPHS','sa3009293','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682937}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682937?hydrate=xrefId',null),
+('enrike-sevilya','MLB','800288','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800288,"name":"Enrike Sevilya","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800288?hydrate=xrefId',null),
+('enrike-sevilya','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800288}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('enrike-sevilya','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800288}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800288?hydrate=xrefId',null),
+('erick-batista','MLB','808209','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808209,"name":"Erick Batista","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808209?hydrate=xrefId',null),
+('erick-batista','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808209}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('erick-batista','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808209}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808209?hydrate=xrefId',null),
+('erick-julio','MLB','650510','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Colombia","birthDate":"1996-09-22","date":"2013-07-02","description":"Colorado Rockies signed free agent RHP Erick Julio to a minor league contract.","fullName":"Erick Julio","mlbDebutDate":null,"mlbId":650510}]'::jsonb,'{"aliases":[],"club":"COL","mlbId":650510,"name":"Erick Julio","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650510?hydrate=xrefId',null),
+('erick-julio','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650510}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('erick-julio','FANGRAPHS','sa828333','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650510}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650510?hydrate=xrefId',null),
+('erick-nava','MLB','812748','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":812748,"name":"Erick Nava","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/812748?hydrate=xrefId',null),
+('erick-nava','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":812748}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('erick-nava','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":812748}'::jsonb,'https://statsapi.mlb.com/api/v1/people/812748?hydrate=xrefId',null),
+('erling-moreno','MLB','650400','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Colombia","birthDate":"1997-01-13","date":"2013-07-02","description":"Chicago Cubs signed free agent RHP Erling Moreno to a minor league contract.","fullName":"Erling Moreno","mlbDebutDate":null,"mlbId":650400}]'::jsonb,'{"aliases":[],"club":"CHC","mlbId":650400,"name":"Erling Moreno","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650400?hydrate=xrefId',null),
+('erling-moreno','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650400}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('erling-moreno','FANGRAPHS','sa827076','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650400}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650400?hydrate=xrefId',null),
+('erny-orellana','MLB','821786','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821786,"name":"Erny Orellana","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821786?hydrate=xrefId',null),
+('erny-orellana','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821786}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('erny-orellana','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821786}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821786?hydrate=xrefId',null),
+('euri-rosa','MLB','821817','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Eury Rosa"],"club":"LAD","mlbId":821817,"name":"Euri Rosa","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821817?hydrate=xrefId',null),
+('euri-rosa','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821817}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('euri-rosa','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821817}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821817?hydrate=xrefId',null),
+('ezequiel-aparicio','MLB','830452','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830452,"name":"Ezequiel Aparicio","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830452?hydrate=xrefId',null),
+('ezequiel-aparicio','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830452}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ezequiel-aparicio','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830452}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830452?hydrate=xrefId',null),
+('ezequiel-melburne','MLB','836606','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":836606,"name":"Ezequiel Melburne","signingYear":2026}'::jsonb,'https://statsapi.mlb.com/api/v1/people/836606?hydrate=xrefId',null),
+('ezequiel-melburne','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":836606}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ezequiel-melburne','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":836606}'::jsonb,'https://statsapi.mlb.com/api/v1/people/836606?hydrate=xrefId',null),
+('fernando-valenzuela','MLB','123619','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":123619,"name":"Fernando Valenzuela","signingYear":1979}'::jsonb,'https://statsapi.mlb.com/api/v1/people/123619?hydrate=xrefId',null),
+('fernando-valenzuela','BASEBALL_REFERENCE','valenfe01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"valenfe01","firstTeam":"LAD","firstYear":1980,"name":"Fernando Valenzuela"}]'::jsonb,'{"brefHint":"valenfe01","debutDate":"1980-09-15","debutTeam":"LAD","lahman":"valenfe01","mlbId":123619}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('fernando-valenzuela','FANGRAPHS','1013327','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":123619}'::jsonb,'https://statsapi.mlb.com/api/v1/people/123619?hydrate=xrefId',null),
+('francisco-espinoza','MLB','821689','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Francisco Esponoza"],"club":"LAD","mlbId":821689,"name":"Francisco Espinoza","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821689?hydrate=xrefId',null),
+('francisco-espinoza','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821689}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('francisco-espinoza','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821689}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821689?hydrate=xrefId',null),
+('franderly-morel','MLB','806918','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":806918,"name":"Franderly Morel","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806918?hydrate=xrefId',null),
+('franderly-morel','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":806918}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('franderly-morel','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":806918}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806918?hydrate=xrefId',null),
+('franklin-perez','MLB','658530','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-12-06","date":"2014-07-02","description":"Houston Astros signed free agent RHP Franklin Perez to a minor league contract.","fullName":"Franklin Pérez","mlbDebutDate":null,"mlbId":658530}]'::jsonb,'{"aliases":[],"club":"HOU","mlbId":658530,"name":"Franklin Perez","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658530?hydrate=xrefId',null),
+('franklin-perez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":658530}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('franklin-perez','FANGRAPHS','sa873722','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":658530}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658530?hydrate=xrefId',null),
+('franly-mallen','MLB','650691','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-05-27","date":"2013-07-02","description":"Milwaukee Brewers signed free agent SS Franly Mallen to a minor league contract.","fullName":"Franly Mallen","mlbDebutDate":null,"mlbId":650691}]'::jsonb,'{"aliases":[],"club":"MIL","mlbId":650691,"name":"Franly Mallen","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650691?hydrate=xrefId',null),
+('franly-mallen','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650691}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('franly-mallen','FANGRAPHS','sa827978','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650691}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650691?hydrate=xrefId',null),
+('gersel-pitre','MLB','649957','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":649957,"name":"Gersel Pitre","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649957?hydrate=xrefId',null),
+('gersel-pitre','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":649957}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('gersel-pitre','FANGRAPHS','sa828176','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":649957}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649957?hydrate=xrefId',null),
+('gilbert-lara','MLB','658677','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-10-30","date":"2014-07-10","description":"Milwaukee Brewers signed free agent SS Gilbert Lara to a minor league contract.","fullName":"Gilbert Lara","mlbDebutDate":null,"mlbId":658677}]'::jsonb,'{"aliases":[],"club":"MIL","mlbId":658677,"name":"Gilbert Lara","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658677?hydrate=xrefId',null),
+('gilbert-lara','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":658677}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('gilbert-lara','FANGRAPHS','sa877337','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":658677}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658677?hydrate=xrefId',null),
+('gleyber-torres','MLB','650402','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1996-12-13","date":"2013-07-02","description":"Chicago Cubs signed free agent SS Gleyber Torres to a minor league contract.","fullName":"Gleyber Torres","mlbDebutDate":"2018-04-22","mlbId":650402}]'::jsonb,'{"aliases":[],"club":"CHC","mlbId":650402,"name":"Gleyber Torres","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650402?hydrate=xrefId',null),
+('gleyber-torres','BASEBALL_REFERENCE','torregl01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"torregl01","firstTeam":"NYY","firstYear":2018,"name":"Gleyber Torres"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"torregl01","mlbId":650402}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('gleyber-torres','FANGRAPHS','16997','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650402}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650402?hydrate=xrefId',null),
+('gregory-pereira','MLB','682946','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682946,"name":"Gregory Pereira","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682946?hydrate=xrefId',null),
+('gregory-pereira','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682946}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('gregory-pereira','FANGRAPHS','sa3008844','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682946}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682946?hydrate=xrefId',null),
+('greifer-andrade','MLB','650849','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-01-27","date":"2013-07-03","description":"Seattle Mariners signed free agent SS Greifer Andrade to a minor league contract.","fullName":"Greifer Andrade","mlbDebutDate":null,"mlbId":650849}]'::jsonb,'{"aliases":[],"club":"SEA","mlbId":650849,"name":"Greifer Andrade","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650849?hydrate=xrefId',null),
+('greifer-andrade','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650849}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('greifer-andrade','FANGRAPHS','sa826675','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650849}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650849?hydrate=xrefId',null),
+('harold-gonzalez','MLB','808339','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808339,"name":"Harold Gonzalez","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808339?hydrate=xrefId',null),
+('harold-gonzalez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808339}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('harold-gonzalez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808339}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808339?hydrate=xrefId',null),
+('hendrik-clementina','MLB','649955','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":649955,"name":"Hendrik Clementina","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649955?hydrate=xrefId',null),
+('hendrik-clementina','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":649955}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('hendrik-clementina','FANGRAPHS','sa828422','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":649955}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649955?hydrate=xrefId',null),
+('hendry-arvelo','MLB','829498','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":829498,"name":"Hendry Arvelo","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829498?hydrate=xrefId',null),
+('hendry-arvelo','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":829498}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('hendry-arvelo','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":829498}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829498?hydrate=xrefId',null),
+('heudy-pena','MLB','821263','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Heudy Peña"],"club":"LAD","mlbId":821263,"name":"Heudy Pena","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821263?hydrate=xrefId',null),
+('heudy-pena','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821263}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('heudy-pena','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821263}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821263?hydrate=xrefId',null),
+('hideo-nomo','MLB','119827','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":119827,"name":"Hideo Nomo","signingYear":1995}'::jsonb,'https://statsapi.mlb.com/api/v1/people/119827?hydrate=xrefId',null),
+('hideo-nomo','BASEBALL_REFERENCE','nomohi01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"nomohi01","firstTeam":"LAD","firstYear":1995,"name":"Hideo Nomo"}]'::jsonb,'{"brefHint":"nomohi01","debutDate":"1995-05-02","debutTeam":"LAD","lahman":"nomohi01","mlbId":119827}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('hideo-nomo','FANGRAPHS','666','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":119827}'::jsonb,'https://statsapi.mlb.com/api/v1/people/119827?hydrate=xrefId',null),
+('huascar-ynoa','MLB','660623','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1998-05-28","date":"2014-07-02","description":"Minnesota Twins signed free agent RHP Huascar Ynoa to a minor league contract.","fullName":"Huascar Ynoa","mlbDebutDate":"2019-06-16","mlbId":660623}]'::jsonb,'{"aliases":[],"club":"MIN","mlbId":660623,"name":"Huascar Ynoa","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660623?hydrate=xrefId',null),
+('huascar-ynoa','BASEBALL_REFERENCE','ynoahu01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"ynoahu01","firstTeam":"ATL","firstYear":2019,"name":"Huascar Ynoa"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"ynoahu01","mlbId":660623}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('huascar-ynoa','FANGRAPHS','20468','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660623}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660623?hydrate=xrefId',null),
+('hung-chih-kuo','MLB','425539','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":425539,"name":"Hung-Chih Kuo","signingYear":1999}'::jsonb,'https://statsapi.mlb.com/api/v1/people/425539?hydrate=xrefId',null),
+('hung-chih-kuo','BASEBALL_REFERENCE','kuoho01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"kuoho01","firstTeam":"LAD","firstYear":2005,"name":"Hung-Chih Kuo"}]'::jsonb,'{"brefHint":"kuoho01","debutDate":"2005-09-02","debutTeam":"LAD","lahman":"kuoho01","mlbId":425539}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('hung-chih-kuo','FANGRAPHS','7016','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":425539}'::jsonb,'https://statsapi.mlb.com/api/v1/people/425539?hydrate=xrefId',null),
+('hyo-jun-park','MLB','660829','RESOLVED','MANUAL_LINKED_SIGNING_TRANSACTION','HIGH',array['SIGNING_CLUB','SIGNING_PERIOD_OPENING_DATE','POSITION','BIRTH_COUNTRY','ROMANIZATION_VARIANT']::text[],'[{"birthCountry":"South Korea","birthDate":"1996-04-07","date":"2014-07-02","description":"New York Yankees signed free agent SS Hoy Jun Park to a minor league contract.","fullName":"Hoy Park","mlbDebutDate":"2021-07-16","mlbId":660829}]'::jsonb,'{"aliases":["Hoy Jun Park"],"club":"NYY","mlbId":660829,"name":"Hyo-Jun Park","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31','Hyo-Jun Park (2014 signing tracker spelling) and Hoy Jun Park / Hoy Park (MLB record) are the same player: the MLB transaction is a Yankees signing of a shortstop on the 2014 period''s opening day, and the MLB person record''s birth country is South Korea, matching the tracker''s club, period, position and country. Linked on that evidence, not on name similarity. The MLB.com biography (Hoy Jun Park, born April 7, 1996 in Seoul; signed by the Yankees July 2, 2014; No. 13 prospect of the 2014 period) states the same link; it could not be retrieved by the research client (HTTP 406), so it is not stored as a source.'),
+('hyo-jun-park','BASEBALL_REFERENCE','parkho01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"parkho01","firstTeam":"NYY","firstYear":2021,"name":"Hoy Park"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"parkho01","mlbId":660829}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('hyo-jun-park','FANGRAPHS','18027','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660829}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660829?hydrate=xrefId',null),
+('hyun-jin-ryu','MLB','547943','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":547943,"name":"Hyun-Jin Ryu","signingYear":2012}'::jsonb,'https://statsapi.mlb.com/api/v1/people/547943?hydrate=xrefId',null),
+('hyun-jin-ryu','BASEBALL_REFERENCE','ryuhy01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"ryuhy01","firstTeam":"LAD","firstYear":2013,"name":"Hyun Jin Ryu"}]'::jsonb,'{"brefHint":"ryuhy01","debutDate":"2013-04-02","debutTeam":"LAD","lahman":"ryuhy01","mlbId":547943}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('hyun-jin-ryu','FANGRAPHS','14444','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":547943}'::jsonb,'https://statsapi.mlb.com/api/v1/people/547943?hydrate=xrefId',null),
+('ilmerson-colon','MLB','805623','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":805623,"name":"Ilmerson Colon","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805623?hydrate=xrefId',null),
+('ilmerson-colon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":805623}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ilmerson-colon','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":805623}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805623?hydrate=xrefId',null),
+('isaac-barreto','MLB','699064','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699064,"name":"Isaac Barreto","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699064?hydrate=xrefId',null),
+('isaac-barreto','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699064}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('isaac-barreto','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":699064}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699064?hydrate=xrefId',null),
+('ismael-valdez','MLB','123595','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":123595,"name":"Ismael Valdez","signingYear":1991}'::jsonb,'https://statsapi.mlb.com/api/v1/people/123595?hydrate=xrefId',null),
+('ismael-valdez','BASEBALL_REFERENCE','valdeis01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"valdeis01","firstTeam":"LAD","firstYear":1994,"name":"Ismael Valdez"}]'::jsonb,'{"brefHint":"valdeis01","debutDate":"1994-06-15","debutTeam":"LAD","lahman":"valdeis01","mlbId":123595}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('ismael-valdez','FANGRAPHS','1283','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":123595}'::jsonb,'https://statsapi.mlb.com/api/v1/people/123595?hydrate=xrefId',null),
+('ivan-pacheco','MLB','830612','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830612,"name":"Ivan Pacheco","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830612?hydrate=xrefId',null),
+('ivan-pacheco','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830612}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ivan-pacheco','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830612}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830612?hydrate=xrefId',null),
+('javier-bartolozzi','MLB','812745','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":812745,"name":"Javier Bartolozzi","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/812745?hydrate=xrefId',null),
+('javier-bartolozzi','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":812745}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('javier-bartolozzi','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":812745}'::jsonb,'https://statsapi.mlb.com/api/v1/people/812745?hydrate=xrefId',null),
+('javier-herrera','MLB','808223','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808223,"name":"Javier Herrera","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808223?hydrate=xrefId',null),
+('javier-herrera','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808223}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('javier-herrera','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808223}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808223?hydrate=xrefId',null),
+('javier-pena','MLB','800351','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800351,"name":"Javier Pena","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800351?hydrate=xrefId',null),
+('javier-pena','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800351}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('javier-pena','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800351}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800351?hydrate=xrefId',null),
+('jecsua-liborius','MLB','807403','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":807403,"name":"Jecsua Liborius","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807403?hydrate=xrefId',null),
+('jecsua-liborius','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":807403}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jecsua-liborius','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":807403}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807403?hydrate=xrefId',null),
+('jeral-perez','MLB','800419','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800419,"name":"Jeral Perez","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800419?hydrate=xrefId',null),
+('jeral-perez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800419}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jeral-perez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800419}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800419?hydrate=xrefId',null),
+('jerami-rodriguez','MLB','682951','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Jeremi Rodriguez"],"club":"LAD","mlbId":682951,"name":"Jerami Rodriguez","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682951?hydrate=xrefId',null),
+('jerami-rodriguez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682951}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jerami-rodriguez','FANGRAPHS','sa3009721','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682951}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682951?hydrate=xrefId',null),
+('jeremy-castro','MLB','812746','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":812746,"name":"Jeremy Castro","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/812746?hydrate=xrefId',null),
+('jeremy-castro','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":812746}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jeremy-castro','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":812746}'::jsonb,'https://statsapi.mlb.com/api/v1/people/812746?hydrate=xrefId',null),
+('jerming-rosario','MLB','682645','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682645,"name":"Jerming Rosario","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682645?hydrate=xrefId',null),
+('jerming-rosario','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682645}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jerming-rosario','FANGRAPHS','sa3008678','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682645}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682645?hydrate=xrefId',null),
+('jesus-galiz','MLB','694188','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":694188,"name":"Jesus Galiz","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/694188?hydrate=xrefId',null),
+('jesus-galiz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":694188}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jesus-galiz','FANGRAPHS','sa3015700','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":694188}'::jsonb,'https://statsapi.mlb.com/api/v1/people/694188?hydrate=xrefId',null),
+('jesus-tillero','MLB','808313','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808313,"name":"Jesus Tillero","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808313?hydrate=xrefId',null),
+('jesus-tillero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808313}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jesus-tillero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808313}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808313?hydrate=xrefId',null),
+('jhoandro-alfaro','MLB','658532','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Colombia","birthDate":"1997-11-04","date":"2014-07-02","description":"Chicago White Sox signed free agent C Jhoandro Alfaro to a minor league contract.","fullName":"Jhoandro Alfaro","mlbDebutDate":null,"mlbId":658532}]'::jsonb,'{"aliases":[],"club":"CWS","mlbId":658532,"name":"Jhoandro Alfaro","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658532?hydrate=xrefId',null),
+('jhoandro-alfaro','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":658532}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jhoandro-alfaro','FANGRAPHS','sa877352','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":658532}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658532?hydrate=xrefId',null),
+('jholbran-herder','MLB','800408','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800408,"name":"Jholbran Herder","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800408?hydrate=xrefId',null),
+('jholbran-herder','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800408}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jholbran-herder','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800408}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800408?hydrate=xrefId',null),
+('jhon-gil','MLB','830459','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830459,"name":"Jhon Gil","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830459?hydrate=xrefId',null),
+('jhon-gil','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830459}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jhon-gil','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830459}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830459?hydrate=xrefId',null),
+('jhonny-jimenez','MLB','699075','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699075,"name":"Jhonny Jimenez","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699075?hydrate=xrefId',null),
+('jhonny-jimenez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699075}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jhonny-jimenez','FANGRAPHS','sa3016506','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699075}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699075?hydrate=xrefId',null),
+('jhosman-theran','MLB','830420','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830420,"name":"Jhosman Theran","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830420?hydrate=xrefId',null),
+('jhosman-theran','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830420}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jhosman-theran','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830420}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830420?hydrate=xrefId',null),
+('joendry-vargas','MLB','806959','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":806959,"name":"Joendry Vargas","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806959?hydrate=xrefId',null),
+('joendry-vargas','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":806959}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('joendry-vargas','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":806959}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806959?hydrate=xrefId',null),
+('jonathan-amundaray','MLB',null,'NOT_FOUND',null,null,array[]::text[],'[]'::jsonb,'{"club":"NYY","name":"Jonathan Amundaray","signingYear":2014}'::jsonb,null,'No MLB transaction or name-search match with the signing club; left for manual identity research.'),
+('jonathan-amundaray','BASEBALL_REFERENCE',null,'NOT_FOUND',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":null}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No Baseball-Reference entry named "Jonathan Amundaray".'),
+('jorbit-vivas','MLB','678391','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":678391,"name":"Jorbit Vivas","signingYear":2017}'::jsonb,'https://statsapi.mlb.com/api/v1/people/678391?hydrate=xrefId',null),
+('jorbit-vivas','BASEBALL_REFERENCE','vivasjo01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"vivasjo01","firstTeam":"NYY","firstYear":2025,"name":"Jorbit Vivas"}]'::jsonb,'{"brefHint":"vivasjo01","debutDate":"2025-05-02","debutTeam":"NYY","lahman":"vivasjo01","mlbId":678391}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('jorbit-vivas','FANGRAPHS','23917','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":678391}'::jsonb,'https://statsapi.mlb.com/api/v1/people/678391?hydrate=xrefId',null),
+('jorge-carpintero','MLB','699058','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699058,"name":"Jorge Carpintero","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699058?hydrate=xrefId',null),
+('jorge-carpintero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699058}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jorge-carpintero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":699058}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699058?hydrate=xrefId',null),
+('jose-almonte','MLB','650954','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1996-09-09","date":"2013-07-02","description":"Texas Rangers signed free agent OF Jose Almonte to a minor league contract.","fullName":"Jose Almonte","mlbDebutDate":null,"mlbId":650954}]'::jsonb,'{"aliases":[],"club":"TEX","mlbId":650954,"name":"Jose Almonte","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650954?hydrate=xrefId',null),
+('jose-almonte','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650954}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jose-almonte','FANGRAPHS','sa828294','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650954}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650954?hydrate=xrefId',null),
+('jose-dominguez','MLB','523848','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":523848,"name":"Jose Dominguez","signingYear":2007}'::jsonb,'https://statsapi.mlb.com/api/v1/people/523848?hydrate=xrefId',null),
+('jose-dominguez','BASEBALL_REFERENCE','dominjo01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"dominjo01","firstTeam":"LAD","firstYear":2013,"name":"José Domínguez"}]'::jsonb,'{"brefHint":"dominjo01","debutDate":"2013-06-30","debutTeam":"LAD","lahman":"dominjo01","mlbId":523848}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('jose-dominguez','FANGRAPHS','11571','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":523848}'::jsonb,'https://statsapi.mlb.com/api/v1/people/523848?hydrate=xrefId',null),
+('jose-gonzalez','MLB','806919','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":806919,"name":"Jose Gonzalez","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806919?hydrate=xrefId',null),
+('jose-gonzalez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":806919}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jose-gonzalez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":806919}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806919?hydrate=xrefId',null),
+('jose-herrera','MLB','645444','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-02-24","date":"2013-07-08","description":"Arizona Diamondbacks signed free agent C Jose Herrera to a minor league contract.","fullName":"Jose Herrera","mlbDebutDate":"2022-04-09","mlbId":645444}]'::jsonb,'{"aliases":[],"club":"ARI","mlbId":645444,"name":"Jose Herrera","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/645444?hydrate=xrefId',null),
+('jose-herrera','BASEBALL_REFERENCE','herrejo04','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"herrejo04","firstTeam":"ARI","firstYear":2022,"name":"José Herrera"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"herrejo04","mlbId":645444}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('jose-herrera','FANGRAPHS','17040','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":645444}'::jsonb,'https://statsapi.mlb.com/api/v1/people/645444?hydrate=xrefId',null),
+('jose-lopez','MLB','821653','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821653,"name":"Jose Lopez","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821653?hydrate=xrefId',null),
+('jose-lopez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821653}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jose-lopez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821653}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821653?hydrate=xrefId',null),
+('jose-offerman','MLB','119948','RESOLVED','BREF_NAME_DEBUT_YEAR_DEBUT_TEAM','HIGH',array['NAME','DEBUT_YEAR','DEBUT_FRANCHISE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":119948,"name":"Jose Offerman","signingYear":1986}'::jsonb,'https://statsapi.mlb.com/api/v1/people/119948?hydrate=xrefId',null),
+('jose-offerman','BASEBALL_REFERENCE','offerjo01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"offerjo01","firstTeam":"LAD","firstYear":1990,"name":"José Offerman"}]'::jsonb,'{"brefHint":null,"debutDate":"1990-08-19","debutTeam":"LAD","lahman":"offerjo01","mlbId":119948}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('jose-offerman','FANGRAPHS','205','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":119948}'::jsonb,'https://statsapi.mlb.com/api/v1/people/119948?hydrate=xrefId',null),
+('jose-requena','MLB','837769','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":837769,"name":"Jose Requena","signingYear":2026}'::jsonb,'https://statsapi.mlb.com/api/v1/people/837769?hydrate=xrefId',null),
+('jose-requena','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":837769}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jose-requena','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":837769}'::jsonb,'https://statsapi.mlb.com/api/v1/people/837769?hydrate=xrefId',null),
+('jose-rivas','MLB','830449','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830449,"name":"Jose Rivas","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830449?hydrate=xrefId',null),
+('jose-rivas','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830449}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jose-rivas','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830449}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830449?hydrate=xrefId',null),
+('jose-torrez','MLB','807404','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":807404,"name":"Jose Torrez","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807404?hydrate=xrefId',null),
+('jose-torrez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":807404}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jose-torrez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":807404}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807404?hydrate=xrefId',null),
+('jose-victorino','MLB','837652','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":837652,"name":"Jose Victorino","signingYear":2026}'::jsonb,'https://statsapi.mlb.com/api/v1/people/837652?hydrate=xrefId',null),
+('jose-victorino','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":837652}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jose-victorino','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":837652}'::jsonb,'https://statsapi.mlb.com/api/v1/people/837652?hydrate=xrefId',null),
+('jose-villegas','MLB','830413','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830413,"name":"Jose Villegas","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830413?hydrate=xrefId',null),
+('jose-villegas','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830413}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('jose-villegas','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830413}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830413?hydrate=xrefId',null),
+('jose-vizcaino','MLB','123743','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":123743,"name":"Jose Vizcaino","signingYear":1986}'::jsonb,'https://statsapi.mlb.com/api/v1/people/123743?hydrate=xrefId',null),
+('jose-vizcaino','BASEBALL_REFERENCE','vizcajo01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"vizcajo01","firstTeam":"LAD","firstYear":1989,"name":"José Vizcaíno"}]'::jsonb,'{"brefHint":"vizcajo01","debutDate":"1989-09-10","debutTeam":"LAD","lahman":"vizcajo01","mlbId":123743}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('jose-vizcaino','FANGRAPHS','577','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":123743}'::jsonb,'https://statsapi.mlb.com/api/v1/people/123743?hydrate=xrefId',null),
+('joseilyn-gonzalez','MLB','805120','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":805120,"name":"Joseilyn Gonzalez","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805120?hydrate=xrefId',null),
+('joseilyn-gonzalez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":805120}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('joseilyn-gonzalez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":805120}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805120?hydrate=xrefId',null),
+('joseph-deng-thon','MLB','830188','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830188,"name":"Joseph Deng Thon","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830188?hydrate=xrefId',null),
+('joseph-deng-thon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830188}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('joseph-deng-thon','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830188}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830188?hydrate=xrefId',null),
+('josue-de-paula','MLB','800543','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800543,"name":"Josue De Paula","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800543?hydrate=xrefId',null),
+('josue-de-paula','BASEBALL_REFERENCE','depaujo03','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"depaujo03","firstTeam":"LAD","firstYear":2026,"name":"Josue De Paula"}]'::jsonb,'{"brefHint":"depaujo03","debutDate":"2026-09-11","debutTeam":"LAD","lahman":null,"mlbId":800543}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('josue-de-paula','FANGRAPHS','30871','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":800543}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800543?hydrate=xrefId',null),
+('juan-alonso','MLB','699076','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699076,"name":"Juan Alonso","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699076?hydrate=xrefId',null),
+('juan-alonso','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699076}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('juan-alonso','FANGRAPHS','sa3016331','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699076}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699076?hydrate=xrefId',null),
+('juan-castro','MLB','112128','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":112128,"name":"Juan Castro","signingYear":1991}'::jsonb,'https://statsapi.mlb.com/api/v1/people/112128?hydrate=xrefId',null),
+('juan-castro','BASEBALL_REFERENCE','castrju01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"castrju01","firstTeam":"LAD","firstYear":1995,"name":"Juan Castro"}]'::jsonb,'{"brefHint":"castrju01","debutDate":"1995-09-02","debutTeam":"LAD","lahman":"castrju01","mlbId":112128}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('juan-castro','FANGRAPHS','315','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":112128}'::jsonb,'https://statsapi.mlb.com/api/v1/people/112128?hydrate=xrefId',null),
+('juan-deleon','MLB','660665','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-09-13","date":"2014-07-02","description":"New York Yankees signed free agent RF Juan De Leon to a minor league contract.","fullName":"Juan De Leon","mlbDebutDate":null,"mlbId":660665}]'::jsonb,'{"aliases":[],"club":"NYY","mlbId":660665,"name":"Juan DeLeon","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660665?hydrate=xrefId',null),
+('juan-deleon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660665}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('juan-deleon','FANGRAPHS','sa872565','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660665}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660665?hydrate=xrefId',null),
+('juan-guzman','MLB','115267','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":115267,"name":"Juan Guzman","signingYear":1985}'::jsonb,'https://statsapi.mlb.com/api/v1/people/115267?hydrate=xrefId',null),
+('juan-guzman','BASEBALL_REFERENCE','guzmaju01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"guzmaju01","firstTeam":"TOR","firstYear":1991,"name":"Juan Guzmán"}]'::jsonb,'{"brefHint":"guzmaju01","debutDate":"1991-06-07","debutTeam":"TOR","lahman":"guzmaju01","mlbId":115267}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('juan-guzman','FANGRAPHS','1005162','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":115267}'::jsonb,'https://statsapi.mlb.com/api/v1/people/115267?hydrate=xrefId',null),
+('juan-hernandez','MLB','806638','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":806638,"name":"Juan Hernandez","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806638?hydrate=xrefId',null),
+('juan-hernandez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":806638}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('juan-hernandez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":806638}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806638?hydrate=xrefId',null),
+('juan-macero','MLB','830471','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830471,"name":"Juan Macero","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830471?hydrate=xrefId',null),
+('juan-macero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830471}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('juan-macero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830471}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830471?hydrate=xrefId',null),
+('juan-meza','MLB','660565','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1998-02-04","date":"2014-07-02","description":"Toronto Blue Jays signed free agent RHP Juan Meza to a minor league contract.","fullName":"Juan Meza","mlbDebutDate":null,"mlbId":660565}]'::jsonb,'{"aliases":[],"club":"TOR","mlbId":660565,"name":"Juan Meza","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660565?hydrate=xrefId',null),
+('juan-meza','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660565}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('juan-meza','FANGRAPHS','sa877930','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660565}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660565?hydrate=xrefId',null),
+('julian-leon','MLB','624645','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":624645,"name":"Julian Leon","signingYear":2012}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624645?hydrate=xrefId',null),
+('julian-leon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":624645}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('julian-leon','FANGRAPHS','sa739577','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":624645}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624645?hydrate=xrefId',null),
+('julio-lugo-prospect','MLB','649956','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Julio Lugo"],"club":"LAD","mlbId":649956,"name":"Julio Lugo (prospect)","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649956?hydrate=xrefId',null),
+('julio-lugo-prospect','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":649956}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('julio-lugo-prospect','FANGRAPHS','sa828896','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":649956}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649956?hydrate=xrefId',null),
+('julio-martinez','MLB','660699','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-12-15","date":"2014-07-02","description":"Detroit Tigers signed free agent LF Julio Martinez to a minor league contract.","fullName":"Julio Martinez","mlbDebutDate":null,"mlbId":660699}]'::jsonb,'{"aliases":[],"club":"DET","mlbId":660699,"name":"Julio Martinez","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660699?hydrate=xrefId',null),
+('julio-martinez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660699}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('julio-martinez','FANGRAPHS','sa872583','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660699}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660699?hydrate=xrefId',null),
+('julio-urias','MLB','628711','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":628711,"name":"Julio Urias","signingYear":2012}'::jsonb,'https://statsapi.mlb.com/api/v1/people/628711?hydrate=xrefId',null),
+('julio-urias','BASEBALL_REFERENCE','uriasju01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"uriasju01","firstTeam":"LAD","firstYear":2016,"name":"Julio Urías"}]'::jsonb,'{"brefHint":"uriasju01","debutDate":"2016-05-27","debutTeam":"LAD","lahman":"uriasju01","mlbId":628711}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('julio-urias','FANGRAPHS','14765','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":628711}'::jsonb,'https://statsapi.mlb.com/api/v1/people/628711?hydrate=xrefId',null),
+('karim-garcia','MLB','114588','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":114588,"name":"Karim Garcia","signingYear":1992}'::jsonb,'https://statsapi.mlb.com/api/v1/people/114588?hydrate=xrefId',null),
+('karim-garcia','BASEBALL_REFERENCE','garcika01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"garcika01","firstTeam":"LAD","firstYear":1995,"name":"Karim García"}]'::jsonb,'{"brefHint":"garcika01","debutDate":"1995-09-02","debutTeam":"LAD","lahman":"garcika01","mlbId":114588}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('karim-garcia','FANGRAPHS','1537','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":114588}'::jsonb,'https://statsapi.mlb.com/api/v1/people/114588?hydrate=xrefId',null),
+('keibert-ruiz','MLB','660688','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":660688,"name":"Keibert Ruiz","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660688?hydrate=xrefId',null),
+('keibert-ruiz','BASEBALL_REFERENCE','ruizke01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"ruizke01","firstTeam":"LAD","firstYear":2020,"name":"Keibert Ruiz"}]'::jsonb,'{"brefHint":"ruizke01","debutDate":"2020-08-16","debutTeam":"LAD","lahman":"ruizke01","mlbId":660688}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('keibert-ruiz','FANGRAPHS','19610','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660688}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660688?hydrate=xrefId',null),
+('kelvin-ramirez','MLB','699062','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699062,"name":"Kelvin Ramirez","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699062?hydrate=xrefId',null),
+('kelvin-ramirez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699062}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('kelvin-ramirez','FANGRAPHS','sa3015492','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699062}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699062?hydrate=xrefId',null),
+('kenley-jansen','MLB','445276','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":445276,"name":"Kenley Jansen","signingYear":2004}'::jsonb,'https://statsapi.mlb.com/api/v1/people/445276?hydrate=xrefId',null),
+('kenley-jansen','BASEBALL_REFERENCE','janseke01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"janseke01","firstTeam":"LAD","firstYear":2010,"name":"Kenley Jansen"}]'::jsonb,'{"brefHint":"janseke01","debutDate":"2010-07-24","debutTeam":"LAD","lahman":"janseke01","mlbId":445276}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('kenley-jansen','FANGRAPHS','3096','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":445276}'::jsonb,'https://statsapi.mlb.com/api/v1/people/445276?hydrate=xrefId',null),
+('kenny-hernandez','MLB','660660','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1998-08-13","date":"2014-08-13","description":"New York Mets signed free agent SS Kenny Hernandez to a minor league contract.","fullName":"Kenny Hernandez","mlbDebutDate":null,"mlbId":660660}]'::jsonb,'{"aliases":[],"club":"NYM","mlbId":660660,"name":"Kenny Hernandez","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660660?hydrate=xrefId',null),
+('kenny-hernandez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660660}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('kenny-hernandez','FANGRAPHS','sa872522','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660660}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660660?hydrate=xrefId',null),
+('kosuke-matsuda','MLB','800494','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800494,"name":"Kosuke Matsuda","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800494?hydrate=xrefId',null),
+('kosuke-matsuda','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800494}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('kosuke-matsuda','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800494}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800494?hydrate=xrefId',null),
+('leider-padilla','MLB','821636','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821636,"name":"Leider Padilla","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821636?hydrate=xrefId',null),
+('leider-padilla','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821636}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('leider-padilla','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821636}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821636?hydrate=xrefId',null),
+('lenix-osuna','MLB','624646','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":624646,"name":"Lenix Osuna","signingYear":2012}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624646?hydrate=xrefId',null),
+('lenix-osuna','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":624646}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('lenix-osuna','FANGRAPHS','sa739579','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":624646}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624646?hydrate=xrefId',null),
+('lesther-medrano','MLB','692327','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":692327,"name":"Lesther Medrano","signingYear":2019}'::jsonb,'https://statsapi.mlb.com/api/v1/people/692327?hydrate=xrefId',null),
+('lesther-medrano','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":692327}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('lesther-medrano','FANGRAPHS','sa3016470','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":692327}'::jsonb,'https://statsapi.mlb.com/api/v1/people/692327?hydrate=xrefId',null),
+('lewin-diaz','MLB','650331','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1996-11-19","date":"2013-11-21","description":"Minnesota Twins signed free agent OF Lewin Diaz to a minor league contract.","fullName":"Lewin Díaz","mlbDebutDate":"2020-08-15","mlbId":650331}]'::jsonb,'{"aliases":[],"club":"MIN","mlbId":650331,"name":"Lewin Diaz","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650331?hydrate=xrefId',null),
+('lewin-diaz','BASEBALL_REFERENCE','diazle01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"diazle01","firstTeam":"MIA","firstYear":2020,"name":"Lewin Díaz"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"diazle01","mlbId":650331}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('lewin-diaz','FANGRAPHS','18365','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650331}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650331?hydrate=xrefId',null),
+('luciano-romero','MLB','800355','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800355,"name":"Luciano Romero","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800355?hydrate=xrefId',null),
+('luciano-romero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800355}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luciano-romero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800355}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800355?hydrate=xrefId',null),
+('luis-carias','MLB','808218','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808218,"name":"Luis Carias","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808218?hydrate=xrefId',null),
+('luis-carias','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808218}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luis-carias','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808218}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808218?hydrate=xrefId',null),
+('luis-gamez','MLB','830800','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830800,"name":"Luis Gamez","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830800?hydrate=xrefId',null),
+('luis-gamez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830800}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luis-gamez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830800}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830800?hydrate=xrefId',null),
+('luis-guerra','MLB','699065','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699065,"name":"Luis Guerra","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699065?hydrate=xrefId',null),
+('luis-guerra','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699065}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luis-guerra','FANGRAPHS','sa3015788','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699065}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699065?hydrate=xrefId',null),
+('luis-izturis','MLB','682950','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682950,"name":"Luis Izturis","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682950?hydrate=xrefId',null),
+('luis-izturis','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682950}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luis-izturis','FANGRAPHS','sa3009295','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682950}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682950?hydrate=xrefId',null),
+('luis-luna','MLB','830463','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830463,"name":"Luis Luna","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830463?hydrate=xrefId',null),
+('luis-luna','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830463}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luis-luna','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830463}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830463?hydrate=xrefId',null),
+('luis-rodriguez-2015','MLB','665960','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Luis Rodriguez"],"club":"LAD","mlbId":665960,"name":"Luis Rodriguez (2015)","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665960?hydrate=xrefId',null),
+('luis-rodriguez-2015','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":665960}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luis-rodriguez-2015','FANGRAPHS','sa917322','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665960}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665960?hydrate=xrefId',null),
+('luis-rodriguez-2019','MLB','691177','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Luis Rodriguez"],"club":"LAD","mlbId":691177,"name":"Luis Rodriguez (2019)","signingYear":2019}'::jsonb,'https://statsapi.mlb.com/api/v1/people/691177?hydrate=xrefId',null),
+('luis-rodriguez-2019','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":691177}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luis-rodriguez-2019','FANGRAPHS','sa3014689','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":691177}'::jsonb,'https://statsapi.mlb.com/api/v1/people/691177?hydrate=xrefId',null),
+('luis-tovar','MLB','830434','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830434,"name":"Luis Tovar","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830434?hydrate=xrefId',null),
+('luis-tovar','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830434}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('luis-tovar','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830434}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830434?hydrate=xrefId',null),
+('mairoshendrick-martinus','MLB','800302','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Mairo Martinus"],"club":"LAD","mlbId":800302,"name":"Mairoshendrick Martinus","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800302?hydrate=xrefId',null),
+('mairoshendrick-martinus','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800302}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('mairoshendrick-martinus','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800302}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800302?hydrate=xrefId',null),
+('marco-corcho','MLB','806866','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":806866,"name":"Marco Corcho","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806866?hydrate=xrefId',null),
+('marco-corcho','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":806866}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('marco-corcho','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":806866}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806866?hydrate=xrefId',null),
+('marcos-diplan','MLB','650959','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1996-09-18","date":"2013-07-02","description":"Texas Rangers signed free agent Marcos Diplan.","fullName":"Marcos Diplán","mlbDebutDate":"2021-08-06","mlbId":650959}]'::jsonb,'{"aliases":[],"club":"TEX","mlbId":650959,"name":"Marcos Diplan","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650959?hydrate=xrefId',null),
+('marcos-diplan','BASEBALL_REFERENCE','diplama01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"diplama01","firstTeam":"BAL","firstYear":2021,"name":"Marcos Diplán"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"diplama01","mlbId":650959}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('marcos-diplan','FANGRAPHS','17583','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650959}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650959?hydrate=xrefId',null),
+('marten-gasparini','MLB','645282','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Italy","birthDate":"1997-05-24","date":"2013-07-02","description":"Kansas City Royals signed SS Marten Gasparini.","fullName":"Marten Gasparini","mlbDebutDate":null,"mlbId":645282}]'::jsonb,'{"aliases":[],"club":"KC","mlbId":645282,"name":"Marten Gasparini","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/645282?hydrate=xrefId',null),
+('marten-gasparini','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":645282}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('marten-gasparini','FANGRAPHS','sa830181','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":645282}'::jsonb,'https://statsapi.mlb.com/api/v1/people/645282?hydrate=xrefId',null),
+('maximo-martinez','MLB','699059','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699059,"name":"Maximo Martinez","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699059?hydrate=xrefId',null),
+('maximo-martinez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699059}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('maximo-martinez','FANGRAPHS','sa3016026','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699059}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699059?hydrate=xrefId',null),
+('michael-deleon','MLB','650958','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-01-14","date":"2013-07-02","description":"Texas Rangers signed free agent SS Michael De Leon to a minor league contract.","fullName":"Michael De León","mlbDebutDate":null,"mlbId":650958}]'::jsonb,'{"aliases":[],"club":"TEX","mlbId":650958,"name":"Michael DeLeon","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650958?hydrate=xrefId',null),
+('michael-deleon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650958}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('michael-deleon','FANGRAPHS','sa823925','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650958}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650958?hydrate=xrefId',null),
+('michael-ramirez','MLB','821679','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Michael Ramírez"],"club":"LAD","mlbId":821679,"name":"Michael Ramirez","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821679?hydrate=xrefId',null),
+('michael-ramirez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821679}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('michael-ramirez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821679}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821679?hydrate=xrefId',null),
+('michael-vilchez','MLB','699074','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699074,"name":"Michael Vilchez","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699074?hydrate=xrefId',null),
+('michael-vilchez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699074}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('michael-vilchez','FANGRAPHS','sa3016605','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699074}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699074?hydrate=xrefId',null),
+('micker-zapata','MLB',null,'NOT_FOUND',null,null,array[]::text[],'[]'::jsonb,'{"club":"CWS","name":"Micker Zapata","signingYear":2013}'::jsonb,null,'No MLB transaction or name-search match with the signing club; left for manual identity research.'),
+('micker-zapata','BASEBALL_REFERENCE',null,'NOT_FOUND',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":null}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No Baseball-Reference entry named "Micker Zapata".'),
+('miguel-angel-sierra','MLB','658531','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-12-02","date":"2014-07-02","description":"Houston Astros signed free agent SS Miguelangel Sierra to a minor league contract.","fullName":"Miguelangel Sierra","mlbDebutDate":null,"mlbId":658531}]'::jsonb,'{"aliases":[],"club":"HOU","mlbId":658531,"name":"Miguel Angel Sierra","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658531?hydrate=xrefId',null),
+('miguel-angel-sierra','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":658531}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('miguel-angel-sierra','FANGRAPHS','sa872750','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":658531}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658531?hydrate=xrefId',null),
+('miguel-bastardo','MLB','699072','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699072,"name":"Miguel Bastardo","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699072?hydrate=xrefId',null),
+('miguel-bastardo','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699072}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('miguel-bastardo','FANGRAPHS','sa3017597','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699072}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699072?hydrate=xrefId',null),
+('miguel-dominguez','MLB','800399','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800399,"name":"Miguel Dominguez","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800399?hydrate=xrefId',null),
+('miguel-dominguez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800399}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('miguel-dominguez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800399}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800399?hydrate=xrefId',null),
+('miguel-droz','MLB','682940','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682940,"name":"Miguel Droz","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682940?hydrate=xrefId',null),
+('miguel-droz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682940}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('miguel-droz','FANGRAPHS','sa3011704','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682940}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682940?hydrate=xrefId',null),
+('miguel-flames','MLB','660560','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-09-14","date":"2014-07-02","description":"New York Yankees signed free agent C Miguel Flames to a minor league contract.","fullName":"Miguel Flames","mlbDebutDate":null,"mlbId":660560}]'::jsonb,'{"aliases":[],"club":"NYY","mlbId":660560,"name":"Miguel Flames","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660560?hydrate=xrefId',null),
+('miguel-flames','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660560}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('miguel-flames','FANGRAPHS','sa872566','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660560}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660560?hydrate=xrefId',null),
+('miguel-vargas','MLB','678246','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":678246,"name":"Miguel Vargas","signingYear":2017}'::jsonb,'https://statsapi.mlb.com/api/v1/people/678246?hydrate=xrefId',null),
+('miguel-vargas','BASEBALL_REFERENCE','vargami01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"vargami01","firstTeam":"LAD","firstYear":2022,"name":"Miguel Vargas"}]'::jsonb,'{"brefHint":"vargami01","debutDate":"2022-08-03","debutTeam":"LAD","lahman":"vargami01","mlbId":678246}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('miguel-vargas','FANGRAPHS','20178','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":678246}'::jsonb,'https://statsapi.mlb.com/api/v1/people/678246?hydrate=xrefId',null),
+('misja-harcksen','MLB','649958','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":649958,"name":"Misja Harcksen","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649958?hydrate=xrefId',null),
+('misja-harcksen','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":649958}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('misja-harcksen','FANGRAPHS','sa834014','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":649958}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649958?hydrate=xrefId',null),
+('missael-soto','MLB','699057','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699057,"name":"Missael Soto","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699057?hydrate=xrefId',null),
+('missael-soto','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699057}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('missael-soto','FANGRAPHS','sa3016505','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699057}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699057?hydrate=xrefId',null),
+('moises-acacio','MLB','830432','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830432,"name":"Moises Acacio","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830432?hydrate=xrefId',null),
+('moises-acacio','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830432}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('moises-acacio','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830432}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830432?hydrate=xrefId',null),
+('moises-rangel','MLB','830404','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830404,"name":"Moises Rangel","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830404?hydrate=xrefId',null),
+('moises-rangel','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830404}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('moises-rangel','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830404}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830404?hydrate=xrefId',null),
+('natanael-castillo','MLB','800390','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800390,"name":"Natanael Castillo","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800390?hydrate=xrefId',null),
+('natanael-castillo','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800390}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('natanael-castillo','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800390}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800390?hydrate=xrefId',null),
+('nelson-gomez','MLB','660617','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-10-08","date":"2014-07-02","description":"New York Yankees signed free agent 3B Nelson Gomez to a minor league contract.","fullName":"Nelson Gomez","mlbDebutDate":null,"mlbId":660617}]'::jsonb,'{"aliases":[],"club":"NYY","mlbId":660617,"name":"Nelson Gomez","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660617?hydrate=xrefId',null),
+('nelson-gomez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660617}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('nelson-gomez','FANGRAPHS','sa873303','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660617}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660617?hydrate=xrefId',null),
+('nicolas-cruz','MLB','800395','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800395,"name":"Nicolas Cruz","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800395?hydrate=xrefId',null),
+('nicolas-cruz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800395}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('nicolas-cruz','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800395}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800395?hydrate=xrefId',null),
+('nicolas-pierre','MLB','650693','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1996-11-13","date":"2013-07-02","description":"Milwaukee Brewers signed free agent LF Nicolas Pierre to a minor league contract.","fullName":"Nic Pierre","mlbDebutDate":null,"mlbId":650693}]'::jsonb,'{"aliases":[],"club":"MIL","mlbId":650693,"name":"Nicolas Pierre","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650693?hydrate=xrefId',null),
+('nicolas-pierre','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650693}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('nicolas-pierre','FANGRAPHS','sa827977','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650693}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650693?hydrate=xrefId',null),
+('omar-daal','MLB','112984','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":112984,"name":"Omar Daal","signingYear":1990}'::jsonb,'https://statsapi.mlb.com/api/v1/people/112984?hydrate=xrefId',null),
+('omar-daal','BASEBALL_REFERENCE','daalom01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"daalom01","firstTeam":"LAD","firstYear":1993,"name":"Omar Daal"}]'::jsonb,'{"brefHint":"daalom01","debutDate":"1993-04-23","debutTeam":"LAD","lahman":"daalom01","mlbId":112984}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('omar-daal','FANGRAPHS','646','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":112984}'::jsonb,'https://statsapi.mlb.com/api/v1/people/112984?hydrate=xrefId',null),
+('omar-estevez','MLB','666784','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Omar Estévez"],"club":"LAD","mlbId":666784,"name":"Omar Estevez","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/666784?hydrate=xrefId',null),
+('omar-estevez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":666784}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('omar-estevez','FANGRAPHS','sa914242','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":666784}'::jsonb,'https://statsapi.mlb.com/api/v1/people/666784?hydrate=xrefId',null),
+('oneil-cruz','MLB','665833','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":["Oneal Cruz"],"club":"LAD","mlbId":665833,"name":"Oneil Cruz","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665833?hydrate=xrefId',null),
+('oneil-cruz','BASEBALL_REFERENCE','cruzon01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"cruzon01","firstTeam":"PIT","firstYear":2021,"name":"Oneil Cruz"}]'::jsonb,'{"brefHint":"cruzon01","debutDate":"2021-10-02","debutTeam":"PIT","lahman":"cruzon01","mlbId":665833}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('oneil-cruz','FANGRAPHS','21711','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665833}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665833?hydrate=xrefId',null),
+('oswaldo-osorio','MLB','800424','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800424,"name":"Oswaldo Osorio","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800424?hydrate=xrefId',null),
+('oswaldo-osorio','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800424}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('oswaldo-osorio','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800424}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800424?hydrate=xrefId',null),
+('paris-johnson','MLB','807379','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":807379,"name":"Paris Johnson","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807379?hydrate=xrefId',null),
+('paris-johnson','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":807379}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('paris-johnson','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":807379}'::jsonb,'https://statsapi.mlb.com/api/v1/people/807379?hydrate=xrefId',null),
+('pedro-astacio','MLB','110359','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":110359,"name":"Pedro Astacio","signingYear":1987}'::jsonb,'https://statsapi.mlb.com/api/v1/people/110359?hydrate=xrefId',null),
+('pedro-astacio','BASEBALL_REFERENCE','astacpe01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"astacpe01","firstTeam":"LAD","firstYear":1992,"name":"Pedro Astacio"}]'::jsonb,'{"brefHint":"astacpe01","debutDate":"1992-07-03","debutTeam":"LAD","lahman":"astacpe01","mlbId":110359}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('pedro-astacio','FANGRAPHS','862','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":110359}'::jsonb,'https://statsapi.mlb.com/api/v1/people/110359?hydrate=xrefId',null),
+('pedro-baez','MLB','520980','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":520980,"name":"Pedro Baez","signingYear":2007}'::jsonb,'https://statsapi.mlb.com/api/v1/people/520980?hydrate=xrefId',null),
+('pedro-baez','BASEBALL_REFERENCE','baezpe01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"baezpe01","firstTeam":"LAD","firstYear":2014,"name":"Pedro Báez"}]'::jsonb,'{"brefHint":"baezpe01","debutDate":"2014-05-05","debutTeam":"LAD","lahman":"baezpe01","mlbId":520980}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('pedro-baez','FANGRAPHS','5420','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":520980}'::jsonb,'https://statsapi.mlb.com/api/v1/people/520980?hydrate=xrefId',null),
+('pedro-gonzalez','MLB','660639','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-10-27","date":"2014-07-02","description":"Colorado Rockies signed free agent CF Pedro Gonzalez to a minor league contract.","fullName":"Pedro Gonzalez","mlbDebutDate":null,"mlbId":660639}]'::jsonb,'{"aliases":[],"club":"COL","mlbId":660639,"name":"Pedro Gonzalez","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660639?hydrate=xrefId',null),
+('pedro-gonzalez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660639}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('pedro-gonzalez','FANGRAPHS','sa872568','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660639}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660639?hydrate=xrefId',null),
+('pedro-martinez','MLB','118377','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":118377,"name":"Pedro Martinez","signingYear":1988}'::jsonb,'https://statsapi.mlb.com/api/v1/people/118377?hydrate=xrefId',null),
+('pedro-martinez','BASEBALL_REFERENCE','martipe02','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"martipe02","firstTeam":"LAD","firstYear":1992,"name":"Pedro Martínez"}]'::jsonb,'{"brefHint":"martipe02","debutDate":"1992-09-24","debutTeam":"LAD","lahman":"martipe02","mlbId":118377}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('pedro-martinez','FANGRAPHS','200','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":118377}'::jsonb,'https://statsapi.mlb.com/api/v1/people/118377?hydrate=xrefId',null),
+('pedro-santillan','MLB','699063','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699063,"name":"Pedro Santillan","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699063?hydrate=xrefId',null),
+('pedro-santillan','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699063}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('pedro-santillan','FANGRAPHS','sa3015493','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699063}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699063?hydrate=xrefId',null),
+('peter-bonilla','MLB','800361','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800361,"name":"Peter Bonilla","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800361?hydrate=xrefId',null),
+('peter-bonilla','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800361}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('peter-bonilla','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800361}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800361?hydrate=xrefId',null),
+('rafael-devers','MLB','646240','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1996-10-24","date":"2013-08-09","description":"Boston Red Sox signed free agent 3B Rafael Devers to a minor league contract.","fullName":"Rafael Devers","mlbDebutDate":"2017-07-25","mlbId":646240}]'::jsonb,'{"aliases":[],"club":"BOS","mlbId":646240,"name":"Rafael Devers","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/646240?hydrate=xrefId',null),
+('rafael-devers','BASEBALL_REFERENCE','deverra01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES']::text[],'[{"brefId":"deverra01","firstTeam":"BOS","firstYear":2017,"name":"Rafael Devers"}]'::jsonb,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":"deverra01","mlbId":646240}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('rafael-devers','FANGRAPHS','17350','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":646240}'::jsonb,'https://statsapi.mlb.com/api/v1/people/646240?hydrate=xrefId',null),
+('rafael-tua','MLB','682948','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":682948,"name":"Rafael Tua","signingYear":2018}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682948?hydrate=xrefId',null),
+('rafael-tua','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":682948}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('rafael-tua','FANGRAPHS','sa3008692','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":682948}'::jsonb,'https://statsapi.mlb.com/api/v1/people/682948?hydrate=xrefId',null),
+('rafy-peguero','MLB','821801','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821801,"name":"Rafy Peguero","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821801?hydrate=xrefId',null),
+('rafy-peguero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821801}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('rafy-peguero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821801}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821801?hydrate=xrefId',null),
+('railin-familia','MLB','812747','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":812747,"name":"Railin Familia","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/812747?hydrate=xrefId',null),
+('railin-familia','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":812747}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('railin-familia','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":812747}'::jsonb,'https://statsapi.mlb.com/api/v1/people/812747?hydrate=xrefId',null),
+('ramon-martinez','MLB','118378','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":118378,"name":"Ramon Martinez","signingYear":1984}'::jsonb,'https://statsapi.mlb.com/api/v1/people/118378?hydrate=xrefId',null),
+('ramon-martinez','BASEBALL_REFERENCE','martira02','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"martira02","firstTeam":"LAD","firstYear":1988,"name":"Ramón Martínez"}]'::jsonb,'{"brefHint":"martira02","debutDate":"1988-08-13","debutTeam":"LAD","lahman":"martira02","mlbId":118378}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('ramon-martinez','FANGRAPHS','1008193','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":118378}'::jsonb,'https://statsapi.mlb.com/api/v1/people/118378?hydrate=xrefId',null),
+('ramon-rosso','MLB','665759','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":665759,"name":"Ramon Rosso","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665759?hydrate=xrefId',null),
+('ramon-rosso','BASEBALL_REFERENCE','rossora01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"rossora01","firstTeam":"PHI","firstYear":2020,"name":"Ramón Rosso"}]'::jsonb,'{"brefHint":"rossora01","debutDate":"2020-07-24","debutTeam":"PHI","lahman":"rossora01","mlbId":665759}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('ramon-rosso','FANGRAPHS','20368','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665759}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665759?hydrate=xrefId',null),
+('ramon-troncoso','MLB','470462','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":470462,"name":"Ramon Troncoso","signingYear":2002}'::jsonb,'https://statsapi.mlb.com/api/v1/people/470462?hydrate=xrefId',null),
+('ramon-troncoso','BASEBALL_REFERENCE','troncra01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"troncra01","firstTeam":"LAD","firstYear":2008,"name":"Ramón Troncoso"}]'::jsonb,'{"brefHint":"troncra01","debutDate":"2008-04-01","debutTeam":"LAD","lahman":"troncra01","mlbId":470462}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('ramon-troncoso','FANGRAPHS','4685','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":470462}'::jsonb,'https://statsapi.mlb.com/api/v1/people/470462?hydrate=xrefId',null),
+('raul-mondesi','MLB','119247','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":119247,"name":"Raul Mondesi","signingYear":1988}'::jsonb,'https://statsapi.mlb.com/api/v1/people/119247?hydrate=xrefId',null),
+('raul-mondesi','BASEBALL_REFERENCE','mondera01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"mondera01","firstTeam":"LAD","firstYear":1993,"name":"Raúl Mondesí"}]'::jsonb,'{"brefHint":"mondera01","debutDate":"1993-07-19","debutTeam":"LAD","lahman":"mondera01","mlbId":119247}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('raul-mondesi','FANGRAPHS','1314','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":119247}'::jsonb,'https://statsapi.mlb.com/api/v1/people/119247?hydrate=xrefId',null),
+('rayne-doncon','MLB','699061','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699061,"name":"Rayne Doncon","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699061?hydrate=xrefId',null),
+('rayne-doncon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699061}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('rayne-doncon','FANGRAPHS','sa3016720','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699061}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699061?hydrate=xrefId',null),
+('raynerd-ortega','MLB','800380','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800380,"name":"Raynerd Ortega","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800380?hydrate=xrefId',null),
+('raynerd-ortega','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800380}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('raynerd-ortega','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800380}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800380?hydrate=xrefId',null),
+('reyli-mariano','MLB','821697','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821697,"name":"Reyli Mariano","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821697?hydrate=xrefId',null),
+('reyli-mariano','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821697}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('reyli-mariano','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821697}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821697?hydrate=xrefId',null),
+('ricardo-montero','MLB','805110','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":805110,"name":"Ricardo Montero","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805110?hydrate=xrefId',null),
+('ricardo-montero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":805110}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ricardo-montero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":805110}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805110?hydrate=xrefId',null),
+('ricardo-rodriguez','MLB','660616','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-12-20","date":"2014-07-02","description":"San Diego Padres signed free agent C Ricardo Rodriguez to a minor league contract.","fullName":"Ricardo Rodriguez","mlbDebutDate":null,"mlbId":660616}]'::jsonb,'{"aliases":[],"club":"SD","mlbId":660616,"name":"Ricardo Rodriguez","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660616?hydrate=xrefId',null),
+('ricardo-rodriguez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660616}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ricardo-rodriguez','FANGRAPHS','sa877334','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660616}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660616?hydrate=xrefId',null),
+('ricardo-roman','MLB','830429','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":830429,"name":"Ricardo Roman","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830429?hydrate=xrefId',null),
+('ricardo-roman','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":830429}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ricardo-roman','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":830429}'::jsonb,'https://statsapi.mlb.com/api/v1/people/830429?hydrate=xrefId',null),
+('ricky-aracena','MLB','660615','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-10-02","date":"2014-07-03","description":"Kansas City Royals signed free agent SS Ricky Aracena to a minor league contract.","fullName":"Ricky Aracena","mlbDebutDate":null,"mlbId":660615}]'::jsonb,'{"aliases":[],"club":"KC","mlbId":660615,"name":"Ricky Aracena","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660615?hydrate=xrefId',null),
+('ricky-aracena','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660615}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ricky-aracena','FANGRAPHS','sa877365','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660615}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660615?hydrate=xrefId',null),
+('roberto-clemente','MLB','112391','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":112391,"name":"Roberto Clemente","signingYear":1954}'::jsonb,'https://statsapi.mlb.com/api/v1/people/112391?hydrate=xrefId',null),
+('roberto-clemente','BASEBALL_REFERENCE','clemero01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"clemero01","firstTeam":"PIT","firstYear":1955,"name":"Roberto Clemente"}]'::jsonb,'{"brefHint":"clemero01","debutDate":"1955-04-17","debutTeam":"PIT","lahman":"clemero01","mlbId":112391}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('roberto-clemente','FANGRAPHS','1002340','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":112391}'::jsonb,'https://statsapi.mlb.com/api/v1/people/112391?hydrate=xrefId',null),
+('robinson-ventura','MLB','808332','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808332,"name":"Robinson Ventura","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808332?hydrate=xrefId',null),
+('robinson-ventura','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808332}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('robinson-ventura','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808332}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808332?hydrate=xrefId',null),
+('rodmar-angela','MLB','806791','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":806791,"name":"Rodmar Angela","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806791?hydrate=xrefId',null),
+('rodmar-angela','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":806791}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('rodmar-angela','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":806791}'::jsonb,'https://statsapi.mlb.com/api/v1/people/806791?hydrate=xrefId',null),
+('roger-cedeno','MLB','112155','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":112155,"name":"Roger Cedeno","signingYear":1991}'::jsonb,'https://statsapi.mlb.com/api/v1/people/112155?hydrate=xrefId',null),
+('roger-cedeno','BASEBALL_REFERENCE','cedenro01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"cedenro01","firstTeam":"LAD","firstYear":1995,"name":"Roger Cedeño"}]'::jsonb,'{"brefHint":"cedenro01","debutDate":"1995-06-20","debutTeam":"LAD","lahman":"cedenro01","mlbId":112155}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('roger-cedeno','FANGRAPHS','869','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":112155}'::jsonb,'https://statsapi.mlb.com/api/v1/people/112155?hydrate=xrefId',null),
+('roger-lasso','MLB','699068','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699068,"name":"Roger Lasso","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699068?hydrate=xrefId',null),
+('roger-lasso','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699068}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('roger-lasso','FANGRAPHS','sa3015789','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699068}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699068?hydrate=xrefId',null),
+('roiger-mujica','MLB','800487','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800487,"name":"Roiger Mujica","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800487?hydrate=xrefId',null),
+('roiger-mujica','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800487}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('roiger-mujica','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800487}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800487?hydrate=xrefId',null),
+('roki-sasaki','MLB','808963','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808963,"name":"Roki Sasaki","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808963?hydrate=xrefId',null),
+('roki-sasaki','BASEBALL_REFERENCE','sasakro01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"sasakro01","firstTeam":"LAD","firstYear":2025,"name":"Roki Sasaki"}]'::jsonb,'{"brefHint":"sasakro01","debutDate":"2025-03-19","debutTeam":"LAD","lahman":"sasakro01","mlbId":808963}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('roki-sasaki','FANGRAPHS','35323','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":808963}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808963?hydrate=xrefId',null),
+('ronny-brito','MLB','665798','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":665798,"name":"Ronny Brito","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665798?hydrate=xrefId',null),
+('ronny-brito','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":665798}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ronny-brito','FANGRAPHS','sa917329','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665798}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665798?hydrate=xrefId',null),
+('ronny-rafael','MLB','658665','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Dominican Republic","birthDate":"1997-10-14","date":"2014-07-07","description":"Houston Astros signed free agent CF Ronny Ramirez to a minor league contract.","fullName":"Ronny Rafael","mlbDebutDate":null,"mlbId":658665}]'::jsonb,'{"aliases":[],"club":"HOU","mlbId":658665,"name":"Ronny Rafael","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658665?hydrate=xrefId',null),
+('ronny-rafael','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":658665}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('ronny-rafael','FANGRAPHS','sa872754','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":658665}'::jsonb,'https://statsapi.mlb.com/api/v1/people/658665?hydrate=xrefId',null),
+('roque-gutierrez','MLB','692262','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":692262,"name":"Roque Gutierrez","signingYear":2019}'::jsonb,'https://statsapi.mlb.com/api/v1/people/692262?hydrate=xrefId',null),
+('roque-gutierrez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":692262}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('roque-gutierrez','FANGRAPHS','sa3015440','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":692262}'::jsonb,'https://statsapi.mlb.com/api/v1/people/692262?hydrate=xrefId',null),
+('rubby-de-la-rosa','MLB','523989','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":523989,"name":"Rubby De La Rosa","signingYear":2007}'::jsonb,'https://statsapi.mlb.com/api/v1/people/523989?hydrate=xrefId',null),
+('rubby-de-la-rosa','BASEBALL_REFERENCE','delarru01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"delarru01","firstTeam":"LAD","firstYear":2011,"name":"Rubby De La Rosa"}]'::jsonb,'{"brefHint":"delarru01","debutDate":"2011-05-24","debutTeam":"LAD","lahman":"delarru01","mlbId":523989}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('rubby-de-la-rosa','FANGRAPHS','3862','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":523989}'::jsonb,'https://statsapi.mlb.com/api/v1/people/523989?hydrate=xrefId',null),
+('rubel-arias','MLB','837601','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":837601,"name":"Rubel Arias","signingYear":2026}'::jsonb,'https://statsapi.mlb.com/api/v1/people/837601?hydrate=xrefId',null),
+('rubel-arias','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":837601}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('rubel-arias','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":837601}'::jsonb,'https://statsapi.mlb.com/api/v1/people/837601?hydrate=xrefId',null),
+('samuel-munoz','MLB','703153','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":703153,"name":"Samuel Munoz","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/703153?hydrate=xrefId',null),
+('samuel-munoz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":703153}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('samuel-munoz','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":703153}'::jsonb,'https://statsapi.mlb.com/api/v1/people/703153?hydrate=xrefId',null),
+('samuel-sanchez','MLB','808247','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808247,"name":"Samuel Sanchez","signingYear":2023}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808247?hydrate=xrefId',null),
+('samuel-sanchez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808247}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('samuel-sanchez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808247}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808247?hydrate=xrefId',null),
+('samuel-savinon','MLB','829493','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":829493,"name":"Samuel Savinon","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829493?hydrate=xrefId',null),
+('samuel-savinon','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":829493}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('samuel-savinon','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":829493}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829493?hydrate=xrefId',null),
+('sandy-amoros','MLB','110222','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":110222,"name":"Sandy Amoros","signingYear":1951}'::jsonb,'https://statsapi.mlb.com/api/v1/people/110222?hydrate=xrefId',null),
+('sandy-amoros','BASEBALL_REFERENCE','amorosa01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"amorosa01","firstTeam":"BRO","firstYear":1952,"name":"Sandy Amorós"}]'::jsonb,'{"brefHint":"amorosa01","debutDate":"1952-08-22","debutTeam":"BRO","lahman":"amorosa01","mlbId":110222}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('sandy-amoros','FANGRAPHS','1000212','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":110222}'::jsonb,'https://statsapi.mlb.com/api/v1/people/110222?hydrate=xrefId',null),
+('sean-linan','MLB','800344','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Sean Paul Liñan"],"club":"LAD","mlbId":800344,"name":"Sean Linan","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800344?hydrate=xrefId',null),
+('sean-linan','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800344}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('sean-linan','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800344}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800344?hydrate=xrefId',null),
+('sebastian-jimenez','MLB','699067','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699067,"name":"Sebastian Jimenez","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699067?hydrate=xrefId',null),
+('sebastian-jimenez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699067}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('sebastian-jimenez','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":699067}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699067?hydrate=xrefId',null),
+('shai-romero','MLB','829476','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":829476,"name":"Shai Romero","signingYear":2025}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829476?hydrate=xrefId',null),
+('shai-romero','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":829476}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('shai-romero','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":829476}'::jsonb,'https://statsapi.mlb.com/api/v1/people/829476?hydrate=xrefId',null),
+('shakir-albert','MLB','649954','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":649954,"name":"Shakir Albert","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649954?hydrate=xrefId',null),
+('shakir-albert','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":649954}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('shakir-albert','FANGRAPHS','sa828423','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":649954}'::jsonb,'https://statsapi.mlb.com/api/v1/people/649954?hydrate=xrefId',null),
+('starling-heredia','MLB','665752','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":665752,"name":"Starling Heredia","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665752?hydrate=xrefId',null),
+('starling-heredia','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":665752}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('starling-heredia','FANGRAPHS','sa917328','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665752}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665752?hydrate=xrefId',null),
+('steven-castillo','MLB','800481','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800481,"name":"Steven Castillo","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800481?hydrate=xrefId',null),
+('steven-castillo','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800481}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('steven-castillo','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800481}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800481?hydrate=xrefId',null),
+('thayron-liranzo','MLB','699073','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":699073,"name":"Thayron Liranzo","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699073?hydrate=xrefId',null),
+('thayron-liranzo','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":699073}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('thayron-liranzo','FANGRAPHS','sa3015790','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":699073}'::jsonb,'https://statsapi.mlb.com/api/v1/people/699073?hydrate=xrefId',null),
+('tim-fischer','MLB','808444','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":808444,"name":"Tim Fischer","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808444?hydrate=xrefId',null),
+('tim-fischer','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":808444}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('tim-fischer','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":808444}'::jsonb,'https://statsapi.mlb.com/api/v1/people/808444?hydrate=xrefId',null),
+('tony-abreu','MLB','473234','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":473234,"name":"Tony Abreu","signingYear":2002}'::jsonb,'https://statsapi.mlb.com/api/v1/people/473234?hydrate=xrefId',null),
+('tony-abreu','BASEBALL_REFERENCE','abreuto01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"abreuto01","firstTeam":"LAD","firstYear":2007,"name":"Tony Abreu"}]'::jsonb,'{"brefHint":"abreuto01","debutDate":"2007-05-22","debutTeam":"LAD","lahman":"abreuto01","mlbId":473234}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('tony-abreu','FANGRAPHS','5053','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":473234}'::jsonb,'https://statsapi.mlb.com/api/v1/people/473234?hydrate=xrefId',null),
+('umar-male','MLB','805773','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":805773,"name":"Umar Male","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805773?hydrate=xrefId',null),
+('umar-male','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":805773}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('umar-male','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":805773}'::jsonb,'https://statsapi.mlb.com/api/v1/people/805773?hydrate=xrefId',null),
+('victor-gonzalez','MLB','624647','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":624647,"name":"Victor Gonzalez","signingYear":2012}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624647?hydrate=xrefId',null),
+('victor-gonzalez','BASEBALL_REFERENCE','gonzavi02','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"gonzavi02","firstTeam":"LAD","firstYear":2020,"name":"Victor González"}]'::jsonb,'{"brefHint":"gonzavi02","debutDate":"2020-07-31","debutTeam":"LAD","lahman":"gonzavi02","mlbId":624647}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('victor-gonzalez','FANGRAPHS','16408','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":624647}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624647?hydrate=xrefId',null),
+('victor-rodrigues','MLB','800332','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800332,"name":"Victor Rodrigues","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800332?hydrate=xrefId',null),
+('victor-rodrigues','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800332}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('victor-rodrigues','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800332}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800332?hydrate=xrefId',null),
+('wilkerman-garcia','MLB','660564','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1998-04-01","date":"2014-07-02","description":"New York Yankees signed free agent SS Wilkerman Garcia to a minor league contract.","fullName":"Wilkerman Garcia","mlbDebutDate":null,"mlbId":660564}]'::jsonb,'{"aliases":[],"club":"NYY","mlbId":660564,"name":"Wilkerman Garcia","signingYear":2014}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660564?hydrate=xrefId',null),
+('wilkerman-garcia','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":660564}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('wilkerman-garcia','FANGRAPHS','sa872548','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":660564}'::jsonb,'https://statsapi.mlb.com/api/v1/people/660564?hydrate=xrefId',null),
+('william-soto','MLB','624648','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Willian Soto"],"club":"LAD","mlbId":624648,"name":"William Soto","signingYear":2012}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624648?hydrate=xrefId',null),
+('william-soto','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":624648}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('william-soto','FANGRAPHS','sa739645','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":624648}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624648?hydrate=xrefId',null),
+('willy-aybar','MLB','430632','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":430632,"name":"Willy Aybar","signingYear":2000}'::jsonb,'https://statsapi.mlb.com/api/v1/people/430632?hydrate=xrefId',null),
+('willy-aybar','BASEBALL_REFERENCE','aybarwi01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"aybarwi01","firstTeam":"LAD","firstYear":2005,"name":"Willy Aybar"}]'::jsonb,'{"brefHint":"aybarwi01","debutDate":"2005-08-31","debutTeam":"LAD","lahman":"aybarwi01","mlbId":430632}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('willy-aybar','FANGRAPHS','2192','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":430632}'::jsonb,'https://statsapi.mlb.com/api/v1/people/430632?hydrate=xrefId',null),
+('wilman-diaz','MLB','694180','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":694180,"name":"Wilman Diaz","signingYear":2021}'::jsonb,'https://statsapi.mlb.com/api/v1/people/694180?hydrate=xrefId',null),
+('wilman-diaz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":694180}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('wilman-diaz','FANGRAPHS','sa3015694','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":694180}'::jsonb,'https://statsapi.mlb.com/api/v1/people/694180?hydrate=xrefId',null),
+('yadier-alvarez','MLB','665751','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":["Yadiel Alvarez"],"club":"LAD","mlbId":665751,"name":"Yadier Álvarez","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665751?hydrate=xrefId',null),
+('yadier-alvarez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":665751}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('yadier-alvarez','FANGRAPHS','sa868984','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":665751}'::jsonb,'https://statsapi.mlb.com/api/v1/people/665751?hydrate=xrefId',null),
+('yasiel-puig','MLB','624577','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":624577,"name":"Yasiel Puig","signingYear":2012}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624577?hydrate=xrefId',null),
+('yasiel-puig','BASEBALL_REFERENCE','puigya01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"puigya01","firstTeam":"LAD","firstYear":2013,"name":"Yasiel Puig"}]'::jsonb,'{"brefHint":"puigya01","debutDate":"2013-06-03","debutTeam":"LAD","lahman":"puigya01","mlbId":624577}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('yasiel-puig','FANGRAPHS','14225','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":624577}'::jsonb,'https://statsapi.mlb.com/api/v1/people/624577?hydrate=xrefId',null),
+('yeiner-fernandez','MLB','691558','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":691558,"name":"Yeiner Fernandez","signingYear":2019}'::jsonb,'https://statsapi.mlb.com/api/v1/people/691558?hydrate=xrefId',null),
+('yeiner-fernandez','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":691558}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('yeiner-fernandez','FANGRAPHS','sa3015182','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":691558}'::jsonb,'https://statsapi.mlb.com/api/v1/people/691558?hydrate=xrefId',null),
+('yeltsin-gudino','MLB','650988','RESOLVED','CLUB_TRANSACTION_MATCH','VERIFIED',array['NAME','SIGNING_CLUB','SIGNING_YEAR']::text[],'[{"birthCountry":"Venezuela","birthDate":"1997-01-17","date":"2013-07-02","description":"Toronto Blue Jays signed free agent SS Yeltsin Gudino to a minor league contract.","fullName":"Yeltsin Gudino","mlbDebutDate":null,"mlbId":650988}]'::jsonb,'{"aliases":[],"club":"TOR","mlbId":650988,"name":"Yeltsin Gudino","signingYear":2013}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650988?hydrate=xrefId',null),
+('yeltsin-gudino','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":650988}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('yeltsin-gudino','FANGRAPHS','sa830208','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":650988}'::jsonb,'https://statsapi.mlb.com/api/v1/people/650988?hydrate=xrefId',null),
+('yeremy-rosario','MLB',null,'NOT_FOUND',null,null,array[]::text[],'[]'::jsonb,'{"club":"COL","name":"Yeremy Rosario","signingYear":2014}'::jsonb,null,'No MLB transaction or name-search match with the signing club; left for manual identity research.'),
+('yeremy-rosario','BASEBALL_REFERENCE',null,'NOT_FOUND',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":null}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No Baseball-Reference entry named "Yeremy Rosario".'),
+('yeyson-yrizarry','MLB',null,'NOT_FOUND',null,null,array[]::text[],'[]'::jsonb,'{"club":"TEX","name":"Yeyson Yrizarry","signingYear":2013}'::jsonb,null,'No MLB transaction or name-search match with the signing club; left for manual identity research.'),
+('yeyson-yrizarry','BASEBALL_REFERENCE',null,'NOT_FOUND',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":null}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No Baseball-Reference entry named "Yeyson Yrizarry".'),
+('yhonaider-gudino','MLB','800521','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800521,"name":"Yhonaider Gudino","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800521?hydrate=xrefId',null),
+('yhonaider-gudino','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800521}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('yhonaider-gudino','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800521}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800521?hydrate=xrefId',null),
+('yojackson-laya','MLB','821684','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":821684,"name":"Yojackson Laya","signingYear":2024}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821684?hydrate=xrefId',null),
+('yojackson-laya','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":821684}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('yojackson-laya','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":821684}'::jsonb,'https://statsapi.mlb.com/api/v1/people/821684?hydrate=xrefId',null),
+('yordan-alvarez','MLB','670541','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":670541,"name":"Yordan Alvarez","signingYear":2016}'::jsonb,'https://statsapi.mlb.com/api/v1/people/670541?hydrate=xrefId',null),
+('yordan-alvarez','BASEBALL_REFERENCE','alvaryo01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"alvaryo01","firstTeam":"HOU","firstYear":2019,"name":"Yordan Alvarez"}]'::jsonb,'{"brefHint":"alvaryo01","debutDate":"2019-06-09","debutTeam":"HOU","lahman":"alvaryo01","mlbId":670541}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('yordan-alvarez','FANGRAPHS','19556','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":670541}'::jsonb,'https://statsapi.mlb.com/api/v1/people/670541?hydrate=xrefId',null),
+('yorfran-medina','MLB','800337','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800337,"name":"Yorfran Medina","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800337?hydrate=xrefId',null),
+('yorfran-medina','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800337}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('yorfran-medina','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800337}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800337?hydrate=xrefId',null),
+('yoryi-simarra','MLB','800366','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800366,"name":"Yoryi Simarra","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800366?hydrate=xrefId',null),
+('yoryi-simarra','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800366}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('yoryi-simarra','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800366}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800366?hydrate=xrefId',null),
+('yuliangel-de-la-cruz','MLB','800447','RESOLVED','EXISTING_DISI_ID','VERIFIED',array['DISI_RECORD']::text[],null,'{"aliases":[],"club":"LAD","mlbId":800447,"name":"Yuliangel De La Cruz","signingYear":2022}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800447?hydrate=xrefId',null),
+('yuliangel-de-la-cruz','BASEBALL_REFERENCE',null,'NOT_APPLICABLE',null,null,array[]::text[],null,'{"brefHint":null,"debutDate":null,"debutTeam":null,"lahman":null,"mlbId":800447}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt','No MLB debut; Baseball-Reference major-league ids apply to MLB players.'),
+('yuliangel-de-la-cruz','FANGRAPHS',null,'NOT_AVAILABLE',null,null,array[]::text[],null,'{"mlbId":800447}'::jsonb,'https://statsapi.mlb.com/api/v1/people/800447?hydrate=xrefId',null),
+('yusniel-diaz','MLB','666783','RESOLVED','BREF_CITED_BREF_PAGE','VERIFIED',array['BREF_ID_FROM_CITED_PAGE','MLB_ID_IN_BREF_WAR_FILE']::text[],null,'{"aliases":[],"club":"LAD","mlbId":666783,"name":"Yusniel Diaz","signingYear":2015}'::jsonb,'https://statsapi.mlb.com/api/v1/people/666783?hydrate=xrefId',null),
+('yusniel-diaz','BASEBALL_REFERENCE','diazyu01','RESOLVED','BREF_WAR_FILE_MLB_ID','VERIFIED',array['MLB_ID_IN_BREF_WAR_FILE','MLB_LAHMAN_XREF_AGREES','CITED_BREF_PAGE_AGREES']::text[],'[{"brefId":"diazyu01","firstTeam":"BAL","firstYear":2022,"name":"Yusniel Diaz"}]'::jsonb,'{"brefHint":"diazyu01","debutDate":"2022-08-02","debutTeam":"BAL","lahman":"diazyu01","mlbId":666783}'::jsonb,'https://www.baseball-reference.com/data/war_daily_bat.txt',null),
+('yusniel-diaz','FANGRAPHS','18905','RESOLVED','MLB_XREF','VERIFIED',array['MLB_PERSON_XREF_FANGRAPHS']::text[],null,'{"mlbId":666783}'::jsonb,'https://statsapi.mlb.com/api/v1/people/666783?hydrate=xrefId',null);
+
+create temporary table _m020_sources (url text, retrieved_at timestamptz, kind text) on commit drop;
+insert into _m020_sources values
+('https://statsapi.mlb.com/api/v1/people/110222?hydrate=xrefId','2026-10-05T23:22:22.723Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/110359?hydrate=xrefId','2026-10-05T23:21:43.919Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/112128?hydrate=xrefId','2026-10-05T23:20:45.301Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/112155?hydrate=xrefId','2026-10-05T23:22:11.326Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/112391?hydrate=xrefId','2026-10-05T23:22:08.270Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/112984?hydrate=xrefId','2026-10-05T23:21:38.585Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/114077?hydrate=xrefId','2026-10-05T23:19:09.502Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/114588?hydrate=xrefId','2026-10-05T23:20:57.515Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/115267?hydrate=xrefId','2026-10-05T23:20:48.342Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/118377?hydrate=xrefId','2026-10-05T23:21:48.490Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/118378?hydrate=xrefId','2026-10-05T23:21:55.340Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/119247?hydrate=xrefId','2026-10-05T23:21:59.918Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/119827?hydrate=xrefId','2026-10-05T23:20:03.476Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/119948?hydrate=xrefId','2026-10-05T23:20:34.673Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/120107?hydrate=xrefId','2026-10-05T23:18:48.169Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/120221?hydrate=xrefId','2026-10-05T23:19:07.988Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/123595?hydrate=xrefId','2026-10-05T23:20:11.084Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/123619?hydrate=xrefId','2026-10-05T23:19:48.291Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/123743?hydrate=xrefId','2026-10-05T23:20:39.994Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/134181?hydrate=xrefId','2026-10-05T23:18:26.826Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/425539?hydrate=xrefId','2026-10-05T23:20:06.517Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/430632?hydrate=xrefId','2026-10-05T23:22:37.229Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/445276?hydrate=xrefId','2026-10-05T23:21:01.310Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/464341?hydrate=xrefId','2026-10-05T23:19:11.017Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/467070?hydrate=xrefId','2026-10-05T23:19:33.827Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/467793?hydrate=xrefId','2026-10-05T23:19:04.948Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/470462?hydrate=xrefId','2026-10-05T23:21:58.398Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/473234?hydrate=xrefId','2026-10-05T23:22:30.350Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/516910?hydrate=xrefId','2026-10-05T23:18:59.616Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/520980?hydrate=xrefId','2026-10-05T23:21:45.438Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/523848?hydrate=xrefId','2026-10-05T23:20:30.134Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/523989?hydrate=xrefId','2026-10-05T23:22:18.164Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/547943?hydrate=xrefId','2026-10-05T23:20:08.037Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/624577?hydrate=xrefId','2026-10-05T23:22:40.297Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/624645?hydrate=xrefId','2026-10-05T23:20:52.922Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/624646?hydrate=xrefId','2026-10-05T23:21:05.868Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/624647?hydrate=xrefId','2026-10-05T23:22:32.627Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/624648?hydrate=xrefId','2026-10-05T23:22:36.468Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/628711?hydrate=xrefId','2026-10-05T23:20:55.982Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/645282?hydrate=xrefId','2026-10-05T23:21:18.815Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/645289?hydrate=xrefId','2026-10-05T23:19:01.861Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/645444?hydrate=xrefId','2026-10-05T23:20:32.406Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/646240?hydrate=xrefId','2026-10-05T23:21:51.518Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/649954?hydrate=xrefId','2026-10-05T23:22:26.539Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/649955?hydrate=xrefId','2026-10-05T23:20:01.187Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/649956?hydrate=xrefId','2026-10-05T23:20:53.698Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/649957?hydrate=xrefId','2026-10-05T23:19:54.357Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/649958?hydrate=xrefId','2026-10-05T23:21:30.998Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650331?hydrate=xrefId','2026-10-05T23:21:07.381Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650391?hydrate=xrefId','2026-10-05T23:19:36.876Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650400?hydrate=xrefId','2026-10-05T23:19:43.729Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650402?hydrate=xrefId','2026-10-05T23:19:56.634Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650508?hydrate=xrefId','2026-10-05T23:19:00.361Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650510?hydrate=xrefId','2026-10-05T23:19:41.442Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650691?hydrate=xrefId','2026-10-05T23:19:52.840Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650693?hydrate=xrefId','2026-10-05T23:21:37.077Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650849?hydrate=xrefId','2026-10-05T23:19:58.900Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650954?hydrate=xrefId','2026-10-05T23:20:28.604Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650958?hydrate=xrefId','2026-10-05T23:21:21.135Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650959?hydrate=xrefId','2026-10-05T23:21:17.322Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/650988?hydrate=xrefId','2026-10-05T23:22:42.580Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/658530?hydrate=xrefId','2026-10-05T23:19:51.341Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/658531?hydrate=xrefId','2026-10-05T23:21:24.189Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/658532?hydrate=xrefId','2026-10-05T23:20:20.985Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/658535?hydrate=xrefId','2026-10-05T23:18:36.744Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/658665?hydrate=xrefId','2026-10-05T23:22:15.880Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/658677?hydrate=xrefId','2026-10-05T23:19:55.132Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/659261?hydrate=xrefId','2026-10-05T23:19:14.825Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/659262?hydrate=xrefId','2026-10-05T23:18:38.270Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/659910?hydrate=xrefId','2026-10-05T23:18:55.018Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660560?hydrate=xrefId','2026-10-05T23:21:27.966Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660564?hydrate=xrefId','2026-10-05T23:22:34.950Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660565?hydrate=xrefId','2026-10-05T23:20:51.393Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660614?hydrate=xrefId','2026-10-05T23:18:51.977Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660615?hydrate=xrefId','2026-10-05T23:22:06.759Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660616?hydrate=xrefId','2026-10-05T23:22:04.468Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660617?hydrate=xrefId','2026-10-05T23:21:34.777Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660623?hydrate=xrefId','2026-10-05T23:20:04.982Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660626?hydrate=xrefId','2026-10-05T23:18:46.642Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660632?hydrate=xrefId','2026-10-05T23:18:28.360Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660636?hydrate=xrefId','2026-10-05T23:19:25.472Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660639?hydrate=xrefId','2026-10-05T23:21:46.955Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660650?hydrate=xrefId','2026-10-05T23:19:22.431Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660660?hydrate=xrefId','2026-10-05T23:21:02.834Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660665?hydrate=xrefId','2026-10-05T23:20:46.819Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660688?hydrate=xrefId','2026-10-05T23:20:59.045Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660699?hydrate=xrefId','2026-10-05T23:20:54.459Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/660829?hydrate=xrefId','2026-10-06T03:51:20.757Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665751?hydrate=xrefId','2026-10-05T23:22:39.535Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665752?hydrate=xrefId','2026-10-05T23:22:27.296Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665759?hydrate=xrefId','2026-10-05T23:21:56.860Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665779?hydrate=xrefId','2026-10-05T23:19:04.172Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665798?hydrate=xrefId','2026-10-05T23:22:15.131Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665833?hydrate=xrefId','2026-10-05T23:21:40.896Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665852?hydrate=xrefId','2026-10-05T23:18:31.398Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665931?hydrate=xrefId','2026-10-05T23:19:16.341Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/665960?hydrate=xrefId','2026-10-05T23:21:13.499Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/666006?hydrate=xrefId','2026-10-05T23:19:17.880Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/666783?hydrate=xrefId','2026-10-05T23:22:49.445Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/666784?hydrate=xrefId','2026-10-05T23:21:40.114Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/670541?hydrate=xrefId','2026-10-05T23:22:45.648Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/678246?hydrate=xrefId','2026-10-05T23:21:29.484Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/678391?hydrate=xrefId','2026-10-05T23:20:26.306Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/678760?hydrate=xrefId','2026-10-05T23:19:27.766Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/681624?hydrate=xrefId','2026-10-05T23:18:42.092Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682616?hydrate=xrefId','2026-10-05T23:19:24.701Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682645?hydrate=xrefId','2026-10-05T23:20:18.692Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682937?hydrate=xrefId','2026-10-05T23:19:39.184Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682940?hydrate=xrefId','2026-10-05T23:21:27.208Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682942?hydrate=xrefId','2026-10-05T23:18:32.919Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682946?hydrate=xrefId','2026-10-05T23:19:58.153Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682948?hydrate=xrefId','2026-10-05T23:21:53.037Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682949?hydrate=xrefId','2026-10-05T23:19:14.079Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682950?hydrate=xrefId','2026-10-05T23:21:11.982Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/682951?hydrate=xrefId','2026-10-05T23:20:17.165Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/691177?hydrate=xrefId','2026-10-05T23:21:14.267Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/691558?hydrate=xrefId','2026-10-05T23:22:41.815Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/692262?hydrate=xrefId','2026-10-05T23:22:17.408Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/692327?hydrate=xrefId','2026-10-05T23:21:06.644Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/694180?hydrate=xrefId','2026-10-05T23:22:38.759Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/694188?hydrate=xrefId','2026-10-05T23:20:19.460Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699057?hydrate=xrefId','2026-10-05T23:21:31.738Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699058?hydrate=xrefId','2026-10-05T23:20:27.835Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699059?hydrate=xrefId','2026-10-05T23:21:20.362Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699060?hydrate=xrefId','2026-10-05T23:19:17.109Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699061?hydrate=xrefId','2026-10-05T23:22:01.432Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699062?hydrate=xrefId','2026-10-05T23:21:00.572Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699063?hydrate=xrefId','2026-10-05T23:21:49.998Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699064?hydrate=xrefId','2026-10-05T23:20:10.326Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699065?hydrate=xrefId','2026-10-05T23:21:11.225Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699066?hydrate=xrefId','2026-10-05T23:18:58.838Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699067?hydrate=xrefId','2026-10-05T23:22:25.018Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699068?hydrate=xrefId','2026-10-05T23:22:12.079Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699069?hydrate=xrefId','2026-10-05T23:19:36.116Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699070?hydrate=xrefId','2026-10-05T23:18:56.544Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699071?hydrate=xrefId','2026-10-05T23:19:13.312Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699072?hydrate=xrefId','2026-10-05T23:21:25.726Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699073?hydrate=xrefId','2026-10-05T23:22:28.824Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699074?hydrate=xrefId','2026-10-05T23:21:23.418Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699075?hydrate=xrefId','2026-10-05T23:20:24.025Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/699076?hydrate=xrefId','2026-10-05T23:20:44.540Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/702881?hydrate=xrefId','2026-10-05T23:18:32.157Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/703153?hydrate=xrefId','2026-10-05T23:22:20.433Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/703193?hydrate=xrefId','2026-10-05T23:18:26.065Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800288?hydrate=xrefId','2026-10-05T23:19:39.919Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800302?hydrate=xrefId','2026-10-05T23:21:15.780Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800316?hydrate=xrefId','2026-10-05T23:18:33.688Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800328?hydrate=xrefId','2026-10-05T23:19:18.622Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800332?hydrate=xrefId','2026-10-05T23:22:34.178Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800337?hydrate=xrefId','2026-10-05T23:22:47.230Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800344?hydrate=xrefId','2026-10-05T23:22:24.244Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800351?hydrate=xrefId','2026-10-05T23:20:14.872Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800355?hydrate=xrefId','2026-10-05T23:21:08.935Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800361?hydrate=xrefId','2026-10-05T23:21:50.763Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800366?hydrate=xrefId','2026-10-05T23:22:47.925Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800370?hydrate=xrefId','2026-10-05T23:19:31.573Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800380?hydrate=xrefId','2026-10-05T23:22:02.209Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800383?hydrate=xrefId','2026-10-05T23:19:27.006Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800390?hydrate=xrefId','2026-10-05T23:21:34.004Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800395?hydrate=xrefId','2026-10-05T23:21:36.303Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800399?hydrate=xrefId','2026-10-05T23:21:26.457Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800408?hydrate=xrefId','2026-10-05T23:20:22.504Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800419?hydrate=xrefId','2026-10-05T23:20:16.407Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800424?hydrate=xrefId','2026-10-05T23:21:42.366Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800447?hydrate=xrefId','2026-10-05T23:22:48.688Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800453?hydrate=xrefId','2026-10-05T23:19:30.796Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800481?hydrate=xrefId','2026-10-05T23:22:28.064Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800487?hydrate=xrefId','2026-10-05T23:22:12.844Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800494?hydrate=xrefId','2026-10-05T23:21:04.370Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800521?hydrate=xrefId','2026-10-05T23:22:44.106Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800527?hydrate=xrefId','2026-10-05T23:18:58.074Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800530?hydrate=xrefId','2026-10-05T23:19:29.277Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/800543?hydrate=xrefId','2026-10-05T23:20:43.033Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/802528?hydrate=xrefId','2026-10-05T23:18:30.626Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/802740?hydrate=xrefId','2026-10-05T23:18:39.794Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/803242?hydrate=xrefId','2026-10-05T23:18:51.210Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/805110?hydrate=xrefId','2026-10-05T23:22:03.724Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/805120?hydrate=xrefId','2026-10-05T23:20:41.480Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/805205?hydrate=xrefId','2026-10-05T23:18:54.247Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/805623?hydrate=xrefId','2026-10-05T23:20:09.549Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/805773?hydrate=xrefId','2026-10-05T23:22:31.883Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/806638?hydrate=xrefId','2026-10-05T23:20:49.883Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/806791?hydrate=xrefId','2026-10-05T23:22:10.556Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/806866?hydrate=xrefId','2026-10-05T23:21:16.545Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/806867?hydrate=xrefId','2026-10-05T23:18:25.843Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/806918?hydrate=xrefId','2026-10-05T23:19:50.571Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/806919?hydrate=xrefId','2026-10-05T23:20:31.653Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/806959?hydrate=xrefId','2026-10-05T23:20:25.535Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/806984?hydrate=xrefId','2026-10-05T23:18:50.462Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/807379?hydrate=xrefId','2026-10-05T23:21:43.161Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/807403?hydrate=xrefId','2026-10-05T23:20:15.644Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/807404?hydrate=xrefId','2026-10-05T23:20:37.703Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/807626?hydrate=xrefId','2026-10-05T23:19:30.026Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/807654?hydrate=xrefId','2026-10-05T23:18:44.381Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808028?hydrate=xrefId','2026-10-05T23:19:19.383Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808209?hydrate=xrefId','2026-10-05T23:19:40.686Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808214?hydrate=xrefId','2026-10-05T23:18:40.555Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808218?hydrate=xrefId','2026-10-05T23:21:09.687Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808223?hydrate=xrefId','2026-10-05T23:20:14.110Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808234?hydrate=xrefId','2026-10-05T23:19:32.299Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808247?hydrate=xrefId','2026-10-05T23:22:21.218Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808257?hydrate=xrefId','2026-10-05T23:19:35.350Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808313?hydrate=xrefId','2026-10-05T23:20:20.229Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808332?hydrate=xrefId','2026-10-05T23:22:09.821Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808339?hydrate=xrefId','2026-10-05T23:20:00.436Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808444?hydrate=xrefId','2026-10-05T23:22:29.571Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/808963?hydrate=xrefId','2026-10-05T23:22:13.602Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/812745?hydrate=xrefId','2026-10-05T23:20:13.386Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/812746?hydrate=xrefId','2026-10-05T23:20:17.927Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/812747?hydrate=xrefId','2026-10-05T23:21:54.563Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/812748?hydrate=xrefId','2026-10-05T23:19:42.967Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/815896?hydrate=xrefId','2026-10-05T23:19:38.412Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821263?hydrate=xrefId','2026-10-05T23:20:02.704Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821612?hydrate=xrefId','2026-10-05T23:18:53.516Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821633?hydrate=xrefId','2026-10-05T23:18:45.146Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821636?hydrate=xrefId','2026-10-05T23:21:05.136Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821650?hydrate=xrefId','2026-10-05T23:19:12.565Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821653?hydrate=xrefId','2026-10-05T23:20:33.917Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821658?hydrate=xrefId','2026-10-05T23:19:06.463Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821661?hydrate=xrefId','2026-10-05T23:19:20.152Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821672?hydrate=xrefId','2026-10-05T23:19:33.066Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821679?hydrate=xrefId','2026-10-05T23:21:22.665Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821684?hydrate=xrefId','2026-10-05T23:22:44.866Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821689?hydrate=xrefId','2026-10-05T23:19:49.818Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821697?hydrate=xrefId','2026-10-05T23:22:02.956Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821786?hydrate=xrefId','2026-10-05T23:19:45.234Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821801?hydrate=xrefId','2026-10-05T23:21:53.808Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821808?hydrate=xrefId','2026-10-05T23:18:35.982Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821817?hydrate=xrefId','2026-10-05T23:19:46.007Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/821826?hydrate=xrefId','2026-10-05T23:18:34.446Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/825160?hydrate=xrefId','2026-10-05T23:18:43.611Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/829476?hydrate=xrefId','2026-10-05T23:22:25.789Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/829479?hydrate=xrefId','2026-10-05T23:19:07.206Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/829482?hydrate=xrefId','2026-10-05T23:18:45.892Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/829490?hydrate=xrefId','2026-10-05T23:18:35.228Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/829493?hydrate=xrefId','2026-10-05T23:22:21.977Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/829498?hydrate=xrefId','2026-10-05T23:20:01.955Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830188?hydrate=xrefId','2026-10-05T23:20:42.261Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830397?hydrate=xrefId','2026-10-05T23:18:29.859Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830404?hydrate=xrefId','2026-10-05T23:21:33.263Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830413?hydrate=xrefId','2026-10-05T23:20:39.229Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830420?hydrate=xrefId','2026-10-05T23:20:24.798Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830426?hydrate=xrefId','2026-10-05T23:19:23.941Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830429?hydrate=xrefId','2026-10-05T23:22:05.986Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830432?hydrate=xrefId','2026-10-05T23:21:32.505Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830434?hydrate=xrefId','2026-10-05T23:21:15.013Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830439?hydrate=xrefId','2026-10-05T23:19:03.395Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830449?hydrate=xrefId','2026-10-05T23:20:36.941Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830452?hydrate=xrefId','2026-10-05T23:19:46.769Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830459?hydrate=xrefId','2026-10-05T23:20:23.260Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830463?hydrate=xrefId','2026-10-05T23:21:12.741Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830468?hydrate=xrefId','2026-10-05T23:19:21.658Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830471?hydrate=xrefId','2026-10-05T23:20:50.635Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830481?hydrate=xrefId','2026-10-05T23:19:20.917Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830612?hydrate=xrefId','2026-10-05T23:20:12.622Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/830800?hydrate=xrefId','2026-10-05T23:21:10.463Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/831322?hydrate=xrefId','2026-10-05T23:18:41.326Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/832440?hydrate=xrefId','2026-10-05T23:18:57.314Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/836606?hydrate=xrefId','2026-10-05T23:19:47.533Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/837601?hydrate=xrefId','2026-10-05T23:22:19.693Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/837605?hydrate=xrefId','2026-10-05T23:18:49.694Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/837652?hydrate=xrefId','2026-10-05T23:20:38.457Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/people/837769?hydrate=xrefId','2026-10-05T23:20:36.203Z','MLB_PLAYER_IDENTITY'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=520980','2026-10-05T23:21:46.204Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=523989','2026-10-05T23:22:18.930Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=547943','2026-10-05T23:20:08.820Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=624577','2026-10-05T23:22:41.054Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=624645','2026-10-05T21:08:39.805Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=624646','2026-10-05T21:08:43.595Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=624647','2026-10-05T23:22:33.419Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=624648','2026-10-05T21:08:47.472Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=628711','2026-10-05T23:20:56.761Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=645444','2026-10-05T23:20:33.195Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=646240','2026-10-05T23:21:52.300Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=649954','2026-10-05T21:09:06.369Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=649955','2026-10-05T21:08:55.002Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=649956','2026-10-05T21:08:58.781Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=649957','2026-10-05T21:08:51.224Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=649958','2026-10-05T21:09:02.579Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650331','2026-10-05T23:21:08.194Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650391','2026-10-05T23:19:37.663Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650400','2026-10-05T23:19:44.499Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650402','2026-10-05T23:19:57.398Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650508','2026-10-05T23:19:01.142Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650510','2026-10-05T23:19:42.210Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650691','2026-10-05T23:19:53.626Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650693','2026-10-05T23:21:37.825Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650849','2026-10-05T23:19:59.686Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650954','2026-10-05T23:20:29.377Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650958','2026-10-05T23:21:21.910Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=650988','2026-10-05T23:22:43.345Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=658530','2026-10-05T23:19:52.129Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=658531','2026-10-05T23:21:24.949Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=658532','2026-10-05T23:20:21.786Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=658535','2026-10-05T23:18:37.494Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=658665','2026-10-05T23:22:16.647Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=658677','2026-10-05T23:19:55.882Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=659261','2026-10-05T23:19:15.586Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=659910','2026-10-05T23:18:55.789Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660560','2026-10-05T23:21:28.713Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660564','2026-10-05T23:22:35.737Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660565','2026-10-05T23:20:52.165Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660614','2026-10-05T23:18:52.747Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660615','2026-10-05T23:22:07.525Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660616','2026-10-05T23:22:05.245Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660617','2026-10-05T23:21:35.549Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660623','2026-10-05T23:20:05.763Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660626','2026-10-05T23:18:47.410Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660636','2026-10-05T23:19:26.248Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660639','2026-10-05T23:21:47.728Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660650','2026-10-05T23:19:23.233Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660660','2026-10-05T23:21:03.594Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660665','2026-10-05T23:20:47.601Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660688','2026-10-05T23:20:59.808Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660699','2026-10-05T23:20:55.232Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=660829','2026-10-06T03:51:21.050Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665751','2026-10-05T21:13:55.780Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665752','2026-10-05T21:13:51.260Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665759','2026-10-05T23:21:57.650Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665779','2026-10-05T21:13:24.707Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665798','2026-10-05T21:13:46.718Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665833','2026-10-05T23:21:41.611Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665852','2026-10-05T21:13:20.144Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665931','2026-10-05T21:13:28.511Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=665960','2026-10-05T21:13:37.588Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=666006','2026-10-05T21:13:33.056Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=666783','2026-10-05T23:22:50.227Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=666784','2026-10-05T21:13:42.153Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=678246','2026-10-05T23:21:30.232Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=678391','2026-10-05T23:20:27.098Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=678760','2026-10-05T23:19:28.546Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682616','2026-10-05T21:14:04.911Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682645','2026-10-05T21:14:09.460Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682937','2026-10-05T21:09:13.958Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682940','2026-10-05T21:09:29.895Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682942','2026-10-05T21:14:00.351Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682946','2026-10-05T21:09:17.741Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682948','2026-10-05T21:09:33.697Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682949','2026-10-05T21:09:10.153Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682950','2026-10-05T21:09:26.094Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=682951','2026-10-05T21:09:22.303Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=691177','2026-10-05T21:14:13.995Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=691558','2026-10-05T21:09:45.114Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=692327','2026-10-05T21:09:37.479Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=694180','2026-10-05T21:11:08.578Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=694188','2026-10-05T21:10:11.639Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699057','2026-10-05T21:10:45.772Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699058','2026-10-05T21:10:19.230Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699059','2026-10-05T21:10:34.401Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699060','2026-10-05T21:10:00.281Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699061','2026-10-05T21:10:53.377Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699062','2026-10-05T21:10:26.816Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699063','2026-10-05T21:10:49.587Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699064','2026-10-05T21:10:07.932Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699065','2026-10-05T21:10:30.609Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699066','2026-10-05T21:09:52.694Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699067','2026-10-05T21:11:00.939Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699068','2026-10-05T21:10:57.173Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699069','2026-10-05T21:10:04.055Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699070','2026-10-05T21:09:48.910Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699071','2026-10-05T21:09:56.502Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699072','2026-10-05T21:10:41.990Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699073','2026-10-05T21:11:04.743Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699074','2026-10-05T21:10:38.210Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699075','2026-10-05T21:10:15.428Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=699076','2026-10-05T21:10:23.038Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=702881','2026-10-05T21:11:26.809Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=703153','2026-10-05T21:14:38.011Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=703193','2026-10-05T21:11:17.674Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800288','2026-10-05T21:12:25.849Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800302','2026-10-05T21:13:38.852Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800316','2026-10-05T21:11:31.314Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800328','2026-10-05T21:11:58.632Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800332','2026-10-05T21:15:00.738Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800337','2026-10-05T21:15:09.835Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800344','2026-10-05T21:14:42.557Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800351','2026-10-05T21:12:48.650Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800355','2026-10-05T21:13:34.287Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800361','2026-10-05T21:14:10.657Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800366','2026-10-05T21:15:14.403Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800370','2026-10-05T21:12:21.314Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800380','2026-10-05T21:14:19.806Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800383','2026-10-05T21:12:03.119Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800390','2026-10-05T21:13:52.537Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800395','2026-10-05T21:13:57.076Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800399','2026-10-05T21:13:47.955Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800408','2026-10-05T21:13:06.986Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800419','2026-10-05T21:12:57.763Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800424','2026-10-05T21:14:01.597Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800447','2026-10-05T21:15:18.922Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800453','2026-10-05T21:12:16.777Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800481','2026-10-05T21:14:47.087Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800487','2026-10-05T21:14:33.468Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800494','2026-10-05T21:13:29.758Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800521','2026-10-05T21:15:05.297Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800527','2026-10-05T21:11:54.117Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800530','2026-10-05T21:12:07.655Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=800543','2026-10-05T23:20:43.784Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=802528','2026-10-05T21:11:22.236Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=802740','2026-10-05T21:11:35.884Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=803242','2026-10-05T21:11:45.001Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=805110','2026-10-05T21:14:24.379Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=805120','2026-10-05T21:13:20.654Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=805205','2026-10-05T21:11:49.567Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=805623','2026-10-05T21:12:39.524Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=805773','2026-10-05T21:14:56.192Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=806638','2026-10-05T21:13:25.206Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=806791','2026-10-05T21:14:28.901Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=806866','2026-10-05T21:13:43.417Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=806867','2026-10-05T21:11:13.114Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=806918','2026-10-05T21:12:34.961Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=806919','2026-10-05T21:13:11.540Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=806959','2026-10-05T21:15:56.796Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=806984','2026-10-05T21:15:26.487Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=807379','2026-10-05T21:14:06.138Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=807403','2026-10-05T21:12:53.210Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=807404','2026-10-05T21:13:16.116Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=807626','2026-10-05T21:12:12.303Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=807654','2026-10-05T21:11:40.445Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808028','2026-10-05T21:15:30.257Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808209','2026-10-05T21:15:41.659Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808214','2026-10-05T21:15:22.685Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808218','2026-10-05T21:16:00.590Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808223','2026-10-05T21:15:49.217Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808234','2026-10-05T21:15:34.059Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808247','2026-10-05T21:16:08.155Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808257','2026-10-05T21:15:37.860Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808313','2026-10-05T21:15:53.028Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808332','2026-10-05T21:16:04.378Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808339','2026-10-05T21:15:45.432Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808444','2026-10-05T21:14:51.638Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=808963','2026-10-05T23:22:14.389Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=812745','2026-10-05T21:12:44.078Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=812746','2026-10-05T21:13:02.337Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=812747','2026-10-05T21:14:15.233Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=812748','2026-10-05T21:12:30.414Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=815896','2026-10-05T21:16:49.136Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821263','2026-10-05T21:17:07.346Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821612','2026-10-05T21:16:26.399Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821633','2026-10-05T21:16:21.843Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821636','2026-10-05T21:17:16.441Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821650','2026-10-05T21:16:35.516Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821653','2026-10-05T21:17:11.895Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821658','2026-10-05T21:16:30.959Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821661','2026-10-05T21:16:40.047Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821672','2026-10-05T21:16:44.611Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821679','2026-10-05T21:17:21.018Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821684','2026-10-05T21:17:34.661Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821689','2026-10-05T21:17:02.766Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821697','2026-10-05T21:17:30.113Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821786','2026-10-05T21:16:53.673Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821801','2026-10-05T21:17:25.566Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821808','2026-10-05T21:16:17.269Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821817','2026-10-05T21:16:58.215Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=821826','2026-10-05T21:16:12.700Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=825160','2026-10-05T21:17:52.846Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=829476','2026-10-05T21:19:42.053Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=829479','2026-10-05T21:18:11.077Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=829482','2026-10-05T21:17:57.396Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=829490','2026-10-05T21:17:43.760Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=829493','2026-10-05T21:19:37.498Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=829498','2026-10-05T21:18:33.802Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830188','2026-10-05T21:19:01.092Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830397','2026-10-05T21:17:39.203Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830404','2026-10-05T21:19:28.398Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830413','2026-10-05T21:18:56.561Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830420','2026-10-05T21:18:47.444Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830426','2026-10-05T21:18:24.704Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830429','2026-10-05T21:19:32.946Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830432','2026-10-05T21:19:23.836Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830434','2026-10-05T21:19:19.261Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830439','2026-10-05T21:18:06.497Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830449','2026-10-05T21:18:52.006Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830452','2026-10-05T21:18:29.269Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830459','2026-10-05T21:18:42.881Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830463','2026-10-05T21:19:14.744Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830468','2026-10-05T21:18:20.174Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830471','2026-10-05T21:19:05.648Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830481','2026-10-05T21:18:15.610Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830612','2026-10-05T21:18:38.345Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=830800','2026-10-05T21:19:10.209Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=831322','2026-10-05T21:17:48.301Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=832440','2026-10-05T21:18:01.956Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=836606','2026-10-05T21:19:49.625Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=837601','2026-10-05T21:20:01.002Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=837605','2026-10-05T21:19:45.846Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=837652','2026-10-05T21:19:57.223Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?playerId=837769','2026-10-05T21:19:53.439Z','MLB_PLAYER_TRANSACTIONS'),
+('https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31','2026-10-05T23:15:23.812Z','MLB_TEAM_TRANSACTIONS'),
+('https://www.baseball-reference.com/data/war_daily_bat.txt','2026-10-05T21:22:01.003Z','BREF_WAR_DATA_FILE'),
+('https://www.baseball-reference.com/data/war_daily_pitch.txt','2026-10-05T21:22:01.887Z','BREF_WAR_DATA_FILE');
+
+create temporary table _m020_aliases (slug text, alias text, alias_type text, source_url text) on commit drop;
+insert into _m020_aliases values
+('adrian-beltre','Adrian Beltre','PREVIOUS_DISI_SPELLING',null),
+('arquimedes-gamboa','Arquimedes Gamboa','PREVIOUS_DISI_SPELLING',null),
+('carlos-frias','Carlos Frias','PREVIOUS_DISI_SPELLING',null),
+('chico-fernandez','Chico Fernandez','PREVIOUS_DISI_SPELLING',null),
+('dermis-garcia','Dermis Garcia','PREVIOUS_DISI_SPELLING',null),
+('elian-herrera','Elian Herrera','PREVIOUS_DISI_SPELLING',null),
+('eloy-jimenez','Eloy Jimenez','PREVIOUS_DISI_SPELLING',null),
+('franklin-perez','Franklin Perez','PREVIOUS_DISI_SPELLING',null),
+('hyo-jun-park','Hoy Jun Park','MLB_TRANSACTION_NAME','https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31'),
+('hyo-jun-park','Hoy Park','MLB_RECORD_NAME','https://statsapi.mlb.com/api/v1/people/660829?hydrate=xrefId'),
+('jerami-rodriguez','Jeremi Rodriguez','MLB_RECORD_NAME','https://statsapi.mlb.com/api/v1/people/682951?hydrate=xrefId'),
+('jose-dominguez','Jose Dominguez','PREVIOUS_DISI_SPELLING',null),
+('jose-herrera','Jose Herrera','PREVIOUS_DISI_SPELLING',null),
+('jose-offerman','Jose Offerman','PREVIOUS_DISI_SPELLING',null),
+('jose-vizcaino','Jose Vizcaino','PREVIOUS_DISI_SPELLING',null),
+('juan-guzman','Juan Guzman','PREVIOUS_DISI_SPELLING',null),
+('julio-urias','Julio Urias','PREVIOUS_DISI_SPELLING',null),
+('karim-garcia','Karim Garcia','PREVIOUS_DISI_SPELLING',null),
+('lewin-diaz','Lewin Diaz','PREVIOUS_DISI_SPELLING',null),
+('mairoshendrick-martinus','Mairo Martinus','MLB_RECORD_NAME','https://statsapi.mlb.com/api/v1/people/800302?hydrate=xrefId'),
+('marcos-diplan','Marcos Diplan','PREVIOUS_DISI_SPELLING',null),
+('nicolas-pierre','Nic Pierre','MLB_RECORD_NAME','https://statsapi.mlb.com/api/v1/people/650693?hydrate=xrefId'),
+('omar-estevez','Omar Estevez','PREVIOUS_DISI_SPELLING',null),
+('pedro-baez','Pedro Baez','PREVIOUS_DISI_SPELLING',null),
+('pedro-martinez','Pedro Martinez','PREVIOUS_DISI_SPELLING',null),
+('ramon-martinez','Ramon Martinez','PREVIOUS_DISI_SPELLING',null),
+('ramon-rosso','Ramon Rosso','PREVIOUS_DISI_SPELLING',null),
+('ramon-troncoso','Ramon Troncoso','PREVIOUS_DISI_SPELLING',null),
+('raul-mondesi','Raul Mondesi','PREVIOUS_DISI_SPELLING',null),
+('roger-cedeno','Roger Cedeno','PREVIOUS_DISI_SPELLING',null),
+('sandy-amoros','Sandy Amoros','PREVIOUS_DISI_SPELLING',null),
+('sean-linan','Sean Paul Liñan','MLB_RECORD_NAME','https://statsapi.mlb.com/api/v1/people/800344?hydrate=xrefId'),
+('victor-gonzalez','Victor Gonzalez','PREVIOUS_DISI_SPELLING',null),
+('william-soto','Willian Soto','MLB_RECORD_NAME','https://statsapi.mlb.com/api/v1/people/624648?hydrate=xrefId'),
+('yusniel-diaz','Yusniel Diaz','PREVIOUS_DISI_SPELLING',null);
+delete from _m020_aliases where slug = '__none__';
+
+-- ===========================================================================
+-- 3. SOURCES (accessed_at = retrieval time)
+-- ===========================================================================
+
+insert into public.sources (source_name, source_type, title, url, accessed_at, notes, source_tier)
+select
+  case s.kind when 'BREF_WAR_DATA_FILE' then 'Baseball-Reference' else 'MLB Stats API' end,
+  case s.kind
+    when 'MLB_PLAYER_IDENTITY' then 'MLB_PERSON_RECORD'
+    when 'MLB_PLAYER_TRANSACTIONS' then 'MLB_TRANSACTION_LOG'
+    when 'MLB_TEAM_TRANSACTIONS' then 'MLB_TRANSACTION_LOG'
+    else 'WAR_DATA_FILE'
+  end,
+  case s.kind
+    when 'MLB_PLAYER_IDENTITY' then 'MLB player identity record: ' || coalesce(b.mlb_full_name, s.url)
+    when 'MLB_PLAYER_TRANSACTIONS' then 'MLB transaction history'
+    when 'MLB_TEAM_TRANSACTIONS' then 'MLB club transaction log: ' || substring(s.url from 'startDate=([0-9-]+)') || ' to ' || substring(s.url from 'endDate=([0-9-]+)')
+    when 'BREF_WAR_DATA_FILE' then 'Baseball-Reference WAR data: ' || regexp_replace(s.url, '^.*/', '')
+  end,
+  s.url, s.retrieved_at,
+  case s.kind
+    when 'MLB_PLAYER_IDENTITY' then 'MLB person record with cross-reference ids (birth data, bats/throws, height/weight, position, Lahman and FanGraphs ids).'
+    when 'BREF_WAR_DATA_FILE' then 'Maps MLB ids (mlb_ID) to Baseball-Reference ids (player_ID).'
+  end,
+  public.disi_infer_source_tier(s.url, null)
+from _m020_sources s
+left join _m020_bio b on b.identity_url = s.url
+on conflict (url) do nothing;
+
+-- ===========================================================================
+-- 4. IDENTIFIERS (fill NULLs; never take an id another player holds)
+-- ===========================================================================
+
+-- Differences from an existing id are recorded, never overwritten.
+insert into public.research_source_conflicts (
+  conflict_key, conflict_type, player_id, field_name, value_a, value_b, source_b_id, status, note
+)
+select 'IDENTITY:' || f.field || ':' || p.slug, 'IDENTITY', p.id, f.field, f.current_value, f.new_value,
+       (select src.id from public.sources src where src.url = b.identity_url),
+       'UNRESOLVED', 'Existing identifier kept; the 020 identity research found a different value.'
+from _m020_ids i
+join public.players p on p.slug = i.slug
+left join _m020_bio b on b.slug = i.slug
+cross join lateral (values
+  ('mlb_id', p.mlb_id::text, i.mlb_id::text),
+  ('bref_id', p.bref_id, i.bref_id),
+  ('fangraphs_id', p.fangraphs_id, i.fangraphs_id)
+) f(field, current_value, new_value)
+where f.current_value is not null and f.new_value is not null and f.current_value <> f.new_value
+on conflict (conflict_key) do nothing;
+
+-- An identifier already held by another player is a collision: recorded, not applied.
+insert into public.research_source_conflicts (
+  conflict_key, conflict_type, player_id, field_name, value_a, value_b, status, note
+)
+select 'IDENTITY_COLLISION:' || f.field || ':' || p.slug, 'IDENTITY', p.id, f.field, o.slug, f.new_value,
+       'UNRESOLVED', 'Identifier already belongs to another DISI player (value_a); not applied. Players are never merged automatically.'
+from _m020_ids i
+join public.players p on p.slug = i.slug
+cross join lateral (values ('mlb_id', i.mlb_id::text), ('bref_id', i.bref_id), ('fangraphs_id', i.fangraphs_id)) f(field, new_value)
+join public.players o on o.id <> p.id and (
+  (f.field = 'mlb_id' and o.mlb_id::text = f.new_value) or
+  (f.field = 'bref_id' and o.bref_id = f.new_value) or
+  (f.field = 'fangraphs_id' and o.fangraphs_id = f.new_value))
+where f.new_value is not null
+on conflict (conflict_key) do nothing;
+
+update public.players p
+set mlb_id = i.mlb_id
+from _m020_ids i
+where p.slug = i.slug and p.mlb_id is null
+  and not exists (select 1 from public.players o where o.mlb_id = i.mlb_id);
+
+update public.players p
+set bref_id = i.bref_id
+from _m020_ids i
+where p.slug = i.slug and p.bref_id is null and i.bref_id is not null and p.mlb_id = i.mlb_id
+  and not exists (select 1 from public.players o where o.bref_id = i.bref_id);
+
+update public.players p
+set fangraphs_id = i.fangraphs_id
+from _m020_ids i
+where p.slug = i.slug and p.fangraphs_id is null and i.fangraphs_id is not null and p.mlb_id = i.mlb_id
+  and not exists (select 1 from public.players o where o.fangraphs_id = i.fangraphs_id);
+
+-- ===========================================================================
+-- 5. NAMES AND ALIASES
+-- ===========================================================================
+
+-- Previous spellings and MLB record names (alias rows first, so no spelling is lost).
+insert into public.player_aliases (player_id, alias, alias_type, source_id)
+select p.id, a.alias, a.alias_type, src.id
+from _m020_aliases a
+join public.players p on p.slug = a.slug
+left join public.sources src on src.url = a.source_url
+where a.alias is distinct from p.full_name or a.alias_type = 'PREVIOUS_DISI_SPELLING'
+on conflict (player_id, alias) do nothing;
+
+-- Accent-only respelling: same letters, same slug. Guarded again here.
+update public.players p
+set full_name = b.canonical_name
+from _m020_bio b
+join _m020_ids i on i.slug = b.slug
+where p.slug = b.slug and b.rename_full_name and p.mlb_id = i.mlb_id
+  and p.full_name <> b.canonical_name
+  and public.disi_ascii_fold(p.full_name) = public.disi_ascii_fold(b.canonical_name)
+  and exists (select 1 from public.player_aliases a where a.player_id = p.id and a.alias = p.full_name);
+
+update public.players p
+set canonical_name = b.canonical_name
+from _m020_bio b
+join _m020_ids i on i.slug = b.slug
+where p.slug = b.slug and p.mlb_id = i.mlb_id
+  and p.canonical_name is distinct from b.canonical_name
+  and (p.canonical_name is null or public.disi_ascii_fold(p.canonical_name) = public.disi_ascii_fold(b.canonical_name));
+
+insert into public.evidence (entity_type, entity_id, field_name, source_id, confidence, evidence_note)
+select 'player', p.id, 'canonical_name', src.id, 'HIGH',
+       'Accented spelling from ' || replace(initcap(b.canonical_name_source), '_', '-')
+       || '; previous DISI spelling kept as an alias.'
+from _m020_bio b
+join public.players p on p.slug = b.slug and p.full_name = b.canonical_name
+join public.sources src on src.url = case when b.canonical_name_source = 'BASEBALL_REFERENCE'
+  then 'https://www.baseball-reference.com/data/war_daily_bat.txt' else b.identity_url end
+where b.rename_full_name
+  and not exists (select 1 from public.evidence e where e.entity_type = 'player' and e.entity_id = p.id
+                  and e.field_name = 'canonical_name' and e.source_id = src.id);
+
+-- ===========================================================================
+-- 6. BIOGRAPHY (fill NULLs; disagreements recorded; evidence per field)
+-- ===========================================================================
+
+-- Disagreements with existing values (kept) unless the same field already has
+-- an open conflict.
+insert into public.research_source_conflicts (
+  conflict_key, conflict_type, player_id, field_name, value_a, value_b, source_b_id, status, note
+)
+select 'BIO:' || f.field || ':' || p.slug, f.conflict_type, p.id, f.field, f.current_value, f.new_value, src.id,
+       'UNRESOLVED', 'Existing DISI value kept; the MLB person record differs.'
+from _m020_bio b
+join _m020_ids i on i.slug = b.slug
+join public.players p on p.slug = b.slug and p.mlb_id = i.mlb_id
+join public.sources src on src.url = b.identity_url
+cross join lateral (values
+  ('birth_date', 'BIRTH_DATE', p.birth_date::text, b.birth_date::text),
+  ('birth_country', 'BIRTH_COUNTRY', p.birth_country, b.birth_country),
+  ('bats', 'HANDEDNESS', p.bats, b.bats),
+  ('throws', 'HANDEDNESS', p.throws, b.throws)
+) f(field, conflict_type, current_value, new_value)
+where f.current_value is not null and f.new_value is not null and f.current_value <> f.new_value
+  and not exists (select 1 from public.research_source_conflicts c
+                  where c.player_id = p.id and c.field_name = f.field and c.status = 'UNRESOLVED')
+on conflict (conflict_key) do nothing;
+
+-- Birth-country corrections. These legacy birth_country values were seeded
+-- with the player's signing country (the class / signing source), which
+-- supports signings.country_market, not a birthplace. No evidence row ever
+-- supported them as birth countries. Each is replaced only when the MLB person
+-- record gives the corrected value; the signing market is not touched, and the
+-- conflict row keeps the legacy value (value_a) with the reason.
+create temporary table _m020_birth_corrections (
+  slug text, legacy_value text, corrected_value text, conflict_key text, resolution text
+) on commit drop;
+insert into _m020_birth_corrections values
+('josue-de-paula', 'Dominican Republic', 'United States', 'BIO:birth_country:josue-de-paula',
+ 'Corrected to United States: the MLB person record gives Brooklyn, NY. The legacy value was his signing country; he moved to the Dominican Republic and signed out of it, which stays as the signing market.'),
+('damaso-marte-jr', 'Dominican Republic', 'United States', 'BIO:birth_country:damaso-marte-jr',
+ 'Corrected to United States: the MLB person record gives Orlando, FL. The legacy value was his signing country; he was signed from the Dominican Republic, which stays as the signing market.'),
+('isaac-barreto', 'Colombia', 'Venezuela', 'BIO:birth_country:isaac-barreto',
+ 'Corrected to Venezuela: the MLB person record gives Maracaibo, Venezuela. Colombia comes from the Dodgers 2021 class release, which lists his signing country; it stays as the signing market.'),
+('luciano-romero', 'Venezuela', 'Dominican Republic', 'BIO:birth_country:luciano-romero',
+ 'Corrected to Dominican Republic: the MLB person record gives La Romana, Dominican Republic. Venezuela comes from the 2022 class list and stays as the signing market.'),
+('joseph-deng-thon', 'South Sudan', 'Sudan', 'BIRTH_COUNTRY:deng-thon',
+ 'Birth country set to the literal value on the MLB person record: Juba, Sudan. He was born 2007-08-05, before South Sudan''s independence (2011-07-09), so Sudan is the country of birth as recorded; Juba is in present-day South Sudan. Club and class sources describe him as South Sudanese (the first South Sudanese player signed professionally); South Sudan stays as the signing market. Nationality is not recorded because no source states it as such.');
+
+update public.players p
+set birth_country = c.corrected_value
+from _m020_birth_corrections c
+join _m020_bio b on b.slug = c.slug
+where p.slug = c.slug and p.birth_country = c.legacy_value and b.birth_country = c.corrected_value;
+
+update public.research_source_conflicts r
+set status = 'RESOLVED', resolution = c.resolution
+from _m020_birth_corrections c
+join public.players p on p.slug = c.slug
+where r.conflict_key = c.conflict_key and r.status = 'UNRESOLVED' and p.birth_country = c.corrected_value;
+
+-- The 2022 market conflict was birth country vs signing market: two facts, both now recorded.
+update public.research_source_conflicts r
+set status = 'RESOLVED',
+    resolution = 'Different fields, not a disagreement: birth country Dominican Republic (MLB person record) and signing market Venezuela (2022 class list).'
+from public.players p
+where r.conflict_key = 'MARKET:luciano-romero-2022' and r.status = 'UNRESOLVED'
+  and p.slug = 'luciano-romero' and p.birth_country = 'Dominican Republic';
+
+update public.players p
+set birth_date = coalesce(p.birth_date, b.birth_date),
+    birth_city = coalesce(p.birth_city, b.birth_city),
+    birth_state_province = coalesce(p.birth_state_province, b.birth_state_province),
+    birth_country = coalesce(p.birth_country, b.birth_country),
+    bats = coalesce(p.bats, b.bats),
+    throws = coalesce(p.throws, b.throws),
+    height_in = coalesce(p.height_in, b.height_in),
+    weight_lb = coalesce(p.weight_lb, b.weight_lb),
+    current_position = coalesce(p.current_position, b.current_position),
+    mlb_debut_date = coalesce(p.mlb_debut_date, b.mlb_debut_date)
+from _m020_bio b
+join _m020_ids i on i.slug = b.slug
+where p.slug = b.slug and p.mlb_id = i.mlb_id;
+
+-- Evidence: one row per field the MLB person record supports AND that agrees
+-- with the stored value. Identifier evidence names its own source.
+insert into public.evidence (entity_type, entity_id, field_name, source_id, confidence, evidence_note)
+select 'player', p.id, f.field, src.id, 'VERIFIED',
+       'MLB person record (MLB id ' || p.mlb_id || ')' || coalesce(f.note, '') || '.'
+from _m020_bio b
+join _m020_ids i on i.slug = b.slug
+join public.players p on p.slug = b.slug and p.mlb_id = i.mlb_id
+join public.sources src on src.url = b.identity_url
+cross join lateral (values
+  ('mlb_id', true, null),
+  ('birth_date', b.birth_date = p.birth_date, null),
+  ('birth_city', b.birth_city = p.birth_city, null),
+  ('birth_state_province', b.birth_state_province = p.birth_state_province, null),
+  ('birth_country', b.birth_country = p.birth_country,
+     concat(case when b.raw_birth_country <> b.birth_country then ': birthCountry "' || b.raw_birth_country || '"' end,
+            (select '; replaces legacy value "' || c.legacy_value || '", which was the signing country (kept as signing market)'
+               from _m020_birth_corrections c where c.slug = b.slug))),
+  ('bats', b.bats = p.bats, null),
+  ('throws', b.throws = p.throws, null),
+  ('height_in', b.height_in = p.height_in, null),
+  ('weight_lb', b.weight_lb = p.weight_lb, ' (weight as listed at retrieval)'),
+  ('current_position', b.current_position = p.current_position, ' (position as of retrieval)'),
+  ('mlb_debut_date', b.mlb_debut_date = p.mlb_debut_date, null),
+  ('fangraphs_id', i.fangraphs_id = p.fangraphs_id, ': FanGraphs cross-reference id')
+) f(field, agrees, note)
+where f.agrees
+  and not exists (select 1 from public.evidence e where e.entity_type = 'player' and e.entity_id = p.id
+                  and e.field_name = f.field and e.source_id = src.id);
+
+insert into public.evidence (entity_type, entity_id, field_name, source_id, confidence, evidence_note)
+select 'player', p.id, 'bref_id', src.id, coalesce(r.confidence, 'HIGH')::public.confidence_level,
+       'Baseball-Reference WAR data file maps mlb_ID ' || p.mlb_id || ' to ' || p.bref_id
+       || coalesce(' (' || array_to_string(r.signals, ', ') || ')', '') || '.'
+from _m020_ids i
+join public.players p on p.slug = i.slug and p.bref_id = i.bref_id
+join _m020_resolutions r on r.slug = i.slug and r.id_system = 'BASEBALL_REFERENCE'
+join public.sources src on src.url = r.source_url
+where not exists (select 1 from public.evidence e where e.entity_type = 'player' and e.entity_id = p.id
+                  and e.field_name = 'bref_id' and e.source_id = src.id);
+
+-- The person-record debut date must agree with an audited outcome's debut date.
+insert into public.research_source_conflicts (
+  conflict_key, conflict_type, player_id, field_name, value_a, source_a_id, value_b, source_b_id, status, note
+)
+select 'BIO:mlb_debut_date:' || p.slug, 'OUTCOME', p.id, 'mlb_debut_date', oc.mlb_debut_date::text, oc.source_id,
+       p.mlb_debut_date::text, src.id, 'UNRESOLVED', 'Outcome record and MLB person record give different debut dates; the outcome record is kept.'
+from public.players p
+join public.outcomes oc on oc.player_id = p.id
+join _m020_bio b on b.slug = p.slug
+join public.sources src on src.url = b.identity_url
+where oc.mlb_debut_date is not null and p.mlb_debut_date is not null and oc.mlb_debut_date <> p.mlb_debut_date
+on conflict (conflict_key) do nothing;
+
+-- ===========================================================================
+-- 7. POSITION AT SIGNING (from the club's signing transaction)
+-- ===========================================================================
+
+update public.signings s
+set position_at_signing = ps.position_at_signing,
+    position_at_signing_source_id = src.id
+from _m020_positions ps
+join public.players p on p.slug = ps.slug
+join public.sources src on src.url = ps.transaction_url
+where s.player_id = p.id and s.signing_year = ps.signing_year
+  and s.position_at_signing is null
+  and (select count(*) from public.signings x where x.player_id = p.id and x.signing_year = ps.signing_year) = 1;
+
+insert into public.evidence (entity_type, entity_id, field_name, source_id, confidence, evidence_note)
+select 'signing', s.id, 'position_at_signing', s.position_at_signing_source_id, 'VERIFIED',
+       'Position named on the ' || ps.transaction_date || ' signing transaction.'
+from _m020_positions ps
+join public.players p on p.slug = ps.slug
+join public.signings s on s.player_id = p.id and s.signing_year = ps.signing_year
+  and s.position_at_signing = ps.position_at_signing
+where s.position_at_signing_source_id is not null
+  and not exists (select 1 from public.evidence e where e.entity_type = 'signing' and e.entity_id = s.id
+                  and e.field_name = 'position_at_signing');
+
+-- ===========================================================================
+-- 8. IDENTITY RESOLUTION RECORDS (never overwritten on rerun)
+-- ===========================================================================
+
+insert into public.player_identity_resolutions (
+  player_id, id_system, external_id, status, method, confidence, signals, candidates, query, source_id, decided_on, note
+)
+select p.id, r.id_system, r.external_id, r.status, r.method, r.confidence::public.confidence_level,
+       coalesce(r.signals, array[]::text[]), r.candidates, r.query, src.id, date '2026-10-05', r.note
+from _m020_resolutions r
+join public.players p on p.slug = r.slug
+left join public.sources src on src.url = r.source_url
+on conflict (player_id, id_system) do nothing;
+
+-- A resolved id that could not be applied (collision / existing different id)
+-- is not shown as resolved.
+update public.player_identity_resolutions r
+set status = 'CONFLICT',
+    note = concat_ws(' ', r.note, 'Not applied: see research_source_conflicts.')
+from public.players p
+where p.id = r.player_id and r.status = 'RESOLVED'
+  and ((r.id_system = 'MLB' and p.mlb_id::text is distinct from r.external_id)
+    or (r.id_system = 'BASEBALL_REFERENCE' and p.bref_id is distinct from r.external_id)
+    or (r.id_system = 'FANGRAPHS' and p.fangraphs_id is distinct from r.external_id));
+
+-- ===========================================================================
+-- 9. MANUAL DECISIONS
+-- ===========================================================================
+
+update public.research_source_conflicts
+set note = 'Club and class sources say South Sudan; the MLB person record says Juba, Sudan. He was born '
+        || '2007-08-05, before South Sudan''s independence (2011-07-09), so "Sudan" describes the state at birth and '
+        || '"South Sudan" the country today: not a data error on either side. birth_country holds the literal '
+        || 'birth-record value (Sudan); South Sudan is the signing market.'
+where conflict_key = 'BIRTH_COUNTRY:deng-thon';
+
+-- Birth-country corrections and the Hyo-Jun Park / Hoy Park link are documented
+-- in section 6 and in database/research/020/README.md (identity-decisions.json).
+
+-- ===========================================================================
+-- 10. VIEWS
+-- ===========================================================================
+
+-- 10a. Signing ages, one row per signing. Every age names the date it uses:
+--   age_at_signing          signings.signing_date (the recorded signing date;
+--                           signing_date_basis says whether it equals the
+--                           formal MLB transaction date)
+--   age_at_announcement     signings.announced_date (club class announcement)
+--   age_at_formal_transaction signings.formal_transaction_date (MLB transaction)
+-- Agreement, announcement and transaction dates are never substituted for one
+-- another; a missing date gives a NULL age.
+create or replace view public.v_signing_ages
+with (security_invoker = true)
+as
+select
+  s.id as signing_id,
+  p.id as player_id,
+  p.slug as player_slug,
+  p.full_name,
+  o.abbreviation as organization,
+  o.franchise_key,
+  s.signing_year,
+  s.country_market,
+  s.position_at_signing,
+  p.birth_date,
+  s.signing_date,
+  case
+    when s.signing_date is null then null
+    when s.formal_transaction_date = s.signing_date then 'SIGNING_DATE_EQUALS_FORMAL_TRANSACTION'
+    when s.formal_transaction_date is null then 'SIGNING_DATE_RECORDED'
+    else 'SIGNING_DATE_DIFFERS_FROM_FORMAL_TRANSACTION'
+  end as signing_date_basis,
+  s.announced_date,
+  s.formal_transaction_date,
+  public.disi_age_decimal(p.birth_date, s.signing_date) as age_at_signing,
+  public.disi_age_years(p.birth_date, s.signing_date) as age_years_at_signing,
+  public.disi_signing_age_band(public.disi_age_years(p.birth_date, s.signing_date)) as signing_age_band,
+  public.disi_age_decimal(p.birth_date, s.announced_date) as age_at_announcement,
+  public.disi_age_decimal(p.birth_date, s.formal_transaction_date) as age_at_formal_transaction,
+  case when p.birth_date is null then 'NO_BIRTH_DATE'
+       when s.signing_date is null then 'NO_SIGNING_DATE'
+       else 'COMPUTED' end as signing_age_status
+from public.signings s
+join public.players p on p.id = s.player_id
+join public.organizations o on o.id = s.organization_id;
+
+-- 10b. Player biography and identity. First signing = earliest signing year,
+-- then earliest recorded signing date. MLB debut date from the verified outcome,
+-- else the structured professional-progress record, else the MLB person record
+-- (mlb_debut_date_basis names which).
+create or replace view public.v_player_bio
+with (security_invoker = true)
+as
+select
+  p.id as player_id,
+  p.slug as player_slug,
+  p.full_name,
+  p.canonical_name,
+  coalesce(pa.aliases, array[]::text[]) as aliases,
+  p.mlb_id,
+  p.bref_id,
+  p.fangraphs_id,
+  p.birth_date,
+  p.birth_city,
+  p.birth_state_province,
+  p.birth_country,
+  p.nationality,
+  p.bats,
+  p.throws,
+  p.height_in,
+  p.weight_lb,
+  p.primary_position,
+  p.current_position,
+  fs.signing_id as first_signing_id,
+  fs.signing_year as first_signing_year,
+  fs.organization as first_signing_organization,
+  fs.country_market as first_signing_market,
+  fs.position_at_signing,
+  fs.signing_date as first_signing_date,
+  fs.signing_date_basis,
+  fs.announced_date as first_announced_date,
+  fs.formal_transaction_date as first_formal_transaction_date,
+  fs.age_at_signing,
+  fs.age_years_at_signing,
+  fs.signing_age_band,
+  fs.age_at_announcement,
+  fs.age_at_formal_transaction,
+  coalesce(oc.mlb_debut_date, pp.mlb_debut_date, p.mlb_debut_date) as mlb_debut_date,
+  case when oc.mlb_debut_date is not null then 'OUTCOME_RECORD'
+       when pp.mlb_debut_date is not null then 'PROFESSIONAL_PROGRESS'
+       when p.mlb_debut_date is not null then 'MLB_PERSON_RECORD' end as mlb_debut_date_basis,
+  public.disi_age_decimal(p.birth_date, coalesce(oc.mlb_debut_date, pp.mlb_debut_date, p.mlb_debut_date)) as age_at_mlb_debut,
+  coalesce(rm.status, case when p.mlb_id is not null then 'RESOLVED' else 'NOT_RESEARCHED' end) as mlb_id_status,
+  coalesce(rb.status, case when p.bref_id is not null then 'RESOLVED' else 'NOT_RESEARCHED' end) as bref_id_status,
+  coalesce(rf.status, case when p.fangraphs_id is not null then 'RESOLVED' else 'NOT_RESEARCHED' end) as fangraphs_id_status,
+  (select count(*)::int from public.research_source_conflicts c
+    where c.player_id = p.id and c.status = 'UNRESOLVED'
+      and c.conflict_type in ('IDENTITY','BIRTH_DATE','BIRTH_COUNTRY','HANDEDNESS','NAME_SPELLING')) as open_identity_conflicts,
+  array(select distinct c.field_name from public.research_source_conflicts c
+        where c.player_id = p.id and c.status = 'UNRESOLVED' and c.field_name is not null
+        order by c.field_name) as open_conflict_fields,
+  array(select distinct e.field_name from public.evidence e
+        where e.entity_type = 'player' and e.entity_id = p.id and e.field_name is not null
+        order by e.field_name) as sourced_fields
+from public.players p
+left join lateral (
+  select array_agg(a.alias order by a.alias) as aliases
+  from public.player_aliases a
+  where a.player_id = p.id and a.alias <> p.full_name
+) pa on true
+left join lateral (
+  select sa.*
+  from public.v_signing_ages sa
+  where sa.player_id = p.id
+  order by sa.signing_year, coalesce(sa.signing_date, sa.formal_transaction_date, sa.announced_date) nulls last, sa.signing_id
+  limit 1
+) fs on true
+left join public.outcomes oc on oc.player_id = p.id
+left join public.player_professional_progress pp on pp.player_id = p.id
+left join public.player_identity_resolutions rm on rm.player_id = p.id and rm.id_system = 'MLB'
+left join public.player_identity_resolutions rb on rb.player_id = p.id and rb.id_system = 'BASEBALL_REFERENCE'
+left join public.player_identity_resolutions rf on rf.player_id = p.id and rf.id_system = 'FANGRAPHS';
+
+-- 10c. Player directory (replaces 017): existing columns kept, including the
+-- legacy 'countries' array. Appended: birth fields, handedness, signing ages and
+-- signing_markets. Birth country (where born) and signing market (where signed)
+-- are separate columns and separate filters.
+create or replace view public.v_player_directory
+with (security_invoker = true)
+as
+select
+  p.id as player_id,
+  p.slug as player_slug,
+  p.full_name,
+  public.disi_ascii_fold(p.full_name) as player_sort_name,
+  upper(left(public.disi_ascii_fold(p.full_name), 1)) as name_initial,
+  coalesce(pa.aliases, array[]::text[]) as aliases,
+  public.disi_ascii_fold(concat_ws(' ', p.full_name, p.canonical_name, array_to_string(pa.aliases, ' '))) as search_text,
+  p.birth_country,
+  p.nationality,
+  p.primary_position,
+  sg.first_signing_year,
+  sg.latest_signing_year,
+  (sg.first_signing_year / 10) * 10 as first_signing_decade,
+  coalesce(sg.signing_count, 0) as signing_count,
+  coalesce(sg.organizations, array[]::text[]) as organizations,
+  coalesce(sg.has_dodgers_signing, false) as has_dodgers_signing,
+  sg.first_signing_market,
+  array(
+    select distinct x
+    from unnest(array[p.birth_country] || coalesce(sg.signing_markets, array[]::text[])) as x
+    where x is not null
+    order by x
+  ) as countries,
+  case
+    when oa.player_id is null then 'NOT_AUDITED'
+    when oa.reached_mlb_verified then 'VERIFIED_MLB'
+    else 'VERIFIED_NO_MLB'
+  end as outcome_audit_status,
+  oa.reached_mlb_verified,
+  oc.mlb_debut_date,
+  debut.abbreviation as mlb_debut_org,
+  case when debut.id is null then null else debut.franchise_key = 'DODGERS' end
+    as direct_dodgers_franchise_debut,
+  w.career_bwar,
+  w.bwar_observed_through_season,
+  oc.current_status,
+  p.bats,
+  p.throws,
+  p.birth_city,
+  p.birth_state_province,
+  p.current_position,
+  coalesce(sg.signing_markets, array[]::text[]) as signing_markets,
+  b.first_signing_date,
+  b.signing_date_basis,
+  b.age_at_signing,
+  b.age_years_at_signing,
+  b.signing_age_band,
+  b.age_at_mlb_debut,
+  p.mlb_id,
+  p.bref_id,
+  p.canonical_name
+from public.players p
+left join lateral (
+  select array_agg(a.alias order by a.alias) as aliases
+  from public.player_aliases a
+  where a.player_id = p.id
+) pa on true
+left join lateral (
+  select
+    min(s.signing_year) as first_signing_year,
+    max(s.signing_year) as latest_signing_year,
+    count(*)::int as signing_count,
+    array_agg(distinct o.abbreviation) filter (where o.abbreviation is not null) as organizations,
+    bool_or(o.franchise_key = 'DODGERS') as has_dodgers_signing,
+    array_agg(distinct s.country_market) filter (where s.country_market is not null) as signing_markets,
+    (array_agg(s.country_market order by s.signing_year, s.signing_date nulls last)
+      filter (where s.country_market is not null))[1] as first_signing_market
+  from public.signings s
+  join public.organizations o on o.id = s.organization_id
+  where s.player_id = p.id
+) sg on true
+left join public.outcome_audits oa on oa.player_id = p.id
+left join public.outcomes oc on oc.player_id = p.id
+left join public.organizations debut on debut.id = oc.mlb_debut_organization_id
+left join public.v_player_war w on w.player_id = p.id
+left join public.v_player_bio b on b.player_id = p.id;
+
+
+-- 10d. Player dossier (replaces 019): existing columns kept; identity,
+-- acquisition dates, ages and identifier statuses appended.
+create or replace view public.v_player_dossier
+with (security_invoker = true)
+as
+select
+  p.id as player_id,
+  p.slug as player_slug,
+  p.full_name,
+  p.canonical_name,
+  coalesce(pa.aliases, array[]::text[]) as aliases,
+  p.birth_date,
+  p.birth_city,
+  p.birth_country,
+  p.nationality,
+  p.primary_position,
+  p.secondary_positions,
+  p.bats,
+  p.throws,
+  p.height_in,
+  p.weight_lb,
+  p.mlb_id,
+  p.bref_id,
+  p.fangraphs_id,
+  case
+    when oa.player_id is null then 'NOT_AUDITED'
+    when oa.reached_mlb_verified then 'VERIFIED_MLB'
+    else 'VERIFIED_NO_MLB'
+  end as outcome_audit_status,
+  oa.reached_mlb_verified,
+  oa.audited_through_date,
+  oa.audit_note,
+  oa.confidence::text as audit_confidence,
+  oc.mlb_debut_date,
+  debut.abbreviation as mlb_debut_org,
+  debut.name as mlb_debut_org_name,
+  case when debut.id is null then null else debut.franchise_key = 'DODGERS' end
+    as direct_dodgers_franchise_debut,
+  oc.mlb_games,
+  oc.mlb_pa,
+  oc.mlb_ip,
+  oc.years_of_mlb_service,
+  oc.current_status,
+  oc.outcome_through_season,
+  (oc.current_status ilike 'ACTIVE%' or oc.current_status ilike 'REACHED_MLB_%') as is_active,
+  w.career_bwar,
+  w.bwar_source_id,
+  w.bwar_source_url,
+  w.bwar_observed_through_date,
+  w.bwar_observed_through_season,
+  w.career_fwar,
+  w.fwar_source_id,
+  w.fwar_source_url,
+  w.fwar_observed_through_date,
+  w.fwar_observed_through_season,
+  oa.outcome_state,
+  pp.as_of_date as progress_as_of_date,
+  pp.highest_level,
+  pp.highest_level_season,
+  pp.last_affiliated_season,
+  pp.last_affiliated_team,
+  pp.last_affiliated_level,
+  pp.final_transaction_type,
+  pp.final_transaction_date,
+  pp.final_organization,
+  pp.disposition,
+  pp.active_in_affiliated_ball,
+  pp.continued_outside_affiliated,
+  (select count(*)::int from public.outcome_evidence e where e.player_id = p.id) as outcome_evidence_count,
+  p.birth_state_province,
+  p.current_position,
+  b.first_signing_id,
+  b.first_signing_year,
+  b.first_signing_organization,
+  b.first_signing_market,
+  b.position_at_signing,
+  b.first_signing_date,
+  b.signing_date_basis,
+  b.first_announced_date,
+  b.first_formal_transaction_date,
+  b.age_at_signing,
+  b.age_at_announcement,
+  b.age_at_formal_transaction,
+  b.signing_age_band,
+  b.mlb_debut_date_basis,
+  b.age_at_mlb_debut,
+  b.mlb_id_status,
+  b.bref_id_status,
+  b.fangraphs_id_status,
+  b.open_identity_conflicts
+from public.players p
+left join lateral (
+  select array_agg(a.alias order by a.alias) as aliases
+  from public.player_aliases a
+  where a.player_id = p.id
+) pa on true
+left join public.outcome_audits oa on oa.player_id = p.id
+left join public.outcomes oc on oc.player_id = p.id
+left join public.organizations debut on debut.id = oc.mlb_debut_organization_id
+left join public.v_player_war w on w.player_id = p.id
+left join public.player_professional_progress pp on pp.player_id = p.id
+left join public.v_player_bio b on b.player_id = p.id;
+
+
+-- 10e. Filter facets (replaces 017). The legacy 'country' facet (birth country
+-- and signing markets combined) is kept for compatibility; new code uses
+-- 'birth_country' and 'signing_market', which are never mixed. Rows are split
+-- by has_dodgers_signing so Dodgers-scoped pages count Dodgers signees only;
+-- summing both rows gives the all-player count.
+create or replace view public.v_player_filter_options
+with (security_invoker = true)
+as
+select facet, value, count(*)::int as row_count, has_dodgers_signing
+from (
+  select 'country' as facet, unnest(countries) as value, has_dodgers_signing from public.v_player_directory
+  union all select 'primary_position', primary_position, has_dodgers_signing from public.v_player_directory
+  union all select 'first_signing_decade', first_signing_decade::text, has_dodgers_signing from public.v_player_directory
+  union all select 'name_initial', name_initial, has_dodgers_signing from public.v_player_directory
+  union all select 'outcome_audit_status', outcome_audit_status, has_dodgers_signing from public.v_player_directory
+  union all select 'birth_country', birth_country, has_dodgers_signing from public.v_player_directory
+  union all select 'signing_market', unnest(signing_markets), has_dodgers_signing from public.v_player_directory
+  union all select 'bats', bats, has_dodgers_signing from public.v_player_directory
+  union all select 'throws', throws, has_dodgers_signing from public.v_player_directory
+  union all select 'signing_age_band', signing_age_band, has_dodgers_signing from public.v_player_directory
+) f
+where value is not null
+group by facet, value, has_dodgers_signing;
+
+-- 10f. Identity research scope per player. Research priority: MLB players,
+-- then audited mature signings, then other mature signings (5+ years), then
+-- recent Dodgers prospects, then other organizations' signees.
+create or replace view public.v_player_identity_scope
+with (security_invoker = true)
+as
+select
+  b.*,
+  d.player_id is not null as has_dodgers_signing,
+  d.first_dodgers_signing_year,
+  (oa.player_id is not null) as outcome_audited,
+  coalesce(oa.reached_mlb_verified, false) or b.mlb_debut_date is not null as reached_mlb,
+  case
+    when d.player_id is null then 'OTHER_ORGANIZATION'
+    when coalesce(oa.reached_mlb_verified, false) or b.mlb_debut_date is not null then 'DODGERS_MLB_PLAYER'
+    when d.first_dodgers_signing_year <= extract(year from current_date)::int - 5 and oa.player_id is not null
+      then 'DODGERS_AUDITED_MATURE'
+    when d.first_dodgers_signing_year <= extract(year from current_date)::int - 5 then 'DODGERS_OTHER_MATURE'
+    else 'DODGERS_RECENT_PROSPECT'
+  end as identity_scope,
+  case
+    when d.player_id is null then 5
+    when coalesce(oa.reached_mlb_verified, false) or b.mlb_debut_date is not null then 1
+    when d.first_dodgers_signing_year <= extract(year from current_date)::int - 5 and oa.player_id is not null then 2
+    when d.first_dodgers_signing_year <= extract(year from current_date)::int - 5 then 3
+    else 4
+  end as research_priority
+from public.v_player_bio b
+left join lateral (
+  select s.player_id, min(s.signing_year) as first_dodgers_signing_year
+  from public.signings s
+  join public.organizations o on o.id = s.organization_id and o.franchise_key = 'DODGERS'
+  where s.player_id = b.player_id
+  group by s.player_id
+) d on true
+left join public.outcome_audits oa on oa.player_id = b.player_id;
+
+-- 10g. Identity coverage by scope. Counts what is known; nothing is imputed.
+create or replace view public.v_dodgers_player_identity_coverage
+with (security_invoker = true)
+as
+with scoped as (
+  select 'ALL_TRACKED_PLAYERS' as scope, 0 as scope_order, s.* from public.v_player_identity_scope s
+  union all
+  select 'DODGERS_SIGNEES', 1, s.* from public.v_player_identity_scope s where s.has_dodgers_signing
+  union all
+  select s.identity_scope, s.research_priority + 1, s.* from public.v_player_identity_scope s
+)
+select
+  scope,
+  count(*)::int as players,
+  count(*) filter (where mlb_id is not null)::int as with_mlb_id,
+  count(*) filter (where reached_mlb)::int as mlb_players,
+  count(*) filter (where reached_mlb and bref_id is not null)::int as mlb_players_with_bref_id,
+  count(*) filter (where bref_id is not null)::int as with_bref_id,
+  count(*) filter (where fangraphs_id is not null)::int as with_fangraphs_id,
+  count(*) filter (where birth_date is not null)::int as with_birth_date,
+  count(*) filter (where birth_city is not null and birth_country is not null)::int as with_birthplace,
+  count(*) filter (where birth_state_province is not null)::int as with_birth_state_province,
+  count(*) filter (where birth_country is not null)::int as with_birth_country,
+  count(*) filter (where nationality is not null)::int as with_nationality,
+  count(*) filter (where bats is not null)::int as with_bats,
+  count(*) filter (where throws is not null)::int as with_throws,
+  count(*) filter (where height_in is not null)::int as with_height,
+  count(*) filter (where weight_lb is not null)::int as with_weight,
+  count(*) filter (where position_at_signing is not null)::int as with_position_at_signing,
+  count(*) filter (where age_at_signing is not null)::int as signing_age_computable,
+  count(*) filter (where age_at_mlb_debut is not null)::int as debut_age_computable,
+  count(*) filter (where cardinality(aliases) > 0)::int as with_aliases,
+  count(*) filter (where open_identity_conflicts > 0)::int as with_open_identity_conflicts,
+  -- Present = non-null. Resolved = present, backed by an evidence row for that
+  -- field, and no open source conflict on it. Conflicted = an open conflict
+  -- exists. Unsourced = present with neither evidence nor conflict (e.g. a
+  -- legacy value never tied to a source).
+  count(*) filter (where mlb_id is not null and 'mlb_id' = any(sourced_fields) and not 'mlb_id' = any(open_conflict_fields))::int as mlb_id_resolved,
+  count(*) filter (where 'mlb_id' = any(open_conflict_fields))::int as mlb_id_conflicted,
+  count(*) filter (where mlb_id is not null and not 'mlb_id' = any(sourced_fields) and not 'mlb_id' = any(open_conflict_fields))::int as mlb_id_unsourced,
+  count(*) filter (where bref_id is not null and 'bref_id' = any(sourced_fields) and not 'bref_id' = any(open_conflict_fields))::int as bref_id_resolved,
+  count(*) filter (where 'bref_id' = any(open_conflict_fields))::int as bref_id_conflicted,
+  count(*) filter (where bref_id is not null and not 'bref_id' = any(sourced_fields) and not 'bref_id' = any(open_conflict_fields))::int as bref_id_unsourced,
+  count(*) filter (where birth_date is not null and 'birth_date' = any(sourced_fields) and not 'birth_date' = any(open_conflict_fields))::int as birth_date_resolved,
+  count(*) filter (where 'birth_date' = any(open_conflict_fields))::int as birth_date_conflicted,
+  count(*) filter (where birth_date is not null and not 'birth_date' = any(sourced_fields) and not 'birth_date' = any(open_conflict_fields))::int as birth_date_unsourced,
+  count(*) filter (where birth_country is not null and 'birth_country' = any(sourced_fields) and not 'birth_country' = any(open_conflict_fields))::int as birth_country_resolved,
+  count(*) filter (where 'birth_country' = any(open_conflict_fields))::int as birth_country_conflicted,
+  count(*) filter (where birth_country is not null and not 'birth_country' = any(sourced_fields) and not 'birth_country' = any(open_conflict_fields))::int as birth_country_unsourced,
+  count(*) filter (where bats is not null and 'bats' = any(sourced_fields) and not 'bats' = any(open_conflict_fields))::int as bats_resolved,
+  count(*) filter (where 'bats' = any(open_conflict_fields))::int as bats_conflicted,
+  count(*) filter (where bats is not null and not 'bats' = any(sourced_fields) and not 'bats' = any(open_conflict_fields))::int as bats_unsourced,
+  count(*) filter (where throws is not null and 'throws' = any(sourced_fields) and not 'throws' = any(open_conflict_fields))::int as throws_resolved,
+  count(*) filter (where 'throws' = any(open_conflict_fields))::int as throws_conflicted,
+  count(*) filter (where throws is not null and not 'throws' = any(sourced_fields) and not 'throws' = any(open_conflict_fields))::int as throws_unsourced,
+  round(100.0 * count(*) filter (where mlb_id is not null) / nullif(count(*), 0), 1) as mlb_id_pct,
+  round(100.0 * count(*) filter (where birth_date is not null) / nullif(count(*), 0), 1) as birth_date_pct,
+  round(100.0 * count(*) filter (where reached_mlb and bref_id is not null)
+        / nullif(count(*) filter (where reached_mlb), 0), 1) as mlb_player_bref_pct
+from scoped
+group by scope, scope_order
+order by min(scope_order), scope;
+
+-- 10h. Identity research queue: one row per open identity issue, prioritized.
+create or replace view public.v_dodgers_player_identity_research_queue
+with (security_invoker = true)
+as
+with issues as (
+  select s.player_id, 'MLB_ID_UNRESOLVED' as issue,
+         coalesce(r.note, 'No MLB id resolved.') as detail
+  from public.v_player_identity_scope s
+  left join public.player_identity_resolutions r on r.player_id = s.player_id and r.id_system = 'MLB'
+  where s.mlb_id is null
+  union all
+  select s.player_id, 'BREF_ID_UNRESOLVED',
+         coalesce(r.status || ': ' || r.note, r.status, 'MLB player without a Baseball-Reference id.')
+  from public.v_player_identity_scope s
+  left join public.player_identity_resolutions r on r.player_id = s.player_id and r.id_system = 'BASEBALL_REFERENCE'
+  where s.bref_id is null and (s.reached_mlb or r.status in ('AMBIGUOUS','NEEDS_REVIEW','CONFLICT'))
+  union all
+  select r.player_id, 'IDENTITY_' || r.status, concat_ws(' ', r.id_system, r.note)
+  from public.player_identity_resolutions r
+  where r.status in ('AMBIGUOUS','NEEDS_REVIEW','CONFLICT') and r.id_system <> 'BASEBALL_REFERENCE'
+  union all
+  select s.player_id, 'BIRTH_DATE_MISSING', 'No source-backed birth date.'
+  from public.v_player_identity_scope s where s.birth_date is null
+  union all
+  select s.player_id, 'HANDEDNESS_MISSING', 'Bats and/or throws unknown.'
+  from public.v_player_identity_scope s where s.bats is null or s.throws is null
+  union all
+  select s.player_id, 'BIRTHPLACE_MISSING', 'Birth city and/or birth country unknown.'
+  from public.v_player_identity_scope s
+  where s.mlb_id is not null and (s.birth_city is null or s.birth_country is null)
+  union all
+  select s.player_id, upper(f.field) || '_UNSOURCED',
+         f.field || ' = ' || f.value || ' has no supporting evidence (legacy value); verify against a birth / player record.'
+  from public.v_player_identity_scope s
+  cross join lateral (values ('birth_date', s.birth_date::text), ('birth_country', s.birth_country),
+                             ('bats', s.bats), ('throws', s.throws)) f(field, value)
+  where f.value is not null and not f.field = any(s.sourced_fields) and not f.field = any(s.open_conflict_fields)
+  union all
+  select c.player_id, 'OPEN_CONFLICT_' || c.conflict_type,
+         c.field_name || ': ' || coalesce(c.value_a, '?') || ' vs ' || coalesce(c.value_b, '?')
+  from public.research_source_conflicts c
+  where c.status = 'UNRESOLVED' and c.player_id is not null
+    and c.conflict_type in ('IDENTITY','BIRTH_DATE','BIRTH_COUNTRY','HANDEDNESS')
+)
+select
+  s.player_id,
+  s.player_slug,
+  s.full_name,
+  s.identity_scope,
+  s.research_priority,
+  s.first_signing_year,
+  s.first_signing_organization,
+  s.mlb_id,
+  i.issue,
+  i.detail
+from issues i
+join public.v_player_identity_scope s on s.player_id = i.player_id
+order by s.research_priority, s.first_signing_year nulls last, s.player_slug, i.issue;
+
+-- 10i. Database status (replaces 018): existing columns kept; Dodgers signees
+-- and other-club benchmark players appended so Dodgers-facing pages never
+-- present the whole player table as Dodgers signings.
+create or replace view public.v_database_status
+with (security_invoker = true)
+as
+with d as (
+  select * from public.v_signing_records where is_dodgers_franchise
+),
+c as (
+  select * from public.v_class_research_coverage where franchise_key = 'DODGERS'
+),
+pc as (
+  select * from public.v_dodgers_signing_population_coverage
+)
+select
+  (select count(*) from d)::int as tracked_signings,
+  (select min(signing_year) from d) as earliest_signing_year,
+  (select max(signing_year) from d) as latest_signing_year,
+  (select count(distinct signing_year) from d)::int as years_represented,
+  (select count(distinct country_market) from d where country_market is not null)::int as markets_represented,
+  (select count(*) from d where country_market is null)::int as signings_with_unknown_market,
+  (select count(*) from c where expected_class_size is not null)::int as classes_with_known_population,
+  (select count(*) from c where class_status = 'COMPLETE')::int as complete_classes,
+  (select count(*) from d where outcome_audited)::int as outcome_audits_completed,
+  (select count(*) from d where outcome_audit_status = 'VERIFIED_MLB')::int as verified_mlb_outcomes,
+  (select count(*) from d where outcome_audit_status = 'VERIFIED_NO_MLB')::int as verified_no_mlb_outcomes,
+  (select count(*) from d where not outcome_audited)::int as outcome_audit_queue,
+  (select round(sum(total_known_acquisition_cost_usd)::numeric, 2) from d) as known_acquisition_cost_usd,
+  (select count(*) from d where total_known_acquisition_cost_usd is not null)::int as signings_with_known_cost,
+  (select count(*) from d where career_bwar is not null)::int as signings_with_bwar,
+  (select coalesce(sum(missing_from_expected), 0) from c)::int as class_members_missing,
+  (select count(*) from public.v_research_tasks where franchise_key = 'DODGERS')::int as open_research_tasks,
+  (select count(*) from public.players)::int as total_players,
+  (select count(*) from public.v_signing_records where not is_dodgers_franchise)::int as league_signing_records,
+  (select count(*) from pc where population_scope = 'OPENING_CLASS' and population_complete)::int as opening_classes_complete,
+  (select count(*) from pc where population_scope = 'OPENING_CLASS' and expected_population is not null)::int as opening_classes_with_known_size,
+  (select count(*) from pc where population_scope = 'FULL_SIGNING_PERIOD' and expected_population is not null)::int as full_periods_with_known_size,
+  (select count(*) from pc where population_scope = 'FULL_SIGNING_PERIOD' and population_complete)::int as full_periods_complete,
+  (select count(*) from pc where rate_eligible)::int as rate_eligible_populations,
+  (select count(*) from public.players p where exists (
+     select 1 from public.signings s join public.organizations o on o.id = s.organization_id
+     where s.player_id = p.id and o.franchise_key = 'DODGERS'))::int as dodgers_players,
+  (select count(*) from public.players p where not exists (
+     select 1 from public.signings s join public.organizations o on o.id = s.organization_id
+     where s.player_id = p.id and o.franchise_key = 'DODGERS'))::int as league_benchmark_players;
+
+do $$
+declare v text;
+begin
+  foreach v in array array['v_signing_ages', 'v_player_bio', 'v_player_directory', 'v_player_filter_options',
+    'v_player_dossier', 'v_player_identity_scope', 'v_dodgers_player_identity_coverage',
+    'v_dodgers_player_identity_research_queue', 'v_database_status'] loop
+    execute format('revoke all on public.%I from anon, authenticated', v);
+    execute format('grant select on public.%I to anon, authenticated', v);
+  end loop;
+end $$;
+
+commit;

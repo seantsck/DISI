@@ -118,9 +118,9 @@ test('query: typed filters map to the right PostgREST operators', () => {
 })
 
 test('query: array containment quotes values', () => {
-  const state = parseTableState(PLAYERS_SPEC, { country: 'Dominican "Republic"' })
+  const state = parseTableState(PLAYERS_SPEC, { market: 'Dominican "Republic"' })
   const call = applyTableQuery(fakeBuilder(), PLAYERS_SPEC, state).calls.find((c) => c[0] === 'filter')
-  assert.deepEqual(call, ['filter', 'countries', 'cs', '{"Dominican \\"Republic\\""}'])
+  assert.deepEqual(call, ['filter', 'signing_markets', 'cs', '{"Dominican \\"Republic\\""}'])
 })
 
 test('activeFilterCount ignores the default scope', () => {

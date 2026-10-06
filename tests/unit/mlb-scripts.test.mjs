@@ -52,6 +52,7 @@ test('countries and positions normalize to DISI conventions; unknown codes stay 
   assert.equal(normalizeCountry('DOM'), 'Dominican Republic')
   assert.equal(normalizeCountry('Venezuela'), 'Venezuela')
   assert.equal(normalizeCountry('RU1'), null)
+  assert.equal(normalizeCountry('Republic of Korea'), 'South Korea')
   assert.equal(normalizeCountry(''), null)
   const amateur = normalizePerson(fixtures.personAmateur.people[0])
   assert.equal(amateur.birthCountry, 'Dominican Republic')

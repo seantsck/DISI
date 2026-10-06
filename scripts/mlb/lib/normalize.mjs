@@ -43,6 +43,8 @@ export function parseIsoDate(value) {
 const COUNTRY_CODES = {
   DOM: 'Dominican Republic', VEN: 'Venezuela', MEX: 'Mexico', PAN: 'Panama', COL: 'Colombia',
   JPN: 'Japan', USA: 'United States', CUB: 'Cuba', NIC: 'Nicaragua', CUR: 'Curacao', KOR: 'South Korea',
+  // Long-form names MLB uses for countries DISI records under their common name.
+  'Republic of Korea': 'South Korea',
 }
 
 /** MLB uses both country names and three-letter codes; unknown codes stay null. */
@@ -64,15 +66,39 @@ export function normalizePosition(person) {
   return ab
 }
 
+/** "6' 1\"" → 73 (inches). Returns null for anything else. */
+export function parseHeight(value) {
+  if (typeof value !== 'string') return null
+  const m = value.match(/^\s*(\d)'\s*(\d{1,2})"?\s*$/)
+  if (!m) return null
+  const inches = Number(m[1]) * 12 + Number(m[2])
+  return Number(m[2]) < 12 && inches >= 48 && inches <= 96 ? inches : null
+}
+
+/** Cross-reference ids published on the MLB person record (hydrate=xrefId). */
+export function xrefIds(raw) {
+  const out = {}
+  for (const x of raw?.xrefIds ?? []) {
+    if (x?.xrefType && x?.xrefId && !(x.xrefType in out)) out[x.xrefType] = String(x.xrefId)
+  }
+  return out
+}
+
 export function normalizePerson(raw) {
   if (!raw || !raw.id) return null
+  const weight = Number(raw.weight)
   return {
     mlbId: raw.id,
     fullName: raw.fullName ?? null,
     foldedName: foldText(raw.fullName ?? ''),
     birthDate: parseIsoDate(raw.birthDate),
+    birthCity: raw.birthCity ?? null,
+    birthStateProvince: raw.birthStateProvince ?? null,
     birthCountry: normalizeCountry(raw.birthCountry),
     rawBirthCountry: raw.birthCountry ?? null,
+    heightIn: parseHeight(raw.height),
+    weightLb: Number.isFinite(weight) && weight > 80 && weight < 400 ? weight : null,
+    xref: xrefIds(raw),
     bats: raw.batSide?.code ?? null,
     throws: raw.pitchHand?.code ?? null,
     position: normalizePosition(raw),

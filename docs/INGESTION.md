@@ -67,7 +67,28 @@ node scripts/mlb/reconcile-class.mjs --list class.txt --signings research-output
 node scripts/mlb/outcome-sql-values.mjs --outcomes a.json --bwar bref-war.json --audit-date 2026-10-05 --out values.sql
 ```
 
-Workflow: run the research → review the JSON / CSV artifacts and the decisions report → record manual decisions (e.g. identity) in a decisions file → generate VALUES → build a migration from a template (see `database/research/019/`) → run `npm test` (the DB test applies every migration in PGlite and re-runs the latest) → apply in the Supabase SQL Editor.
+Workflow: run the research → review the JSON / CSV artifacts and the decisions report → record manual decisions (e.g. identity) in a decisions file → generate VALUES → build a migration from a template (see `database/research/019/` and `020/`) → run `npm test` (the DB test applies every migration in PGlite and re-runs the latest) → apply in the Supabase SQL Editor.
+
+## Recording player identity
+
+- **Identifier roles.** `players.mlb_id` is the MLB Stats API person id and the anchor of every identity: biography and the other ids are applied only to a player whose MLB id is resolved. `bref_id` is the Baseball-Reference page id, recorded only for players with an MLB debut. `fangraphs_id` comes from MLB's cross-reference and is only an identifier; it never implies fWAR.
+- **Resolution.** Several signals, never a name alone (club transaction name + club + year; a B-Ref page DISI already cites; name + debut year + debut franchise). Ambiguous or name-only matches are never selected. Every attempt is in `player_identity_resolutions` (query, candidates, signals, status, confidence) and anything unresolved is in `v_dodgers_player_identity_research_queue`.
+- **Canonical name vs alias.** `full_name` / `canonical_name` is one spelling; every other spelling is a `player_aliases` row (`PREVIOUS_DISI_SPELLING`, `MLB_RECORD_NAME`, `PUBLISHED_SPELLING`, `SOURCE_VARIANT`). Names change only for accent-only differences. Slugs never change, and players are never merged because their names match.
+- **Birth country vs signing market vs nationality.** `players.birth_country` is where the player was born (the literal value of a birth / player record: Joseph Deng Thon, born in Juba before 2011, is Sudan); `signings.country_market` is where he was signed; `players.nationality` is stated only where a source states it. None is derived from another, and a class list or signing announcement is evidence for the signing market only, never for birth country.
+- **Fill NULLs only; record disagreements.** A source value that contradicts a stored value becomes a `research_source_conflicts` row; the stored value stays.
+- **Field-level provenance.** Every identity field has its own `evidence` row (`field_name`) naming the source and its retrieval time (`sources.accessed_at`). Coverage counts a value as *resolved* only when such a row exists and no conflict is open; a non-null value without one is *unsourced* and queued.
+- **Dates and ages.** `signing_date` (recorded signing / agreement date), `announced_date` (class announcement) and `formal_transaction_date` (MLB transaction) are different facts. `v_signing_ages` computes an age from each separately and `signing_date_basis` says whether the signing date matches the transaction. `age_at_signing` uses `signing_date` only; when it is missing the age is NULL, never borrowed from another date. Ages are completed years (`disi_age_years`) and decimal years truncated to one place (`disi_age_decimal`); the signing-age band uses completed years. `age_at_mlb_debut` uses the audited outcome debut date, then the progress record, then the MLB person record (`mlb_debut_date_basis`).
+
+Identity workflow (see `database/research/020/README.md`):
+
+```bash
+node scripts/mlb/player-identities.mjs --input players-with-ids.json      # MLB person record + position at signing
+node scripts/mlb/resolve-bref.mjs --input players-with-ids.json --identities player-identities.json
+node scripts/mlb/resolve-fangraphs.mjs --identities player-identities.json
+node scripts/mlb/identity-sql-values.mjs --players ... --identities ... --bref ... --fangraphs ... --out values.sql
+```
+
+Review `AMBIGUOUS`, `NEEDS_REVIEW`, `CONFLICT` and `NOT_FOUND` rows by hand; record the decision and its reason in the research README. Only `RESOLVED` rows are applied.
 
 ## Recording outcomes
 

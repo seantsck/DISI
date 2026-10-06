@@ -29,7 +29,8 @@ All commands write to `research-output/` (git-ignored) unless `--out` is given.
 # profile and first-professional-contract classification.
 node scripts/mlb/org-signings.mjs --year 2022 --start 2022-01-15 --end 2022-12-15
 
-# Propose MLB ids for players without one (Dodgers transaction match; name search is reported, never accepted).
+# Propose MLB ids for players without one (signing-club transaction match: name + club + year; optional
+# per-player teamAbbr, default Dodgers; name search is reported, never accepted).
 node scripts/mlb/resolve-ids.mjs --input players.json --out research-output/019
 
 # Outcome research: MLB debut, highest affiliated level, last affiliated season, final transaction,
@@ -41,6 +42,21 @@ node scripts/mlb/bref-war.mjs --input mlb-players.json --out research-output/019
 
 # Reconcile a published class list against an org-signings artifact.
 node scripts/mlb/reconcile-class.mjs --list class-2025.txt --signings research-output/org-signings-119-2025/org-signings.json
+
+# Identity: MLB person record (birth data, bats/throws, height/weight, position, debut,
+# Lahman / FanGraphs cross-reference ids) and the position named on the signing transaction.
+node scripts/mlb/player-identities.mjs --input players.json --out research-output/020
+
+# Baseball-Reference ids from B-Ref's WAR files (mlb_ID -> player_ID), checked against MLB's Lahman id
+# and any B-Ref page DISI cites. Ambiguous and name-only matches are never selected.
+node scripts/mlb/resolve-bref.mjs --input players.json --identities research-output/020/player-identities.json
+
+# FanGraphs ids from MLB's cross-reference only (no fWAR).
+node scripts/mlb/resolve-fangraphs.mjs --identities research-output/020/player-identities.json
+
+# Reviewed identity artifacts -> SQL VALUES blocks and a decisions report.
+node scripts/mlb/identity-sql-values.mjs --players players.json --identities player-identities.json \
+  --bref resolve-bref.json --fangraphs resolve-fangraphs.json --league-ids resolve-ids.json --out values.sql
 
 # Turn REVIEWED artifacts into SQL VALUES blocks plus a decisions report.
 node scripts/mlb/outcome-sql-values.mjs --outcomes a.json,b.json --bwar bref-war.json \
@@ -59,6 +75,13 @@ Input files are JSON arrays: `[{ "name": "...", "signingYear": 2018, "mlbId": 68
 - **Outcome recommendation**: `VERIFIED_MLB`, `NO_MLB_CAREER_ENDED` (final release / free agency / retirement, or no affiliated appearance for two seasons), `NO_MLB_ACTIVE_IN_MINORS`, `INSUFFICIENT_EVIDENCE`. Missing data is never read as "no MLB".
 - **Audit policy** (`auditDecision`): positives for any class; "no longer in affiliated ball" only for classes through 2021; "active, no debut" only through 2020; insufficient evidence never.
 - **bWAR**: sum of batting and pitching WAR rows per `mlb_ID`, summed in exact hundredths and rounded half away from zero (validated against all 42 page-keyed DISI values).
+
+## Identity rules in `lib/identity.mjs`
+
+- **B-Ref resolution** (`resolveBref`): by MLB id in the WAR file (VERIFIED, must agree with MLB's Lahman id and any cited B-Ref page, else `CONFLICT`); by a cited B-Ref page (VERIFIED); by name + debut year + debut franchise (HIGH). A name alone is `NEEDS_REVIEW`; several candidates are `AMBIGUOUS`; players without an MLB debut are `NOT_APPLICABLE`. Only `RESOLVED` is applied, and one B-Ref id can belong to one player (`findIdCollisions`).
+- **Canonical name** (`chooseCanonicalName`): a source spelling replaces the DISI name only when it differs by accents alone (same slug, same letters) and adds accents; never strips them. Other spellings become aliases.
+- **Position at signing** (`signingPosition`): the position named on the club's closest signing transaction in the signing window; otherwise none.
+- **Normalization**: heights outside 4′–8′ and weights outside 80–400 lb are dropped; country names are mapped to DISI's names (`Republic of Korea` → `South Korea`); unknown codes become NULL. Nationality is never derived.
 
 ## Tests
 

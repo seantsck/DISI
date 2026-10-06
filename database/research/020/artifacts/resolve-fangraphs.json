@@ -1,0 +1,4495 @@
+{
+  "meta": {
+    "collisions": [],
+    "command": "resolve-fangraphs",
+    "recordCount": 263
+  },
+  "records": [
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 806867,
+      "name": "Abel Lorenzo",
+      "signals": [],
+      "slug": "abel-lorenzo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:25.843Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806867?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 703193,
+      "name": "Accimias Morales",
+      "signals": [],
+      "slug": "accimias-morales",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:26.065Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/703193?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "639",
+      "method": "MLB_XREF",
+      "mlbId": 134181,
+      "name": "Adrian Beltre",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "adrian-beltre",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:26.826Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/134181?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa877519",
+      "method": "MLB_XREF",
+      "mlbId": 660632,
+      "name": "Adrian Rondon",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "adrian-rondon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:28.360Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660632?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830397,
+      "name": "Adrian Torres",
+      "signals": [],
+      "slug": "adrian-torres",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:29.859Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830397?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 802528,
+      "name": "Agustin Acosta",
+      "signals": [],
+      "slug": "agustin-acosta",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:30.626Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/802528?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa917334",
+      "method": "MLB_XREF",
+      "mlbId": 665852,
+      "name": "Aldo Espinoza",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "aldo-espinoza",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:31.398Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665852?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 702881,
+      "name": "Aldrin Batista",
+      "signals": [],
+      "slug": "aldrin-batista",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:32.157Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/702881?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3008842",
+      "method": "MLB_XREF",
+      "mlbId": 682942,
+      "name": "Alex De Jesus",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "alex-de-jesus",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:32.919Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682942?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800316,
+      "name": "Alexander Albertus",
+      "signals": [],
+      "slug": "alexander-albertus",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:33.688Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800316?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821826,
+      "name": "Alexis Dominguez",
+      "signals": [],
+      "slug": "alexis-dominguez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:34.446Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821826?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 829490,
+      "name": "Alexis Reyes",
+      "signals": [],
+      "slug": "alexis-reyes",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:35.228Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/829490?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821808,
+      "name": "Allen Ajoti",
+      "signals": [],
+      "slug": "allen-ajoti",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:35.982Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821808?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa877349",
+      "method": "MLB_XREF",
+      "mlbId": 658535,
+      "name": "Amado Nunez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "amado-nunez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:36.744Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658535?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "18593",
+      "method": "MLB_XREF",
+      "mlbId": 659262,
+      "name": "Anderson Espinoza",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "anderson-espinoza",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:38.270Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/659262?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 802740,
+      "name": "Anderson Estevez",
+      "signals": [],
+      "slug": "anderson-estevez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:39.794Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/802740?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808214,
+      "name": "Anderson Jerez",
+      "signals": [],
+      "slug": "anderson-jerez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:40.555Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808214?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 831322,
+      "name": "Andres Luna",
+      "signals": [],
+      "slug": "andres-luna",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:41.326Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/831322?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "24816",
+      "method": "MLB_XREF",
+      "mlbId": 681624,
+      "name": "Andy Pages",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "andy-pages",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:42.092Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/681624?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 825160,
+      "name": "Aneudy Almonte",
+      "signals": [],
+      "slug": "aneudy-almonte",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:43.611Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/825160?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 807654,
+      "name": "Angel Cruz",
+      "signals": [],
+      "slug": "angel-cruz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:44.381Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/807654?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821633,
+      "name": "Angel Ramirez",
+      "signals": [],
+      "slug": "angel-ramirez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:45.146Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821633?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 829482,
+      "name": "Antoni Urena",
+      "signals": [],
+      "slug": "antoni-urena",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:45.892Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/829482?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa873482",
+      "method": "MLB_XREF",
+      "mlbId": 660626,
+      "name": "Antonio Arias",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "antonio-arias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:46.642Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660626?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "249",
+      "method": "MLB_XREF",
+      "mlbId": 120107,
+      "name": "Antonio Osuna",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "antonio-osuna",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:48.169Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/120107?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 837605,
+      "name": "Ariel Reynoso",
+      "signals": [],
+      "slug": "ariel-reynoso",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:49.694Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/837605?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 806984,
+      "name": "Arnaldo Lantigua",
+      "signals": [],
+      "slug": "arnaldo-lantigua",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:50.462Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806984?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 803242,
+      "name": "Arod McKenzie",
+      "signals": [],
+      "slug": "arod-mckenzie",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:51.210Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/803242?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa877497",
+      "method": "MLB_XREF",
+      "mlbId": 660614,
+      "name": "Arquimedes Gamboa",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "arquimedes-gamboa",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:51.977Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660614?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821612,
+      "name": "Axel Perez",
+      "signals": [],
+      "slug": "axel-perez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:53.516Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821612?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 805205,
+      "name": "Ben Serunkuma",
+      "signals": [],
+      "slug": "ben-serunkuma",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:54.247Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/805205?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa876536",
+      "method": "MLB_XREF",
+      "mlbId": 659910,
+      "name": "Brayan Hernandez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "brayan-hernandez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:55.018Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/659910?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016028",
+      "method": "MLB_XREF",
+      "mlbId": 699070,
+      "name": "Brian Diaz",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "brian-diaz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:56.544Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699070?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 832440,
+      "name": "Bryan Lara",
+      "signals": [],
+      "slug": "bryan-lara",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:57.314Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/832440?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800527,
+      "name": "Callum Wallace",
+      "signals": [],
+      "slug": "callum-wallace",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:58.074Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800527?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016161",
+      "method": "MLB_XREF",
+      "mlbId": 699066,
+      "name": "Carlos Avila",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "carlos-avila",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:58.838Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699066?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "3547",
+      "method": "MLB_XREF",
+      "mlbId": 516910,
+      "name": "Carlos Frias",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "carlos-frias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:18:59.616Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/516910?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa830140",
+      "method": "MLB_XREF",
+      "mlbId": 650508,
+      "name": "Carlos Herrera",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "carlos-herrera",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:00.361Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650508?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa828218",
+      "method": "MLB_XREF",
+      "mlbId": 645289,
+      "name": "Carlos Hiciano",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "carlos-hiciano",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:01.861Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/645289?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830439,
+      "name": "Carlos Ramirez",
+      "signals": [],
+      "slug": "carlos-ramirez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:03.395Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830439?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa917319",
+      "method": "MLB_XREF",
+      "mlbId": 665779,
+      "name": "Carlos Rincon",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "carlos-rincon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:04.172Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665779?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "2396",
+      "method": "MLB_XREF",
+      "mlbId": 467793,
+      "name": "Carlos Santana",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "carlos-santana",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:04.948Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/467793?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821658,
+      "name": "Carlos Sardina",
+      "signals": [],
+      "slug": "carlos-sardina",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:06.463Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821658?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 829479,
+      "name": "Cesar Sanchez",
+      "signals": [],
+      "slug": "cesar-sanchez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:07.206Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/829479?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1267",
+      "method": "MLB_XREF",
+      "mlbId": 120221,
+      "name": "Chan Ho Park",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "chan-ho-park",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:07.988Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/120221?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1003994",
+      "method": "MLB_XREF",
+      "mlbId": 114077,
+      "name": "Chico Fernandez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "chico-fernandez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:09.502Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/114077?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "5198",
+      "method": "MLB_XREF",
+      "mlbId": 464341,
+      "name": "Chin-lung Hu",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "chin-lung-hu",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:11.017Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/464341?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821650,
+      "name": "Christian Muniz",
+      "signals": [],
+      "slug": "christian-muniz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:12.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821650?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016260",
+      "method": "MLB_XREF",
+      "mlbId": 699071,
+      "name": "Christian Romero",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "christian-romero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:13.312Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699071?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3009222",
+      "method": "MLB_XREF",
+      "mlbId": 682949,
+      "name": "Christian Suarez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "christian-suarez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:14.079Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682949?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872489",
+      "method": "MLB_XREF",
+      "mlbId": 659261,
+      "name": "Christopher Acosta",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "christopher-acosta",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:14.825Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/659261?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3002839",
+      "method": "MLB_XREF",
+      "mlbId": 665931,
+      "name": "Christopher Arias",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "christopher-arias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:16.341Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665931?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016027",
+      "method": "MLB_XREF",
+      "mlbId": 699060,
+      "name": "Dailoui Abad",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "dailoui-abad",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:17.109Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699060?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 666006,
+      "name": "Damaso Marte Jr.",
+      "signals": [],
+      "slug": "damaso-marte-jr",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:17.880Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666006?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800328,
+      "name": "Daniel Arrias",
+      "signals": [],
+      "slug": "daniel-arrias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:18.622Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800328?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808028,
+      "name": "Daniel Mielcarek",
+      "signals": [],
+      "slug": "daniel-mielcarek",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:19.383Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808028?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821661,
+      "name": "David Romero",
+      "signals": [],
+      "slug": "david-romero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:20.152Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821661?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830481,
+      "name": "Degerson Diaz",
+      "signals": [],
+      "slug": "degerson-diaz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:20.917Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830481?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830468,
+      "name": "Derik Aquino",
+      "signals": [],
+      "slug": "derik-aquino",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:21.658Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830468?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "20926",
+      "method": "MLB_XREF",
+      "mlbId": 660650,
+      "name": "Dermis Garcia",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "dermis-garcia",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:22.431Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660650?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830426,
+      "name": "Devlyn Bautista",
+      "signals": [],
+      "slug": "devlyn-bautista",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:23.941Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830426?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3008742",
+      "method": "MLB_XREF",
+      "mlbId": 682616,
+      "name": "Diego Cartaya",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "diego-cartaya",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:24.701Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682616?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "19906",
+      "method": "MLB_XREF",
+      "mlbId": 660636,
+      "name": "Diego Castillo",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "diego-castillo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:25.472Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660636?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800383,
+      "name": "Domingo Geronimo",
+      "signals": [],
+      "slug": "domingo-geronimo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:27.006Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800383?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "24151",
+      "method": "MLB_XREF",
+      "mlbId": 678760,
+      "name": "Eddys Leonard",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "eddys-leonard",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:27.766Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/678760?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800530,
+      "name": "Edgar Aviles",
+      "signals": [],
+      "slug": "edgar-aviles",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:29.277Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800530?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 807626,
+      "name": "Edgar Gomez",
+      "signals": [],
+      "slug": "edgar-gomez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:30.026Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/807626?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800453,
+      "name": "Edgar Leon",
+      "signals": [],
+      "slug": "edgar-leon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:30.796Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800453?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800370,
+      "name": "Eduardo Guerrero",
+      "signals": [],
+      "slug": "eduardo-guerrero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:31.573Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800370?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808234,
+      "name": "Eduardo Quintero",
+      "signals": [],
+      "slug": "eduardo-quintero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:32.299Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808234?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821672,
+      "name": "Eduardo Rojas",
+      "signals": [],
+      "slug": "eduardo-rojas",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:33.066Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821672?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "5432",
+      "method": "MLB_XREF",
+      "mlbId": 467070,
+      "name": "Elian Herrera",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "elian-herrera",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:33.827Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/467070?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808257,
+      "name": "Elias Medina",
+      "signals": [],
+      "slug": "elias-medina",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:35.350Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808257?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016645",
+      "method": "MLB_XREF",
+      "mlbId": 699069,
+      "name": "Elio Campos",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "elio-campos",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:36.116Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699069?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "17484",
+      "method": "MLB_XREF",
+      "mlbId": 650391,
+      "name": "Eloy Jimenez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "eloy-jimenez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:36.876Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650391?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 815896,
+      "name": "Emil Morales",
+      "signals": [],
+      "slug": "emil-morales",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:38.412Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/815896?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3009293",
+      "method": "MLB_XREF",
+      "mlbId": 682937,
+      "name": "Ender Avendano",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ender-avendano",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:39.184Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682937?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800288,
+      "name": "Enrike Sevilya",
+      "signals": [],
+      "slug": "enrike-sevilya",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:39.919Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800288?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808209,
+      "name": "Erick Batista",
+      "signals": [],
+      "slug": "erick-batista",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:40.686Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808209?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa828333",
+      "method": "MLB_XREF",
+      "mlbId": 650510,
+      "name": "Erick Julio",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "erick-julio",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:41.442Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650510?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 812748,
+      "name": "Erick Nava",
+      "signals": [],
+      "slug": "erick-nava",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:42.967Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/812748?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa827076",
+      "method": "MLB_XREF",
+      "mlbId": 650400,
+      "name": "Erling Moreno",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "erling-moreno",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:43.729Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650400?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821786,
+      "name": "Erny Orellana",
+      "signals": [],
+      "slug": "erny-orellana",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:45.234Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821786?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821817,
+      "name": "Euri Rosa",
+      "signals": [],
+      "slug": "euri-rosa",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:46.007Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821817?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830452,
+      "name": "Ezequiel Aparicio",
+      "signals": [],
+      "slug": "ezequiel-aparicio",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:46.769Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830452?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 836606,
+      "name": "Ezequiel Melburne",
+      "signals": [],
+      "slug": "ezequiel-melburne",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:47.533Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/836606?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1013327",
+      "method": "MLB_XREF",
+      "mlbId": 123619,
+      "name": "Fernando Valenzuela",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "fernando-valenzuela",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:48.291Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/123619?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821689,
+      "name": "Francisco Espinoza",
+      "signals": [],
+      "slug": "francisco-espinoza",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:49.818Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821689?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 806918,
+      "name": "Franderly Morel",
+      "signals": [],
+      "slug": "franderly-morel",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:50.571Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806918?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa873722",
+      "method": "MLB_XREF",
+      "mlbId": 658530,
+      "name": "Franklin Perez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "franklin-perez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:51.341Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658530?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa827978",
+      "method": "MLB_XREF",
+      "mlbId": 650691,
+      "name": "Franly Mallen",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "franly-mallen",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:52.840Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650691?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa828176",
+      "method": "MLB_XREF",
+      "mlbId": 649957,
+      "name": "Gersel Pitre",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "gersel-pitre",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:54.357Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649957?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa877337",
+      "method": "MLB_XREF",
+      "mlbId": 658677,
+      "name": "Gilbert Lara",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "gilbert-lara",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:55.132Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658677?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "16997",
+      "method": "MLB_XREF",
+      "mlbId": 650402,
+      "name": "Gleyber Torres",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "gleyber-torres",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:56.634Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650402?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3008844",
+      "method": "MLB_XREF",
+      "mlbId": 682946,
+      "name": "Gregory Pereira",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "gregory-pereira",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:58.153Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682946?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa826675",
+      "method": "MLB_XREF",
+      "mlbId": 650849,
+      "name": "Greifer Andrade",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "greifer-andrade",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:19:58.900Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650849?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808339,
+      "name": "Harold Gonzalez",
+      "signals": [],
+      "slug": "harold-gonzalez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:00.436Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808339?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa828422",
+      "method": "MLB_XREF",
+      "mlbId": 649955,
+      "name": "Hendrik Clementina",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "hendrik-clementina",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:01.187Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649955?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 829498,
+      "name": "Hendry Arvelo",
+      "signals": [],
+      "slug": "hendry-arvelo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:01.955Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/829498?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821263,
+      "name": "Heudy Pena",
+      "signals": [],
+      "slug": "heudy-pena",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:02.704Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821263?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "666",
+      "method": "MLB_XREF",
+      "mlbId": 119827,
+      "name": "Hideo Nomo",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "hideo-nomo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:03.476Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/119827?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "20468",
+      "method": "MLB_XREF",
+      "mlbId": 660623,
+      "name": "Huascar Ynoa",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "huascar-ynoa",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:04.982Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660623?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "7016",
+      "method": "MLB_XREF",
+      "mlbId": 425539,
+      "name": "Hung-Chih Kuo",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "hung-chih-kuo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:06.517Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/425539?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "18027",
+      "method": "MLB_XREF",
+      "mlbId": 660829,
+      "name": "Hyo-Jun Park",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "hyo-jun-park",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-06T03:51:20.757Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660829?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "14444",
+      "method": "MLB_XREF",
+      "mlbId": 547943,
+      "name": "Hyun-Jin Ryu",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "hyun-jin-ryu",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:08.037Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/547943?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 805623,
+      "name": "Ilmerson Colon",
+      "signals": [],
+      "slug": "ilmerson-colon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:09.549Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/805623?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 699064,
+      "name": "Isaac Barreto",
+      "signals": [],
+      "slug": "isaac-barreto",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:10.326Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699064?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1283",
+      "method": "MLB_XREF",
+      "mlbId": 123595,
+      "name": "Ismael Valdez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ismael-valdez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:11.084Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/123595?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830612,
+      "name": "Ivan Pacheco",
+      "signals": [],
+      "slug": "ivan-pacheco",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:12.622Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830612?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 812745,
+      "name": "Javier Bartolozzi",
+      "signals": [],
+      "slug": "javier-bartolozzi",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:13.386Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/812745?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808223,
+      "name": "Javier Herrera",
+      "signals": [],
+      "slug": "javier-herrera",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:14.110Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808223?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800351,
+      "name": "Javier Pena",
+      "signals": [],
+      "slug": "javier-pena",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:14.872Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800351?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 807403,
+      "name": "Jecsua Liborius",
+      "signals": [],
+      "slug": "jecsua-liborius",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:15.644Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/807403?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800419,
+      "name": "Jeral Perez",
+      "signals": [],
+      "slug": "jeral-perez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:16.407Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800419?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3009721",
+      "method": "MLB_XREF",
+      "mlbId": 682951,
+      "name": "Jerami Rodriguez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jerami-rodriguez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:17.165Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682951?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 812746,
+      "name": "Jeremy Castro",
+      "signals": [],
+      "slug": "jeremy-castro",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:17.927Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/812746?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3008678",
+      "method": "MLB_XREF",
+      "mlbId": 682645,
+      "name": "Jerming Rosario",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jerming-rosario",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:18.692Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682645?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015700",
+      "method": "MLB_XREF",
+      "mlbId": 694188,
+      "name": "Jesus Galiz",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jesus-galiz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:19.460Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/694188?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808313,
+      "name": "Jesus Tillero",
+      "signals": [],
+      "slug": "jesus-tillero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:20.229Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808313?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa877352",
+      "method": "MLB_XREF",
+      "mlbId": 658532,
+      "name": "Jhoandro Alfaro",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jhoandro-alfaro",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:20.985Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658532?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800408,
+      "name": "Jholbran Herder",
+      "signals": [],
+      "slug": "jholbran-herder",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:22.504Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800408?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830459,
+      "name": "Jhon Gil",
+      "signals": [],
+      "slug": "jhon-gil",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:23.260Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830459?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016506",
+      "method": "MLB_XREF",
+      "mlbId": 699075,
+      "name": "Jhonny Jimenez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jhonny-jimenez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:24.025Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699075?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830420,
+      "name": "Jhosman Theran",
+      "signals": [],
+      "slug": "jhosman-theran",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:24.798Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830420?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 806959,
+      "name": "Joendry Vargas",
+      "signals": [],
+      "slug": "joendry-vargas",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:25.535Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806959?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "23917",
+      "method": "MLB_XREF",
+      "mlbId": 678391,
+      "name": "Jorbit Vivas",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jorbit-vivas",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:26.306Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/678391?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 699058,
+      "name": "Jorge Carpintero",
+      "signals": [],
+      "slug": "jorge-carpintero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:27.835Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699058?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa828294",
+      "method": "MLB_XREF",
+      "mlbId": 650954,
+      "name": "Jose Almonte",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jose-almonte",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:28.604Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650954?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "11571",
+      "method": "MLB_XREF",
+      "mlbId": 523848,
+      "name": "Jose Dominguez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jose-dominguez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:30.134Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/523848?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 806919,
+      "name": "Jose Gonzalez",
+      "signals": [],
+      "slug": "jose-gonzalez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:31.653Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806919?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "17040",
+      "method": "MLB_XREF",
+      "mlbId": 645444,
+      "name": "Jose Herrera",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jose-herrera",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:32.406Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/645444?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821653,
+      "name": "Jose Lopez",
+      "signals": [],
+      "slug": "jose-lopez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:33.917Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821653?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "205",
+      "method": "MLB_XREF",
+      "mlbId": 119948,
+      "name": "Jose Offerman",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jose-offerman",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:34.673Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/119948?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 837769,
+      "name": "Jose Requena",
+      "signals": [],
+      "slug": "jose-requena",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:36.203Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/837769?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830449,
+      "name": "Jose Rivas",
+      "signals": [],
+      "slug": "jose-rivas",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:36.941Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830449?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 807404,
+      "name": "Jose Torrez",
+      "signals": [],
+      "slug": "jose-torrez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:37.703Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/807404?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 837652,
+      "name": "Jose Victorino",
+      "signals": [],
+      "slug": "jose-victorino",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:38.457Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/837652?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830413,
+      "name": "Jose Villegas",
+      "signals": [],
+      "slug": "jose-villegas",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:39.229Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830413?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "577",
+      "method": "MLB_XREF",
+      "mlbId": 123743,
+      "name": "Jose Vizcaino",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "jose-vizcaino",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:39.994Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/123743?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 805120,
+      "name": "Joseilyn Gonzalez",
+      "signals": [],
+      "slug": "joseilyn-gonzalez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:41.480Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/805120?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830188,
+      "name": "Joseph Deng Thon",
+      "signals": [],
+      "slug": "joseph-deng-thon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:42.261Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830188?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "30871",
+      "method": "MLB_XREF",
+      "mlbId": 800543,
+      "name": "Josue De Paula",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "josue-de-paula",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:43.033Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800543?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016331",
+      "method": "MLB_XREF",
+      "mlbId": 699076,
+      "name": "Juan Alonso",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "juan-alonso",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:44.540Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699076?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "315",
+      "method": "MLB_XREF",
+      "mlbId": 112128,
+      "name": "Juan Castro",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "juan-castro",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:45.301Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/112128?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872565",
+      "method": "MLB_XREF",
+      "mlbId": 660665,
+      "name": "Juan DeLeon",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "juan-deleon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:46.819Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660665?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1005162",
+      "method": "MLB_XREF",
+      "mlbId": 115267,
+      "name": "Juan Guzman",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "juan-guzman",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:48.342Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/115267?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 806638,
+      "name": "Juan Hernandez",
+      "signals": [],
+      "slug": "juan-hernandez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:49.883Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806638?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830471,
+      "name": "Juan Macero",
+      "signals": [],
+      "slug": "juan-macero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:50.635Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830471?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa877930",
+      "method": "MLB_XREF",
+      "mlbId": 660565,
+      "name": "Juan Meza",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "juan-meza",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:51.393Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660565?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa739577",
+      "method": "MLB_XREF",
+      "mlbId": 624645,
+      "name": "Julian Leon",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "julian-leon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:52.922Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/624645?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa828896",
+      "method": "MLB_XREF",
+      "mlbId": 649956,
+      "name": "Julio Lugo (prospect)",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "julio-lugo-prospect",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:53.698Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649956?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872583",
+      "method": "MLB_XREF",
+      "mlbId": 660699,
+      "name": "Julio Martinez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "julio-martinez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:54.459Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660699?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "14765",
+      "method": "MLB_XREF",
+      "mlbId": 628711,
+      "name": "Julio Urias",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "julio-urias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:55.982Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/628711?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1537",
+      "method": "MLB_XREF",
+      "mlbId": 114588,
+      "name": "Karim Garcia",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "karim-garcia",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:57.515Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/114588?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "19610",
+      "method": "MLB_XREF",
+      "mlbId": 660688,
+      "name": "Keibert Ruiz",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "keibert-ruiz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:20:59.045Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660688?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015492",
+      "method": "MLB_XREF",
+      "mlbId": 699062,
+      "name": "Kelvin Ramirez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "kelvin-ramirez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:00.572Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699062?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "3096",
+      "method": "MLB_XREF",
+      "mlbId": 445276,
+      "name": "Kenley Jansen",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "kenley-jansen",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:01.310Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/445276?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872522",
+      "method": "MLB_XREF",
+      "mlbId": 660660,
+      "name": "Kenny Hernandez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "kenny-hernandez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:02.834Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660660?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800494,
+      "name": "Kosuke Matsuda",
+      "signals": [],
+      "slug": "kosuke-matsuda",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:04.370Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800494?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821636,
+      "name": "Leider Padilla",
+      "signals": [],
+      "slug": "leider-padilla",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:05.136Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821636?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa739579",
+      "method": "MLB_XREF",
+      "mlbId": 624646,
+      "name": "Lenix Osuna",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "lenix-osuna",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:05.868Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/624646?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016470",
+      "method": "MLB_XREF",
+      "mlbId": 692327,
+      "name": "Lesther Medrano",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "lesther-medrano",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:06.644Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/692327?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "18365",
+      "method": "MLB_XREF",
+      "mlbId": 650331,
+      "name": "Lewin Diaz",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "lewin-diaz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:07.381Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650331?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800355,
+      "name": "Luciano Romero",
+      "signals": [],
+      "slug": "luciano-romero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:08.935Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800355?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808218,
+      "name": "Luis Carias",
+      "signals": [],
+      "slug": "luis-carias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:09.687Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808218?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830800,
+      "name": "Luis Gamez",
+      "signals": [],
+      "slug": "luis-gamez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:10.463Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830800?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015788",
+      "method": "MLB_XREF",
+      "mlbId": 699065,
+      "name": "Luis Guerra",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "luis-guerra",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:11.225Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699065?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3009295",
+      "method": "MLB_XREF",
+      "mlbId": 682950,
+      "name": "Luis Izturis",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "luis-izturis",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:11.982Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682950?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830463,
+      "name": "Luis Luna",
+      "signals": [],
+      "slug": "luis-luna",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:12.741Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830463?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa917322",
+      "method": "MLB_XREF",
+      "mlbId": 665960,
+      "name": "Luis Rodriguez (2015)",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "luis-rodriguez-2015",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:13.499Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665960?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3014689",
+      "method": "MLB_XREF",
+      "mlbId": 691177,
+      "name": "Luis Rodriguez (2019)",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "luis-rodriguez-2019",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:14.267Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/691177?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830434,
+      "name": "Luis Tovar",
+      "signals": [],
+      "slug": "luis-tovar",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:15.013Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830434?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800302,
+      "name": "Mairoshendrick Martinus",
+      "signals": [],
+      "slug": "mairoshendrick-martinus",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:15.780Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800302?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 806866,
+      "name": "Marco Corcho",
+      "signals": [],
+      "slug": "marco-corcho",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:16.545Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806866?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "17583",
+      "method": "MLB_XREF",
+      "mlbId": 650959,
+      "name": "Marcos Diplan",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "marcos-diplan",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:17.322Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650959?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa830181",
+      "method": "MLB_XREF",
+      "mlbId": 645282,
+      "name": "Marten Gasparini",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "marten-gasparini",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:18.815Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/645282?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016026",
+      "method": "MLB_XREF",
+      "mlbId": 699059,
+      "name": "Maximo Martinez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "maximo-martinez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:20.362Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699059?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa823925",
+      "method": "MLB_XREF",
+      "mlbId": 650958,
+      "name": "Michael DeLeon",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "michael-deleon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:21.135Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650958?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821679,
+      "name": "Michael Ramirez",
+      "signals": [],
+      "slug": "michael-ramirez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:22.665Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821679?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016605",
+      "method": "MLB_XREF",
+      "mlbId": 699074,
+      "name": "Michael Vilchez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "michael-vilchez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:23.418Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699074?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872750",
+      "method": "MLB_XREF",
+      "mlbId": 658531,
+      "name": "Miguel Angel Sierra",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "miguel-angel-sierra",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:24.189Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658531?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3017597",
+      "method": "MLB_XREF",
+      "mlbId": 699072,
+      "name": "Miguel Bastardo",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "miguel-bastardo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:25.726Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699072?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800399,
+      "name": "Miguel Dominguez",
+      "signals": [],
+      "slug": "miguel-dominguez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:26.457Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800399?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3011704",
+      "method": "MLB_XREF",
+      "mlbId": 682940,
+      "name": "Miguel Droz",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "miguel-droz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:27.208Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682940?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872566",
+      "method": "MLB_XREF",
+      "mlbId": 660560,
+      "name": "Miguel Flames",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "miguel-flames",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:27.966Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660560?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "20178",
+      "method": "MLB_XREF",
+      "mlbId": 678246,
+      "name": "Miguel Vargas",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "miguel-vargas",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:29.484Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/678246?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa834014",
+      "method": "MLB_XREF",
+      "mlbId": 649958,
+      "name": "Misja Harcksen",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "misja-harcksen",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:30.998Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649958?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016505",
+      "method": "MLB_XREF",
+      "mlbId": 699057,
+      "name": "Missael Soto",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "missael-soto",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:31.738Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699057?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830432,
+      "name": "Moises Acacio",
+      "signals": [],
+      "slug": "moises-acacio",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:32.505Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830432?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830404,
+      "name": "Moises Rangel",
+      "signals": [],
+      "slug": "moises-rangel",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:33.263Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830404?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800390,
+      "name": "Natanael Castillo",
+      "signals": [],
+      "slug": "natanael-castillo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:34.004Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800390?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa873303",
+      "method": "MLB_XREF",
+      "mlbId": 660617,
+      "name": "Nelson Gomez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "nelson-gomez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:34.777Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660617?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800395,
+      "name": "Nicolas Cruz",
+      "signals": [],
+      "slug": "nicolas-cruz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:36.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800395?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa827977",
+      "method": "MLB_XREF",
+      "mlbId": 650693,
+      "name": "Nicolas Pierre",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "nicolas-pierre",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:37.077Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650693?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "646",
+      "method": "MLB_XREF",
+      "mlbId": 112984,
+      "name": "Omar Daal",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "omar-daal",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:38.585Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/112984?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa914242",
+      "method": "MLB_XREF",
+      "mlbId": 666784,
+      "name": "Omar Estevez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "omar-estevez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:40.114Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666784?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "21711",
+      "method": "MLB_XREF",
+      "mlbId": 665833,
+      "name": "Oneil Cruz",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "oneil-cruz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:40.896Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665833?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800424,
+      "name": "Oswaldo Osorio",
+      "signals": [],
+      "slug": "oswaldo-osorio",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:42.366Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800424?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 807379,
+      "name": "Paris Johnson",
+      "signals": [],
+      "slug": "paris-johnson",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:43.161Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/807379?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "862",
+      "method": "MLB_XREF",
+      "mlbId": 110359,
+      "name": "Pedro Astacio",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "pedro-astacio",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:43.919Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/110359?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "5420",
+      "method": "MLB_XREF",
+      "mlbId": 520980,
+      "name": "Pedro Baez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "pedro-baez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:45.438Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/520980?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872568",
+      "method": "MLB_XREF",
+      "mlbId": 660639,
+      "name": "Pedro Gonzalez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "pedro-gonzalez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:46.955Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660639?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "200",
+      "method": "MLB_XREF",
+      "mlbId": 118377,
+      "name": "Pedro Martinez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "pedro-martinez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:48.490Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/118377?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015493",
+      "method": "MLB_XREF",
+      "mlbId": 699063,
+      "name": "Pedro Santillan",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "pedro-santillan",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:49.998Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699063?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800361,
+      "name": "Peter Bonilla",
+      "signals": [],
+      "slug": "peter-bonilla",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:50.763Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800361?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "17350",
+      "method": "MLB_XREF",
+      "mlbId": 646240,
+      "name": "Rafael Devers",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "rafael-devers",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:51.518Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/646240?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3008692",
+      "method": "MLB_XREF",
+      "mlbId": 682948,
+      "name": "Rafael Tua",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "rafael-tua",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:53.037Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682948?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821801,
+      "name": "Rafy Peguero",
+      "signals": [],
+      "slug": "rafy-peguero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:53.808Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821801?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 812747,
+      "name": "Railin Familia",
+      "signals": [],
+      "slug": "railin-familia",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:54.563Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/812747?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1008193",
+      "method": "MLB_XREF",
+      "mlbId": 118378,
+      "name": "Ramon Martinez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ramon-martinez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:55.340Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/118378?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "20368",
+      "method": "MLB_XREF",
+      "mlbId": 665759,
+      "name": "Ramon Rosso",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ramon-rosso",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:56.860Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665759?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "4685",
+      "method": "MLB_XREF",
+      "mlbId": 470462,
+      "name": "Ramon Troncoso",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ramon-troncoso",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:58.398Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/470462?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1314",
+      "method": "MLB_XREF",
+      "mlbId": 119247,
+      "name": "Raul Mondesi",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "raul-mondesi",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:21:59.918Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/119247?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3016720",
+      "method": "MLB_XREF",
+      "mlbId": 699061,
+      "name": "Rayne Doncon",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "rayne-doncon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:01.432Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699061?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800380,
+      "name": "Raynerd Ortega",
+      "signals": [],
+      "slug": "raynerd-ortega",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:02.209Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800380?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821697,
+      "name": "Reyli Mariano",
+      "signals": [],
+      "slug": "reyli-mariano",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:02.956Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821697?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 805110,
+      "name": "Ricardo Montero",
+      "signals": [],
+      "slug": "ricardo-montero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:03.724Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/805110?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa877334",
+      "method": "MLB_XREF",
+      "mlbId": 660616,
+      "name": "Ricardo Rodriguez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ricardo-rodriguez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:04.468Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660616?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 830429,
+      "name": "Ricardo Roman",
+      "signals": [],
+      "slug": "ricardo-roman",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:05.986Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/830429?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa877365",
+      "method": "MLB_XREF",
+      "mlbId": 660615,
+      "name": "Ricky Aracena",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ricky-aracena",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:06.759Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660615?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1002340",
+      "method": "MLB_XREF",
+      "mlbId": 112391,
+      "name": "Roberto Clemente",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "roberto-clemente",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:08.270Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/112391?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808332,
+      "name": "Robinson Ventura",
+      "signals": [],
+      "slug": "robinson-ventura",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:09.821Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808332?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 806791,
+      "name": "Rodmar Angela",
+      "signals": [],
+      "slug": "rodmar-angela",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:10.556Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806791?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "869",
+      "method": "MLB_XREF",
+      "mlbId": 112155,
+      "name": "Roger Cedeno",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "roger-cedeno",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:11.326Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/112155?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015789",
+      "method": "MLB_XREF",
+      "mlbId": 699068,
+      "name": "Roger Lasso",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "roger-lasso",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:12.079Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699068?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800487,
+      "name": "Roiger Mujica",
+      "signals": [],
+      "slug": "roiger-mujica",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:12.844Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800487?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "35323",
+      "method": "MLB_XREF",
+      "mlbId": 808963,
+      "name": "Roki Sasaki",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "roki-sasaki",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:13.602Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808963?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa917329",
+      "method": "MLB_XREF",
+      "mlbId": 665798,
+      "name": "Ronny Brito",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ronny-brito",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:15.131Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665798?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872754",
+      "method": "MLB_XREF",
+      "mlbId": 658665,
+      "name": "Ronny Rafael",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "ronny-rafael",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:15.880Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658665?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015440",
+      "method": "MLB_XREF",
+      "mlbId": 692262,
+      "name": "Roque Gutierrez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "roque-gutierrez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:17.408Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/692262?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "3862",
+      "method": "MLB_XREF",
+      "mlbId": 523989,
+      "name": "Rubby De La Rosa",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "rubby-de-la-rosa",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:18.164Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/523989?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 837601,
+      "name": "Rubel Arias",
+      "signals": [],
+      "slug": "rubel-arias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:19.693Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/837601?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 703153,
+      "name": "Samuel Munoz",
+      "signals": [],
+      "slug": "samuel-munoz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:20.433Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/703153?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808247,
+      "name": "Samuel Sanchez",
+      "signals": [],
+      "slug": "samuel-sanchez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:21.218Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808247?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 829493,
+      "name": "Samuel Savinon",
+      "signals": [],
+      "slug": "samuel-savinon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:21.977Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/829493?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "1000212",
+      "method": "MLB_XREF",
+      "mlbId": 110222,
+      "name": "Sandy Amoros",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "sandy-amoros",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:22.723Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/110222?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800344,
+      "name": "Sean Linan",
+      "signals": [],
+      "slug": "sean-linan",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:24.244Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800344?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 699067,
+      "name": "Sebastian Jimenez",
+      "signals": [],
+      "slug": "sebastian-jimenez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:25.018Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699067?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 829476,
+      "name": "Shai Romero",
+      "signals": [],
+      "slug": "shai-romero",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:25.789Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/829476?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa828423",
+      "method": "MLB_XREF",
+      "mlbId": 649954,
+      "name": "Shakir Albert",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "shakir-albert",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:26.539Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649954?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa917328",
+      "method": "MLB_XREF",
+      "mlbId": 665752,
+      "name": "Starling Heredia",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "starling-heredia",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:27.296Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665752?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800481,
+      "name": "Steven Castillo",
+      "signals": [],
+      "slug": "steven-castillo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:28.064Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800481?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015790",
+      "method": "MLB_XREF",
+      "mlbId": 699073,
+      "name": "Thayron Liranzo",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "thayron-liranzo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:28.824Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699073?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 808444,
+      "name": "Tim Fischer",
+      "signals": [],
+      "slug": "tim-fischer",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:29.571Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808444?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "5053",
+      "method": "MLB_XREF",
+      "mlbId": 473234,
+      "name": "Tony Abreu",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "tony-abreu",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:30.350Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/473234?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 805773,
+      "name": "Umar Male",
+      "signals": [],
+      "slug": "umar-male",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:31.883Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/805773?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "16408",
+      "method": "MLB_XREF",
+      "mlbId": 624647,
+      "name": "Victor Gonzalez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "victor-gonzalez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:32.627Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/624647?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800332,
+      "name": "Victor Rodrigues",
+      "signals": [],
+      "slug": "victor-rodrigues",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:34.178Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800332?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa872548",
+      "method": "MLB_XREF",
+      "mlbId": 660564,
+      "name": "Wilkerman Garcia",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "wilkerman-garcia",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:34.950Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660564?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa739645",
+      "method": "MLB_XREF",
+      "mlbId": 624648,
+      "name": "William Soto",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "william-soto",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:36.468Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/624648?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "2192",
+      "method": "MLB_XREF",
+      "mlbId": 430632,
+      "name": "Willy Aybar",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "willy-aybar",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:37.229Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/430632?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015694",
+      "method": "MLB_XREF",
+      "mlbId": 694180,
+      "name": "Wilman Diaz",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "wilman-diaz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:38.759Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/694180?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa868984",
+      "method": "MLB_XREF",
+      "mlbId": 665751,
+      "name": "Yadier Álvarez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "yadier-alvarez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:39.535Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/665751?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "14225",
+      "method": "MLB_XREF",
+      "mlbId": 624577,
+      "name": "Yasiel Puig",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "yasiel-puig",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:40.297Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/624577?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa3015182",
+      "method": "MLB_XREF",
+      "mlbId": 691558,
+      "name": "Yeiner Fernandez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "yeiner-fernandez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:41.815Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/691558?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "sa830208",
+      "method": "MLB_XREF",
+      "mlbId": 650988,
+      "name": "Yeltsin Gudino",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "yeltsin-gudino",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:42.580Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650988?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800521,
+      "name": "Yhonaider Gudino",
+      "signals": [],
+      "slug": "yhonaider-gudino",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:44.106Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800521?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 821684,
+      "name": "Yojackson Laya",
+      "signals": [],
+      "slug": "yojackson-laya",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:44.866Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/821684?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "19556",
+      "method": "MLB_XREF",
+      "mlbId": 670541,
+      "name": "Yordan Alvarez",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "yordan-alvarez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:45.648Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/670541?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800337,
+      "name": "Yorfran Medina",
+      "signals": [],
+      "slug": "yorfran-medina",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:47.230Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800337?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800366,
+      "name": "Yoryi Simarra",
+      "signals": [],
+      "slug": "yoryi-simarra",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:47.925Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800366?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": null,
+      "fangraphsId": null,
+      "method": null,
+      "mlbId": 800447,
+      "name": "Yuliangel De La Cruz",
+      "signals": [],
+      "slug": "yuliangel-de-la-cruz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:48.688Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/800447?hydrate=xrefId"
+        }
+      ],
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "confidence": "VERIFIED",
+      "fangraphsId": "18905",
+      "method": "MLB_XREF",
+      "mlbId": 666783,
+      "name": "Yusniel Diaz",
+      "signals": [
+        "MLB_PERSON_XREF_FANGRAPHS"
+      ],
+      "slug": "yusniel-diaz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:22:49.445Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/666783?hydrate=xrefId"
+        }
+      ],
+      "status": "RESOLVED"
+    }
+  ]
+}

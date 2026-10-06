@@ -10,12 +10,14 @@ import AuditBadge from '../components/AuditBadge'
 import { getPlayerDirectory } from '../../lib/data.js'
 import { PLAYERS_SPEC, AUDIT_STATUSES } from '../../lib/specs.js'
 import { parseTableState, tableHref, activeFilterCount } from '../../lib/table-state.js'
-import { bwar, dateLabel, auditLabel, MISSING } from '../../lib/format.js'
+import { bwar, dateLabel, auditLabel, ageBandLabel, handLabel, MISSING } from '../../lib/format.js'
 
 export const metadata = { title: 'Players' }
 
 const PATH = '/players'
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+const facetSelect = (rows = [], label = (v) => v) =>
+  rows.filter((r) => r.value).map((r) => ({ value: r.value, label: `${label(r.value)} (${r.count})` }))
 
 export default async function PlayersPage({ searchParams }) {
   const state = parseTableState(PLAYERS_SPEC, await searchParams)
@@ -33,7 +35,8 @@ export default async function PlayersPage({ searchParams }) {
       { value: 'dodgers', label: 'Signed by the Dodgers franchise' },
       { value: 'all', label: 'All players in database' },
     ] },
-    { name: 'country', type: 'select', label: 'Country', options: (facets.country || []).filter((c) => c.value).map((c) => ({ value: c.value, label: `${c.value} (${c.count})` })) },
+    { name: 'market', type: 'select', label: 'Signing market', options: facetSelect(facets.market) },
+    { name: 'birth_country', type: 'select', label: 'Birth country', options: facetSelect(facets.birthCountry) },
     { name: 'position', type: 'select', label: 'Position', options: (facets.position || []).filter((p) => p.value).map((p) => ({ value: p.value, label: `${p.value} (${p.count})` })) },
     { name: 'year_min', type: 'select', label: 'First signed from', options: fromOptions },
     { name: 'year_max', type: 'select', label: 'First signed to', options: toOptions },
@@ -42,6 +45,9 @@ export default async function PlayersPage({ searchParams }) {
     ] },
     { name: 'dodgers_debut', type: 'select', label: 'Dodgers-franchise MLB debut', options: [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }] },
     { name: 'audit', type: 'select', label: 'Outcome audit', options: AUDIT_STATUSES.map((s) => ({ value: s, label: auditLabel(s) })) },
+    { name: 'bats', type: 'select', label: 'Bats', options: facetSelect(facets.bats, handLabel) },
+    { name: 'throws', type: 'select', label: 'Throws', options: facetSelect(facets.throws, handLabel) },
+    { name: 'age_band', type: 'select', label: 'Age at signing', options: facetSelect(facets.ageBand, ageBandLabel) },
   ] : []
 
   const header = (key, label, opts = {}) => (
@@ -75,6 +81,12 @@ export default async function PlayersPage({ searchParams }) {
           ) : <span key={letter} className="disabled" aria-hidden="true">{letter}</span>)}
         </nav>
 
+        <p className="micro-note">
+          {state.filters.org_scope === 'all'
+            ? <>Showing <strong>all players in the database</strong>: Dodgers franchise signees and other clubs&apos; signees kept as league benchmarks. {total.toLocaleString()} match.</>
+            : <>Showing <strong>Dodgers franchise signees</strong> only ({total.toLocaleString()} match). Other clubs&apos; benchmark players are under Scope → All players in database.</>}
+        </p>
+
         <FilterForm
           pathname={PATH}
           fields={fields}
@@ -91,9 +103,11 @@ export default async function PlayersPage({ searchParams }) {
               <thead>
                 <tr>
                   {header('player', 'Player')}
-                  {header('country', 'Signing market')}
+                  {header('market', 'Signing market')}
+                  {header('born', 'Born')}
                   {header('position', 'Pos')}
                   {header('first_year', 'First signed', { numeric: true })}
+                  {header('age', 'Age at signing', { numeric: true, title: 'Age on the recorded signing date' })}
                   <th scope="col">Organizations</th>
                   {header('audit', 'Outcome audit')}
                   {header('debut', 'MLB debut')}
@@ -108,8 +122,10 @@ export default async function PlayersPage({ searchParams }) {
                       {r.aliases?.length > 0 && <small className="alias">{r.aliases.join(', ')}</small>}
                     </td>
                     <td>{r.first_signing_market || MISSING}</td>
+                    <td>{r.birth_country || MISSING}</td>
                     <td>{r.primary_position || MISSING}</td>
                     <td className="num">{r.first_signing_year ?? MISSING}</td>
+                    <td className="num">{r.age_at_signing ?? MISSING}</td>
                     <td>{r.organizations?.length ? r.organizations.join(', ') : MISSING}</td>
                     <td><AuditBadge status={r.outcome_audit_status} /></td>
                     <td>
@@ -119,7 +135,7 @@ export default async function PlayersPage({ searchParams }) {
                     <td className="num">{bwar(r.career_bwar)}</td>
                   </RowLink>
                 ))}
-                {rows.length === 0 && <tr><td colSpan={8} className="empty-row">No players match these filters.</td></tr>}
+                {rows.length === 0 && <tr><td colSpan={10} className="empty-row">No players match these filters.</td></tr>}
               </tbody>
             </table>
           </div>

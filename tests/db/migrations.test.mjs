@@ -46,6 +46,9 @@ test('the latest migration is rerunnable without changing data', async () => {
   const latest = manifest.canonical_sql.at(-1)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
+      (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
+      (select string_agg(coalesce(position_at_signing, ''), ',' order by id) from signings) as positions_at_signing,
+      (select string_agg(player_id::text || id_system || status || coalesce(external_id, ''), ',' order by player_id, id_system) from player_identity_resolutions) as resolutions,
       (select count(*) from signings)::int as signings,
       (select string_agg(coalesce(formal_transaction_date::text, '') || coalesce(announced_date::text, '') || coalesce(country_market, ''), ',' order by id) from signings) as signing_facts,
       (select count(*) from player_metric_observations)::int as metrics,
@@ -218,7 +221,7 @@ test('signing records keep unknowns NULL and use text codes for alphabetical sor
 })
 
 test('Brooklyn-era signings display the historical organization name', async () => {
-  const r = await one("select organization_name, franchise_key, mlb_debut_org from v_signing_records where full_name = 'Sandy Amoros'")
+  const r = await one("select organization_name, franchise_key, mlb_debut_org from v_signing_records where public.disi_ascii_fold(full_name) = 'sandy amoros'")
   assert.equal(r.organization_name, 'Brooklyn Dodgers')
   assert.equal(r.franchise_key, 'DODGERS')
   assert.equal(r.mlb_debut_org, 'BRO')
@@ -513,7 +516,8 @@ test('anon cannot write any 018 table', async () => {
 // 019: evidence-based outcome audits, professional progress, outcome views
 // ---------------------------------------------------------------------------
 
-const dossier = (name) => one('select * from v_player_dossier where full_name = $1', [name])
+// Accent-insensitive: 020 respells some names with their accents (Roger Cedeño).
+const dossier = (name) => one('select * from v_player_dossier where public.disi_ascii_fold(full_name) = public.disi_ascii_fold($1)', [name])
 
 test('019 adds 35 evidence-backed audits: 2 verified MLB, 33 verified no MLB', async () => {
   const p = await one('select * from v_dodgers_outcome_audit_progress')
@@ -675,4 +679,278 @@ test('anon cannot write the 019 tables', async () => {
     assert.equal(n, 7)
     await tx.rollback()
   })
+})
+
+// ---------------------------------------------------------------------------
+// 020: player identity and biography
+// ---------------------------------------------------------------------------
+
+test('020 identifiers: MLB, Baseball-Reference and FanGraphs ids are unique, and every MLB player has a B-Ref id', async () => {
+  const r = await one(`select count(*)::int as players, count(mlb_id)::int as mlb, count(bref_id)::int as bref, count(fangraphs_id)::int as fg,
+      count(distinct mlb_id)::int as mlb_distinct, count(distinct bref_id)::int as bref_distinct, count(distinct fangraphs_id)::int as fg_distinct
+    from players`)
+  assert.deepEqual([r.players, r.mlb, r.bref, r.fg], [268, 263, 58, 139])
+  assert.equal(r.mlb_distinct, r.mlb)
+  assert.equal(r.bref_distinct, r.bref)
+  assert.equal(r.fg_distinct, r.fg)
+  const cov = await one(`select mlb_players, mlb_players_with_bref_id from v_dodgers_player_identity_coverage where scope = 'ALL_TRACKED_PLAYERS'`)
+  assert.equal(cov.mlb_players_with_bref_id, cov.mlb_players)
+  const cedeno = await one(`select mlb_id, bref_id from players where slug = 'roger-cedeno'`)
+  assert.deepEqual([Number(cedeno.mlb_id), cedeno.bref_id], [112155, 'cedenro01'])
+  const ev = await one(`select count(*)::int as n from evidence e join sources s on s.id = e.source_id
+    where e.entity_type = 'player' and e.field_name = 'bref_id' and s.url ~ 'baseball-reference\\.com/data/war_daily'`)
+  assert.equal(ev.n, 58, 'each B-Ref id cites the Baseball-Reference WAR file')
+  const fwar = await one(`select count(*)::int as n from player_metric_observations where metric_key = 'CAREER_FWAR'`)
+  assert.equal(fwar.n, 0, 'a FanGraphs id does not add fWAR')
+})
+
+test('020 unresolved identities keep NULL ids and biography and are queued, never auto-resolved', async () => {
+  const unresolved = await rows(`select slug, birth_date, bats, throws from players where mlb_id is null order by slug`)
+  assert.deepEqual(unresolved.map((r) => r.slug),
+    ['emmanuel-dejesus', 'jonathan-amundaray', 'micker-zapata', 'yeremy-rosario', 'yeyson-yrizarry'])
+  for (const r of unresolved) assert.deepEqual([r.birth_date, r.bats, r.throws], [null, null, null], `${r.slug} has no invented biography`)
+  const queued = await rows(`select player_slug from v_dodgers_player_identity_research_queue where issue = 'MLB_ID_UNRESOLVED' order by 1`)
+  assert.deepEqual(queued.map((r) => r.player_slug), unresolved.map((r) => r.slug))
+  const bref = await one(`select r.status from player_identity_resolutions r join players p on p.id = r.player_id
+    where p.slug = 'emmanuel-dejesus' and r.id_system = 'BASEBALL_REFERENCE'`)
+  assert.equal(bref.status, 'NOT_FOUND', 'an unresolved player is not declared to have no MLB debut')
+  // An ambiguous / review status can never carry an applied id; RESOLVED always needs one.
+  for (const [sql, label] of [
+    [`insert into player_identity_resolutions (player_id, id_system, external_id, status, decided_on) values ($1, 'MLB', '123', 'AMBIGUOUS', current_date)`, 'ambiguous with id'],
+    [`insert into player_identity_resolutions (player_id, id_system, status, decided_on) values ($1, 'MLB', 'RESOLVED', current_date)`, 'resolved without id'],
+  ]) {
+    await db.transaction(async (tx) => {
+      const pid = (await tx.query(`select id from players where slug = 'emmanuel-dejesus'`)).rows[0].id
+      await tx.query(`delete from player_identity_resolutions where player_id = $1 and id_system = 'MLB'`, [pid])
+      await assert.rejects(tx.query(sql, [pid]), /check constraint/, label)
+      await tx.rollback()
+    })
+  }
+})
+
+test('020 biography: values carry field-level evidence; existing values are kept and disagreements recorded', async () => {
+  const urias = await one(`select * from v_player_bio where player_slug = 'julio-urias'`)
+  assert.equal(urias.full_name, 'Julio Urías')
+  assert.equal(urias.birth_country, 'Mexico')
+  assert.equal(urias.nationality, null, 'nationality is never derived from birth country')
+  assert.ok(urias.birth_date && urias.bats && urias.throws && urias.birth_city)
+  const fields = (await rows(`select distinct e.field_name from evidence e join players p on p.id = e.entity_id
+    where e.entity_type = 'player' and p.slug = 'julio-urias' and e.field_name is not null`)).map((r) => r.field_name)
+  for (const f of ['birth_date', 'birth_city', 'birth_country', 'bats', 'throws', 'height_in', 'weight_lb', 'mlb_id']) {
+    assert.ok(fields.includes(f), `evidence for ${f}`)
+  }
+  assert.ok(!fields.includes('nationality'))
+  const thon = await rows(`select c.note from research_source_conflicts c join players p on p.id = c.player_id
+    where p.slug = 'joseph-deng-thon' and c.field_name = 'birth_country'`)
+  assert.equal(thon.length, 1, 'a conflict is not duplicated')
+  assert.match(thon[0].note, /before South Sudan/)
+})
+
+test('020 names: accent-only respelling keeps the slug, the old spelling is an alias, search ignores accents', async () => {
+  const c = await one(`select full_name, canonical_name, slug from players where slug = 'roger-cedeno'`)
+  assert.deepEqual([c.full_name, c.canonical_name, c.slug], ['Roger Cedeño', 'Roger Cedeño', 'roger-cedeno'])
+  const renamed = await one(`select count(*)::int as n from player_aliases where alias_type = 'PREVIOUS_DISI_SPELLING'`)
+  assert.equal(renamed.n, 28)
+  const bad = await one(`select count(*)::int as n from player_aliases a join players p on p.id = a.player_id
+    where a.alias_type = 'PREVIOUS_DISI_SPELLING' and public.disi_ascii_fold(a.alias) <> public.disi_ascii_fold(p.full_name)`)
+  assert.equal(bad.n, 0, 'no rename beyond accents')
+  for (const [q, slug] of [['cedeno', 'roger-cedeno'], ['Cedeño', 'roger-cedeno'], ['atoji', 'allen-ajoti'],
+    ['jeremi', 'jerami-rodriguez'], ['urena', 'antoni-urena'], ['Ureña', 'antoni-urena']]) {
+    const hit = await rows(`select player_slug from v_player_directory where search_text like '%' || public.disi_ascii_fold($1) || '%'`, [q])
+    assert.ok(hit.some((r) => r.player_slug === slug), `${q} finds ${slug}`)
+  }
+  const ajoti = await rows(`select id from players where public.disi_ascii_fold(full_name) in ('allen ajoti', 'allan atoji')`)
+  assert.equal(ajoti.length, 1, 'an alias is not a second player')
+})
+
+test('020 ages: derived only when both dates exist, and each age names its date', async () => {
+  const r = await one(`select
+      count(*) filter (where age_at_signing is not null and (birth_date is null or signing_date is null))::int as invented_signing,
+      count(*) filter (where age_at_announcement is not null and (birth_date is null or announced_date is null))::int as invented_announce,
+      count(*) filter (where age_at_formal_transaction is not null and (birth_date is null or formal_transaction_date is null))::int as invented_tx,
+      count(*) filter (where age_at_signing is not null and signing_date_basis is null)::int as unlabeled
+    from v_signing_ages`)
+  assert.deepEqual([r.invented_signing, r.invented_announce, r.invented_tx, r.unlabeled], [0, 0, 0, 0])
+  const debut = await one(`select count(*) filter (where age_at_mlb_debut is not null and (birth_date is null or mlb_debut_date is null))::int as bad,
+      count(*) filter (where age_at_mlb_debut is not null)::int as n from v_player_bio`)
+  assert.deepEqual([debut.bad, debut.n], [0, 58])
+  const urias = await one(`select signing_age_band, mlb_debut_date_basis from v_player_bio where player_slug = 'julio-urias'`)
+  assert.deepEqual([urias.signing_age_band, urias.mlb_debut_date_basis], ['16_OR_YOUNGER', 'OUTCOME_RECORD'])
+  const fn = await one(`select public.disi_age_years('2006-07-03', '2023-07-02') as y, public.disi_age_decimal('2006-07-03', '2023-07-02') as d,
+    public.disi_age_years(null, '2023-07-02') as n, public.disi_signing_age_band(17) as b`)
+  assert.deepEqual([fn.y, Number(fn.d), fn.n, fn.b], [16, 16.9, null, '17'])
+})
+
+test('020 birth country and signing market are separate fields and filters', async () => {
+  const p = await one(`select b.birth_country, d.signing_markets from v_player_bio b
+    join v_player_directory d using (player_id) where b.player_slug = 'rafy-peguero'`)
+  assert.equal(p.birth_country, 'United States')
+  assert.deepEqual(p.signing_markets, ['Dominican Republic'])
+  const us = await rows(`select distinct facet from v_player_filter_options where facet in ('birth_country', 'signing_market') and value = 'United States'`)
+  assert.deepEqual(us.map((f) => f.facet), ['birth_country'], 'United States is a birth country here, never a signing market')
+  const all = (await rows(`select distinct facet from v_player_filter_options`)).map((r) => r.facet)
+  for (const f of ['bats', 'throws', 'signing_age_band', 'birth_country', 'signing_market']) assert.ok(all.includes(f), f)
+})
+
+test('020 position at signing comes from the signing transaction, not the current position', async () => {
+  const r = await one(`select count(*)::int as n, count(*) filter (where position_at_signing_source_id is null)::int as unsourced
+    from signings where position_at_signing is not null`)
+  assert.deepEqual([r.n, r.unsourced], [225, 0])
+  const lorenzo = await one(`select s.position_at_signing, p.current_position from signings s join players p on p.id = s.player_id where p.slug = 'abel-lorenzo'`)
+  assert.deepEqual([lorenzo.position_at_signing, lorenzo.current_position], ['C', 'OF'])
+})
+
+test('020 views are security_invoker; anon reads identity data but cannot write it', async () => {
+  const views = await rows(`select c.relname, coalesce(c.reloptions::text, '') as opts from pg_class c
+    where c.relname in ('v_player_bio', 'v_signing_ages', 'v_player_identity_scope', 'v_dodgers_player_identity_coverage',
+      'v_dodgers_player_identity_research_queue', 'v_player_directory', 'v_player_dossier', 'v_player_filter_options')`)
+  assert.equal(views.length, 8)
+  for (const v of views) assert.match(v.opts, /security_invoker=(true|on)/, v.relname)
+  const rls = await one(`select relrowsecurity from pg_class where relname = 'player_identity_resolutions'`)
+  assert.equal(rls.relrowsecurity, true)
+  for (const sql of [
+    `update players set birth_date = '2000-01-01'`,
+    `update players set bref_id = null`,
+    `delete from player_identity_resolutions`,
+    `insert into player_aliases (player_id, alias) select id, 'x' from players limit 1`,
+  ]) {
+    await db.transaction(async (tx) => {
+      await tx.query('set local role anon')
+      await assert.rejects(tx.query(sql), /permission denied/)
+      await tx.rollback()
+    })
+  }
+  await db.transaction(async (tx) => {
+    await tx.query('set local role anon')
+    assert.equal((await tx.query('select count(*)::int as n from v_player_bio')).rows[0].n, 268)
+    assert.ok((await tx.query('select count(*)::int as n from v_dodgers_player_identity_research_queue')).rows[0].n > 0)
+    await tx.rollback()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 020 correction pass: birth country vs signing market, Hoy Park, Dodgers scope
+// ---------------------------------------------------------------------------
+
+const birthAndMarket = (slug) => one(`select p.birth_country, p.birth_city, p.birth_state_province,
+    array(select distinct s.country_market from signings s where s.player_id = p.id and s.country_market is not null) as markets
+  from players p where p.slug = $1`, [slug])
+
+test('020 corrections: De Paula and Marte Jr. were born in the United States; Dominican Republic stays their signing market', async () => {
+  const dp = await birthAndMarket('josue-de-paula')
+  assert.deepEqual([dp.birth_country, dp.birth_city, dp.birth_state_province, dp.markets], ['United States', 'Brooklyn', 'NY', ['Dominican Republic']])
+  const dm = await birthAndMarket('damaso-marte-jr')
+  assert.deepEqual([dm.birth_country, dm.birth_city, dm.birth_state_province, dm.markets], ['United States', 'Orlando', 'FL', ['Dominican Republic']])
+  // The legacy value is kept on the resolved conflict, with the reason; evidence names the correction.
+  const c = await one(`select status, value_a, value_b, resolution from research_source_conflicts where conflict_key = 'BIO:birth_country:josue-de-paula'`)
+  assert.deepEqual([c.status, c.value_a, c.value_b], ['RESOLVED', 'Dominican Republic', 'United States'])
+  assert.match(c.resolution, /signing market/)
+  const ev = await one(`select e.evidence_note from evidence e join players p on p.id = e.entity_id
+    where e.entity_type = 'player' and e.field_name = 'birth_country' and p.slug = 'josue-de-paula'`)
+  assert.match(ev.evidence_note, /replaces legacy value "Dominican Republic"/)
+})
+
+test('020 corrections: Barreto, Romero and Deng Thon take the MLB birth country; class countries stay signing markets', async () => {
+  const expected = {
+    'isaac-barreto': ['Venezuela', ['Colombia']],
+    'luciano-romero': ['Dominican Republic', ['Venezuela']],
+    'joseph-deng-thon': ['Sudan', ['South Sudan']],
+  }
+  for (const [slug, [born, markets]] of Object.entries(expected)) {
+    const r = await birthAndMarket(slug)
+    assert.deepEqual([r.birth_country, r.markets], [born, markets], slug)
+  }
+  const thon = await one(`select p.nationality, c.status, c.resolution from players p
+    join research_source_conflicts c on c.player_id = p.id and c.conflict_key = 'BIRTH_COUNTRY:deng-thon' where p.slug = 'joseph-deng-thon'`)
+  assert.equal(thon.nationality, null, 'nationality is not inferred from either country')
+  assert.equal(thon.status, 'RESOLVED')
+  assert.match(thon.resolution, /2011-07-09/)
+  const romeroMarket = await one(`select status from research_source_conflicts where conflict_key = 'MARKET:luciano-romero-2022'`)
+  assert.equal(romeroMarket.status, 'RESOLVED')
+})
+
+test('020 corrections never overwrite signing markets', { timeout: 180000 }, async () => {
+  // Every signing market equals its 019 value: the snapshot of all markets is compared with a
+  // build that stops at 019.
+  const after = await rows(`select p.slug, s.signing_year, s.country_market from signings s join players p on p.id = s.player_id order by 1, 2`)
+  const before = new PGlite({ extensions: { pgcrypto } })
+  try {
+    await before.exec('create role anon nologin; create role authenticated nologin;')
+    for (const file of manifest.canonical_sql.filter((f) => f < '020_')) await before.exec(readSql(file))
+    const prior = (await before.query(`select p.slug, s.signing_year, s.country_market from signings s join players p on p.id = s.player_id order by 1, 2`)).rows
+    assert.deepEqual(after, prior)
+  } finally {
+    await before.close()
+  }
+})
+
+test('020 Hyo-Jun Park resolves to MLB player Hoy Park (660829) on documented signing-transaction evidence', async () => {
+  const p = await one(`select * from v_player_bio where player_slug = 'hyo-jun-park'`)
+  assert.equal(p.full_name, 'Hyo-Jun Park', 'the DISI tracker spelling stays the name')
+  assert.deepEqual([Number(p.mlb_id), p.bref_id, p.fangraphs_id], [660829, 'parkho01', '18027'])
+  assert.equal(p.birth_date.toISOString().slice(0, 10), '1996-04-07')
+  assert.deepEqual([p.birth_city, p.birth_country], ['Seoul', 'South Korea'])
+  assert.deepEqual([...p.aliases].sort(), ['Hoy Jun Park', 'Hoy Park'])
+  const r = await one(`select r.status, r.method, r.confidence::text, r.signals, r.note, s.url from player_identity_resolutions r
+    join players p on p.id = r.player_id left join sources s on s.id = r.source_id
+    where p.slug = 'hyo-jun-park' and r.id_system = 'MLB'`)
+  assert.deepEqual([r.status, r.method, r.confidence], ['RESOLVED', 'MANUAL_LINKED_SIGNING_TRANSACTION', 'HIGH'])
+  assert.ok(r.signals.includes('SIGNING_CLUB') && r.signals.includes('SIGNING_PERIOD_OPENING_DATE'), 'not a name-only link')
+  assert.match(r.url, /transactions\?teamId=147&startDate=2014-01-01/)
+  assert.match(r.note, /not on name similarity/)
+  const alias = await one(`select a.alias_type, s.url from player_aliases a join players p on p.id = a.player_id
+    left join sources s on s.id = a.source_id where p.slug = 'hyo-jun-park' and a.alias = 'Hoy Jun Park'`)
+  assert.equal(alias.alias_type, 'MLB_TRANSACTION_NAME')
+  assert.ok(alias.url, 'the alias cites the transaction log')
+  const hit = await rows(`select player_slug from v_player_directory where search_text like '%hoy park%'`)
+  assert.deepEqual(hit.map((h) => h.player_slug), ['hyo-jun-park'])
+})
+
+test('020 coverage: a conflicted field is present but not resolved', async () => {
+  const before = await one(`select with_birth_country, birth_country_resolved, birth_country_conflicted, birth_country_unsourced
+    from v_dodgers_player_identity_coverage where scope = 'ALL_TRACKED_PLAYERS'`)
+  assert.equal(before.with_birth_country,
+    before.birth_country_resolved + before.birth_country_conflicted + before.birth_country_unsourced)
+  // Legacy birth countries no source backs are present but not resolved: the five unresolved benchmark
+  // players, and Enrike Sevilya (MLB gives Moscow with the non-standard country code "RU1").
+  assert.deepEqual([before.with_birth_country, before.birth_country_resolved, before.birth_country_unsourced], [268, 262, 6])
+  const unsourced = await rows(`select player_slug from v_dodgers_player_identity_research_queue where issue = 'BIRTH_COUNTRY_UNSOURCED' order by 1`)
+  assert.deepEqual(unsourced.map((r) => r.player_slug),
+    ['emmanuel-dejesus', 'enrike-sevilya', 'jonathan-amundaray', 'micker-zapata', 'yeremy-rosario', 'yeyson-yrizarry'])
+  await db.transaction(async (tx) => {
+    const pid = (await tx.query(`select id from players where slug = 'rafy-peguero'`)).rows[0].id
+    await tx.query(`insert into research_source_conflicts (conflict_key, conflict_type, player_id, field_name, value_a, value_b)
+      values ('TEST:peguero', 'BIRTH_COUNTRY', $1, 'birth_country', 'United States', 'Dominican Republic')`, [pid])
+    const c = (await tx.query(`select with_birth_country, birth_country_resolved, birth_country_conflicted
+      from v_dodgers_player_identity_coverage where scope = 'ALL_TRACKED_PLAYERS'`)).rows[0]
+    assert.equal(c.with_birth_country, before.with_birth_country, 'still present')
+    assert.equal(c.birth_country_resolved, before.birth_country_resolved - 1, 'no longer resolved')
+    assert.equal(c.birth_country_conflicted, before.birth_country_conflicted + 1)
+    const b = (await tx.query(`select open_conflict_fields from v_player_bio where player_id = $1`, [pid])).rows[0]
+    assert.deepEqual(b.open_conflict_fields, ['birth_country'])
+    await tx.rollback()
+  })
+})
+
+test('020 Dodgers-facing counts exclude other-club benchmark players unless all players are requested', async () => {
+  const status = await one(`select dodgers_players, league_benchmark_players, total_players from v_database_status`)
+  assert.deepEqual([status.dodgers_players, status.league_benchmark_players, status.total_players], [220, 48, 268])
+  const dodgersFacet = await one(`select coalesce(sum(row_count), 0)::int as n from v_player_filter_options
+    where facet = 'name_initial' and has_dodgers_signing`)
+  const allFacet = await one(`select sum(row_count)::int as n from v_player_filter_options where facet = 'name_initial'`)
+  assert.deepEqual([dodgersFacet.n, allFacet.n], [220, 268])
+  // Hyo-Jun Park (Yankees, South Korea) is counted only in the benchmark row.
+  const korea = await rows(`select has_dodgers_signing, row_count from v_player_filter_options
+    where facet = 'signing_market' and value = 'South Korea' order by has_dodgers_signing`)
+  const dodgersKorea = await one(`select count(*)::int as n from v_player_directory
+    where has_dodgers_signing and 'South Korea' = any(signing_markets)`)
+  const leagueKorea = await rows(`select player_slug from v_player_directory
+    where not has_dodgers_signing and 'South Korea' = any(signing_markets) order by 1`)
+  assert.ok(leagueKorea.some((r) => r.player_slug === 'hyo-jun-park'))
+  assert.deepEqual(korea.map((r) => [r.has_dodgers_signing, r.row_count]),
+    [[false, leagueKorea.length], ...(dodgersKorea.n ? [[true, dodgersKorea.n]] : [])])
+  const cov = await one(`select players from v_dodgers_player_identity_coverage where scope = 'DODGERS_SIGNEES'`)
+  assert.equal(cov.players, 220)
+  const dir = await one(`select count(*)::int as n from v_player_directory where has_dodgers_signing`)
+  assert.equal(dir.n, 220)
 })

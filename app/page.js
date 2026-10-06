@@ -56,7 +56,7 @@ export default async function HomePage() {
             <Link href="/research">Coverage detail →</Link>
           </div>
           <div className="stat-grid">
-            <Stat label="Tracked signings" value={status.tracked_signings.toLocaleString()} note={`${status.total_players.toLocaleString()} players in database incl. ${status.league_signing_records} league benchmark records`} />
+            <Stat label="Tracked signings" value={status.tracked_signings.toLocaleString()} note={`${status.dodgers_players.toLocaleString()} Dodgers players · ${status.league_benchmark_players} other-club benchmark players kept separately`} />
             <Stat label="Years represented" value={status.years_represented} note={`${status.earliest_signing_year}–${status.latest_signing_year}; not every year is covered`} />
             <Stat label="Markets represented" value={status.markets_represented} note={`${status.signings_with_unknown_market} signings with unknown market`} />
             <Stat label="Classes with known population" value={status.classes_with_known_population} note={`${status.opening_classes_complete} announced opening classes complete · ${status.full_periods_complete} full signing periods complete`} />

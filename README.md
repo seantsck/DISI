@@ -51,11 +51,14 @@ A player can be announced in a class while the formal MLB transaction is dated l
 - Brooklyn and Los Angeles share franchise key `DODGERS`; historical organization names are preserved.
 - An outcome audit of "no MLB debut" needs evidence (enforced in the database) and says *how*: no longer in affiliated baseball, still active in the minors, or status unknown. Developing players get a progress record, not an outcome.
 - Career value is **bWAR** (Baseball-Reference WAR), stored with its source, observation date and through-season. FanGraphs fWAR, if added, is stored separately and never blended or substituted.
+- **Identity.** MLB id anchors a player; B-Ref and FanGraphs ids are identifiers only. A name match alone never identifies a player, and two players are never merged because their names match. Canonical name is one spelling; others are aliases (search ignores accents).
+- **Birth country is not signing market**, and neither implies nationality. Bats / throws are never inferred from position.
+- **Ages name their date.** Age at signing uses the recorded signing date, age at announcement the announcement date, age at transaction the formal MLB transaction date; a missing date gives no age.
 
 ## Setup
 
 1. Copy `.env.example` to `.env.local` and set the Supabase Project URL and **publishable key**.
-2. Apply the SQL in `database/sql/` in manifest order in the Supabase SQL Editor (for an existing v0.9 project, run `019_mature_outcome_audit_expansion.sql`).
+2. Apply the SQL in `database/sql/` in manifest order in the Supabase SQL Editor (for an existing v0.10 project, run `020_player_identity_and_biography_enrichment.sql`).
 3. `npm install`
 4. `npm run dev`
 
@@ -79,7 +82,7 @@ Never put a Supabase secret key or legacy service-role key in a `NEXT_PUBLIC_` v
 
 ## Database lineage
 
-- `database/sql/` — canonical build sequence 001–019 (listed in `database/manifest.json`).
+- `database/sql/` — canonical build sequence 001–020 (listed in `database/manifest.json`).
 - `database/research/` — reviewed research artifacts and builders behind data migrations (019 onward).
 - `scripts/mlb/` — reproducible MLB Stats API / Baseball-Reference research scripts (see `scripts/mlb/README.md`). They output review artifacts and never write to a database.
 - `database/repairs/` — the 004a–004c troubleshooting scripts from the first manual Supabase build.

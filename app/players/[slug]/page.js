@@ -6,7 +6,8 @@ import AuditBadge from '../../components/AuditBadge'
 import PlayerLink from '../../components/PlayerLink'
 import { getPlayerDossier } from '../../../lib/data.js'
 import {
-  money, moneyExact, num, bwar, humanize, dateLabel, yesNoUnknown, statusLabel, populationScopeLabel, MISSING,
+  moneyExact, num, bwar, humanize, dateLabel, yesNoUnknown, statusLabel, populationScopeLabel,
+  handLabel, heightLabel, ageLabel, ageBandLabel, MISSING,
 } from '../../../lib/format.js'
 
 const loadDossier = cache(getPlayerDossier)
@@ -30,9 +31,25 @@ function moneyFact(value) {
     : <span title={moneyExact(value)}>{moneyExact(value)}</span>
 }
 
-function heightLabel(inches) {
-  const n = Number(inches)
-  return `${Math.floor(n / 12)}′ ${Math.round(n % 12)}″`
+/** External identifier with a link to the provider's page. Unknown ids stay unknown. */
+function ExternalId({ id, href, status }) {
+  if (id == null || id === '') {
+    const why = status && status !== 'NOT_RESEARCHED' ? humanize(status) : 'Not identified'
+    return <span className="unknown">{why}</span>
+  }
+  return <a className="source-link" href={href} target="_blank" rel="noopener noreferrer">{id}</a>
+}
+
+const SIGNING_DATE_BASIS = {
+  SIGNING_DATE_EQUALS_FORMAL_TRANSACTION: 'recorded signing date (same as the formal MLB transaction)',
+  SIGNING_DATE_RECORDED: 'recorded signing date (no formal transaction verified)',
+  SIGNING_DATE_DIFFERS_FROM_FORMAL_TRANSACTION: 'recorded signing date (differs from the formal MLB transaction)',
+}
+
+/** Age with the date it was computed from; NULL when either date is missing. */
+function AgeFact({ age, date, what }) {
+  if (age == null) return <span className="unknown">{date ? 'Birth date unknown' : `No ${what} recorded`}</span>
+  return <>{ageLabel(age)} <span className="muted">on {dateLabel(date)}</span></>
 }
 
 function Fact({ label, children }) {
@@ -95,9 +112,11 @@ export default async function PlayerPage({ params }) {
   if (!player) notFound()
 
   const p = player
-  const birthPlace = [p.birth_city, p.birth_country].filter(Boolean).join(', ')
+  const birthPlace = [p.birth_city, p.birth_state_province, p.birth_country].filter(Boolean).join(', ')
+  const signingMarkets = [...new Set(signings.map((s) => s.country_market).filter(Boolean))]
   const bwarHistory = metrics.filter((m) => m.metric_key === 'CAREER_BWAR')
   const fwarHistory = metrics.filter((m) => m.metric_key === 'CAREER_FWAR')
+  const hasProgress = Boolean(p.progress_as_of_date)
 
   return (
     <main className="shell page-main dossier">
@@ -112,7 +131,8 @@ export default async function PlayerPage({ params }) {
           {p.aliases.length > 0 && <p className="aliases">Also recorded as {p.aliases.join(' · ')}</p>}
           <div className="signal-row">
             {p.primary_position && <span>{p.primary_position}</span>}
-            {(p.birth_country || signings[0]?.country_market) && <span>{p.birth_country || signings[0]?.country_market}</span>}
+            {p.birth_country && <span>Born · {p.birth_country}</span>}
+            {signingMarkets.map((m) => <span key={m}>Signing market · {m}</span>)}
             {signings.map((s) => <span key={s.signing_id}>{s.organization_name} {s.signing_year}</span>)}
             {p.current_status && <span>{statusLabel(p.current_status)}</span>}
           </div>
@@ -132,73 +152,41 @@ export default async function PlayerPage({ params }) {
         </div>
       </header>
 
-      <div className="dossier-grid">
-        <section className="panel">
-          <h2>Biography</h2>
-          <dl className="fact-grid">
-            <Fact label="Full name">{p.full_name}</Fact>
-            <Fact label="Aliases">{p.aliases.length ? p.aliases.join(', ') : <span className="unknown">None recorded</span>}</Fact>
-            <Fact label="Birth date">{known(p.birth_date, dateLabel)}</Fact>
-            <Fact label="Birthplace">{known(birthPlace)}</Fact>
-            <Fact label="Birth country">{known(p.birth_country)}</Fact>
-            <Fact label="Nationality">{known(p.nationality)}</Fact>
-            <Fact label="Position">{known(p.primary_position)}{p.secondary_positions?.length ? ` (also ${p.secondary_positions.join(', ')})` : ''}</Fact>
-            <Fact label="Bats / throws">{known(p.bats)} / {known(p.throws)}</Fact>
-            {p.height_in != null && <Fact label="Height">{heightLabel(p.height_in)}</Fact>}
-            {p.weight_lb != null && <Fact label="Weight">{num(p.weight_lb, 0)} lb</Fact>}
-          </dl>
-        </section>
-
-        <section className="panel">
-          <h2>MLB outcome</h2>
-          <dl className="fact-grid">
-            <Fact label="Outcome audit"><AuditBadge status={p.outcome_audit_status} /></Fact>
-            <Fact label="Audited through">{p.audited_through_date ? dateLabel(p.audited_through_date) : <span className="unknown">Not yet audited</span>}</Fact>
-            <Fact label="MLB reached">{p.outcome_audit_status === 'NOT_AUDITED' ? <span className="unknown">Unknown — not audited</span> : yesNoUnknown(p.reached_mlb_verified)}</Fact>
-            <Fact label="MLB debut">{p.mlb_debut_date ? dateLabel(p.mlb_debut_date) : <span className="unknown">{p.reached_mlb_verified === false ? 'None found' : UNKNOWN}</span>}</Fact>
-            <Fact label="Debut organization">{known(p.mlb_debut_org_name)}</Fact>
-            <Fact label="Debut directly with Dodgers franchise">{p.mlb_debut_date ? yesNoUnknown(p.direct_dodgers_franchise_debut) : <span className="unknown">Not applicable</span>}</Fact>
-            <Fact label="Current / final status">{known(p.current_status, statusLabel)}</Fact>
-            {p.outcome_state && p.outcome_state !== 'REACHED_MLB' && (
-              <Fact label="Outcome">{outcomeStateLabel(p.outcome_state, p.audited_through_date)}</Fact>
-            )}
-            {p.outcome_audit_status !== 'NOT_AUDITED' && (
-              <Fact label="Audit confidence">{p.audit_confidence ? humanize(p.audit_confidence) : <span className="unknown">{UNKNOWN}</span>}</Fact>
-            )}
-            <Fact label="Career bWAR">
-              {p.career_bwar == null ? <span className="unknown">{UNKNOWN}</span> : <>
-                {bwar(p.career_bwar)} <span className="muted">through {p.bwar_observed_through_season ?? dateLabel(p.bwar_observed_through_date)}</span>{' '}
-                <SourceLink url={p.bwar_source_url} title="Baseball-Reference" />
-              </>}
-            </Fact>
-            {p.career_fwar != null && (
-              <Fact label="Career fWAR (FanGraphs, separate metric)">
-                {num(p.career_fwar)} <span className="muted">through {p.fwar_observed_through_season ?? dateLabel(p.fwar_observed_through_date)}</span>{' '}
-                <SourceLink url={p.fwar_source_url} title="FanGraphs" />
-              </Fact>
-            )}
-          </dl>
-          {p.progress_as_of_date && (
-            <>
-              <h3 className="sub">
-                {p.outcome_audit_status === 'NOT_AUDITED' ? 'Professional progress (not an outcome)' : 'Professional record'}
-              </h3>
-              <dl className="fact-grid">
-                <Fact label="Highest level">{p.highest_level ? `${p.highest_level}${p.highest_level_season ? ` (${p.highest_level_season})` : ''}` : <span className="unknown">No affiliated games recorded</span>}</Fact>
-                <Fact label="Last affiliated season">{p.last_affiliated_season ? `${p.last_affiliated_season}${p.last_affiliated_team ? ` · ${p.last_affiliated_team}` : ''}` : <span className="unknown">{UNKNOWN}</span>}</Fact>
-                <Fact label="Disposition">{dispositionLabel(p)}</Fact>
-                <Fact label="Outside affiliated baseball">{p.continued_outside_affiliated ? 'Continued professionally (e.g. Mexican League)' : <span className="unknown">Not recorded</span>}</Fact>
-              </dl>
-              <p className="muted small-note">As of {dateLabel(p.progress_as_of_date)} from MLB / MiLB records; see Sources and provenance.</p>
-            </>
-          )}
-          <p className="method-note">
-            <strong>bWAR</strong> is Baseball-Reference Wins Above Replacement (also called rWAR). Other WAR implementations, such as
-            FanGraphs fWAR, use different inputs and can differ for the same player. DISI stores each metric with its own source and
-            observation date and never converts or blends them.
-          </p>
-        </section>
-      </div>
+      <section className="panel">
+        <h2>Identity</h2>
+        <dl className="fact-grid wide">
+          <Fact label="Name">{p.full_name}</Fact>
+          <Fact label="Also recorded as">{p.aliases.length ? p.aliases.join(', ') : <span className="unknown">None recorded</span>}</Fact>
+          <Fact label="Birth date">{known(p.birth_date, dateLabel)}</Fact>
+          <Fact label="Birthplace">{known(birthPlace)}</Fact>
+          <Fact label="Birth country">{known(p.birth_country)}</Fact>
+          <Fact label="Nationality">{p.nationality || <span className="unknown">Not stated by a source</span>}</Fact>
+          <Fact label="Bats">{known(p.bats, handLabel)}</Fact>
+          <Fact label="Throws">{known(p.throws, handLabel)}</Fact>
+          <Fact label="Height">{known(p.height_in, heightLabel)}</Fact>
+          <Fact label="Weight">{known(p.weight_lb, (v) => `${num(v, 0)} lb`)}</Fact>
+          <Fact label="Research position">{known(p.primary_position)}{p.secondary_positions?.length ? ` (also ${p.secondary_positions.join(', ')})` : ''}</Fact>
+          <Fact label="Current MLB-record position">{known(p.current_position)}</Fact>
+          <Fact label="MLB id">
+            <ExternalId id={p.mlb_id} status={p.mlb_id_status} href={`https://www.mlb.com/player/${p.mlb_id}`} />
+          </Fact>
+          <Fact label="Baseball-Reference id">
+            <ExternalId id={p.bref_id} status={p.bref_id_status}
+              href={p.bref_id ? `https://www.baseball-reference.com/players/${p.bref_id[0]}/${p.bref_id}.shtml` : ''} />
+          </Fact>
+          <Fact label="FanGraphs id">
+            <ExternalId id={p.fangraphs_id} status={p.fangraphs_id_status}
+              href={`https://www.fangraphs.com/players/x/${p.fangraphs_id}/stats`} />
+          </Fact>
+          <Fact label="Open identity questions">
+            {p.open_identity_conflicts ? `${p.open_identity_conflicts} recorded source disagreement${p.open_identity_conflicts === 1 ? '' : 's'}` : 'None'}
+          </Fact>
+        </dl>
+        <p className="muted small-note">
+          Birth country is where the player was born; signing market is where he was signed. They are recorded separately and can differ.
+          Each identity field cites its own source under Sources and provenance.
+        </p>
+      </section>
 
       <section className="panel section-gap">
         <h2>Acquisition</h2>
@@ -211,12 +199,18 @@ export default async function PlayerPage({ params }) {
               <Fact label="Signing date">{known(s.signing_date, dateLabel)}</Fact>
               <Fact label="Announced in class">{s.announced_date ? dateLabel(s.announced_date) : <span className="unknown">Not recorded</span>}</Fact>
               <Fact label="Formal MLB transaction">{s.formal_transaction_date ? dateLabel(s.formal_transaction_date) : <span className="unknown">Not verified</span>}</Fact>
+              <Fact label="Age at signing">
+                <AgeFact age={s.ages?.age_at_signing} date={s.signing_date} what="signing date" />
+                {s.ages?.signing_age_band && <span className="muted"> · band {ageBandLabel(s.ages.signing_age_band)}</span>}
+              </Fact>
+              <Fact label="Age at announcement"><AgeFact age={s.ages?.age_at_announcement} date={s.announced_date} what="announcement date" /></Fact>
+              <Fact label="Age at formal transaction"><AgeFact age={s.ages?.age_at_formal_transaction} date={s.formal_transaction_date} what="formal transaction" /></Fact>
+              <Fact label="Position at signing">{s.ages?.position_at_signing || <span className="unknown">Not recorded on the transaction</span>}</Fact>
               <Fact label="Signing market">{known(s.country_market)}</Fact>
               <Fact label="Acquisition pathway">{humanize(s.pathway)}</Fact>
               <Fact label="Source league">{known(s.source_league)}</Fact>
               <Fact label="Source club">{known(s.source_club)}</Fact>
               <Fact label="Professional experience before acquisition">{known(s.professional_experience_years, (v) => `${num(v, 1)} years`)}</Fact>
-              <Fact label="Age at signing">{known(s.age_at_signing, (v) => num(v, 1))}</Fact>
               <Fact label="Signing bonus">{moneyFact(s.signing_bonus_usd)}</Fact>
               <Fact label="Posting fee">{moneyFact(s.posting_fee_usd)}</Fact>
               <Fact label="Transfer / acquisition fee">{moneyFact(s.transfer_fee_usd)}</Fact>
@@ -226,6 +220,9 @@ export default async function PlayerPage({ params }) {
               <Fact label="Record scope">{humanize(s.record_scope)}</Fact>
               <Fact label="Signing-class coverage">{known(s.coverage_type, humanize)}</Fact>
             </dl>
+            {s.ages?.signing_date_basis && (
+              <p className="muted small-note">Age at signing uses the {SIGNING_DATE_BASIS[s.ages.signing_date_basis] || humanize(s.ages.signing_date_basis)}.</p>
+            )}
             {memberships.some((m) => m.signing_id === s.signing_id) && (
               <>
                 <h4 className="sub">Class membership</h4>
@@ -250,7 +247,33 @@ export default async function PlayerPage({ params }) {
       </section>
 
       <section className="panel section-gap">
-        <h2>Timeline</h2>
+        <h2>Development</h2>
+        {hasProgress ? (
+          <>
+            <h3 className="sub">
+              {p.outcome_audit_status === 'NOT_AUDITED' ? 'Professional progress (not an outcome)' : 'Professional record'}
+            </h3>
+            <dl className="fact-grid wide">
+              <Fact label="Highest level">{p.highest_level ? `${p.highest_level}${p.highest_level_season ? ` (${p.highest_level_season})` : ''}` : <span className="unknown">No affiliated games recorded</span>}</Fact>
+              <Fact label="Last affiliated season">{p.last_affiliated_season ? `${p.last_affiliated_season}${p.last_affiliated_team ? ` · ${p.last_affiliated_team}` : ''}` : <span className="unknown">{UNKNOWN}</span>}</Fact>
+              <Fact label="Last affiliated level">{known(p.last_affiliated_level)}</Fact>
+              <Fact label="Active in affiliated baseball">{p.active_in_affiliated_ball == null ? <span className="unknown">{UNKNOWN}</span> : yesNoUnknown(p.active_in_affiliated_ball)}</Fact>
+            </dl>
+            <p className="muted small-note">As of {dateLabel(p.progress_as_of_date)} from MLB / MiLB records; see Sources and provenance.</p>
+          </>
+        ) : <p className="unknown">No professional-progress record yet.</p>}
+        <h3 className="sub">Trainer / academy relationships</h3>
+        {trainers.length === 0 ? <p className="unknown">None recorded.</p> : (
+          <ul className="plain-list">
+            {trainers.map((t, i) => (
+              <li key={i}>
+                <strong>{t.trainer_name}</strong>{t.academy_name && ` · ${t.academy_name}`}
+                <span className="muted"> · {humanize(t.relationship_type)}{t.country && ` · ${t.country}`} · confidence {humanize(t.confidence)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        <h3 className="sub">Timeline</h3>
         {timeline.length === 0 ? <p className="unknown">No dated events recorded.</p> : (
           <ol className="timeline">
             {timeline.map((e, i) => (
@@ -267,24 +290,42 @@ export default async function PlayerPage({ params }) {
         )}
       </section>
 
-      <div className="dossier-grid">
+      <div className="dossier-grid section-gap">
         <section className="panel">
-          <h2>Development</h2>
-          <h3 className="sub">Trainer / academy relationships</h3>
-          {trainers.length === 0 ? <p className="unknown">None recorded.</p> : (
-            <ul className="plain-list">
-              {trainers.map((t, i) => (
-                <li key={i}>
-                  <strong>{t.trainer_name}</strong>{t.academy_name && ` · ${t.academy_name}`}
-                  <span className="muted"> · {humanize(t.relationship_type)}{t.country && ` · ${t.country}`} · confidence {humanize(t.confidence)}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-          <h3 className="sub">Milestones and progression</h3>
-          {timeline.some((e) => e.event_type === 'DEVELOPMENT')
-            ? <p className="muted">Development milestones are shown in the timeline.</p>
-            : <p className="unknown">No minor-league milestones recorded yet. Progression data will come from MiLB / MLB player records.</p>}
+          <h2>MLB outcome</h2>
+          <dl className="fact-grid">
+            <Fact label="Outcome audit"><AuditBadge status={p.outcome_audit_status} /></Fact>
+            <Fact label="Audited through">{p.audited_through_date ? dateLabel(p.audited_through_date) : <span className="unknown">Not yet audited</span>}</Fact>
+            <Fact label="MLB reached">{p.outcome_audit_status === 'NOT_AUDITED' ? <span className="unknown">Unknown — not audited</span> : yesNoUnknown(p.reached_mlb_verified)}</Fact>
+            <Fact label="MLB debut">{p.mlb_debut_date ? dateLabel(p.mlb_debut_date) : <span className="unknown">{p.reached_mlb_verified === false ? 'None found' : UNKNOWN}</span>}</Fact>
+            <Fact label="Age at MLB debut">{p.age_at_mlb_debut == null ? <span className="unknown">{p.mlb_debut_date ? 'Birth date unknown' : 'No MLB debut recorded'}</span> : ageLabel(p.age_at_mlb_debut)}</Fact>
+            <Fact label="Debut organization">{known(p.mlb_debut_org_name)}</Fact>
+            <Fact label="Debut directly with Dodgers franchise">{p.mlb_debut_date ? yesNoUnknown(p.direct_dodgers_franchise_debut) : <span className="unknown">Not applicable</span>}</Fact>
+            <Fact label="Current / final status">{known(p.current_status, statusLabel)}</Fact>
+            {p.outcome_state && p.outcome_state !== 'REACHED_MLB' && (
+              <Fact label="Outcome">{outcomeStateLabel(p.outcome_state, p.audited_through_date)}</Fact>
+            )}
+            {p.outcome_audit_status !== 'NOT_AUDITED' && (
+              <Fact label="Audit confidence">{p.audit_confidence ? humanize(p.audit_confidence) : <span className="unknown">{UNKNOWN}</span>}</Fact>
+            )}
+            <Fact label="Career bWAR">
+              {p.career_bwar == null ? <span className="unknown">{UNKNOWN}</span> : <>
+                {bwar(p.career_bwar)} <span className="muted">through {p.bwar_observed_through_season ?? dateLabel(p.bwar_observed_through_date)}</span>{' '}
+                <SourceLink url={p.bwar_source_url} title="Baseball-Reference" />
+              </>}
+            </Fact>
+            {p.career_fwar != null && (
+              <Fact label="Career fWAR (FanGraphs, separate metric)">
+                {num(p.career_fwar)} <span className="muted">through {p.fwar_observed_through_season ?? dateLabel(p.fwar_observed_through_date)}</span>{' '}
+                <SourceLink url={p.fwar_source_url} title="FanGraphs" />
+              </Fact>
+            )}
+          </dl>
+          <p className="method-note">
+            <strong>bWAR</strong> is Baseball-Reference Wins Above Replacement (also called rWAR). Other WAR implementations, such as
+            FanGraphs fWAR, use different inputs and can differ for the same player. DISI stores each metric with its own source and
+            observation date and never converts or blends them.
+          </p>
         </section>
 
         <section className="panel">
@@ -320,7 +361,14 @@ export default async function PlayerPage({ params }) {
       </div>
 
       <section className="panel section-gap">
-        <h2>Transactions and disposition</h2>
+        <h2>Disposition</h2>
+        <dl className="fact-grid wide">
+          <Fact label="Disposition">{hasProgress ? dispositionLabel(p) : <span className="unknown">{UNKNOWN}</span>}</Fact>
+          <Fact label="Final transaction">{p.final_transaction_type ? `${humanize(p.final_transaction_type)}${p.final_transaction_date ? ` · ${dateLabel(p.final_transaction_date)}` : ''}` : <span className="unknown">Not recorded</span>}</Fact>
+          <Fact label="Final organization">{known(p.final_organization)}</Fact>
+          <Fact label="Outside affiliated baseball">{p.continued_outside_affiliated ? 'Continued professionally (e.g. Mexican League)' : <span className="unknown">Not recorded</span>}</Fact>
+        </dl>
+        <h3 className="sub">Transactions</h3>
         {transactions.length === 0 ? <p className="unknown">No trades, releases or other transactions recorded.</p> : transactions.map((t, i) => (
           <article className="transaction-block" key={t.event_key || `${t.transaction_date}-${i}`}>
             <div className="trade-date">{dateLabel(t.transaction_date)} · {humanize(t.transaction_type)}</div>

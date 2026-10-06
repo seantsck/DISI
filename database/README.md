@@ -28,6 +28,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 17. `017_research_database_layer.sql` — research-database layer for the web application (details below).
 18. `018_signing_class_coverage_and_backfill.sql` — signing populations, class-membership provenance and the 2022 / 2024 / 2025 backfill (details below).
 19. `019_mature_outcome_audit_expansion.sql` — evidence-based outcome audits, professional progress and outcome research views (details below; research in `database/research/019/`).
+20. `020_player_identity_and_biography_enrichment.sql` — external identifiers, biography with field-level provenance, position at signing, derived ages and identity research views (details below; research in `database/research/020/`).
 
 ## 017 research-database layer
 
@@ -57,6 +58,28 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Policy.** New "no MLB" audits only for classes through 2021 (and "still active" only through 2020); recent classes get progress only. Existing audits were never overwritten.
 - **Rates.** Unchanged from 018: fully audited historical or tracked classes are reported as tracked-cohort outcomes (`v_dodgers_outcome_by_signing_class`) and never become organization rates.
 - **Reproducibility.** `database/research/019/` holds the artifacts, decisions, template and `build.mjs`; see its README.
+
+## 020 player identity and biography
+
+- **Columns.** `players.birth_state_province`, `players.current_position` (MLB record, as of retrieval), `players.mlb_debut_date` (MLB person record; the audited value stays in `outcomes`), `signings.position_at_signing` + `position_at_signing_source_id` (from the signing transaction).
+- **Resolution log.** `player_identity_resolutions`: one row per player per id system (`MLB`, `BASEBALL_REFERENCE`, `FANGRAPHS`) with status, method, confidence, signals, candidates and query. Check constraints: `RESOLVED` needs an id; `AMBIGUOUS` / `NEEDS_REVIEW` / `NOT_FOUND` cannot carry one.
+- **Conflict types** gain `BIRTH_DATE` and `HANDEDNESS`.
+- **Functions.** `disi_age_years`, `disi_age_decimal`, `disi_signing_age_band` (NULL in, NULL out).
+- **Views.** `v_signing_ages`, `v_player_bio`, `v_player_identity_scope`, `v_dodgers_player_identity_coverage`, `v_dodgers_player_identity_research_queue`. `v_player_directory`, `v_player_filter_options` and `v_player_dossier` keep their columns and append identity fields; the directory's legacy `countries` array is unchanged, and new `birth_country` / `signing_market` facets keep the two apart.
+- **Corrections.** Five legacy birth countries that were really signing countries are corrected from the MLB person record (legacy value kept on the resolved conflict); signing markets never change.
+- **Scope.** `v_database_status` adds `dodgers_players` / `league_benchmark_players`; `v_player_filter_options` adds `has_dodgers_signing` so Dodgers pages count Dodgers signees only.
+- **Coverage semantics.** `v_dodgers_player_identity_coverage` reports each identity field as present, resolved (evidence-backed, no open conflict), conflicted or unsourced; `v_player_bio` exposes `open_conflict_fields` and `sourced_fields`.
+- **Rerunnable**, fills NULLs only, never takes an id another player holds. See `database/research/020/README.md` for the rules, results and manual decisions.
+
+## Player identity (020)
+
+- **Identifier roles.** `players.mlb_id` is the MLB Stats API person id and the anchor of every identity: biography and the other ids are applied only to a player whose MLB id is resolved. `bref_id` is the Baseball-Reference page id, recorded only for players with an MLB debut. `fangraphs_id` comes from MLB's cross-reference and is only an identifier; it never implies fWAR.
+- **Resolution.** Several signals, never a name alone (club transaction name + club + year; a B-Ref page DISI already cites; name + debut year + debut franchise). Ambiguous or name-only matches are never selected. Every attempt is in `player_identity_resolutions` (query, candidates, signals, status, confidence) and anything unresolved is in `v_dodgers_player_identity_research_queue`.
+- **Canonical name vs alias.** `full_name` / `canonical_name` is one spelling; every other spelling is a `player_aliases` row (`PREVIOUS_DISI_SPELLING`, `MLB_RECORD_NAME`, `PUBLISHED_SPELLING`, `SOURCE_VARIANT`). Names change only for accent-only differences. Slugs never change, and players are never merged because their names match.
+- **Birth country vs signing market vs nationality.** `players.birth_country` is where the player was born (the literal value of a birth / player record: Joseph Deng Thon, born in Juba before 2011, is Sudan); `signings.country_market` is where he was signed; `players.nationality` is stated only where a source states it. None is derived from another, and a class list or signing announcement is evidence for the signing market only, never for birth country.
+- **Fill NULLs only; record disagreements.** A source value that contradicts a stored value becomes a `research_source_conflicts` row; the stored value stays.
+- **Field-level provenance.** Every identity field has its own `evidence` row (`field_name`) naming the source and its retrieval time (`sources.accessed_at`). Coverage counts a value as *resolved* only when such a row exists and no conflict is open; a non-null value without one is *unsourced* and queued.
+- **Dates and ages.** `signing_date` (recorded signing / agreement date), `announced_date` (class announcement) and `formal_transaction_date` (MLB transaction) are different facts. `v_signing_ages` computes an age from each separately and `signing_date_basis` says whether the signing date matches the transaction. `age_at_signing` uses `signing_date` only; when it is missing the age is NULL, never borrowed from another date. Ages are completed years (`disi_age_years`) and decimal years truncated to one place (`disi_age_decimal`); the signing-age band uses completed years. `age_at_mlb_debut` uses the audited outcome debut date, then the progress record, then the MLB person record (`mlb_debut_date_basis`).
 
 ## Repair history
 

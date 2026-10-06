@@ -19,6 +19,8 @@ export const config = {
 export function statsApi(base = config.statsApiBase) {
   return {
     person: (id) => `${base}/people/${id}`,
+    personIdentity: (id) => `${base}/people/${id}?hydrate=xrefId`,
+    teams: (season) => `${base}/teams?sportId=1&season=${season}`,
     personTransactions: (id) => `${base}/transactions?playerId=${id}`,
     teamTransactions: (teamId, startDate, endDate) =>
       `${base}/transactions?teamId=${teamId}&startDate=${startDate}&endDate=${endDate}`,

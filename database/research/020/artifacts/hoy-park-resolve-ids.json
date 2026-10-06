@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "command": "resolve-ids",
+    "recordCount": 1,
+    "rule": "Only DODGERS_TRANSACTION_MATCH / CLUB_TRANSACTION_MATCH are proposed resolutions; every other status requires manual research.",
+    "team": 119
+  },
+  "records": [
+    {
+      "candidates": [
+        {
+          "birthCountry": "South Korea",
+          "birthDate": "1996-04-07",
+          "date": "2014-07-02",
+          "description": "New York Yankees signed free agent SS Hoy Jun Park to a minor league contract.",
+          "fullName": "Hoy Park",
+          "mlbDebutDate": "2021-07-16",
+          "mlbId": 660829
+        }
+      ],
+      "name": "Hyo-Jun Park",
+      "signingYear": 2014,
+      "slug": "hyo-jun-park",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-06T03:49:48.194Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660829"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYY"
+    }
+  ]
+}

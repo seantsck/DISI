@@ -18,6 +18,23 @@ export function defaultClient(args = {}) {
 
 const source = (res) => ({ url: res.url, retrievedAt: res.retrievedAt })
 
+/** Person record with MLB's cross-reference ids (B-Ref / Lahman, FanGraphs, Retrosheet). */
+export async function fetchIdentity(client, id, api = statsApi()) {
+  const res = await client.getJson(api.personIdentity(id))
+  return { person: normalizePerson(res.data.people?.[0]), sources: [source(res)] }
+}
+
+/** MLB club abbreviation → Stats API team id (DISI abbreviations included). */
+export async function fetchTeamIds(client, season, api = statsApi()) {
+  const res = await client.getJson(api.teams(season))
+  const map = {}
+  for (const t of res.data.teams ?? []) map[t.abbreviation] = t.id
+  const aliases = { SFG: 'SF', OAK: 'ATH', CWS: 'CWS', KC: 'KC', SD: 'SD', TB: 'TB', WSH: 'WSH', ARI: 'AZ' }
+  for (const [disi, mlb] of Object.entries(aliases)) if (!map[disi] && map[mlb]) map[disi] = map[mlb]
+  if (!map.OAK && map.ATH) map.OAK = map.ATH
+  return { map, sources: [source(res)] }
+}
+
 export async function fetchPerson(client, id, api = statsApi()) {
   const res = await client.getJson(api.person(id))
   return { person: normalizePerson(res.data.people?.[0]), sources: [source(res)] }

@@ -18,7 +18,8 @@
     "016_historical_positive_outcomes_and_rate_guardrail.sql",
     "017_research_database_layer.sql",
     "018_signing_class_coverage_and_backfill.sql",
-    "019_mature_outcome_audit_expansion.sql"
+    "019_mature_outcome_audit_expansion.sql",
+    "020_player_identity_and_biography_enrichment.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -27,7 +28,7 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 19,
+    "canonical_build_count": 20,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
@@ -35,6 +36,7 @@
     "v0_7": "39 positive MLB outcome audits, Dodgers franchise identity, rate-eligibility guardrail, historical MLB outcome homepage.",
     "v0_8": "Research-database layer: canonical player slugs, source tiers, metric-specific bWAR/fWAR provenance (player_metric_observations), official 2024/2025 class-size sources, and security-invoker research views for the signings table, player directory, player dossier, class coverage and research queue.",
     "v0_9": "Signing populations (opening class vs full signing period vs samples), class-membership provenance, announced vs formal transaction dates, rate eligibility restricted to complete full-period populations, 2024 and 2025 announced classes completed, 2022 later-period backfill and source reconciliation.",
-    "v0_10": "Evidence-based outcome audits (35 new: 2 MLB, 33 no MLB) from reproducible MLB Stats API / Baseball-Reference research (scripts/mlb, database/research/019); outcome states, structured professional progress, outcome evidence, outcome research views."
+    "v0_10": "Evidence-based outcome audits (35 new: 2 MLB, 33 no MLB) from reproducible MLB Stats API / Baseball-Reference research (scripts/mlb, database/research/019); outcome states, structured professional progress, outcome evidence, outcome research views.",
+    "v0_11": "Player identity and biography (020): MLB ids 263/268 (Dodgers 220/220), Baseball-Reference ids for all 58 MLB players, FanGraphs ids 139, birth data / handedness / size with field-level evidence, five birth countries corrected from signing-country values, Hyo-Jun Park linked to MLB Hoy Park, position at signing, derived ages (v_signing_ages, v_player_bio), present / resolved / conflicted / unsourced identity coverage, Dodgers-scoped counts (scripts/mlb, database/research/020)."
   }
 }
