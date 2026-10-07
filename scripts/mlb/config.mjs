@@ -29,7 +29,15 @@ export function statsApi(base = config.statsApiBase) {
     peopleSearch: (name) => `${base}/people/search?names=${encodeURIComponent(name)}`,
     // Game-level log for a season (used by player-game-levels to resolve exact
     // first/last appearance dates where the API supports them).
+    //
+    // The two forms are complementary and disjoint: the plain form covers only
+    // MLB-level games (it returns an empty stats array for minor leaguers),
+    // while leagueListId=milb_all covers the affiliated minor leagues
+    // (including the complex rookie leagues) and never MLB games. Both return
+    // regular-season entries (gameType "R") only.
     gameLog: (id, group, season) => `${base}/people/${id}/stats?stats=gameLog&group=${group}&season=${season}`,
+    milbGameLog: (id, group, season) =>
+      `${base}/people/${id}/stats?stats=gameLog&group=${group}&season=${season}&leagueListId=milb_all`,
   }
 }
 

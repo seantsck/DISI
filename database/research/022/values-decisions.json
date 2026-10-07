@@ -1,0 +1,4218 @@
+{
+  "coverage": {
+    "conflicts": 0,
+    "gameLogErrors": 0,
+    "newMilestones": 166,
+    "playersQueried": 263,
+    "playersWithNoStructuredGameLogData": 97,
+    "playersWithUsableGameLogs": 166,
+    "researchNotes": 3,
+    "stintsDated": 746,
+    "upgrades": 400
+  },
+  "meta": {
+    "asOf": "2026-10-06",
+    "participationRule": "A dated entry in the official gameLog endpoint with a stat block is a recorded appearance (hitters: plate appearance, at-bat or represented defensive appearance; pitchers: recorded pitching line). Roster lists, transactions, promotions, options, assignments and team schedules are never appearances.",
+    "rules": [
+      "SEASON → DAY only when the earliest game-verified appearance at the level falls in the reviewed first season.",
+      "Existing exact dates are never overwritten; disagreements become conflicts.",
+      "Missing game logs preserve SEASON precision; absence is never evidence of absence."
+    ],
+    "source": "scripts/mlb/development-date-sql-values.mjs"
+  },
+  "records": [
+    {
+      "coverage": {
+        "appearanceCount": 222,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "abel-lorenzo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 74,
+        "datedSeasons": [
+          2022,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "accimias-morales"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "adrian-beltre"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "adrian-rondon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 5,
+        "datedSeasons": [
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "adrian-torres"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 153,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "agustin-acosta"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 123,
+        "datedSeasons": [
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "aldo-espinoza"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 57,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "aldrin-batista"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 522,
+        "datedSeasons": [
+          2019,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 14,
+        "stintsWithDates": 12
+      },
+      "slug": "alex-de-jesus"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 233,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 8
+      },
+      "slug": "alexander-albertus"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 22,
+        "datedSeasons": [
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "alexis-dominguez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 31,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "alexis-reyes"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 54,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 4
+      },
+      "slug": "allen-ajoti"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "amado-nunez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "anderson-espinoza"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 19,
+        "datedSeasons": [
+          2022,
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "anderson-estevez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 33,
+        "datedSeasons": [
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "anderson-jerez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 14,
+        "datedSeasons": [
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 2
+      },
+      "slug": "andres-luna"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "andy-pages"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 27,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "aneudy-almonte"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 87,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "angel-cruz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "angel-ramirez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 76,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "antoni-urena"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "antonio-arias"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "antonio-osuna"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 38,
+        "datedSeasons": [
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "ariel-reynoso"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 267,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "arnaldo-lantigua"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 12,
+        "datedSeasons": [
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "arod-mckenzie"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "arquimedes-gamboa"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 22,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "axel-perez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 41,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "ben-serunkuma"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "brayan-hernandez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 18,
+        "datedSeasons": [
+          2021
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "brian-diaz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 8,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "bryan-lara"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 50,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "callum-wallace"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 124,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 9
+      },
+      "slug": "carlos-avila"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 286,
+        "datedSeasons": [
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "FOREIGN_PRO",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A",
+          "MLB",
+          "OTHER"
+        ],
+        "stintsTotal": 24,
+        "stintsWithDates": 22
+      },
+      "slug": "carlos-frias"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "carlos-herrera"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "carlos-hiciano"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 7,
+        "datedSeasons": [
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "carlos-ramirez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 521,
+        "datedSeasons": [
+          2016,
+          2017,
+          2018,
+          2019,
+          2021,
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A",
+          "OTHER"
+        ],
+        "stintsTotal": 14,
+        "stintsWithDates": 12
+      },
+      "slug": "carlos-rincon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "carlos-santana"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 12,
+        "datedSeasons": [
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "carlos-sardina"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 12,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "cesar-sanchez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "chan-ho-park"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "chico-fernandez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "chin-lung-hu"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 12,
+        "datedSeasons": [
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 2
+      },
+      "slug": "christian-muniz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 120,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 9
+      },
+      "slug": "christian-romero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 243,
+        "datedSeasons": [
+          2019,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 9
+      },
+      "slug": "christian-suarez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "christopher-acosta"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 39,
+        "datedSeasons": [
+          2017
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "christopher-arias"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 97,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 11,
+        "stintsWithDates": 10
+      },
+      "slug": "dailoui-abad"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "damaso-marte-jr"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 17,
+        "datedSeasons": [
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "daniel-arrias"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 140,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "daniel-mielcarek"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 16,
+        "datedSeasons": [
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "david-romero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 3,
+        "datedSeasons": [
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "degerson-diaz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 36,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "derik-aquino"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "dermis-garcia"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 29,
+        "datedSeasons": [
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "devlyn-bautista"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 397,
+        "datedSeasons": [
+          2019,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 12,
+        "stintsWithDates": 11
+      },
+      "slug": "diego-cartaya"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "diego-castillo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 91,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 7
+      },
+      "slug": "domingo-geronimo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "eddys-leonard"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 17,
+        "datedSeasons": [
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 2
+      },
+      "slug": "edgar-aviles"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "edgar-gomez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 62,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 11,
+        "stintsWithDates": 9
+      },
+      "slug": "edgar-leon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 376,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 9
+      },
+      "slug": "eduardo-guerrero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 357,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 7
+      },
+      "slug": "eduardo-quintero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 109,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "eduardo-rojas"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "elian-herrera"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 92,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "elias-medina"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 183,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 7
+      },
+      "slug": "elio-campos"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "eloy-jimenez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 252,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "emil-morales"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 51,
+        "datedSeasons": [
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "ender-avendano"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 16,
+        "datedSeasons": [
+          2022,
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "enrike-sevilya"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 22,
+        "datedSeasons": [
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "erick-batista"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "erick-julio"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 5,
+        "datedSeasons": [
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "erick-nava"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "erling-moreno"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 121,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "erny-orellana"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 74,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "euri-rosa"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 58,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "ezequiel-aparicio"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 49,
+        "datedSeasons": [
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "ezequiel-melburne"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "fernando-valenzuela"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 104,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "francisco-espinoza"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 71,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "franderly-morel"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "franklin-perez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "franly-mallen"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 277,
+        "datedSeasons": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A",
+          "OTHER"
+        ],
+        "stintsTotal": 10,
+        "stintsWithDates": 9
+      },
+      "slug": "gersel-pitre"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "gilbert-lara"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "gleyber-torres"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 37,
+        "datedSeasons": [
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "gregory-pereira"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "greifer-andrade"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 126,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "harold-gonzalez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 520,
+        "datedSeasons": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2021,
+          2022,
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A",
+          "OTHER"
+        ],
+        "stintsTotal": 14,
+        "stintsWithDates": 13
+      },
+      "slug": "hendrik-clementina"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 91,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "hendry-arvelo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 64,
+        "datedSeasons": [
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "heudy-pena"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "hideo-nomo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "huascar-ynoa"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "hung-chih-kuo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "hyo-jun-park"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 31,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "ilmerson-colon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "isaac-barreto"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "ismael-valdez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 25,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "ivan-pacheco"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 69,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "javier-bartolozzi"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 210,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "javier-herrera"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 39,
+        "datedSeasons": [
+          2022,
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "javier-pena"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 91,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "jecsua-liborius"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 451,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 8
+      },
+      "slug": "jeral-perez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 16,
+        "datedSeasons": [
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 2
+      },
+      "slug": "jerami-rodriguez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 23,
+        "datedSeasons": [
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "jeremy-castro"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 203,
+        "datedSeasons": [
+          2019,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 11,
+        "stintsWithDates": 11
+      },
+      "slug": "jerming-rosario"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 220,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "jesus-galiz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 56,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "jesus-tillero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "jhoandro-alfaro"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 102,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "jholbran-herder"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 74,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "jhon-gil"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 123,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 8
+      },
+      "slug": "jhonny-jimenez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 82,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "jhosman-theran"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 238,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "joendry-vargas"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "jorbit-vivas"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "jorge-carpintero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "jose-almonte"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "jose-dominguez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 177,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 6
+      },
+      "slug": "jose-gonzalez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "jose-herrera"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 24,
+        "datedSeasons": [
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "jose-lopez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "jose-offerman"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 33,
+        "datedSeasons": [
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "jose-requena"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 63,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "jose-rivas"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 59,
+        "datedSeasons": [
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "jose-torrez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 24,
+        "datedSeasons": [
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "jose-victorino"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 14,
+        "datedSeasons": [
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 2
+      },
+      "slug": "jose-villegas"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "jose-vizcaino"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 127,
+        "datedSeasons": [
+          2022,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "joseilyn-gonzalez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 21,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "joseph-deng-thon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "josue-de-paula"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 231,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 7
+      },
+      "slug": "juan-alonso"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "juan-castro"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "juan-deleon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "juan-guzman"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 26,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "juan-hernandez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 89,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "juan-macero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "juan-meza"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 430,
+        "datedSeasons": [
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "LOW_A",
+          "OTHER"
+        ],
+        "stintsTotal": 10,
+        "stintsWithDates": 10
+      },
+      "slug": "julian-leon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 45,
+        "datedSeasons": [
+          2014,
+          2015,
+          2016
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 4
+      },
+      "slug": "julio-lugo-prospect"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "julio-martinez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "julio-urias"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "karim-garcia"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "keibert-ruiz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 193,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "kelvin-ramirez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "kenley-jansen"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "kenny-hernandez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "kosuke-matsuda"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 104,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 4
+      },
+      "slug": "leider-padilla"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 91,
+        "datedSeasons": [
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "FOREIGN_PRO",
+          "HIGH_A",
+          "LOW_A",
+          "OTHER"
+        ],
+        "stintsTotal": 15,
+        "stintsWithDates": 10
+      },
+      "slug": "lenix-osuna"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 34,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 4
+      },
+      "slug": "lesther-medrano"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "lewin-diaz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 55,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "luciano-romero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 70,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "luis-carias"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 31,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "luis-gamez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 130,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "luis-guerra"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 39,
+        "datedSeasons": [
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "luis-izturis"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 55,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "luis-luna"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 155,
+        "datedSeasons": [
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "luis-rodriguez-2015"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 288,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "LOW_A"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "luis-rodriguez-2019"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 46,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "luis-tovar"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 371,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 7
+      },
+      "slug": "mairoshendrick-martinus"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 83,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "marco-corcho"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "marcos-diplan"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "marten-gasparini"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 33,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "maximo-martinez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "michael-deleon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 42,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "michael-ramirez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 96,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "michael-vilchez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "miguel-angel-sierra"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 9,
+        "datedSeasons": [
+          2021
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "miguel-bastardo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 66,
+        "datedSeasons": [
+          2022,
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "miguel-dominguez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 76,
+        "datedSeasons": [
+          2019,
+          2021,
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 4
+      },
+      "slug": "miguel-droz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "miguel-flames"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "miguel-vargas"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 46,
+        "datedSeasons": [
+          2014,
+          2015,
+          2016
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "OTHER"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 5
+      },
+      "slug": "misja-harcksen"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 21,
+        "datedSeasons": [
+          2021,
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "missael-soto"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 60,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "moises-acacio"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 52,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "moises-rangel"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 25,
+        "datedSeasons": [
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "natanael-castillo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "nelson-gomez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 115,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 8
+      },
+      "slug": "nicolas-cruz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "nicolas-pierre"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "omar-daal"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 618,
+        "datedSeasons": [
+          2016,
+          2017,
+          2018,
+          2019,
+          2021,
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 7
+      },
+      "slug": "omar-estevez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "oneil-cruz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 303,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 8,
+        "stintsWithDates": 8
+      },
+      "slug": "oswaldo-osorio"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 51,
+        "datedSeasons": [
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 3
+      },
+      "slug": "paris-johnson"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "pedro-astacio"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "pedro-baez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "pedro-gonzalez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "pedro-martinez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 79,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "pedro-santillan"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 91,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "peter-bonilla"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "rafael-devers"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 36,
+        "datedSeasons": [
+          2019,
+          2021,
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "rafael-tua"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 82,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "rafy-peguero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 101,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 4
+      },
+      "slug": "railin-familia"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "ramon-martinez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "ramon-rosso"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "ramon-troncoso"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "raul-mondesi"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 392,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 10,
+        "stintsWithDates": 10
+      },
+      "slug": "rayne-doncon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 167,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 6
+      },
+      "slug": "raynerd-ortega"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 128,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "reyli-mariano"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 85,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "ricardo-montero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "ricardo-rodriguez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 3,
+        "datedSeasons": [
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "ricardo-roman"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "ricky-aracena"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "roberto-clemente"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 16,
+        "datedSeasons": [
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "robinson-ventura"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 29,
+        "datedSeasons": [
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 2
+      },
+      "slug": "rodmar-angela"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 22,
+        "stintsWithDates": 0
+      },
+      "slug": "roger-cedeno"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 208,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 12,
+        "stintsWithDates": 9
+      },
+      "slug": "roger-lasso"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 26,
+        "datedSeasons": [
+          2022,
+          2023,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "roiger-mujica"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "roki-sasaki"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 254,
+        "datedSeasons": [
+          2016,
+          2017,
+          2018,
+          2019,
+          2021
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A",
+          "OTHER"
+        ],
+        "stintsTotal": 13,
+        "stintsWithDates": 10
+      },
+      "slug": "ronny-brito"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "ronny-rafael"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 133,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 11,
+        "stintsWithDates": 10
+      },
+      "slug": "roque-gutierrez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "rubby-de-la-rosa"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 48,
+        "datedSeasons": [
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "rubel-arias"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 400,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "samuel-munoz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 28,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "samuel-sanchez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 14,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "samuel-savinon"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "sandy-amoros"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 88,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 11,
+        "stintsWithDates": 10
+      },
+      "slug": "sean-linan"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "sebastian-jimenez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 25,
+        "datedSeasons": [
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 2,
+        "stintsWithDates": 2
+      },
+      "slug": "shai-romero"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 159,
+        "datedSeasons": [
+          2014,
+          2015,
+          2016,
+          2017
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 5
+      },
+      "slug": "shakir-albert"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 278,
+        "datedSeasons": [
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A",
+          "OTHER"
+        ],
+        "stintsTotal": 10,
+        "stintsWithDates": 8
+      },
+      "slug": "starling-heredia"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 10,
+        "datedSeasons": [
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 1,
+        "stintsWithDates": 1
+      },
+      "slug": "steven-castillo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 435,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 8
+      },
+      "slug": "thayron-liranzo"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 30,
+        "datedSeasons": [
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "tim-fischer"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "tony-abreu"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 25,
+        "datedSeasons": [
+          2022,
+          2023
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "umar-male"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "victor-gonzalez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 288,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 8,
+        "stintsWithDates": 7
+      },
+      "slug": "victor-rodrigues"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "wilkerman-garcia"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 41,
+        "datedSeasons": [
+          2013,
+          2014,
+          2015,
+          2016,
+          2017
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "LOW_A",
+          "OTHER"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 7
+      },
+      "slug": "william-soto"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "willy-aybar"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 305,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "INTERNATIONAL_ROOKIE",
+          "LOW_A"
+        ],
+        "stintsTotal": 6,
+        "stintsWithDates": 6
+      },
+      "slug": "wilman-diaz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 91,
+        "datedSeasons": [
+          2016,
+          2017,
+          2018,
+          2019,
+          2021,
+          2022
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "AAA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "LOW_A"
+        ],
+        "stintsTotal": 9,
+        "stintsWithDates": 9
+      },
+      "slug": "yadier-alvarez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "yasiel-puig"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 443,
+        "datedSeasons": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "AA",
+          "COMPLEX_ROOKIE",
+          "HIGH_A",
+          "LOW_A"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 7
+      },
+      "slug": "yeiner-fernandez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "yeltsin-gudino"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "yhonaider-gudino"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 110,
+        "datedSeasons": [
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 5,
+        "stintsWithDates": 4
+      },
+      "slug": "yojackson-laya"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "yordan-alvarez"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 101,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 3,
+        "stintsWithDates": 3
+      },
+      "slug": "yorfran-medina"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 52,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 4,
+        "stintsWithDates": 4
+      },
+      "slug": "yoryi-simarra"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 70,
+        "datedSeasons": [
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [
+          "COMPLEX_ROOKIE",
+          "INTERNATIONAL_ROOKIE"
+        ],
+        "stintsTotal": 7,
+        "stintsWithDates": 6
+      },
+      "slug": "yuliangel-de-la-cruz"
+    },
+    {
+      "coverage": {
+        "appearanceCount": 0,
+        "datedSeasons": [],
+        "gameLogErrors": [],
+        "levelsWithExactFirst": [],
+        "stintsTotal": 0,
+        "stintsWithDates": 0
+      },
+      "slug": "yusniel-diaz"
+    }
+  ]
+}

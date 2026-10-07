@@ -1,5 +1,5 @@
 // Offline tests for scripts/db/lib/invariants.mjs against the canonical
-// 001→021 PGlite chain. No live Supabase access is involved.
+// 001→022 PGlite chain. No live Supabase access is involved.
 //
 // Drift conditions are simulated inside transactions that are rolled back, so
 // the shared chain stays pristine for every scenario.
@@ -30,29 +30,32 @@ async function withDrift(driftSql) {
   }
 }
 
-test('clean canonical 001→021 state passes every hard invariant', async () => {
+test('clean canonical 001→022 state passes every hard invariant', async () => {
   const report = await runChecks()
   assert.deepEqual(failedChecks(report).map((c) => c.name), [])
-  // population 4 + development 6 + status 2 + integrity 4 + privileges 13
-  // + rls 5 + security_invoker 8
-  assert.ok(report.hard.length >= 40, `expected a full battery, got ${report.hard.length}`)
+  // population 4 + development 11 + status 2 + integrity 4 + privileges 14
+  // + rls 5 + security_invoker 9
+  assert.ok(report.hard.length >= 45, `expected a full battery, got ${report.hard.length}`)
   // informational coverage numbers are reported but never fail
   assert.ok(report.info.length >= 3)
 })
 
 test('changing one expected count fails exactly that check', async () => {
-  const expectations = { ...CANONICAL_EXPECTATIONS, coded_milestones: 665 }
+  const expectations = { ...CANONICAL_EXPECTATIONS, coded_milestones: 831 }
   const report = await checkInvariants(chain.query, expectations)
   assert.deepEqual(failedChecks(report).map((c) => c.name), ['coded_milestones'])
-  assert.equal(failedChecks(report)[0].actual, 666)
+  assert.equal(failedChecks(report)[0].actual, 832)
 })
 
 test('a duplicate stint row fails the duplicate-group check', async () => {
   // The canonical schema forbids duplicates via player_season_stints_stint_key,
   // so the simulation relaxes that index inside the rolled-back transaction.
+  // A pre-2006 stint is duplicated so only the row count and the duplicate
+  // group move (the dated-stint and log-era-coverage counts are unaffected).
   const report = await withDrift(`
     drop index public.player_season_stints_stint_key;
-    create temp table stints_dup as select * from public.player_season_stints limit 1;
+    create temp table stints_dup as
+      select * from public.player_season_stints where season < 2006 limit 1;
     update stints_dup set id = gen_random_uuid();
     insert into public.player_season_stints select * from stints_dup;
   `)

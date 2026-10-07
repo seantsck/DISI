@@ -58,9 +58,10 @@ test('the latest migration is rerunnable without changing data', async () => {
       (select string_agg(coalesce(source_id::text,'') || tracked_signings || coalesce(population_scope, ''), ',' order by id) from signing_census_coverage) as coverage,
       (select count(*) from player_season_stints)::int as stints,
       (select string_agg(concat_ws('|', season::text, level::text, coalesce(affiliate_team, ''), coalesce(league_name, ''), coalesce(source_level, ''), level_classification, era::text, affiliated::text,
-        coalesce(g::text, ''), coalesce(pa::text, ''), coalesce(pg::text, ''), coalesce(ip::text, '')), ',' order by player_id, season, level, coalesce(affiliate_team, ''), coalesce(league_name, '')) from player_season_stints) as stint_values,
+        coalesce(g::text, ''), coalesce(pa::text, ''), coalesce(pg::text, ''), coalesce(ip::text, ''),
+        coalesce(first_game_date::text, ''), coalesce(last_game_date::text, ''), coalesce(game_date_basis, '')), ',' order by player_id, season, level, coalesce(affiliate_team, ''), coalesce(league_name, '')) from player_season_stints) as stint_values,
       (select count(*) from development_milestones where event_code is not null)::int as coded_milestones,
-      (select string_agg(concat_ws('|', event_code, coalesce(milestone_date::text, ''), coalesce(season_year::text, ''), date_precision::text, coalesce(evidence_basis, '')), ','
+      (select string_agg(concat_ws('|', event_code, coalesce(milestone_date::text, ''), coalesce(season_year::text, ''), date_precision::text, coalesce(evidence_basis, ''), coalesce(prior_evidence_basis, '')), ','
         order by player_id, event_code, coalesce(milestone_date::text, '9999'), coalesce(season_year, 0)) from development_milestones where event_code is not null) as milestone_values,
       (select count(*) from player_development_status)::int as dev_status,
       (select string_agg(status::text || basis || coalesce(status_season::text, '') || coalesce(note, ''), ',' order by player_id) from player_development_status) as dev_status_values`)
@@ -965,9 +966,10 @@ test('021 stints: 828 rows over 167 players; a player-season with several teams,
     count(*) filter (where first_game_date is not null or last_game_date is not null)::int as dated,
     count(*) filter (where game_date_basis is not null)::int as dated_basis
     from player_season_stints`)
-  // No game logs were cached, so no stint claims a first/last game date: the
-  // absence is recorded, never fabricated.
-  assert.deepEqual([t.n, t.players, t.null_source, t.dated, t.dated_basis], [828, 167, 0, 0, 0])
+  // 022 filled 746 stints with game-verified first/last appearance dates; the
+  // 60 log-era stints without a team identity (or without any logged games)
+  // stay NULL: absence is recorded, never fabricated.
+  assert.deepEqual([t.n, t.players, t.null_source, t.dated, t.dated_basis], [828, 167, 0, 746, 746])
   const multi = await one(`select
     (select count(*)::int from (select player_id, season from player_season_stints group by 1, 2 having count(*) > 1) x) as multi_stint,
     (select count(*)::int from (select player_id, season from player_season_stints group by 1, 2 having count(distinct level) > 1) x) as multi_level,
@@ -1029,7 +1031,7 @@ test('021 milestones: SEASON precision never fabricates a date, DAY always has o
     count(*) filter (where date_precision = 'DAY' and milestone_date is null)::int as dayless,
     count(*) filter (where date_precision = 'SEASON' and season_year is null)::int as seasonless
     from development_milestones where event_code is not null`)
-  assert.deepEqual([m.n, m.fabricated, m.dayless, m.seasonless], [666, 0, 0, 0])
+  assert.deepEqual([m.n, m.fabricated, m.dayless, m.seasonless], [832, 0, 0, 0])
   const oc = await one(`select count(*)::int as n,
     count(*) filter (where milestone_date is null and season_year is not null)::int as season_only
     from development_milestones where event_code = 'ORGANIZATION_CHANGE'`)
@@ -1063,12 +1065,11 @@ test('021 derived metrics: exact elapsed times need both endpoint dates; season 
   const bad = await one(`select count(*)::int as n from v_dodgers_player_development_summary
     where days_signing_to_mlb_exact is not null and (signing_date is null or mlb_debut_date is null)`)
   assert.equal(bad.n, 0)
-  // a season-labelled debut is evidence without a date: the AA debuts are all
-  // SEASON precision, and none of them invented a day
+  // after 022, game-log evidence dates 24 of the 25 AA debuts in place; the one
+  // whose first AA season predates the gameLog era stays season-precision, dateless
   const aa = await one(`select count(*)::int as n, count(*) filter (where milestone_date is not null)::int as dated
     from development_milestones where event_code = 'AA_DEBUT'`)
-  assert.ok(aa.n >= 25)
-  assert.equal(aa.dated, 0)
+  assert.deepEqual([aa.n, aa.dated], [25, 24])
 })
 
 test('021 development status: a classification, not a grade; absence of data is never "not reached"', async () => {
@@ -1101,10 +1102,11 @@ test('021 signing-class measures are tracked-cohort counts: reach uses any evide
     from v_dodgers_development_by_signing_class where signing_year = 2023`)
   assert.deepEqual([class2023.tracked_players, class2023.reached_a, class2023.reached_high_a, class2023.reached_aa, class2023.reached_aaa, class2023.reached_mlb],
     [13, 7, 1, 1, 1, 0])
-  // the 2023 medians stay NULL: no player in that class has two exact endpoint dates yet
+  // after 022 the 2023 AA median is calculable: Eduardo Quintero signed
+  // 2023-01-15 and first appeared at Double-A on 2026-09-13 (both exact)
   const medians = await one(`select median_years_signing_to_aa_exact, median_years_signing_to_mlb_exact
     from v_dodgers_development_by_signing_class where signing_year = 2023`)
-  assert.deepEqual([medians.median_years_signing_to_aa_exact, medians.median_years_signing_to_mlb_exact], [null, null])
+  assert.deepEqual([Number(medians.median_years_signing_to_aa_exact), medians.median_years_signing_to_mlb_exact], [3.66, null])
 })
 
 test('021 organization changes: per-stint ownership in the same season, plus a SEASON-precision milestone', async () => {
@@ -1154,8 +1156,8 @@ test('021 coverage view: populations add up', async () => {
   assert.equal(c.players_with_stints + c.players_without_stints, c.tracked_players)
   assert.equal(c.players_with_mlb_history + c.non_mlb_players_with_history, c.players_with_stints)
   assert.deepEqual([c.players_with_mlb_history, c.mlb_players_missing_pre_mlb_history], [2, 0])
-  assert.deepEqual([c.players_with_exact_first_aa_date, c.players_with_first_aa_season], [0, 25])
-  assert.deepEqual([c.players_with_exact_first_aaa_date, c.players_with_first_aaa_season], [0, 16])
+  assert.deepEqual([c.players_with_exact_first_aa_date, c.players_with_first_aa_season], [24, 25])
+  assert.deepEqual([c.players_with_exact_first_aaa_date, c.players_with_first_aaa_season], [15, 16])
   assert.equal(c.players_with_signing_to_mlb_time, 6)
 })
 
@@ -1182,6 +1184,160 @@ test('021 views are security_invoker and anon can read development data but cann
        select id, 2026, 'x', 'ROK', 'OTHER', 'UNKNOWN_ROOKIE_LEAGUE', 'MODERN_FOUR_LEVEL_2021_PLUS', false, '2026-10-06' from players limit 1`),
       /permission denied/,
     )
+    await tx.rollback()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 022: exact development dates from official game logs
+// ---------------------------------------------------------------------------
+
+test('022 upgrades: 400 SEASON-precision debuts carry exact game-log dates in place, each naming the basis it replaced', async () => {
+  const r = await one(`select
+      count(*)::int as n,
+      count(*) filter (where date_precision = 'DAY' and milestone_date is not null)::int as exact,
+      count(*) filter (where date_precision = 'SEASON')::int as still_season,
+      count(*) filter (where prior_evidence_basis is not null)::int as with_prior,
+      count(*) filter (where prior_evidence_basis is not null and date_precision <> 'DAY')::int as prior_without_exact,
+      count(*) filter (where evidence_basis <> 'GAME_LOG')::int as not_game_log
+    from development_milestones
+    where event_code in ('DSL_DEBUT','COMPLEX_DEBUT','A_DEBUT','HIGH_A_DEBUT','AA_DEBUT','AAA_DEBUT')`)
+  assert.deepEqual([r.n, r.exact, r.still_season, r.with_prior, r.prior_without_exact, r.not_game_log], [403, 400, 3, 400, 0, 3],
+    'the three non-GAME_LOG rows are exactly the pre-log-era season-precision debuts')
+  // the three debuts whose first season predates the gameLog era stay
+  // season-precision: Roger Cedeño's 1993 AA/AAA and 1998 High-A
+  const seasonOnly = await rows(`select p.slug, m.event_code, m.season_year
+    from development_milestones m join players p on p.id = m.player_id
+    where m.event_code in ('HIGH_A_DEBUT','AA_DEBUT','AAA_DEBUT') and m.date_precision = 'SEASON' order by 1, 2`)
+  assert.deepEqual(seasonOnly.map((s) => [s.slug, s.event_code, s.season_year]), [
+    ['roger-cedeno', 'AAA_DEBUT', 1993],
+    ['roger-cedeno', 'AA_DEBUT', 1993],
+    ['roger-cedeno', 'HIGH_A_DEBUT', 1998],
+  ])
+  // spot-check a full ladder: Carlos Frias 2011 High-A → 2013 AA → 2014 AAA,
+  // while his existing exact MLB debut (2014-08-04) was never overwritten
+  const frias = await rows(`select m.event_code, m.milestone_date::text as d, m.evidence_basis, m.prior_evidence_basis
+    from development_milestones m join players p on p.id = m.player_id
+    where p.slug = 'carlos-frias' and m.event_code in ('HIGH_A_DEBUT','AA_DEBUT','AAA_DEBUT','MLB_DEBUT') order by m.milestone_date`)
+  assert.deepEqual(frias, [
+    { event_code: 'HIGH_A_DEBUT', d: '2011-07-08', evidence_basis: 'GAME_LOG', prior_evidence_basis: 'SEASON_SPLITS' },
+    { event_code: 'AA_DEBUT', d: '2013-07-31', evidence_basis: 'GAME_LOG', prior_evidence_basis: 'SEASON_SPLITS' },
+    { event_code: 'AAA_DEBUT', d: '2014-04-30', evidence_basis: 'GAME_LOG', prior_evidence_basis: 'SEASON_SPLITS' },
+    { event_code: 'MLB_DEBUT', d: '2014-08-04', evidence_basis: 'MLB_PERSON_RECORD', prior_evidence_basis: null },
+  ])
+  // the season_year that carried the reviewed season fact survives the upgrade
+  const seasons = await one(`select count(*)::int as n from development_milestones
+    where prior_evidence_basis is not null and (season_year is null or extract(year from milestone_date) <> season_year)`)
+  assert.equal(seasons.n, 0)
+})
+
+test('022 professional debuts: 166 exact first games; a same-day signing stays a distinct, honestly-typed fact', async () => {
+  const r = await one(`select
+      count(*)::int as n,
+      count(*) filter (where date_precision = 'DAY' and milestone_date is not null)::int as exact,
+      count(*) filter (where evidence_basis <> 'GAME_LOG')::int as not_game_log,
+      count(*) filter (where milestone <> 'OTHER')::int as mistyped
+    from development_milestones where event_code = 'PROFESSIONAL_DEBUT'`)
+  assert.deepEqual([r.n, r.exact, r.not_game_log, r.mistyped], [166, 166, 0, 0])
+  // every PROFESSIONAL_DEBUT falls in the player's first stint season (the rule
+  // that separates an evidenced first game from an approximated one)
+  const late = await one(`select count(*)::int as n from development_milestones m
+    where m.event_code = 'PROFESSIONAL_DEBUT' and m.season_year is not null
+      and m.season_year <> (select min(s.season) from player_season_stints s where s.player_id = m.player_id)`)
+  assert.equal(late.n, 0)
+  // Ilmerson Colon signed and first appeared on the same day: two facts, two
+  // rows. The signing moves to the dedicated 'SIGNED' enum value (unused since
+  // 001) so 001's unique (player_id, milestone, milestone_date) keeps both.
+  const colon = await rows(`select m.event_code, m.milestone::text as type, m.milestone_date::text as d
+    from development_milestones m join players p on p.id = m.player_id
+    where p.slug = 'ilmerson-colon' and m.event_code in ('PROFESSIONAL_SIGNING','PROFESSIONAL_DEBUT') order by m.event_code`)
+  assert.deepEqual(colon, [
+    { event_code: 'PROFESSIONAL_DEBUT', type: 'OTHER', d: '2022-06-20' },
+    { event_code: 'PROFESSIONAL_SIGNING', type: 'SIGNED', d: '2022-06-20' },
+  ])
+  const signed = await one(`select count(*)::int as n, count(*) filter (where milestone <> 'SIGNED')::int as mistyped
+    from development_milestones where event_code = 'PROFESSIONAL_SIGNING'`)
+  assert.deepEqual([signed.n, signed.mistyped], [154, 0])
+})
+
+test('022 stint dates: 746 stints carry verified first/last appearance dates; unknown-team and unlogged stints stay NULL', async () => {
+  const r = await one(`select
+      count(*)::int as n,
+      count(*) filter (where first_game_date is not null or last_game_date is not null)::int as dated,
+      count(*) filter (where first_game_date is not null and last_game_date is null)::int as first_without_last,
+      count(*) filter (where first_game_date is not null and last_game_date < first_game_date)::int as reversed,
+      count(*) filter (where first_game_date is not null and extract(year from first_game_date) <> season)::int as wrong_season,
+      count(*) filter (where first_game_date is not null and game_date_basis <> 'GAME_LOG')::int as basis
+    from player_season_stints`)
+  assert.deepEqual([r.n, r.dated, r.first_without_last, r.reversed, r.wrong_season, r.basis], [828, 746, 0, 0, 0, 0])
+  // 60 log-era stints stay undated: 56 have no team identity for the games to
+  // attach to, 4 are 2018 Mexican-League stints the gameLog era never covered
+  const undated = await one(`select
+      count(*) filter (where season >= 2006 and first_game_date is null)::int as log_era,
+      count(*) filter (where season >= 2006 and first_game_date is null and affiliate_team is null)::int as null_team,
+      count(*) filter (where season >= 2006 and first_game_date is null and affiliate_team is not null
+        and level = 'FOREIGN_PRO' and season = 2018)::int as mexican_2018
+    from player_season_stints`)
+  assert.deepEqual([undated.log_era, undated.null_team, undated.mexican_2018], [60, 56, 4])
+  // every dated stint cites the gameLog endpoint it was derived from
+  const uncited = await one(`select count(*)::int as n from player_season_stints s
+    where s.first_game_date is not null and not exists (
+      select 1 from jsonb_array_elements_text(s.source_urls) u where u like '%stats=gameLog%')`)
+  assert.equal(uncited.n, 0)
+  // pre-2006 stints are never dated from the log era
+  const old = await one(`select count(*)::int as n from player_season_stints where season < 2006 and first_game_date is not null`)
+  assert.equal(old.n, 0)
+})
+
+test('022 coverage: the date-coverage view reports exact versus season-only facts and zero unresolved conflicts', async () => {
+  const c = await one('select * from v_dodgers_development_date_coverage')
+  assert.deepEqual(
+    [c.tracked_players, c.exact_pro_debut, c.exact_dsl_debut, c.exact_complex_debut, c.exact_first_a,
+      c.exact_first_high_a, c.exact_first_aa, c.exact_first_aaa, c.exact_mlb_debut],
+    [268, 166, 157, 97, 71, 36, 24, 15, 7])
+  assert.deepEqual(
+    [c.exact_signing_to_pro_debut, c.exact_signing_to_a, c.exact_signing_to_high_a,
+      c.exact_signing_to_aa, c.exact_signing_to_aaa, c.exact_signing_to_mlb],
+    [146, 61, 28, 19, 11, 6])
+  assert.deepEqual(
+    [c.season_only_dsl_debut, c.season_only_complex_debut, c.season_only_first_a,
+      c.season_only_first_high_a, c.season_only_first_aa, c.season_only_first_aaa],
+    [0, 0, 0, 1, 1, 1])
+  assert.equal(c.players_with_unresolved_date_conflicts, 0)
+})
+
+test('022 queue: missing dates are review items, and no exact-date conflict exists', async () => {
+  const issues = Object.fromEntries((await rows(`select issue, count(*)::int as n
+    from v_dodgers_development_research_queue group by 1`)).map((r) => [r.issue, r.n]))
+  assert.equal(issues.MISSING_FIRST_GAME_DATE, 46)
+  assert.equal(issues.MISSING_LAST_GAME_DATE, 46)
+  assert.equal(issues.SEASON_ONLY_MILESTONE, 1)
+  assert.equal(issues.GAME_LOG_UNAVAILABLE ?? 0, 0, 'every stints-carrying player has at least one dated stint')
+  assert.equal(issues.EXACT_DATE_CONFLICT, undefined, 'no game evidence disagreed with a stored exact date')
+  const conflicts = await one(`select count(*)::int as n from research_source_conflicts where conflict_type = 'EXACT_DATE_CONFLICT'`)
+  assert.equal(conflicts.n, 0)
+  // the flagged player is the pre-log-era one: reached MLB before 2006
+  const flagged = await rows(`select player_slug from v_dodgers_development_research_queue where issue = 'MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES'`)
+  assert.deepEqual(flagged.map((r) => r.player_slug), ['roger-cedeno'])
+})
+
+test('022 views: the new coverage view is security_invoker, granted, and anon can read the extended data', async () => {
+  const views = await rows(`select relname, coalesce(reloptions::text, '') as opts from pg_class
+    where relname in ('v_dodgers_development_date_coverage', 'v_dodgers_player_development_summary') and relkind = 'v'`)
+  assert.equal(views.length, 2)
+  for (const v of views) assert.match(v.opts, /security_invoker=(true|on)/, v.relname)
+  const grants = await rows(`select grantee, privilege_type from information_schema.role_table_grants
+    where table_name = 'v_dodgers_development_date_coverage' and grantee in ('anon', 'authenticated') order by 1`)
+  assert.deepEqual(grants.map((g) => [g.grantee, g.privilege_type]), [['anon', 'SELECT'], ['authenticated', 'SELECT']])
+  await db.transaction(async (tx) => {
+    await tx.query('set local role anon')
+    const cov = (await tx.query('select exact_pro_debut, tracked_players from v_dodgers_development_date_coverage')).rows[0]
+    assert.deepEqual([cov.exact_pro_debut, cov.tracked_players], [166, 268])
+    // the extended summary columns are readable and derived only from exact dates
+    const bad = (await tx.query(`select count(*)::int as n from v_dodgers_player_development_summary
+      where days_signing_to_high_a_exact is not null
+        and (signing_date is null or first_high_a_date is null)`)).rows[0]
+    assert.equal(bad.n, 0)
     await tx.rollback()
   })
 })

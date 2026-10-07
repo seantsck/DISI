@@ -5,7 +5,7 @@
 // a query function (PGlite for the local canonical chain, or a pg client
 // connected with a URL from an environment variable).
 //
-// Hard invariants are the byte-stable state of the canonical 001→021 chain
+// Hard invariants are the byte-stable state of the canonical 001→022 chain
 // (seeded populations, migration-built rows, schema security properties).
 // Informational metrics are research-coverage numbers that may legitimately
 // move as research progresses; they are reported but never fail the run.
@@ -15,17 +15,20 @@
 // migration that legitimately changes a hard invariant must update
 // CANONICAL_EXPECTATIONS in the same commit as that migration.
 
-/** Canonical 001→021 (DISI v0.12) expected state. */
+/** Canonical 001→022 (DISI v0.13) expected state. */
 export const CANONICAL_EXPECTATIONS = {
   // population (seeded by 002/012/013/016/019 and surfaced by v_database_status)
   players_total: 268,
   dodgers_players: 220,
   league_benchmark_players: 48,
   verified_mlb_outcomes: 47,
-  // development dataset (021)
+  // development dataset (021 stints; 022 exact dates)
   stints: 828,
   stint_players: 167,
-  coded_milestones: 666,
+  dated_stints: 746,
+  undated_log_era_stints: 60,
+  coded_milestones: 832,
+  professional_debut_milestones: 166,
   legacy_milestones: 5,
   mlb_debut_milestones: 7,
   mlb_debut_players: 7,
@@ -62,6 +65,7 @@ export const CANONICAL_EXPECTATIONS = {
     'v_dodgers_development_by_bonus_band',
     'v_dodgers_development_research_queue',
     'v_dodgers_development_coverage',
+    'v_dodgers_development_date_coverage',
   ],
 }
 
@@ -103,10 +107,15 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
 
   // -- development dataset ---------------------------------------------------
   const [stints] = await query(
-    'select count(*)::int as n, count(distinct player_id)::int as players from player_season_stints'
+    `select count(*)::int as n, count(distinct player_id)::int as players,
+      count(*) filter (where first_game_date is not null)::int as dated,
+      count(*) filter (where season >= 2006 and first_game_date is null)::int as undated_log_era
+    from player_season_stints`
   )
   check('development', 'stints', expectations.stints, stints.n)
   check('development', 'stint_players', expectations.stint_players, stints.players)
+  check('development', 'dated_stints', expectations.dated_stints, stints.dated)
+  check('development', 'undated_log_era_stints', expectations.undated_log_era_stints, stints.undated_log_era)
 
   const [milestones] = await query(`select
       count(*) filter (where event_code is not null)::int as coded,
@@ -114,7 +123,8 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
       count(*) filter (where event_code = 'MLB_DEBUT')::int as mlb_debut,
       count(distinct player_id) filter (where event_code = 'MLB_DEBUT')::int as mlb_debut_players,
       count(*) filter (where event_code = 'ORGANIZATION_CHANGE')::int as org_change,
-      count(*) filter (where event_code = 'AA_DEBUT')::int as aa_debut
+      count(*) filter (where event_code = 'AA_DEBUT')::int as aa_debut,
+      count(*) filter (where event_code = 'PROFESSIONAL_DEBUT')::int as pro_debut
     from development_milestones`)
   check('development', 'coded_milestones', expectations.coded_milestones, milestones.coded)
   check('development', 'legacy_milestones', expectations.legacy_milestones, milestones.legacy)
@@ -122,6 +132,7 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   check('development', 'mlb_debut_players', expectations.mlb_debut_players, milestones.mlb_debut_players)
   check('development', 'organization_change_milestones', expectations.organization_change_milestones, milestones.org_change)
   check('development', 'aa_debut_milestones', expectations.aa_debut_milestones, milestones.aa_debut)
+  check('development', 'professional_debut_milestones', expectations.professional_debut_milestones, milestones.pro_debut)
 
   // -- development status ----------------------------------------------------
   const statusRows = await query(
