@@ -8,11 +8,11 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
+import { buildCanonicalChain, manifest } from './canonical-chain.mjs'
 import { foldText, slugify } from '../../lib/text.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const sqlDir = path.join(root, 'database/sql')
-const manifest = JSON.parse(fs.readFileSync(path.join(root, 'database/manifest.json'), 'utf8'))
 const readSql = (file) => fs.readFileSync(path.join(sqlDir, file), 'utf8')
 
 /** @type {PGlite} */
@@ -21,15 +21,7 @@ const rows = async (sql, params) => (await db.query(sql, params)).rows
 const one = async (sql, params) => (await rows(sql, params))[0]
 
 before(async () => {
-  db = new PGlite({ extensions: { pgcrypto } })
-  await db.exec('create role anon nologin; create role authenticated nologin;')
-  for (const file of manifest.canonical_sql) {
-    try {
-      await db.exec(readSql(file))
-    } catch (error) {
-      throw new Error(`${file} failed: ${error.message}`)
-    }
-  }
+  db = (await buildCanonicalChain()).db
 }, { timeout: 180000 })
 
 after(async () => { await db?.close() })

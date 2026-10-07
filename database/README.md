@@ -99,6 +99,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 - `004a_diagnose_zero_cohort.sql`
 - `004b_repair_dodgers_signings.sql`
 - `004c_repair_observed_outcomes.sql`
+- `repairs/README.md` — provenance for the 2026-10-06 one-time live drift repair (the five 003-era legacy MLB_DEBUT milestones were missing on the production database and were backfilled; 021 then tagged them).
 
 The repair files document issues encountered during the first manual Supabase build and are intentionally kept out of the canonical build sequence.
 
