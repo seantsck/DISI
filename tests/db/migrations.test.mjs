@@ -65,6 +65,9 @@ test('the latest migration is rerunnable without changing data', async () => {
       (select string_agg(concat_ws('|', event_code, coalesce(milestone_date::text, ''), coalesce(season_year::text, ''), date_precision::text, coalesce(evidence_basis, ''), coalesce(prior_evidence_basis, '')), ','
         order by player_id, event_code, coalesce(milestone_date::text, '9999'), coalesce(season_year, 0)) from development_milestones where event_code is not null) as milestone_values,
       (select count(*) from player_development_status)::int as dev_status,
+      (select string_agg(concat_ws('|', player_id::text, event_code, milestone_id::text, progression_role, coalesce(developmental_arrival_date::text, ''),
+        coalesce(developmental_arrival_season::text, ''), review_status, confidence::text, notes, reviewed_at::text, as_of_date::text), ',' order by player_id, event_code)
+        from development_progression_decisions) as progression_decisions,
       (select string_agg(status::text || basis || coalesce(status_season::text, '') || coalesce(note, ''), ',' order by player_id) from player_development_status) as dev_status_values`)
   const beforeRun = await snapshot()
   await db.exec(readSql(latest))
@@ -1080,8 +1083,10 @@ test('021 development status: a classification, not a grade; absence of data is 
     .map((r) => [r.status, r.n]))
   assert.deepEqual(byStatus, {
     // 023 excludes season-total rows: Edgar Leon's cross-level 2026 rookie total no longer reads as
-    // unaffiliated play, so he is A_BALL (A_BALL 29 -> 30, OUT_OF_AFFILIATED_BASEBALL 2 -> 1).
-    ROOKIE_LEVEL: 92, MLB: 47, A_BALL: 30, HIGH_A: 16, AAA: 14, AA: 12, OUT_OF_AFFILIATED_BASEBALL: 1,
+    // unaffiliated play (A_BALL 29 -> 30, OUT_OF_AFFILIATED_BASEBALL 2 -> 1). 024 makes status the
+    // highest unambiguously established developmental level: five reviewed AAA cameos move and pending
+    // milestones do not count as reached (AAA 14 -> 7, AA 12 -> 14, A_BALL 30 -> 33, ROOKIE_LEVEL 92 -> 94).
+    ROOKIE_LEVEL: 94, MLB: 47, A_BALL: 33, HIGH_A: 16, AAA: 7, AA: 14, OUT_OF_AFFILIATED_BASEBALL: 1,
   })
   // every player with stints has a status; 47 verified MLB audits are AUDITED_OUTCOME
   const orphans = await one(`select count(*)::int as n from players p
@@ -1303,7 +1308,8 @@ test('022 coverage: the date-coverage view reports exact versus season-only fact
   assert.deepEqual(
     [c.exact_signing_to_pro_debut, c.exact_signing_to_a, c.exact_signing_to_high_a,
       c.exact_signing_to_aa, c.exact_signing_to_aaa, c.exact_signing_to_mlb],
-    [146, 61, 28, 19, 11, 6])
+    // 022 reported 146/61/28/19/11/6 from first appearances; 024 measures to developmental arrival
+    [146, 58, 26, 17, 4, 6])
   assert.deepEqual(
     [c.season_only_dsl_debut, c.season_only_complex_debut, c.season_only_first_a,
       c.season_only_first_high_a, c.season_only_first_aa, c.season_only_first_aaa],
@@ -1482,8 +1488,9 @@ test('023 research queue: totals raise no false flags; FOREIGN_PRO is organizati
     IDENTITY_BUT_NO_PROFESSIONAL_SEASONS: 53, MISSING_FIRST_GAME_DATE: 2, MISSING_LAST_GAME_DATE: 2,
     MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES: 1, MLB_PLAYER_MISSING_PRE_MLB_HISTORY: 5, MULTI_ORG_SEASON_UNVERIFIED: 9,
     SEASON_GAP: 15, SEASON_ONLY_MILESTONE: 1, UNKNOWN_LEVEL_CLASSIFICATION: 11, UNRESOLVED_ORGANIZATION: 1,
+    LEVEL_SKIP_CAMEO_CANDIDATE: 4, // added by 024 (heuristic candidates; 023 alone left 100 flags)
   })
-  assert.equal(Object.values(issues).reduce((a, b) => a + b, 0), 100)
+  assert.equal(Object.values(issues).reduce((a, b) => a + b, 0), 104)
   const who = async (issue) => (await rows(`select player_slug from v_dodgers_development_research_queue where issue = $1 order by 1`, [issue])).map((r) => r.player_slug)
   assert.deepEqual(await who('MISSING_FIRST_GAME_DATE'), ['carlos-frias', 'lenix-osuna'])
   assert.deepEqual(await who('MISSING_LAST_GAME_DATE'), ['carlos-frias', 'lenix-osuna'])
@@ -1526,13 +1533,11 @@ test('023 SEASON_GAP: scoped per player over distinct team-stint seasons - 15 ge
 test('023 status: season totals no longer look like unaffiliated play (Edgar Leon), and nothing else moved', async () => {
   const leon = await one(`select d.status::text as status, d.status_season from player_development_status d join players p on p.id = d.player_id where p.slug = 'edgar-leon'`)
   assert.deepEqual([leon.status, leon.status_season], ['A_BALL', 2025])
-  const byStatus = Object.fromEntries((await rows(`select status::text, count(*)::int as n from player_development_status group by 1`)).map((r) => [r.status, r.n]))
-  assert.deepEqual(byStatus, { ROOKIE_LEVEL: 92, MLB: 47, A_BALL: 30, HIGH_A: 16, AAA: 14, AA: 12, OUT_OF_AFFILIATED_BASEBALL: 1 })
   const ooa = await rows(`select p.slug from player_development_status d join players p on p.id = d.player_id where d.status = 'OUT_OF_AFFILIATED_BASEBALL'`)
   assert.deepEqual(ooa.map((r) => r.slug), ['lenix-osuna'], 'Osuna genuinely played only Mexican League ball after High-A')
-  // 023 status is still appearance-based: nobody's highest-level status moved except through the totals
+  // 024 then makes status developmental: a reviewed one-game AAA cameo no longer counts (see the 024 tests)
   const cameo = await one(`select d.status::text as status from player_development_status d join players p on p.id = d.player_id where p.slug = 'eduardo-guerrero'`)
-  assert.equal(cameo.status, 'AAA', 'a one-game AAA cameo still counts as appearing at AAA; developmental arrival is migration 024')
+  assert.equal(cameo.status, 'AA')
 })
 
 test('023 organizations: Augusta 2021+ is the Braves, Vancouver 2011+ the Blue Jays; raw affiliate names and legitimate stints are untouched', async () => {
@@ -1580,7 +1585,8 @@ test('023 leaves milestones, the 019 Mexican League rule and the first-appearanc
   assert.equal(mex.violations, 0)
   assert.equal(mex.totals, 1, 'only Osuna 2018 is a Mexican League season total, and it is still FOREIGN_PRO')
   const cov = await one('select * from v_dodgers_development_date_coverage')
-  assert.deepEqual([cov.exact_signing_to_pro_debut, cov.exact_signing_to_a, cov.exact_signing_to_aaa], [146, 61, 11], 'milestone metrics are 024 territory')
+  assert.deepEqual([cov.exact_signing_to_pro_debut, cov.exact_signing_to_a, cov.exact_signing_to_aaa], [146, 58, 4],
+    'unchanged by 023; 024 measures elapsed time to developmental arrival')
 })
 
 test('023 views: the stints view appends the two columns; every development view stays security_invoker with SELECT-only grants', async () => {
@@ -1622,11 +1628,332 @@ test('023 migration guard: a broken aggregate raises and rolls back everything; 
     const aug = await one(`select organization_name from player_season_stints where affiliate_team = 'Augusta GreenJackets'`)
     assert.equal(aug.organization_name, 'San Francisco Giants')
   } finally {
-    await db.exec(`update player_season_stints set g = g - 1 where id = ${target}`)
+    // repair both tampered facts directly: 023 cannot be replayed over the wider views of a later
+    // migration (the latest migration's rerun is covered by its own test)
+    await db.exec(`update player_season_stints set g = g - 1 where id = ${target};
+      update player_season_stints set organization_name = 'Atlanta Braves',
+        organization_id = (select id from organizations where name = 'Atlanta Braves') where affiliate_team = 'Augusta GreenJackets'`)
   }
-  await db.exec(latest) // repaired data: the migration corrects Augusta again
   const fixed = await one(`select organization_name from player_season_stints where affiliate_team = 'Augusta GreenJackets'`)
   assert.equal(fixed.organization_name, 'Atlanta Braves')
   const k = await one(`select count(*) filter (where stint_kind = 'SEASON_TOTAL')::int as totals from player_season_stints`)
   assert.equal(k.totals, 56)
+})
+
+// ---------------------------------------------------------------------------
+// 024 — development progression decisions
+// ---------------------------------------------------------------------------
+
+const progressionOf = (slug) => rows(`select event_code, first_appearance_date::text as first_date, first_appearance_season as first_season,
+    first_appearance_precision as first_precision, progression_role, review_status,
+    developmental_arrival_date::text as dev_date, developmental_arrival_season as dev_season,
+    developmental_arrival_precision as dev_precision, development_state as state
+  from v_player_development_progression where player_slug = $1 order by progression_rank`, [slug])
+const byEvent = (list) => Object.fromEntries(list.map((r) => [r.event_code, r]))
+const summaryOf = (slug) => one(`select * from v_dodgers_player_development_summary where player_slug = $1`, [slug])
+
+test('024 decisions: 20 rows (11 reviewed, 9 pending), one per player and event, each tied to its own first-appearance milestone', async () => {
+  const d = await rows(`select p.slug, d.event_code, d.progression_role, d.review_status, d.confidence::text as confidence,
+      d.developmental_arrival_date::text as arrival, d.developmental_arrival_precision::text as precision, d.developmental_arrival_season as season
+    from development_progression_decisions d join players p on p.id = d.player_id
+    order by 1, array_position(array['DSL_DEBUT', 'COMPLEX_DEBUT', 'A_DEBUT', 'HIGH_A_DEBUT', 'AA_DEBUT', 'AAA_DEBUT', 'MLB_DEBUT'], d.event_code)`)
+  assert.deepEqual(d.map((r) => [r.slug, r.event_code, r.progression_role, r.arrival]), [
+    ['carlos-avila', 'A_DEBUT', 'REVIEW_REQUIRED', null],
+    ['carlos-avila', 'AA_DEBUT', 'REVIEW_REQUIRED', null],
+    ['carlos-avila', 'AAA_DEBUT', 'REVIEW_REQUIRED', null],
+    ['carlos-frias', 'A_DEBUT', 'REVIEW_REQUIRED', null],
+    ['carlos-frias', 'HIGH_A_DEBUT', 'REVIEW_REQUIRED', null],
+    ['christian-romero', 'AA_DEBUT', 'REVIEW_REQUIRED', null],
+    ['christian-romero', 'AAA_DEBUT', 'REVIEW_REQUIRED', null],
+    ['eduardo-guerrero', 'AAA_DEBUT', 'EARLY_CAMEO', null],
+    ['eduardo-rojas', 'AAA_DEBUT', 'EARLY_CAMEO', null],
+    ['elio-campos', 'COMPLEX_DEBUT', 'POST_ESTABLISHMENT_APPEARANCE', null],
+    ['elio-campos', 'AAA_DEBUT', 'EARLY_CAMEO', null],
+    ['javier-herrera', 'AAA_DEBUT', 'EARLY_CAMEO', null],
+    ['jeral-perez', 'A_DEBUT', 'EARLY_CAMEO', '2024-04-05'],
+    ['mairoshendrick-martinus', 'HIGH_A_DEBUT', 'EARLY_CAMEO', '2026-08-02'],
+    ['nicolas-cruz', 'A_DEBUT', 'REVIEW_REQUIRED', null],
+    ['nicolas-cruz', 'HIGH_A_DEBUT', 'REVIEW_REQUIRED', null],
+    ['omar-estevez', 'COMPLEX_DEBUT', 'POST_ESTABLISHMENT_APPEARANCE', null],
+    ['roger-cedeno', 'HIGH_A_DEBUT', 'POST_ESTABLISHMENT_APPEARANCE', null],
+    ['ronny-brito', 'HIGH_A_DEBUT', 'EARLY_CAMEO', '2021-05-04'],
+    ['sean-linan', 'AAA_DEBUT', 'EARLY_CAMEO', null],
+  ])
+  assert.equal(d.filter((r) => r.review_status === 'REVIEWED').length, 11)
+  assert.equal(d.filter((r) => r.review_status === 'PENDING_REVIEW').length, 9)
+  assert.ok(d.filter((r) => r.review_status === 'PENDING_REVIEW').every((r) => r.progression_role === 'REVIEW_REQUIRED' && r.confidence === 'LOW'))
+  assert.ok(d.filter((r) => r.arrival).every((r) => r.precision === 'DAY' && Number(r.arrival.slice(0, 4)) === r.season))
+  const fk = await one(`select count(*)::int as n from development_progression_decisions d
+    join development_milestones m on m.id = d.milestone_id and m.player_id = d.player_id and m.event_code = d.event_code`)
+  assert.equal(fk.n, 20, 'every decision references the milestone of its own player and event')
+})
+
+test('024 constraints: unique (player, event), the composite milestone key, and the role/arrival/review rules are enforced', async () => {
+  const attempt = async (sql) => {
+    await db.exec('begin;')
+    try { await db.exec(sql); return 'accepted' } catch (e) { return String(e.message) } finally { await db.exec('rollback;') }
+  }
+  const cameo = `(select d.id from development_progression_decisions d join players p on p.id = d.player_id where p.slug = 'eduardo-guerrero')`
+  assert.match(await attempt(`insert into development_progression_decisions (player_id, event_code, milestone_id, progression_role, decision_basis, review_status, confidence, notes, reviewed_at, as_of_date)
+    select player_id, event_code, milestone_id, 'DEVELOPMENTAL_ARRIVAL', decision_basis, 'REVIEWED', confidence, 'dup', now(), current_date
+    from development_progression_decisions where id = ${cameo}`), /player_event_key|duplicate key/)
+  // a milestone of a different player cannot be borrowed
+  assert.match(await attempt(`update development_progression_decisions set milestone_id =
+    (select m.id from development_milestones m join players p on p.id = m.player_id where p.slug = 'sean-linan' and m.event_code = 'AAA_DEBUT')
+    where id = ${cameo}`), /milestone_fkey|foreign key/)
+  assert.match(await attempt(`update development_progression_decisions set developmental_arrival_date = date '2026-01-01',
+    developmental_arrival_precision = 'DAY', developmental_arrival_season = 2026, progression_role = 'POST_ESTABLISHMENT_APPEARANCE' where id = ${cameo}`), /arrival_check/)
+  assert.match(await attempt(`update development_progression_decisions set developmental_arrival_date = date '2026-01-01',
+    developmental_arrival_precision = 'DAY', developmental_arrival_season = 2025 where id = ${cameo}`), /arrival_check/, 'a DAY arrival carries its own season')
+  assert.match(await attempt(`update development_progression_decisions set developmental_arrival_precision = 'DAY' where id = ${cameo}`), /arrival_check/)
+  assert.match(await attempt(`update development_progression_decisions set progression_role = 'REVIEW_REQUIRED' where id = ${cameo}`), /review_check/,
+    'REVIEW_REQUIRED is always pending')
+  assert.match(await attempt(`update development_progression_decisions set progression_role = 'SKIPPED_LEVEL' where id = ${cameo}`), /role_check/,
+    'skipped is derived, never stored')
+  assert.equal(await attempt(`update development_progression_decisions set developmental_arrival_precision = 'SEASON', developmental_arrival_season = 2027 where id = ${cameo}`), 'accepted')
+})
+
+test('024 preserves raw history: 828 stints, 832 milestones, every first-appearance fact and every 023 classification', async () => {
+  const t = await one(`select (select count(*) from player_season_stints)::int as stints,
+    (select count(*) filter (where stint_kind = 'TEAM_STINT') from player_season_stints)::int as team,
+    (select count(*) filter (where stint_kind = 'SEASON_TOTAL') from player_season_stints)::int as totals,
+    (select count(*) from development_milestones where event_code is not null)::int as milestones,
+    (select count(*) from development_milestones where event_code = 'ORGANIZATION_CHANGE')::int as org_changes`)
+  assert.deepEqual([t.stints, t.team, t.totals, t.milestones, t.org_changes], [828, 772, 56, 832, 18])
+  // the progression view's first appearance IS the milestone, untouched
+  const drift = await one(`select count(*)::int as n from v_player_development_progression pr
+    join development_milestones m on m.id = pr.milestone_id
+    where pr.first_appearance_date is distinct from m.milestone_date
+       or pr.first_appearance_season is distinct from coalesce(m.season_year, extract(year from m.milestone_date)::int)`)
+  assert.equal(drift.n, 0)
+  // first_* summary columns are literal first appearances
+  const g = await summaryOf('eduardo-guerrero')
+  assert.equal(g.first_aaa_date.toISOString().slice(0, 10), '2024-08-03', 'the one-game AAA cameo stays the first AAA appearance')
+  const m = await summaryOf('mairoshendrick-martinus')
+  assert.equal(m.first_high_a_date.toISOString().slice(0, 10), '2025-04-20')
+  assert.equal(m.age_at_first_high_a_exact, (await one(`select public.disi_age_years(p.birth_date, date '2025-04-20') as a from players p where slug = 'mairoshendrick-martinus'`)).a,
+    'age_at_first_* still measures the first appearance')
+})
+
+test('024 Cedeno: the 1998 High-A stint and first-appearance fact stay; development skips High-A; AA/AAA stay 1993 SEASON with no inferred order', async () => {
+  const stint = await rows(`select s.affiliate_team, coalesce(s.g, s.pg) as games from player_season_stints s join players p on p.id = s.player_id
+    where p.slug = 'roger-cedeno' and s.season = 1998 and s.level = 'HIGH_A'`)
+  assert.deepEqual(stint.map((r) => [r.affiliate_team, r.games]), [['Vero Beach Dodgers', 6]])
+  const pr = byEvent(await progressionOf('roger-cedeno'))
+  assert.deepEqual([pr.HIGH_A_DEBUT.first_season, pr.HIGH_A_DEBUT.first_precision, pr.HIGH_A_DEBUT.progression_role, pr.HIGH_A_DEBUT.dev_season, pr.HIGH_A_DEBUT.state],
+    [1998, 'SEASON', 'POST_ESTABLISHMENT_APPEARANCE', null, 'SKIPPED'])
+  assert.deepEqual([pr.AA_DEBUT.dev_date, pr.AA_DEBUT.dev_season, pr.AA_DEBUT.dev_precision, pr.AA_DEBUT.state], [null, 1993, 'SEASON', 'REACHED'])
+  assert.deepEqual([pr.AAA_DEBUT.dev_date, pr.AAA_DEBUT.dev_season, pr.AAA_DEBUT.dev_precision, pr.AAA_DEBUT.state], [null, 1993, 'SEASON', 'REACHED'])
+  assert.deepEqual([pr.MLB_DEBUT.dev_date, pr.MLB_DEBUT.dev_precision, pr.MLB_DEBUT.state], ['1995-06-20', 'DAY', 'REACHED'])
+  assert.equal(pr.A_DEBUT.state, 'SKIPPED', 'a level never played with a higher arrival is derived as skipped')
+  const s = await summaryOf('roger-cedeno')
+  assert.deepEqual([s.first_high_a_season, s.dev_high_a_season, s.dev_high_a_state, s.dev_high_a_role], [1998, null, 'SKIPPED', 'POST_ESTABLISHMENT_APPEARANCE'])
+  assert.equal(s.days_aa_to_aaa_exact, null, 'two SEASON-precision arrivals never yield an exact interval or an order')
+})
+
+test('024 Guerrero: the AAA cameo is kept but not reached; A -> High-A -> AA stands; status AA; no backward sequence', async () => {
+  const pr = byEvent(await progressionOf('eduardo-guerrero'))
+  assert.deepEqual([pr.AAA_DEBUT.first_date, pr.AAA_DEBUT.progression_role, pr.AAA_DEBUT.dev_date, pr.AAA_DEBUT.state],
+    ['2024-08-03', 'EARLY_CAMEO', null, 'NOT_REACHED'])
+  assert.deepEqual([pr.A_DEBUT.dev_date, pr.HIGH_A_DEBUT.dev_date, pr.AA_DEBUT.dev_date], ['2024-08-06', '2025-04-05', '2025-08-15'])
+  assert.ok([pr.A_DEBUT, pr.HIGH_A_DEBUT, pr.AA_DEBUT].every((r) => r.state === 'REACHED'))
+  const s = await summaryOf('eduardo-guerrero')
+  assert.deepEqual([s.current_development_status, s.current_development_season, s.highest_affiliated_level], ['AA', 2025, 'AAA'],
+    'status is developmental; highest_affiliated_level still shows the cameo')
+  assert.deepEqual([s.days_a_to_high_a_exact, s.days_a_to_aa_exact, s.days_high_a_to_aa_exact, s.days_signing_to_aaa_exact, s.days_aa_to_aaa_exact],
+    [242, 374, 132, null, null])
+})
+
+test('024 reviewed later arrivals: Martinus, Brito and Perez development intervals use the reviewed arrival', async () => {
+  const m = await summaryOf('mairoshendrick-martinus')
+  assert.deepEqual([m.dev_high_a_date.toISOString().slice(0, 10), m.dev_high_a_state, m.dev_high_a_role], ['2026-08-02', 'REACHED', 'EARLY_CAMEO'])
+  assert.deepEqual([m.days_signing_to_high_a_exact, m.days_a_to_high_a_exact], [1660, 451])
+  // the Low-A development between the cameo and the arrival is preserved
+  const lowA = await one(`select sum(coalesce(s.g, s.pg))::int as g from player_season_stints s join players p on p.id = s.player_id
+    where p.slug = 'mairoshendrick-martinus' and s.level = 'LOW_A' and s.stint_kind = 'TEAM_STINT'`)
+  assert.equal(lowA.g, 184)
+  const b = await summaryOf('ronny-brito')
+  assert.deepEqual([b.dev_high_a_date.toISOString().slice(0, 10), b.days_a_to_high_a_exact], ['2021-05-04', 690])
+  const j = await summaryOf('jeral-perez')
+  assert.deepEqual([j.first_a_date.toISOString().slice(0, 10), j.dev_a_date.toISOString().slice(0, 10)], ['2023-04-20', '2024-04-05'])
+  assert.deepEqual([j.days_signing_to_a_exact, j.days_a_to_high_a_exact, j.days_a_to_aa_exact], [811, 364, 728])
+})
+
+test('024 REVIEW_REQUIRED stays unknown: every unresolved level of an ambiguous sequence is UNRESOLVED (never REACHED, NOT_REACHED or SKIPPED) and its metrics are NULL', async () => {
+  const pending = [['carlos-frias', 'A_DEBUT'], ['carlos-frias', 'HIGH_A_DEBUT'],
+    ['carlos-avila', 'A_DEBUT'], ['carlos-avila', 'AA_DEBUT'], ['carlos-avila', 'AAA_DEBUT'],
+    ['christian-romero', 'AA_DEBUT'], ['christian-romero', 'AAA_DEBUT'],
+    ['nicolas-cruz', 'A_DEBUT'], ['nicolas-cruz', 'HIGH_A_DEBUT']]
+  const unresolved = await rows(`select player_slug, event_code from v_player_development_progression where development_state = 'UNRESOLVED' order by 1, 2`)
+  assert.deepEqual(unresolved.map((r) => [r.player_slug, r.event_code]).sort(), pending.slice().sort())
+  for (const [slug, event] of pending) {
+    const r = byEvent(await progressionOf(slug))[event]
+    assert.deepEqual([r.progression_role, r.review_status, r.dev_date, r.dev_season, r.state], ['REVIEW_REQUIRED', 'PENDING_REVIEW', null, null, 'UNRESOLVED'], slug)
+    assert.ok(r.first_date, `${slug} keeps its first appearance`)
+    const s = await summaryOf(slug)
+    assert.equal(s.progression_review_pending, true, slug)
+  }
+  const frias = await summaryOf('carlos-frias')
+  assert.deepEqual([frias.days_signing_to_a_exact, frias.days_signing_to_high_a_exact, frias.days_a_to_aa_exact, frias.days_a_to_high_a_exact, frias.days_high_a_to_aa_exact],
+    [null, null, null, null, null], 'never guessed')
+  const avila = await summaryOf('carlos-avila')
+  assert.deepEqual([avila.days_signing_to_aa_exact, avila.days_signing_to_aaa_exact, avila.days_aa_to_aaa_exact], [null, null, null])
+  const romero = await summaryOf('christian-romero')
+  assert.deepEqual([romero.days_signing_to_aa_exact, romero.days_signing_to_aaa_exact, romero.days_high_a_to_aa_exact, romero.days_aa_to_aaa_exact], [null, null, null, null])
+  const cruz = await summaryOf('nicolas-cruz')
+  assert.deepEqual([cruz.days_signing_to_a_exact, cruz.days_signing_to_high_a_exact], [null, null])
+})
+
+test('024 status is the highest unambiguously established level: pending milestones never count as reached nor invalidate a verified higher level; highest_affiliated_level still shows appearances', async () => {
+  const st = Object.fromEntries((await rows(`select s.player_slug, s.current_development_status as status, s.current_development_season as season,
+      s.highest_affiliated_level as highest, s.progression_review_pending as pending, s.development_status_note as note
+    from v_dodgers_player_development_summary s where s.player_slug in ('carlos-frias', 'carlos-avila', 'christian-romero', 'nicolas-cruz')`))
+    .map((r) => [r.player_slug, r]))
+  assert.deepEqual(['carlos-frias', 'carlos-avila', 'christian-romero', 'nicolas-cruz'].map((s) => [s, st[s].status, st[s].season, st[s].highest, st[s].pending]), [
+    ['carlos-frias', 'MLB', 2017, 'MLB', true], // verified MLB outcome; his pending levels are below it
+    ['carlos-avila', 'ROOKIE_LEVEL', 2025, 'AAA', true],
+    ['christian-romero', 'HIGH_A', 2025, 'AAA', true],
+    ['nicolas-cruz', 'ROOKIE_LEVEL', 2024, 'HIGH_A', true],
+  ])
+  assert.equal(st['carlos-avila'].note, 'Highest affiliated level reached: COMPLEX_ROOKIE (unambiguous); progression pending review: A_DEBUT, AA_DEBUT, AAA_DEBUT')
+  assert.equal(st['christian-romero'].note, 'Highest affiliated level reached: HIGH_A (unambiguous); progression pending review: AA_DEBUT, AAA_DEBUT')
+  assert.equal(st['nicolas-cruz'].note, 'Highest affiliated level reached: COMPLEX_ROOKIE (unambiguous); progression pending review: A_DEBUT, HIGH_A_DEBUT')
+})
+
+test('024 elapsed metrics: development intervals use developmental arrival, never negative, no inversion left', async () => {
+  const c = await one(`select count(days_signing_to_pro_debut_exact)::int as s_pro, count(days_signing_to_a_exact)::int as s_a,
+      count(days_signing_to_high_a_exact)::int as s_ha, count(days_signing_to_aa_exact)::int as s_aa,
+      count(days_signing_to_aaa_exact)::int as s_aaa, count(days_signing_to_mlb_exact)::int as s_mlb,
+      count(days_a_to_high_a_exact)::int as a_ha, count(days_a_to_aa_exact)::int as a_aa, count(days_high_a_to_aa_exact)::int as ha_aa,
+      count(days_aa_to_aaa_exact)::int as aa_aaa, count(days_aaa_to_mlb_exact)::int as aaa_mlb,
+      count(*) filter (where least(days_signing_to_a_exact, days_signing_to_high_a_exact, days_signing_to_aa_exact, days_signing_to_aaa_exact,
+        days_a_to_high_a_exact, days_a_to_aa_exact, days_high_a_to_aa_exact, days_aa_to_aaa_exact, days_aaa_to_mlb_exact) < 0)::int as negative
+    from v_dodgers_player_development_summary`)
+  assert.deepEqual([c.s_pro, c.s_a, c.s_ha, c.s_aa, c.s_aaa, c.s_mlb, c.a_ha, c.a_aa, c.ha_aa, c.aa_aaa, c.aaa_mlb, c.negative],
+    [146, 58, 26, 17, 4, 6, 34, 18, 17, 8, 1, 0])
+  // every exact interval equals the difference of the developmental arrivals it names
+  const bad = await one(`select count(*)::int as n from v_dodgers_player_development_summary
+    where days_a_to_high_a_exact is distinct from public.disi_development_days(dev_a_date, dev_high_a_date)
+       or days_aa_to_aaa_exact is distinct from public.disi_development_days(dev_aa_date, dev_aaa_date)
+       or days_signing_to_aaa_exact is distinct from public.disi_development_days(signing_date, dev_aaa_date)`)
+  assert.equal(bad.n, 0)
+  // with every arrival known, no interval would be negative: no reached pair runs backward
+  const inverted = await one(`select count(*)::int as n from v_player_development_progression lo
+    join v_player_development_progression hi on hi.player_id = lo.player_id and hi.progression_tier > lo.progression_tier
+    where lo.development_state = 'REACHED' and hi.development_state = 'REACHED'
+      and case when lo.developmental_arrival_date is not null and hi.developmental_arrival_date is not null
+               then lo.developmental_arrival_date > hi.developmental_arrival_date
+               else lo.developmental_arrival_season > hi.developmental_arrival_season end`)
+  assert.equal(inverted.n, 0)
+  // ...whereas raw first appearances still contain the reviewed inversions (raw history stays raw)
+  const raw = await one(`select count(distinct lo.player_id)::int as n from v_player_development_progression lo
+    join v_player_development_progression hi on hi.player_id = lo.player_id and hi.progression_tier > lo.progression_tier
+    where case when lo.first_appearance_date is not null and hi.first_appearance_date is not null
+               then lo.first_appearance_date > hi.first_appearance_date
+               else lo.first_appearance_season > hi.first_appearance_season end`)
+  assert.equal(raw.n, 14)
+  // first-appearance coverage is unchanged; the elapsed coverage now counts developmental intervals
+  const cov = await one('select * from v_dodgers_development_date_coverage')
+  assert.deepEqual([cov.exact_first_a, cov.exact_first_high_a, cov.exact_first_aa, cov.exact_first_aaa], [71, 36, 24, 15])
+  assert.deepEqual([cov.exact_signing_to_a, cov.exact_signing_to_aa, cov.exact_signing_to_aaa], [58, 17, 4])
+})
+
+test('024 status: highest level developmentally reached; highest_affiliated_level stays appearance-based', async () => {
+  const byStatus = Object.fromEntries((await rows(`select status::text, count(*)::int as n from player_development_status group by 1`)).map((r) => [r.status, r.n]))
+  assert.deepEqual(byStatus, { ROOKIE_LEVEL: 94, MLB: 47, A_BALL: 33, HIGH_A: 16, AAA: 7, AA: 14, OUT_OF_AFFILIATED_BASEBALL: 1 })
+  // every player whose status sits below the highest level they appeared at, and why
+  const moved = await rows(`select s.player_slug, s.current_development_status as status, s.highest_affiliated_level as highest
+    from v_dodgers_player_development_summary s
+    where s.current_development_status::text not in ('MLB', 'OUT_OF_AFFILIATED_BASEBALL', 'UNKNOWN', 'NOT_YET_DEBUTED')
+      and s.highest_affiliated_level is not null
+      and (case s.current_development_status::text when 'ROOKIE_LEVEL' then 2 when 'A_BALL' then 3 when 'HIGH_A' then 4 when 'AA' then 5 when 'AAA' then 6 end)
+        < (select l.progression_rank from development_levels l where l.level = s.highest_affiliated_level)
+    order by 1`)
+  assert.deepEqual(moved.map((r) => [r.player_slug, r.highest, r.status]), [
+    ['carlos-avila', 'AAA', 'ROOKIE_LEVEL'], // pending A / AA / AAA
+    ['christian-romero', 'AAA', 'HIGH_A'], // pending AA / AAA
+    ['eduardo-guerrero', 'AAA', 'AA'], // reviewed AAA cameo
+    ['eduardo-rojas', 'AAA', 'A_BALL'],
+    ['elio-campos', 'AAA', 'A_BALL'],
+    ['javier-herrera', 'AAA', 'A_BALL'],
+    ['nicolas-cruz', 'HIGH_A', 'ROOKIE_LEVEL'], // pending A / High-A
+    ['sean-linan', 'AAA', 'AA'],
+  ])
+})
+
+test('024 research queue: no uncovered inversion; level-skip cameo candidates are listed but never change analytics', async () => {
+  const issues = Object.fromEntries((await rows(`select issue, count(*)::int as n from v_dodgers_development_research_queue group by 1`)).map((r) => [r.issue, r.n]))
+  assert.equal(issues.NON_MONOTONIC_PROGRESSION, undefined)
+  assert.equal(issues.LEVEL_SKIP_CAMEO_CANDIDATE, 4)
+  assert.equal(Object.values(issues).reduce((a, b) => a + b, 0), 104)
+  const candidates = (await rows(`select player_slug from v_dodgers_development_research_queue where issue = 'LEVEL_SKIP_CAMEO_CANDIDATE' order by 1`)).map((r) => r.player_slug)
+  assert.deepEqual(candidates, ['agustin-acosta', 'domingo-geronimo', 'reyli-mariano', 'umar-male'])
+  // a candidate has no decision, so its 1-game AA appearance still counts as arrival until reviewed
+  for (const slug of candidates) {
+    const s = await summaryOf(slug)
+    assert.deepEqual([s.dev_aa_state, s.dev_aa_role], ['REACHED', null], slug)
+  }
+  // removing a decision re-exposes its inversion in the queue (inside a rolled-back transaction)
+  await db.transaction(async (tx) => {
+    await tx.query(`delete from development_progression_decisions where player_id = (select id from players where slug = 'eduardo-guerrero')`)
+    const q = (await tx.query(`select issue from v_dodgers_development_research_queue where player_slug = 'eduardo-guerrero' and issue = 'NON_MONOTONIC_PROGRESSION'`)).rows
+    assert.equal(q.length, 1)
+    await tx.rollback()
+  })
+})
+
+test('024 ladder: FOREIGN_PRO and OTHER are never on it; every ladder player has one row per level', async () => {
+  const levels = (await rows(`select distinct level from v_player_development_progression order by 1`)).map((r) => r.level)
+  assert.deepEqual(levels, ['AA', 'AAA', 'COMPLEX_ROOKIE', 'HIGH_A', 'INTERNATIONAL_ROOKIE', 'LOW_A', 'MLB'])
+  const shape = await one(`select count(*)::int as n, count(distinct player_id)::int as players from v_player_development_progression`)
+  assert.deepEqual([shape.n, shape.players], [172 * 7, 172])
+  // Lenix Osuna's Mexican League seasons create no ladder level
+  const osuna = byEvent(await progressionOf('lenix-osuna'))
+  assert.equal(osuna.AAA_DEBUT.first_date, null)
+})
+
+test('024 security: the decisions table has RLS and SELECT-only grants; the progression view is security_invoker; anon cannot write', async () => {
+  const t = await one(`select relrowsecurity as rls from pg_class where relname = 'development_progression_decisions'`)
+  assert.equal(t.rls, true)
+  const v = await one(`select coalesce(reloptions::text, '') as opts from pg_class where relname = 'v_player_development_progression' and relkind = 'v'`)
+  assert.match(v.opts, /security_invoker=(true|on)/)
+  const grants = await rows(`select table_name, grantee, string_agg(privilege_type, ',' order by privilege_type) as privs
+    from information_schema.role_table_grants where grantee in ('anon', 'authenticated')
+      and table_name in ('development_progression_decisions', 'v_player_development_progression', 'v_dodgers_player_development_summary', 'v_dodgers_development_research_queue')
+    group by 1, 2`)
+  assert.equal(grants.length, 8)
+  assert.ok(grants.every((g) => g.privs === 'SELECT'), JSON.stringify(grants))
+  await db.transaction(async (tx) => {
+    await tx.query('set local role anon')
+    const n = (await tx.query(`select count(*)::int as n from development_progression_decisions`)).rows[0].n
+    assert.equal(n, 20)
+    const states = (await tx.query(`select count(*)::int as n from v_player_development_progression where development_state = 'UNRESOLVED'`)).rows[0].n
+    assert.equal(states, 9)
+    await assert.rejects(() => tx.query(`delete from development_progression_decisions`), /permission denied/)
+    await tx.rollback()
+  })
+})
+
+test('024 cohort views: the 021 reached_* columns stay first appearances (documented); developmental counts are appended', async () => {
+  const cls = await one(`select sum(reached_aaa)::int as appeared_aaa, sum(developmentally_reached_aaa)::int as dev_aaa,
+      sum(reached_aa)::int as appeared_aa, sum(developmentally_reached_aa)::int as dev_aa,
+      sum(progression_review_pending_players)::int as pending
+    from v_dodgers_development_by_signing_class`)
+  // the developmental counts drop by exactly the cameo / pending AAA and AA players among Dodgers signings
+  const expected = await one(`select count(*) filter (where s.dev_aaa_state = 'REACHED')::int as dev_aaa,
+      count(*) filter (where s.first_aaa_date is not null or s.first_aaa_season is not null)::int as appeared_aaa,
+      count(*) filter (where s.dev_aa_state = 'REACHED')::int as dev_aa,
+      count(*) filter (where s.progression_review_pending)::int as pending
+    from v_dodgers_player_development_summary s
+    where s.player_id in (select sg.player_id from signings sg join organizations o on o.id = sg.organization_id where o.franchise_key = 'DODGERS')`)
+  assert.deepEqual([cls.appeared_aaa, cls.dev_aaa, cls.dev_aa, cls.pending], [expected.appeared_aaa, expected.dev_aaa, expected.dev_aa, expected.pending])
+  assert.ok(cls.dev_aaa < cls.appeared_aaa, 'cameo and pending AAA appearances are not developmental arrivals')
+  assert.equal(cls.pending, 4)
+  for (const view of ['v_dodgers_development_by_market', 'v_dodgers_development_by_bonus_band']) {
+    const r = await one(`select sum(developmentally_reached_aaa)::int as dev_aaa, sum(progression_review_pending_players)::int as pending from ${view}`)
+    assert.deepEqual([r.dev_aaa, r.pending], [cls.dev_aaa, 4], view)
+  }
+  const comment = await one(`select col_description('public.v_dodgers_development_by_signing_class'::regclass,
+    (select attnum from pg_attribute where attrelid = 'public.v_dodgers_development_by_signing_class'::regclass and attname = 'reached_aaa')) as c`)
+  assert.match(comment.c, /FIRST APPEARANCE/)
 })

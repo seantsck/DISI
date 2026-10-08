@@ -5,7 +5,7 @@
 // a query function (PGlite for the local canonical chain, or a pg client
 // connected with a URL from an environment variable).
 //
-// Hard invariants are the byte-stable state of the canonical 001→023 chain
+// Hard invariants are the byte-stable state of the canonical 001→024 chain
 // (seeded populations, migration-built rows, schema security properties).
 // Informational metrics are research-coverage numbers that may legitimately
 // move as research progresses; they are reported but never fail the run.
@@ -15,7 +15,7 @@
 // migration that legitimately changes a hard invariant must update
 // CANONICAL_EXPECTATIONS in the same commit as that migration.
 
-/** Canonical 001→023 (DISI v0.14) expected state. */
+/** Canonical 001→024 (DISI v0.15) expected state. */
 export const CANONICAL_EXPECTATIONS = {
   // population (seeded by 002/012/013/016/019 and surfaced by v_database_status)
   players_total: 268,
@@ -44,14 +44,28 @@ export const CANONICAL_EXPECTATIONS = {
   mlb_debut_players: 7,
   organization_change_milestones: 18,
   aa_debut_milestones: 25,
+  // 024: status is the highest unambiguously established developmental level;
+  // pending milestones do not count as reached and do not invalidate a
+  // separately verified higher level (Frias stays MLB). Five reviewed early
+  // cameos move (Guerrero and Linan AAA -> AA; Herrera, Rojas and Campos AAA ->
+  // A_BALL), as do Avila AAA -> ROOKIE_LEVEL, Romero AAA -> HIGH_A and Cruz
+  // HIGH_A -> ROOKIE_LEVEL.
   development_status: {
-    ROOKIE_LEVEL: 92,
+    ROOKIE_LEVEL: 94,
     MLB: 47,
-    A_BALL: 30,
+    A_BALL: 33,
     HIGH_A: 16,
-    AAA: 14,
-    AA: 12,
+    AAA: 7,
+    AA: 14,
     OUT_OF_AFFILIATED_BASEBALL: 1,
+  },
+  // progression decisions (024): reviewed interpretation of first appearances
+  progression_decisions: 20,
+  progression_decisions_pending: 9,
+  progression_roles: {
+    EARLY_CAMEO: 8,
+    POST_ESTABLISHMENT_APPEARANCE: 3,
+    REVIEW_REQUIRED: 9,
   },
   // integrity
   duplicate_stint_groups: 0,
@@ -62,6 +76,8 @@ export const CANONICAL_EXPECTATIONS = {
   season_total_sum_mismatch: 0,
   augusta_2021plus_non_braves: 0,
   vancouver_2011plus_non_bluejays: 0,
+  developmental_inversion_players: 0,
+  decision_milestone_mismatch: 0,
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -69,6 +85,7 @@ export const CANONICAL_EXPECTATIONS = {
     'development_levels',
     'development_level_era_map',
     'development_event_codes',
+    'development_progression_decisions',
   ],
   development_views: [
     'v_dodgers_player_development_summary',
@@ -80,6 +97,7 @@ export const CANONICAL_EXPECTATIONS = {
     'v_dodgers_development_research_queue',
     'v_dodgers_development_coverage',
     'v_dodgers_development_date_coverage',
+    'v_player_development_progression',
   ],
 }
 
@@ -170,6 +188,17 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const expectedTotal = Object.values(expectations.development_status).reduce((sum, n) => sum + n, 0)
   check('status', 'development_status_total', expectedTotal, statusTotal)
 
+  // -- progression decisions (024) -------------------------------------------
+  const roleRows = await query(`select progression_role as role, count(*)::int as n,
+      count(*) filter (where review_status = 'PENDING_REVIEW')::int as pending
+    from development_progression_decisions group by 1 order by 1`)
+  check('progression', 'progression_decisions', expectations.progression_decisions,
+    roleRows.reduce((sum, r) => sum + Number(r.n), 0))
+  check('progression', 'progression_decisions_pending', expectations.progression_decisions_pending,
+    roleRows.reduce((sum, r) => sum + Number(r.pending), 0))
+  check('progression', 'progression_roles', expectations.progression_roles,
+    Object.fromEntries(roleRows.map((r) => [r.role, r.n])))
+
   // -- integrity -------------------------------------------------------------
   const [duplicates] = await query(`select count(*)::int as n from (
       select player_id, season, level, coalesce(affiliate_team, '') as affiliate, coalesce(league_name, '') as league
@@ -223,6 +252,21 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
     where s.affiliate_team = 'Vancouver Canadians' and s.season >= 2011
       and not exists (select 1 from organizations o where o.id = s.organization_id and o.name = 'Toronto Blue Jays')`)
   check('integrity', 'vancouver_2011plus_non_bluejays', expectations.vancouver_2011plus_non_bluejays, vancouver.n)
+
+  // 024: developmental arrivals never run backward (any player, not just the
+  // Dodgers queue), and every decision points at its own player's milestone.
+  const [inversions] = await query(`select count(distinct lo.player_id)::int as n
+    from v_player_development_progression lo
+    join v_player_development_progression hi on hi.player_id = lo.player_id and hi.progression_tier > lo.progression_tier
+    where lo.development_state = 'REACHED' and hi.development_state = 'REACHED'
+      and case when lo.developmental_arrival_date is not null and hi.developmental_arrival_date is not null
+               then lo.developmental_arrival_date > hi.developmental_arrival_date
+               else lo.developmental_arrival_season > hi.developmental_arrival_season end`)
+  check('integrity', 'developmental_inversion_players', expectations.developmental_inversion_players, inversions.n)
+  const [mismatch024] = await query(`select count(*)::int as n from development_progression_decisions d
+    where not exists (select 1 from development_milestones m
+      where m.id = d.milestone_id and m.player_id = d.player_id and m.event_code = d.event_code)`)
+  check('integrity', 'decision_milestone_mismatch', expectations.decision_milestone_mismatch, mismatch024.n)
 
   // -- security --------------------------------------------------------------
   const objects = [...expectations.development_base_tables, ...expectations.development_views]

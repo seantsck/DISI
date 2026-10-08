@@ -65,7 +65,7 @@ export default async function DevelopmentPage() {
         <section className="timeline-panel section-gap">
           <div className="table-head">
             <div><span className="eyebrow">Tracked cohort</span><h2>By signing class</h2></div>
-            <span className="micro-note">Reach counts include season-only evidence; medians need two exact dates</span>
+            <span className="micro-note">Reached = developmental arrival after reviewed progression decisions (cameos and pending reviews are not counted); medians need two exact dates</span>
           </div>
           <table className="compact-table">
             <thead><tr>
@@ -78,10 +78,10 @@ export default async function DevelopmentPage() {
               <tr key={r.signing_year}>
                 <td>{r.signing_year}</td>
                 <td className="num">{r.tracked_players}</td>
-                <td className="num">{r.reached_a}</td>
-                <td className="num">{r.reached_high_a}</td>
-                <td className="num">{r.reached_aa}</td>
-                <td className="num">{r.reached_aaa}</td>
+                <td className="num">{r.developmentally_reached_a ?? MISSING}</td>
+                <td className="num">{r.developmentally_reached_high_a ?? MISSING}</td>
+                <td className="num">{r.developmentally_reached_aa ?? MISSING}</td>
+                <td className="num">{r.developmentally_reached_aaa ?? MISSING}</td>
                 <td className="num">{r.reached_mlb}</td>
                 <td className="num">{r.median_years_signing_to_aa_exact == null ? MISSING : num(r.median_years_signing_to_aa_exact, 2)}</td>
                 <td className="num">{r.years_signing_to_aa_n}</td>
@@ -90,7 +90,7 @@ export default async function DevelopmentPage() {
               </tr>
             ))}</tbody>
           </table>
-          <p className="muted small-note">Counts describe the tracked players in each class, not the full signing period. Medians cover only the subset with both endpoint dates; the n columns say how many.</p>
+          <p className="muted small-note">Counts describe the tracked players in each class, not the full signing period. A brief cameo or an appearance still under progression review is a first appearance, not a reached level. Medians cover only the subset with both endpoint dates; the n columns say how many.</p>
         </section>
 
         <div className="dossier-grid section-gap">
@@ -102,8 +102,8 @@ export default async function DevelopmentPage() {
                 <tr key={r.country_market ?? 'unknown'}>
                   <td>{r.country_market ?? <span className="unknown">Unknown market</span>}</td>
                   <td className="num">{r.tracked_players}</td>
-                  <td className="num">{r.aa_reach_count}</td>
-                  <td className="num">{r.aaa_reach_count}</td>
+                  <td className="num">{r.developmentally_reached_aa ?? MISSING}</td>
+                  <td className="num">{r.developmentally_reached_aaa ?? MISSING}</td>
                   <td className="num">{r.mlb_reach_count}</td>
                   <td className="num">{r.median_signing_age == null ? MISSING : num(r.median_signing_age, 1)}</td>
                 </tr>
@@ -119,8 +119,8 @@ export default async function DevelopmentPage() {
                 <tr key={r.bonus_band}>
                   <td>{r.bonus_band}</td>
                   <td className="num">{r.tracked_players}</td>
-                  <td className="num">{r.reached_aa}</td>
-                  <td className="num">{r.reached_aaa}</td>
+                  <td className="num">{r.developmentally_reached_aa ?? MISSING}</td>
+                  <td className="num">{r.developmentally_reached_aaa ?? MISSING}</td>
                   <td className="num">{r.reached_mlb}</td>
                   <td className="num">{r.median_years_signing_to_mlb == null ? MISSING : num(r.median_years_signing_to_mlb, 2)}</td>
                 </tr>

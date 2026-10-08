@@ -1,5 +1,5 @@
 // Offline tests for scripts/db/lib/invariants.mjs against the canonical
-// 001→023 PGlite chain. No live Supabase access is involved.
+// 001→024 PGlite chain. No live Supabase access is involved.
 //
 // Drift conditions are simulated inside transactions that are rolled back, so
 // the shared chain stays pristine for every scenario.
@@ -30,12 +30,12 @@ async function withDrift(driftSql) {
   }
 }
 
-test('clean canonical 001→023 state passes every hard invariant', async () => {
+test('clean canonical 001→024 state passes every hard invariant', async () => {
   const report = await runChecks()
   assert.deepEqual(failedChecks(report).map((c) => c.name), [])
-  // population 4 + development 17 + status 2 + integrity 8 + privileges 14
-  // + rls 5 + security_invoker 9
-  assert.ok(report.hard.length >= 55, `expected a full battery, got ${report.hard.length}`)
+  // population 4 + development 17 + status 2 + progression 3 + integrity 10
+  // + privileges 16 + rls 6 + security_invoker 10
+  assert.ok(report.hard.length >= 68, `expected a full battery, got ${report.hard.length}`)
   // informational coverage numbers are reported but never fail
   assert.ok(report.info.length >= 3)
 })
@@ -136,5 +136,33 @@ test('023 drift: an untagged team-less row, a broken season total and a reverted
     where affiliate_team = 'Vancouver Canadians' and season = 2019;
   `)
   assert.deepEqual(failedChecks(reverted).map((c) => c.name).sort(), ['augusta_2021plus_non_braves', 'vancouver_2011plus_non_bluejays'])
+  assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
+})
+
+test('024 drift: a missing decision, an altered role and a borrowed milestone each fail their checks', async () => {
+  // a reviewed decision deleted: its counts move and the inversion it covered returns
+  const missing = await withDrift(`
+    delete from public.development_progression_decisions
+    where player_id = (select id from public.players where slug = 'eduardo-guerrero');
+  `)
+  assert.deepEqual(failedChecks(missing).map((c) => c.name).sort(),
+    ['developmental_inversion_players', 'progression_decisions', 'progression_roles'])
+  // a pending review silently turned into a reviewed decision
+  const altered = await withDrift(`
+    update public.development_progression_decisions
+    set progression_role = 'DEVELOPMENTAL_ARRIVAL', review_status = 'REVIEWED'
+    where player_id = (select id from public.players where slug = 'carlos-frias');
+  `)
+  assert.deepEqual(failedChecks(altered).map((c) => c.name).sort(),
+    ['developmental_inversion_players', 'progression_decisions_pending', 'progression_roles'])
+  // a decision pointing at another player's milestone (the composite key relaxed inside the transaction)
+  const borrowed = await withDrift(`
+    alter table public.development_progression_decisions drop constraint development_progression_decisions_milestone_fkey;
+    update public.development_progression_decisions
+    set milestone_id = (select m.id from public.development_milestones m join public.players p on p.id = m.player_id
+                        where p.slug = 'sean-linan' and m.event_code = 'AAA_DEBUT')
+    where player_id = (select id from public.players where slug = 'eduardo-guerrero');
+  `)
+  assert.deepEqual(failedChecks(borrowed).map((c) => c.name), ['decision_milestone_mismatch'])
   assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
 })

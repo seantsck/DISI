@@ -32,6 +32,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 21. `021_player_development_history.sql` — development-history dataset: stints, extended milestones, derived metrics, development status and research views (details below; research in `database/research/021/`).
 22. `022_player_development_exact_dates.sql` — exact game-log dates for development milestones and stints (research in `database/research/022/`).
 23. `023_development_stint_integrity.sql` — season-total stints classified and excluded from additive analytics, team-stint-only status and research queue, two affiliation corrections (details below; research in `database/research/023/`).
+24. `024_development_progression_decisions.sql` — reviewed progression decisions separating first appearance from developmental arrival; developmental elapsed metrics and status (details below; research in `database/research/024/`).
 
 ## 017 research-database layer
 
@@ -95,6 +96,14 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Status is still appearance-based.** Edgar León's cross-level 2026 rookie total no longer reads as unaffiliated play (`OUT_OF_AFFILIATED_BASEBALL` → `A_BALL`). Developmental-arrival semantics (cameos, post-establishment appearances) are a separate, later migration.
 - **Organization corrections.** Augusta GreenJackets 2021+ → Atlanta Braves and Vancouver Canadians 2011+ → Toronto Blue Jays (Elio Campos 2025, Ronny Brito 2019 changed); raw affiliate names are preserved and the legitimate `ORGANIZATION_CHANGE` milestones are untouched.
 - **Rerunnable**; research and reproduction steps in `database/research/023/README.md`.
+
+## 024 development progression decisions
+
+- **First appearance vs developmental arrival.** Every `*_DEBUT` milestone stays the first recorded appearance at a level. `development_progression_decisions` (one reviewed row per player and level event, tied to that milestone by a composite foreign key) says how the appearance counts as development: no row (it is the arrival), `DEVELOPMENTAL_ARRIVAL`, `EARLY_CAMEO` (arrival is a reviewed later date or not yet reached), `POST_ESTABLISHMENT_APPEARANCE` (skipped) or `REVIEW_REQUIRED` (unknown, never guessed). 20 rows: 11 reviewed decisions and 9 pending events (every unresolved level of four ambiguous sequences).
+- **Derivation.** `v_player_development_progression` gives, per player and ladder level, the first appearance, the decision, the developmental arrival and a state (`REACHED`, `SKIPPED`, `NOT_REACHED`, `UNRESOLVED`). Skipped is derived, never stored. FOREIGN_PRO is never on the ladder.
+- **Analytics.** Summary `first_*` / `age_at_first_*` columns stay literal; elapsed development metrics use developmental arrival and `dev_*` columns are appended. `player_development_status.status` is the highest unambiguously established developmental level: pending milestones do not count as reached and do not invalidate a separately verified higher level (the status note names them); `highest_affiliated_level` stays the highest level ever appeared at. The cohort views keep their 021 `reached_*` columns as documented first-appearance counts and append `developmentally_reached_*`.
+- **Candidates are not decisions.** The research queue lists `NON_MONOTONIC_PROGRESSION` (developmental inversions no decision covers; 0) and `LEVEL_SKIP_CAMEO_CANDIDATE` (heuristic 1–2 game skips; 4). A candidate never changes analytics until a reviewed decision exists.
+- **Rerunnable**; evidence and reproduction steps in `database/research/024/README.md`.
 
 ## Player identity (020)
 

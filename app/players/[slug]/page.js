@@ -270,19 +270,20 @@ export default async function PlayerPage({ params }) {
         <h2>Development</h2>
         {devSummary && (
           <dl className="fact-grid wide">
-            <Fact label="Current development status (a classification, not a grade)">
+            <Fact label="Development level reached (a classification, not a grade)">
               {humanize(devSummary.current_development_status)}
               {devSummary.current_development_season ? <span className="muted"> · last recorded season {devSummary.current_development_season}</span> : null}
+              {devSummary.progression_review_pending ? <span className="muted"> · progression review pending</span> : null}
             </Fact>
-            <Fact label="Highest affiliated level">
+            <Fact label="Highest affiliated level appeared at">
               {devSummary.highest_affiliated_level ? humanize(devSummary.highest_affiliated_level) : <span className="unknown">{UNKNOWN}</span>}
             </Fact>
-            <Fact label="First Double-A">
+            <Fact label="First Double-A appearance">
               {devSummary.first_aa_date ? <>{dateLabel(devSummary.first_aa_date)} <span className="muted">(exact date)</span></>
                 : devSummary.first_aa_season != null ? <>{devSummary.first_aa_season} <span className="muted">(season recorded; exact date not recorded)</span></>
                 : <span className="unknown">{UNKNOWN}</span>}
             </Fact>
-            <Fact label="First Triple-A">
+            <Fact label="First Triple-A appearance">
               {devSummary.first_aaa_date ? <>{dateLabel(devSummary.first_aaa_date)} <span className="muted">(exact date)</span></>
                 : devSummary.first_aaa_season != null ? <>{devSummary.first_aaa_season} <span className="muted">(season recorded; exact date not recorded)</span></>
                 : <span className="unknown">{UNKNOWN}</span>}
