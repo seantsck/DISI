@@ -1,5 +1,5 @@
 // Offline tests for scripts/db/lib/invariants.mjs against the canonical
-// 001→022 PGlite chain. No live Supabase access is involved.
+// 001→023 PGlite chain. No live Supabase access is involved.
 //
 // Drift conditions are simulated inside transactions that are rolled back, so
 // the shared chain stays pristine for every scenario.
@@ -30,12 +30,12 @@ async function withDrift(driftSql) {
   }
 }
 
-test('clean canonical 001→022 state passes every hard invariant', async () => {
+test('clean canonical 001→023 state passes every hard invariant', async () => {
   const report = await runChecks()
   assert.deepEqual(failedChecks(report).map((c) => c.name), [])
-  // population 4 + development 11 + status 2 + integrity 4 + privileges 14
+  // population 4 + development 17 + status 2 + integrity 8 + privileges 14
   // + rls 5 + security_invoker 9
-  assert.ok(report.hard.length >= 45, `expected a full battery, got ${report.hard.length}`)
+  assert.ok(report.hard.length >= 55, `expected a full battery, got ${report.hard.length}`)
   // informational coverage numbers are reported but never fail
   assert.ok(report.info.length >= 3)
 })
@@ -59,10 +59,11 @@ test('a duplicate stint row fails the duplicate-group check', async () => {
     update stints_dup set id = gen_random_uuid();
     insert into public.player_season_stints select * from stints_dup;
   `)
-  // the extra row both duplicates a stint group and moves the row count off 828
+  // the extra row duplicates a stint group and moves both the raw (828) and
+  // effective team-stint (772) counts
   assert.deepEqual(
     failedChecks(report).map((c) => c.name).sort(),
-    ['duplicate_stint_groups', 'stints']
+    ['duplicate_stint_groups', 'stints', 'team_stints']
   )
   assert.equal(failedChecks(report).find((c) => c.name === 'duplicate_stint_groups').actual, 1)
   // the rollback restored the canonical state
@@ -109,5 +110,31 @@ test('the exit contract: the verifier exits non-zero when a hard invariant fails
   } finally {
     await chain.db.exec('rollback;')
   }
+  assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
+})
+
+test('023 drift: an untagged team-less row, a broken season total and a reverted affiliation each fail exactly their checks', async () => {
+  // a season total reverted to TEAM_STINT: it is team-less, and the counts move
+  const untagged = await withDrift(`
+    update public.player_season_stints set stint_kind = 'TEAM_STINT', season_total_basis = null
+    where id = (select id from public.player_season_stints where stint_kind = 'SEASON_TOTAL' and season_total_basis = 'SAME_LEVEL' limit 1);
+  `)
+  assert.deepEqual(failedChecks(untagged).map((c) => c.name).sort(),
+    ['season_total_same_level', 'season_total_stints', 'team_stints', 'undated_log_era_stints', 'untagged_aggregate_rows'])
+  // a season total whose games no longer equal its components
+  const broken = await withDrift(`
+    update public.player_season_stints set g = g + 1
+    where id = (select id from public.player_season_stints where stint_kind = 'SEASON_TOTAL' and g is not null and season_total_basis = 'SAME_LEVEL' limit 1);
+  `)
+  assert.deepEqual(failedChecks(broken).map((c) => c.name), ['season_total_sum_mismatch'])
+  assert.equal(failedChecks(broken)[0].actual, 1)
+  // the corrected affiliations reverting to the old rule
+  const reverted = await withDrift(`
+    update public.player_season_stints set organization_id = (select id from public.organizations where name = 'San Francisco Giants')
+    where affiliate_team = 'Augusta GreenJackets';
+    update public.player_season_stints set organization_id = null
+    where affiliate_team = 'Vancouver Canadians' and season = 2019;
+  `)
+  assert.deepEqual(failedChecks(reverted).map((c) => c.name).sort(), ['augusta_2021plus_non_braves', 'vancouver_2011plus_non_bluejays'])
   assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
 })

@@ -1,7 +1,7 @@
 // Read-only drift verifier for the DISI research database.
 //
 // Usage:
-//   node scripts/db/verify-live-invariants.mjs                 # local canonical 001→022 chain (PGlite)
+//   node scripts/db/verify-live-invariants.mjs                 # local canonical 001→023 chain (PGlite)
 //   DISI_VERIFY_DB_URL=postgresql://... node scripts/db/verify-live-invariants.mjs   # live database
 //
 // The connection URL is read from DISI_VERIFY_DB_URL (falling back to
@@ -58,7 +58,7 @@ if (invokedDirectly) {
     const chain = await buildCanonicalChain()
     query = chain.query
     close = chain.close
-    mode = 'local canonical 001→021 chain (PGlite)'
+    mode = 'local canonical 001→023 chain (PGlite)'
   }
 
   try {

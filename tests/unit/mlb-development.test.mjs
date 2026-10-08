@@ -6,7 +6,7 @@ import assert from 'node:assert/strict'
 import {
   LEVEL_TAXONOMY, classifyLevel, eraFor, parseInningsPitched, statDecimal, ageAtSeasonStart,
   resolveOrganization, buildAffiliations, dodgersAffiliationRules, distillStints,
-  buildMilestoneCandidates, sqlValue, sqlRow, Json,
+  buildMilestoneCandidates, classifySeasonTotals, sqlValue, sqlRow, Json,
 } from '../../scripts/mlb/lib/development.mjs'
 import { normalizeSeasonSplits } from '../../scripts/mlb/lib/normalize.mjs'
 
@@ -16,9 +16,9 @@ const affiliations = buildAffiliations(dodgersAffiliationRules())
  * A raw (pre-normalize) split with the optional fields present.
  * @template T
  * @param {T} over
- * @returns {T & { level: any, levelRank: any, games: any }}
+ * @returns {T & { level: any, levelRank: any, games: any, seasonLabel: any, numTeams: any }}
  */
-const raw = (over) => ({ level: null, levelRank: null, games: null, ...over })
+const raw = (over) => ({ level: null, levelRank: null, games: null, seasonLabel: null, numTeams: null, ...over })
 
 const hit = (over = {}) => ({ group: 'hitting', stat: { gamesPlayed: 44, plateAppearances: 198, atBats: 167, hits: 46, baseOnBalls: 24, strikeOuts: 54, avg: '.275', obp: '.376', slg: '.443', ops: '.819', age: 17 }, ...over })
 const pitch = (over = {}) => ({ group: 'pitching', stat: { gamesPlayed: 12, gamesStarted: 12, inningsPitched: '36.2', battersFaced: 155, hits: 38, runs: 19, earnedRuns: 13, baseOnBalls: 3, strikeOuts: 24, era: '3.19', whip: '1.12', age: 17 }, ...over })
@@ -189,4 +189,77 @@ test('sql helpers: unknown stays null, text escapes quotes, json wraps as jsonb'
   assert.equal(sqlValue("O'Brien"), "'O''Brien'")
   assert.equal(sqlValue(new Json({ a: 1 })), "'{\"a\":1}'::jsonb")
   assert.equal(sqlRow(['x', null, 5]), "('x',null,5)")
+})
+
+test('affiliation rules: Augusta is the Giants through 2020 and the Braves from 2021; Vancouver is Toronto from 2011', () => {
+  const org = (team, league, season) => resolveOrganization(team, league, season, affiliations).organization
+  assert.equal(org('Augusta GreenJackets', 'South Atlantic League', 2019), 'San Francisco Giants')
+  assert.equal(org('Augusta GreenJackets', 'South Atlantic League', 2020), 'San Francisco Giants')
+  assert.equal(org('Augusta GreenJackets', 'Carolina League', 2021), 'Atlanta Braves')
+  assert.equal(org('Augusta GreenJackets', 'Carolina League', 2025), 'Atlanta Braves')
+  for (const season of [2011, 2015, 2019, 2021, 2023]) {
+    assert.equal(org('Vancouver Canadians', 'Northwest League', season), 'Toronto Blue Jays', `Vancouver ${season}`)
+  }
+  assert.notEqual(org('Vancouver Canadians', 'Northwest League', 2019), 'Oakland Athletics')
+  assert.equal(org('Vancouver Canadians', 'Northwest League', 2010), null, 'no rule is invented before the verified period')
+})
+
+// -- season-total (aggregate) splits ------------------------------------------
+const stat = (g, pa, ab, h) => ({ gamesPlayed: g, plateAppearances: pa, atBats: ab, hits: h })
+const split = (season, sport, team, league, st, extra = {}) => ({
+  season, sport: { id: sport }, ...(team ? { team: { id: team.length * 100, name: team } } : {}), ...(league ? { league: { name: league } } : {}), stat: st, ...extra,
+})
+const distillHitting = (splits) => distillStints(
+  normalizeSeasonSplits({ stats: [{ group: { displayName: 'hitting' }, splits }] }), affiliations, {})
+const kinds = (stints) => stints.map((s) => `${s.teamName ?? 'TOTAL'}:${s.stintKind}:${s.seasonTotalBasis ?? '-'}`).sort()
+
+test('a team-less aggregate that equals its components is a SEASON_TOTAL; the basis names the relationship', () => {
+  // same level: two Low-A teams, one aggregate (numTeams 2)
+  const sameLevel = distillHitting([
+    split('2024', 14, 'Rancho Cucamonga Quakes', 'California League', stat(75, 300, 270, 70)),
+    split('2024', 14, 'Kannapolis Cannon Ballers', 'Carolina League', stat(30, 120, 110, 36)),
+    split('2024', 14, null, null, stat(105, 420, 380, 106), { numTeams: 2 }),
+  ])
+  assert.deepEqual(kinds(sameLevel), ['Kannapolis Cannon Ballers:TEAM_STINT:-', 'Rancho Cucamonga Quakes:TEAM_STINT:-', 'TOTAL:SEASON_TOTAL:SAME_LEVEL'])
+  // cross level: the rookie sport id covers a DSL and a complex-league team
+  const cross = distillHitting([
+    split('2019', 16, 'DSL LAD Bautista', 'Dominican Summer League', stat(13, 50, 45, 12)),
+    split('2019', 16, 'AZL Dodgers Mota', 'Arizona League', stat(36, 150, 130, 40)),
+    split('2019', 16, null, null, stat(49, 200, 175, 52), { numTeams: 2 }),
+  ])
+  assert.deepEqual(kinds(cross), ['AZL Dodgers Mota:TEAM_STINT:-', 'DSL LAD Bautista:TEAM_STINT:-', 'TOTAL:SEASON_TOTAL:CROSS_LEVEL'])
+  const rookieTotal = cross.find((s) => s.stintKind === 'SEASON_TOTAL')
+  assert.deepEqual([rookieTotal.level, rookieTotal.affiliated], ['OTHER', false], 'a team-less rookie total carries no league, so it stays unclassified rather than invented')
+})
+
+test('a split-season aggregate covering only some teams is a SUB_SEASON total; without the label it stays unresolved', () => {
+  const teams = (label) => [
+    split(label, 11, 'Diablos Rojos del Mexico', 'Mexican League', stat(2, 7, 6, 1)),
+    split(label, 11, 'Guerreros de Oaxaca', 'Mexican League', stat(5, 19, 17, 4)),
+    split('2018.2', 11, 'Generales de Durango', 'Mexican League', stat(21, 110, 100, 20)),
+    split(label, 11, null, 'Mexican League', stat(7, 26, 23, 5), { numTeams: 2 }),
+  ]
+  const sub = distillHitting(teams('2018.1'))
+  assert.deepEqual(kinds(sub), ['Diablos Rojos del Mexico:TEAM_STINT:-', 'Generales de Durango:TEAM_STINT:-', 'Guerreros de Oaxaca:TEAM_STINT:-', 'TOTAL:SEASON_TOTAL:SUB_SEASON'])
+  const total = sub.find((s) => s.stintKind === 'SEASON_TOTAL')
+  assert.deepEqual([total.level, total.affiliated], ['FOREIGN_PRO', false], 'the Mexican League stays FOREIGN_PRO')
+  // a plain season label gives no evidence that the aggregate is partial
+  assert.equal(distillHitting(teams('2018')).find((s) => s.teamName == null).stintKind, 'UNRESOLVED')
+})
+
+test('a team-less row is never assumed to be a total: no numTeams, wrong arithmetic or a missing component stays UNRESOLVED', () => {
+  const a = split('2024', 14, 'Team A', 'California League', stat(75, 300, 270, 70))
+  const b = split('2024', 14, 'Team B', 'Carolina League', stat(30, 120, 110, 36))
+  const noCount = distillHitting([a, b, split('2024', 14, null, null, stat(105, 420, 380, 106))])
+  assert.equal(noCount.find((s) => s.teamName == null).stintKind, 'UNRESOLVED', 'the source did not say it aggregates teams')
+  const off = distillHitting([a, b, split('2024', 14, null, null, stat(106, 420, 380, 106), { numTeams: 2 })])
+  assert.equal(off.find((s) => s.teamName == null).stintKind, 'UNRESOLVED', 'one game off is not a sum')
+  const lone = distillHitting([a, split('2024', 14, null, null, stat(75, 300, 270, 70), { numTeams: 2 })])
+  assert.equal(lone.find((s) => s.teamName == null).stintKind, 'UNRESOLVED', 'fewer components than numTeams')
+  const other = distillHitting([a, b, split('2024', 13, null, null, stat(105, 420, 380, 106), { numTeams: 2 })])
+  assert.equal(other.find((s) => s.teamName == null).stintKind, 'UNRESOLVED', 'components must share the aggregate\'s source level')
+  // ordinary team stints are TEAM_STINT, and the sport-21 minors aggregate is still never a stint
+  const plain = distillHitting([a, split('2024', 21, 'Minors Aggregate', 'Minors', stat(75, 300, 270, 70))])
+  assert.deepEqual(kinds(plain), ['Team A:TEAM_STINT:-'])
+  assert.deepEqual(classifySeasonTotals([]).length, 0)
 })

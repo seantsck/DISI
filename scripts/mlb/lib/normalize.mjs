@@ -165,6 +165,10 @@ export function normalizeSeasonSplits(response) {
       out.push({
         // Split-season leagues report seasons such as "2018.1"; keep the year.
         season: Number.parseInt(String(sp.season), 10),
+        // The raw label ("2018.1") and the aggregate team count are kept so a
+        // team-less aggregate split can be recognised, never guessed.
+        seasonLabel: String(sp.season),
+        numTeams: sp.numTeams ?? null,
         level: lvl.level,
         levelRank: lvl.rank,
         sportId,

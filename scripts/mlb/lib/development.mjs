@@ -262,7 +262,10 @@ export function dodgersAffiliationRules() {
     { teamName: 'Inland Empire 66ers', seasons: [2011, 2100], organization: 'Los Angeles Angels' },
     { teamName: 'Eugene Emeralds', seasons: [2018, 2100], organization: 'San Francisco Giants' },
     { teamName: 'San Jose Giants', seasons: [2010, 2100], organization: 'San Francisco Giants' },
-    { teamName: 'Augusta GreenJackets', seasons: [2018, 2100], organization: 'San Francisco Giants' },
+    // Augusta was a Giants affiliate through 2020; the Braves took over the Low-A
+    // affiliation when the 2021 player-development structure began.
+    { teamName: 'Augusta GreenJackets', seasons: [2018, 2020], organization: 'San Francisco Giants' },
+    { teamName: 'Augusta GreenJackets', seasons: [2021, 2100], organization: 'Atlanta Braves' },
     { teamName: 'Brooklyn Cyclones', seasons: [2010, 2100], organization: 'New York Mets' },
     { teamName: 'Binghamton Rumble Ponies', seasons: [2017, 2100], organization: 'New York Mets' },
     { teamName: 'Syracuse Mets', seasons: [2019, 2100], organization: 'New York Mets' },
@@ -281,8 +284,9 @@ export function dodgersAffiliationRules() {
     { teamName: 'Daytona Cubs', seasons: [2010, 2014], organization: 'Chicago Cubs' },
     { teamName: 'Salt Lake Bees', seasons: [2011, 2100], organization: 'Los Angeles Angels' },
     { teamName: 'New Orleans Zephyrs', seasons: [1999, 2016], organization: 'Houston Astros' },
-    { teamName: 'Vancouver Canadians', seasons: [2011, 2019], organization: 'Oakland Athletics' },
-    { teamName: 'Vancouver Canadians', seasons: [2021, 2100], organization: 'Toronto Blue Jays' },
+    // Vancouver has been Toronto's affiliate since 2011 (short-season A through
+    // 2019, High-A from 2021); the club was never Oakland's in this period.
+    { teamName: 'Vancouver Canadians', seasons: [2011, 2100], organization: 'Toronto Blue Jays' },
   ]
 }
 
@@ -356,6 +360,8 @@ export function distillStints(splits, affiliations, meta) {
       firstGameDate: null,
       lastGameDate: null,
       age: numOrNull(split.age),
+      numTeams: numOrNull(split.numTeams),
+      seasonLabel: split.seasonLabel ?? null,
       groups: [split.group],
       hitting: split.group === 'hitting' ? split : null,
       pitching: split.group === 'pitching' ? split : null,
@@ -369,7 +375,94 @@ export function distillStints(splits, affiliations, meta) {
     s.ageSeasonStart = ageAtSeasonStart(meta.birthDate, s.season)
     s.sources = (meta.sources ?? []).map((x) => x)
   }
+  classifySeasonTotals(stints)
   return stints.sort((a, b) => a.season - b.season || (a.levelRank ?? 99) - (b.levelRank ?? 99) || String(a.teamName).localeCompare(String(b.teamName)))
+}
+
+// ---------------------------------------------------------------------------
+// Season-total (aggregate) splits
+// ---------------------------------------------------------------------------
+
+const TOTAL_BATTING_KEYS = ['games', 'plateAppearances', 'atBats', 'hits', 'doubles', 'triples', 'homeRuns', 'walks', 'strikeouts', 'stolenBases', 'caughtStealing']
+const TOTAL_PITCHING_KEYS = ['games', 'gamesStarted', 'battersFaced', 'hitsAllowed', 'runs', 'earnedRuns', 'homeRunsAllowed', 'walks', 'strikeouts']
+
+const isTeamless = (s) => s.teamId == null && s.teamName == null
+const thirds = (ip) => (ip == null ? null : Math.round(ip * 3))
+
+/**
+ * True when every additive stat the total reports equals the components' sum (and at least one was compared).
+ * @param {any} total
+ * @param {any[]} parts
+ */
+function additivelyEqual(total, parts) {
+  let compared = 0
+  /** @type {Array<[string, string[]]>} */
+  const lines = [['batting', TOTAL_BATTING_KEYS], ['pitchingLine', TOTAL_PITCHING_KEYS]]
+  for (const [line, keys] of lines) {
+    if (!total[line]) continue
+    for (const key of keys) {
+      const value = total[line][key]
+      if (value == null) continue
+      if (value !== parts.reduce((n, p) => n + (p[line]?.[key] ?? 0), 0)) return false
+      compared++
+    }
+  }
+  if (total.pitchingLine?.inningsPitched != null) {
+    if (thirds(total.pitchingLine.inningsPitched) !== parts.reduce((n, p) => n + (thirds(p.pitchingLine?.inningsPitched) ?? 0), 0)) return false
+  }
+  return compared > 0
+}
+
+/**
+ * @param {any[]} items
+ * @param {number} size
+ * @param {number} [start]
+ * @param {any[]} [picked]
+ * @returns {Generator<any[]>}
+ */
+function* subsetsOfSize(items, size, start = 0, picked = []) {
+  if (picked.length === size) { yield [...picked]; return }
+  for (let i = start; i < items.length; i++) {
+    picked.push(items[i])
+    yield* subsetsOfSize(items, size, i + 1, picked)
+    picked.pop()
+  }
+}
+
+/**
+ * Classifies each distilled stint as TEAM_STINT, SEASON_TOTAL or UNRESOLVED.
+ *
+ * The MLB Stats API emits a team-less aggregate split (numTeams >= 2) when a
+ * player appears for several teams in one sport/league season. A team-less
+ * stint is a SEASON_TOTAL only when BOTH hold: the source says it aggregates
+ * numTeams teams, AND its additive stats equal the sum of exactly that many
+ * same-season team stints at the same source level. Anything else team-less is
+ * UNRESOLVED - never silently dropped, never silently counted as a team stint.
+ *   SAME_LEVEL   components share one canonical level, equal to the total's.
+ *   CROSS_LEVEL  components span several canonical levels (rookie-sport totals).
+ *   SUB_SEASON   a split-season label ("2018.1") whose components are a proper
+ *                subset of the player's team stints for the season.
+ * Mutates and returns `stints` (sets stintKind / seasonTotalBasis).
+ * @param {any[]} stints
+ */
+export function classifySeasonTotals(stints) {
+  for (const s of stints) { s.stintKind = 'TEAM_STINT'; s.seasonTotalBasis = null }
+  for (const total of stints) {
+    if (!isTeamless(total)) continue
+    total.stintKind = 'UNRESOLVED'
+    if (!(total.numTeams >= 2)) continue
+    const pool = stints.filter((p) => !isTeamless(p) && p.season === total.season && p.sourceLevel === total.sourceLevel)
+    if (pool.length < total.numTeams) continue
+    if (pool.length === total.numTeams && additivelyEqual(total, pool)) {
+      total.stintKind = 'SEASON_TOTAL'
+      total.seasonTotalBasis = pool.every((p) => p.level === total.level) ? 'SAME_LEVEL' : 'CROSS_LEVEL'
+    } else if (pool.length > total.numTeams && /\./.test(total.seasonLabel ?? '')) {
+      for (const subset of subsetsOfSize(pool, total.numTeams)) {
+        if (additivelyEqual(total, subset)) { total.stintKind = 'SEASON_TOTAL'; total.seasonTotalBasis = 'SUB_SEASON'; break }
+      }
+    }
+  }
+  return stints
 }
 
 /** The era a season belongs to, for historical handling. */

@@ -30,6 +30,8 @@ This folder preserves the SQL lineage behind the DISI research database.
 19. `019_mature_outcome_audit_expansion.sql` — evidence-based outcome audits, professional progress and outcome research views (details below; research in `database/research/019/`).
 20. `020_player_identity_and_biography_enrichment.sql` — external identifiers, biography with field-level provenance, position at signing, derived ages and identity research views (details below; research in `database/research/020/`).
 21. `021_player_development_history.sql` — development-history dataset: stints, extended milestones, derived metrics, development status and research views (details below; research in `database/research/021/`).
+22. `022_player_development_exact_dates.sql` — exact game-log dates for development milestones and stints (research in `database/research/022/`).
+23. `023_development_stint_integrity.sql` — season-total stints classified and excluded from additive analytics, team-stint-only status and research queue, two affiliation corrections (details below; research in `database/research/023/`).
 
 ## 017 research-database layer
 
@@ -83,6 +85,16 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Views** (all security_invoker): `v_dodgers_player_development_summary`, `v_player_development_stints`, `v_player_development_milestones`, `v_dodgers_development_by_signing_class`, `v_dodgers_development_by_market`, `v_dodgers_development_by_bonus_band`, `v_dodgers_development_research_queue`, `v_dodgers_development_coverage`. Reach counts accept any evidence (exact date or labelled season); median elapsed times are exact-date only, with n columns saying how many.
 - **Sources.** Every stint row cites the endpoints it was built from (`source_urls`, `source_id`, `retrieved_at`, `as_of_date`); sources are registered with `disi_infer_source_tier`, and rows already registered by 019/020 keep their metadata.
 - **Rerunnable**: inserts are on-conflict, conflicts are detected inside the reviewed artifact only, and a rerun changes nothing. See `database/research/021/README.md` for the pipeline, results and limitations.
+
+## 023 development stint integrity
+
+- **Raw rows vs team stints.** The MLB Stats API emits a team-less *season-total* split when a player appears for several teams in one sport season. 021 stored 56 of them (no affiliate, no team id) beside the team stints they sum, so summing `player_season_stints` double-counted 1,786 games. 023 adds `stint_kind` (`TEAM_STINT`, `SEASON_TOTAL`, `UNRESOLVED`) and `season_total_basis` (`SAME_LEVEL`, `CROSS_LEVEL`, `SUB_SEASON`) with CHECK constraints tying them together. No row is deleted: all 828 raw rows stay (772 `TEAM_STINT`, 56 `SEASON_TOTAL`, 0 `UNRESOLVED`), and a season total remains source evidence on the player page.
+- **Additive rule.** Sum or count stints **only** `WHERE stint_kind = 'TEAM_STINT'`. A `SEASON_TOTAL` may stand in only where no component team stints exist (none today). Non-additive facts (rates, age, league) are not changed by the classification.
+- **Proof, not assumption.** A team-less row is a season total only when its additive stats equal the sum of the player's same-season team stints at its source level (all of them, or an exact subset for a split-season label such as Lenix Osuna's 2018.1 Mexican League total). The migration re-proves this arithmetic and raises (rolling back) if any tagged total disagrees; `season_total_sum_mismatch` keeps checking it on a live database. A future team-less row that is not proven stays `UNRESOLVED`.
+- **Coverage and queue.** `undated_log_era_stints` now counts team stints only (60 → 4; the four are 2018 Mexican League source gaps, still undated). The research queue, coverage view, summary view and development status read team stints only. The inherited 021 `SEASON_GAP` check bound a bare `player_id` to the inner table and measured the whole table's season span (flagging 144 players); it is now scoped per player over distinct team-stint seasons (15 genuine gaps). `FOREIGN_PRO` clubs are organization-unmapped by design and no longer raise `UNRESOLVED_ORGANIZATION`.
+- **Status is still appearance-based.** Edgar León's cross-level 2026 rookie total no longer reads as unaffiliated play (`OUT_OF_AFFILIATED_BASEBALL` → `A_BALL`). Developmental-arrival semantics (cameos, post-establishment appearances) are a separate, later migration.
+- **Organization corrections.** Augusta GreenJackets 2021+ → Atlanta Braves and Vancouver Canadians 2011+ → Toronto Blue Jays (Elio Campos 2025, Ronny Brito 2019 changed); raw affiliate names are preserved and the legitimate `ORGANIZATION_CHANGE` milestones are untouched.
+- **Rerunnable**; research and reproduction steps in `database/research/023/README.md`.
 
 ## Player identity (020)
 

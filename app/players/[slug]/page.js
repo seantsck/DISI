@@ -314,24 +314,32 @@ export default async function PlayerPage({ params }) {
         ) : (
           <table className="compact-table">
             <thead><tr><th>Year</th><th className="num">Age</th><th>Organization</th><th>Team</th><th>League</th><th>Level</th><th className="num">Line</th><th>Game dates</th></tr></thead>
-            <tbody>{devStints.map((s) => (
-              <tr key={s.stint_id}>
+            <tbody>{devStints.map((s) => {
+              // A season total (migration 023) is the source's aggregate of this season's team rows:
+              // kept as provenance, labelled, and left out of additive analysis.
+              const isTotal = s.stint_kind === 'SEASON_TOTAL'
+              return (
+              <tr key={s.stint_id} className={isTotal ? 'muted' : undefined}>
                 <td>{s.season}</td>
                 <td className="num">{s.age_during_season ?? MISSING}</td>
-                <td>{s.organization_name ?? <span className="unknown">Unresolved</span>}</td>
-                <td>{s.affiliate_team ?? <span className="unknown">Not recorded</span>}</td>
+                <td>{s.organization_name ?? (isTotal ? MISSING : <span className="unknown">Unresolved</span>)}</td>
+                <td>{s.affiliate_team ?? (isTotal
+                  ? <span title="Aggregate of this season's team rows above and below; excluded from additive totals">Season total</span>
+                  : <span className="unknown">Not recorded</span>)}</td>
                 <td>{s.league_name ?? <span className="unknown">Not recorded</span>}</td>
                 <td>{levelCell(s)}</td>
                 <td className="num">{s.line_summary ?? MISSING}</td>
-                <td>{s.first_game_date ? <>{dateLabel(s.first_game_date)} – {dateLabel(s.last_game_date)}</> : <span className="unknown">None recorded</span>}</td>
+                <td>{s.first_game_date ? <>{dateLabel(s.first_game_date)} – {dateLabel(s.last_game_date)}</> : (isTotal ? MISSING : <span className="unknown">None recorded</span>)}</td>
               </tr>
-            ))}</tbody>
+              )
+            })}</tbody>
           </table>
         )}
         {devStints.length > 0 && (
           <p className="muted small-note">
             One row per team, league and level within a season. First/last game dates appear only where a dated
             game-level record supports them; season splits alone are never rendered as dates.
+            {devStints.some((s) => s.stint_kind === 'SEASON_TOTAL') && ' A “Season total” row is the source’s aggregate of that season’s team rows; it is shown for provenance and excluded from additive totals.'}
           </p>
         )}
         <h3 className="sub">Development milestones</h3>
