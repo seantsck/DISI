@@ -5,7 +5,7 @@
 // a query function (PGlite for the local canonical chain, or a pg client
 // connected with a URL from an environment variable).
 //
-// Hard invariants are the byte-stable state of the canonical 001→025 chain
+// Hard invariants are the byte-stable state of the canonical 001→026 chain
 // (seeded populations, migration-built rows, schema security properties).
 // Informational metrics are research-coverage numbers that may legitimately
 // move as research progresses; they are reported but never fail the run.
@@ -15,7 +15,7 @@
 // migration that legitimately changes a hard invariant must update
 // CANONICAL_EXPECTATIONS in the same commit as that migration.
 
-/** Canonical 001→025 (DISI v0.16) expected state. */
+/** Canonical 001→026 (DISI v0.17) expected state. */
 export const CANONICAL_EXPECTATIONS = {
   // population (seeded by 002/012/013/016/019 and surfaced by v_database_status)
   players_total: 268,
@@ -80,15 +80,42 @@ export const CANONICAL_EXPECTATIONS = {
   decision_milestone_mismatch: 0,
   // whole public API surface (025). Checked from the ACLs themselves
   // (aclexplode), so privileges information_schema omits (MAINTAIN) count too.
-  public_views_total: 86,
+  // 026 adds six tables (and drops the empty legacy evaluations table: 42 - 1 + 6) and five views.
+  public_views_total: 91,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 42,
+  public_tables_total: 47,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
   public_role_relation_grants: 0,
+  // scouting / evaluation history (026). Only the migration-built canonical state is pinned;
+  // research that adds evaluations later updates these numbers in the same commit.
+  scouting_publications: 3,
+  scouting_disi_research_publications: 0,
+  evaluation_scales: 1,
+  player_evaluations: 51,
+  player_evaluations_superseded: 0,
+  legacy_evaluations_table_present: 0,
+  scouting_guard_triggers: 5,
+  scouting_legacy_ranks_total: 59,
+  scouting_legacy_ranks_backfilled: 48,
+  scouting_legacy_ranks_unrepresented: 11,
+  scouting_legacy_rank_mismatches: 0,
+  scouting_orphan_evaluations: 0,
+  scouting_orphan_grades: 0,
+  scouting_orphan_rankings: 0,
+  scouting_orphan_notes: 0,
+  scouting_evaluations_without_provenance: 0,
+  scouting_rankings_without_scope: 0,
+  scouting_scale_violations: 0,
+  scouting_origin_violations: 0,
+  scouting_model_contamination: 0,
+  scouting_date_shape_violations: 0,
+  scouting_supersession_violations: 0,
+  scouting_sealed_trigger_events: 4,
+  scouting_international_rank_context_violations: 0,
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -279,6 +306,93 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
       where m.id = d.milestone_id and m.player_id = d.player_id and m.event_code = d.event_code)`)
   check('integrity', 'decision_milestone_mismatch', expectations.decision_milestone_mismatch, mismatch024.n)
 
+  // -- scouting / evaluation history (026) ------------------------------------
+  const count = async (sql) => (await query(sql))[0].n
+  check('scouting', 'scouting_publications', expectations.scouting_publications, await count('select count(*)::int as n from scouting_publications'))
+  check('scouting', 'scouting_disi_research_publications', expectations.scouting_disi_research_publications,
+    await count(`select count(*)::int as n from scouting_publications where origin = 'DISI_RESEARCH'`))
+  check('scouting', 'evaluation_scales', expectations.evaluation_scales, await count('select count(*)::int as n from evaluation_scales'))
+  check('scouting', 'player_evaluations', expectations.player_evaluations, await count('select count(*)::int as n from player_evaluations'))
+  check('scouting', 'player_evaluations_superseded', expectations.player_evaluations_superseded,
+    await count(`select count(*)::int as n from player_evaluations where record_status = 'SUPERSEDED'`))
+  check('scouting', 'legacy_evaluations_table_present', expectations.legacy_evaluations_table_present,
+    await count(`select count(*)::int as n from pg_class where relname = 'evaluations' and relnamespace = 'public'::regnamespace`))
+  check('scouting', 'scouting_guard_triggers', expectations.scouting_guard_triggers, await count(`select count(*)::int as n from pg_trigger t
+    join pg_class c on c.oid = t.tgrelid where c.relnamespace = 'public'::regnamespace and not t.tgisinternal
+      and c.relname in ('player_evaluations', 'player_evaluation_grades', 'player_evaluation_rankings', 'player_evaluation_notes')`))
+  // Legacy signings.international_rank: how many are represented by a provenance-backed evaluation.
+  const [legacyRanks] = await query(`select count(*)::int as total,
+      count(*) filter (where exists (select 1 from player_evaluations e
+        join scouting_publications pub on pub.id = e.publication_id and pub.publication_slug like 'mlb-pipeline-%'
+        join player_evaluation_rankings r on r.evaluation_id = e.id and r.ranking_scope = 'INTERNATIONAL_CLASS'
+        where e.player_id = sg.player_id and e.record_status = 'ACTIVE'))::int as represented,
+      count(*) filter (where exists (select 1 from player_evaluations e
+        join scouting_publications pub on pub.id = e.publication_id and pub.publication_slug like 'mlb-pipeline-%'
+        join player_evaluation_rankings r on r.evaluation_id = e.id and r.ranking_scope = 'INTERNATIONAL_CLASS'
+        where e.player_id = sg.player_id and e.record_status = 'ACTIVE' and r.rank is distinct from sg.international_rank::int))::int as mismatched
+    from signings sg where sg.international_rank is not null`)
+  check('scouting', 'scouting_legacy_ranks_total', expectations.scouting_legacy_ranks_total, legacyRanks.total)
+  check('scouting', 'scouting_legacy_ranks_backfilled', expectations.scouting_legacy_ranks_backfilled, legacyRanks.represented)
+  check('scouting', 'scouting_legacy_ranks_unrepresented', expectations.scouting_legacy_ranks_unrepresented, Number(legacyRanks.total) - Number(legacyRanks.represented))
+  check('scouting', 'scouting_legacy_rank_mismatches', expectations.scouting_legacy_rank_mismatches, legacyRanks.mismatched)
+  check('scouting', 'scouting_orphan_evaluations', expectations.scouting_orphan_evaluations, await count(`select count(*)::int as n from player_evaluations e
+    where not exists (select 1 from players p where p.id = e.player_id)
+       or not exists (select 1 from scouting_publications pub where pub.id = e.publication_id)
+       or (e.source_id is not null and not exists (select 1 from sources so where so.id = e.source_id))`))
+  check('scouting', 'scouting_orphan_grades', expectations.scouting_orphan_grades, await count(`select count(*)::int as n from player_evaluation_grades g
+    where not exists (select 1 from player_evaluations e where e.id = g.evaluation_id)
+       or not exists (select 1 from evaluation_scales sc where sc.scale_code = g.scale_code)`))
+  check('scouting', 'scouting_orphan_rankings', expectations.scouting_orphan_rankings, await count(`select count(*)::int as n from player_evaluation_rankings r
+    where not exists (select 1 from player_evaluations e where e.id = r.evaluation_id)`))
+  check('scouting', 'scouting_orphan_notes', expectations.scouting_orphan_notes, await count(`select count(*)::int as n from player_evaluation_notes nt
+    where not exists (select 1 from player_evaluations e where e.id = nt.evaluation_id)`))
+  check('scouting', 'scouting_evaluations_without_provenance', expectations.scouting_evaluations_without_provenance,
+    await count(`select count(*)::int as n from player_evaluations
+      where (source_id is null and nullif(btrim(source_reference), '') is null) or retrieved_at is null or evidence_basis is null`))
+  check('scouting', 'scouting_rankings_without_scope', expectations.scouting_rankings_without_scope,
+    await count(`select count(*)::int as n from player_evaluation_rankings
+      where ranking_scope is null or nullif(btrim(scope_label), '') is null or rank < 1
+         or (ranking_scope = 'ORGANIZATION') <> (organization_id is not null)`))
+  check('scouting', 'scouting_scale_violations', expectations.scouting_scale_violations, await count(`select count(*)::int as n
+    from player_evaluation_grades g join evaluation_scales sc on sc.scale_code = g.scale_code
+    where (g.qualifier <> 'NONE' and not sc.allows_qualifier)
+       or (sc.scale_kind = 'NUMERIC' and (g.raw_value is null or g.raw_value < sc.scale_min or g.raw_value > sc.scale_max
+            or (sc.scale_step is not null and mod(g.raw_value - sc.scale_min, sc.scale_step) <> 0)))
+       or (sc.scale_kind = 'ORDINAL' and (g.raw_label is null or not (g.raw_label = any (sc.ordered_labels))))`))
+  check('scouting', 'scouting_origin_violations', expectations.scouting_origin_violations,
+    await count(`select count(*)::int as n from scouting_publications where origin is null or origin not in ('EXTERNAL', 'TEAM_PUBLIC', 'DISI_RESEARCH')`))
+  check('scouting', 'scouting_model_contamination', expectations.scouting_model_contamination, await count(`select count(*)::int as n from scouting_publications
+    where publication_slug ~* 'model|prediction' or publisher ~* 'disi.*model' or publication_name ~* 'disi.*model|prediction'`))
+  check('scouting', 'scouting_date_shape_violations', expectations.scouting_date_shape_violations, await count(`select count(*)::int as n from player_evaluations
+    where not coalesce(case date_precision
+      when 'DAY' then evaluation_date is not null and evaluation_year = extract(year from evaluation_date)::int and evaluation_month = extract(month from evaluation_date)::int
+      when 'MONTH' then evaluation_date is null and evaluation_year is not null and evaluation_month is not null
+      when 'YEAR' then evaluation_date is null and evaluation_year is not null and evaluation_month is null
+      when 'SEASON' then evaluation_date is null and evaluation_year is not null and evaluation_month is null
+      when 'UNKNOWN' then evaluation_date is null and evaluation_year is null and evaluation_month is null
+    end, false)`))
+  // Lifecycle DRAFT -> ACTIVE -> SUPERSEDED. A SUPERSEDED row has a replacement; a replacement
+  // supersedes a sealed row of the same player and publication; an ACTIVE or SUPERSEDED row's
+  // predecessor is itself SUPERSEDED; no predecessor has two replacements.
+  check('scouting', 'scouting_supersession_violations', expectations.scouting_supersession_violations, await count(`select count(*)::int as n from player_evaluations e
+    where (e.record_status = 'SUPERSEDED' and not exists (select 1 from player_evaluations s where s.supersedes_evaluation_id = e.id))
+       or (e.supersedes_evaluation_id is not null and not exists (select 1 from player_evaluations o
+            where o.id = e.supersedes_evaluation_id and o.id <> e.id and o.record_status <> 'DRAFT'
+              and o.player_id = e.player_id and o.publication_id = e.publication_id
+              and (e.record_status = 'DRAFT' or o.record_status = 'SUPERSEDED')))
+       or (e.supersedes_evaluation_id is not null and exists (select 1 from player_evaluations x
+            where x.supersedes_evaluation_id = e.supersedes_evaluation_id and x.id <> e.id))`))
+  // The sealing triggers must cover INSERT, UPDATE and DELETE on the header and each child table.
+  check('scouting', 'scouting_sealed_trigger_events', expectations.scouting_sealed_trigger_events, await count(`select count(*)::int as n from pg_trigger t
+    join pg_class c on c.oid = t.tgrelid where c.relnamespace = 'public'::regnamespace and not t.tgisinternal
+      and c.relname in ('player_evaluations', 'player_evaluation_grades', 'player_evaluation_rankings', 'player_evaluation_notes')
+      and (t.tgtype & 28) = 28`))
+  // An international-class rank is never filed under another list's context.
+  check('scouting', 'scouting_international_rank_context_violations', expectations.scouting_international_rank_context_violations,
+    await count(`select count(*)::int as n from player_evaluations e
+      where exists (select 1 from player_evaluation_rankings r where r.evaluation_id = e.id and r.ranking_scope = 'INTERNATIONAL_CLASS')
+        and e.evaluation_context in ('GLOBAL_LIST', 'ORG_LIST')`))
+
   // -- whole public API surface (025) -----------------------------------------
   // Every public view must be security_invoker and give anon / authenticated
   // SELECT only; every public table must have RLS and give them SELECT only; no
@@ -360,6 +474,16 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   }
   await report('latest_stint_as_of_date', 'select max(as_of_date)::text as v from player_season_stints', (r) => r[0].v)
   await report('latest_stint_retrieved_at', 'select max(retrieved_at)::text as v from player_season_stints', (r) => r[0].v)
+  await report(
+    'scouting_evaluations_by_status',
+    'select record_status, count(*)::int as n from player_evaluations group by 1 order by 1',
+    (r) => Object.fromEntries(r.map((x) => [x.record_status, x.n]))
+  )
+  await report(
+    'scouting_research_queue_by_issue',
+    'select issue, count(*)::int as n from v_scouting_research_queue group by 1 order by 1',
+    (r) => Object.fromEntries(r.map((x) => [x.issue, x.n]))
+  )
   await report('mlb_level_stints', 'select count(*)::int as v from player_season_stints where level = \'MLB\' and stint_kind = \'TEAM_STINT\'', (r) => r[0].v)
   await report(
     'research_queue_by_issue',

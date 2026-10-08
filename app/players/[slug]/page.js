@@ -20,6 +20,15 @@ export async function generateMetadata({ params }) {
 
 const UNKNOWN = 'Unknown'
 
+// How precisely an external evaluation is dated. Only DAY carries a date; the rest are shown as the period they are.
+const DATE_PRECISION_NOTE = {
+  DAY: null,
+  MONTH: 'month only',
+  YEAR: 'year only',
+  SEASON: 'season only',
+  UNKNOWN: 'date not known',
+}
+
 /** Value or the word "Unknown"; never fabricates a biography field. */
 function known(value, format = (v) => v) {
   return value == null || value === '' ? <span className="unknown">{UNKNOWN}</span> : format(value)
@@ -119,7 +128,7 @@ function milestoneWhen(m) {
 
 export default async function PlayerPage({ params }) {
   const { slug } = await params
-  const { live, error, player, signings, timeline, transactions, sources, trainers, metrics, memberships, devStints, devMilestones, devSummary } = await loadDossier(slug)
+  const { live, error, player, signings, timeline, transactions, sources, trainers, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable } = await loadDossier(slug)
 
   if (!live) {
     return (
@@ -381,6 +390,56 @@ export default async function PlayerPage({ params }) {
               </li>
             ))}
           </ol>
+        )}
+      </section>
+
+      <section className="panel section-gap">
+        <h2>External scouting evaluations</h2>
+        <p className="muted small-note">
+          Opinions published by outside evaluators at a point in time. They are not DISI predictions, not performance, and not
+          development facts: the first-appearance dates and developmental arrival above, and the MLB outcome below, are separate.
+        </p>
+        {!scoutingAvailable ? (
+          <p className="unknown">Scouting evaluation history is not available in this database yet.</p>
+        ) : scouting.length === 0 ? (
+          <p className="unknown">No verified external scouting evaluation is recorded. A missing row is not evidence that none exists.</p>
+        ) : (
+          <>
+            <table className="compact-table">
+              <thead><tr>
+                <th>Evaluation date</th><th>Evaluator</th><th>Context</th><th>Ranking (with its list)</th>
+                <th>Future value</th><th className="num">ETA</th><th>Evidence</th><th>Source</th>
+              </tr></thead>
+              <tbody>{scouting.map((e) => (
+                <tr key={e.evaluation_id}>
+                  <td>
+                    {e.evaluation_label}
+                    {DATE_PRECISION_NOTE[e.date_precision] ? <span className="muted"> ({DATE_PRECISION_NOTE[e.date_precision]})</span> : null}
+                  </td>
+                  <td>{e.publication_name}<span className="muted"> · {e.publisher}</span></td>
+                  <td>{humanize(e.evaluation_context)}</td>
+                  <td>{e.rank_summary ?? <span className="unknown">{MISSING}</span>}</td>
+                  <td>
+                    {e.future_value_label ?? <span className="unknown">{MISSING}</span>}
+                    {e.grade_count > 1 ? <span className="muted"> · {e.grade_count} grades recorded</span> : null}
+                  </td>
+                  <td className="num">{e.eta_season ?? MISSING}</td>
+                  <td>{humanize(e.evidence_basis)}<span className="muted"> · {humanize(e.confidence)} confidence</span></td>
+                  <td>
+                    {e.source_url
+                      ? <a href={e.source_url} target="_blank" rel="noreferrer">{e.source_title ?? 'Source'}</a>
+                      : (e.source_reference ?? <span className="unknown">{MISSING}</span>)}
+                    {e.archive_url ? <> · <a href={e.archive_url} target="_blank" rel="noreferrer">archive</a></> : null}
+                  </td>
+                </tr>
+              ))}</tbody>
+            </table>
+            <p className="muted small-note">
+              Dates are the evaluation&apos;s publication or report date, shown at the precision the source supports; a year or season is never
+              presented as an exact day. A blank cell means the source did not provide that value (it is not zero). Grades keep the source&apos;s
+              scale and label (for example 45+ is not an exact 45). A rank belongs to the list named beside it and is not comparable across lists.
+            </p>
+          </>
         )}
       </section>
 

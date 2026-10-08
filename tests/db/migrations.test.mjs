@@ -8,7 +8,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
-import { buildCanonicalChain, manifest } from './canonical-chain.mjs'
+import crypto from 'node:crypto'
+import { buildCanonicalChain, buildChainThrough, manifest } from './canonical-chain.mjs'
 import { foldText, slugify } from '../../lib/text.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
@@ -1960,19 +1961,26 @@ test('024 cohort views: the 021 reached_* columns stay first appearances (docume
 
 // ---------------------------------------------------------------------------
 // 025 — public view grant hardening
+// (replayed on an isolated pre-026 database: a frozen migration cannot be run
+// again over the objects created by later migrations)
 // ---------------------------------------------------------------------------
 
 const inventory025 = JSON.parse(fs.readFileSync(path.join(root, 'database/research/025/view-inventory.json'), 'utf8'))
 const legacyBroad = inventory025.views.filter((v) => v.live_beyond_select_before_025).map((v) => v.view)
+const views026 = ['v_dodgers_scouting_at_signing', 'v_player_latest_external_evaluation', 'v_player_scouting_timeline',
+  'v_scouting_research_queue', 'v_scouting_source_coverage']
+const tables026 = ['evaluation_scales', 'player_evaluation_grades', 'player_evaluation_notes', 'player_evaluation_rankings',
+  'player_evaluations', 'scouting_publications']
 // Every API-role privilege on every public relation, straight from the ACLs (MAINTAIN included).
-const apiAcl = async () => rows(`select c.relname, c.relkind::text as kind, coalesce(r.rolname, 'PUBLIC') as grantee,
+const apiAclOn = async (rowsFn) => rowsFn(`select c.relname, c.relkind::text as kind, coalesce(r.rolname, 'PUBLIC') as grantee,
     string_agg(a.privilege_type, ',' order by a.privilege_type) as privs
   from pg_class c join pg_namespace n on n.oid = c.relnamespace
   cross join lateral aclexplode(coalesce(c.relacl, acldefault('r', c.relowner))) a
   left join pg_roles r on r.oid = a.grantee
   where n.nspname = 'public' and c.relkind in ('r', 'v') and coalesce(r.rolname, 'PUBLIC') in ('anon', 'authenticated', 'service_role', 'PUBLIC')
   group by 1, 2, 3 order by 1, 3`)
-const securitySnapshot = async () => one(`select
+const apiAcl = () => apiAclOn(rows)
+const securitySnapshotOn = async (oneFn) => oneFn(`select
     (select string_agg(relname || ':' || relrowsecurity || ':' || relforcerowsecurity, ',' order by relname) from pg_class c
       join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r') as rls,
     (select string_agg(tablename || ':' || policyname || ':' || cmd || ':' || roles::text || ':' || coalesce(qual, '') || ':' || coalesce(with_check, ''), ',' order by tablename, policyname)
@@ -1980,7 +1988,7 @@ const securitySnapshot = async () => one(`select
     (select string_agg(c.relname || ':' || pg_get_viewdef(c.oid), ',' order by c.relname) from pg_class c
       join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v') as view_definitions`)
 
-test('025 inventory: every one of the 86 public views is reviewed, read-only analytics, security_invoker and not updatable', async () => {
+test('025 inventory: the 86 reviewed views are read-only analytics, security_invoker and not updatable; 026 adds exactly five more', async () => {
   assert.equal(inventory025.views.length, 86)
   assert.equal(legacyBroad.length, 43, 'the live audit found 43 legacy views with ALL privileges')
   assert.deepEqual(inventory025.intentionally_writable, [])
@@ -1988,7 +1996,7 @@ test('025 inventory: every one of the 86 public views is reviewed, read-only ana
     from pg_class c join pg_namespace n on n.oid = c.relnamespace
     join information_schema.views v on v.table_schema = 'public' and v.table_name = c.relname
     where n.nspname = 'public' and c.relkind = 'v' order by 1`)
-  assert.deepEqual(views.map((v) => v.relname), inventory025.views.map((v) => v.view).sort())
+  assert.deepEqual(views.map((v) => v.relname), [...inventory025.views.map((v) => v.view), ...views026].sort())
   for (const v of views) {
     assert.match(v.opts, /security_invoker=(true|on)/, v.relname)
     assert.deepEqual([v.is_updatable, v.is_insertable_into], ['NO', 'NO'], v.relname)
@@ -2004,7 +2012,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   for (const kind of ['v', 'r']) {
     for (const role of ['anon', 'authenticated']) {
       const relations = acl.filter((a) => a.kind === kind && a.grantee === role)
-      assert.equal(relations.length, kind === 'v' ? 86 : 42, `${role} ${kind}`)
+      assert.equal(relations.length, kind === 'v' ? 91 : 47, `${role} ${kind}`)
       for (const privilege of ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN']) {
         assert.deepEqual(relations.filter((a) => a.privs.split(',').includes(privilege)).map((a) => a.relname), [], `${role} ${privilege} on ${kind}`)
       }
@@ -2014,58 +2022,63 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   assert.deepEqual(acl.filter((a) => a.grantee === 'PUBLIC'), [], 'PUBLIC holds nothing')
   const tables = await one(`select count(*)::int as n, count(*) filter (where relrowsecurity)::int as rls from pg_class c
     join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r'`)
-  assert.deepEqual([tables.n, tables.rls], [42, 42])
+  assert.deepEqual([tables.n, tables.rls], [47, 47])
   const write = await one(`select count(*)::int as n from pg_policies where schemaname = 'public' and cmd <> 'SELECT'`)
   assert.equal(write.n, 0, 'no table policy grants writes to anyone')
 })
 
 test('025 repairs the live drift: Supabase-default ALL grants on the 43 legacy views become SELECT; service_role, RLS, policies and view definitions are untouched; rerun is a no-op', async () => {
-  await db.exec(`do $$ begin if not exists (select 1 from pg_roles where rolname = 'service_role') then create role service_role nologin; end if; end $$;`)
-  // reproduce the live state: ALL (incl. MAINTAIN) for anon / authenticated on the legacy views, and service_role ALL everywhere
-  for (const v of legacyBroad) await db.exec(`grant all on public.${v} to anon, authenticated`)
-  await db.exec(`grant all on public.v_dodgers_signing_cohort to service_role; grant all on public.players to service_role`)
-  const drifted = (await apiAcl()).filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT')
-  assert.equal(drifted.length, 86, '43 views x 2 roles carry more than SELECT before 025')
-  assert.ok(drifted.every((a) => a.privs.includes('MAINTAIN') && a.privs.includes('TRUNCATE')))
-  const before = await securitySnapshot()
-  const serviceBefore = (await apiAcl()).filter((a) => a.grantee === 'service_role')
+  const iso = await buildChainThrough('024_development_progression_decisions.sql')
+  try {
+    const isoRows = iso.query
+    const isoOne = async (sql, params) => (await isoRows(sql, params))[0]
+    await iso.db.exec(`create role service_role nologin`)
+    // reproduce the live state: ALL (incl. MAINTAIN) for anon / authenticated on the legacy views, and service_role ALL
+    for (const v of legacyBroad) await iso.db.exec(`grant all on public.${v} to anon, authenticated`)
+    await iso.db.exec(`grant all on public.v_dodgers_signing_cohort to service_role; grant all on public.players to service_role`)
+    const drifted = (await apiAclOn(isoRows)).filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT')
+    assert.equal(drifted.length, 86, '43 views x 2 roles carry more than SELECT before 025')
+    assert.ok(drifted.every((a) => a.privs.includes('MAINTAIN') && a.privs.includes('TRUNCATE')))
+    const before = await securitySnapshotOn(isoOne)
+    const serviceBefore = (await apiAclOn(isoRows)).filter((a) => a.grantee === 'service_role')
 
-  await db.exec(readSql('025_public_view_grant_hardening.sql'))
-  const after = await apiAcl()
-  assert.deepEqual(after.filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT'), [])
-  assert.equal(after.filter((a) => a.kind === 'v' && ['anon', 'authenticated'].includes(a.grantee) && a.privs === 'SELECT').length, 172)
-  assert.deepEqual(after.filter((a) => a.grantee === 'service_role'), serviceBefore, 'service_role privileges are not changed')
-  assert.deepEqual(await securitySnapshot(), before, 'RLS, policies and view definitions are unchanged')
+    await iso.db.exec(readSql('025_public_view_grant_hardening.sql'))
+    const after = await apiAclOn(isoRows)
+    assert.deepEqual(after.filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT'), [])
+    assert.equal(after.filter((a) => a.kind === 'v' && ['anon', 'authenticated'].includes(a.grantee) && a.privs === 'SELECT').length, 172)
+    assert.deepEqual(after.filter((a) => a.grantee === 'service_role'), serviceBefore, 'service_role privileges are not changed')
+    assert.deepEqual(await securitySnapshotOn(isoOne), before, 'RLS, policies and view definitions are unchanged')
 
-  await db.exec(readSql('025_public_view_grant_hardening.sql'))
-  assert.deepEqual(await apiAcl(), after, 'rerun changes nothing')
-  assert.deepEqual(await securitySnapshot(), before)
-  await db.exec(`revoke all on public.v_dodgers_signing_cohort from service_role; revoke all on public.players from service_role`)
+    await iso.db.exec(readSql('025_public_view_grant_hardening.sql'))
+    assert.deepEqual(await apiAclOn(isoRows), after, 'rerun changes nothing')
+    assert.deepEqual(await securitySnapshotOn(isoOne), before)
+  } finally {
+    await iso.close()
+  }
 })
 
 test('025 guards: an unreviewed public view or a non-security_invoker view stops the migration with nothing changed', async () => {
-  const sql = readSql('025_public_view_grant_hardening.sql')
-  await db.exec(`create view public.zz_unreviewed with (security_invoker = true) as select 1 as x; grant all on public.zz_unreviewed to anon;`)
+  const iso = await buildChainThrough('024_development_progression_decisions.sql')
   try {
-    await assert.rejects(async () => { await db.exec(sql) }, /not in the reviewed inventory: zz_unreviewed/)
-    await db.exec('rollback;').catch(() => {})
-  } finally {
-    await db.exec('drop view public.zz_unreviewed')
-  }
-  await db.exec(`alter view public.v_dodgers_signing_cohort set (security_invoker = false); grant all on public.v_dodgers_market_summary to anon;`)
-  try {
-    await assert.rejects(async () => { await db.exec(sql) }, /not security_invoker: v_dodgers_signing_cohort/)
-    await db.exec('rollback;').catch(() => {})
-    const still = await one(`select string_agg(a.privilege_type, ',' order by a.privilege_type) as p from pg_class c
+    const sql = readSql('025_public_view_grant_hardening.sql')
+    await iso.db.exec(`create view public.zz_unreviewed with (security_invoker = true) as select 1 as x; grant all on public.zz_unreviewed to anon;`)
+    await assert.rejects(async () => { await iso.db.exec(sql) }, /not in the reviewed inventory: zz_unreviewed/)
+    await iso.db.exec('rollback;').catch(() => {})
+    await iso.db.exec(`drop view public.zz_unreviewed`)
+    await iso.db.exec(`alter view public.v_dodgers_signing_cohort set (security_invoker = false); grant all on public.v_dodgers_market_summary to anon;`)
+    await assert.rejects(async () => { await iso.db.exec(sql) }, /not security_invoker: v_dodgers_signing_cohort/)
+    await iso.db.exec('rollback;').catch(() => {})
+    const still = (await iso.query(`select string_agg(a.privilege_type, ',' order by a.privilege_type) as p from pg_class c
       cross join lateral aclexplode(c.relacl) a join pg_roles r on r.oid = a.grantee
-      where c.relname = 'v_dodgers_market_summary' and r.rolname = 'anon'`)
+      where c.relname = 'v_dodgers_market_summary' and r.rolname = 'anon'`))[0]
     assert.match(still.p, /INSERT/, 'the failed run rolled back: the drifted grant is still there')
+    await iso.db.exec(`alter view public.v_dodgers_signing_cohort set (security_invoker = true)`)
+    await iso.db.exec(sql)
+    const clean = (await apiAclOn(iso.query)).filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT')
+    assert.deepEqual(clean, [])
   } finally {
-    await db.exec(`alter view public.v_dodgers_signing_cohort set (security_invoker = true)`)
-    await db.exec(sql)
+    await iso.close()
   }
-  const clean = (await apiAcl()).filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT')
-  assert.deepEqual(clean, [])
 })
 
 test('025 leaves the 024 development security intact', async () => {
@@ -2078,4 +2091,692 @@ test('025 leaves the 024 development security intact', async () => {
   const acl = (await apiAcl()).filter((a) => /development|player_season_stints/.test(a.relname) && ['anon', 'authenticated'].includes(a.grantee))
   assert.equal(acl.length, 34, '7 development tables + 10 development views, x 2 roles')
   assert.ok(acl.every((a) => a.privs === 'SELECT'))
+})
+
+// ---------------------------------------------------------------------------
+// 026 — scouting / evaluation history
+// ---------------------------------------------------------------------------
+
+const frozen = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'frozen-migrations.json'), 'utf8')).files
+const seed026 = JSON.parse(fs.readFileSync(path.join(root, 'database/research/026/seed-evidence.json'), 'utf8'))
+/** Runs statements in a transaction that is always rolled back; resolves to the error message or 'accepted'. */
+const attempt = async (sql) => {
+  await db.exec('begin;')
+  try { await db.exec(sql); return 'accepted' } catch (e) { return String(e.message) } finally { await db.exec('rollback;') }
+}
+const attemptRaw = attempt
+const PLAYER = (slug) => `(select id from players where slug = '${slug}')`
+const PUBLICATION = (slug) => `(select id from scouting_publications where publication_slug = '${slug}')`
+/** An INSERT into player_evaluations with sensible defaults; override any column. */
+const insertEvaluation = (o = {}) => {
+  const c = {
+    player_id: PLAYER(o.slug ?? 'roger-cedeno'), publication_id: PUBLICATION(o.pub ?? 'baseball-america-top-100'),
+    evaluation_context: "'OTHER'", date_precision: "'UNKNOWN'", evaluation_date: 'null', evaluation_year: 'null', evaluation_month: 'null',
+    evidence_basis: "'MANUAL_TRANSCRIPTION'", confidence: "'LOW'", source_id: 'null', source_reference: "'test reference A'",
+    retrieved_at: "timestamptz '2026-10-08 00:00:00+00'", archive_url: 'null', preservation_concern: 'null',
+  }
+  for (const [k, v] of Object.entries(o)) if (k in c) c[k] = v
+  return `insert into player_evaluations (${Object.keys(c).join(', ')}) values (${Object.values(c).join(', ')})`
+}
+const dayEval = (date, o = {}) => insertEvaluation({
+  date_precision: "'DAY'", evaluation_date: `date '${date}'`, evaluation_year: String(Number(date.slice(0, 4))),
+  evaluation_month: String(Number(date.slice(5, 7))), ...o,
+})
+/** One evaluation assembled as DRAFT and sealed (activated) in a single step; the argument is a single INSERT. */
+const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} returning id into i; update player_evaluations set record_status = 'ACTIVE' where id = i; end $seal$`
+const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
+
+test('026 frozen history: migrations 001-025 are byte-for-byte unchanged (line endings normalised)', () => {
+  const files = manifest.canonical_sql.filter((f) => f < '026')
+  assert.equal(files.length, 25)
+  assert.deepEqual(Object.keys(frozen), files)
+  for (const f of files) {
+    const text = readSql(f).replace(/\r\n/g, '\n')
+    assert.equal(crypto.createHash('sha1').update(text).digest('hex'), frozen[f], `${f} was modified after it was frozen`)
+  }
+})
+
+test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 47 tables / 91 views, all RLS / security_invoker', async () => {
+  const t = await rows(`select c.relname, c.relrowsecurity as rls from pg_class c join pg_namespace n on n.oid = c.relnamespace
+    where n.nspname = 'public' and c.relkind = 'r' and c.relname = any($1) order by 1`, [tables026])
+  assert.deepEqual(t.map((r) => [r.relname, r.rls]), tables026.map((n) => [n, true]))
+  const legacy = await one(`select to_regclass('public.evaluations') is null as gone`)
+  assert.equal(legacy.gone, true)
+  const counts = await one(`select count(*) filter (where relkind = 'r')::int as tables, count(*) filter (where relkind = 'v')::int as views
+    from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind in ('r', 'v')`)
+  assert.deepEqual([counts.tables, counts.views], [47, 91])
+  const v = await rows(`select relname, coalesce(array_to_string(reloptions, ','), '') as opts from pg_class where relname = any($1) and relkind = 'v'`, [views026])
+  assert.equal(v.length, 5)
+  for (const x of v) assert.match(x.opts, /security_invoker=(true|on)/, x.relname)
+  // no new enum types: check constraints, with only the existing confidence_level reused
+  const enums = await one(`select count(*)::int as n from pg_type t join pg_namespace n on n.oid = t.typnamespace where n.nspname = 'public' and t.typtype = 'e'`)
+  assert.equal(enums.n, 8, 'no Postgres enum was added by 026')
+})
+
+test('026 security: RLS and SELECT-only for anon / authenticated on every new object; no write policy; trigger functions are invoker-rights with EXECUTE revoked', async () => {
+  const acl = (await apiAcl()).filter((a) => [...tables026, ...views026].includes(a.relname))
+  assert.equal(acl.length, 11 * 2 + 11 * 0 + 0, '11 new objects x 2 API roles')
+  assert.ok(acl.filter((a) => ['anon', 'authenticated'].includes(a.grantee)).every((a) => a.privs === 'SELECT'))
+  assert.deepEqual(acl.filter((a) => a.grantee === 'PUBLIC'), [])
+  const policies = await rows(`select tablename, cmd from pg_policies where schemaname = 'public' and tablename = any($1)`, [tables026])
+  assert.equal(policies.length, 6)
+  assert.ok(policies.every((p) => p.cmd === 'SELECT'))
+  const fns = await rows(`select p.proname, p.prosecdef as secdef, coalesce(array_to_string(p.proconfig, ','), '') as config,
+      has_function_privilege('anon', p.oid, 'EXECUTE') as anon_exec, has_function_privilege('authenticated', p.oid, 'EXECUTE') as auth_exec
+    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public' and p.proname in ('disi_evaluation_guard', 'disi_evaluation_child_immutable', 'disi_evaluation_grade_check') order by 1`)
+  assert.equal(fns.length, 3)
+  for (const f of fns) assert.deepEqual([f.secdef, f.anon_exec, f.auth_exec, /search_path=""?$/.test(f.config) || f.config.includes('search_path')], [false, false, false, true], f.proname)
+  await db.transaction(async (tx) => {
+    await tx.query('set local role anon')
+    const n = (await tx.query('select count(*)::int as n from player_evaluations')).rows[0].n
+    assert.equal(n, 51)
+    await assert.rejects(() => tx.query(`delete from player_evaluations`), /permission denied/)
+    await tx.rollback()
+  })
+  await db.transaction(async (tx) => {
+    await tx.query('set local role authenticated')
+    await assert.rejects(() => tx.query(`insert into player_evaluation_notes (evaluation_id, note_kind, note_text) select id, 'OTHER', 'x' from player_evaluations limit 1`), /permission denied/)
+    await tx.rollback()
+  })
+})
+
+test('026 legacy drop: guarded, and only an empty known-shape table with no dependents is dropped', async () => {
+  const iso = await buildChainThrough('025_public_view_grant_hardening.sql')
+  try {
+    const sql = readSql('026_scouting_evaluation_history.sql')
+    const state = async () => (await iso.query(`select to_regclass('public.evaluations') is not null as legacy, to_regclass('public.scouting_publications') is not null as scouting`))[0]
+    const expectAbort = async (label, pattern) => {
+      await assert.rejects(async () => { await iso.db.exec(sql) }, pattern, label)
+      await iso.db.exec('rollback;').catch(() => {})
+      assert.deepEqual(await state(), { legacy: true, scouting: false }, `${label}: the abort left nothing behind`)
+    }
+    assert.deepEqual(await state(), { legacy: true, scouting: false })
+    // 1. a row in the legacy table
+    const playerId = (await iso.query(`select id from players limit 1`))[0].id
+    await iso.db.query(`insert into public.evaluations (player_id, evaluator_source) values ($1, 'test')`, [playerId])
+    await expectAbort('row present', /holds 1 rows/)
+    await iso.db.exec('delete from public.evaluations')
+    // 2. the shape drifted
+    await iso.db.exec('alter table public.evaluations add column extra_note text')
+    await expectAbort('shape drift', /no longer has the migration-001 shape/)
+    await iso.db.exec('alter table public.evaluations drop column extra_note')
+    // 3. a dependent view
+    await iso.db.exec('create view public.zz_reads_evaluations as select id from public.evaluations')
+    await expectAbort('dependent view', /objects depend on public.evaluations/)
+    await iso.db.exec('drop view public.zz_reads_evaluations')
+    // 4. an inbound foreign key
+    await iso.db.exec('create table public.zz_points_at_evaluations (e uuid references public.evaluations(id))')
+    await expectAbort('inbound foreign key', /reference public.evaluations through a foreign key/)
+    await iso.db.exec('drop table public.zz_points_at_evaluations')
+    // 5. clean state: drops, builds, and a second run is a no-op that recognises the table is already gone
+    await iso.db.exec(sql)
+    assert.deepEqual(await state(), { legacy: false, scouting: true })
+    await iso.db.exec(sql)
+    assert.deepEqual(await state(), { legacy: false, scouting: true })
+    // 6. missing legacy table without the scouting tables is an unexpected state, not a silent pass
+    await iso.db.exec('drop table public.player_evaluation_notes, public.player_evaluation_rankings, public.player_evaluation_grades, public.player_evaluations, public.scouting_publications, public.evaluation_scales cascade')
+    await assert.rejects(async () => { await iso.db.exec(sql) }, /public.evaluations is missing but the scouting tables do not exist/)
+    await iso.db.exec('rollback;').catch(() => {})
+  } finally {
+    await iso.close()
+  }
+  // the audit that backs the guards is part of the committed package
+  const audit = JSON.parse(fs.readFileSync(path.join(root, 'database/research/026/audit-report.json'), 'utf8'))
+  assert.deepEqual([audit.legacy_evaluations.row_count, audit.legacy_evaluations.dependents, audit.legacy_evaluations.inbound_foreign_keys, audit.legacy_evaluations.repository_references, audit.legacy_evaluations.columns.length],
+    [0, [], [], [], 23])
+  assert.deepEqual(audit.failures, [])
+})
+
+test('026 backfill: the 48 legacy ranks with provenance become evaluations; the 11 unsourced stay legacy, are queued, and signings.international_rank is unchanged', async () => {
+  const backfilled = await rows(`select p.slug, e.evaluation_context, e.date_precision, e.evaluation_date::text as d, e.evidence_basis, r.rank, r.ranking_scope,
+      r.scope_label, r.list_size, so.source_tier, so.publication_date::text as pub
+    from player_evaluations e join players p on p.id = e.player_id
+    join scouting_publications pub on pub.id = e.publication_id and pub.publication_slug = 'mlb-pipeline-top-30-international-signings'
+    join player_evaluation_rankings r on r.evaluation_id = e.id join sources so on so.id = e.source_id order by r.scope_label, r.rank`)
+  assert.equal(backfilled.length, 48)
+  assert.deepEqual(backfilled.reduce((t, b) => ((t[b.scope_label] = (t[b.scope_label] || 0) + 1), t), {}),
+    { '2013 Top 30 international prospect signings': 20, '2014 Top 30 international prospect signings': 28 })
+  assert.ok(backfilled.every((b) => b.date_precision === 'DAY' && b.d === b.pub && b.ranking_scope === 'INTERNATIONAL_CLASS' && b.list_size === 30
+    && b.evidence_basis === 'PUBLISHED_LIST' && b.source_tier === 'MLB_PIPELINE'))
+  // international-class lists, not MLB-wide lists, and no signing chronology is claimed: never GLOBAL_LIST or PRE_SIGNING
+  assert.ok(backfilled.every((b) => b.evaluation_context === 'INTERNATIONAL_CLASS_LIST'))
+  const contexts = await rows(`select evaluation_context, count(*)::int as n from player_evaluations group by 1 order by 1`)
+  assert.deepEqual(contexts, [{ evaluation_context: 'GLOBAL_LIST', n: 1 }, { evaluation_context: 'INTERNATIONAL_CLASS_LIST', n: 48 }, { evaluation_context: 'ORG_LIST', n: 2 }])
+  assert.equal((await one(`select count(*)::int as n from player_evaluations e join player_evaluation_rankings r on r.evaluation_id = e.id
+    where r.ranking_scope = 'INTERNATIONAL_CLASS' and e.evaluation_context <> 'INTERNATIONAL_CLASS_LIST'`)).n, 0, 'no sourced international-class rank is labelled with another context')
+  // each backfilled rank equals the legacy value it came from
+  const mismatch = await one(`select count(*)::int as n from player_evaluations e join player_evaluation_rankings r on r.evaluation_id = e.id
+    join signings sg on sg.player_id = e.player_id and sg.international_rank is not null where r.ranking_scope = 'INTERNATIONAL_CLASS' and r.rank <> sg.international_rank::int
+      and e.publication_id = ${PUBLICATION('mlb-pipeline-top-30-international-signings')}`)
+  assert.equal(mismatch.n, 0)
+  const eloy = backfilled.find((b) => b.slug === 'eloy-jimenez')
+  assert.deepEqual([eloy.rank, eloy.d], [1, '2013-07-03'])
+  // the legacy column is untouched
+  const legacy = await one(`select count(*)::int as n, count(*) filter (where rank_source = 'MLB Pipeline')::int as pipe from signings where international_rank is not null`)
+  assert.deepEqual([legacy.n, legacy.pipe], [59, 59])
+  // the 11 unsourced ranks: no evaluation, queued
+  const queued = (await rows(`select player_slug from v_scouting_research_queue where issue = 'LEGACY_RANK_WITHOUT_EVALUATION' order by 1`)).map((r) => r.player_slug)
+  assert.deepEqual(queued, ['arnaldo-lantigua', 'diego-cartaya', 'emil-morales', 'ezequiel-melburne', 'joendry-vargas', 'luis-rodriguez-2019',
+    'roki-sasaki', 'ronny-brito', 'starling-heredia', 'yadier-alvarez', 'yusniel-diaz'])
+  const unsourcedEvaluations = await one(`select count(*)::int as n from player_evaluation_rankings r join player_evaluations e on e.id = r.evaluation_id
+    where r.ranking_scope = 'INTERNATIONAL_CLASS' and e.player_id in (select id from players where slug = any($1))`, [queued])
+  assert.equal(unsourcedEvaluations.n, 0, 'an unsourced rank is not migrated as an evaluation fact')
+})
+
+test('026 proof cohort: values read from public pages are stored with provenance; Cedeno and Frias have no verified evaluation (and are queued, not zeroed)', async () => {
+  const depaula = await one(`select * from v_player_scouting_timeline where player_slug = 'josue-de-paula'`)
+  assert.deepEqual([depaula.publication_slug, depaula.evaluation_context, depaula.date_precision, depaula.evaluation_label, depaula.future_value_label, depaula.future_value_numeric_base,
+    depaula.future_value_qualifier, depaula.eta_season, depaula.grade_count, depaula.rank_summary, depaula.evidence_basis, depaula.confidence],
+    ['fangraphs-organization-prospect-lists', 'ORG_LIST', 'DAY', '2025-12-05', '55', '55', 'NONE', 2027, 12, 'FanGraphs Los Angeles Dodgers Top 53 Prospects #1', 'PUBLISHED_LIST', 'MEDIUM'])
+  assert.match(depaula.source_url, /^https:\/\/blogs\.fangraphs\.com\//)
+  const tools = Object.fromEntries((await rows(`select g.dimension_code || ':' || g.temporal_basis as k, g.raw_value::int as v from player_evaluation_grades g
+    join player_evaluations e on e.id = g.evaluation_id where e.player_id = ${PLAYER('josue-de-paula')}`)).map((r) => [r.k, r.v]))
+  assert.deepEqual(tools, { 'OVERALL:FUTURE': 55, 'HIT:PRESENT': 30, 'HIT:FUTURE': 45, 'RAW_POWER:PRESENT': 55, 'RAW_POWER:FUTURE': 70,
+    'GAME_POWER:PRESENT': 30, 'GAME_POWER:FUTURE': 60, 'RUN:PRESENT': 30, 'RUN:FUTURE': 40, 'FIELD:PRESENT': 20, 'FIELD:FUTURE': 40, 'ARM:UNSPECIFIED': 60 })
+  const morales = await one(`select * from v_player_scouting_timeline where player_slug = 'emil-morales'`)
+  assert.deepEqual([morales.future_value_label, morales.eta_season, morales.rank_summary, morales.grade_count], ['50', 2030, 'FanGraphs Los Angeles Dodgers Top 53 Prospects #4', 1])
+  // a secondary citation of a Baseball America rank: rank only, no FV invented
+  const sasaki = await one(`select * from v_player_scouting_timeline where player_slug = 'roki-sasaki'`)
+  assert.deepEqual([sasaki.publication_slug, sasaki.evidence_basis, sasaki.evaluation_label, sasaki.rank_summary, sasaki.future_value_label, sasaki.grade_count, sasaki.eta_season],
+    ['baseball-america-top-100', 'SECONDARY_CITATION', '2025-01-22', 'Baseball America Top 100 Prospects, 2025 season #1', null, 0, null])
+  assert.deepEqual([sasaki.evaluation_vs_signing, sasaki.days_from_signing_exact], ['SAME_DAY', 0])
+  // the seed file documents who has no verified evaluation
+  assert.ok(seed026.no_evaluation_found.some((p) => p.player_slug === 'roger-cedeno') && seed026.no_evaluation_found.some((p) => p.player_slug === 'carlos-frias'))
+  for (const slug of ['roger-cedeno', 'carlos-frias']) {
+    assert.equal((await one(`select count(*)::int as n from player_evaluations where player_id = ${PLAYER(slug)}`)).n, 0, slug)
+    assert.equal((await one(`select count(*)::int as n from v_scouting_research_queue where player_slug = '${slug}' and issue = 'PLAYER_WITHOUT_SCOUTING_HISTORY'`)).n, 1, slug)
+    assert.equal((await one(`select count(*)::int as n from v_player_scouting_timeline where player_slug = '${slug}'`)).n, 0, slug)
+  }
+})
+
+test('026 context vocabulary: INTERNATIONAL_CLASS_LIST is distinct from ORG_LIST, GLOBAL_LIST and PRE_SIGNING', async () => {
+  const vocabulary = (await one(`select pg_get_constraintdef(oid) as def from pg_constraint where conrelid = 'public.player_evaluations'::regclass and conname like '%evaluation_context_check'`)).def
+  for (const c of ['PRE_SIGNING', 'SIGNING', 'ORG_LIST', 'GLOBAL_LIST', 'INTERNATIONAL_CLASS_LIST', 'IN_SEASON_REPORT', 'TRADE_COVERAGE', 'MLB_READY', 'OTHER']) assert.match(vocabulary, new RegExp(`'${c}'`))
+  assert.equal(await attempt(`${insertEvaluation({ evaluation_context: "'INTERNATIONAL_CLASS_LIST'", source_reference: "'ctx'" })}`), 'accepted')
+  assert.match(await attempt(insertEvaluation({ evaluation_context: "'INTERNATIONAL_LIST'", source_reference: "'ctx'" })), /evaluation_context_check|check/)
+  const sasaki = await one(`select evaluation_context from player_evaluations where player_id = ${PLAYER('roki-sasaki')}`)
+  assert.equal(sasaki.evaluation_context, 'GLOBAL_LIST', 'an MLB-wide Top 100 stays GLOBAL_LIST')
+  const fg = await rows(`select distinct evaluation_context from player_evaluations where publication_id = ${PUBLICATION('fangraphs-organization-prospect-lists')}`)
+  assert.deepEqual(fg, [{ evaluation_context: 'ORG_LIST' }])
+})
+
+const randomUuid = '00000000-0000-4000-8000-000000000000'
+const LIFECYCLE = `(select id from player_evaluations where source_reference = 'lifecycle')`
+const lifecycleDraft = (o = {}) => dayEval('2024-05-01', { slug: 'josue-de-paula', pub: 'baseball-america-top-100', evaluation_context: "'GLOBAL_LIST'", source_reference: "'lifecycle'", ...o })
+const lifecycleChildren = `insert into player_evaluation_rankings (evaluation_id, rank, ranking_scope, scope_label, list_size) values (${LIFECYCLE}, 3, 'MLB_GLOBAL', 'MLB Top 100', 100);
+  insert into player_evaluation_grades (evaluation_id, dimension_code, temporal_basis, raw_value, raw_label, scale_code, source_label) values (${LIFECYCLE}, 'OVERALL', 'FUTURE', 55, '55', 'SCOUTING_20_80', 'FV');
+  insert into player_evaluation_notes (evaluation_id, note_kind, note_text) values (${LIFECYCLE}, 'RISK', 'draft paraphrase')`
+const activateLifecycle = `update player_evaluations set record_status = 'ACTIVE' where id = ${LIFECYCLE}`
+
+test('026 lifecycle: a DRAFT is writable and invisible; activation seals the header and every child', async () => {
+  const draft = `${lifecycleDraft()}; ${lifecycleChildren}`
+  // DRAFT: header and children can be written, edited and deleted
+  assert.equal(await attempt(`${draft};
+    update player_evaluations set summary_note = 'edited while draft', confidence = 'HIGH' where id = ${LIFECYCLE};
+    update player_evaluation_rankings set rank = 4 where evaluation_id = ${LIFECYCLE};
+    update player_evaluation_grades set raw_value = 60, raw_label = '60' where evaluation_id = ${LIFECYCLE};
+    update player_evaluation_notes set note_text = 'edited draft paraphrase' where evaluation_id = ${LIFECYCLE};
+    delete from player_evaluation_notes where evaluation_id = ${LIFECYCLE};
+    delete from player_evaluation_grades where evaluation_id = ${LIFECYCLE};
+    delete from player_evaluation_rankings where evaluation_id = ${LIFECYCLE};
+    delete from player_evaluations where id = ${LIFECYCLE}`), 'accepted')
+  // DRAFT is invisible to every public view and to the coverage / queue views
+  await db.exec('begin;')
+  try {
+    await db.exec(`${draft}`)
+    for (const view of ['v_player_scouting_timeline', 'v_player_latest_external_evaluation']) {
+      assert.equal((await one(`select count(*)::int as n from ${view} where player_slug = 'josue-de-paula' and publication_slug = 'baseball-america-top-100'`)).n, 0, `${view} hides a DRAFT`)
+    }
+    assert.equal((await one(`select count(*)::int as n from v_dodgers_scouting_at_signing where player_slug = 'josue-de-paula'`)).n, 0)
+    const cov = await one(`select evaluations from v_scouting_source_coverage where publication_slug = 'baseball-america-top-100'`)
+    assert.equal(cov.evaluations, 1, 'coverage counts ACTIVE snapshots only')
+    // DRAFT -> ACTIVE succeeds and the snapshot becomes visible
+    await db.exec(activateLifecycle)
+    assert.equal((await one(`select count(*)::int as n from v_player_scouting_timeline where source_reference = 'lifecycle'`)).n, 1)
+    assert.equal((await one(`select count(*)::int as n from v_player_latest_external_evaluation where player_slug = 'josue-de-paula' and publication_slug = 'baseball-america-top-100'`)).n, 1)
+  } finally {
+    await db.exec('rollback;')
+  }
+  // ACTIVE: header sealed
+  const active = `${draft}; ${activateLifecycle}`
+  for (const set of ["summary_note = 'edited'", "evaluation_context = 'OTHER'", "confidence = 'HIGH'", "eta_season = 2099", "archive_url = 'https://example.org/x'",
+    "preservation_concern = 'SOURCE_UNSTABLE'", "evaluation_year = 2023, evaluation_date = null, date_precision = 'YEAR', evaluation_month = null", "retrieved_at = now()"]) {
+    assert.match(await attempt(`${active}; update player_evaluations set ${set} where id = ${LIFECYCLE}`), /ACTIVE evaluation is sealed/, set)
+  }
+  assert.match(await attempt(`${active}; update player_evaluations set record_status = 'SUPERSEDED', summary_note = 'edited' where id = ${LIFECYCLE}`), /ACTIVE evaluation is sealed/, 'a status change cannot carry a content change')
+  assert.match(await attempt(`${active}; update player_evaluations set record_status = 'DRAFT' where id = ${LIFECYCLE}`), /can only move to SUPERSEDED/, 'no un-sealing')
+  assert.match(await attempt(`${active}; update player_evaluations set record_status = 'SUPERSEDED' where id = ${LIFECYCLE}`), /superseded only by a replacement/, 'no retiring without a replacement')
+  assert.match(await attempt(`${active}; delete from player_evaluations where id = ${LIFECYCLE}`), /sealed historical observation/)
+  // ACTIVE: children sealed (insert, update and delete of grades, rankings and notes)
+  const sealedMsg = /cannot change once their evaluation is ACTIVE/
+  const more = {
+    grades: `insert into player_evaluation_grades (evaluation_id, dimension_code, temporal_basis, raw_value, raw_label, scale_code, source_label) values (${LIFECYCLE}, 'HIT', 'FUTURE', 50, '50', 'SCOUTING_20_80', 'Hit')`,
+    rankings: `insert into player_evaluation_rankings (evaluation_id, rank, ranking_scope, scope_label) values (${LIFECYCLE}, 9, 'POSITION', 'OF list')`,
+    notes: `insert into player_evaluation_notes (evaluation_id, note_kind, note_text) values (${LIFECYCLE}, 'STRENGTH', 'late addition')`,
+  }
+  for (const [table, insert] of Object.entries(more)) assert.match(await attempt(`${active}; ${insert}`), sealedMsg, `${table} insert`)
+  assert.match(await attempt(`${active}; update player_evaluation_grades set raw_value = 65, raw_label = '65' where evaluation_id = ${LIFECYCLE}`), sealedMsg)
+  assert.match(await attempt(`${active}; update player_evaluation_rankings set rank = 9 where evaluation_id = ${LIFECYCLE}`), sealedMsg)
+  assert.match(await attempt(`${active}; update player_evaluation_notes set note_text = 'edited' where evaluation_id = ${LIFECYCLE}`), sealedMsg)
+  assert.match(await attempt(`${active}; delete from player_evaluation_grades where evaluation_id = ${LIFECYCLE}`), sealedMsg)
+  assert.match(await attempt(`${active}; delete from player_evaluation_rankings where evaluation_id = ${LIFECYCLE}`), sealedMsg)
+  assert.match(await attempt(`${active}; delete from player_evaluation_notes where evaluation_id = ${LIFECYCLE}`), sealedMsg)
+  assert.match(await attempt(`${active}; update player_evaluation_notes set evaluation_id = ${evaluationId('emil-morales', 'fangraphs-organization-prospect-lists')} where evaluation_id = ${LIFECYCLE}`), sealedMsg,
+    'a child cannot be moved onto or off a sealed snapshot')
+  // the seeded, real evaluations are sealed too
+  const id = `(select id from player_evaluations where player_id = ${PLAYER('josue-de-paula')})`
+  assert.match(await attempt(`update player_evaluations set summary_note = 'edited' where id = ${id}`), /ACTIVE evaluation is sealed/)
+  assert.match(await attempt(`update player_evaluation_grades set raw_value = 65, raw_label = '65' where evaluation_id = ${id} and dimension_code = 'OVERALL'`), sealedMsg)
+  assert.match(await attempt(`delete from player_evaluation_rankings where evaluation_id = ${id}`), sealedMsg)
+  // a new evaluation starts as DRAFT, never ACTIVE or SUPERSEDED
+  for (const status of ['ACTIVE', 'SUPERSEDED']) {
+    assert.match(await attempt(lifecycleDraft().replace(/\) values \(/, ', record_status) values (').replace(/\)$/, `, '${status}')`)), /starts as DRAFT/, status)
+  }
+  assert.match(await attempt(`${lifecycleDraft()}; update player_evaluations set record_status = 'SUPERSEDED' where id = ${LIFECYCLE}`), /DRAFT cannot be superseded/)
+  // a status census at 026: only sealed history, no loose drafts
+  const census = await rows(`select record_status, count(*)::int as n from player_evaluations group by 1 order by 1`)
+  assert.deepEqual(census, [{ record_status: 'ACTIVE', n: 51 }])
+})
+
+test('026 player deletion: the player foreign key is RESTRICT, so sealed evaluations cannot vanish with a player; DRAFTs are deleted explicitly', async () => {
+  const fk = await one(`select confdeltype::text as t from pg_constraint where conrelid = 'public.player_evaluations'::regclass and contype = 'f'
+    and confrelid = 'public.players'::regclass`)
+  assert.equal(fk.t, 'r', 'ON DELETE RESTRICT')
+  // an ACTIVE evaluation (the FK refuses, before any trigger is consulted)
+  assert.match(await attempt(`delete from players where id = ${PLAYER('josue-de-paula')}`), /foreign key|violates/i)
+  // even with every sealing trigger disabled the foreign key still protects the history
+  assert.match(await attempt(`alter table player_evaluations disable trigger user; delete from players where id = ${PLAYER('josue-de-paula')}`), /foreign key|violates/i)
+  // a DRAFT does not protect the player, but must itself be deleted explicitly (children cascade with it)
+  assert.match(await attempt(`${lifecycleDraft({ slug: 'roger-cedeno' })}; delete from players where id = ${PLAYER('roger-cedeno')}`), /foreign key|violates/i)
+  assert.equal(await attempt(`${lifecycleDraft({ slug: 'roger-cedeno' })}; ${lifecycleChildren}; delete from player_evaluations where id = ${LIFECYCLE}`), 'accepted')
+  assert.equal((await one(`select count(*)::int as n from player_evaluations`)).n, 51)
+})
+
+test('026 supersession: a correction is a DRAFT replacement; activation retires the predecessor and keeps its contents byte-identical', async () => {
+  const fgPub = 'fangraphs-organization-prospect-lists'
+  const oldId = (await one(`select id from player_evaluations where player_id = ${PLAYER('josue-de-paula')}`)).id
+  const fingerprint = async (id) => (await one(`select md5(
+      coalesce((select (to_jsonb(e) - 'record_status')::text from player_evaluations e where e.id = '${id}'), '') ||
+      coalesce((select jsonb_agg(to_jsonb(g) order by g.id)::text from player_evaluation_grades g where g.evaluation_id = '${id}'), '') ||
+      coalesce((select jsonb_agg(to_jsonb(r) order by r.id)::text from player_evaluation_rankings r where r.evaluation_id = '${id}'), '') ||
+      coalesce((select jsonb_agg(to_jsonb(n) order by n.id)::text from player_evaluation_notes n where n.evaluation_id = '${id}'), '')) as h`)).h
+  const draftReplacement = `insert into player_evaluations (player_id, publication_id, evaluation_context, date_precision, evaluation_date, evaluation_year, evaluation_month,
+      evidence_basis, confidence, source_id, retrieved_at, supersedes_evaluation_id, summary_note)
+    select player_id, publication_id, evaluation_context, date_precision, evaluation_date, evaluation_year, evaluation_month,
+      evidence_basis, 'HIGH', source_id, retrieved_at, id, 'corrected transcription' from player_evaluations where id = '${oldId}'`
+  const copyChildren = `insert into player_evaluation_rankings (evaluation_id, rank, ranking_scope, scope_label, organization_id, list_size)
+      select (select id from player_evaluations where supersedes_evaluation_id = '${oldId}'), rank, ranking_scope, scope_label, organization_id, list_size
+      from player_evaluation_rankings where evaluation_id = '${oldId}';
+    insert into player_evaluation_grades (evaluation_id, dimension_code, temporal_basis, raw_value, raw_label, qualifier, scale_code, source_label)
+      select (select id from player_evaluations where supersedes_evaluation_id = '${oldId}'), dimension_code, temporal_basis, raw_value, raw_label, qualifier, scale_code, source_label
+      from player_evaluation_grades where evaluation_id = '${oldId}' and dimension_code <> 'OVERALL';
+    insert into player_evaluation_grades (evaluation_id, dimension_code, temporal_basis, raw_value, raw_label, qualifier, scale_code, source_label)
+      values ((select id from player_evaluations where supersedes_evaluation_id = '${oldId}'), 'OVERALL', 'FUTURE', 60, '60', 'NONE', 'SCOUTING_20_80', 'FV')`
+  const before = await fingerprint(oldId)
+  // order 1: build the DRAFT replacement, activate it; the predecessor is retired in the same step
+  await db.exec('begin;')
+  try {
+    await db.exec(`${draftReplacement}; ${copyChildren}`)
+    assert.equal((await rows(`select evaluation_id from v_player_scouting_timeline where player_slug = 'josue-de-paula'`)).length, 1, 'the DRAFT replacement is invisible; the ACTIVE predecessor is current')
+    assert.equal((await one(`select evaluation_id from v_player_latest_external_evaluation where player_slug = 'josue-de-paula'`)).evaluation_id, oldId)
+    await db.exec(`update player_evaluations set record_status = 'ACTIVE' where supersedes_evaluation_id = '${oldId}'`)
+    const states = await rows(`select record_status, supersedes_evaluation_id is not null as is_correction from player_evaluations where player_id = ${PLAYER('josue-de-paula')} order by record_status`)
+    assert.deepEqual(states, [{ record_status: 'ACTIVE', is_correction: true }, { record_status: 'SUPERSEDED', is_correction: false }])
+    const newId = (await one(`select id from player_evaluations where supersedes_evaluation_id = '${oldId}'`)).id
+    assert.equal(await fingerprint(oldId), before, 'the predecessor contents are byte-identical after the correction')
+    const timeline = await rows(`select evaluation_id, future_value_label from v_player_scouting_timeline where player_slug = 'josue-de-paula'`)
+    assert.deepEqual(timeline, [{ evaluation_id: newId, future_value_label: '60' }])
+    const latest = await rows(`select evaluation_id, future_value_label from v_player_latest_external_evaluation where player_slug = 'josue-de-paula'`)
+    assert.deepEqual(latest, [{ evaluation_id: newId, future_value_label: '60' }], 'the latest-external view ignores SUPERSEDED evaluations')
+    assert.equal((await one(`select evaluations from v_scouting_source_coverage where publication_slug = '${fgPub}'`)).evaluations, 2, 'coverage counts only ACTIVE snapshots')
+  } finally {
+    await db.exec('rollback;')
+  }
+  // the retired snapshot is sealed, header and children
+  const retired = `${draftReplacement}; ${copyChildren}; update player_evaluations set record_status = 'ACTIVE' where supersedes_evaluation_id = '${oldId}'`
+  assert.match(await attempt(`${retired}; update player_evaluation_notes set note_text = 'x' where evaluation_id = '${oldId}'`), /cannot change once their evaluation is SUPERSEDED/)
+  assert.match(await attempt(`${retired}; delete from player_evaluation_grades where evaluation_id = '${oldId}'`), /cannot change once their evaluation is SUPERSEDED/)
+  assert.match(await attempt(`${retired}; update player_evaluations set summary_note = 'x' where id = '${oldId}'`), /SUPERSEDED evaluation is sealed/)
+  assert.match(await attempt(`${retired}; delete from player_evaluations where id = '${oldId}'`), /sealed historical observation/)
+  // order 2: retire the predecessor explicitly once its DRAFT replacement exists, then activate; until then nothing is current
+  await db.exec('begin;')
+  try {
+    await db.exec(`${draftReplacement}; ${copyChildren}; update player_evaluations set record_status = 'SUPERSEDED' where id = '${oldId}'`)
+    assert.equal((await rows(`select 1 from v_player_latest_external_evaluation where player_slug = 'josue-de-paula'`)).length, 0, 'a SUPERSEDED predecessor is never current evidence')
+    await db.exec(`update player_evaluations set record_status = 'ACTIVE' where supersedes_evaluation_id = '${oldId}'`)
+    assert.equal((await rows(`select 1 from v_player_latest_external_evaluation where player_slug = 'josue-de-paula'`)).length, 1)
+    assert.equal(await fingerprint(oldId), before)
+  } finally {
+    await db.exec('rollback;')
+  }
+  // invalid chains
+  const replacement = (o) => dayEval('2025-12-05', { slug: 'josue-de-paula', pub: fgPub, evaluation_context: "'ORG_LIST'", source_reference: "'replacement'", ...o })
+  const supersedes = (sql, target = `'${oldId}'`) => sql.replace(/\) values \(/, ', supersedes_evaluation_id) values (').replace(/\)$/, `, ${target})`)
+  assert.equal(await attempt(supersedes(replacement({}))), 'accepted')
+  assert.match(await attempt(supersedes(replacement({ slug: 'emil-morales' }))), /same player and publication/, 'a different player')
+  assert.match(await attempt(supersedes(replacement({ pub: 'baseball-america-top-100' }))), /same player and publication/, 'a different publication')
+  assert.match(await attempt(supersedes(replacement({}), `'${randomUuid}'`)), /same player and publication/, 'a predecessor that does not exist')
+  assert.match(await attempt(`${replacement({})}; update player_evaluations set supersedes_evaluation_id = id where source_reference = 'replacement'`), /supersedes_check|must supersede a sealed/, 'self-supersession')
+  assert.match(await attempt(`${lifecycleDraft()}; ${supersedes(replacement({ source_reference: "'second'" }), LIFECYCLE)}`), /same player and publication/, 'a DRAFT cannot be superseded')
+  assert.match(await attempt(`${supersedes(replacement({}))}; ${supersedes(replacement({ source_reference: "'second replacement'" }))}`), /supersedes_key|duplicate key/, 'one replacement per predecessor')
+  // cycles are impossible: a sealed row cannot be edited to point at its own replacement
+  assert.match(await attempt(`${supersedes(replacement({}))}; update player_evaluations set supersedes_evaluation_id = (select id from player_evaluations where source_reference = 'replacement') where id = '${oldId}'`),
+    /ACTIVE evaluation is sealed/, 'no cycle through a sealed predecessor')
+  assert.equal((await one(`select count(*)::int as n from player_evaluations`)).n, 51, 'the rolled-back attempts changed nothing')
+})
+
+test('026 snapshot identity: duplicates are blocked; different sources, different dates and undated reports with distinct source identity coexist', async () => {
+  const base = { slug: 'roger-cedeno', pub: 'baseball-america-top-100', evaluation_context: "'IN_SEASON_REPORT'" }
+  // the key binds when a snapshot is sealed (ACTIVE): same key twice -> blocked
+  const first = sealed(dayEval('1996-04-01', { ...base, source_reference: "'report A'" }))
+  assert.match(await attempt(`${first}; ${first}`), /duplicate key|snapshot_key/)
+  const draftA = dayEval('1996-04-01', { ...base, source_reference: "'report A'" })
+  assert.equal(await attempt(`${draftA}; ${draftA}`), 'accepted', 'two DRAFTs of one snapshot may coexist until one is activated')
+  // same player / date / publication from two different sources coexist
+  assert.equal(await attempt(`${first}; ${sealed(dayEval('1996-04-01', { ...base, source_reference: "'report B'" }))}`), 'accepted')
+  // the identity of a source reference ignores case and surrounding spaces
+  assert.match(await attempt(`${first}; ${sealed(dayEval('1996-04-01', { ...base, source_reference: "'  REPORT a '" }))}`), /duplicate key|snapshot_key/)
+  // multiple snapshots from one publication over time
+  assert.equal(await attempt(`${first}; ${sealed(dayEval('1997-04-01', { ...base, source_reference: "'report A'" }))}; ${sealed(dayEval('1998-04-01', { ...base, source_reference: "'report A'" }))}`), 'accepted')
+  // a different context on the same day is a different snapshot
+  assert.equal(await attempt(`${first}; ${sealed(dayEval('1996-04-01', { ...base, evaluation_context: "'MLB_READY'", source_reference: "'report A'" }))}`), 'accepted')
+  // several UNKNOWN-date reports coexist when their source identity differs, but one source cannot repeat
+  const undated = (ref) => sealed(insertEvaluation({ slug: 'roger-cedeno', source_reference: `'${ref}'` }))
+  assert.equal(await attempt(`${undated('undated one')}; ${undated('undated two')}; ${undated('undated three')}`), 'accepted')
+  assert.match(await attempt(`${undated('undated one')}; ${undated('undated one')}`), /duplicate key|snapshot_key/)
+  // an ACTIVE row from the cited sources table also keys on source_id
+  const sid = "(select id from sources where url like 'https://blogs.fangraphs.com/%')"
+  const bySource = (o) => sealed(insertEvaluation({ slug: 'roger-cedeno', pub: 'fangraphs-organization-prospect-lists', source_id: sid, source_reference: 'null', ...o }))
+  assert.match(await attempt(`${bySource({})}; ${bySource({})}`), /duplicate key|snapshot_key/)
+})
+
+test('026 rankings: a rank needs a scope and a label; an organization rank needs an organization (and only it may carry one)', async () => {
+  const id = `(select id from player_evaluations where source_reference = 'child test')`
+  const attempt = (sql) => attemptRaw(`${insertEvaluation({ slug: 'emil-morales', pub: 'fangraphs-organization-prospect-lists', source_reference: "'child test'" })}; ${sql}`)
+  const rank = (cols, vals) => `insert into player_evaluation_rankings (evaluation_id, ${cols}) values (${id}, ${vals})`
+  assert.match(await attempt(rank('rank, scope_label', "1, 'No scope list'")), /ranking_scope|not-null|null value/)
+  assert.match(await attempt(rank('rank, ranking_scope', "1, 'MLB_GLOBAL'")), /scope_label|not-null|null value/)
+  assert.match(await attempt(rank('rank, ranking_scope, scope_label', "1, 'MLB_GLOBAL', '   '")), /scope_label_check|check/)
+  assert.match(await attempt(rank('rank, ranking_scope, scope_label', "1, 'GALAXY', 'x'")), /ranking_scope_check|check/)
+  assert.match(await attempt(rank('rank, ranking_scope, scope_label', "0, 'MLB_GLOBAL', 'x'")), /rank_check|check/)
+  assert.match(await attempt(rank('rank, ranking_scope, scope_label', "1, 'ORGANIZATION', 'Some org list'")), /org_scope_check/)
+  assert.match(await attempt(rank('rank, ranking_scope, scope_label, organization_id', "1, 'MLB_GLOBAL', 'Top 100', (select id from organizations limit 1)")), /org_scope_check/)
+  assert.match(await attempt(rank('rank, ranking_scope, scope_label, list_size', "50, 'MLB_GLOBAL', 'Top 30', 30")), /size_check/, 'a rank cannot exceed the list size')
+  assert.equal(await attempt(rank('rank, ranking_scope, scope_label, list_size', "7, 'MLB_GLOBAL', 'MLB-wide Top 100', 100")), 'accepted')
+  assert.equal(await attempt(rank('rank, ranking_scope, scope_label, organization_id', "2, 'ORGANIZATION', 'Another org list', (select id from organizations where name = 'Los Angeles Dodgers')")), 'accepted')
+  // the same player can hold an organization rank and an MLB-wide rank in one snapshot, but not the same scope + label twice
+  assert.equal(await attempt(`${rank('rank, ranking_scope, scope_label', "7, 'MLB_GLOBAL', 'MLB-wide Top 100'")}; ${rank('rank, ranking_scope, scope_label', "4, 'POSITION', 'SS list'")}`), 'accepted')
+  assert.match(await attempt(`${rank('rank, ranking_scope, scope_label', "7, 'MLB_GLOBAL', 'dup'")}; ${rank('rank, ranking_scope, scope_label', "8, 'MLB_GLOBAL', 'dup'")}`), /duplicate key|unique/)
+  // absence from a list is never stored as a rank: the seeded players have exactly the ranks their sources print
+  assert.deepEqual((await rows(`select count(*)::int as n from player_evaluation_rankings r where r.rank > coalesce(r.list_size, r.rank)`))[0], { n: 0 })
+})
+
+test('026 grades: scale validation, the preserved printed label, and the + / - qualifier (45+ is not exact 45)', async () => {
+  const id = `(select id from player_evaluations where source_reference = 'child test')`
+  const attempt = (sql) => attemptRaw(`${insertEvaluation({ slug: 'emil-morales', pub: 'fangraphs-organization-prospect-lists', source_reference: "'child test'" })}; ${sql}`)
+  const grade = (v) => `insert into player_evaluation_grades (evaluation_id, ${Object.keys(v).join(', ')}) values (${id}, ${Object.values(v).join(', ')})`
+  const ok = { dimension_code: "'HIT'", temporal_basis: "'FUTURE'", scale_code: "'SCOUTING_20_80'" }
+  // scale validation
+  assert.match(await attempt(grade({ ...ok, raw_value: 85, raw_label: "'85'" })), /outside scale SCOUTING_20_80/)
+  assert.match(await attempt(grade({ ...ok, raw_value: 15, raw_label: "'15'" })), /outside scale/)
+  assert.match(await attempt(grade({ ...ok, raw_value: 47, raw_label: "'47'" })), /not on the 5 step/)
+  assert.match(await attempt(grade({ ...ok, raw_value: 'null', raw_label: "'55'" })), /requires raw_value/)
+  assert.match(await attempt(grade({ ...ok, raw_value: 50, raw_label: "'55'" })), /does not match raw_value/)
+  assert.match(await attempt(grade({ ...ok, raw_value: 50, raw_label: "'fifty'" })), /optional \+ or -/)
+  assert.match(await attempt(grade({ ...ok, scale_code: "'NO_SUCH_SCALE'", raw_value: 50, raw_label: "'50'" })), /foreign key|unknown scale/)
+  assert.match(await attempt(grade({ dimension_code: "'HIT'", temporal_basis: "'FUTURE'", raw_value: 50, raw_label: "'50'" })), /scale_code|null value|unknown scale/, 'a grade without a scale is impossible')
+  assert.match(await attempt(grade({ ...ok, raw_value: 'null', raw_label: 'null' })), /value_check|requires raw_value/, 'a grade row needs a value or a label')
+  assert.match(await attempt(grade({ ...ok, dimension_code: "'ASTROLOGY'", raw_value: 50, raw_label: "'50'" })), /dimension_code_check|check/)
+  // qualifier: label, numeric base and qualifier stay separate and consistent
+  assert.equal(await attempt(grade({ ...ok, raw_value: 45, raw_label: "'45+'", qualifier: "'PLUS'" })), 'accepted')
+  assert.equal(await attempt(grade({ ...ok, raw_value: 45, raw_label: "'45-'", qualifier: "'MINUS'" })), 'accepted')
+  assert.match(await attempt(grade({ ...ok, raw_value: 45, raw_label: "'45+'" })), /qualifier_label_check|does not match qualifier/, '45+ cannot masquerade as an exact 45')
+  assert.match(await attempt(grade({ ...ok, raw_value: 45, raw_label: "'45'", qualifier: "'PLUS'" })), /qualifier_label_check|does not match qualifier/)
+  assert.match(await attempt(grade({ ...ok, raw_value: 45, raw_label: "'45-'", qualifier: "'PLUS'" })), /qualifier_label_check|does not match qualifier/)
+  assert.match(await attempt(grade({ ...ok, raw_value: 45, raw_label: 'null', qualifier: "'PLUS'" })), /qualifier_label_check|requires the printed raw_label/)
+  // 45, 45+ and 45- are three different observations, not one
+  assert.equal(await attempt([
+    grade({ ...ok, raw_value: 45, raw_label: "'45'", source_label: "'exact'" }),
+    grade({ ...ok, raw_value: 45, raw_label: "'45+'", qualifier: "'PLUS'", source_label: "'plus'" }),
+    grade({ ...ok, raw_value: 45, raw_label: "'45-'", qualifier: "'MINUS'", source_label: "'minus'" })].join('; ')), 'accepted')
+  assert.match(await attempt(`${grade({ ...ok, raw_value: 45, raw_label: "'45'" })}; ${grade({ ...ok, raw_value: 50, raw_label: "'50'" })}`), /duplicate key|grades_key/,
+    'one grade per dimension, temporal basis and source label')
+  // an ordinal scale and a scale that disallows qualifiers (created inside a rolled-back transaction)
+  const ordinal = `insert into evaluation_scales (scale_code, label, scale_kind, ordered_labels) values ('TEST_RISK', 'test risk', 'ORDINAL', array['Low', 'Medium', 'High']);`
+  const risk = (label, extra = {}) => grade({ dimension_code: "'RISK'", temporal_basis: "'UNSPECIFIED'", scale_code: "'TEST_RISK'", raw_label: label, raw_value: 'null', ...extra })
+  assert.equal(await attempt(`${ordinal} ${risk("'High'")}`), 'accepted')
+  assert.match(await attempt(`${ordinal} ${risk("'Extreme'")}`), /not on ordinal scale/)
+  assert.match(await attempt(`${ordinal} ${risk("'High'", { raw_value: 3 })}`), /label, not a numeric value/)
+  assert.match(await attempt(`${ordinal} ${risk("'High+'", { qualifier: "'PLUS'" })}`), /does not allow a \+ \/ - qualifier/)
+  assert.match(await attempt(`insert into evaluation_scales (scale_code, label, scale_kind, scale_min, scale_max) values ('BAD', 'bad', 'NUMERIC', 80, 20)`), /shape_check|check/)
+  assert.match(await attempt(`insert into evaluation_scales (scale_code, label, scale_kind) values ('BAD2', 'bad', 'ORDINAL')`), /shape_check|check/)
+  // what is stored and shown: the printed label, the numeric base and the qualifier stay apart
+  await db.exec('begin;')
+  try {
+    await db.exec(insertEvaluation({ slug: 'roger-cedeno', source_reference: "'qualifier demo'" }))
+    const demo = `(select id from player_evaluations where source_reference = 'qualifier demo')`
+    await db.exec(`insert into player_evaluation_grades (evaluation_id, dimension_code, temporal_basis, raw_value, raw_label, qualifier, scale_code, source_label)
+      values (${demo}, 'OVERALL', 'FUTURE', 45, '45+', 'PLUS', 'SCOUTING_20_80', 'FV');
+      update player_evaluations set record_status = 'ACTIVE' where id = ${demo}`)
+    const stored = await one(`select raw_value::int as base, raw_label, qualifier from player_evaluation_grades where evaluation_id = ${demo}`)
+    assert.deepEqual(stored, { base: 45, raw_label: '45+', qualifier: 'PLUS' })
+    const shown = await one(`select future_value_label, future_value_numeric_base::int as base, future_value_qualifier, future_value_scale
+      from v_player_scouting_timeline where source_reference = 'qualifier demo'`)
+    assert.deepEqual(shown, { future_value_label: '45+', base: 45, future_value_qualifier: 'PLUS', future_value_scale: 'SCOUTING_20_80' })
+    // an exact 45 elsewhere is a different observation with its own label and qualifier
+    const exact = await one(`select future_value_label, future_value_qualifier from v_player_scouting_timeline where player_slug = 'emil-morales'`)
+    assert.deepEqual(exact, { future_value_label: '50', future_value_qualifier: 'NONE' })
+    // a missing FV is NULL, never 0
+    const none = await one(`select future_value_label, future_value_numeric_base, present_overall_label, has_future_value from v_player_scouting_timeline where player_slug = 'roki-sasaki'`)
+    assert.deepEqual(none, { future_value_label: null, future_value_numeric_base: null, present_overall_label: null, has_future_value: false })
+  } finally {
+    await db.exec('rollback;')
+  }
+})
+
+test('026 provenance and evidence: a source (or a print reference), basis, confidence and retrieval time are required; notes are short paraphrases', async () => {
+  assert.match(await attempt(insertEvaluation({ source_reference: 'null' })), /provenance_check/)
+  assert.match(await attempt(insertEvaluation({ source_reference: "'   '" })), /provenance_check/)
+  assert.match(await attempt(insertEvaluation({ source_reference: "'ok'", evidence_basis: 'null' })), /evidence_basis|null value/)
+  assert.match(await attempt(insertEvaluation({ source_reference: "'ok'", evidence_basis: "'HEARSAY'" })), /evidence_basis_check|check/)
+  assert.match(await attempt(insertEvaluation({ source_reference: "'ok'", retrieved_at: 'null' })), /retrieved_at|null value/)
+  assert.match(await attempt(insertEvaluation({ source_reference: "'ok'", confidence: 'null' })), /confidence|null value/)
+  assert.match(await attempt(insertEvaluation({ source_reference: "'ok'", evaluation_context: "'HUNCH'" })), /evaluation_context_check|check/)
+  assert.equal(await attempt(insertEvaluation({ source_reference: "'Baseball America Prospect Handbook 1996, p. 112 (print)'" })), 'accepted')
+  assert.equal(await attempt(insertEvaluation({ source_reference: 'null', source_id: '(select id from sources limit 1)' })), 'accepted')
+  const note = (text) => `${insertEvaluation({ source_reference: "'note parent'" })}; insert into player_evaluation_notes (evaluation_id, note_kind, note_text) select id, 'RISK', ${text} from player_evaluations where source_reference = 'note parent'`
+  assert.equal(await attempt(note("'" + 'x'.repeat(500) + "'")), 'accepted')
+  assert.match(await attempt(note("'" + 'x'.repeat(501) + "'")), /note_text_check|check/)
+  assert.match(await attempt(note("'   '")), /note_text_check|check/)
+  assert.match(await attempt(insertEvaluation({ source_reference: "'ok'" }).replace(/\) values \(/, ', summary_note) values (').replace(/\)$/, ", '" + 'x'.repeat(501) + "')")), /summary_note_check|check/)
+  assert.match(await attempt(`${insertEvaluation({ source_reference: "'note parent'" })}; insert into player_evaluation_notes (evaluation_id, note_kind, note_text, note_origin) select id, 'RISK', 'x', 'PUBLISHER_TEXT' from player_evaluations where source_reference = 'note parent'`), /note_origin_check|check/,
+    'only analyst paraphrases are storable')
+  // every stored evaluation has provenance and every seeded citation has a URL
+  const orphans = await one(`select count(*)::int as n from player_evaluations where source_id is null and nullif(btrim(source_reference), '') is null`)
+  assert.equal(orphans.n, 0)
+})
+
+test('026 date precision: only DAY carries a date; coarser precision never produces an exact-day metric', async () => {
+  const shape = (o) => insertEvaluation({ source_reference: "'shape'", ...o })
+  assert.match(await attempt(shape({ date_precision: "'DAY'" })), /date_shape_check/)
+  assert.match(await attempt(shape({ date_precision: "'DAY'", evaluation_date: "date '2020-05-05'", evaluation_year: '2021', evaluation_month: '5' })), /date_shape_check/)
+  assert.match(await attempt(shape({ date_precision: "'MONTH'", evaluation_date: "date '2020-05-01'", evaluation_year: '2020', evaluation_month: '5' })), /date_shape_check/, 'no fabricated day 1')
+  assert.match(await attempt(shape({ date_precision: "'MONTH'", evaluation_year: '2020' })), /date_shape_check/)
+  assert.match(await attempt(shape({ date_precision: "'YEAR'", evaluation_date: "date '2020-01-01'", evaluation_year: '2020' })), /date_shape_check/, 'no fabricated January 1')
+  assert.match(await attempt(shape({ date_precision: "'YEAR'", evaluation_year: '2020', evaluation_month: '3' })), /date_shape_check/)
+  assert.match(await attempt(shape({ date_precision: "'SEASON'" })), /date_shape_check/)
+  assert.match(await attempt(shape({ date_precision: "'UNKNOWN'", evaluation_year: '2020' })), /date_shape_check/)
+  assert.match(await attempt(shape({ date_precision: "'WEEK'", evaluation_year: '2020' })), /date_precision_check|check/)
+  assert.equal(await attempt(shape({ date_precision: "'MONTH'", evaluation_year: '2020', evaluation_month: '5' })), 'accepted')
+  // one player, four snapshots of the same moment at different precisions: only DAY yields exact metrics
+  const player = 'josue-de-paula'
+  const ref = (n) => ({ slug: player, pub: 'baseball-america-top-100', evaluation_context: "'GLOBAL_LIST'", source_reference: `'precision ${n}'` })
+  await db.exec('begin;')
+  try {
+    await db.exec([
+      dayEval('2024-06-15', ref('day')),
+      insertEvaluation({ ...ref('month'), date_precision: "'MONTH'", evaluation_year: '2024', evaluation_month: '6' }),
+      insertEvaluation({ ...ref('year'), date_precision: "'YEAR'", evaluation_year: '2024' }),
+      insertEvaluation({ ...ref('season'), date_precision: "'SEASON'", evaluation_year: '2024' }),
+      insertEvaluation({ ...ref('unknown') }),
+    ].join('; ') + "; update player_evaluations set record_status = 'ACTIVE' where source_reference like 'precision %'")
+    const t = Object.fromEntries((await rows(`select source_reference, date_precision, evaluation_label, days_from_signing_exact as d, evaluation_vs_signing as vs,
+        age_at_evaluation_exact as age, approx_age_in_evaluation_year as aage, approx_years_from_signing as ay, development_level_at_evaluation as lvl, sort_key
+      from v_player_scouting_timeline where player_slug = '${player}' and source_reference like 'precision %'`)).map((r) => [r.source_reference, r]))
+    assert.deepEqual([t['precision day'].evaluation_label, t['precision month'].evaluation_label, t['precision year'].evaluation_label,
+      t['precision season'].evaluation_label, t['precision unknown'].evaluation_label], ['2024-06-15', '2024-06', '2024', '2024 season', 'Date unknown'])
+    assert.equal(t['precision day'].d, (await one(`select date '2024-06-15' - signing_date as d from signings where player_id = ${PLAYER(player)}`)).d, 'DAY: exact days from signing')
+    assert.notEqual(t['precision day'].age, null)
+    for (const k of ['month', 'year', 'season', 'unknown']) {
+      const r = t[`precision ${k}`]
+      assert.deepEqual([r.d, r.vs, r.age, r.lvl], [null, 'UNKNOWN', null, null], `${k}: no exact-day metric`)
+    }
+    assert.notEqual(t['precision year'].aage, null, 'a labelled approximation is allowed at YEAR precision')
+    assert.equal(t['precision unknown'].aage, null)
+    assert.equal(t['precision unknown'].ay, null)
+    // chronological order: unknown dates sort last
+    const order = (await rows(`select source_reference from v_player_scouting_timeline where player_slug = '${player}' and source_reference like 'precision %' order by sort_key, source_reference`)).map((r) => r.source_reference)
+    assert.equal(order.at(-1), 'precision unknown')
+  } finally {
+    await db.exec('rollback;')
+  }
+})
+
+test('026 origin: DISI_RESEARCH is allowed by the schema but never seeded and excluded from every view; DISI_MODEL cannot exist', async () => {
+  assert.match(await attempt(`insert into scouting_publications (publication_slug, publication_name, publisher, origin, publication_kind, access_class)
+    values ('disi-model-output', 'DISI model', 'DISI', 'DISI_MODEL', 'OTHER', 'OPEN')`), /origin_check|check/)
+  const seeded = await rows(`select origin, count(*)::int as n from scouting_publications group by 1`)
+  assert.deepEqual(seeded, [{ origin: 'EXTERNAL', n: 3 }])
+  assert.ok(seed026.publications.every((p) => ['EXTERNAL', 'TEAM_PUBLIC'].includes(p.origin)))
+  await db.exec('begin;')
+  try {
+    await db.exec(`insert into scouting_publications (publication_slug, publication_name, publisher, origin, publication_kind, access_class)
+      values ('disi-analyst-notes', 'DISI analyst notes', 'DISI', 'DISI_RESEARCH', 'OTHER', 'OPEN');
+      ${sealed(dayEval('2025-02-02', { slug: 'roki-sasaki', pub: 'disi-analyst-notes', evaluation_context: "'IN_SEASON_REPORT'", source_reference: "'DISI note'" }))}`)
+    assert.equal((await one(`select count(*)::int as n from player_evaluations`)).n, 52, 'the schema accepts it')
+    for (const view of ['v_player_scouting_timeline', 'v_player_latest_external_evaluation', 'v_dodgers_scouting_at_signing']) {
+      assert.equal((await one(`select count(*)::int as n from ${view} where publication_slug = 'disi-analyst-notes'`)).n, 0, `${view} excludes DISI_RESEARCH`)
+    }
+    assert.equal((await one(`select count(*)::int as n from v_scouting_source_coverage where publication_slug = 'disi-analyst-notes'`)).n, 0)
+    assert.equal((await one(`select count(*)::int as n from v_player_scouting_timeline`)).n, 51)
+  } finally {
+    await db.exec('rollback;')
+  }
+  // DISI model output stays in model_predictions, untouched by 026
+  assert.equal((await one(`select count(*)::int as n from model_predictions`)).n, 0)
+})
+
+test('026 views: timeline derivations, latest-per-publication, at-signing window and source coverage', async () => {
+  const sasaki = await one(`select * from v_player_scouting_timeline where player_slug = 'roki-sasaki'`)
+  assert.deepEqual([sasaki.age_at_evaluation_exact, sasaki.mlb_status_at_evaluation, sasaki.development_level_at_evaluation, sasaki.organization_name],
+    [23, 'PRE_MLB_DEBUT', null, 'Los Angeles Dodgers'])
+  assert.equal(sasaki.age_at_evaluation_exact, (await one(`select public.disi_age_years(birth_date, date '2025-01-22') as a from players where slug = 'roki-sasaki'`)).a)
+  // a benchmark evaluation: signing date unknown -> no exact interval and no claimed chronology
+  const eloy = await one(`select * from v_player_scouting_timeline where player_slug = 'eloy-jimenez'`)
+  assert.deepEqual([eloy.evaluation_vs_signing, eloy.days_from_signing_exact, eloy.approx_years_from_signing, eloy.mlb_status_at_evaluation], ['UNKNOWN', null, 0, 'PRE_MLB_DEBUT'])
+  // Morales's level at the list date comes from a dated team stint
+  const morales = await one(`select development_level_at_evaluation, development_level_basis from v_player_scouting_timeline where player_slug = 'emil-morales'`)
+  assert.deepEqual([morales.development_level_at_evaluation, morales.development_level_basis], ['LOW_A', 'EXACT_DATE'])
+  // one latest row per player and publication
+  const latest = await one(`select count(*)::int as n, count(distinct (player_id, publication_slug))::int as k from v_player_latest_external_evaluation`)
+  assert.deepEqual([latest.n, latest.k], [51, 51])
+  // at-signing: Dodgers signings only, with signing-year or signing-context evaluations only
+  const atSigning = await rows(`select player_slug, signing_year, at_signing_basis, evaluation_vs_signing from v_dodgers_scouting_at_signing`)
+  assert.deepEqual(atSigning, [{ player_slug: 'roki-sasaki', signing_year: 2025, at_signing_basis: 'SAME_YEAR', evaluation_vs_signing: 'SAME_DAY' }])
+  // coverage: zero is a blind spot, not a finding
+  const coverage = Object.fromEntries((await rows(`select * from v_scouting_source_coverage`)).map((r) => [r.publication_slug, r]))
+  assert.deepEqual(Object.keys(coverage).sort(), ['baseball-america-top-100', 'fangraphs-organization-prospect-lists', 'mlb-pipeline-top-30-international-signings'])
+  assert.deepEqual([coverage['mlb-pipeline-top-30-international-signings'].evaluations, coverage['mlb-pipeline-top-30-international-signings'].players,
+    coverage['mlb-pipeline-top-30-international-signings'].first_year, coverage['mlb-pipeline-top-30-international-signings'].last_year], [48, 48, 2013, 2014])
+  assert.deepEqual([coverage['fangraphs-organization-prospect-lists'].with_future_value, coverage['fangraphs-organization-prospect-lists'].with_tool_grades, coverage['fangraphs-organization-prospect-lists'].with_ranking], [2, 1, 2])
+  assert.equal(coverage['baseball-america-top-100'].secondary_citations, 1)
+  assert.ok(Object.values(coverage).every((c) => c.with_archive_reference === 0 && c.bulk_ingest_allowed === false))
+})
+
+test('026 research queue: meaningful gaps only; nothing the schema forbids; differing opinions are not conflicts', async () => {
+  const issues = Object.fromEntries((await rows(`select issue, count(*)::int as n from v_scouting_research_queue group by 1`)).map((r) => [r.issue, r.n]))
+  assert.deepEqual(issues, { LEGACY_RANK_WITHOUT_EVALUATION: 11, MISSING_ARCHIVE_REFERENCE: 3, PLAYER_WITHOUT_SCOUTING_HISTORY: 53, SIGNING_WITHOUT_SIGNING_EVALUATION: 41 })
+  for (const forbidden of ['RANK_WITHOUT_SCOPE', 'FV_WITHOUT_SCALE', 'EVALUATION_WITHOUT_SOURCE', 'CONFLICTING_SOURCE_VALUES', 'UNRESOLVED_PLAYER_IDENTITY']) assert.equal(issues[forbidden], undefined, forbidden)
+  // independent oracles for the two scoped issues
+  const history = await one(`select count(*)::int as n from players p
+    where (exists (select 1 from outcome_audits oa where oa.player_id = p.id and oa.reached_mlb_verified)
+        or exists (select 1 from signings sg where sg.player_id = p.id and sg.international_rank is not null))
+      and not exists (select 1 from player_evaluations e where e.player_id = p.id)`)
+  assert.equal(history.n, 53)
+  const signing = await one(`select count(*)::int as n from signings sg join organizations o on o.id = sg.organization_id and o.franchise_key = 'DODGERS'
+    where (sg.bonus_publicly_reported or sg.international_rank is not null)
+      and not exists (select 1 from player_evaluations e where e.player_id = sg.player_id and (e.evaluation_context in ('PRE_SIGNING', 'SIGNING') or e.evaluation_year = sg.signing_year))`)
+  assert.equal(signing.n, 41)
+  // date-quality issues appear when a coarse or undated evaluation exists
+  await db.exec('begin;')
+  try {
+    await db.exec([sealed(insertEvaluation({ slug: 'carlos-frias', source_reference: "'undated'" })),
+      sealed(insertEvaluation({ slug: 'roger-cedeno', source_reference: "'yearly'", date_precision: "'YEAR'", evaluation_year: '1996' }))].join('; '))
+    const q = Object.fromEntries((await rows(`select player_slug, issue from v_scouting_research_queue where issue in ('EVALUATION_WITHOUT_DATE', 'EVALUATION_DATE_IMPRECISE')`)).map((r) => [r.issue, r.player_slug]))
+    assert.deepEqual(q, { EVALUATION_WITHOUT_DATE: 'carlos-frias', EVALUATION_DATE_IMPRECISE: 'roger-cedeno' })
+    assert.equal((await one(`select count(*)::int as n from v_scouting_research_queue where player_slug = 'carlos-frias' and issue = 'PLAYER_WITHOUT_SCOUTING_HISTORY'`)).n, 0,
+      'a player with a (possibly weak) evaluation leaves the no-history queue')
+  } finally {
+    await db.exec('rollback;')
+  }
+})
+
+test('026 archive queue: a live primary source is sufficient; an archive reference is queued only where preservation is warranted', async () => {
+  // the three hand-researched evaluations are the only legitimate candidates today
+  const queued = await rows(`select player_slug, detail from v_scouting_research_queue where issue = 'MISSING_ARCHIVE_REFERENCE' order by 1`)
+  assert.deepEqual(queued.map((q) => q.player_slug), ['emil-morales', 'josue-de-paula', 'roki-sasaki'])
+  assert.match(queued.find((q) => q.player_slug === 'josue-de-paula').detail, /edited after publication/)
+  assert.match(queued.find((q) => q.player_slug === 'roki-sasaki').detail, /secondary citation/)
+  // the 48 MLB Pipeline backfills have a valid primary source and are not queued merely for lacking an archive URL
+  const pipeline = await one(`select count(*)::int as n from v_scouting_research_queue q join player_evaluations e on e.player_id = q.player_id
+    where q.issue = 'MISSING_ARCHIVE_REFERENCE' and e.publication_id = ${PUBLICATION('mlb-pipeline-top-30-international-signings')}`)
+  assert.equal(pipeline.n, 0)
+  const flag = async (o) => {
+    await db.exec('begin;')
+    try {
+      await db.exec(sealed(insertEvaluation({ slug: 'roger-cedeno', source_reference: "'archive case'", ...o })))
+      return (await one(`select count(*)::int as n from v_scouting_research_queue where player_slug = 'roger-cedeno' and issue = 'MISSING_ARCHIVE_REFERENCE'`)).n
+    } finally {
+      await db.exec('rollback;')
+    }
+  }
+  assert.equal(await flag({}), 0, 'absence of an archive URL alone is not an issue')
+  assert.equal(await flag({ evidence_basis: "'PUBLISHED_REPORT'" }), 0)
+  assert.equal(await flag({ evidence_basis: "'SECONDARY_CITATION'" }), 1, 'a secondary citation warrants the original / an archive')
+  assert.equal(await flag({ preservation_concern: "'SOURCE_UNAVAILABLE'" }), 1)
+  assert.equal(await flag({ preservation_concern: "'SOURCE_EDITED_AFTER_PUBLICATION'" }), 1)
+  assert.equal(await flag({ preservation_concern: "'SOURCE_UNSTABLE'" }), 1)
+  assert.equal(await flag({ evidence_basis: "'SECONDARY_CITATION'", archive_url: "'https://web.archive.org/web/2025/https://example.org/x'" }), 0, 'an archive reference resolves it')
+  assert.equal(await flag({ preservation_concern: "'SOURCE_UNSTABLE'", archive_url: "'https://web.archive.org/web/2025/https://example.org/x'" }), 0)
+  assert.match(await attempt(insertEvaluation({ source_reference: "'x'", preservation_concern: "'BECAUSE'" })), /preservation_concern|check/)
+})
+
+test('026 identity discipline: views and the migration join on player_id, never on a name', async () => {
+  const defs = await rows(`select c.relname, pg_get_viewdef(c.oid) as def from pg_class c where c.relname = any($1) and c.relkind = 'v'`, [views026])
+  for (const d of defs) {
+    assert.doesNotMatch(d.def, /full_name\s*=|canonical_name\s*=|lower\(\s*\w*\.?full_name|\bjoin\b[^;]{0,200}full_name/i, d.relname)
+    assert.match(d.def, /player_id|\.id/, d.relname)
+  }
+  const sql = readSql('026_scouting_evaluation_history.sql').replace(/--[^\n]*/g, '')
+  assert.doesNotMatch(sql, /full_name\s*=|canonical_name\s*=|lower\(\s*\w*\.?full_name|join[^;]{0,200}full_name/i)
+  // reviewed seeds resolve players by their stable slug, and cite sources by URL
+  assert.match(sql, /join public\.players p on p\.slug = v\.player_slug/)
+})
+
+test('026 reruns cleanly: a second run changes no row, no grant, no definition', async () => {
+  const snapshot = async () => one(`select
+      (select count(*) from player_evaluations)::int as evaluations, (select count(*) from player_evaluation_rankings)::int as rankings,
+      (select count(*) from player_evaluation_grades)::int as grades, (select count(*) from player_evaluation_notes)::int as notes,
+      (select count(*) from scouting_publications)::int as publications, (select count(*) from evaluation_scales)::int as scales,
+      (select string_agg(id::text || record_status || created_at::text, ',' order by id) from player_evaluations) as evaluation_rows,
+      (select count(*) from sources)::int as sources`)
+  const before = await snapshot()
+  const securityBefore = await securitySnapshotOn(one)
+  const aclBefore = await apiAcl()
+  await db.exec(readSql('026_scouting_evaluation_history.sql'))
+  assert.deepEqual(await snapshot(), before)
+  assert.deepEqual(await securitySnapshotOn(one), securityBefore)
+  assert.deepEqual(await apiAcl(), aclBefore)
+  assert.deepEqual([before.evaluations, before.rankings, before.grades, before.notes, before.publications, before.scales], [51, 51, 13, 1, 3, 1])
 })

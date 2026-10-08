@@ -74,7 +74,7 @@ if (invokedDirectly) {
     const chain = await buildCanonicalChain()
     query = chain.query
     close = chain.close
-    mode = 'local canonical 001→025 chain (PGlite)'
+    mode = 'local canonical 001→026 chain (PGlite)'
   }
 
   try {

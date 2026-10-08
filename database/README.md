@@ -34,6 +34,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 23. `023_development_stint_integrity.sql` — season-total stints classified and excluded from additive analytics, team-stint-only status and research queue, two affiliation corrections (details below; research in `database/research/023/`).
 24. `024_development_progression_decisions.sql` — reviewed progression decisions separating first appearance from developmental arrival; developmental elapsed metrics and status (details below; research in `database/research/024/`).
 25. `025_public_view_grant_hardening.sql` — every public view reduced to SELECT for anon/authenticated (43 legacy views had inherited Supabase default ALL privileges) behind a reviewed inventory and an ACL postcondition (details below; research in `database/research/025/`).
+26. `026_scouting_evaluation_history.sql` — immutable external scouting evaluations (publications, scales, snapshots, grades, rankings, notes), the 48 provenance-backed legacy international ranks backfilled, the empty legacy `evaluations` table dropped behind guards (details below; research in `database/research/026/`).
 
 ## 017 research-database layer
 
@@ -112,6 +113,17 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Convention.** Every migration that creates or replaces a public table or view must `revoke all … from anon, authenticated` and `grant select …` explicitly; Supabase default privileges grant ALL otherwise. The verifier checks the whole public surface from the ACLs (MAINTAIN included).
 - **Verifier commands.** `npm run verify:db` checks the local canonical chain and ignores any database URL; `npm run verify:db:live` loads `.env.local` and refuses to run without a URL.
 - **Rerunnable**; audit, inventory and the default-privilege recommendation in `database/research/025/README.md`.
+
+## 026 scouting / prospect evaluation history
+
+- **An evaluation is an opinion at a point in time.** `player_evaluations` snapshots (player × publication × as-of date × context) carry grades, rankings and short notes in child tables; nothing is overwritten. Lifecycle DRAFT → ACTIVE → SUPERSEDED: a DRAFT is assembled and invisible; activation seals the header and every grade / ranking / note (no insert, update or delete); a correction is a new DRAFT that names its predecessor (same player and publication) and retires it on activation. External and DISI evaluations stay separate; model output stays in `model_predictions`.
+- **Scale and qualifiers.** Source grades keep the printed label, the numeric base and a PLUS/MINUS/NONE qualifier (45+ is not 45), validated against `evaluation_scales`. FV is `OVERALL` + `FUTURE`.
+- **Dates and provenance.** Date precision is DAY/MONTH/YEAR/SEASON/UNKNOWN (no invented day 1); every evaluation names a publication and a source or print reference. Notes are DISI paraphrases (<= 500 characters); no publisher text is stored.
+- **Context.** `ORG_LIST` = organization list, `GLOBAL_LIST` = MLB-wide list, `INTERNATIONAL_CLASS_LIST` = international amateur / free-agent class list, `PRE_SIGNING` only where dates establish it.
+- **Archive queue.** A live primary source is sufficient provenance; `MISSING_ARCHIVE_REFERENCE` is raised only for a secondary citation or a recorded `preservation_concern` (3 today).
+- **Backfill.** 48 of the 59 legacy `signings.international_rank` values have a tracker source and are mirrored as `INTERNATIONAL_CLASS_LIST` evaluations; the 11 unsourced are queued as `LEGACY_RANK_WITHOUT_EVALUATION`. `signings.international_rank` is unchanged.
+- **Surface.** 47 public tables, 91 views (5 new, security_invoker, SELECT-only); the empty legacy `evaluations` table is dropped only if it is unchanged, empty and unreferenced. The dossier shows an "External scouting evaluations" section.
+- **Rerunnable**; design, source audit and reproduction in `database/research/026/`.
 
 ## Player identity (020)
 

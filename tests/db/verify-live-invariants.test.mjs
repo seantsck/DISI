@@ -1,5 +1,5 @@
 // Offline tests for scripts/db/lib/invariants.mjs against the canonical
-// 001→025 PGlite chain. No live Supabase access is involved.
+// 001→026 PGlite chain. No live Supabase access is involved.
 //
 // Drift conditions are simulated inside transactions that are rolled back, so
 // the shared chain stays pristine for every scenario.
@@ -30,12 +30,12 @@ async function withDrift(driftSql) {
   }
 }
 
-test('clean canonical 001→025 state passes every hard invariant', async () => {
+test('clean canonical 001→026 state passes every hard invariant', async () => {
   const report = await runChecks()
   assert.deepEqual(failedChecks(report).map((c) => c.name), [])
   // population 4 + development 17 + status 2 + progression 3 + integrity 10
-  // + api 9 + privileges 16 + rls 6 + security_invoker 10
-  assert.ok(report.hard.length >= 77, `expected a full battery, got ${report.hard.length}`)
+  // + scouting 22 + api 9 + privileges 16 + rls 6 + security_invoker 10
+  assert.ok(report.hard.length >= 101, `expected a full battery, got ${report.hard.length}`)
   // informational coverage numbers are reported but never fail
   assert.ok(report.info.length >= 3)
 })
@@ -192,5 +192,61 @@ test('025 drift: the whole public API surface is checked from the ACLs, not just
   // an extra (unreviewed) view moves the reviewed total
   const extra = await withDrift(`create view public.zz_extra with (security_invoker = true) as select 1 as x; grant select on public.zz_extra to anon, authenticated;`)
   assert.deepEqual(failedChecks(extra).map((c) => c.name), ['public_views_total'])
+  assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
+})
+
+test('026 drift: scouting integrity is checked from the data itself, each kind of damage failing exactly its checks', async () => {
+  const eloy = `(select e.id from public.player_evaluations e join public.players p on p.id = e.player_id where p.slug = 'eloy-jimenez')`
+  const names = (report) => failedChecks(report).map((c) => c.name).sort()
+  // a backfilled evaluation deleted: totals move and its legacy rank is no longer represented
+  assert.deepEqual(names(await withDrift(`alter table public.player_evaluations disable trigger player_evaluations_guard;
+    delete from public.player_evaluations where id = ${eloy};`)),
+    ['player_evaluations', 'scouting_legacy_ranks_backfilled', 'scouting_legacy_ranks_unrepresented'])
+  // the legacy table comes back (without RLS)
+  assert.deepEqual(names(await withDrift(`create table public.evaluations (id int);`)),
+    ['legacy_evaluations_table_present', 'public_tables_total', 'public_tables_without_rls'])
+  // a stored rank no longer matches the legacy value it was backfilled from (immutability trigger bypassed)
+  assert.deepEqual(names(await withDrift(`
+    alter table public.player_evaluation_rankings disable trigger player_evaluation_rankings_immutable;
+    update public.player_evaluation_rankings set rank = rank + 1 where evaluation_id = ${eloy};`)), ['scouting_legacy_rank_mismatches'])
+  // a DISI_RESEARCH publication appears
+  assert.deepEqual(names(await withDrift(`insert into public.scouting_publications (publication_slug, publication_name, publisher, origin, publication_kind, access_class)
+    values ('disi-notes', 'DISI notes', 'DISI', 'DISI_RESEARCH', 'OTHER', 'OPEN');`)), ['scouting_disi_research_publications', 'scouting_publications'])
+  // an evaluation marked SUPERSEDED with no successor (it also stops representing its legacy rank: only ACTIVE counts)
+  assert.deepEqual(names(await withDrift(`alter table public.player_evaluations disable trigger player_evaluations_guard;
+    update public.player_evaluations set record_status = 'SUPERSEDED' where id = ${eloy};`)),
+    ['player_evaluations_superseded', 'scouting_legacy_ranks_backfilled', 'scouting_legacy_ranks_unrepresented', 'scouting_supersession_violations'])
+  // a grade outside its scale (scale trigger bypassed)
+  assert.deepEqual(names(await withDrift(`
+    alter table public.player_evaluation_grades disable trigger player_evaluation_grades_check_scale;
+    alter table public.player_evaluation_grades disable trigger player_evaluation_grades_immutable;
+    insert into public.player_evaluation_grades (evaluation_id, dimension_code, temporal_basis, raw_value, raw_label, scale_code)
+    values (${eloy}, 'HIT', 'FUTURE', 85, '85', 'SCOUTING_20_80');`)), ['scouting_scale_violations'])
+  // an evaluation with no provenance (constraint dropped)
+  assert.deepEqual(names(await withDrift(`
+    alter table public.player_evaluations drop constraint player_evaluations_provenance_check;
+    insert into public.player_evaluations (player_id, publication_id, evaluation_context, date_precision, evidence_basis, retrieved_at)
+    select player_id, publication_id, 'OTHER', 'UNKNOWN', 'MANUAL_TRANSCRIPTION', now() from public.player_evaluations limit 1;`)),
+    ['player_evaluations', 'scouting_evaluations_without_provenance'])
+  // a guard trigger removed
+  assert.deepEqual(names(await withDrift(`drop trigger player_evaluations_guard on public.player_evaluations;`)), ['scouting_guard_triggers', 'scouting_sealed_trigger_events'])
+  // a sealing trigger that no longer covers DELETE
+  assert.deepEqual(names(await withDrift(`drop trigger player_evaluation_notes_immutable on public.player_evaluation_notes;
+    create trigger player_evaluation_notes_immutable before insert or update on public.player_evaluation_notes
+    for each row execute function public.disi_evaluation_child_immutable();`)), ['scouting_sealed_trigger_events'])
+  // an international-class rank filed under an MLB-wide list context
+  assert.deepEqual(names(await withDrift(`alter table public.player_evaluations disable trigger player_evaluations_guard;
+    update public.player_evaluations set evaluation_context = 'GLOBAL_LIST' where id = ${eloy};`)), ['scouting_international_rank_context_violations'])
+  // a replacement that supersedes an ACTIVE row (the predecessor was never retired), and a second replacement for one predecessor
+  assert.deepEqual(names(await withDrift(`alter table public.player_evaluations disable trigger player_evaluations_guard;
+    drop index public.player_evaluations_snapshot_key;
+    drop index public.player_evaluations_supersedes_key;
+    insert into public.player_evaluations (player_id, publication_id, evaluation_context, date_precision, evaluation_date, evaluation_year, evaluation_month,
+      evidence_basis, confidence, source_id, retrieved_at, supersedes_evaluation_id, record_status)
+    select player_id, publication_id, evaluation_context, date_precision, evaluation_date, evaluation_year, evaluation_month,
+      evidence_basis, confidence, source_id, retrieved_at, id, 'ACTIVE' from public.player_evaluations where id = ${eloy};`)),
+    ['player_evaluations', 'scouting_supersession_violations'])
+  // a broad grant on a new scouting view is caught by the whole-surface check
+  assert.deepEqual(names(await withDrift(`grant all on public.v_player_scouting_timeline to anon;`)), ['public_views_anon_beyond_select'])
   assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
 })

@@ -1,6 +1,6 @@
 // Builds the complete canonical SQL lineage (database/manifest.json) in an
 // in-process Postgres (PGlite). Shared by the DB test suites and the drift
-// verifier's local mode so every consumer checks the same clean 001→025 state.
+// verifier's local mode so every consumer checks the same clean 001→026 state.
 
 import fs from 'node:fs'
 import path from 'node:path'
@@ -28,6 +28,28 @@ export async function buildCanonicalChain() {
       await db.close()
       throw new Error(`${file} failed: ${error.message}`)
     }
+  }
+  const query = async (sql, params) => (await db.query(sql, params)).rows
+  return { db, query, close: () => db.close() }
+}
+
+/**
+ * Builds the canonical chain only up to and including `lastFile` (for tests that
+ * must replay one migration over the exact database it was written for - a frozen
+ * migration cannot be replayed over objects created by later ones).
+ */
+export async function buildChainThrough(lastFile) {
+  const db = new PGlite({ extensions: { pgcrypto } })
+  await db.exec('create role anon nologin; create role authenticated nologin;')
+  if (!manifest.canonical_sql.includes(lastFile)) throw new Error(`${lastFile} is not in the manifest`)
+  for (const file of manifest.canonical_sql) {
+    try {
+      await db.exec(fs.readFileSync(path.join(root, 'database/sql', file), 'utf8'))
+    } catch (error) {
+      await db.close()
+      throw new Error(`${file} failed: ${error.message}`)
+    }
+    if (file === lastFile) break
   }
   const query = async (sql, params) => (await db.query(sql, params)).rows
   return { db, query, close: () => db.close() }

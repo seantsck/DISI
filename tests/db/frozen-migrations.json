@@ -1,0 +1,30 @@
+{
+  "note": "sha1 of each frozen migration (CRLF normalised to LF). A migration is immutable once applied; change one and tests/db/migrations.test.mjs fails.",
+  "files": {
+    "001_disi_core_schema.sql": "a8e01b8c4d73cbde89bb2146d92b2e41b89f3731",
+    "002_dodgers_seed_cohort.sql": "f3b5184d34e71ff02dfb22f58ce12c1cd296f4b4",
+    "003_observed_outcomes_and_asset_value.sql": "da44cafccdec0b46be4ed014d8d88174876b0ffa",
+    "004_dodgers_analytics_views.sql": "78dc400014528aa98964e34c634da6c7eb124aa7",
+    "005_outcome_completeness_and_rosso.sql": "436b618d2ad6439151e03f855ca0a380a4c5d0c5",
+    "006_complete_mature_outcome_audit.sql": "32471417c5d5120cb51709e4cb64fe8144413bf0",
+    "007_mature_bonus_efficiency_analysis.sql": "50342fdb1cb42a43b413efb5c367d7a8c239f192",
+    "008_mature_asset_realization.sql": "8d389443ad631d5ba6b25f30124ba996dd14cc98",
+    "009_trade_package_asset_conversion.sql": "9552aeae9f33db1609e969622ae75a121d4dab83",
+    "010_competitive_context_value.sql": "c874165aea16044bc4f05ecdd0c8aa36b677ef31",
+    "011_executive_dashboard_layer.sql": "2bc42e54ccd5661cdd34a38e3e802b8b7489ebd2",
+    "012_historical_census_framework.sql": "ccd1604cc01fcee42d4ee61df2a60890bde493c8",
+    "013_league_benchmark_seed.sql": "2769af502b027f30127e0ac582e5b3aeb728e9d5",
+    "014_portfolio_universe_and_source_pipeline.sql": "63cd573b13876b290e076d1fdf1bb97790cabd34",
+    "015_outcome_audit_operations.sql": "fabd6510846ca7d101d2080307a4c18e6894bf09",
+    "016_historical_positive_outcomes_and_rate_guardrail.sql": "7d1b61ebf8848750aaee9e0214934cf1e966ca17",
+    "017_research_database_layer.sql": "00e7b31cb056d747818a4f5b33677a07241e7006",
+    "018_signing_class_coverage_and_backfill.sql": "cb722d6d673c657ea3a660bdc720a66ba837ca3d",
+    "019_mature_outcome_audit_expansion.sql": "0f40e5ba4cbaff3df3589d36be1d2aca0c8ee2b8",
+    "020_player_identity_and_biography_enrichment.sql": "fea4f95c3d7c2fd8d93b7dd7c87b18a4612d2941",
+    "021_player_development_history.sql": "727f9766bad6544dcc362117448ffc68044085b7",
+    "022_player_development_exact_dates.sql": "3ae5c01d413dc787b8e6aa424c68737473857509",
+    "023_development_stint_integrity.sql": "bf557b5e87eec89fd1f35006a108b9119eef129d",
+    "024_development_progression_decisions.sql": "bfc1d1094fbaec9faf0910c5c4e67bb9bc084ac1",
+    "025_public_view_grant_hardening.sql": "c942938953ddd9747064111ef78f420b60fc1f5b"
+  }
+}
