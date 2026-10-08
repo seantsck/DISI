@@ -5,7 +5,7 @@
 // a query function (PGlite for the local canonical chain, or a pg client
 // connected with a URL from an environment variable).
 //
-// Hard invariants are the byte-stable state of the canonical 001→024 chain
+// Hard invariants are the byte-stable state of the canonical 001→025 chain
 // (seeded populations, migration-built rows, schema security properties).
 // Informational metrics are research-coverage numbers that may legitimately
 // move as research progresses; they are reported but never fail the run.
@@ -15,7 +15,7 @@
 // migration that legitimately changes a hard invariant must update
 // CANONICAL_EXPECTATIONS in the same commit as that migration.
 
-/** Canonical 001→024 (DISI v0.15) expected state. */
+/** Canonical 001→025 (DISI v0.16) expected state. */
 export const CANONICAL_EXPECTATIONS = {
   // population (seeded by 002/012/013/016/019 and surfaced by v_database_status)
   players_total: 268,
@@ -78,6 +78,17 @@ export const CANONICAL_EXPECTATIONS = {
   vancouver_2011plus_non_bluejays: 0,
   developmental_inversion_players: 0,
   decision_milestone_mismatch: 0,
+  // whole public API surface (025). Checked from the ACLs themselves
+  // (aclexplode), so privileges information_schema omits (MAINTAIN) count too.
+  public_views_total: 86,
+  public_views_non_security_invoker: 0,
+  public_views_anon_beyond_select: 0,
+  public_views_authenticated_beyond_select: 0,
+  public_tables_total: 42,
+  public_tables_without_rls: 0,
+  public_tables_api_beyond_select: 0,
+  public_api_write_policies: 0,
+  public_role_relation_grants: 0,
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -267,6 +278,41 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
     where not exists (select 1 from development_milestones m
       where m.id = d.milestone_id and m.player_id = d.player_id and m.event_code = d.event_code)`)
   check('integrity', 'decision_milestone_mismatch', expectations.decision_milestone_mismatch, mismatch024.n)
+
+  // -- whole public API surface (025) -----------------------------------------
+  // Every public view must be security_invoker and give anon / authenticated
+  // SELECT only; every public table must have RLS and give them SELECT only; no
+  // policy may grant them writes; PUBLIC holds nothing. No allowlist: DISI has
+  // no intentionally writable view (database/research/025/view-inventory.json).
+  const acl = await query(`select c.relname, c.relkind::text as kind, c.relrowsecurity as rls,
+      coalesce(array_to_string(c.reloptions, ','), '') as opts,
+      coalesce(r.rolname, case when a.grantee = 0 then 'PUBLIC' end) as grantee, a.privilege_type as privilege
+    from pg_class c
+    join pg_namespace n on n.oid = c.relnamespace
+    left join lateral aclexplode(coalesce(c.relacl, acldefault('r', c.relowner))) a on true
+    left join pg_roles r on r.oid = a.grantee
+    where n.nspname = 'public' and c.relkind in ('r', 'v')`)
+  const rels = new Map()
+  for (const row of acl) rels.set(row.relname, row)
+  const views = [...rels.values()].filter((r) => r.kind === 'v')
+  const tables = [...rels.values()].filter((r) => r.kind === 'r')
+  const beyondSelect = (kind, role) => new Set(acl.filter((r) => r.kind === kind && r.grantee === role && r.privilege !== 'SELECT')
+    .map((r) => r.relname)).size
+  check('api', 'public_views_total', expectations.public_views_total, views.length)
+  check('api', 'public_views_non_security_invoker', expectations.public_views_non_security_invoker,
+    views.filter((v) => !/security_invoker=(true|on)/.test(v.opts)).length)
+  check('api', 'public_views_anon_beyond_select', expectations.public_views_anon_beyond_select, beyondSelect('v', 'anon'))
+  check('api', 'public_views_authenticated_beyond_select', expectations.public_views_authenticated_beyond_select, beyondSelect('v', 'authenticated'))
+  check('api', 'public_tables_total', expectations.public_tables_total, tables.length)
+  check('api', 'public_tables_without_rls', expectations.public_tables_without_rls, tables.filter((t) => t.rls !== true).length)
+  check('api', 'public_tables_api_beyond_select', expectations.public_tables_api_beyond_select,
+    new Set(acl.filter((r) => r.kind === 'r' && (r.grantee === 'anon' || r.grantee === 'authenticated') && r.privilege !== 'SELECT').map((r) => r.relname)).size)
+  const [writePolicies] = await query(`select count(*)::int as n from pg_policies
+    where schemaname = 'public' and cmd <> 'SELECT'
+      and (roles && array['anon', 'authenticated', 'public']::name[])`)
+  check('api', 'public_api_write_policies', expectations.public_api_write_policies, writePolicies.n)
+  check('api', 'public_role_relation_grants', expectations.public_role_relation_grants,
+    new Set(acl.filter((r) => r.grantee === 'PUBLIC').map((r) => r.relname)).size)
 
   // -- security --------------------------------------------------------------
   const objects = [...expectations.development_base_tables, ...expectations.development_views]

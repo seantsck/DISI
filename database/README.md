@@ -33,6 +33,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 22. `022_player_development_exact_dates.sql` — exact game-log dates for development milestones and stints (research in `database/research/022/`).
 23. `023_development_stint_integrity.sql` — season-total stints classified and excluded from additive analytics, team-stint-only status and research queue, two affiliation corrections (details below; research in `database/research/023/`).
 24. `024_development_progression_decisions.sql` — reviewed progression decisions separating first appearance from developmental arrival; developmental elapsed metrics and status (details below; research in `database/research/024/`).
+25. `025_public_view_grant_hardening.sql` — every public view reduced to SELECT for anon/authenticated (43 legacy views had inherited Supabase default ALL privileges) behind a reviewed inventory and an ACL postcondition (details below; research in `database/research/025/`).
 
 ## 017 research-database layer
 
@@ -104,6 +105,13 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Analytics.** Summary `first_*` / `age_at_first_*` columns stay literal; elapsed development metrics use developmental arrival and `dev_*` columns are appended. `player_development_status.status` is the highest unambiguously established developmental level: pending milestones do not count as reached and do not invalidate a separately verified higher level (the status note names them); `highest_affiliated_level` stays the highest level ever appeared at. The cohort views keep their 021 `reached_*` columns as documented first-appearance counts and append `developmentally_reached_*`.
 - **Candidates are not decisions.** The research queue lists `NON_MONOTONIC_PROGRESSION` (developmental inversions no decision covers; 0) and `LEVEL_SKIP_CAMEO_CANDIDATE` (heuristic 1–2 game skips; 4). A candidate never changes analytics until a reviewed decision exists.
 - **Rerunnable**; evidence and reproduction steps in `database/research/024/README.md`.
+
+## 025 public view grant hardening
+
+- **Least privilege on every view.** All 86 public views are security_invoker, read-only analytical views (none is updatable or insertable, none has a trigger or rule). anon and authenticated get SELECT only; 43 legacy views from 001–016 had inherited Supabase's default ALL privileges (including MAINTAIN, TRIGGER, TRUNCATE) and are corrected. service_role, RLS, policies, table grants and view definitions are unchanged.
+- **Convention.** Every migration that creates or replaces a public table or view must `revoke all … from anon, authenticated` and `grant select …` explicitly; Supabase default privileges grant ALL otherwise. The verifier checks the whole public surface from the ACLs (MAINTAIN included).
+- **Verifier commands.** `npm run verify:db` checks the local canonical chain and ignores any database URL; `npm run verify:db:live` loads `.env.local` and refuses to run without a URL.
+- **Rerunnable**; audit, inventory and the default-privilege recommendation in `database/research/025/README.md`.
 
 ## Player identity (020)
 

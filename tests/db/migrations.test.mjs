@@ -1957,3 +1957,125 @@ test('024 cohort views: the 021 reached_* columns stay first appearances (docume
     (select attnum from pg_attribute where attrelid = 'public.v_dodgers_development_by_signing_class'::regclass and attname = 'reached_aaa')) as c`)
   assert.match(comment.c, /FIRST APPEARANCE/)
 })
+
+// ---------------------------------------------------------------------------
+// 025 — public view grant hardening
+// ---------------------------------------------------------------------------
+
+const inventory025 = JSON.parse(fs.readFileSync(path.join(root, 'database/research/025/view-inventory.json'), 'utf8'))
+const legacyBroad = inventory025.views.filter((v) => v.live_beyond_select_before_025).map((v) => v.view)
+// Every API-role privilege on every public relation, straight from the ACLs (MAINTAIN included).
+const apiAcl = async () => rows(`select c.relname, c.relkind::text as kind, coalesce(r.rolname, 'PUBLIC') as grantee,
+    string_agg(a.privilege_type, ',' order by a.privilege_type) as privs
+  from pg_class c join pg_namespace n on n.oid = c.relnamespace
+  cross join lateral aclexplode(coalesce(c.relacl, acldefault('r', c.relowner))) a
+  left join pg_roles r on r.oid = a.grantee
+  where n.nspname = 'public' and c.relkind in ('r', 'v') and coalesce(r.rolname, 'PUBLIC') in ('anon', 'authenticated', 'service_role', 'PUBLIC')
+  group by 1, 2, 3 order by 1, 3`)
+const securitySnapshot = async () => one(`select
+    (select string_agg(relname || ':' || relrowsecurity || ':' || relforcerowsecurity, ',' order by relname) from pg_class c
+      join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r') as rls,
+    (select string_agg(tablename || ':' || policyname || ':' || cmd || ':' || roles::text || ':' || coalesce(qual, '') || ':' || coalesce(with_check, ''), ',' order by tablename, policyname)
+      from pg_policies where schemaname = 'public') as policies,
+    (select string_agg(c.relname || ':' || pg_get_viewdef(c.oid), ',' order by c.relname) from pg_class c
+      join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v') as view_definitions`)
+
+test('025 inventory: every one of the 86 public views is reviewed, read-only analytics, security_invoker and not updatable', async () => {
+  assert.equal(inventory025.views.length, 86)
+  assert.equal(legacyBroad.length, 43, 'the live audit found 43 legacy views with ALL privileges')
+  assert.deepEqual(inventory025.intentionally_writable, [])
+  const views = await rows(`select c.relname, coalesce(array_to_string(c.reloptions, ','), '') as opts, v.is_updatable, v.is_insertable_into
+    from pg_class c join pg_namespace n on n.oid = c.relnamespace
+    join information_schema.views v on v.table_schema = 'public' and v.table_name = c.relname
+    where n.nspname = 'public' and c.relkind = 'v' order by 1`)
+  assert.deepEqual(views.map((v) => v.relname), inventory025.views.map((v) => v.view).sort())
+  for (const v of views) {
+    assert.match(v.opts, /security_invoker=(true|on)/, v.relname)
+    assert.deepEqual([v.is_updatable, v.is_insertable_into], ['NO', 'NO'], v.relname)
+  }
+  const instead = await one(`select count(*)::int as n from pg_trigger t join pg_class c on c.oid = t.tgrelid
+    join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v' and not t.tgisinternal`)
+  const rules = await one(`select count(*)::int as n from pg_rules where schemaname = 'public' and rulename <> '_RETURN'`)
+  assert.deepEqual([instead.n, rules.n], [0, 0], 'no INSTEAD OF trigger or rule makes any view writable')
+})
+
+test('025 grants: anon and authenticated hold SELECT only on every public view and table (no INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER or MAINTAIN)', async () => {
+  const acl = await apiAcl()
+  for (const kind of ['v', 'r']) {
+    for (const role of ['anon', 'authenticated']) {
+      const relations = acl.filter((a) => a.kind === kind && a.grantee === role)
+      assert.equal(relations.length, kind === 'v' ? 86 : 42, `${role} ${kind}`)
+      for (const privilege of ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN']) {
+        assert.deepEqual(relations.filter((a) => a.privs.split(',').includes(privilege)).map((a) => a.relname), [], `${role} ${privilege} on ${kind}`)
+      }
+      assert.ok(relations.every((a) => a.privs === 'SELECT'), `${role} ${kind}`)
+    }
+  }
+  assert.deepEqual(acl.filter((a) => a.grantee === 'PUBLIC'), [], 'PUBLIC holds nothing')
+  const tables = await one(`select count(*)::int as n, count(*) filter (where relrowsecurity)::int as rls from pg_class c
+    join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r'`)
+  assert.deepEqual([tables.n, tables.rls], [42, 42])
+  const write = await one(`select count(*)::int as n from pg_policies where schemaname = 'public' and cmd <> 'SELECT'`)
+  assert.equal(write.n, 0, 'no table policy grants writes to anyone')
+})
+
+test('025 repairs the live drift: Supabase-default ALL grants on the 43 legacy views become SELECT; service_role, RLS, policies and view definitions are untouched; rerun is a no-op', async () => {
+  await db.exec(`do $$ begin if not exists (select 1 from pg_roles where rolname = 'service_role') then create role service_role nologin; end if; end $$;`)
+  // reproduce the live state: ALL (incl. MAINTAIN) for anon / authenticated on the legacy views, and service_role ALL everywhere
+  for (const v of legacyBroad) await db.exec(`grant all on public.${v} to anon, authenticated`)
+  await db.exec(`grant all on public.v_dodgers_signing_cohort to service_role; grant all on public.players to service_role`)
+  const drifted = (await apiAcl()).filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT')
+  assert.equal(drifted.length, 86, '43 views x 2 roles carry more than SELECT before 025')
+  assert.ok(drifted.every((a) => a.privs.includes('MAINTAIN') && a.privs.includes('TRUNCATE')))
+  const before = await securitySnapshot()
+  const serviceBefore = (await apiAcl()).filter((a) => a.grantee === 'service_role')
+
+  await db.exec(readSql('025_public_view_grant_hardening.sql'))
+  const after = await apiAcl()
+  assert.deepEqual(after.filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT'), [])
+  assert.equal(after.filter((a) => a.kind === 'v' && ['anon', 'authenticated'].includes(a.grantee) && a.privs === 'SELECT').length, 172)
+  assert.deepEqual(after.filter((a) => a.grantee === 'service_role'), serviceBefore, 'service_role privileges are not changed')
+  assert.deepEqual(await securitySnapshot(), before, 'RLS, policies and view definitions are unchanged')
+
+  await db.exec(readSql('025_public_view_grant_hardening.sql'))
+  assert.deepEqual(await apiAcl(), after, 'rerun changes nothing')
+  assert.deepEqual(await securitySnapshot(), before)
+  await db.exec(`revoke all on public.v_dodgers_signing_cohort from service_role; revoke all on public.players from service_role`)
+})
+
+test('025 guards: an unreviewed public view or a non-security_invoker view stops the migration with nothing changed', async () => {
+  const sql = readSql('025_public_view_grant_hardening.sql')
+  await db.exec(`create view public.zz_unreviewed with (security_invoker = true) as select 1 as x; grant all on public.zz_unreviewed to anon;`)
+  try {
+    await assert.rejects(async () => { await db.exec(sql) }, /not in the reviewed inventory: zz_unreviewed/)
+    await db.exec('rollback;').catch(() => {})
+  } finally {
+    await db.exec('drop view public.zz_unreviewed')
+  }
+  await db.exec(`alter view public.v_dodgers_signing_cohort set (security_invoker = false); grant all on public.v_dodgers_market_summary to anon;`)
+  try {
+    await assert.rejects(async () => { await db.exec(sql) }, /not security_invoker: v_dodgers_signing_cohort/)
+    await db.exec('rollback;').catch(() => {})
+    const still = await one(`select string_agg(a.privilege_type, ',' order by a.privilege_type) as p from pg_class c
+      cross join lateral aclexplode(c.relacl) a join pg_roles r on r.oid = a.grantee
+      where c.relname = 'v_dodgers_market_summary' and r.rolname = 'anon'`)
+    assert.match(still.p, /INSERT/, 'the failed run rolled back: the drifted grant is still there')
+  } finally {
+    await db.exec(`alter view public.v_dodgers_signing_cohort set (security_invoker = true)`)
+    await db.exec(sql)
+  }
+  const clean = (await apiAcl()).filter((a) => ['anon', 'authenticated'].includes(a.grantee) && a.privs !== 'SELECT')
+  assert.deepEqual(clean, [])
+})
+
+test('025 leaves the 024 development security intact', async () => {
+  const t = await one(`select relrowsecurity as rls from pg_class where relname = 'development_progression_decisions'`)
+  assert.equal(t.rls, true)
+  const dev = await rows(`select c.relname, coalesce(array_to_string(c.reloptions, ','), '') as opts from pg_class c
+    join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v' and c.relname like '%development%'`)
+  assert.equal(dev.length, 10)
+  assert.ok(dev.every((v) => /security_invoker=(true|on)/.test(v.opts)))
+  const acl = (await apiAcl()).filter((a) => /development|player_season_stints/.test(a.relname) && ['anon', 'authenticated'].includes(a.grantee))
+  assert.equal(acl.length, 34, '7 development tables + 10 development views, x 2 roles')
+  assert.ok(acl.every((a) => a.privs === 'SELECT'))
+})

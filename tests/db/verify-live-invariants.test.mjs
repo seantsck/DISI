@@ -1,5 +1,5 @@
 // Offline tests for scripts/db/lib/invariants.mjs against the canonical
-// 001→024 PGlite chain. No live Supabase access is involved.
+// 001→025 PGlite chain. No live Supabase access is involved.
 //
 // Drift conditions are simulated inside transactions that are rolled back, so
 // the shared chain stays pristine for every scenario.
@@ -30,12 +30,12 @@ async function withDrift(driftSql) {
   }
 }
 
-test('clean canonical 001→024 state passes every hard invariant', async () => {
+test('clean canonical 001→025 state passes every hard invariant', async () => {
   const report = await runChecks()
   assert.deepEqual(failedChecks(report).map((c) => c.name), [])
   // population 4 + development 17 + status 2 + progression 3 + integrity 10
-  // + privileges 16 + rls 6 + security_invoker 10
-  assert.ok(report.hard.length >= 68, `expected a full battery, got ${report.hard.length}`)
+  // + api 9 + privileges 16 + rls 6 + security_invoker 10
+  assert.ok(report.hard.length >= 77, `expected a full battery, got ${report.hard.length}`)
   // informational coverage numbers are reported but never fail
   assert.ok(report.info.length >= 3)
 })
@@ -94,9 +94,11 @@ test('an excessive anon privilege fails the security check', async () => {
   const report = await withDrift(`
     grant insert on public.player_season_stints to anon;
   `)
-  assert.deepEqual(failedChecks(report).map((c) => c.name), ['privileges:player_season_stints'])
+  // caught twice: by the development-surface privilege check and (025) by the
+  // whole-API-surface table check
+  assert.deepEqual(failedChecks(report).map((c) => c.name).sort(), ['privileges:player_season_stints', 'public_tables_api_beyond_select'])
   assert.deepEqual(
-    failedChecks(report)[0].actual.anon,
+    failedChecks(report).find((c) => c.name === 'privileges:player_season_stints').actual.anon,
     ['INSERT', 'SELECT']
   )
 })
@@ -164,5 +166,31 @@ test('024 drift: a missing decision, an altered role and a borrowed milestone ea
     where player_id = (select id from public.players where slug = 'eduardo-guerrero');
   `)
   assert.deepEqual(failedChecks(borrowed).map((c) => c.name), ['decision_milestone_mismatch'])
+  assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
+})
+
+test('025 drift: the whole public API surface is checked from the ACLs, not just the development objects', async () => {
+  // a legacy (non-development) view regains Supabase's default ALL grant for anon
+  const all = await withDrift(`grant all on public.v_dodgers_signing_cohort to anon;`)
+  assert.deepEqual(failedChecks(all).map((c) => c.name), ['public_views_anon_beyond_select'])
+  assert.equal(failedChecks(all)[0].actual, 1)
+  // MAINTAIN alone: invisible to information_schema.role_table_grants, caught from the ACL
+  const maintain = await withDrift(`grant maintain on public.v_league_signing_benchmark to authenticated;`)
+  assert.deepEqual(failedChecks(maintain).map((c) => c.name), ['public_views_authenticated_beyond_select'])
+  // a view that stops being security_invoker
+  const definer = await withDrift(`alter view public.v_dodgers_signing_cohort set (security_invoker = false);`)
+  assert.deepEqual(failedChecks(definer).map((c) => c.name), ['public_views_non_security_invoker'])
+  // a base table outside the development surface: write grant, lost RLS, write policy, PUBLIC grant
+  const tableWrite = await withDrift(`grant insert on public.players to authenticated;`)
+  assert.deepEqual(failedChecks(tableWrite).map((c) => c.name), ['public_tables_api_beyond_select'])
+  const noRls = await withDrift(`alter table public.players disable row level security;`)
+  assert.deepEqual(failedChecks(noRls).map((c) => c.name), ['public_tables_without_rls'])
+  const policy = await withDrift(`create policy drift_insert on public.players for insert to anon with check (true);`)
+  assert.deepEqual(failedChecks(policy).map((c) => c.name), ['public_api_write_policies'])
+  const publicRole = await withDrift(`grant select on public.v_dodgers_market_summary to public;`)
+  assert.deepEqual(failedChecks(publicRole).map((c) => c.name), ['public_role_relation_grants'])
+  // an extra (unreviewed) view moves the reviewed total
+  const extra = await withDrift(`create view public.zz_extra with (security_invoker = true) as select 1 as x; grant select on public.zz_extra to anon, authenticated;`)
+  assert.deepEqual(failedChecks(extra).map((c) => c.name), ['public_views_total'])
   assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
 })

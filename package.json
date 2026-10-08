@@ -15,7 +15,8 @@
     "test:db": "node --test \"tests/db/*.test.mjs\"",
     "check": "npm run lint && npm run typecheck && npm test && npm run build",
     "research:test": "node --test \"tests/unit/mlb-scripts.test.mjs\"",
-    "verify:db": "node scripts/db/verify-live-invariants.mjs"
+    "verify:db": "node scripts/db/verify-live-invariants.mjs --local",
+    "verify:db:live": "node --env-file=.env.local scripts/db/verify-live-invariants.mjs --live"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",

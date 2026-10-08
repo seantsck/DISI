@@ -1,6 +1,6 @@
 // Builds the complete canonical SQL lineage (database/manifest.json) in an
 // in-process Postgres (PGlite). Shared by the DB test suites and the drift
-// verifier's local mode so every consumer checks the same clean 001→024 state.
+// verifier's local mode so every consumer checks the same clean 001→025 state.
 
 import fs from 'node:fs'
 import path from 'node:path'

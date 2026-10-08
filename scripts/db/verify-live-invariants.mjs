@@ -1,8 +1,13 @@
 // Read-only drift verifier for the DISI research database.
 //
 // Usage:
-//   node scripts/db/verify-live-invariants.mjs                 # local canonical 001→024 chain (PGlite)
-//   DISI_VERIFY_DB_URL=postgresql://... node scripts/db/verify-live-invariants.mjs   # live database
+//   npm run verify:db        -> node scripts/db/verify-live-invariants.mjs --local
+//                               local canonical chain (PGlite); ignores every DB URL
+//   npm run verify:db:live   -> node --env-file=.env.local scripts/db/verify-live-invariants.mjs --live
+//                               live database; requires DISI_VERIFY_DB_URL (or DATABASE_URL)
+//                               and never falls back to the local chain
+//   node scripts/db/verify-live-invariants.mjs   (no flag: legacy behaviour - live when a URL
+//                               is set in the environment, otherwise local)
 //
 // The connection URL is read from DISI_VERIFY_DB_URL (falling back to
 // DATABASE_URL). Nothing is hardcoded and nothing is ever written to the
@@ -38,7 +43,18 @@ const invokedDirectly = Boolean(process.argv[1]) &&
   import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href
 
 if (invokedDirectly) {
-  const url = process.env.DISI_VERIFY_DB_URL || process.env.DATABASE_URL
+  const wantLocal = process.argv.includes('--local')
+  const wantLive = process.argv.includes('--live')
+  if (wantLocal && wantLive) {
+    console.error('Pass either --local or --live, not both.')
+    process.exit(2)
+  }
+  const envUrl = process.env.DISI_VERIFY_DB_URL || process.env.DATABASE_URL
+  if (wantLive && !envUrl) {
+    console.error('--live needs DISI_VERIFY_DB_URL (or DATABASE_URL); use npm run verify:db:live, which loads .env.local. Refusing to fall back to the local chain.')
+    process.exit(2)
+  }
+  const url = wantLocal ? null : envUrl
   let query
   let mode
   let close = async () => {}
@@ -58,7 +74,7 @@ if (invokedDirectly) {
     const chain = await buildCanonicalChain()
     query = chain.query
     close = chain.close
-    mode = 'local canonical 001→024 chain (PGlite)'
+    mode = 'local canonical 001→025 chain (PGlite)'
   }
 
   try {
