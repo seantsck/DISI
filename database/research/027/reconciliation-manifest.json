@@ -1,0 +1,2614 @@
+{
+ "categories": {
+  "evidence_missing": {
+   "affected_views": [
+    "v_player_sources",
+    "v_player_timeline",
+    "v_signing_records"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2025 signing coverage reports bonus and international signing."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2025 signing coverage reports bonus and international signing."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "adrian-torres",
+      "signing_year": 2025,
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2025"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "aldo-espinoza",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2026 signing coverage reports Dodgers agreement/bonus."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2026 signing coverage reports Dodgers agreement/bonus."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "ariel-reynoso",
+      "signing_year": 2026,
+      "url": "https://www.mlb.com/milb/news/mlb-international-prospects-signing-day-2026"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "Dodgers press release verifies signing and No. 23 MLB Pipeline rank; bonus intentionally remains NULL."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "Dodgers press release verifies signing and No. 23 MLB Pipeline rank; bonus intentionally remains NULL."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "arnaldo-lantigua",
+      "signing_year": 2023,
+      "url": "https://www.mlb.com/press-release/press-release-dodgers-announce-2023-international-signings"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "carlos-rincon",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "christopher-arias",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "damaso-marte-jr",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB International Signing Day reports the signing and bonus."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB International Signing Day reports the signing and bonus."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "daniel-mielcarek",
+      "signing_year": 2023,
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2023"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB International Signing Day reports the signing and bonus."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB International Signing Day reports the signing and bonus."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jesus-tillero",
+      "signing_year": 2023,
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2023"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB International Signing Day reports the signing and bonus."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB International Signing Day reports the signing and bonus."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "joendry-vargas",
+      "signing_year": 2023,
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2023"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2026 signing coverage reports Dodgers agreement/bonus."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2026 signing coverage reports Dodgers agreement/bonus."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jose-requena",
+      "signing_year": 2026,
+      "url": "https://www.mlb.com/milb/news/mlb-international-prospects-signing-day-2026"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2026 signing coverage reports Dodgers agreement/bonus."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2026 signing coverage reports Dodgers agreement/bonus."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jose-victorino",
+      "signing_year": 2026,
+      "url": "https://www.mlb.com/milb/news/mlb-international-prospects-signing-day-2026"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "VERIFIED",
+      "evidence_note": "MLB prospect profile identifies De Paula as a January 2022 Dodgers signing for $397,500."
+     },
+     "intended": {
+      "confidence": "VERIFIED",
+      "evidence_note": "MLB prospect profile identifies De Paula as a January 2022 Dodgers signing for $397,500."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "josue-de-paula",
+      "signing_year": 2022,
+      "url": "https://www.mlb.com/milb/prospects/2023/dodgers/josue-de-paula-800543"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "luis-rodriguez-2015",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported Luis Rodriguez agreement and $2.6675M bonus."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported Luis Rodriguez agreement and $2.6675M bonus."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "luis-rodriguez-2019",
+      "signing_year": 2019,
+      "url": "https://www.mlb.com/news/dodgers-sign-pair-of-top-int-l-prospects"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2025 signing coverage reports bonus and international signing."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2025 signing coverage reports bonus and international signing."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "luis-tovar",
+      "signing_year": 2025,
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2025"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "omar-estevez",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "oneil-cruz",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "ramon-rosso",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2025 signing coverage reports bonus and international signing."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2025 signing coverage reports bonus and international signing."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "roki-sasaki",
+      "signing_year": 2025,
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2025"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "ronny-brito",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2026 signing coverage reports Dodgers agreement/bonus."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB 2026 signing coverage reports Dodgers agreement/bonus."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "rubel-arias",
+      "signing_year": 2026,
+      "url": "https://www.mlb.com/milb/news/mlb-international-prospects-signing-day-2026"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "starling-heredia",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "yadier-alvarez",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported a $2M agreement with Yordan Alvarez during the 2015-16 international period."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported a $2M agreement with Yordan Alvarez during the 2015-16 international period."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "yordan-alvarez",
+      "signing_year": 2016,
+      "url": "https://www.mlb.com/news/dodgers-have-deal-with-cuban-of-yordan-alvarez-c184312840"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reports signing identity, market and bonus; several deals were attributed to industry sources rather than formally confirmed by the club."
+     },
+     "live": null,
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "yusniel-diaz",
+      "signing_year": 2015,
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    }
+   ],
+   "reason": "Signing-level provenance rows from the committed seed (identity: signing + field + source URL) that live never received.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  },
+  "evidence_note_neutralizations": {
+   "affected_views": [
+    "v_player_sources",
+    "v_player_timeline"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "Migration 002 source retained for signing provenance. Trainer/academy attribution is not carried forward pending direct source verification."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "Migration 002 source retained for signing provenance. Trainer/academy attribution is not carried forward pending direct source verification."
+     },
+     "live": null,
+     "rank": 1,
+     "replay_original": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB Signing Day reports Morales at $1.9M; Dodgers coverage reports his market, rank and trainer relationships."
+     },
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "emil-morales",
+      "signing_year": 2024,
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2024"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "Migration 002 source retained for signing provenance. Trainer/academy attribution is not carried forward pending direct source verification."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "Migration 002 source retained for signing provenance. Trainer/academy attribution is not carried forward pending direct source verification."
+     },
+     "live": null,
+     "rank": 1,
+     "replay_original": {
+      "confidence": "HIGH",
+      "evidence_note": "Dodgers 2026 international coverage reports Melburne at $747,500 and identifies Jaime Ramos as trainer for Melburne and Arias."
+     },
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "ezequiel-melburne",
+      "signing_year": 2026,
+      "url": "https://www.mlb.com/news/los-angeles-dodgers-2026-international-signings"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "Migration 002 source retained for signing provenance. Trainer/academy attribution is not carried forward pending direct source verification."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "Migration 002 source retained for signing provenance. Trainer/academy attribution is not carried forward pending direct source verification."
+     },
+     "live": null,
+     "rank": 2,
+     "replay_original": {
+      "confidence": "HIGH",
+      "evidence_note": "Dodgers 2026 international coverage reports Melburne at $747,500 and identifies Jaime Ramos as trainer for Melburne and Arias."
+     },
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "rubel-arias",
+      "signing_year": 2026,
+      "url": "https://www.mlb.com/news/los-angeles-dodgers-2026-international-signings"
+     }
+    }
+   ],
+   "neutral_note": "Migration 002 source retained for signing provenance. Trainer/academy attribution is not carried forward pending direct source verification.",
+   "reason": "Three committed seed notes assert that an MLB.com article reported trainer relationships (Morales 2024, Melburne 2026, Arias 2026). The trainer / academy claims have not been directly verified, so the evidence rows are kept as signing provenance with a neutral note. This is an intentional forward correction, not drift. It does not say that no relationship existed.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  },
+  "evidence_variants": {
+   "affected_views": [
+    "v_player_sources",
+    "v_player_timeline"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported the agreements and bonuses from industry sources."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported the agreements and bonuses from industry sources."
+     },
+     "live": {
+      "confidence": "VERIFIED",
+      "evidence_note": "Dodgers-announced 2018 international signing."
+     },
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "alex-de-jesus",
+      "signing_year": 2018,
+      "url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported the agreements and bonuses from industry sources."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported the agreements and bonuses from industry sources."
+     },
+     "live": {
+      "confidence": "VERIFIED",
+      "evidence_note": "Dodgers-announced 2018 international signing."
+     },
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "diego-cartaya",
+      "signing_year": 2018,
+      "url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported the agreements and bonuses from industry sources."
+     },
+     "intended": {
+      "confidence": "HIGH",
+      "evidence_note": "MLB.com reported the agreements and bonuses from industry sources."
+     },
+     "live": {
+      "confidence": "VERIFIED",
+      "evidence_note": "Dodgers-announced 2018 international signing."
+     },
+     "rank": 1,
+     "selector": {
+      "field_name": null,
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jerming-rosario",
+      "signing_year": 2018,
+      "url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     }
+    }
+   ],
+   "reason": "Live holds a different version of the same claim (same signing, field and source) written by a later migration instead of the seed. They are duplicates of one claim, not additional facts; the canonical seed form is the target and the live row is updated in place only when it exactly matches the known variant.",
+   "source_migration": "002_dodgers_seed_cohort.sql vs 018"
+  },
+  "legacy_player_trainers": {
+   "affected_views": [
+    "v_player_trainers",
+    "v_dodgers_trainer_network"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "academy_name": null,
+      "confidence": "VERIFIED",
+      "end_date": null,
+      "player_slug": "emil-morales",
+      "relationship_type": "PRE_SIGNING_TRAINER",
+      "start_date": null,
+      "trainer_name": "Fausto Garcia"
+     },
+     "intended": null,
+     "live": null,
+     "selector": {
+      "academy_name": null,
+      "player_slug": "emil-morales",
+      "trainer_name": "Fausto Garcia"
+     }
+    },
+    {
+     "canonical": {
+      "academy_name": null,
+      "confidence": "VERIFIED",
+      "end_date": null,
+      "player_slug": "emil-morales",
+      "relationship_type": "PRE_SIGNING_TRAINER",
+      "start_date": null,
+      "trainer_name": "Jaime Ramos"
+     },
+     "intended": null,
+     "live": null,
+     "selector": {
+      "academy_name": null,
+      "player_slug": "emil-morales",
+      "trainer_name": "Jaime Ramos"
+     }
+    },
+    {
+     "canonical": {
+      "academy_name": null,
+      "confidence": "VERIFIED",
+      "end_date": null,
+      "player_slug": "ezequiel-melburne",
+      "relationship_type": "PRE_SIGNING_TRAINER",
+      "start_date": null,
+      "trainer_name": "Jaime Ramos"
+     },
+     "intended": null,
+     "live": null,
+     "selector": {
+      "academy_name": null,
+      "player_slug": "ezequiel-melburne",
+      "trainer_name": "Jaime Ramos"
+     }
+    },
+    {
+     "canonical": {
+      "academy_name": null,
+      "confidence": "VERIFIED",
+      "end_date": null,
+      "player_slug": "rubel-arias",
+      "relationship_type": "PRE_SIGNING_TRAINER",
+      "start_date": null,
+      "trainer_name": "Jaime Ramos"
+     },
+     "intended": null,
+     "live": null,
+     "selector": {
+      "academy_name": null,
+      "player_slug": "rubel-arias",
+      "trainer_name": "Jaime Ramos"
+     }
+    }
+   ],
+   "reason": "See legacy_trainers.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  },
+  "legacy_trainers": {
+   "affected_views": [
+    "v_player_trainers",
+    "v_dodgers_trainer_network"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "academy_name": null,
+      "city": null,
+      "country": "Dominican Republic",
+      "name": "Fausto Garcia",
+      "notes": null
+     },
+     "intended": null,
+     "live": null,
+     "selector": {
+      "academy_name": null,
+      "name": "Fausto Garcia"
+     }
+    },
+    {
+     "canonical": {
+      "academy_name": null,
+      "city": null,
+      "country": "Dominican Republic",
+      "name": "Jaime Ramos",
+      "notes": null
+     },
+     "intended": null,
+     "live": null,
+     "selector": {
+      "academy_name": null,
+      "name": "Jaime Ramos"
+     }
+    }
+   ],
+   "live_rows": {
+    "player_trainers": 0,
+    "trainers": 0
+   },
+   "reason": "The two seed trainers and four links have no provenance and were marked VERIFIED; at least one conflates a person with an academy. They are removed from canonical replay (live already has none). Removal means DISI lacks sufficient verified evidence, not that no trainer relationship existed.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  },
+  "player_aliases": {
+   "affected_views": [
+    "v_player_bio",
+    "v_player_directory",
+    "v_player_identity_scope",
+    "v_dodgers_player_identity_coverage"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "alias": "Oneal Cruz",
+      "alias_type": "SOURCE_VARIANT",
+      "language_code": null,
+      "player_slug": "oneil-cruz"
+     },
+     "intended": {
+      "alias": "Oneal Cruz",
+      "alias_type": "SOURCE_VARIANT",
+      "language_code": null,
+      "player_slug": "oneil-cruz"
+     },
+     "live": null,
+     "selector": {
+      "alias": "Oneal Cruz",
+      "player_slug": "oneil-cruz"
+     }
+    },
+    {
+     "canonical": {
+      "alias": "Yadiel Alvarez",
+      "alias_type": "SOURCE_VARIANT",
+      "language_code": null,
+      "player_slug": "yadier-alvarez"
+     },
+     "intended": {
+      "alias": "Yadiel Alvarez",
+      "alias_type": "SOURCE_VARIANT",
+      "language_code": null,
+      "player_slug": "yadier-alvarez"
+     },
+     "live": null,
+     "selector": {
+      "alias": "Yadiel Alvarez",
+      "player_slug": "yadier-alvarez"
+     }
+    }
+   ],
+   "reason": "Two source-spelling aliases from the committed seed are missing live. No other alias is added.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  },
+  "signing_environment_assignments": {
+   "affected_views": [
+    "v_dodgers_signing_cohort",
+    "v_dodgers_signing_leaderboard",
+    "v_player_signing_profile",
+    "v_signing_efficiency"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2025
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Panama",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "362500.00",
+      "signing_date": "2025-01-17"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2025
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "adrian-torres",
+      "signing_year": 2025
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Nicaragua",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "50000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "aldo-espinoza",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2018
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "500000.00",
+      "signing_date": "2018-07-02"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2018
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "alex-de-jesus",
+      "signing_year": 2018
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "597500.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "ariel-reynoso",
+      "signing_year": 2026
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2023
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": false,
+      "country_market": "Dominican Republic",
+      "international_rank": "23.00",
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "COMPLETE_CENSUS",
+      "signing_bonus_usd": null,
+      "signing_date": "2023-01-15"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2023
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "arnaldo-lantigua",
+      "signing_year": 2023
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "350000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "carlos-rincon",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "500000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "christopher-arias",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "300000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "damaso-marte-jr",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2023
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "COMPLETE_CENSUS",
+      "signing_bonus_usd": "397500.00",
+      "signing_date": "2023-01-15"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2023
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "daniel-mielcarek",
+      "signing_year": 2023
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2018
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Venezuela",
+      "international_rank": "1.00",
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "2500000.00",
+      "signing_date": "2018-07-02"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2018
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "diego-cartaya",
+      "signing_year": 2018
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2024
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": "14.00",
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "1900000.00",
+      "signing_date": "2024-01-15"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2024
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "emil-morales",
+      "signing_year": 2024
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": "29.00",
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "747500.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "ezequiel-melburne",
+      "signing_year": 2026
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2018
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "600000.00",
+      "signing_date": "2018-07-02"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2018
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jerming-rosario",
+      "signing_year": 2018
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2023
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Venezuela",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "COMPLETE_CENSUS",
+      "signing_bonus_usd": "497500.00",
+      "signing_date": "2023-01-15"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2023
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jesus-tillero",
+      "signing_year": 2023
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2023
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": "3.00",
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "COMPLETE_CENSUS",
+      "signing_bonus_usd": "2077500.00",
+      "signing_date": "2023-01-15"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2023
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "joendry-vargas",
+      "signing_year": 2023
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Venezuela",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "372500.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jose-requena",
+      "signing_year": 2026
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "547500.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jose-victorino",
+      "signing_year": 2026
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2022
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "397500.00",
+      "signing_date": "2022-01-15"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2022
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "josue-de-paula",
+      "signing_year": 2022
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Venezuela",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "62500.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "luis-rodriguez-2015",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2025
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Venezuela",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "397500.00",
+      "signing_date": "2025-01-18"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2025
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "luis-tovar",
+      "signing_year": 2025
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Cuba",
+      "international_rank": null,
+      "pathway": "CUBAN_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "6000000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "omar-estevez",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "950000.00",
+      "signing_date": "2015-07-02"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "oneil-cruz",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "62000.00",
+      "signing_date": "2015-07-02"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "ramon-rosso",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2025
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Japan",
+      "international_rank": "1.00",
+      "pathway": "POSTED_PLAYER",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "6500000.00",
+      "signing_date": "2025-01-22"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2025
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "roki-sasaki",
+      "signing_year": 2025
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": "21.00",
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "2000000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "ronny-brito",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": null,
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "997500.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2026
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "rubel-arias",
+      "signing_year": 2026
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Dominican Republic",
+      "international_rank": "5.00",
+      "pathway": "LATAM_AMATEUR",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "2600000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "starling-heredia",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Cuba",
+      "international_rank": "2.00",
+      "pathway": "CUBAN_AMATEUR",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "16000000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "yadier-alvarez",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Cuba",
+      "international_rank": null,
+      "pathway": "CUBAN_PRO",
+      "rank_source": null,
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "2000000.00",
+      "signing_date": "2016-06-15"
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "yordan-alvarez",
+      "signing_year": 2016
+     }
+    },
+    {
+     "canonical": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "guard": {
+      "bonus_publicly_reported": true,
+      "country_market": "Cuba",
+      "international_rank": "3.00",
+      "pathway": "CUBAN_PRO",
+      "rank_source": "MLB Pipeline",
+      "record_scope": "TRACKED_DODGERS",
+      "signing_bonus_usd": "15500000.00",
+      "signing_date": null
+     },
+     "intended": {
+      "environment": {
+       "organization_name": "Los Angeles Dodgers",
+       "signing_year": 2015
+      }
+     },
+     "live": {
+      "environment": null
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "yusniel-diaz",
+      "signing_year": 2015
+     }
+    }
+   ],
+   "reason": "Each affected signing links to its period environment in the canonical seed; live has NULL for all of them while every other signing field already matches.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  },
+  "signing_environments": {
+   "affected_views": [
+    "v_dodgers_signing_cohort",
+    "v_dodgers_signing_leaderboard",
+    "v_player_signing_profile",
+    "v_signing_efficiency",
+    "v_dodgers_signing_year_summary"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "2020300.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": "1.00000",
+      "penalty_status": "Maximum overage penalty; future individual-bonus restriction triggered",
+      "pool_after_trades_usd": "700000.00",
+      "regime": "AGGRESSIVE_OVERAGE",
+      "rules_summary": "Dodgers exceeded the pool by more than 15%, paid a 100% tax on overage, and were barred from bonuses above $300,000 in the next two periods.",
+      "signing_period_label": "2015-16",
+      "signing_year": 2015,
+      "tradeable_pool_space": true
+     },
+     "intended": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "2020300.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": "1.00000",
+      "penalty_status": "Maximum overage penalty; future individual-bonus restriction triggered",
+      "pool_after_trades_usd": "700000.00",
+      "regime": "AGGRESSIVE_OVERAGE",
+      "rules_summary": "Dodgers exceeded the pool by more than 15%, paid a 100% tax on overage, and were barred from bonuses above $300,000 in the next two periods.",
+      "signing_period_label": "2015-16",
+      "signing_year": 2015,
+      "tradeable_pool_space": true
+     },
+     "live": null,
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "signing_year": 2015
+     }
+    },
+    {
+     "canonical": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": null,
+      "max_individual_bonus_usd": "300000.00",
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": "Individual signing bonus capped at $300,000",
+      "pool_after_trades_usd": null,
+      "regime": "PENALTY_RESTRICTED",
+      "rules_summary": "Restriction resulted from the 2015-16 overage.",
+      "signing_period_label": "2017-18",
+      "signing_year": 2017,
+      "tradeable_pool_space": null
+     },
+     "intended": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": null,
+      "max_individual_bonus_usd": "300000.00",
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": "Individual signing bonus capped at $300,000",
+      "pool_after_trades_usd": null,
+      "regime": "PENALTY_RESTRICTED",
+      "rules_summary": "Restriction resulted from the 2015-16 overage.",
+      "signing_period_label": "2017-18",
+      "signing_year": 2017,
+      "tradeable_pool_space": null
+     },
+     "live": null,
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "signing_year": 2017
+     }
+    },
+    {
+     "canonical": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "4983500.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "Hard-cap pool system; Dodgers were no longer one of the clubs under the grandfathered $300,000 individual cap.",
+      "signing_period_label": "2018-19",
+      "signing_year": 2018,
+      "tradeable_pool_space": true
+     },
+     "intended": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "4983500.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "Hard-cap pool system; Dodgers were no longer one of the clubs under the grandfathered $300,000 individual cap.",
+      "signing_period_label": "2018-19",
+      "signing_year": 2018,
+      "tradeable_pool_space": true
+     },
+     "live": null,
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "signing_year": 2018
+     }
+    },
+    {
+     "canonical": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "4644000.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "Pool was reduced by $500,000 after the Trevor Bauer free-agent signing.",
+      "signing_period_label": "2021-22",
+      "signing_year": 2022,
+      "tradeable_pool_space": true
+     },
+     "intended": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "4644000.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "Pool was reduced by $500,000 after the Trevor Bauer free-agent signing.",
+      "signing_period_label": "2021-22",
+      "signing_year": 2022,
+      "tradeable_pool_space": true
+     },
+     "live": null,
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "signing_year": 2022
+     }
+    },
+    {
+     "canonical": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "4144000.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "MLB.com reported a $4.144M base signing pool.",
+      "signing_period_label": "2023",
+      "signing_year": 2023,
+      "tradeable_pool_space": true
+     },
+     "intended": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "4144000.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "MLB.com reported a $4.144M base signing pool.",
+      "signing_period_label": "2023",
+      "signing_year": 2023,
+      "tradeable_pool_space": true
+     },
+     "live": null,
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "signing_year": 2023
+     }
+    },
+    {
+     "canonical": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "5284000.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "MLB.com reported a $5.284M base signing pool.",
+      "signing_period_label": "2024",
+      "signing_year": 2024,
+      "tradeable_pool_space": true
+     },
+     "intended": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "5284000.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "MLB.com reported a $5.284M base signing pool.",
+      "signing_period_label": "2024",
+      "signing_year": 2024,
+      "tradeable_pool_space": true
+     },
+     "live": null,
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "signing_year": 2024
+     }
+    },
+    {
+     "canonical": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "5146200.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "Initial pool. Additional pool capacity was required to accommodate Roki Sasaki's reported $6.5M bonus.",
+      "signing_period_label": "2025",
+      "signing_year": 2025,
+      "tradeable_pool_space": true
+     },
+     "intended": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "5146200.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "Initial pool. Additional pool capacity was required to accommodate Roki Sasaki's reported $6.5M bonus.",
+      "signing_period_label": "2025",
+      "signing_year": 2025,
+      "tradeable_pool_space": true
+     },
+     "live": null,
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "signing_year": 2025
+     }
+    },
+    {
+     "canonical": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "6679200.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "MLB.com reported $6.6792M available to Los Angeles.",
+      "signing_period_label": "2026",
+      "signing_year": 2026,
+      "tradeable_pool_space": true
+     },
+     "intended": {
+      "cba_regime": null,
+      "club_bonus_pool_usd": "6679200.00",
+      "max_individual_bonus_usd": null,
+      "notes": null,
+      "organization_name": "Los Angeles Dodgers",
+      "overage_tax_rate": null,
+      "penalty_status": null,
+      "pool_after_trades_usd": null,
+      "regime": "MODERN_HARD_POOL",
+      "rules_summary": "MLB.com reported $6.6792M available to Los Angeles.",
+      "signing_period_label": "2026",
+      "signing_year": 2026,
+      "tradeable_pool_space": true
+     },
+     "live": null,
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "signing_year": 2026
+     }
+    }
+   ],
+   "live_rows": 0,
+   "reason": "The committed 002 seed inserted one signing environment per Dodgers signing period; the live database never received them.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  },
+  "source_metadata_variants": {
+   "affected_views": [
+    "v_player_sources",
+    "v_player_timeline",
+    "v_dodgers_class_source_reconciliation"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "MLB_TRANSACTION_LOG",
+      "source_type": "TRANSACTIONS",
+      "title": "Los Angeles Dodgers transactions January 2025",
+      "url": "https://www.mlb.com/dodgers/roster/transactions/2025/01"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "MLB_TRANSACTION_LOG",
+      "source_type": "TRANSACTIONS",
+      "title": "Los Angeles Dodgers transactions January 2025",
+      "url": "https://www.mlb.com/dodgers/roster/transactions/2025/01"
+     },
+     "live": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "MLB_TRANSACTION_LOG",
+      "source_type": "DODGERS_TRANSACTION_LOG",
+      "title": "2025 Dodgers transaction log",
+      "url": "https://www.mlb.com/dodgers/roster/transactions/2025/01"
+     },
+     "selector": {
+      "url": "https://www.mlb.com/dodgers/roster/transactions/2025/01"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2018-07-02",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers agree with top international prospect Diego Cartaya",
+      "url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2018-07-02",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers agree with top international prospect Diego Cartaya",
+      "url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     },
+     "live": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "OFFICIAL_CLUB_RELEASE",
+      "source_type": "DODGERS_CLASS_RELEASE",
+      "title": "2018 opening class",
+      "url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     },
+     "selector": {
+      "url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2025-01-25",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "MLB international prospects signing day 2025",
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2025"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2025-01-25",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "MLB international prospects signing day 2025",
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2025"
+     },
+     "live": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "MLB_PIPELINE",
+      "source_type": "MLB_PIPELINE_TRACKER",
+      "title": "2025 Top 50 signing tracker",
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2025"
+     },
+     "selector": {
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2025"
+     }
+    }
+   ],
+   "reason": "Three URLs exist in both systems with different type/title/tier. The committed canonical representation is the target; the live row is changed only when it exactly matches the known live variant.",
+   "source_migration": "002_dodgers_seed_cohort.sql (then 018 upserts)"
+  },
+  "sources_missing": {
+   "affected_views": [
+    "v_player_sources",
+    "v_player_timeline"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2024-01-16",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers 2024 international prospects signings",
+      "url": "https://www.mlb.com/dodgers/news/dodgers-2024-international-prospects-signings"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2024-01-16",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers 2024 international prospects signings",
+      "url": "https://www.mlb.com/dodgers/news/dodgers-2024-international-prospects-signings"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/dodgers/news/dodgers-2024-international-prospects-signings"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2015-11-22",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Sources: Dodgers ink pair of Cuban prospects",
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2015-11-22",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Sources: Dodgers ink pair of Cuban prospects",
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-pair-of-cuban-prospects/c-157908784"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2015-07-07",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers open international signing period with a flurry",
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-top-international-free-agents/c-134055834"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2015-07-07",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers open international signing period with a flurry",
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-top-international-free-agents/c-134055834"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/dodgers/news/dodgers-sign-top-international-free-agents/c-134055834"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "International Amateur Free Agency & Bonus Pool Money",
+      "url": "https://www.mlb.com/glossary/transactions/international-amateur-free-agency-bonus-pool-money"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "International Amateur Free Agency & Bonus Pool Money",
+      "url": "https://www.mlb.com/glossary/transactions/international-amateur-free-agency-bonus-pool-money"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/glossary/transactions/international-amateur-free-agency-bonus-pool-money"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2026-01-15",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "2026 MLB International Signing Day",
+      "url": "https://www.mlb.com/milb/news/mlb-international-prospects-signing-day-2026"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2026-01-15",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "2026 MLB International Signing Day",
+      "url": "https://www.mlb.com/milb/news/mlb-international-prospects-signing-day-2026"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/milb/news/mlb-international-prospects-signing-day-2026"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "MLB_PIPELINE",
+      "source_type": "PROSPECT_PROFILE",
+      "title": "Dodgers Top Prospects: Josue De Paula",
+      "url": "https://www.mlb.com/milb/prospects/2023/dodgers/josue-de-paula-800543"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": null,
+      "source_name": "MLB.com",
+      "source_tier": "MLB_PIPELINE",
+      "source_type": "PROSPECT_PROFILE",
+      "title": "Dodgers Top Prospects: Josue De Paula",
+      "url": "https://www.mlb.com/milb/prospects/2023/dodgers/josue-de-paula-800543"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/milb/prospects/2023/dodgers/josue-de-paula-800543"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2016-06-16",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers have deal with Cuban OF Yordan Alvarez",
+      "url": "https://www.mlb.com/news/dodgers-have-deal-with-cuban-of-yordan-alvarez-c184312840"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2016-06-16",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers have deal with Cuban OF Yordan Alvarez",
+      "url": "https://www.mlb.com/news/dodgers-have-deal-with-cuban-of-yordan-alvarez-c184312840"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/news/dodgers-have-deal-with-cuban-of-yordan-alvarez-c184312840"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2019-07-02",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers to sign pair of top international prospects",
+      "url": "https://www.mlb.com/news/dodgers-sign-pair-of-top-int-l-prospects"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2019-07-02",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Dodgers to sign pair of top international prospects",
+      "url": "https://www.mlb.com/news/dodgers-sign-pair-of-top-int-l-prospects"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/news/dodgers-sign-pair-of-top-int-l-prospects"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2026-01-16",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Los Angeles Dodgers 2026 international signings",
+      "url": "https://www.mlb.com/news/los-angeles-dodgers-2026-international-signings"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2026-01-16",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "Los Angeles Dodgers 2026 international signings",
+      "url": "https://www.mlb.com/news/los-angeles-dodgers-2026-international-signings"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/news/los-angeles-dodgers-2026-international-signings"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2023-01-21",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "MLB International Prospects Signing Day 2023",
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2023"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2023-01-21",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "MLB International Prospects Signing Day 2023",
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2023"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2023"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2024-01-15",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "International Signing Day 2024",
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2024"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2024-01-15",
+      "source_name": "MLB.com",
+      "source_tier": "MLB_COM_REPORTING",
+      "source_type": "ARTICLE",
+      "title": "International Signing Day 2024",
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2024"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/news/mlb-international-prospects-signing-day-2024"
+     }
+    },
+    {
+     "canonical": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2023-01-16",
+      "source_name": "MLB.com",
+      "source_tier": "OFFICIAL_CLUB_RELEASE",
+      "source_type": "PRESS_RELEASE",
+      "title": "Dodgers announce 2023 international signings",
+      "url": "https://www.mlb.com/press-release/press-release-dodgers-announce-2023-international-signings"
+     },
+     "intended": {
+      "author": null,
+      "notes": null,
+      "publication_date": "2023-01-16",
+      "source_name": "MLB.com",
+      "source_tier": "OFFICIAL_CLUB_RELEASE",
+      "source_type": "PRESS_RELEASE",
+      "title": "Dodgers announce 2023 international signings",
+      "url": "https://www.mlb.com/press-release/press-release-dodgers-announce-2023-international-signings"
+     },
+     "live": null,
+     "selector": {
+      "url": "https://www.mlb.com/press-release/press-release-dodgers-announce-2023-international-signings"
+     }
+    }
+   ],
+   "reason": "Twelve MLB.com sources inserted by the committed seed (articles, a prospect profile, press releases, a glossary page) are absent live. URL is the identity.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  },
+  "transactions": {
+   "affected_views": [
+    "v_player_transactions",
+    "v_dodgers_asset_realization",
+    "v_signing_asset_outcomes",
+    "v_dodgers_executive_case_studies",
+    "v_dodgers_mature_asset_realization",
+    "v_player_timeline"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "confidence": "VERIFIED",
+      "estimated_org_value_usd": null,
+      "estimated_org_value_war": null,
+      "from_organization_name": "Los Angeles Dodgers",
+      "notes": null,
+      "player_slug": "arnaldo-lantigua",
+      "return_description": "Traded to Cincinnati Reds for future considerations",
+      "source_url": "https://www.mlb.com/dodgers/roster/transactions/2025/01",
+      "to_organization_name": "Cincinnati Reds",
+      "transaction_date": "2025-01-17",
+      "transaction_type": "TRADE",
+      "value_model_version": null
+     },
+     "intended": {
+      "confidence": "VERIFIED",
+      "estimated_org_value_usd": null,
+      "estimated_org_value_war": null,
+      "from_organization_name": "Los Angeles Dodgers",
+      "notes": null,
+      "player_slug": "arnaldo-lantigua",
+      "return_description": "Traded to Cincinnati Reds for future considerations",
+      "source_url": "https://www.mlb.com/dodgers/roster/transactions/2025/01",
+      "to_organization_name": "Cincinnati Reds",
+      "transaction_date": "2025-01-17",
+      "transaction_type": "TRADE",
+      "value_model_version": null
+     },
+     "live": null,
+     "selector": {
+      "player_slug": "arnaldo-lantigua",
+      "transaction_date": "2025-01-17",
+      "transaction_type": "TRADE"
+     }
+    }
+   ],
+   "reason": "The 2025-01-17 Lantigua trade to Cincinnati is part of the committed seed (it shows why later MLB production is not Dodgers value); live lacks it.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  }
+ },
+ "generated_from": "canonical replay 001-026 vs read-only live observation 2026-10-08",
+ "target_rule": "Migration-002 canonical values are retained except for (1) the unsupported 2-trainer / 4-link seed, which is removed, and (2) three trainer-asserting evidence-note strings (evidence_note_neutralizations), which are intentionally neutralized. Both are forward semantic corrections, not drift.",
+ "version": 1
+}

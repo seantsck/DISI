@@ -35,6 +35,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 24. `024_development_progression_decisions.sql` — reviewed progression decisions separating first appearance from developmental arrival; developmental elapsed metrics and status (details below; research in `database/research/024/`).
 25. `025_public_view_grant_hardening.sql` — every public view reduced to SELECT for anon/authenticated (43 legacy views had inherited Supabase default ALL privileges) behind a reviewed inventory and an ACL postcondition (details below; research in `database/research/025/`).
 26. `026_scouting_evaluation_history.sql` — immutable external scouting evaluations (publications, scales, snapshots, grades, rankings, notes), the 48 provenance-backed legacy international ranks backfilled, the empty legacy `evaluations` table dropped behind guards (details below; research in `database/research/026/`).
+27. `027_canonical_seed_drift_reconciliation.sql` — forward, guarded, data-only reconciliation of the committed Migration-002 supplementary seed so live and a fresh replay converge: 8 signing environments and 30 signing links, the Lantigua trade, 2 aliases, 12 sources, 32 evidence claims, 3 source-metadata variants; the unsupported 2-trainer / 4-link seed is removed and three trainer-asserting evidence notes are neutralised (details below; research in `database/research/027/`).
 
 ## 017 research-database layer
 
@@ -124,6 +125,17 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Backfill.** 48 of the 59 legacy `signings.international_rank` values have a tracker source and are mirrored as `INTERNATIONAL_CLASS_LIST` evaluations; the 11 unsourced are queued as `LEGACY_RANK_WITHOUT_EVALUATION`. `signings.international_rank` is unchanged.
 - **Surface.** 47 public tables, 91 views (5 new, security_invoker, SELECT-only); the empty legacy `evaluations` table is dropped only if it is unchanged, empty and unreferenced. The dossier shows an "External scouting evaluations" section.
 - **Rerunnable**; design, source audit and reproduction in `database/research/026/`.
+
+## 027 canonical seed drift reconciliation
+
+- **Why.** A fresh replay of the committed Migration-002 seed held supplementary rows that live never received (signing environments and their links, one trade, two aliases, 12 sources, 32 evidence claims), plus an unsupported trainer block. The verifier pinned totals, not these facts, so it could not see it.
+- **Forward and guarded.** A normal migration, not a live patch: every step accepts exactly two states (canonical replay or the known live drift) and aborts on any third. Joins use stable keys only (player slug, organization name, signing year, source URL). No table, view, function, grant or policy changes.
+- **Evidence.** A claim's identity is (signing, field, source URL). Missing claims are inserted; the 3 live variants of one claim are updated in place to the committed form; nothing is deleted.
+- **Trainer seed.** The 2 trainers / 4 links are removed from the replay and not restored live: they had no provenance and were marked VERIFIED. This means DISI lacks sufficient verified evidence, not that no relationship existed. The legacy tables and views stay until 028.
+- **Neutralised notes.** Three committed seed notes (Morales 2024, Melburne 2026, Arias 2026) asserted that an MLB.com article reported trainer relationships. The evidence rows stay as signing provenance with a neutral note that asserts no trainer or academy and says attribution awaits direct verification.
+- **Verifier.** Eleven new presence / integrity checks (never global totals) read `database/research/027/reconciliation-manifest.json`.
+- **Portability.** `initcap()` behaves differently between engines; new migration logic must not use it or any locale-sensitive function.
+- **Rerunnable**; audit, manifest and reproduction in `database/research/027/README.md`.
 
 ## Player identity (020)
 

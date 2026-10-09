@@ -1,5 +1,5 @@
 // Offline tests for scripts/db/lib/invariants.mjs against the canonical
-// 001→026 PGlite chain. No live Supabase access is involved.
+// 001→027 PGlite chain. No live Supabase access is involved.
 //
 // Drift conditions are simulated inside transactions that are rolled back, so
 // the shared chain stays pristine for every scenario.
@@ -9,6 +9,7 @@ import assert from 'node:assert/strict'
 import { buildCanonicalChain } from './canonical-chain.mjs'
 import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 import { runVerifier } from '../../scripts/db/verify-live-invariants.mjs'
+import { driftParts, liveDriftSql, cats027, lit } from './drift-027.mjs'
 
 let chain
 const runChecks = () => checkInvariants(chain.query)
@@ -30,12 +31,12 @@ async function withDrift(driftSql) {
   }
 }
 
-test('clean canonical 001→026 state passes every hard invariant', async () => {
+test('clean canonical 001→027 state passes every hard invariant', async () => {
   const report = await runChecks()
   assert.deepEqual(failedChecks(report).map((c) => c.name), [])
   // population 4 + development 17 + status 2 + progression 3 + integrity 10
   // + scouting 22 + api 9 + privileges 16 + rls 6 + security_invoker 10
-  assert.ok(report.hard.length >= 101, `expected a full battery, got ${report.hard.length}`)
+  assert.ok(report.hard.length >= 112, `expected a full battery, got ${report.hard.length}`)
   // informational coverage numbers are reported but never fail
   assert.ok(report.info.length >= 3)
 })
@@ -248,5 +249,40 @@ test('026 drift: scouting integrity is checked from the data itself, each kind o
     ['player_evaluations', 'scouting_supersession_violations'])
   // a broad grant on a new scouting view is caught by the whole-surface check
   assert.deepEqual(names(await withDrift(`grant all on public.v_player_scouting_timeline to anon;`)), ['public_views_anon_beyond_select'])
+  assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
+})
+
+test('027 drift: each part of the Migration-002 seed drift fails exactly its reconciliation checks; presence checks ignore legitimate growth', async () => {
+  const names = (report) => failedChecks(report).map((c) => c.name).sort()
+  assert.deepEqual(names(await withDrift(driftParts.environments())),
+    ['reconciliation_affected_signings_without_environment', 'reconciliation_signing_environment_violations', 'reconciliation_signing_link_violations'])
+  assert.deepEqual(names(await withDrift(driftParts.transaction())), ['reconciliation_transaction_violations'])
+  assert.deepEqual(names(await withDrift(driftParts.aliases())), ['reconciliation_alias_violations'])
+  assert.deepEqual(names(await withDrift(driftParts.sourceMetadata())), ['reconciliation_source_violations'])
+  // a missing claim that cites a missing source
+  assert.deepEqual(names(await withDrift(`${driftParts.evidence()}`)), ['reconciliation_evidence_violations', 'reconciliation_evidence_variant_coexistence'].sort())
+  // a trainer-asserting seed note coming back (the claim stays, the unverified wording returns)
+  const neutral = cats027.evidence_note_neutralizations.entries[0]
+  assert.deepEqual(names(await withDrift(`update evidence set evidence_note = ${lit(neutral.replay_original.evidence_note)}
+    where entity_type = 'signing' and field_name is null and source_id = (select id from sources where url = ${lit(neutral.selector.url)})
+      and entity_id = (select sg.id from signings sg join players p on p.id = sg.player_id where p.slug = ${lit(neutral.selector.player_slug)} and sg.signing_year = ${neutral.selector.signing_year});`)),
+    ['reconciliation_evidence_violations', 'reconciliation_trainer_note_violations'].sort())
+  // the whole known live drift (trainers are already absent in a post-027 chain)
+  const all = names(await withDrift(liveDriftSql()))
+  for (const expected of ['reconciliation_signing_environment_violations', 'reconciliation_signing_link_violations', 'reconciliation_affected_signings_without_environment',
+    'reconciliation_transaction_violations', 'reconciliation_alias_violations', 'reconciliation_source_violations', 'reconciliation_evidence_violations',
+    'reconciliation_evidence_variant_coexistence']) assert.ok(all.includes(expected), `${expected} should fail on the known live drift`)
+  // the unsupported trainer seed coming back is caught
+  assert.deepEqual(names(await withDrift(`insert into trainers (name, academy_name, country) values ('Jaime Ramos', null, 'Dominican Republic');`)), ['legacy_trainers_rows'])
+  // a duplicate claim (the canonical row plus a second one) fails the exact-once check, but growth elsewhere does not fail anything
+  const claim = cats027.evidence_variants.entries[0]
+  assert.deepEqual(names(await withDrift(`insert into evidence (entity_type, entity_id, field_name, source_id, confidence, evidence_note)
+    select entity_type, entity_id, field_name, source_id, confidence, evidence_note from evidence
+    where entity_type = 'signing' and field_name is null and source_id = (select id from sources where url = ${lit(claim.selector.url)})
+      and entity_id = (select sg.id from signings sg join players p on p.id = sg.player_id where p.slug = ${lit(claim.selector.player_slug)} and sg.signing_year = ${claim.selector.signing_year});`)),
+    ['reconciliation_evidence_violations'])
+  assert.deepEqual(names(await withDrift(`insert into sources (source_name, source_type, title, url) values ('Test', 'ARTICLE', 'Unrelated new source', 'https://example.test/new-source');
+    insert into player_aliases (player_id, alias, alias_type) select id, 'Test Alias', 'SOURCE_VARIANT' from players limit 1;`)), [],
+    'new sources and aliases are legitimate growth')
   assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
 })

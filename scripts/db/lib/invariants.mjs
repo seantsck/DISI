@@ -5,7 +5,7 @@
 // a query function (PGlite for the local canonical chain, or a pg client
 // connected with a URL from an environment variable).
 //
-// Hard invariants are the byte-stable state of the canonical 001→026 chain
+// Hard invariants are the byte-stable state of the canonical 001→027 chain
 // (seeded populations, migration-built rows, schema security properties).
 // Informational metrics are research-coverage numbers that may legitimately
 // move as research progresses; they are reported but never fail the run.
@@ -15,7 +15,9 @@
 // migration that legitimately changes a hard invariant must update
 // CANONICAL_EXPECTATIONS in the same commit as that migration.
 
-/** Canonical 001→026 (DISI v0.17) expected state. */
+import { RECONCILIATION_QUERIES } from './seed-reconciliation.mjs'
+
+/** Canonical 001→027 (DISI v0.18) expected state. */
 export const CANONICAL_EXPECTATIONS = {
   // population (seeded by 002/012/013/016/019 and surfaced by v_database_status)
   players_total: 268,
@@ -116,6 +118,19 @@ export const CANONICAL_EXPECTATIONS = {
   scouting_supersession_violations: 0,
   scouting_sealed_trigger_events: 4,
   scouting_international_rank_context_violations: 0,
+  // canonical Migration-002 supplementary seed (reconciled by 027): violation counts, never global totals
+  reconciliation_signing_environment_violations: 0,
+  reconciliation_signing_link_violations: 0,
+  reconciliation_affected_signings_without_environment: 0,
+  reconciliation_transaction_violations: 0,
+  reconciliation_alias_violations: 0,
+  reconciliation_source_violations: 0,
+  reconciliation_evidence_violations: 0,
+  reconciliation_evidence_variant_coexistence: 0,
+  reconciliation_trainer_note_violations: 0,
+  // the unsupported trainer seed stays removed until 028 retires the legacy trainer objects
+  legacy_trainers_rows: 0,
+  legacy_player_trainers_rows: 0,
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -392,6 +407,11 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
     await count(`select count(*)::int as n from player_evaluations e
       where exists (select 1 from player_evaluation_rankings r where r.evaluation_id = e.id and r.ranking_scope = 'INTERNATIONAL_CLASS')
         and e.evaluation_context in ('GLOBAL_LIST', 'ORG_LIST')`))
+
+  // -- canonical seed reconciliation (027) ------------------------------------
+  for (const [name, sql] of Object.entries(RECONCILIATION_QUERIES)) {
+    check('seed', name, expectations[name], await count(sql))
+  }
 
   // -- whole public API surface (025) -----------------------------------------
   // Every public view must be security_invoker and give anon / authenticated
