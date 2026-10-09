@@ -1971,6 +1971,7 @@ const views026 = ['v_dodgers_scouting_at_signing', 'v_player_latest_external_eva
   'v_scouting_research_queue', 'v_scouting_source_coverage']
 const views029 = ['v_dodgers_network_coverage', 'v_network_entity_player_history', 'v_network_research_queue', 'v_player_signing_network']
 const views029Retired = ['v_dodgers_trainer_network', 'v_player_trainers']
+const views030 = ['v_dodgers_financial_commitment_by_class', 'v_dodgers_financial_commitment_by_market', 'v_financial_research_queue', 'v_signing_acquisition_financials']
 const tables026 = ['evaluation_scales', 'player_evaluation_grades', 'player_evaluation_notes', 'player_evaluation_rankings',
   'player_evaluations', 'scouting_publications']
 // Every API-role privilege on every public relation, straight from the ACLs (MAINTAIN included).
@@ -1990,7 +1991,7 @@ const securitySnapshotOn = async (oneFn) => oneFn(`select
     (select string_agg(c.relname || ':' || pg_get_viewdef(c.oid), ',' order by c.relname) from pg_class c
       join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v') as view_definitions`)
 
-test('025 inventory: the 86 reviewed views are read-only analytics, security_invoker and not updatable; 026 adds five and 029 adds four (and retires two legacy trainer views)', async () => {
+test('025 inventory: the 86 reviewed views are read-only analytics, security_invoker and not updatable; 026 adds five, 029 adds four (and retires two legacy trainer views), 030 adds four', async () => {
   assert.equal(inventory025.views.length, 86)
   assert.equal(legacyBroad.length, 43, 'the live audit found 43 legacy views with ALL privileges')
   assert.deepEqual(inventory025.intentionally_writable, [])
@@ -1998,7 +1999,7 @@ test('025 inventory: the 86 reviewed views are read-only analytics, security_inv
     from pg_class c join pg_namespace n on n.oid = c.relnamespace
     join information_schema.views v on v.table_schema = 'public' and v.table_name = c.relname
     where n.nspname = 'public' and c.relkind = 'v' order by 1`)
-  assert.deepEqual(views.map((v) => v.relname), [...inventory025.views.map((v) => v.view).filter((v) => !views029Retired.includes(v)), ...views026, ...views029].sort())
+  assert.deepEqual(views.map((v) => v.relname), [...inventory025.views.map((v) => v.view).filter((v) => !views029Retired.includes(v)), ...views026, ...views029, ...views030].sort())
   for (const v of views) {
     assert.match(v.opts, /security_invoker=(true|on)/, v.relname)
     assert.deepEqual([v.is_updatable, v.is_insertable_into], ['NO', 'NO'], v.relname)
@@ -2014,7 +2015,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   for (const kind of ['v', 'r']) {
     for (const role of ['anon', 'authenticated']) {
       const relations = acl.filter((a) => a.kind === kind && a.grantee === role)
-      assert.equal(relations.length, kind === 'v' ? 93 : 50, `${role} ${kind}`)
+      assert.equal(relations.length, kind === 'v' ? 97 : 53, `${role} ${kind}`)
       for (const privilege of ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN']) {
         assert.deepEqual(relations.filter((a) => a.privs.split(',').includes(privilege)).map((a) => a.relname), [], `${role} ${privilege} on ${kind}`)
       }
@@ -2024,7 +2025,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   assert.deepEqual(acl.filter((a) => a.grantee === 'PUBLIC'), [], 'PUBLIC holds nothing')
   const tables = await one(`select count(*)::int as n, count(*) filter (where relrowsecurity)::int as rls from pg_class c
     join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r'`)
-  assert.deepEqual([tables.n, tables.rls], [50, 50])
+  assert.deepEqual([tables.n, tables.rls], [53, 53])
   const write = await one(`select count(*)::int as n from pg_policies where schemaname = 'public' and cmd <> 'SELECT'`)
   assert.equal(write.n, 0, 'no table policy grants writes to anyone')
 })
@@ -2128,10 +2129,10 @@ const dayEval = (date, o = {}) => insertEvaluation({
 const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} returning id into i; update player_evaluations set record_status = 'ACTIVE' where id = i; end $seal$`
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
-test('frozen history: migrations 001-028 are byte-for-byte unchanged (line endings normalised); 029 is the only addition', () => {
-  const files = manifest.canonical_sql.filter((f) => f < '029')
-  assert.equal(files.length, 28)
-  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '029'), ['029_signing_network_intelligence.sql'])
+test('frozen history: migrations 001-029 are byte-for-byte unchanged (line endings normalised); 030 is the only addition', () => {
+  const files = manifest.canonical_sql.filter((f) => f < '030')
+  assert.equal(files.length, 29)
+  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '030'), ['030_financial_acquisition_intelligence.sql'])
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {
     const text = readSql(f).replace(/\r\n/g, '\n')
@@ -2139,7 +2140,7 @@ test('frozen history: migrations 001-028 are byte-for-byte unchanged (line endin
   }
 })
 
-test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 50 tables / 93 views after 029, all RLS / security_invoker', async () => {
+test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 53 tables / 97 views after 030, all RLS / security_invoker', async () => {
   const t = await rows(`select c.relname, c.relrowsecurity as rls from pg_class c join pg_namespace n on n.oid = c.relnamespace
     where n.nspname = 'public' and c.relkind = 'r' and c.relname = any($1) order by 1`, [tables026])
   assert.deepEqual(t.map((r) => [r.relname, r.rls]), tables026.map((n) => [n, true]))
@@ -2147,7 +2148,7 @@ test('026 shape: six new tables and five new views; the legacy evaluations table
   assert.equal(legacy.gone, true)
   const counts = await one(`select count(*) filter (where relkind = 'r')::int as tables, count(*) filter (where relkind = 'v')::int as views
     from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind in ('r', 'v')`)
-  assert.deepEqual([counts.tables, counts.views], [50, 93])
+  assert.deepEqual([counts.tables, counts.views], [53, 97])
   const v = await rows(`select relname, coalesce(array_to_string(reloptions, ','), '') as opts from pg_class where relname = any($1) and relkind = 'v'`, [views026])
   assert.equal(v.length, 5)
   for (const x of v) assert.match(x.opts, /security_invoker=(true|on)/, x.relname)
@@ -2699,7 +2700,7 @@ test('026 views: timeline derivations, latest-per-publication, at-signing window
 
 test('026 research queue: meaningful gaps only; nothing the schema forbids; differing opinions are not conflicts', async () => {
   const issues = Object.fromEntries((await rows(`select issue, count(*)::int as n from v_scouting_research_queue group by 1`)).map((r) => [r.issue, r.n]))
-  assert.deepEqual(issues, { LEGACY_RANK_WITHOUT_EVALUATION: 11, MISSING_ARCHIVE_REFERENCE: 3, PLAYER_WITHOUT_SCOUTING_HISTORY: 53, SIGNING_WITHOUT_SIGNING_EVALUATION: 41 })
+  assert.deepEqual(issues, { LEGACY_RANK_WITHOUT_EVALUATION: 11, MISSING_ARCHIVE_REFERENCE: 3, PLAYER_WITHOUT_SCOUTING_HISTORY: 53, SIGNING_WITHOUT_SIGNING_EVALUATION: 42 })
   for (const forbidden of ['RANK_WITHOUT_SCOPE', 'FV_WITHOUT_SCALE', 'EVALUATION_WITHOUT_SOURCE', 'CONFLICTING_SOURCE_VALUES', 'UNRESOLVED_PLAYER_IDENTITY']) assert.equal(issues[forbidden], undefined, forbidden)
   // independent oracles for the two scoped issues
   const history = await one(`select count(*)::int as n from players p
@@ -2710,7 +2711,8 @@ test('026 research queue: meaningful gaps only; nothing the schema forbids; diff
   const signing = await one(`select count(*)::int as n from signings sg join organizations o on o.id = sg.organization_id and o.franchise_key = 'DODGERS'
     where (sg.bonus_publicly_reported or sg.international_rank is not null)
       and not exists (select 1 from player_evaluations e where e.player_id = sg.player_id and (e.evaluation_context in ('PRE_SIGNING', 'SIGNING') or e.evaluation_year = sg.signing_year))`)
-  assert.equal(signing.n, 41)
+  // 41 before 030; Migration 030 sourced Hyun-Jin Ryu's $5M bonus (bonus_publicly_reported), and he has no signing-time evaluation
+  assert.equal(signing.n, 42)
   // date-quality issues appear when a coarse or undated evaluation exists
   await db.exec('begin;')
   try {

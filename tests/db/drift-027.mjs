@@ -19,7 +19,16 @@ const claimWhere = (sel) => `entity_type = 'signing' and entity_id = ${signingId
 
 /** Parts of the drift, individually addressable so tests can apply them one at a time. */
 export const driftParts = {
-  environments: () => `update signings set signing_environment_id = null where signing_environment_id is not null; delete from signing_environments;`,
+  // after 030 the environment ledger references environments and refuses deletes; a simulated loss of the environments
+  // takes their ledger rows with it (guard bypassed only for the simulation, which always runs in a rolled-back transaction)
+  environments: () => `do $env$ begin
+    if to_regclass('public.signing_environment_financial_reports') is not null then
+      alter table public.signing_environment_financial_reports disable trigger signing_environment_financial_reports_guard;
+      delete from public.signing_environment_financial_reports;
+      alter table public.signing_environment_financial_reports enable trigger signing_environment_financial_reports_guard;
+    end if;
+  end $env$;
+  update signings set signing_environment_id = null where signing_environment_id is not null; delete from signing_environments;`,
   transaction: () => cats027.transactions.entries.map((t) => `delete from transactions where player_id = (select id from players where slug = ${lit(t.selector.player_slug)})
     and transaction_date = ${lit(t.selector.transaction_date)} and transaction_type = ${lit(t.selector.transaction_type)};`).join('\n'),
   aliases: () => cats027.player_aliases.entries.map((a) => `delete from player_aliases where alias = ${lit(a.selector.alias)}

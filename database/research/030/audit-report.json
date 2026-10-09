@@ -1,0 +1,100 @@
+{
+  "audited_against": "canonical replay 001-029 (in memory)",
+  "baseline": {
+    "tables": 50,
+    "views": 93,
+    "signing_environments": 8
+  },
+  "canonical_money_columns": {
+    "bonus": 88,
+    "posting": 1,
+    "transfer": 2,
+    "signings": 268,
+    "zero_values": 0
+  },
+  "field_level_money_evidence": [
+    "fernando-valenzuela 1979 transfer_fee_usd",
+    "hyun-jin-ryu 2012 posting_fee_usd"
+  ],
+  "derived_backfill": {
+    "signing_legacy_carryforward_total": 89,
+    "signing_legacy_carryforward_by_component": {
+      "SIGNING_BONUS": 88,
+      "TRANSFER_FEE": 1
+    },
+    "environment_legacy_carryforward_total": 10
+  },
+  "seeded_external": {
+    "signing_reports": 14,
+    "signing_reports_rule_derived_basis": 2,
+    "environment_reports": 8
+  },
+  "pool_treatment": {
+    "pre_pool_signings": 33,
+    "rule_based_not_applicable": 32,
+    "source_statements": 5,
+    "undated_2012_signings_left_unknown": 0
+  },
+  "dodgers_2019_signings": [
+    "lesther-medrano",
+    "luis-rodriguez-2019",
+    "roque-gutierrez",
+    "yeiner-fernandez"
+  ],
+  "dodgers_2019_population_members_to_link": [
+    "lesther-medrano",
+    "roque-gutierrez",
+    "yeiner-fernandez"
+  ],
+  "legacy_war_per_dollar_views": {
+    "v_signing_efficiency": {
+      "definition_md5": "57e57a2d4dc535703e8150be15fd9c56",
+      "has_comment": false
+    },
+    "v_dodgers_signing_cohort": {
+      "definition_md5": "cb577b7b770e94412d5ae2365114a57c",
+      "has_comment": false
+    },
+    "v_dodgers_signing_leaderboard": {
+      "definition_md5": "2c8de904f680b4d0ae03d880a99bf752",
+      "has_comment": false
+    },
+    "v_dodgers_asset_realization": {
+      "definition_md5": "4c5615307dc7842242895a8abfc1b808",
+      "has_comment": false
+    },
+    "v_signing_asset_outcomes": {
+      "definition_md5": "0a3fb95b5a32309797842d6efe81ad4f",
+      "has_comment": false
+    },
+    "v_dodgers_executive_kpis": {
+      "definition_md5": "7c10c93b627e29a288c5cf9034b74eb6",
+      "has_comment": true
+    },
+    "v_dodgers_executive_case_studies": {
+      "definition_md5": "eae11b30644c7354a1d236338aa042d9",
+      "has_comment": false
+    },
+    "v_dodgers_executive_dashboard_feed": {
+      "definition_md5": "a24f36c6159731fbaf7849358b70e45e",
+      "has_comment": false
+    },
+    "v_dodgers_mature_bonus_tiers": {
+      "definition_md5": "56b3e794816137673faf1d880aac3a83",
+      "has_comment": false
+    },
+    "v_dodgers_mature_premium_comparison": {
+      "definition_md5": "aef162aac1d4e45fdd8084c40288bdac",
+      "has_comment": false
+    },
+    "v_dodgers_mature_year_analysis": {
+      "definition_md5": "2025f31921fe9d0bc23093cfc0d099e7",
+      "has_comment": false
+    },
+    "v_dodgers_mature_player_analysis": {
+      "definition_md5": "4cc3b21ea238e1fb877f30a7c5c4e1ad",
+      "has_comment": false
+    }
+  },
+  "failures": []
+}

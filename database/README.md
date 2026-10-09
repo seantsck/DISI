@@ -38,6 +38,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 27. `027_canonical_seed_drift_reconciliation.sql` — forward, guarded, data-only reconciliation of the committed Migration-002 supplementary seed so live and a fresh replay converge: 8 signing environments and 30 signing links, the Lantigua trade, 2 aliases, 12 sources, 32 evidence claims, 3 source-metadata variants; the unsupported 2-trainer / 4-link seed is removed and three trainer-asserting evidence notes are neutralised (details below; research in `database/research/027/`).
 28. `028_residual_canonical_drift_reconciliation.sql` — small, guarded, data-only correction of the last two substantive live-vs-replay differences: the Yusniel Díaz trade wording and the confidence (VERIFIED → HIGH) of three 2018 class-membership source links (details below; research in `database/research/028/`).
 29. `029_signing_network_intelligence.sql` — source-backed signing-network layer: network entities (people, academies, programs, showcase leagues, agencies) with aliases and identity reviews, entity-to-entity and player-to-network relationships with sealed ACTIVE rows, a deterministic ASCII lookup normaliser, four views and a research queue; the empty Migration-002 trainer layer is replaced and the dossier reads the new view (details below; research in `database/research/029/`).
+30. `030_financial_acquisition_intelligence.sql` — financial acquisition intelligence: a provenance ledger under the unchanged signings money columns (external / legacy carry-forward / rule-derived reports with currency, basis and precision), a signing-environment pool ledger, pathway × component completeness rules, international pool treatment, the Dodgers 2019-20 signing environment, two separate completeness dimensions, descriptive class / market commitment views and a research queue; Ryu's sourced bonus and exact posting fee become canonical and the Sasaki posting-fee conflict is preserved (details below; research in `database/research/030/`).
 
 ## 017 research-database layer
 
@@ -157,6 +158,35 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Legacy.** `trainers`, `player_trainers`, `v_player_trainers` and `v_dodgers_trainer_network` are dropped behind a guard (all empty since 027). The dossier now shows the network from `v_player_signing_network`.
 - **Surface.** 50 public tables and 93 views; every new table has RLS and SELECT-only API grants, every view is `security_invoker`, and the helper functions have EXECUTE revoked. The verifier adds 11 structural checks (125 in total).
 - **Rerunnable**; design, source audit and reproduction in `database/research/029/README.md`.
+
+## 030 financial acquisition intelligence
+
+- **Compatibility layer.** `signings.signing_bonus_usd`, `posting_fee_usd`, `transfer_fee_usd`, the generated `total_known_acquisition_cost_usd` and `bonus_publicly_reported` keep their meaning and shape: one selected USD value per component. `bonus_publicly_reported` is not provenance; the ledger is.
+- **Ledger.** `signing_financial_reports` holds one row per reported amount of one component (SIGNING_BONUS, POSTING_FEE, TRANSFER_FEE, RELEASE_FEE, POOL_CHARGE, OTHER_ACQUISITION_FEE). Each row has:
+  - an ISO-shaped currency (all USD today; no FX);
+  - a basis: EXACT, ROUNDED with precision, APPROXIMATE, or RULE_DERIVED with rate and base;
+  - an origin: EXTERNAL_SOURCE (field-level provenance), LEGACY_CARRYFORWARD (a pre-030 value with no field-level source, never counted as sourced) or RULE_DERIVED.
+
+  ACTIVE rows are sealed, nothing is deleted, and a correction supersedes and retires its predecessor. Disagreeing independent reports stay ACTIVE side by side. No salary, contract value, option, buyout, agent pay, development cost or tax amount is stored.
+- **Reconciliation.** A non-null column equals the value every ACTIVE USD report agrees on (ROUNDED intervals must contain it; APPROXIMATE never selects). Under a conflict the column stays NULL. The verifier checks both directions.
+- **Environment ledger.** `signing_environment_financial_reports` stores base pool, pool after trades, pool space, penalty reduction, reported spend, overage tax rate (`rate_value`), tax paid and individual cap, with typed values and the same lifecycle.
+- **Completeness.** Two separate dimensions:
+  - `acquisition_cost_completeness` (COMPLETE / PARTIAL / UNKNOWN / NO_RULE) from `acquisition_cost_component_rules`;
+  - `pool_completeness` (treatment, pool charge, environment capacity). It never changes acquisition completeness.
+- **Pool treatment.** `signings.international_pool_treatment` takes SUBJECT, EXEMPT, NOT_SUBJECT, NOT_APPLICABLE or UNKNOWN, with a basis and a source. It is independent of pathway and set only from a source statement or the pre-pool rule (signed before 2012-07-02). A pool charge is never assumed equal to the bonus.
+- **Seed and backfill.**
+  - Backfill (from data): 89 legacy signing rows and 10 legacy environment rows.
+  - Directly read sources: 14 external signing reports and 8 external environment reports.
+  - Ryu: bonus $5,000,000 and posting fee $25,737,737.33 (exact reported bid) become canonical.
+  - Sasaki: posting fee stays NULL under a 25% / 20% source conflict.
+  - Dodgers 2019-20 environment added from the period summary (9 environments).
+- **Utilization.** Three measures are kept distinct:
+  - source-reported utilization (2019-20 only);
+  - `known_tracked_bonus_pct_of_pool`, always with its basis text and never called utilization;
+  - true DISI-row utilization, which requires a complete population, every pool charge and the adjusted pool (no period qualifies).
+- **Views.** `v_signing_acquisition_financials`, `v_dodgers_financial_commitment_by_class`, `v_dodgers_financial_commitment_by_market` and `v_financial_research_queue`. They contain no WAR, ROI, ranking, network attribution or scouting ROI. The legacy WAR-per-dollar views are untouched; their limitations are in `database/research/030/legacy-war-per-dollar-views.md`.
+- **Surface.** 53 public tables and 97 views, with RLS, SELECT-only API grants, `security_invoker` views and guard functions with EXECUTE revoked. The verifier adds 12 structural checks (137 in total).
+- **Rerunnable**; design, source audit and reproduction in `database/research/030/README.md`.
 
 ## Player identity (020)
 
