@@ -1,0 +1,60 @@
+{
+  "_note": "Sanitized, fictional records shaped like MLB Stats API responses (ids 9000001+). Used offline by tests/unit/mlb-scripts.test.mjs.",
+  "personAmateur": {
+    "people": [{
+      "id": 9000001, "fullName": "Antoni Ureña Test", "birthDate": "2006-11-30", "birthCountry": "DOM",
+      "primaryPosition": { "abbreviation": "SS" }, "batSide": { "code": "R" }, "pitchHand": { "code": "R" }, "active": true
+    }]
+  },
+  "personPitcher": {
+    "people": [{
+      "id": 9000002, "fullName": "Luis Prueba", "birthDate": "2004-05-10", "birthCountry": "Venezuela",
+      "primaryPosition": { "abbreviation": "P" }, "batSide": { "code": "L" }, "pitchHand": { "code": "L" }, "active": false
+    }]
+  },
+  "personMlb": {
+    "people": [{
+      "id": 9000003, "fullName": "Jose Ejemplo", "birthDate": "2000-01-20", "birthCountry": "Mexico",
+      "primaryPosition": { "abbreviation": "CF" }, "batSide": { "code": "S" }, "pitchHand": { "code": "R" },
+      "mlbDebutDate": "2023-06-02", "active": true
+    }]
+  },
+  "showcaseThenSigned": {
+    "transactions": [
+      { "id": 501, "person": { "id": 9000001, "fullName": "Antoni Ureña Test" }, "date": "2024-05-03", "typeCode": "SC", "description": "Green-South activated Antoni Ureña Test." },
+      { "id": 503, "person": { "id": 9000001, "fullName": "Antoni Ureña Test" }, "date": "2024-12-16", "typeCode": "ASG", "description": "SS Antoni Ureña Test assigned to DSL Team." },
+      { "id": 502, "person": { "id": 9000001, "fullName": "Antoni Ureña Test" }, "toTeam": { "id": 119, "name": "Los Angeles Dodgers" }, "date": "2024-12-16", "typeCode": "SFA", "description": "Los Angeles Dodgers signed free agent SS Antoni Ureña Test to a minor league contract." }
+    ]
+  },
+  "priorContract": {
+    "transactions": [
+      { "id": 601, "person": { "id": 9000002, "fullName": "Luis Prueba" }, "toTeam": { "id": 140, "name": "Texas Rangers" }, "date": "2021-12-13", "typeCode": "SFA", "description": "Texas Rangers signed free agent LHP Luis Prueba to a minor league contract." },
+      { "id": 602, "person": { "id": 9000002, "fullName": "Luis Prueba" }, "toTeam": { "id": 119, "name": "Los Angeles Dodgers" }, "date": "2022-11-04", "typeCode": "SFA", "description": "Los Angeles Dodgers signed free agent LHP Luis Prueba to a minor league contract." },
+      { "id": 603, "person": { "id": 9000002, "fullName": "Luis Prueba" }, "fromTeam": { "id": 119, "name": "DSL LAD Mega" }, "date": "2024-12-14", "typeCode": "REL", "description": "DSL LAD Mega released LHP Luis Prueba." },
+      { "id": 604, "date": "2024-12-15", "typeCode": "REL", "description": "Malformed row without a person." },
+      { "id": 605, "person": { "id": 9000002, "fullName": "Luis Prueba" }, "date": "2024-02-30", "typeCode": "SC", "description": "Invalid calendar date." }
+    ]
+  },
+  "milbSeasonsPitcher": {
+    "stats": [{
+      "group": { "displayName": "pitching" },
+      "splits": [
+        { "season": "2023", "sport": { "id": 16, "abbreviation": "ROK" }, "team": { "id": 1, "name": "DSL LAD Mega" }, "league": { "name": "Dominican Summer League" }, "stat": { "gamesPlayed": 12 } },
+        { "season": "2024", "sport": { "id": 21, "abbreviation": "Minors" }, "stat": { "gamesPlayed": 20 } },
+        { "season": "2024", "sport": { "id": 16, "abbreviation": "ROK" }, "team": { "id": 2, "name": "ACL Dodgers" }, "league": { "name": "Arizona Complex League" }, "stat": { "gamesPlayed": 18 } },
+        { "season": "2024", "sport": { "id": 14, "abbreviation": "A" }, "team": { "id": 3, "name": "Rancho Cucamonga Quakes" }, "league": { "name": "California League" }, "stat": { "gamesPlayed": 2 } },
+        { "season": "2025.1", "sport": { "id": 11, "abbreviation": "AAA" }, "team": { "id": 4, "name": "Olmecas de Prueba" }, "league": { "name": "Mexican League" }, "stat": { "gamesPlayed": 9 } }
+      ]
+    }]
+  },
+  "mlbSeasonsHitter": {
+    "stats": [{
+      "group": { "displayName": "hitting" },
+      "splits": [
+        { "season": "2023", "sport": { "id": 1, "abbreviation": "MLB" }, "team": { "id": 119, "name": "Los Angeles Dodgers" }, "league": { "name": "National League" }, "stat": { "gamesPlayed": 30 } }
+      ]
+    }]
+  },
+  "warBatting": "name_common,age,mlb_ID,player_ID,year_ID,team_ID,stint_ID,lg_ID,WAR,pitcher\nJose Ejemplo,23,9000003,ejemplj01,2023,LAD,1,NL,0.42,N\nJose Ejemplo,24,9000003,ejemplj01,2024,LAD,1,NL,1.33,N\nLuis Prueba,20,9000002,pruebl01,2025,LAD,1,NL,NULL,Y\nSomeone Else,30,9999999,elseso01,2024,NYY,1,AL,5.00,N\n",
+  "warPitching": "name_common,age,mlb_ID,player_ID,year_ID,team_ID,stint_ID,lg_ID,WAR\nLuis Prueba,20,9000002,pruebl01,2025,LAD,1,NL,-0.15\nLuis Prueba,21,9000002,pruebl01,2026,LAD,1,NL,-0.10\n"
+}

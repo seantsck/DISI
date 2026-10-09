@@ -1,0 +1,197 @@
+{
+  "migration": "026_scouting_evaluation_history",
+  "reviewed_at": "2026-10-08",
+  "policy": "Every value below was read from a publicly accessible page on 2026-10-08. No paywall was bypassed, nothing was bulk-scraped, and no scouting report text is stored: only individual factual rank / grade / ETA values and short DISI paraphrases (<= 500 characters). The 48 legacy MLB Pipeline international ranks with provenance are backfilled by the migration itself from the existing evidence and sources rows, not listed here.",
+  "scales": [
+    {
+      "scale_code": "SCOUTING_20_80",
+      "label": "20-80 scouting scale",
+      "scale_kind": "NUMERIC",
+      "scale_min": 20,
+      "scale_max": 80,
+      "scale_step": 5,
+      "allows_qualifier": true,
+      "notes": "The traditional scouting scale: 50 is major-league average. A trailing + or - on a source grade (for example FV 45+) is a qualifier, kept separate from the numeric base."
+    }
+  ],
+  "publications": [
+    {
+      "publication_slug": "mlb-pipeline-top-30-international-signings",
+      "publication_name": "MLB Pipeline Top 30 international prospect signings",
+      "publisher": "MLB Pipeline (MLB.com)",
+      "origin": "EXTERNAL",
+      "publication_kind": "SIGNING_TRACKER",
+      "default_scale_code": null,
+      "access_class": "OPEN",
+      "bulk_ingest_allowed": false,
+      "source_tier": "MLB_PIPELINE",
+      "reference_url": "https://www.mlb.com/prospects",
+      "scope_notes": "Annual signing-day tracker ranking the leading international amateur prospects across all clubs (editions 2013 and 2014 in DISI). Ranks are INTERNATIONAL_CLASS scope: not comparable with an organization list or an MLB-wide Top 100.",
+      "methodology_notes": "MLB Pipeline's own published ranking. DISI has not audited its methodology; MLBAM terms permit only individual, non-commercial, non-bulk use of MLB.com materials."
+    },
+    {
+      "publication_slug": "fangraphs-organization-prospect-lists",
+      "publication_name": "FanGraphs organization top prospects lists",
+      "publisher": "FanGraphs",
+      "origin": "EXTERNAL",
+      "publication_kind": "PROSPECT_LIST",
+      "default_scale_code": "SCOUTING_20_80",
+      "access_class": "MIXED",
+      "bulk_ingest_allowed": false,
+      "source_tier": "FANGRAPHS",
+      "reference_url": "https://www.fangraphs.com/prospects",
+      "scope_notes": "Per-organization lists ranked with a Future Value (FV) on the 20-80 scale, an ETA, and tool grades published as present/future pairs (some tools as a single value). Rank scope is ORGANIZATION.",
+      "methodology_notes": "FanGraphs' published columns: Rk, Name, Age, Highest Level, Position, ETA, FV. FanGraphs' terms of use page was not located during the 2026-10-08 audit, so only individual factual values are transcribed and no report text is stored. List pages use rolling URLs and can be edited after publication."
+    },
+    {
+      "publication_slug": "baseball-america-top-100",
+      "publication_name": "Baseball America Top 100 Prospects",
+      "publisher": "Baseball America",
+      "origin": "EXTERNAL",
+      "publication_kind": "PROSPECT_LIST",
+      "default_scale_code": null,
+      "access_class": "MIXED",
+      "bulk_ingest_allowed": false,
+      "source_tier": "OTHER",
+      "reference_url": "https://www.baseballamerica.com/",
+      "scope_notes": "MLB-wide Top 100 prospect list, published annually. Rank scope is MLB_GLOBAL.",
+      "methodology_notes": "Baseball America's detailed rankings and reports are subscription content; DISI cites only individual ranks reported by free secondary articles and stores no report text."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://blogs.fangraphs.com/los-angeles-dodgers-top-52-prospects/",
+      "source_name": "FanGraphs",
+      "source_type": "ARTICLE",
+      "title": "Los Angeles Dodgers Top 53 Prospects",
+      "author": "Eric Longenhagen, Brendan Gawlowski and James Fegan",
+      "publication_date": "2025-12-05",
+      "accessed_at": "2026-10-08T18:10:00Z",
+      "notes": "Rolling URL (slug says Top 52, the page is titled Top 53). Page metadata: published 2025-12-05T14:15:23Z, last modified 2026-02-09T22:13:31Z. Values read from the page's list table and tool-grade grids on 2026-10-08; no archive snapshot recorded."
+    },
+    {
+      "url": "https://www.si.com/fannation/mlb/fastball/news/roki-sasaki-of-los-angeles-dodgers-is-now-the-no-1-prospect-in-all-of-baseball-according-to-baseball-america",
+      "source_name": "Sports Illustrated",
+      "source_type": "ARTICLE",
+      "title": "Roki Sasaki of Los Angeles Dodgers is Now the No. 1 Prospect in All of Baseball",
+      "author": "Brady Farkas",
+      "publication_date": "2025-01-22",
+      "accessed_at": "2026-10-08T18:20:00Z",
+      "notes": "Free secondary report of a Baseball America ranking. Page metadata: published 2025-01-22T23:57:25Z. The article states the Top 100 was released 'on Wednesday morning'; 2025-01-22 was a Wednesday."
+    }
+  ],
+  "evaluations": [
+    {
+      "ref": "fg-dodgers-2025-12-05:josue-de-paula",
+      "player_slug": "josue-de-paula",
+      "publication_slug": "fangraphs-organization-prospect-lists",
+      "evaluation_context": "ORG_LIST",
+      "date_precision": "DAY",
+      "evaluation_date": "2025-12-05",
+      "organization_name": "Los Angeles Dodgers",
+      "stated_level": "AA",
+      "eta_season": 2027,
+      "role_label": null,
+      "source_url": "https://blogs.fangraphs.com/los-angeles-dodgers-top-52-prospects/",
+      "source_reference": null,
+      "archive_url": null,
+      "evidence_basis": "PUBLISHED_LIST",
+      "preservation_concern": "SOURCE_EDITED_AFTER_PUBLICATION",
+      "confidence": "MEDIUM",
+      "retrieved_at": "2026-10-08T18:10:00Z",
+      "evaluator_name": "Eric Longenhagen, Brendan Gawlowski and James Fegan",
+      "evaluator_role": "FanGraphs prospect team",
+      "summary_note": "Ranked first on FanGraphs' Dodgers list with an FV of 55 and an ETA of 2027; the list shows age 20.7 and highest level AA. Evaluation date is the page's publication date; the page was last modified 2026-02-09, so the displayed values may postdate it.",
+      "rankings": [
+        { "rank": 1, "ranking_scope": "ORGANIZATION", "scope_label": "FanGraphs Los Angeles Dodgers Top 53 Prospects", "organization_name": "Los Angeles Dodgers", "list_size": 53, "eligibility_definition": null }
+      ],
+      "grades": [
+        { "dimension_code": "OVERALL", "temporal_basis": "FUTURE", "raw_value": 55, "raw_label": "55", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "FV" },
+        { "dimension_code": "HIT", "temporal_basis": "PRESENT", "raw_value": 30, "raw_label": "30", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Hit" },
+        { "dimension_code": "HIT", "temporal_basis": "FUTURE", "raw_value": 45, "raw_label": "45", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Hit" },
+        { "dimension_code": "RAW_POWER", "temporal_basis": "PRESENT", "raw_value": 55, "raw_label": "55", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Raw Power" },
+        { "dimension_code": "RAW_POWER", "temporal_basis": "FUTURE", "raw_value": 70, "raw_label": "70", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Raw Power" },
+        { "dimension_code": "GAME_POWER", "temporal_basis": "PRESENT", "raw_value": 30, "raw_label": "30", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Game Power" },
+        { "dimension_code": "GAME_POWER", "temporal_basis": "FUTURE", "raw_value": 60, "raw_label": "60", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Game Power" },
+        { "dimension_code": "RUN", "temporal_basis": "PRESENT", "raw_value": 30, "raw_label": "30", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Run" },
+        { "dimension_code": "RUN", "temporal_basis": "FUTURE", "raw_value": 40, "raw_label": "40", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Run" },
+        { "dimension_code": "FIELD", "temporal_basis": "PRESENT", "raw_value": 20, "raw_label": "20", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Fielding" },
+        { "dimension_code": "FIELD", "temporal_basis": "FUTURE", "raw_value": 40, "raw_label": "40", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Fielding" },
+        { "dimension_code": "ARM", "temporal_basis": "UNSPECIFIED", "raw_value": 60, "raw_label": "60", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "Throw" }
+      ],
+      "notes": [
+        { "note_kind": "CONTEXT", "note_text": "Tool grades are published as present/future pairs; the Throw grade is a single value with no present/future split, so it is stored with an UNSPECIFIED temporal basis." }
+      ]
+    },
+    {
+      "ref": "fg-dodgers-2025-12-05:emil-morales",
+      "player_slug": "emil-morales",
+      "publication_slug": "fangraphs-organization-prospect-lists",
+      "evaluation_context": "ORG_LIST",
+      "date_precision": "DAY",
+      "evaluation_date": "2025-12-05",
+      "organization_name": "Los Angeles Dodgers",
+      "stated_level": "A",
+      "eta_season": 2030,
+      "role_label": null,
+      "source_url": "https://blogs.fangraphs.com/los-angeles-dodgers-top-52-prospects/",
+      "source_reference": null,
+      "archive_url": null,
+      "evidence_basis": "PUBLISHED_LIST",
+      "preservation_concern": "SOURCE_EDITED_AFTER_PUBLICATION",
+      "confidence": "MEDIUM",
+      "retrieved_at": "2026-10-08T18:10:00Z",
+      "evaluator_name": "Eric Longenhagen, Brendan Gawlowski and James Fegan",
+      "evaluator_role": "FanGraphs prospect team",
+      "summary_note": "Ranked fourth on FanGraphs' Dodgers list with an FV of 50 and an ETA of 2030; the list shows age 19.4 and highest level A. Evaluation date is the page's publication date; the page was last modified 2026-02-09.",
+      "rankings": [
+        { "rank": 4, "ranking_scope": "ORGANIZATION", "scope_label": "FanGraphs Los Angeles Dodgers Top 53 Prospects", "organization_name": "Los Angeles Dodgers", "list_size": 53, "eligibility_definition": null }
+      ],
+      "grades": [
+        { "dimension_code": "OVERALL", "temporal_basis": "FUTURE", "raw_value": 50, "raw_label": "50", "qualifier": "NONE", "scale_code": "SCOUTING_20_80", "source_label": "FV" }
+      ],
+      "notes": []
+    },
+    {
+      "ref": "ba-top100-2025:roki-sasaki",
+      "player_slug": "roki-sasaki",
+      "publication_slug": "baseball-america-top-100",
+      "evaluation_context": "GLOBAL_LIST",
+      "date_precision": "DAY",
+      "evaluation_date": "2025-01-22",
+      "organization_name": "Los Angeles Dodgers",
+      "stated_level": null,
+      "eta_season": null,
+      "role_label": null,
+      "source_url": "https://www.si.com/fannation/mlb/fastball/news/roki-sasaki-of-los-angeles-dodgers-is-now-the-no-1-prospect-in-all-of-baseball-according-to-baseball-america",
+      "source_reference": null,
+      "archive_url": null,
+      "evidence_basis": "SECONDARY_CITATION",
+      "confidence": "MEDIUM",
+      "retrieved_at": "2026-10-08T18:20:00Z",
+      "evaluator_name": null,
+      "evaluator_role": null,
+      "summary_note": "Reported by Sports Illustrated as No. 1 on Baseball America's Top 100 for the 2025 season, released the morning of 2025-01-22 (a Wednesday). Secondary citation: Baseball America's own list was not read.",
+      "rankings": [
+        { "rank": 1, "ranking_scope": "MLB_GLOBAL", "scope_label": "Baseball America Top 100 Prospects, 2025 season", "organization_name": null, "list_size": 100, "eligibility_definition": null }
+      ],
+      "grades": [],
+      "notes": []
+    }
+  ],
+  "no_evaluation_found": [
+    { "player_slug": "roger-cedeno", "reason": "Signed 1991, MLB debut 1995; no structured public evaluation located (MLB Pipeline's rankings begin around 2004, Baseball America's earlier lists are print or subscription content)." },
+    { "player_slug": "carlos-frias", "reason": "Signed 2007, MLB debut 2014; no accessible public evaluation located." },
+    { "player_slug": "yordan-alvarez", "reason": "Public evaluations exist (reported at the Astros stage) but no readable page was verified in this audit; candidate for later curation." },
+    { "player_slug": "oneil-cruz", "reason": "Reported rankings seen only in search summaries, not read from a source page; candidate for later curation." },
+    { "player_slug": "julio-urias", "reason": "Not researched in 026." },
+    { "player_slug": "yusniel-diaz", "reason": "Legacy rank #3 (2015) has no provenance; no readable source located." },
+    { "player_slug": "yadier-alvarez", "reason": "Legacy rank #2 (2015) has no provenance; a secondary article was read and does not cite a ranking." },
+    { "player_slug": "diego-cartaya", "reason": "Legacy rank #1 (2018) has no provenance; not on the FanGraphs 2025-12-05 Dodgers list." }
+  ],
+  "verification": [
+    { "claim": "FanGraphs Dodgers list: De Paula rank 1 / FV 55 / ETA 2027 / tool grades; Morales rank 4 / FV 50 / ETA 2030", "method": "Page downloaded once (HTTP 200, public article) and the list table and tool-grade grid parsed from the HTML by DISI, not by a summarizer.", "date": "2026-10-08" },
+    { "claim": "Sasaki No. 1 on Baseball America's 2025 Top 100, released Wednesday 2025-01-22", "method": "SI article downloaded once (HTTP 200) and the sentence plus the page's published_time metadata read from the HTML text.", "date": "2026-10-08" },
+    { "claim": "mlb.com / milb.com pages", "method": "HTTP 406 to automated requests; not circumvented, so nothing was transcribed from MLB.com pages beyond what DISI already held from the 2013 and 2014 trackers.", "date": "2026-10-08" }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+ "categories": {
+  "class_membership_confidence": {
+   "affected_views": [
+    "v_player_sources"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "membership_basis": "OFFICIAL_CLUB_ANNOUNCEMENT",
+      "note": null,
+      "supports_fields": "{CLASS_MEMBERSHIP}"
+     },
+     "intended": {
+      "confidence": "HIGH"
+     },
+     "live": {
+      "confidence": "VERIFIED"
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "alex-de-jesus",
+      "population_key": "DODGERS-2018-OPENING",
+      "signing_year": 2018,
+      "source_url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "membership_basis": "OFFICIAL_CLUB_ANNOUNCEMENT",
+      "note": null,
+      "supports_fields": "{CLASS_MEMBERSHIP}"
+     },
+     "intended": {
+      "confidence": "HIGH"
+     },
+     "live": {
+      "confidence": "VERIFIED"
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "diego-cartaya",
+      "population_key": "DODGERS-2018-OPENING",
+      "signing_year": 2018,
+      "source_url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     }
+    },
+    {
+     "canonical": {
+      "confidence": "HIGH",
+      "membership_basis": "OFFICIAL_CLUB_ANNOUNCEMENT",
+      "note": null,
+      "supports_fields": "{CLASS_MEMBERSHIP}"
+     },
+     "intended": {
+      "confidence": "HIGH"
+     },
+     "live": {
+      "confidence": "VERIFIED"
+     },
+     "selector": {
+      "organization_name": "Los Angeles Dodgers",
+      "player_slug": "jerming-rosario",
+      "population_key": "DODGERS-2018-OPENING",
+      "signing_year": 2018,
+      "source_url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518"
+     }
+    }
+   ],
+   "reason": "In a replay, 018 derived these three 2018 class-membership source links from the 002 evidence (HIGH); on live, where 002 never ran, it produced VERIFIED. There is no evidence that VERIFIED was a separately adjudicated upgrade, so the frozen chain value HIGH is the target; only confidence changes.",
+   "source_migration": "018_signing_class_coverage_and_backfill.sql (derived from the missing 002 evidence)"
+  },
+  "transaction_descriptions": {
+   "affected_views": [
+    "v_dodgers_asset_realization",
+    "v_dodgers_executive_case_studies",
+    "v_dodgers_mature_asset_realization",
+    "v_signing_asset_outcomes"
+   ],
+   "entries": [
+    {
+     "canonical": {
+      "return_description": "Traded as part of a five-player package to Baltimore Orioles for SS Manny Machado"
+     },
+     "intended": {
+      "return_description": "Traded as part of a five-player package to Baltimore Orioles for SS Manny Machado"
+     },
+     "live": {
+      "return_description": "Traded in five-player package to Baltimore Orioles for SS Manny Machado"
+     },
+     "selector": {
+      "from_organization_name": "Los Angeles Dodgers",
+      "player_slug": "yusniel-diaz",
+      "to_organization_name": "Baltimore Orioles",
+      "transaction_date": "2018-07-19",
+      "transaction_type": "TRADE"
+     }
+    }
+   ],
+   "reason": "The Yusniel Diaz trade-package wording differs between live and the frozen chain. The committed canonical wording is the target; only return_description changes.",
+   "source_migration": "002_dodgers_seed_cohort.sql"
+  }
+ },
+ "generated_from": "canonical replay 001-027 vs read-only live observation 2026-10-09 (after Migration 027)",
+ "target_rule": "Exactly four corrections: one transaction wording and three class-membership source-link confidence values. Nothing else changes.",
+ "version": 1
+}

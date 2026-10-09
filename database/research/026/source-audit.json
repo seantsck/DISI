@@ -1,0 +1,88 @@
+{
+  "audited_on": "2026-10-08",
+  "method": "Published robots.txt and terms pages were read; single GET/HEAD requests were made to public endpoints and to the two public articles whose values are cited; web-search summaries were used for background only. Nothing was scraped in bulk and no paywalled content was opened. VERIFIED means read directly during the audit; REPORTED means taken from search summaries and not confirmed at the source.",
+  "policy": {
+    "bulk_ingest_allowed_anywhere": false,
+    "store": "individual factual rank / grade / ETA values with a citation, and short DISI paraphrases (<= 500 characters)",
+    "never_store": ["scouting report or blurb text", "paid report content", "values read from memory"],
+    "mlbam_terms": "Only individual, non-commercial, non-bulk use of MLB.com materials is permitted (gdx.mlb.com/components/copyright.txt)."
+  },
+  "sources": [
+    {
+      "source": "MLB Pipeline (mlb.com/prospects, milb.com/prospects)",
+      "access": "free web pages; HTTP 406 to automated requests",
+      "structured": "pages are client-rendered; no public structured prospect-rank API (the draft endpoint below is draft-only)",
+      "historical_depth": "REPORTED: Top 50s from 2004, Top 100s with midseason updates from 2012",
+      "has_fv_or_tool_grades": "REPORTED: 20-80 tool grades and an overall grade",
+      "stable_urls": "article URLs with ids are stable; prospect-list pages are year-keyed",
+      "ingest": "manual single-value citation only; DISI's two signing trackers (2013, 2014) were already registered sources",
+      "status": "VERIFIED robots/terms; pages not read this audit"
+    },
+    {
+      "source": "MLB Stats API draft/prospects/{year}",
+      "access": "free, HTTP 200",
+      "structured": "yes: pick, rank (recent years only), school, a scouting-report video link and a ~1,200 character editorial blurb",
+      "historical_depth": "queried for 2008, 2012, 2016, 2019, 2022; rank present for recent drafts only",
+      "has_fv_or_tool_grades": "no",
+      "stable_urls": "API route",
+      "ingest": "not used: covers drafted players only (DISI's cohort is mostly international), and the blurb is copyrighted text that must not be stored",
+      "status": "VERIFIED"
+    },
+    {
+      "source": "FanGraphs prospect lists (blogs.fangraphs.com, The Board)",
+      "access": "free articles; The Board full data / export reportedly needs a membership (not confirmed)",
+      "structured": "list tables with Rk, Name, Age, Highest Level, Position, ETA, FV, plus per-player tool-grade grids (present/future)",
+      "historical_depth": "REPORTED: FV era lists from about 2011",
+      "has_fv_or_tool_grades": "yes (VERIFIED on the Dodgers 2025-12-05 list)",
+      "stable_urls": "NO: list pages use rolling URLs and are edited after publication (the Dodgers page was published 2025-12-05 and last modified 2026-02-09); an archive snapshot is needed for permanence",
+      "ingest": "single-page, individual factual values with citation; terms of use page not located (old URL 404), robots.txt permissive",
+      "status": "VERIFIED robots; page downloaded once and parsed"
+    },
+    {
+      "source": "Baseball America (Top 100, Prospect Handbook)",
+      "access": "mostly subscription; some free articles; print handbook",
+      "structured": "no public structured data",
+      "historical_depth": "REPORTED: Top 100 since 1990",
+      "has_fv_or_tool_grades": "reports with grades are subscription content",
+      "stable_urls": "article URLs stable; paid pages are not accessible",
+      "ingest": "only individual ranks reported by free secondary articles; terms treated as all-rights-reserved",
+      "status": "VERIFIED robots; one secondary article (Sports Illustrated) downloaded and read"
+    },
+    {
+      "source": "Baseball Prospectus (Top 101, Futures Guide)",
+      "access": "subscription / book",
+      "structured": "no public structured data",
+      "historical_depth": "REPORTED",
+      "has_fv_or_tool_grades": "not assessed",
+      "stable_urls": "not assessed",
+      "ingest": "none; robots crawl-delay 2, terms page not located",
+      "status": "VERIFIED robots only"
+    },
+    {
+      "source": "Baseball-Reference / Sports-Reference",
+      "access": "free pages",
+      "structured": "peak prospect ranks on minor-league pages (REPORTED), derived from third-party lists",
+      "historical_depth": "not assessed",
+      "has_fv_or_tool_grades": "no",
+      "stable_urls": "yes",
+      "ingest": "cross-check only: robots crawl-delay 3 and the data-use page prohibits automated access that affects site performance",
+      "status": "VERIFIED robots and data-use page"
+    },
+    {
+      "source": "Internet Archive Wayback Machine",
+      "access": "free; the availability API returned HTTP 429 after a short burst",
+      "structured": "snapshot URLs",
+      "historical_depth": "n/a",
+      "has_fv_or_tool_grades": "n/a",
+      "stable_urls": "snapshot URLs are permanent",
+      "ingest": "the intended home of archive_url; pace requests",
+      "status": "VERIFIED"
+    }
+  ],
+  "known_gaps": [
+    "Nothing structured and public before about 2004; players signed in the 1990s (for example Roger Cedeno) are expected to have no verified evaluation.",
+    "11 legacy MLB Pipeline international ranks (Dodgers 2015-2026) have no located public source and are queued, not stored as evaluation facts.",
+    "mlb.com and milb.com pages could not be read by automated tools (HTTP 406); this was not circumvented.",
+    "Historical FanGraphs / Baseball America / MLB Pipeline Top 100 lists for the proof-cohort players (Alvarez, Cruz, Diaz, Cartaya, Sasaki's MLB Pipeline rank) were not readable during this audit and remain candidates for later curation."
+  ]
+}

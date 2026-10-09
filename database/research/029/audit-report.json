@@ -1,0 +1,49 @@
+{
+  "audited_against": "canonical replay 001-028 (in memory)",
+  "baseline": {
+    "tables": 47,
+    "views": 91
+  },
+  "legacy": {
+    "trainers": 0,
+    "player_trainers": 0,
+    "views_present": [
+      "v_dodgers_trainer_network",
+      "v_player_trainers"
+    ],
+    "unexpected_dependent_views": []
+  },
+  "seed": {
+    "entities": 9,
+    "persons": 5,
+    "programs": 1,
+    "academies": 1,
+    "showcase_leagues": 2,
+    "aliases": 1,
+    "player_relationships": 9,
+    "entity_relationships": 0,
+    "identity_reviews": 0
+  },
+  "per_player": {
+    "oneil-cruz": 1,
+    "starling-heredia": 3,
+    "ronny-brito": 2,
+    "christopher-arias": 2,
+    "jorbit-vivas": 1
+  },
+  "coverage": {
+    "primary_denominator": 64,
+    "attributed_after_seed": 5,
+    "missing_attribution_after_seed": 59,
+    "missing_mlb_reached": 34,
+    "mlb_reached_in_denominator": 36,
+    "by_pathway": {
+      "CUBAN_AMATEUR": 4,
+      "LATAM_AMATEUR": 60
+    },
+    "cuban_pro_segment_signings": 3,
+    "cuban_pro_in_primary_denominator": 0
+  },
+  "app_references_to_legacy_trainer_objects": [],
+  "failures": []
+}

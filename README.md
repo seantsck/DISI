@@ -1,82 +1,94 @@
-# DISI Dashboard
+# DISI — Dodgers International Signings Research Database
 
-Dodgers International Signing Intelligence is a public-data decision-support prototype for international signing capital, talent identification, development, asset disposition, trade return, and competitive context.
+A public-data research database of Brooklyn and Los Angeles Dodgers international signings: signing classes, acquisition costs, player development, MLB outcomes, transactions and organizational value. Built with the Next.js App Router on a Supabase (Postgres) database.
 
-## Product routes
+The application contains **no mock, sample or fallback baseball data**. If Supabase is not configured, a view is missing or a query fails, each page shows an explicit data-unavailable state.
 
-- `/` — executive overview
-- `/signings` — tracked signing ledger
-- `/markets` — country-market and acquisition-pathway composition
-- `/league` — cross-organization international signing benchmark
-- `/development` — observed signing-to-MLB timing where dates are supported
-- `/asset-conversion` — package-aware trade and release cases with competitive context
-- `/methodology` — analytical guardrails and database provenance
+## Routes
 
-## Live Supabase views
+| Route | Purpose |
+| --- | --- |
+| `/` | Database status, recent signing records, section index, selected research findings |
+| `/signings` | Sortable, filterable, paginated table of every signing record; state lives in the URL |
+| `/players` | Player directory with A–Z browsing and filters |
+| `/players/[slug]` | Player dossier: biography, acquisition, MLB outcome, bWAR provenance, timeline, transactions, sources |
+| `/markets` | Signings, known cost and audited outcomes by country / market and acquisition pathway |
+| `/development` | Signing-to-MLB timing where both dates are recorded |
+| `/asset-conversion` | Trades and releases with package-level return attribution and competitive context |
+| `/league` | Cross-organization signing volume, bonus pools and MLB Pipeline prospect samples |
+| `/research` | Class coverage, expected-size source support, research queue and source priority |
+| `/methodology` | bWAR definition, data-quality rules, source priority, lineage |
+| `/api/player-search?q=` | JSON player search used by the header search box |
 
-The application reads the following views when Supabase is configured:
+### Research table behaviour
 
-- `v_dodgers_portfolio_signals`
-- `v_dodgers_executive_dashboard_feed`
-- `v_dodgers_executive_findings_v2`
-- `v_dodgers_signing_cohort`
-- `v_dodgers_market_summary`
-- `v_dodgers_pathway_summary`
-- `v_dodgers_competitive_asset_conversion`
+- Sorting and filtering run in Postgres through PostgREST, so dates sort as dates, money and bWAR as numbers, and NULLs always sort last instead of becoming zero. Enum codes are exposed as text so they sort alphabetically.
+- Default order: signing year descending, then player name ascending (accent-insensitive).
+- URL parameters: `q`, `org_scope` (`dodgers` default, `all`), `year`, `year_min`, `year_max`, `market` (`__none` = unknown), `position`, `pathway`, `audit`, `mlb` (`yes` / `no` / `unknown`), `dodgers_debut`, `record_scope`, `coverage`, `org`, `sort`, `dir`, `page`.
+- Table specifications live in `lib/specs.js`; URL parsing, validation and query construction live in `lib/table-state.js`. Adding a column means adding one spec entry and one cell.
 
-There is **no fallback/mock dataset** in v0.4. If Supabase environment variables are missing, a view is absent, or a query fails, the UI displays a data-unavailable state and does not substitute hard-coded baseball records.
+## Signing populations
+
+**An announcement total is not necessarily the full signing-period total.** A club's international-class release usually describes the players announced when the signing period opens; the club keeps signing players for the rest of the period. DISI therefore records which population a count describes:
+
+| Population | Meaning | Can be a rate denominator? |
+| --- | --- | --- |
+| Signing class | The class year a signing is counted in (`signings.signing_year`). | — |
+| Announced opening class (`OPENING_CLASS`) | Players named or counted in the club's opening announcement. | No. Statistics are labelled *opening-class cohort rates*. |
+| Full signing period (`FULL_SIGNING_PERIOD`) | Every international signing in the period (e.g. Jan 15 – Dec 15). | Yes, once complete, fully audited and five years mature. |
+| Top-prospect sample (`TOP_PROSPECT_SAMPLE`) | MLB Pipeline Top 30/50 trackers. | No. |
+| Historical verified set (`HISTORICAL_VERIFIED_SET`) | Individually verified historical signings. | No. |
+| Other defined population (`OTHER_DEFINED_POPULATION`) | E.g. a calendar-year count that spans two periods. | No. |
+
+A player can be announced in a class while the formal MLB transaction is dated later (Eduardo Rojas: announced January 2024, transaction May 30, 2024), so `announced_date` and `formal_transaction_date` are separate fields and `signing_date` is never rewritten.
+
+## Data rules
+
+- Missing is never zero. Unaudited is never failure. Unknown acquisition cost is never `$0`.
+- A historical verified sample is not a census. MLB Pipeline Top 30/50 lists are prospect samples.
+- A population is **complete** only when a source states its size, every member is in the database, and no source conflict is open. A complete announced opening class is not a complete signing period.
+- Signing bonus, posting fee and transfer fee are separate. Multi-player trade returns are shown at package level.
+- Brooklyn and Los Angeles share franchise key `DODGERS`; historical organization names are preserved.
+- An outcome audit of "no MLB debut" needs evidence (enforced in the database) and says *how*: no longer in affiliated baseball, still active in the minors, or status unknown. Developing players get a progress record, not an outcome.
+- Career value is **bWAR** (Baseball-Reference WAR), stored with its source, observation date and through-season. FanGraphs fWAR, if added, is stored separately and never blended or substituted.
+- **Identity.** MLB id anchors a player; B-Ref and FanGraphs ids are identifiers only. A name match alone never identifies a player, and two players are never merged because their names match. Canonical name is one spelling; others are aliases (search ignores accents).
+- **Birth country is not signing market**, and neither implies nationality. Bats / throws are never inferred from position.
+- **Ages name their date.** Age at signing uses the recorded signing date, age at announcement the announcement date, age at transaction the formal MLB transaction date; a missing date gives no age.
 
 ## Setup
 
-1. Copy `.env.example` to `.env.local`.
-2. Add the Supabase Project URL and **publishable key**.
-3. Run `npm install`.
-4. Run `npm run dev`.
-5. Add the same environment variables in Vercel for production.
+1. Copy `.env.example` to `.env.local` and set the Supabase Project URL and **publishable key**.
+2. Apply the SQL in `database/sql/` in manifest order in the Supabase SQL Editor (for an existing v0.10 project, run `020_player_identity_and_biography_enrichment.sql`).
+3. `npm install`
+4. `npm run dev`
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 ```
 
-Never put a Supabase secret key or legacy service-role key in a `NEXT_PUBLIC_` variable.
+Never put a Supabase secret key or legacy service-role key in a `NEXT_PUBLIC_` variable. The browser and server only read through the publishable key; all tables use row-level security with a select-only public policy, and all views are `security_invoker`.
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run lint` | ESLint (flat config, `eslint-config-next/core-web-vitals`) |
+| `npm run typecheck` | `tsc` with `checkJs` over `app/`, `lib/` and `tests/` |
+| `npm test` | Unit tests plus the database test, which runs every canonical migration in PGlite (in-process Postgres), reruns the latest migration, and checks class totals, population and rate-eligibility rules, provenance and the security model |
+| `npm run research:test` | Offline tests for the research scripts (also included in `npm test`) |
+| `npm run build` | Production build |
+| `npm run check` | All of the above |
 
 ## Database lineage
 
-The complete SQL history is preserved under `database/`.
+- `database/sql/` — canonical build sequence 001–020 (listed in `database/manifest.json`).
+- `database/research/` — reviewed research artifacts and builders behind data migrations (019 onward).
+- `scripts/mlb/` — reproducible MLB Stats API / Baseball-Reference research scripts (see `scripts/mlb/README.md`). They output review artifacts and never write to a database.
+- `database/repairs/` — the 004a–004c troubleshooting scripts from the first manual Supabase build.
+- `database/README.md` — what each layer does.
+- `docs/INGESTION.md` — source priority and the workflow for adding classes, players, outcomes and bWAR.
 
-- `database/sql/` contains the canonical 001–013 build sequence.
-- `database/repairs/` contains the 004a–004c troubleshooting scripts used during the initial manual Supabase build.
-- `database/README.md` explains the purpose and execution order of every layer.
+The SQL was applied manually in the Supabase SQL Editor and is kept as analytical provenance. Do not treat it as Supabase CLI migration history without creating a clean baseline first.
 
-These files were originally executed manually in Supabase SQL Editor. They are retained as analytical provenance and should not be treated as Supabase CLI migration history without first creating a clean baseline.
-
-
-## v0.4 data expansion
-
-- `012_historical_census_framework.sql` extends the tracked Dodgers history back to 1951 with verified public records and adds explicit census/coverage metadata.
-- `013_league_benchmark_seed.sql` begins the all-MLB comparison layer with signed players from MLB Pipeline's 2013 and 2014 Top 30 international prospect trackers.
-- Historical and league benchmark rows are deliberately labeled by scope. A historical verified set or Top 30 tracker is never described as a complete census.
-
-### Historical cost semantics
-
-Historical acquisition costs distinguish signing bonuses, posting fees, and transfer/acquisition fees. Unknown components remain `NULL`. Historical MLB outcomes are also marked as audited vs. not-yet-audited so an unresearched old signing is never displayed as a verified failure.
-
-## v0.5 portfolio-universe architecture
-
-The homepage is no longer driven primarily by the four audited MLB-reaching case studies. It now leads with `v_dodgers_universe_summary` and signing-class coverage across the entire reconstructed Dodgers international acquisition universe.
-
-`014_portfolio_universe_and_source_pipeline.sql`:
-- adds a public-source registry,
-- adds organization-period signing/pool summaries,
-- reconstructs missing Dodgers classes and notable signings,
-- adds Andy Pages, Miguel Vargas, Jorbit Vivas, Eddys Leonard, Keibert Ruiz and many additional class members,
-- records complete vs partial class coverage,
-- provides portfolio-wide views that do not treat unaudited players as failures.
-
-
-## v0.7 outcome expansion and rate guardrail
-
-`016_historical_positive_outcomes_and_rate_guardrail.sql` adds 39 sourced MLB-reaching outcomes across the franchise's international history and introduces franchise identity so Brooklyn and Los Angeles Dodgers debuts are both treated as direct Dodgers-franchise outcomes.
-
-The application no longer presents an MLB reach percentage merely because individual players have been audited. A class becomes rate-eligible only if its signing population is explicitly complete, every tracked player in that class has an outcome audit, and the class is at least five years old.
+See `CHANGELOG.md` for release history.

@@ -1,0 +1,970 @@
+{
+  "migration": "023_development_stint_integrity",
+  "rule": "A team-less stint is a SEASON_TOTAL only when its additive stats equal the sum of same-season team stints at its source level (all of them, or an exact subset for a split-season label).",
+  "candidates": 56,
+  "season_totals": 56,
+  "tally": {
+    "CROSS_LEVEL": 21,
+    "SAME_LEVEL": 34,
+    "SUB_SEASON": 1
+  },
+  "no_match": [],
+  "rows": [
+    {
+      "slug": "alex-de-jesus",
+      "season": 2019,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 57,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers Mota",
+        "DSL Dodgers Shoemaker"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "alex-de-jesus",
+      "season": 2022,
+      "level": "HIGH_A",
+      "source_level": "A+",
+      "league_name": null,
+      "basis": "SAME_LEVEL",
+      "games": 74,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "Great Lakes Loons",
+        "Vancouver Canadians"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "alexander-albertus",
+      "season": 2023,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 45,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL LAD Bautista"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "alexis-dominguez",
+      "season": 2025,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 12,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "allen-ajoti",
+      "season": 2026,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 14,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "anderson-jerez",
+      "season": 2023,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 17,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "andres-luna",
+      "season": 2025,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 14,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "aneudy-almonte",
+      "season": 2025,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 13,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "carlos-frias",
+      "season": 2009,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 16,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "carlos-rincon",
+      "season": 2016,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 52,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers",
+        "DSL Dodgers 1"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "carlos-rincon",
+      "season": 2021,
+      "level": "AA",
+      "source_level": "AA",
+      "league_name": null,
+      "basis": "SAME_LEVEL",
+      "games": 101,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "Binghamton Rumble Ponies",
+        "Tulsa Drillers"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "christian-muniz",
+      "season": 2024,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 12,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "dailoui-abad",
+      "season": 2022,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 18,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "diego-cartaya",
+      "season": 2019,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 49,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers Mota",
+        "DSL LAD Bautista"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "edgar-aviles",
+      "season": 2022,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 17,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "edgar-leon",
+      "season": 2023,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 13,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "edgar-leon",
+      "season": 2026,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 9,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL Tigers 1",
+        "DSL Tigers 2"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "erick-batista",
+      "season": 2024,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 14,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "gersel-pitre",
+      "season": 2015,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 40,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "hendrik-clementina",
+      "season": 2017,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": "Pioneer League",
+      "basis": "SAME_LEVEL",
+      "games": 51,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "Billings Mustangs",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "jeral-perez",
+      "season": 2024,
+      "level": "LOW_A",
+      "source_level": "A",
+      "league_name": null,
+      "basis": "SAME_LEVEL",
+      "games": 105,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "Kannapolis Cannon Ballers",
+        "Rancho Cucamonga Quakes"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "jerami-rodriguez",
+      "season": 2019,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 16,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL Dodgers Shoemaker",
+        "DSL LAD Bautista"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "jeremy-castro",
+      "season": 2023,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 14,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "jhonny-jimenez",
+      "season": 2024,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 13,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "jhosman-theran",
+      "season": 2026,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 39,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "jose-gonzalez",
+      "season": 2023,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 32,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "jose-villegas",
+      "season": 2025,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 14,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "julio-lugo-prospect",
+      "season": 2016,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 14,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL Dodgers 1",
+        "DSL Dodgers 2"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "leider-padilla",
+      "season": 2026,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 26,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "lenix-osuna",
+      "season": 2014,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 18,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "lenix-osuna",
+      "season": 2018,
+      "level": "FOREIGN_PRO",
+      "source_level": "AAA",
+      "league_name": "Mexican League",
+      "basis": "SUB_SEASON",
+      "games": 7,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": [
+        "Diablos Rojos del Mexico",
+        "Guerreros de Oaxaca"
+      ],
+      "components_matched": [
+        "Diablos Rojos del Mexico",
+        "Guerreros de Oaxaca"
+      ],
+      "stats_compared": 10,
+      "source_note": "MLB Stats API (people/624646 yearByYear, milb_all, retrieved 2026-10-07) lists the Mexican League 2018 as season 2018.1 (Diablos Rojos + Oaxaca, with a team-less numTeams=2 aggregate of 7 G / 26 BF) and 2018.2 (Durango 21 G). The aggregate covers only the 2018.1 teams."
+    },
+    {
+      "slug": "lesther-medrano",
+      "season": 2023,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 5,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "miguel-dominguez",
+      "season": 2023,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 39,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "miguel-droz",
+      "season": 2021,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 39,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL Dodgers Shoemaker",
+        "DSL LAD Bautista"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "misja-harcksen",
+      "season": 2015,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 18,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "misja-harcksen",
+      "season": 2016,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 21,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "moises-acacio",
+      "season": 2026,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 31,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "nicolas-cruz",
+      "season": 2022,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 15,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "paris-johnson",
+      "season": 2024,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 26,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "railin-familia",
+      "season": 2025,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 36,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "raynerd-ortega",
+      "season": 2024,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 30,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL LAD Bautista"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "rodmar-angela",
+      "season": 2023,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 29,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "roger-lasso",
+      "season": 2021,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 42,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL Dodgers Shoemaker",
+        "DSL LAD Bautista"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "roger-lasso",
+      "season": 2023,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 33,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "roger-lasso",
+      "season": 2024,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 36,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL LAD Bautista"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "ronny-brito",
+      "season": 2016,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 59,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL Dodgers 1",
+        "DSL Dodgers 2"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "ronny-brito",
+      "season": 2017,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 28,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "ronny-brito",
+      "season": 2018,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 61,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL Dodgers Robinson",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "roque-gutierrez",
+      "season": 2021,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 12,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL Dodgers Shoemaker"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "sean-linan",
+      "season": 2025,
+      "level": "HIGH_A",
+      "source_level": "A+",
+      "league_name": null,
+      "basis": "SAME_LEVEL",
+      "games": 11,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "Great Lakes Loons",
+        "Wilmington Blue Rocks"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    },
+    {
+      "slug": "starling-heredia",
+      "season": 2016,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 64,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL Dodgers 1",
+        "DSL Dodgers 2"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "starling-heredia",
+      "season": 2017,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 26,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "AZL Dodgers",
+        "Ogden Raptors"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "thayron-liranzo",
+      "season": 2024,
+      "level": "HIGH_A",
+      "source_level": "A+",
+      "league_name": "Midwest League",
+      "basis": "SAME_LEVEL",
+      "games": 100,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "Great Lakes Loons",
+        "West Michigan Whitecaps"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "victor-rodrigues",
+      "season": 2023,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 47,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL LAD Bautista"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "yojackson-laya",
+      "season": 2026,
+      "level": "OTHER",
+      "source_level": "ROK",
+      "league_name": null,
+      "basis": "CROSS_LEVEL",
+      "games": 27,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "ACL Dodgers",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 11,
+      "source_note": null
+    },
+    {
+      "slug": "yuliangel-de-la-cruz",
+      "season": 2022,
+      "level": "INTERNATIONAL_ROOKIE",
+      "source_level": "ROK",
+      "league_name": "Dominican Summer League",
+      "basis": "SAME_LEVEL",
+      "games": 15,
+      "organization_basis": "NO_TEAM_NAME",
+      "components": null,
+      "components_matched": [
+        "DSL LAD Bautista",
+        "DSL LAD Mega"
+      ],
+      "stats_compared": 10,
+      "source_note": null
+    }
+  ]
+}

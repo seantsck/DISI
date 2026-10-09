@@ -1,0 +1,33 @@
+{
+  "records": [
+    {
+      "slug": "hyo-jun-park",
+      "mlbId": 660829,
+      "basis": "MANUAL_LINKED_SIGNING_TRANSACTION",
+      "confidence": "HIGH",
+      "signals": ["SIGNING_CLUB", "SIGNING_PERIOD_OPENING_DATE", "POSITION", "BIRTH_COUNTRY", "ROMANIZATION_VARIANT"],
+      "aliases": [
+        {
+          "alias": "Hoy Jun Park",
+          "aliasType": "MLB_TRANSACTION_NAME",
+          "sourceUrl": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.mlb.com/news/clubs-agree-to-terms-with-top-international-prospects/c-82709266",
+          "supports": "DISI 2014 record (migration 013): Hyo-Jun Park, SS, South Korea, New York Yankees, No. 13 international prospect, $1.1M."
+        },
+        {
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31",
+          "supports": "New York Yankees signed free agent SS Hoy Jun Park (MLB id 660829) on 2014-07-02, the opening day of the 2014-15 international signing period."
+        },
+        {
+          "url": "https://statsapi.mlb.com/api/v1/people/660829",
+          "supports": "MLB person record: Hoy Park, born 1996-04-07, birth country South Korea; MLB debut 2021-07-16."
+        }
+      ],
+      "note": "Hyo-Jun Park (2014 signing tracker spelling) and Hoy Jun Park / Hoy Park (MLB record) are the same player: the MLB transaction is a Yankees signing of a shortstop on the 2014 period's opening day, and the MLB person record's birth country is South Korea, matching the tracker's club, period, position and country. Linked on that evidence, not on name similarity. The MLB.com biography (Hoy Jun Park, born April 7, 1996 in Seoul; signed by the Yankees July 2, 2014; No. 13 prospect of the 2014 period) states the same link; it could not be retrieved by the research client (HTTP 406), so it is not stored as a source."
+    }
+  ]
+}

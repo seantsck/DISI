@@ -1,9 +1,13 @@
 import DataMode from '../components/DataMode'
 import DataUnavailable from '../components/DataUnavailable'
-import { getLeagueData } from '../../lib/data'
-import { money, humanize } from '../../lib/format'
+import PlayerLink from '../components/PlayerLink'
+import { getLeagueData } from '../../lib/data.js'
+import { money, humanize } from '../../lib/format.js'
 
-export const metadata = { title:'League Benchmark — DISI' }
+export const metadata = { title: 'League Benchmark' }
+
+// Rendered per request so pages always reflect the live database (never a build-time snapshot).
+export const dynamic = 'force-dynamic'
 
 export default async function LeaguePage() {
   const { live, error, rows, orgs, coverage, periodOrgs } = await getLeagueData()
@@ -70,8 +74,8 @@ export default async function LeaguePage() {
         <div className="table-head"><div><span className="eyebrow">Player ledger</span><h2>League benchmark signings</h2></div><span className="micro-note">{rows.length} live rows</span></div>
         <div className="table-scroll"><table>
           <thead><tr><th>Year</th><th>Rank</th><th>Player</th><th>Club</th><th>Market</th><th>Position</th><th>Bonus</th></tr></thead>
-          <tbody>{rows.map((r) => <tr key={`${r.signing_year}-${r.organization}-${r.full_name}`}>
-            <td>{r.signing_year}</td><td>{r.international_rank ?? '—'}</td><td><strong>{r.full_name}</strong></td>
+          <tbody>{rows.map((r) => <tr key={r.signing_id}>
+            <td>{r.signing_year}</td><td>{r.international_rank ?? '—'}</td><td><PlayerLink slug={r.player_slug} name={r.full_name} /></td>
             <td>{r.organization}</td><td>{r.country_market}</td><td>{r.primary_position || '—'}</td><td>{money(r.signing_bonus_usd)}</td>
           </tr>)}</tbody>
         </table></div>

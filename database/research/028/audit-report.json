@@ -1,0 +1,27 @@
+{
+  "audited_against": "canonical replay 001-027 (in memory)",
+  "corrections": {
+    "transaction_descriptions": 1,
+    "class_membership_confidence": 3,
+    "total": 4
+  },
+  "canonical_wording": [
+    "Traded as part of a five-player package to Baltimore Orioles for SS Manny Machado"
+  ],
+  "live_wording": [
+    "Traded in five-player package to Baltimore Orioles for SS Manny Machado"
+  ],
+  "links": [
+    "alex-de-jesus DODGERS-2018-OPENING: VERIFIED -> HIGH",
+    "diego-cartaya DODGERS-2018-OPENING: VERIFIED -> HIGH",
+    "jerming-rosario DODGERS-2018-OPENING: VERIFIED -> HIGH"
+  ],
+  "affected_views": [
+    "v_dodgers_asset_realization",
+    "v_dodgers_executive_case_studies",
+    "v_dodgers_mature_asset_realization",
+    "v_player_sources",
+    "v_signing_asset_outcomes"
+  ],
+  "failures": []
+}

@@ -1,0 +1,2034 @@
+{
+  "meta": {
+    "command": "resolve-ids",
+    "recordCount": 60,
+    "rule": "Only DODGERS_TRANSACTION_MATCH is a proposed resolution; every other status requires manual research.",
+    "team": 119
+  },
+  "records": [
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1974-08-16",
+          "fullName": "Roger Cedeno",
+          "mlbId": 112155
+        }
+      ],
+      "name": "Roger Cedeno",
+      "signingYear": 1991,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:42.227Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=1990-01-01&endDate=1990-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:42.534Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=1991-01-01&endDate=1991-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:43.281Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=1992-01-01&endDate=1992-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:44.442Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Roger%20Cedeno"
+        }
+      ],
+      "status": "NAME_SEARCH_ONLY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1989-11-13",
+          "fullName": "Carlos Frías",
+          "mlbId": 516910
+        }
+      ],
+      "name": "Carlos Frias",
+      "signingYear": 2007,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:44.781Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2006-01-01&endDate=2006-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:45.540Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2007-01-01&endDate=2007-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:46.288Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2008-01-01&endDate=2008-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:47.429Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Carlos%20Frias"
+        }
+      ],
+      "status": "NAME_SEARCH_ONLY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Mexico",
+          "birthDate": "1996-01-24",
+          "date": "2012-07-02",
+          "description": "Los Angeles Dodgers signed free agent C Julian Leon to a minor league contract.",
+          "fullName": "Julian Leon",
+          "mlbDebutDate": null,
+          "mlbId": 624645
+        }
+      ],
+      "name": "Julian Leon",
+      "signingYear": 2012,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:47.808Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2011-01-01&endDate=2011-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:48.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.875Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/624645"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Mexico",
+          "birthDate": "1995-11-11",
+          "date": "2012-07-02",
+          "description": "Los Angeles Dodgers signed free agent RHP Lenix Osuna to a minor league contract.",
+          "fullName": "Lenix Osuna",
+          "mlbDebutDate": null,
+          "mlbId": 624646
+        }
+      ],
+      "name": "Lenix Osuna",
+      "signingYear": 2012,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:47.808Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2011-01-01&endDate=2011-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:48.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:50.666Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/624646"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1996-02-13",
+          "date": "2012-07-02",
+          "description": "Los Angeles Dodgers signed free agent RHP William Soto to a minor league contract.",
+          "fullName": "Willian Soto",
+          "mlbDebutDate": null,
+          "mlbId": 624648
+        }
+      ],
+      "name": "William Soto",
+      "signingYear": 2012,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:47.808Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2011-01-01&endDate=2011-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:48.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:08:20.662Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/624648"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1996-07-23",
+          "date": "2013-12-12",
+          "description": "Los Angeles Dodgers signed free agent C Gersel Pitre to a minor league contract.",
+          "fullName": "Gersel Pitre",
+          "mlbDebutDate": null,
+          "mlbId": 649957
+        }
+      ],
+      "name": "Gersel Pitre",
+      "signingYear": 2013,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:48.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:52.347Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:52.902Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649957"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Curacao",
+          "birthDate": "1997-06-17",
+          "date": "2013-12-13",
+          "description": "Los Angeles Dodgers signed free agent C Hendrik Clementina to a minor league contract.",
+          "fullName": "Hendrik Clementina",
+          "mlbDebutDate": null,
+          "mlbId": 649955
+        }
+      ],
+      "name": "Hendrik Clementina",
+      "signingYear": 2013,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:48.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:52.347Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:53.656Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649955"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-07-07",
+          "date": "2013-12-18",
+          "description": "Los Angeles Dodgers signed free agent OF Julio Lugo to a minor league contract.",
+          "fullName": "Julio Lugo",
+          "mlbDebutDate": null,
+          "mlbId": 649956
+        }
+      ],
+      "name": "Julio Lugo (prospect)",
+      "signingYear": 2013,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:48.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:52.347Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:08:20.985Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649956"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Netherlands",
+          "birthDate": "1995-04-19",
+          "date": "2013-12-26",
+          "description": "Los Angeles Dodgers signed free agent RHP Misja Harcksen to a minor league contract.",
+          "fullName": "Misja Harcksen",
+          "mlbDebutDate": null,
+          "mlbId": 649958
+        }
+      ],
+      "name": "Misja Harcksen",
+      "signingYear": 2013,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:48.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:52.347Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:55.151Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649958"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Curacao",
+          "birthDate": "1996-12-24",
+          "date": "2013-12-02",
+          "description": "Los Angeles Dodgers signed free agent OF Shakir Albert to a minor league contract.",
+          "fullName": "Shakir Albert",
+          "mlbDebutDate": null,
+          "mlbId": 649954
+        }
+      ],
+      "name": "Shakir Albert",
+      "signingYear": 2013,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:48.565Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:49.303Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:52.347Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:55.919Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/649954"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2000-11-25",
+          "date": "2018-07-02",
+          "description": "Los Angeles Dodgers signed free agent LHP Christian Suarez to a minor league contract.",
+          "fullName": "Christian Suarez",
+          "mlbDebutDate": null,
+          "mlbId": 682949
+        }
+      ],
+      "name": "Christian Suarez",
+      "signingYear": 2018,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:56.867Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2017-01-01&endDate=2017-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.979Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682949"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2002-03-07",
+          "date": "2018-07-02",
+          "description": "Los Angeles Dodgers signed free agent SS Ender Avendano to a minor league contract.",
+          "fullName": "Ender Avendano",
+          "mlbDebutDate": null,
+          "mlbId": 682937
+        }
+      ],
+      "name": "Ender Avendano",
+      "signingYear": 2018,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:56.867Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2017-01-01&endDate=2017-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:59.716Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682937"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2002-05-19",
+          "date": "2018-07-02",
+          "description": "Los Angeles Dodgers signed free agent OF Gregory Pereira to a minor league contract.",
+          "fullName": "Gregory Pereira",
+          "mlbDebutDate": null,
+          "mlbId": 682946
+        }
+      ],
+      "name": "Gregory Pereira",
+      "signingYear": 2018,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:56.867Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2017-01-01&endDate=2017-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:00.455Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682946"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [],
+      "name": "Jerami Rodriguez",
+      "signingYear": 2018,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:56.867Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2017-01-01&endDate=2017-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:01.817Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Jerami%20Rodriguez"
+        }
+      ],
+      "status": "NOT_FOUND"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2001-07-13",
+          "date": "2018-07-02",
+          "description": "Los Angeles Dodgers signed free agent SS Luis Izturis to a minor league contract.",
+          "fullName": "Luis Izturis",
+          "mlbDebutDate": null,
+          "mlbId": 682950
+        }
+      ],
+      "name": "Luis Izturis",
+      "signingYear": 2018,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:56.867Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2017-01-01&endDate=2017-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:01.980Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682950"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2001-10-02",
+          "date": "2018-07-02",
+          "description": "Los Angeles Dodgers signed free agent SS Miguel Droz to a minor league contract.",
+          "fullName": "Miguel Droz",
+          "mlbDebutDate": null,
+          "mlbId": 682940
+        }
+      ],
+      "name": "Miguel Droz",
+      "signingYear": 2018,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:56.867Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2017-01-01&endDate=2017-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:02.751Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682940"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2001-10-26",
+          "date": "2018-07-02",
+          "description": "Los Angeles Dodgers signed free agent RHP Rafael Tua to a minor league contract.",
+          "fullName": "Rafael Tua",
+          "mlbDebutDate": null,
+          "mlbId": 682948
+        }
+      ],
+      "name": "Rafael Tua",
+      "signingYear": 2018,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:56.867Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2017-01-01&endDate=2017-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:03.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/682948"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Nicaragua",
+          "birthDate": "2003-03-05",
+          "date": "2019-09-04",
+          "description": "Los Angeles Dodgers signed free agent RHP Lesther Medrano to a minor league contract.",
+          "fullName": "Lesther Medrano",
+          "mlbDebutDate": null,
+          "mlbId": 692327
+        }
+      ],
+      "name": "Lesther Medrano",
+      "signingYear": 2019,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:05.002Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/692327"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Mexico",
+          "birthDate": "2002-09-07",
+          "date": "2020-09-10",
+          "description": "Los Angeles Dodgers signed free agent RHP Roque Gutierrez to a minor league contract.",
+          "fullName": "Roque Gutierrez",
+          "mlbDebutDate": null,
+          "mlbId": 692262
+        }
+      ],
+      "name": "Roque Gutierrez",
+      "signingYear": 2019,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:05.762Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/692262"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2002-09-19",
+          "date": "2019-07-02",
+          "description": "Los Angeles Dodgers signed free agent C Yeiner Fernandez to a minor league contract.",
+          "fullName": "Yeiner Fernandez",
+          "mlbDebutDate": null,
+          "mlbId": 691558
+        }
+      ],
+      "name": "Yeiner Fernandez",
+      "signingYear": 2019,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:06:57.668Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2018-01-01&endDate=2018-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:06:58.384Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2019-01-01&endDate=2019-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:06.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/691558"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2003-06-05",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Brian Diaz to a minor league contract.",
+          "fullName": "Brian Diaz",
+          "mlbDebutDate": null,
+          "mlbId": 699070
+        }
+      ],
+      "name": "Brian Diaz",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.767Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699070"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2003-12-04",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent C Carlos Avila to a minor league contract.",
+          "fullName": "Carlos Avila",
+          "mlbDebutDate": null,
+          "mlbId": 699066
+        }
+      ],
+      "name": "Carlos Avila",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:09.549Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699066"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Mexico",
+          "birthDate": "2002-12-11",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Christian Romero to a minor league contract.",
+          "fullName": "Christian Romero",
+          "mlbDebutDate": null,
+          "mlbId": 699071
+        }
+      ],
+      "name": "Christian Romero",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:10.288Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699071"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2002-05-02",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Dailoui Abad to a minor league contract.",
+          "fullName": "Dailoui Abad",
+          "mlbDebutDate": null,
+          "mlbId": 699060
+        }
+      ],
+      "name": "Dailoui Abad",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:11.035Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699060"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2004-01-02",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Elio Campos to a minor league contract.",
+          "fullName": "Elio Campos",
+          "mlbDebutDate": null,
+          "mlbId": 699069
+        }
+      ],
+      "name": "Elio Campos",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:11.814Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699069"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2004-05-25",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent OF Isaac Barreto to a minor league contract.",
+          "fullName": "Isaac Barreto",
+          "mlbDebutDate": null,
+          "mlbId": 699064
+        }
+      ],
+      "name": "Isaac Barreto",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:12.574Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699064"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2003-12-19",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent C Jesus Galiz to a minor league contract.",
+          "fullName": "Jesus Galiz",
+          "mlbDebutDate": null,
+          "mlbId": 694188
+        }
+      ],
+      "name": "Jesus Galiz",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:13.318Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/694188"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2003-11-09",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Jhonny Jimenez to a minor league contract.",
+          "fullName": "Jhonny Jimenez",
+          "mlbDebutDate": null,
+          "mlbId": 699075
+        }
+      ],
+      "name": "Jhonny Jimenez",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:14.084Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699075"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2004-04-21",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent LHP Jorge Carpintero to a minor league contract.",
+          "fullName": "Jorge Carpintero",
+          "mlbDebutDate": null,
+          "mlbId": 699058
+        }
+      ],
+      "name": "Jorge Carpintero",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:14.870Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699058"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Panama",
+          "birthDate": "2003-11-03",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent OF Juan Alonso to a minor league contract.",
+          "fullName": "Juan Alonso",
+          "mlbDebutDate": null,
+          "mlbId": 699076
+        }
+      ],
+      "name": "Juan Alonso",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:15.604Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699076"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2001-06-10",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Kelvin Ramirez to a minor league contract.",
+          "fullName": "Kelvin Ramirez",
+          "mlbDebutDate": null,
+          "mlbId": 699062
+        }
+      ],
+      "name": "Kelvin Ramirez",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:16.371Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699062"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2003-10-04",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Luis Guerra to a minor league contract.",
+          "fullName": "Luis Guerra",
+          "mlbDebutDate": null,
+          "mlbId": 699065
+        }
+      ],
+      "name": "Luis Guerra",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:17.120Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699065"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2004-06-21",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Maximo Martinez to a minor league contract.",
+          "fullName": "Maximo Martinez",
+          "mlbDebutDate": null,
+          "mlbId": 699059
+        }
+      ],
+      "name": "Maximo Martinez",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:17.885Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699059"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Curacao",
+          "birthDate": "2004-06-03",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Michael Vilchez to a minor league contract.",
+          "fullName": "Michael Vilchez",
+          "mlbDebutDate": null,
+          "mlbId": 699074
+        }
+      ],
+      "name": "Michael Vilchez",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:18.640Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699074"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2003-01-14",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Miguel Bastardo to a minor league contract.",
+          "fullName": "Miguel Bastardo",
+          "mlbDebutDate": null,
+          "mlbId": 699072
+        }
+      ],
+      "name": "Miguel Bastardo",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:19.405Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699072"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2003-09-21",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Missael Soto to a minor league contract.",
+          "fullName": "Missael Soto",
+          "mlbDebutDate": null,
+          "mlbId": 699057
+        }
+      ],
+      "name": "Missael Soto",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:20.164Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699057"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Mexico",
+          "birthDate": "2001-07-07",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Pedro Santillan to a minor league contract.",
+          "fullName": "Pedro Santillan",
+          "mlbDebutDate": null,
+          "mlbId": 699063
+        }
+      ],
+      "name": "Pedro Santillan",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:20.918Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699063"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2003-09-22",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Rayne Doncon to a minor league contract.",
+          "fullName": "Rayne Doncon",
+          "mlbDebutDate": null,
+          "mlbId": 699061
+        }
+      ],
+      "name": "Rayne Doncon",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:21.672Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699061"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Panama",
+          "birthDate": "2004-02-27",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent OF Roger Lasso to a minor league contract.",
+          "fullName": "Roger Lasso",
+          "mlbDebutDate": null,
+          "mlbId": 699068
+        }
+      ],
+      "name": "Roger Lasso",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:22.429Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699068"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2003-04-28",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent LHP Sebastian Jimenez to a minor league contract.",
+          "fullName": "Sebastian Jimenez",
+          "mlbDebutDate": null,
+          "mlbId": 699067
+        }
+      ],
+      "name": "Sebastian Jimenez",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:23.160Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699067"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2003-07-05",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent C Thayron Liranzo to a minor league contract.",
+          "fullName": "Thayron Liranzo",
+          "mlbDebutDate": null,
+          "mlbId": 699073
+        }
+      ],
+      "name": "Thayron Liranzo",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:23.935Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/699073"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2003-11-15",
+          "date": "2021-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Wilman Diaz to a minor league contract.",
+          "fullName": "Wilman Diaz",
+          "mlbDebutDate": null,
+          "mlbId": 694180
+        }
+      ],
+      "name": "Wilman Diaz",
+      "signingYear": 2021,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:04.486Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2020-01-01&endDate=2020-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:07.497Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2021-01-01&endDate=2021-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:24.687Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/694180"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2004-07-19",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Anderson Jerez to a minor league contract.",
+          "fullName": "Anderson Jerez",
+          "mlbDebutDate": null,
+          "mlbId": 808214
+        }
+      ],
+      "name": "Anderson Jerez",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.962Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808214"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2005-12-19",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent OF Arnaldo Lantigua to a minor league contract.",
+          "fullName": "Arnaldo Lantigua",
+          "mlbDebutDate": null,
+          "mlbId": 806984
+        }
+      ],
+      "name": "Arnaldo Lantigua",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:27.724Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806984"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2005-12-19",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Daniel Mielcarek to a minor league contract.",
+          "fullName": "Daniel Mielcarek",
+          "mlbDebutDate": null,
+          "mlbId": 808028
+        }
+      ],
+      "name": "Daniel Mielcarek",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:28.494Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808028"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2005-09-16",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent C Eduardo Quintero to a minor league contract.",
+          "fullName": "Eduardo Quintero",
+          "mlbDebutDate": null,
+          "mlbId": 808234
+        }
+      ],
+      "name": "Eduardo Quintero",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:29.213Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808234"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2005-11-09",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Elias Medina to a minor league contract.",
+          "fullName": "Elias Medina",
+          "mlbDebutDate": null,
+          "mlbId": 808257
+        }
+      ],
+      "name": "Elias Medina",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:29.977Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808257"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2004-03-03",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Erick Batista to a minor league contract.",
+          "fullName": "Erick Batista",
+          "mlbDebutDate": null,
+          "mlbId": 808209
+        }
+      ],
+      "name": "Erick Batista",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:30.726Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808209"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2006-08-29",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Harold Gonzalez to a minor league contract.",
+          "fullName": "Harold Gonzalez",
+          "mlbDebutDate": null,
+          "mlbId": 808339
+        }
+      ],
+      "name": "Harold Gonzalez",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:31.496Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808339"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2005-02-09",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Javier Herrera to a minor league contract.",
+          "fullName": "Javier Herrera",
+          "mlbDebutDate": null,
+          "mlbId": 808223
+        }
+      ],
+      "name": "Javier Herrera",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:32.247Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808223"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2006-05-02",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Jesus Tillero to a minor league contract.",
+          "fullName": "Jesus Tillero",
+          "mlbDebutDate": null,
+          "mlbId": 808313
+        }
+      ],
+      "name": "Jesus Tillero",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:33.024Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808313"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2005-11-08",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Joendry Vargas to a minor league contract.",
+          "fullName": "Joendry Vargas",
+          "mlbDebutDate": null,
+          "mlbId": 806959
+        }
+      ],
+      "name": "Joendry Vargas",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:33.762Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/806959"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2004-09-30",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Luis Carias to a minor league contract.",
+          "fullName": "Luis Carias",
+          "mlbDebutDate": null,
+          "mlbId": 808218
+        }
+      ],
+      "name": "Luis Carias",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:34.532Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808218"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2006-06-28",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Robinson Ventura to a minor league contract.",
+          "fullName": "Robinson Ventura",
+          "mlbDebutDate": null,
+          "mlbId": 808332
+        }
+      ],
+      "name": "Robinson Ventura",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:35.266Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808332"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2005-10-21",
+          "date": "2023-01-15",
+          "description": "Los Angeles Dodgers signed free agent RHP Samuel Sanchez to a minor league contract.",
+          "fullName": "Samuel Sanchez",
+          "mlbDebutDate": null,
+          "mlbId": 808247
+        }
+      ],
+      "name": "Samuel Sanchez",
+      "signingYear": 2023,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:08.207Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2022-01-01&endDate=2022-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:25.685Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2023-01-01&endDate=2023-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:26.430Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2024-01-01&endDate=2024-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:36.040Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/808247"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2009-05-03",
+          "date": "2026-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Ariel Reynoso to a minor league contract.",
+          "fullName": "Ariel Reynoso",
+          "mlbDebutDate": null,
+          "mlbId": 837605
+        }
+      ],
+      "name": "Ariel Reynoso",
+      "signingYear": 2026,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:37.046Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2025-01-01&endDate=2025-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:37.793Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2026-01-01&endDate=2026-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:38.518Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2027-01-01&endDate=2027-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:39.100Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/837605"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2009-06-02",
+          "date": "2026-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Ezequiel Melburne to a minor league contract.",
+          "fullName": "Ezequiel Melburne",
+          "mlbDebutDate": null,
+          "mlbId": 836606
+        }
+      ],
+      "name": "Ezequiel Melburne",
+      "signingYear": 2026,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:37.046Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2025-01-01&endDate=2025-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:37.793Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2026-01-01&endDate=2026-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:38.518Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2027-01-01&endDate=2027-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:39.846Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/836606"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "2008-12-05",
+          "date": "2026-01-15",
+          "description": "Los Angeles Dodgers signed free agent OF Jose Requena to a minor league contract.",
+          "fullName": "Jose Requena",
+          "mlbDebutDate": null,
+          "mlbId": 837769
+        }
+      ],
+      "name": "Jose Requena",
+      "signingYear": 2026,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:37.046Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2025-01-01&endDate=2025-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:37.793Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2026-01-01&endDate=2026-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:38.518Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2027-01-01&endDate=2027-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:40.620Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/837769"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2009-02-05",
+          "date": "2026-01-15",
+          "description": "Los Angeles Dodgers signed free agent SS Jose Victorino to a minor league contract.",
+          "fullName": "Jose Victorino",
+          "mlbDebutDate": null,
+          "mlbId": 837652
+        }
+      ],
+      "name": "Jose Victorino",
+      "signingYear": 2026,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:37.046Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2025-01-01&endDate=2025-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:37.793Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2026-01-01&endDate=2026-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:38.518Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2027-01-01&endDate=2027-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:41.365Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/837652"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "2008-12-08",
+          "date": "2026-01-15",
+          "description": "Los Angeles Dodgers signed free agent OF Rubel Arias to a minor league contract.",
+          "fullName": "Rubel Arias",
+          "mlbDebutDate": null,
+          "mlbId": 837601
+        }
+      ],
+      "name": "Rubel Arias",
+      "signingYear": 2026,
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T21:07:37.046Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2025-01-01&endDate=2025-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:37.793Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2026-01-01&endDate=2026-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:38.518Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=119&startDate=2027-01-01&endDate=2027-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T21:07:42.124Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/837601"
+        }
+      ],
+      "status": "DODGERS_TRANSACTION_MATCH"
+    }
+  ]
+}

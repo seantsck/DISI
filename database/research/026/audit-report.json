@@ -1,0 +1,94 @@
+{
+  "migration": "026_scouting_evaluation_history",
+  "legacy_evaluations": {
+    "exists": true,
+    "row_count": 0,
+    "columns": [
+      "id:uuid",
+      "player_id:uuid",
+      "evaluation_date:date",
+      "evaluator_source:text",
+      "evaluation_stage:text",
+      "overall_fv:numeric",
+      "hit_grade:numeric",
+      "game_power_grade:numeric",
+      "raw_power_grade:numeric",
+      "run_grade:numeric",
+      "field_grade:numeric",
+      "arm_grade:numeric",
+      "fastball_grade:numeric",
+      "breaking_ball_grade:numeric",
+      "changeup_grade:numeric",
+      "command_grade:numeric",
+      "risk_label:text",
+      "prospect_rank:numeric",
+      "prospect_rank_scope:text",
+      "scouting_summary:text",
+      "source_id:uuid",
+      "confidence:USER-DEFINED",
+      "created_at:timestamp with time zone"
+    ],
+    "dependents": [],
+    "inbound_foreign_keys": [],
+    "repository_references": []
+  },
+  "legacy_international_ranks": {
+    "total": 59,
+    "sourced": {
+      "count": 48,
+      "by_year": {
+        "2013": 20,
+        "2014": 28
+      },
+      "tracker_urls": [
+        "https://www.mlb.com/news/clubs-agree-to-terms-with-top-international-prospects/c-82709266",
+        "https://www.mlb.com/news/flurry-of-top-international-prospects-inked-on-first-day/c-52530782"
+      ]
+    },
+    "unsourced": {
+      "count": 11,
+      "by_year": {
+        "2015": 4,
+        "2018": 1,
+        "2019": 1,
+        "2023": 2,
+        "2024": 1,
+        "2025": 1,
+        "2026": 1
+      },
+      "players": [
+        "yadier-alvarez:2015:#2",
+        "yusniel-diaz:2015:#3",
+        "starling-heredia:2015:#5",
+        "ronny-brito:2015:#21",
+        "diego-cartaya:2018:#1",
+        "luis-rodriguez-2019:2019:#4",
+        "joendry-vargas:2023:#3",
+        "arnaldo-lantigua:2023:#23",
+        "emil-morales:2024:#14",
+        "roki-sasaki:2025:#1",
+        "ezequiel-melburne:2026:#29"
+      ]
+    }
+  },
+  "seed": {
+    "publications": 3,
+    "scales": 1,
+    "sources": 2,
+    "evaluations": 3,
+    "rankings": 3,
+    "grades": 13,
+    "notes": 1,
+    "no_evaluation_found": [
+      "roger-cedeno",
+      "carlos-frias",
+      "yordan-alvarez",
+      "oneil-cruz",
+      "julio-urias",
+      "yusniel-diaz",
+      "yadier-alvarez",
+      "diego-cartaya"
+    ]
+  },
+  "failures": []
+}

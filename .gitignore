@@ -5,3 +5,10 @@ out/
 .env.local
 .env*.local
 .vercel
+
+# Research-script cache and scratch output (reviewed artifacts are copied to database/research/)
+.cache/
+research-output/
+
+# Freebuff session metadata
+.freebuff/

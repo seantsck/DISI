@@ -1,0 +1,63 @@
+{
+  "audited_against": "canonical replay 001-026 (in memory)",
+  "entries": {
+    "signing_environments": 8,
+    "signing_environment_assignments": 30,
+    "transactions": 1,
+    "player_aliases": 2,
+    "sources_missing": 12,
+    "source_metadata_variants": 3,
+    "evidence_missing": 26,
+    "evidence_variants": 3,
+    "evidence_note_neutralizations": 3,
+    "legacy_trainers": 2,
+    "legacy_player_trainers": 4
+  },
+  "evidence_claims_total": 32,
+  "evidence_claims_citing_missing_sources": 26,
+  "live_observation": {
+    "signing_environments": 0,
+    "trainers": {
+      "player_trainers": 0,
+      "trainers": 0
+    }
+  },
+  "references_to_repaired_objects_in_017_026": [
+    "017_research_database_layer.sql: public.transactions",
+    "017_research_database_layer.sql: player_trainers",
+    "017_research_database_layer.sql: public.trainers",
+    "018_signing_class_coverage_and_backfill.sql: public.transactions",
+    "019_mature_outcome_audit_expansion.sql: public.transactions",
+    "025_public_view_grant_hardening.sql: player_trainers"
+  ],
+  "references_to_missing_sources_in_017_026": [],
+  "target_rule": "Migration-002 canonical values are retained except for (1) the unsupported 2-trainer / 4-link seed, which is removed, and (2) three trainer-asserting evidence-note strings (evidence_note_neutralizations), which are intentionally neutralized. Both are forward semantic corrections, not drift.",
+  "neutralized_trainer_notes": [
+    "emil-morales 2024: \"MLB Signing Day reports Morales at $1.9M; Dodgers coverage reports his market, rank and trainer relationships.\" -> neutral",
+    "ezequiel-melburne 2026: \"Dodgers 2026 international coverage reports Melburne at $747,500 and identifies Jaime Ramos as trainer for Melburne and Arias.\" -> neutral",
+    "rubel-arias 2026: \"Dodgers 2026 international coverage reports Melburne at $747,500 and identifies Jaime Ramos as trainer for Melburne and Arias.\" -> neutral"
+  ],
+  "affected_views": [
+    "v_dodgers_asset_realization",
+    "v_dodgers_class_source_reconciliation",
+    "v_dodgers_executive_case_studies",
+    "v_dodgers_mature_asset_realization",
+    "v_dodgers_player_identity_coverage",
+    "v_dodgers_signing_cohort",
+    "v_dodgers_signing_leaderboard",
+    "v_dodgers_signing_year_summary",
+    "v_dodgers_trainer_network",
+    "v_player_bio",
+    "v_player_directory",
+    "v_player_identity_scope",
+    "v_player_signing_profile",
+    "v_player_sources",
+    "v_player_timeline",
+    "v_player_trainers",
+    "v_player_transactions",
+    "v_signing_asset_outcomes",
+    "v_signing_efficiency",
+    "v_signing_records"
+  ],
+  "failures": []
+}

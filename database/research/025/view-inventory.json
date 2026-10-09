@@ -1,0 +1,2044 @@
+{
+  "migration": "025_public_view_grant_hardening",
+  "reviewed_at": "2026-10-08",
+  "source": "audit-report-live.json (read-only catalog audit of the live database after 024)",
+  "rule": "Every public view is a read-only analytical/API view: security_invoker, not updatable or insertable, no INSTEAD OF trigger or rule, and no base table grants write access to anon/authenticated. anon and authenticated receive SELECT only; service_role is not changed.",
+  "intentionally_writable": [],
+  "views": [
+    {
+      "view": "v_class_research_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017",
+        "018"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_database_status",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017",
+        "018",
+        "020"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_asset_conversion_brief",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "009"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics"
+      ]
+    },
+    {
+      "view": "v_dodgers_asset_realization",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "004"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signings",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_dodgers_audit_pipeline_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "015"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_class_analysis_eligibility",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "016",
+        "018"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_class_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "014"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "signing_census_coverage"
+      ]
+    },
+    {
+      "view": "v_dodgers_class_research_progress",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "015"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_class_source_reconciliation",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "018"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_member_sources",
+        "signing_population_members",
+        "signing_populations",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_competitive_asset_brief",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "010"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transaction_competitive_context",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics"
+      ]
+    },
+    {
+      "view": "v_dodgers_competitive_asset_conversion",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "010"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transaction_competitive_context",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics"
+      ]
+    },
+    {
+      "view": "v_dodgers_development_by_bonus_band",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "021",
+        "024"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_milestones",
+        "development_progression_decisions",
+        "organizations",
+        "outcome_audits",
+        "player_development_status",
+        "player_season_stints",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_development_by_market",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "021",
+        "024"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_milestones",
+        "development_progression_decisions",
+        "organizations",
+        "outcome_audits",
+        "player_development_status",
+        "player_season_stints",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_development_by_signing_class",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "021",
+        "024"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_milestones",
+        "development_progression_decisions",
+        "organizations",
+        "outcome_audits",
+        "player_development_status",
+        "player_season_stints",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_development_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "021",
+        "023"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_milestones",
+        "development_progression_decisions",
+        "outcome_audits",
+        "player_development_status",
+        "player_season_stints",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_development_date_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "022"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "development_milestones",
+        "development_progression_decisions",
+        "outcome_audits",
+        "player_development_status",
+        "player_season_stints",
+        "players",
+        "research_source_conflicts",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_development_research_queue",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "021",
+        "022",
+        "023",
+        "024"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_milestones",
+        "development_progression_decisions",
+        "organizations",
+        "player_season_stints",
+        "players",
+        "research_source_conflicts",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_executive_case_studies",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "011"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transaction_competitive_context",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_dodgers_executive_dashboard_feed",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "011"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transaction_competitive_context",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_dodgers_executive_findings_v2",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "011"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transaction_competitive_context",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_dodgers_executive_kpis",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "004"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_executive_kpis_v2",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "005"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_historical_signings",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "012"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_known_mlb_outcomes",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "016",
+        "017"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_market_research_progress",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "015"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_market_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "004"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_asset_realization",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "008",
+        "016"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_asset_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "008"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_bonus_tiers",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "007"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_executive_findings",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "007"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_outcome_queue",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "019"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "player_professional_progress",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_player_analysis",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "007"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_premium_comparison",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "007"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_tracked_sample",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "006"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_mature_year_analysis",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "007"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_next_outcome_audits",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "015"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_opening_class_cohort_rates",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "018"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "outcome_audits",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_outcome_audit_operations",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "015"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_outcome_audit_progress",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "019"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_outcome_audit_queue",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "005"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_outcome_by_signing_class",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "019"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_outcome_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "005"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_pathway_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "004"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_player_development_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "021",
+        "022",
+        "023",
+        "024"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_milestones",
+        "development_progression_decisions",
+        "outcome_audits",
+        "player_development_status",
+        "player_season_stints",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_player_identity_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "020"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "evidence",
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_identity_resolutions",
+        "player_professional_progress",
+        "players",
+        "research_source_conflicts",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_player_identity_research_queue",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "020"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "evidence",
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_identity_resolutions",
+        "player_professional_progress",
+        "players",
+        "research_source_conflicts",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_portfolio_signals",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "011"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transaction_competitive_context",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_dodgers_portfolio_universe",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "014",
+        "017"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_rate_eligible_player_analysis",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "016",
+        "018"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_rate_eligible_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "016"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_signing_cohort",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "004"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_signing_leaderboard",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "004"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_signing_period_research_queue",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "018"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "players",
+        "research_source_conflicts",
+        "signing_period_candidates",
+        "signing_population_member_sources",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_signing_population_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "018"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "outcome_audits",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_dodgers_signing_year_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "004"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_dodgers_trade_package_conversion",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "009"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics"
+      ]
+    },
+    {
+      "view": "v_dodgers_trainer_network",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "004"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "player_trainers",
+        "players",
+        "signings",
+        "trainers"
+      ]
+    },
+    {
+      "view": "v_dodgers_universe_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "014"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_league_org_benchmark",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "013"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_league_period_org_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "014"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "international_org_period_summary",
+        "organizations"
+      ]
+    },
+    {
+      "view": "v_league_signing_benchmark",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "013"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_market_research_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_pathway_research_summary",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_player_bio",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "020"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "evidence",
+        "organizations",
+        "outcomes",
+        "player_aliases",
+        "player_identity_resolutions",
+        "player_professional_progress",
+        "players",
+        "research_source_conflicts",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_player_development_milestones",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "021"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_event_codes",
+        "development_milestones",
+        "players"
+      ]
+    },
+    {
+      "view": "v_player_development_progression",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "024"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "development_milestones",
+        "development_progression_decisions",
+        "players"
+      ]
+    },
+    {
+      "view": "v_player_development_stints",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "021",
+        "023"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_levels",
+        "organizations",
+        "player_season_stints",
+        "players"
+      ]
+    },
+    {
+      "view": "v_player_directory",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017",
+        "020"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "evidence",
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_identity_resolutions",
+        "player_metric_observations",
+        "player_professional_progress",
+        "players",
+        "research_source_conflicts",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_player_dossier",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017",
+        "019",
+        "020"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "evidence",
+        "organizations",
+        "outcome_audits",
+        "outcome_evidence",
+        "outcomes",
+        "player_aliases",
+        "player_identity_resolutions",
+        "player_metric_observations",
+        "player_professional_progress",
+        "players",
+        "research_source_conflicts",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_player_filter_options",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017",
+        "020"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "evidence",
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_identity_resolutions",
+        "player_metric_observations",
+        "player_professional_progress",
+        "players",
+        "research_source_conflicts",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_player_identity_scope",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "020"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "evidence",
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_identity_resolutions",
+        "player_professional_progress",
+        "players",
+        "research_source_conflicts",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_player_signing_profile",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "001"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_player_sources",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017",
+        "018",
+        "019"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_milestones",
+        "evidence",
+        "organizations",
+        "outcome_audits",
+        "outcome_evidence",
+        "outcomes",
+        "player_aliases",
+        "player_metric_observations",
+        "signing_census_coverage",
+        "signing_population_member_sources",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "source_tiers",
+        "sources",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_player_timeline",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017",
+        "018"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "development_milestones",
+        "evidence",
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_metric_observations",
+        "players",
+        "signing_population_member_sources",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources",
+        "transaction_competitive_context",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_player_trainers",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "player_trainers",
+        "trainers"
+      ]
+    },
+    {
+      "view": "v_player_transactions",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "players",
+        "sources",
+        "transaction_competitive_context",
+        "transaction_event_assets",
+        "transaction_events",
+        "transaction_return_metrics",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_player_war",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "player_metric_observations",
+        "players",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_research_tasks",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_signing_ages",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "020"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "players",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_signing_asset_outcomes",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "003"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signings",
+        "transactions"
+      ]
+    },
+    {
+      "view": "v_signing_data_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "012"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "signing_census_coverage"
+      ]
+    },
+    {
+      "view": "v_signing_efficiency",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": true,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "001"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "organizations",
+        "outcomes",
+        "players",
+        "signing_environments",
+        "signings"
+      ]
+    },
+    {
+      "view": "v_signing_filter_options",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_signing_population_coverage",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "018"
+      ],
+      "read_by_app": false,
+      "base_tables": [
+        "outcome_audits",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_signing_population_memberships",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "018"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "outcome_audits",
+        "research_source_conflicts",
+        "signing_population_member_sources",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    },
+    {
+      "view": "v_signing_records",
+      "classification": "READ_ONLY_ANALYTICS",
+      "api_privileges": [
+        "SELECT"
+      ],
+      "live_beyond_select_before_025": false,
+      "structurally_updatable": false,
+      "security_invoker": true,
+      "defined_in_migrations": [
+        "017",
+        "018"
+      ],
+      "read_by_app": true,
+      "base_tables": [
+        "organizations",
+        "outcome_audits",
+        "outcomes",
+        "player_aliases",
+        "player_metric_observations",
+        "players",
+        "research_source_conflicts",
+        "signing_population_members",
+        "signing_populations",
+        "signings",
+        "sources"
+      ]
+    }
+  ]
+}

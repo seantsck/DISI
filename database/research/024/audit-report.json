@@ -1,0 +1,408 @@
+{
+  "migration": "024_development_progression_decisions",
+  "decisions": 20,
+  "reviewed": 11,
+  "pending": 9,
+  "failures": [],
+  "evidence": [
+    {
+      "slug": "roger-cedeno",
+      "event_code": "HIGH_A_DEBUT",
+      "progression_role": "POST_ESTABLISHMENT_APPEARANCE",
+      "review_status": "REVIEWED",
+      "first_appearance": "1998",
+      "first_appearance_precision": "SEASON",
+      "games_at_level": 6,
+      "stints_at_level": [
+        "1998 Vero Beach Dodgers 6G undated"
+      ],
+      "higher_first_appearances_before": [
+        "AAA_DEBUT 1993",
+        "AA_DEBUT 1993",
+        "MLB_DEBUT 1995-06-20"
+      ],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "omar-estevez",
+      "event_code": "COMPLEX_DEBUT",
+      "progression_role": "POST_ESTABLISHMENT_APPEARANCE",
+      "review_status": "REVIEWED",
+      "first_appearance": "2019-06-24",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 7,
+      "stints_at_level": [
+        "2019 AZL Dodgers Mota 7G 2019-06-24"
+      ],
+      "higher_first_appearances_before": [
+        "AA_DEBUT 2019-04-04",
+        "A_DEBUT 2016-04-09",
+        "HIGH_A_DEBUT 2017-04-07"
+      ],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "elio-campos",
+      "event_code": "COMPLEX_DEBUT",
+      "progression_role": "POST_ESTABLISHMENT_APPEARANCE",
+      "review_status": "REVIEWED",
+      "first_appearance": "2025-06-10",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 3,
+      "stints_at_level": [
+        "2025 FCL Braves 3G 2025-06-10"
+      ],
+      "higher_first_appearances_before": [
+        "A_DEBUT 2025-04-04"
+      ],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "elio-campos",
+      "event_code": "AAA_DEBUT",
+      "progression_role": "EARLY_CAMEO",
+      "review_status": "REVIEWED",
+      "first_appearance": "2025-08-01",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 1,
+      "stints_at_level": [
+        "2025 Gwinnett Stripers 1G 2025-08-01"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "eduardo-guerrero",
+      "event_code": "AAA_DEBUT",
+      "progression_role": "EARLY_CAMEO",
+      "review_status": "REVIEWED",
+      "first_appearance": "2024-08-03",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 1,
+      "stints_at_level": [
+        "2024 Oklahoma City Baseball Club 1G 2024-08-03"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "javier-herrera",
+      "event_code": "AAA_DEBUT",
+      "progression_role": "EARLY_CAMEO",
+      "review_status": "REVIEWED",
+      "first_appearance": "2025-08-01",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 1,
+      "stints_at_level": [
+        "2025 Oklahoma City Comets 1G 2025-08-01"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "eduardo-rojas",
+      "event_code": "AAA_DEBUT",
+      "progression_role": "EARLY_CAMEO",
+      "review_status": "REVIEWED",
+      "first_appearance": "2026-07-05",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 1,
+      "stints_at_level": [
+        "2026 Oklahoma City Comets 1G 2026-07-05"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "sean-linan",
+      "event_code": "AAA_DEBUT",
+      "progression_role": "EARLY_CAMEO",
+      "review_status": "REVIEWED",
+      "first_appearance": "2025-05-17",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 2,
+      "stints_at_level": [
+        "2025 Oklahoma City Comets 2G 2025-05-17"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "mairoshendrick-martinus",
+      "event_code": "HIGH_A_DEBUT",
+      "progression_role": "EARLY_CAMEO",
+      "review_status": "REVIEWED",
+      "first_appearance": "2025-04-20",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 36,
+      "stints_at_level": [
+        "2025 Great Lakes Loons 7G 2025-04-20",
+        "2026 Great Lakes Loons 29G 2026-08-02"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": "2026-08-02"
+    },
+    {
+      "slug": "ronny-brito",
+      "event_code": "HIGH_A_DEBUT",
+      "progression_role": "EARLY_CAMEO",
+      "review_status": "REVIEWED",
+      "first_appearance": "2019-05-30",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 45,
+      "stints_at_level": [
+        "2019 Dunedin Blue Jays 4G 2019-05-30",
+        "2021 Vancouver Canadians 41G 2021-05-04"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": "2021-05-04"
+    },
+    {
+      "slug": "jeral-perez",
+      "event_code": "A_DEBUT",
+      "progression_role": "EARLY_CAMEO",
+      "review_status": "REVIEWED",
+      "first_appearance": "2023-04-20",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 112,
+      "stints_at_level": [
+        "2023 Rancho Cucamonga Quakes 7G 2023-04-20",
+        "2024 Rancho Cucamonga Quakes 75G 2024-04-05",
+        "2024 Kannapolis Cannon Ballers 30G 2024-08-01"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": "2024-04-05"
+    },
+    {
+      "slug": "carlos-frias",
+      "event_code": "A_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2013-04-07",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 12,
+      "stints_at_level": [
+        "2013 Great Lakes Loons 12G 2013-04-07"
+      ],
+      "higher_first_appearances_before": [
+        "HIGH_A_DEBUT 2011-07-08"
+      ],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "carlos-frias",
+      "event_code": "HIGH_A_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2011-07-08",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 25,
+      "stints_at_level": [
+        "2011 Rancho Cucamonga Quakes 12G 2011-07-08",
+        "2012 Rancho Cucamonga Quakes 3G 2012-05-27",
+        "2013 Rancho Cucamonga Quakes 8G 2013-06-15",
+        "2015 Rancho Cucamonga Quakes 2G 2015-07-26"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "carlos-avila",
+      "event_code": "A_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2025-07-09",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 5,
+      "stints_at_level": [
+        "2025 Rancho Cucamonga Quakes 5G 2025-07-09"
+      ],
+      "higher_first_appearances_before": [
+        "AA_DEBUT 2024-08-16"
+      ],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "carlos-avila",
+      "event_code": "AA_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2024-08-16",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 7,
+      "stints_at_level": [
+        "2024 Tulsa Drillers 6G 2024-08-16",
+        "2025 Tulsa Drillers 1G 2025-06-14"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "carlos-avila",
+      "event_code": "AAA_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2025-09-05",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 3,
+      "stints_at_level": [
+        "2025 Oklahoma City Comets 3G 2025-09-05"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "christian-romero",
+      "event_code": "AA_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2024-05-22",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 6,
+      "stints_at_level": [
+        "2024 Tulsa Drillers 6G 2024-05-22"
+      ],
+      "higher_first_appearances_before": [
+        "AAA_DEBUT 2024-05-17"
+      ],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "christian-romero",
+      "event_code": "AAA_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2024-05-17",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 43,
+      "stints_at_level": [
+        "2024 Oklahoma City Baseball Club 4G 2024-05-17",
+        "2025 Oklahoma City Comets 9G 2025-07-31",
+        "2026 Oklahoma City Comets 30G 2026-03-29"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "nicolas-cruz",
+      "event_code": "A_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2025-04-25",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 23,
+      "stints_at_level": [
+        "2025 Rancho Cucamonga Quakes 23G 2025-04-25"
+      ],
+      "higher_first_appearances_before": [
+        "HIGH_A_DEBUT 2024-09-01"
+      ],
+      "developmental_arrival": null
+    },
+    {
+      "slug": "nicolas-cruz",
+      "event_code": "HIGH_A_DEBUT",
+      "progression_role": "REVIEW_REQUIRED",
+      "review_status": "PENDING_REVIEW",
+      "first_appearance": "2024-09-01",
+      "first_appearance_precision": "DAY",
+      "games_at_level": 54,
+      "stints_at_level": [
+        "2024 Great Lakes Loons 3G 2024-09-01",
+        "2025 Great Lakes Loons 14G 2025-04-20",
+        "2026 Great Lakes Loons 37G 2026-04-07"
+      ],
+      "higher_first_appearances_before": [],
+      "developmental_arrival": null
+    }
+  ],
+  "raw_inversions": 20,
+  "uncovered_inversions": [],
+  "inversion_players": [
+    "carlos-avila",
+    "carlos-frias",
+    "christian-romero",
+    "eduardo-guerrero",
+    "eduardo-rojas",
+    "elio-campos",
+    "javier-herrera",
+    "jeral-perez",
+    "mairoshendrick-martinus",
+    "nicolas-cruz",
+    "omar-estevez",
+    "roger-cedeno",
+    "ronny-brito",
+    "sean-linan"
+  ],
+  "level_skip_cameo_candidates": [
+    {
+      "slug": "agustin-acosta",
+      "event_code": "AA_DEBUT",
+      "first_appearance": "2026-09-11",
+      "games": 1,
+      "decided": false
+    },
+    {
+      "slug": "domingo-geronimo",
+      "event_code": "AA_DEBUT",
+      "first_appearance": "2025-05-18",
+      "games": 1,
+      "decided": false
+    },
+    {
+      "slug": "eduardo-guerrero",
+      "event_code": "AAA_DEBUT",
+      "first_appearance": "2024-08-03",
+      "games": 1,
+      "decided": true
+    },
+    {
+      "slug": "eduardo-rojas",
+      "event_code": "AAA_DEBUT",
+      "first_appearance": "2026-07-05",
+      "games": 1,
+      "decided": true
+    },
+    {
+      "slug": "elio-campos",
+      "event_code": "AAA_DEBUT",
+      "first_appearance": "2025-08-01",
+      "games": 1,
+      "decided": true
+    },
+    {
+      "slug": "javier-herrera",
+      "event_code": "AAA_DEBUT",
+      "first_appearance": "2025-08-01",
+      "games": 1,
+      "decided": true
+    },
+    {
+      "slug": "reyli-mariano",
+      "event_code": "AA_DEBUT",
+      "first_appearance": "2026-07-11",
+      "games": 2,
+      "decided": false
+    },
+    {
+      "slug": "sean-linan",
+      "event_code": "AAA_DEBUT",
+      "first_appearance": "2025-05-17",
+      "games": 2,
+      "decided": true
+    },
+    {
+      "slug": "umar-male",
+      "event_code": "AA_DEBUT",
+      "first_appearance": "2023-09-17",
+      "games": 1,
+      "decided": false
+    }
+  ],
+  "undecided_candidates": [
+    "agustin-acosta",
+    "domingo-geronimo",
+    "reyli-mariano",
+    "umar-male"
+  ]
+}

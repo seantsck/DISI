@@ -2,15 +2,17 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import PlayerSearch from './PlayerSearch'
 
 const links = [
-  ['/', 'Overview'],
   ['/signings', 'Signings'],
+  ['/players', 'Players'],
   ['/markets', 'Markets'],
-  ['/league', 'League Benchmark'],
   ['/development', 'Development'],
   ['/asset-conversion', 'Asset Conversion'],
-  ['/methodology', 'Methodology']
+  ['/league', 'League Benchmark'],
+  ['/research', 'Research & Coverage'],
+  ['/methodology', 'Methodology'],
 ]
 
 export default function Nav() {
@@ -18,17 +20,18 @@ export default function Nav() {
   return (
     <div className="site-nav-wrap">
       <nav className="site-nav shell" aria-label="DISI sections">
-        <Link className="nav-brand" href="/">
+        <Link className="nav-brand" href="/" aria-label="DISI home">
           <span className="brand-mark">DISI</span>
-          <span className="brand-name">Dodgers International Signing Intelligence</span>
+          <span className="brand-name">Dodgers International Signings Research Database</span>
         </Link>
-        <div className="nav-links">
-          {links.map(([href, label]) => {
-            const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
-            return <Link key={href} className={active ? 'active' : ''} href={href}>{label}</Link>
-          })}
-        </div>
+        <PlayerSearch />
       </nav>
+      <div className="nav-links shell">
+        {links.map(([href, label]) => {
+          const active = pathname === href || pathname.startsWith(`${href}/`)
+          return <Link key={href} className={active ? 'active' : ''} aria-current={active ? 'page' : undefined} href={href}>{label}</Link>
+        })}
+      </div>
     </div>
   )
 }

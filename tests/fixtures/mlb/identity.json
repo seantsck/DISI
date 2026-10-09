@@ -1,0 +1,26 @@
+{
+  "_note": "Sanitized, fictional identity records (ids 9000101+), shaped like MLB Stats API person records with xrefIds and Baseball-Reference WAR file rows.",
+  "identityPerson": {
+    "people": [{
+      "id": 9000101, "fullName": "Rogelio Cedeño Prueba", "birthDate": "1974-08-16", "birthCity": "Valencia", "birthStateProvince": "Carabobo",
+      "birthCountry": "Venezuela", "height": "6' 1\"", "weight": 205, "batSide": { "code": "S" }, "pitchHand": { "code": "R" },
+      "primaryPosition": { "abbreviation": "RF" }, "mlbDebutDate": "1995-06-20",
+      "xrefIds": [{ "xrefType": "lahman", "xrefId": "cedenpr01" }, { "xrefType": "fangraphs", "xrefId": "869" }, { "xrefType": "retrosheet", "xrefId": "cedep001" }]
+    }]
+  },
+  "prospectPerson": {
+    "people": [{
+      "id": 9000102, "fullName": "Allen Prueba", "birthDate": "2005-11-08", "birthCity": "Lugazi", "birthCountry": "Uganda",
+      "height": "6' 13\"", "weight": "n/a", "batSide": { "code": "R" }, "pitchHand": { "code": "R" },
+      "primaryPosition": { "abbreviation": "P" }, "xrefIds": [{ "xrefType": "bis", "xrefId": "10007946" }]
+    }]
+  },
+  "warBatting": "name_common,age,mlb_ID,player_ID,year_ID,team_ID,WAR\nRogelio Cedeño Prueba,20,9000101,cedenpr01,1995,LAD,0.1\nRogelio Cedeño Prueba,21,9000101,cedenpr01,1996,LAD,0.5\nChico Ejemplo,24,9000103,ejempch01,1956,BRO,-0.4\nChico Ejemplo,25,9000103,ejempch01,1957,PHI,0.2\nJuan Doble,22,9000104,doblejo01,2001,NYY,0.1\nJuan Doble,23,9000105,doblejo02,2001,BOS,0.3\nJuan Doble,24,9000105,doblejo02,2002,BOS,0.3\n",
+  "warPitching": "name_common,age,mlb_ID,player_ID,year_ID,team_ID,WAR\nChico Ejemplo,24,9000103,ejempch01,1956,BRO,0.0\n",
+  "history": {
+    "transactions": [
+      { "id": 701, "person": { "id": 9000102, "fullName": "Allen Prueba" }, "toTeam": { "id": 119, "name": "Los Angeles Dodgers" }, "date": "2024-01-15", "typeCode": "SFA", "description": "Los Angeles Dodgers signed free agent C Allen Prueba to a minor league contract." },
+      { "id": 702, "person": { "id": 9000102, "fullName": "Allen Prueba" }, "toTeam": { "id": 119, "name": "Los Angeles Dodgers" }, "date": "2025-03-01", "typeCode": "SFA", "description": "Los Angeles Dodgers signed free agent RHP Allen Prueba to a minor league contract." }
+    ]
+  }
+}

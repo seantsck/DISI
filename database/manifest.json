@@ -15,7 +15,20 @@
     "013_league_benchmark_seed.sql",
     "014_portfolio_universe_and_source_pipeline.sql",
     "015_outcome_audit_operations.sql",
-    "016_historical_positive_outcomes_and_rate_guardrail.sql"
+    "016_historical_positive_outcomes_and_rate_guardrail.sql",
+    "017_research_database_layer.sql",
+    "018_signing_class_coverage_and_backfill.sql",
+    "019_mature_outcome_audit_expansion.sql",
+    "020_player_identity_and_biography_enrichment.sql",
+    "021_player_development_history.sql",
+    "022_player_development_exact_dates.sql",
+    "023_development_stint_integrity.sql",
+    "024_development_progression_decisions.sql",
+    "025_public_view_grant_hardening.sql",
+    "026_scouting_evaluation_history.sql",
+    "027_canonical_seed_drift_reconciliation.sql",
+    "028_residual_canonical_drift_reconciliation.sql",
+    "029_signing_network_intelligence.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -24,11 +37,24 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 16,
+    "canonical_build_count": 29,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
     "v0_6": "181-player research universe with explicit outcome audit operations and queue.",
-    "v0_7": "39 positive MLB outcome audits, Dodgers franchise identity, rate-eligibility guardrail, historical MLB outcome homepage."
+    "v0_7": "39 positive MLB outcome audits, Dodgers franchise identity, rate-eligibility guardrail, historical MLB outcome homepage.",
+    "v0_8": "Research-database layer: canonical player slugs, source tiers, metric-specific bWAR/fWAR provenance (player_metric_observations), official 2024/2025 class-size sources, and security-invoker research views for the signings table, player directory, player dossier, class coverage and research queue.",
+    "v0_9": "Signing populations (opening class vs full signing period vs samples), class-membership provenance, announced vs formal transaction dates, rate eligibility restricted to complete full-period populations, 2024 and 2025 announced classes completed, 2022 later-period backfill and source reconciliation.",
+    "v0_10": "Evidence-based outcome audits (35 new: 2 MLB, 33 no MLB) from reproducible MLB Stats API / Baseball-Reference research (scripts/mlb, database/research/019); outcome states, structured professional progress, outcome evidence, outcome research views.",
+    "v0_11": "Player identity and biography (020): MLB ids 263/268 (Dodgers 220/220), Baseball-Reference ids for all 58 MLB players, FanGraphs ids 139, birth data / handedness / size with field-level evidence, five birth countries corrected from signing-country values, Hyo-Jun Park linked to MLB Hoy Park, position at signing, derived ages (v_signing_ages, v_player_bio), present / resolved / conflicted / unsourced identity coverage, Dodgers-scoped counts (scripts/mlb, database/research/020).",
+    "v0_12": "Development history (021): canonical level taxonomy with era mapping, player/team/level/season stints (828 rows, 167 players) preserving source labels and organizations per stint, extended milestones with date precision and evidence basis (no fabricated dates), current development status, derived development metrics and security-invoker research views (scripts/mlb, database/research/021).",
+    "v0_13": "Exact development dates (022): 400 season-precision debut milestones upgraded to game-log-dated DAY precision in place, 166 exact PROFESSIONAL_DEBUT milestones, 746 stints carry verified first/last appearance dates, date-coverage view and research-queue issues; season-precision facts are kept where the gameLog era does not cover them and disagreements with existing exact dates become recorded conflicts, never overwrites (scripts/mlb, database/research/022).",
+    "v0_14": "Development stint integrity (023): 56 team-less season-total stints (34 same-level, 21 cross-level, 1 sub-season) tagged SEASON_TOTAL behind arithmetic guards and excluded from additive and coverage calculations, 772 TEAM_STINT rows, development status and research queue computed from team stints only, SEASON_GAP scoping fixed, FOREIGN_PRO exempt from UNRESOLVED_ORGANIZATION, Augusta 2021+ (Braves) and Vancouver 2011+ (Blue Jays) organization corrections (database/research/023).",
+    "v0_15": "Development progression decisions (024): first-appearance milestones stay literal facts; a reviewed development_progression_decisions layer (11 reviewed decisions, 9 pending events) marks early cameos, post-establishment appearances and unresolved cases, v_player_development_progression derives developmental arrival per level (REACHED / SKIPPED / NOT_REACHED / UNRESOLVED), elapsed development metrics and development status use developmental arrival, and the research queue flags non-monotonic progression and heuristic level-skip cameo candidates (database/research/024).",
+    "v0_16": "Public view grant hardening (025): every public view is a read-only, security_invoker analytical view; 43 legacy views (migrations 001-016) that had inherited Supabase default ALL privileges are reduced to SELECT for anon and authenticated, guarded by a reviewed inventory of all 86 views and an ACL-level postcondition; service_role, RLS, policies, table grants and view definitions are unchanged (database/research/025).",
+    "v0_17": "Scouting / prospect evaluation history (026): immutable point-in-time evaluation snapshots (publications, scales, grades with printed label, numeric base and +/- qualifier, rankings with mandatory scope, short paraphrase notes) kept separate from performance, development, outcomes and DISI model output; the empty legacy evaluations table is dropped behind guards; the 48 legacy MLB Pipeline international ranks with provenance are backfilled and the 11 unsourced ones are queued; five views and a research queue (database/research/026).",
+    "v0_18": "Canonical seed drift reconciliation (027): a forward, guarded, data-only migration that makes a fresh replay and live converge for the committed Migration-002 supplementary seed - 8 signing environments and the 30 signing links, the Lantigua trade, 2 aliases, 12 sources, 32 evidence claims, 3 source-metadata variants - removes the unsupported 2-trainer / 4-link seed and neutralises three trainer-asserting evidence notes (database/research/027).",
+    "v0_19": "Residual canonical drift reconciliation (028): a small, guarded, data-only forward migration that removes the last two substantive differences between live and a fresh replay - the Yusniel Diaz trade-package wording and the confidence (VERIFIED -> HIGH) of three 2018 class-membership source links (database/research/028).",
+    "v0_20": "Signing-network intelligence (029): a source-backed relationship layer for the people, academies, programs and showcase leagues named in a player's amateur development and signing pathway - network entities with aliases and identity reviews, entity-to-entity and player-to-network relationships with sealed ACTIVE rows, a deterministic ASCII lookup normaliser, four views and a research queue; the empty Migration-002 trainer layer is replaced (database/research/029)."
   }
 }

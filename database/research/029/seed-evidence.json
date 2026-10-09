@@ -1,0 +1,84 @@
+{
+  "policy": {
+    "store": "individual source-stated network facts with a citation and a short DISI paraphrase (<= 300 characters); never publisher text",
+    "never_store": ["search-snippet claims", "legacy Migration-002 trainer wording", "neutralised evidence notes", "inferred or probable relationships"],
+    "reviewed_on": "2026-10-08",
+    "pages_read": "Both Baseball America reviews were fetched once, returned HTTP 200 with the full article text, and were parsed directly. No paywall, bot protection or HTTP restriction was bypassed."
+  },
+  "sources": [
+    {
+      "key": "ba2016",
+      "source_name": "Baseball America",
+      "source_type": "ARTICLE",
+      "title": "International Reviews: Los Angeles Dodgers",
+      "url": "https://www.baseballamerica.com/stories/2015-international-reviews-los-angeles-dodgers/",
+      "author": "Ben Badler",
+      "publication_date": "2016-04-01",
+      "accessed_at": "2026-10-08T23:45:00Z",
+      "source_tier": "OTHER",
+      "notes": "Review of the Dodgers' 2015-16 international signing class."
+    },
+    {
+      "key": "ba2018",
+      "source_name": "Baseball America",
+      "source_type": "ARTICLE",
+      "title": "International Reviews: Los Angeles Dodgers",
+      "url": "https://www.baseballamerica.com/stories/international-reviews-los-angeles-dodgers-2018/",
+      "author": "Ben Badler",
+      "publication_date": "2018-04-30",
+      "accessed_at": "2026-10-08T23:45:00Z",
+      "source_tier": "OTHER",
+      "notes": "Review of the Dodgers' 2017-18 international signing class."
+    }
+  ],
+  "entities": [
+    { "slug": "raul-valera", "entity_type": "PERSON", "canonical_name": "Raul Valera", "name_basis": "NAMED", "anchor_slug": null, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "notes": "Baseball America's 2015-class Dodgers review identifies him as Raul Valera and gives the nickname Banana." },
+    { "slug": "franklin-ferreras", "entity_type": "PERSON", "canonical_name": "Franklin Ferreras", "name_basis": "NAMED", "anchor_slug": null, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "notes": "Named in Baseball America's 2015-class Dodgers review as the person Starling Heredia trained with." },
+    { "slug": "laurentino-genao", "entity_type": "PERSON", "canonical_name": "Laurentino Genao", "name_basis": "NAMED", "anchor_slug": null, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "notes": "Named in Baseball America's 2015-class Dodgers review as the person Ronny Brito trained with." },
+    { "slug": "amauris-nina", "entity_type": "PERSON", "canonical_name": "Amauris Nina", "name_basis": "NAMED", "anchor_slug": null, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "notes": "Named in Baseball America's 2015-class Dodgers review as the person Christopher Arias trained with." },
+    { "slug": "yasser-mendez", "entity_type": "PERSON", "canonical_name": "Yasser Mendez", "name_basis": "NAMED", "anchor_slug": null, "source": "ba2018", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "notes": "Named in Baseball America's 2017-class Dodgers review, which describes an academy through him." },
+    { "slug": "dominican-prospect-league", "entity_type": "SHOWCASE_LEAGUE", "canonical_name": "Dominican Prospect League", "name_basis": "NAMED", "anchor_slug": null, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "notes": "Named in Baseball America's 2015-class Dodgers review as a league Starling Heredia played in. No geography is stored beyond the name." },
+    { "slug": "international-prospect-league", "entity_type": "SHOWCASE_LEAGUE", "canonical_name": "International Prospect League", "name_basis": "NAMED", "anchor_slug": null, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "notes": "Named in Baseball America's 2015-class Dodgers review as a league Ronny Brito and Christopher Arias played in (abbreviated IPL there)." },
+    { "slug": "franklin-ferreras-program", "entity_type": "PROGRAM", "canonical_name": "Franklin Ferreras' program", "name_basis": "DESCRIPTIVE", "anchor_slug": "franklin-ferreras", "source": "ba2018", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "MEDIUM",
+      "notes": "A program the source describes only through Franklin Ferreras. The anchor records the wording; it does not assert operation or ownership. No proper name is given." },
+    { "slug": "yasser-mendez-academy", "entity_type": "ACADEMY", "canonical_name": "Yasser Mendez's academy", "name_basis": "DESCRIPTIVE", "anchor_slug": "yasser-mendez", "source": "ba2018", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "MEDIUM",
+      "notes": "An academy the source describes only through Yasser Mendez. The anchor records the wording; it does not assert operation or ownership. No proper name is given." }
+  ],
+  "aliases": [
+    { "entity_slug": "raul-valera", "alias": "Banana", "alias_type": "NICKNAME", "language_code": null, "source": "ba2016", "confidence": "HIGH" }
+  ],
+  "player_relationships": [
+    { "ref": "cruz-valera", "player_slug": "oneil-cruz", "entity_slug": "raul-valera", "relationship_type": "TRAINED_WITH", "stage": "UNKNOWN", "signing": null, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "note": "Baseball America's 2015-class review says Cruz trained with Valera, known as Banana. It gives no dates and does not tie the training to the signing." },
+    { "ref": "heredia-ferreras", "player_slug": "starling-heredia", "entity_slug": "franklin-ferreras", "relationship_type": "TRAINED_WITH", "stage": "PRE_SIGNING", "signing": { "organization_name": "Los Angeles Dodgers", "signing_year": 2015 }, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "note": "Baseball America's 2015-class review says Heredia signed on July 2 after playing in the Dominican Prospect League and training with Ferreras." },
+    { "ref": "heredia-dpl", "player_slug": "starling-heredia", "entity_slug": "dominican-prospect-league", "relationship_type": "SHOWCASED_IN", "stage": "PRE_SIGNING", "signing": { "organization_name": "Los Angeles Dodgers", "signing_year": 2015 }, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "note": "Same sentence: Heredia signed on July 2 after playing in the Dominican Prospect League." },
+    { "ref": "heredia-ferreras-program", "player_slug": "starling-heredia", "entity_slug": "franklin-ferreras-program", "relationship_type": "DEVELOPED_AT", "stage": "UNKNOWN", "signing": null, "source": "ba2018", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "MEDIUM",
+      "note": "Baseball America's 2017-class review says Ferreras' program also produced Heredia. This is neither exclusive nor causal attribution, and no period is given." },
+    { "ref": "brito-genao", "player_slug": "ronny-brito", "entity_slug": "laurentino-genao", "relationship_type": "TRAINED_WITH", "stage": "PRE_SIGNING", "signing": { "organization_name": "Los Angeles Dodgers", "signing_year": 2015 }, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "note": "Baseball America's 2015-class review says Brito signed out of the Dominican Republic after playing in the International Prospect League and training with Genao." },
+    { "ref": "brito-ipl", "player_slug": "ronny-brito", "entity_slug": "international-prospect-league", "relationship_type": "SHOWCASED_IN", "stage": "PRE_SIGNING", "signing": { "organization_name": "Los Angeles Dodgers", "signing_year": 2015 }, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "note": "Same sentence: Brito signed after playing in the International Prospect League." },
+    { "ref": "arias-nina", "player_slug": "christopher-arias", "entity_slug": "amauris-nina", "relationship_type": "TRAINED_WITH", "stage": "PRE_SIGNING", "signing": { "organization_name": "Los Angeles Dodgers", "signing_year": 2015 }, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "note": "Baseball America's 2015-class review says Christopher Arias signed on July 2 after playing in the IPL and training with Nina." },
+    { "ref": "arias-ipl", "player_slug": "christopher-arias", "entity_slug": "international-prospect-league", "relationship_type": "SHOWCASED_IN", "stage": "PRE_SIGNING", "signing": { "organization_name": "Los Angeles Dodgers", "signing_year": 2015 }, "source": "ba2016", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "note": "Same sentence: Arias signed after playing in the IPL, the International Prospect League." },
+    { "ref": "vivas-mendez-academy", "player_slug": "jorbit-vivas", "entity_slug": "yasser-mendez-academy", "relationship_type": "SIGNED_OUT_OF", "stage": "AT_SIGNING", "signing": { "organization_name": "Los Angeles Dodgers", "signing_year": 2017 }, "source": "ba2018", "evidence_basis": "PUBLISHED_INTERNATIONAL_REVIEW", "confidence": "HIGH",
+      "note": "Baseball America's 2017-class review says the Dodgers signed Vivas, spelled Yorbit there, in July out of Mendez's academy." }
+  ],
+  "entity_relationships": [],
+  "identity_reviews": [],
+  "researched_without_attribution": [
+    { "player_slug": "yadier-alvarez", "note": "The 2015-class review names no trainer, program or league for him." },
+    { "player_slug": "yusniel-diaz", "note": "The 2015-class review names no trainer, program or league for him." },
+    { "player_slug": "omar-estevez", "note": "The 2015-class review names no trainer, program or league for him." }
+  ]
+}

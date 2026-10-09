@@ -1,0 +1,1678 @@
+{
+  "meta": {
+    "command": "resolve-ids",
+    "recordCount": 48,
+    "rule": "Only DODGERS_TRANSACTION_MATCH / CLUB_TRANSACTION_MATCH are proposed resolutions; every other status requires manual research.",
+    "team": 119
+  },
+  "records": [
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1996-09-23",
+          "date": "2013-07-02",
+          "description": "Colorado Rockies signed free agent SS Carlos Herrera to a minor league contract.",
+          "fullName": "Carlos Herrera",
+          "mlbDebutDate": null,
+          "mlbId": 650508
+        }
+      ],
+      "name": "Carlos Herrera",
+      "signingYear": 2013,
+      "slug": "carlos-herrera",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:32.161Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:32.924Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:33.684Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:34.293Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650508"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "COL"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1996-10-29",
+          "date": "2013-07-02",
+          "description": "Oakland Athletics signed SS Carlos Hiciano.",
+          "fullName": "Carlos Hiciano",
+          "mlbDebutDate": null,
+          "mlbId": 645289
+        }
+      ],
+      "name": "Carlos Hiciano",
+      "signingYear": 2013,
+      "slug": "carlos-hiciano",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:35.198Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=133&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:35.981Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=133&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:36.706Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=133&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:17:59.216Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/645289"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "OAK"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1996-11-27",
+          "date": "2013-08-01",
+          "description": "Chicago Cubs signed free agent OF Eloy Jimenez to a minor league contract.",
+          "fullName": "Eloy Jiménez",
+          "mlbDebutDate": "2019-03-28",
+          "mlbId": 650391
+        }
+      ],
+      "name": "Eloy Jimenez",
+      "signingYear": 2013,
+      "slug": "eloy-jimenez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:40.535Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:41.442Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:42.077Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:42.635Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650391"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "CHC"
+    },
+    {
+      "candidates": [],
+      "name": "Emmanuel DeJesus",
+      "signingYear": 2013,
+      "slug": "emmanuel-dejesus",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:43.593Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:19.971Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:20.756Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:44.790Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Emmanuel%20DeJesus"
+        }
+      ],
+      "status": "NOT_FOUND",
+      "teamAbbr": "BOS"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Colombia",
+          "birthDate": "1996-09-22",
+          "date": "2013-07-02",
+          "description": "Colorado Rockies signed free agent RHP Erick Julio to a minor league contract.",
+          "fullName": "Erick Julio",
+          "mlbDebutDate": null,
+          "mlbId": 650510
+        }
+      ],
+      "name": "Erick Julio",
+      "signingYear": 2013,
+      "slug": "erick-julio",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:32.161Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:32.924Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:33.684Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:44.940Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650510"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "COL"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Colombia",
+          "birthDate": "1997-01-13",
+          "date": "2013-07-02",
+          "description": "Chicago Cubs signed free agent RHP Erling Moreno to a minor league contract.",
+          "fullName": "Erling Moreno",
+          "mlbDebutDate": null,
+          "mlbId": 650400
+        }
+      ],
+      "name": "Erling Moreno",
+      "signingYear": 2013,
+      "slug": "erling-moreno",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:40.535Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:41.442Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:42.077Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:45.714Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650400"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "CHC"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-05-27",
+          "date": "2013-07-02",
+          "description": "Milwaukee Brewers signed free agent SS Franly Mallen to a minor league contract.",
+          "fullName": "Franly Mallen",
+          "mlbDebutDate": null,
+          "mlbId": 650691
+        }
+      ],
+      "name": "Franly Mallen",
+      "signingYear": 2013,
+      "slug": "franly-mallen",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:49.704Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:50.410Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:51.219Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:51.804Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650691"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "MIL"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1996-12-13",
+          "date": "2013-07-02",
+          "description": "Chicago Cubs signed free agent SS Gleyber Torres to a minor league contract.",
+          "fullName": "Gleyber Torres",
+          "mlbDebutDate": "2018-04-22",
+          "mlbId": 650402
+        }
+      ],
+      "name": "Gleyber Torres",
+      "signingYear": 2013,
+      "slug": "gleyber-torres",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:40.535Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:41.442Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:42.077Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=112&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:54.072Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650402"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "CHC"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-01-27",
+          "date": "2013-07-03",
+          "description": "Seattle Mariners signed free agent SS Greifer Andrade to a minor league contract.",
+          "fullName": "Greifer Andrade",
+          "mlbDebutDate": null,
+          "mlbId": 650849
+        }
+      ],
+      "name": "Greifer Andrade",
+      "signingYear": 2013,
+      "slug": "greifer-andrade",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:54.977Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=136&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:29.134Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=136&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:29.890Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=136&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:55.584Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650849"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "SEA"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1996-09-09",
+          "date": "2013-07-02",
+          "description": "Texas Rangers signed free agent OF Jose Almonte to a minor league contract.",
+          "fullName": "Jose Almonte",
+          "mlbDebutDate": null,
+          "mlbId": 650954
+        }
+      ],
+      "name": "Jose Almonte",
+      "signingYear": 2013,
+      "slug": "jose-almonte",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:01.887Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:02.661Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:03.415Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:03.958Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650954"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "TEX"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-02-24",
+          "date": "2013-07-08",
+          "description": "Arizona Diamondbacks signed free agent C Jose Herrera to a minor league contract.",
+          "fullName": "Jose Herrera",
+          "mlbDebutDate": "2022-04-09",
+          "mlbId": 645444
+        }
+      ],
+      "name": "Jose Herrera",
+      "signingYear": 2013,
+      "slug": "jose-herrera",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:04.933Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=109&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:05.672Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=109&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:06.442Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=109&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:07.009Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/645444"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "ARI"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1996-11-19",
+          "date": "2013-11-21",
+          "description": "Minnesota Twins signed free agent OF Lewin Diaz to a minor league contract.",
+          "fullName": "Lewin Díaz",
+          "mlbDebutDate": "2020-08-15",
+          "mlbId": 650331
+        }
+      ],
+      "name": "Lewin Diaz",
+      "signingYear": 2013,
+      "slug": "lewin-diaz",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:17.805Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=142&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:56.508Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=142&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:57.242Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=142&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:18.369Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650331"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "MIN"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1996-09-18",
+          "date": "2013-07-02",
+          "description": "Texas Rangers signed free agent Marcos Diplan.",
+          "fullName": "Marcos Diplán",
+          "mlbDebutDate": "2021-08-06",
+          "mlbId": 650959
+        }
+      ],
+      "name": "Marcos Diplan",
+      "signingYear": 2013,
+      "slug": "marcos-diplan",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:01.887Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:02.661Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:03.415Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:19.151Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650959"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "TEX"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Italy",
+          "birthDate": "1997-05-24",
+          "date": "2013-07-02",
+          "description": "Kansas City Royals signed SS Marten Gasparini.",
+          "fullName": "Marten Gasparini",
+          "mlbDebutDate": null,
+          "mlbId": 645282
+        }
+      ],
+      "name": "Marten Gasparini",
+      "signingYear": 2013,
+      "slug": "marten-gasparini",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:20.065Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=118&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:20.810Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=118&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:21.564Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=118&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:18:00.718Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/645282"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "KC"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-01-14",
+          "date": "2013-07-02",
+          "description": "Texas Rangers signed free agent SS Michael De Leon to a minor league contract.",
+          "fullName": "Michael De León",
+          "mlbDebutDate": null,
+          "mlbId": 650958
+        }
+      ],
+      "name": "Michael DeLeon",
+      "signingYear": 2013,
+      "slug": "michael-deleon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:01.887Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:02.661Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:03.415Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:18:01.470Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650958"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "TEX"
+    },
+    {
+      "candidates": [],
+      "name": "Micker Zapata",
+      "signingYear": 2013,
+      "slug": "micker-zapata",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:23.855Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:16.959Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:17.665Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:25.036Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Micker%20Zapata"
+        }
+      ],
+      "status": "NOT_FOUND",
+      "teamAbbr": "CWS"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1996-11-13",
+          "date": "2013-07-02",
+          "description": "Milwaukee Brewers signed free agent LF Nicolas Pierre to a minor league contract.",
+          "fullName": "Nic Pierre",
+          "mlbDebutDate": null,
+          "mlbId": 650693
+        }
+      ],
+      "name": "Nicolas Pierre",
+      "signingYear": 2013,
+      "slug": "nicolas-pierre",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:49.704Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:50.410Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:51.219Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:27.500Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650693"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "MIL"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1996-10-24",
+          "date": "2013-08-09",
+          "description": "Boston Red Sox signed free agent 3B Rafael Devers to a minor league contract.",
+          "fullName": "Rafael Devers",
+          "mlbDebutDate": "2017-07-25",
+          "mlbId": 646240
+        }
+      ],
+      "name": "Rafael Devers",
+      "signingYear": 2013,
+      "slug": "rafael-devers",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:43.593Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:19.971Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:20.756Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:29.791Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/646240"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "BOS"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-01-17",
+          "date": "2013-07-02",
+          "description": "Toronto Blue Jays signed free agent SS Yeltsin Gudino to a minor league contract.",
+          "fullName": "Yeltsin Gudino",
+          "mlbDebutDate": null,
+          "mlbId": 650988
+        }
+      ],
+      "name": "Yeltsin Gudino",
+      "signingYear": 2013,
+      "slug": "yeltsin-gudino",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:36.835Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=141&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:08.766Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=141&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:09.525Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=141&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:37.418Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/650988"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "TOR"
+    },
+    {
+      "candidates": [],
+      "name": "Yeyson Yrizarry",
+      "signingYear": 2013,
+      "slug": "yeyson-yrizarry",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:01.887Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2012-01-01&endDate=2012-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:02.661Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:03.415Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=140&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:39.540Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Yeyson%20Yrizarry"
+        }
+      ],
+      "status": "NOT_FOUND",
+      "teamAbbr": "TEX"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1998-07-07",
+          "date": "2014-07-07",
+          "description": "Tampa Bay Rays signed SS Adrian Rondon.",
+          "fullName": "Adrian Rondon",
+          "mlbDebutDate": null,
+          "mlbId": 660632
+        }
+      ],
+      "name": "Adrian Rondon",
+      "signingYear": 2014,
+      "slug": "adrian-rondon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:13.929Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=139&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:14.679Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=139&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:15.469Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=139&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:17:58.851Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660632"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "TB"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-10-10",
+          "date": "2014-07-02",
+          "description": "Chicago White Sox signed free agent SS Amado Nunez to a minor league contract.",
+          "fullName": "Amado Nunez",
+          "mlbDebutDate": null,
+          "mlbId": 658535
+        }
+      ],
+      "name": "Amado Nunez",
+      "signingYear": 2014,
+      "slug": "amado-nunez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:16.959Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:17.665Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:18.459Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:19.024Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658535"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "CWS"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1998-03-09",
+          "date": "2014-08-15",
+          "description": "Boston Red Sox signed free agent Anderson Espinoza.",
+          "fullName": "Anderson Espinoza",
+          "mlbDebutDate": "2022-05-30",
+          "mlbId": 659262
+        }
+      ],
+      "name": "Anderson Espinoza",
+      "signingYear": 2014,
+      "slug": "anderson-espinoza",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:19.971Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:20.756Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:21.523Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:22.100Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/659262"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "BOS"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1998-06-12",
+          "date": "2014-07-02",
+          "description": "New York Yankees signed free agent CF Antonio Arias to a minor league contract.",
+          "fullName": "Antonio Arias",
+          "mlbDebutDate": null,
+          "mlbId": 660626
+        }
+      ],
+      "name": "Antonio Arias",
+      "signingYear": 2014,
+      "slug": "antonio-arias",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:25.129Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660626"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-09-23",
+          "date": "2014-07-17",
+          "description": "Philadelphia Phillies signed free agent SS Arquimedes Gamboa to a minor league contract.",
+          "fullName": "Arquímedes Gamboa",
+          "mlbDebutDate": null,
+          "mlbId": 660614
+        }
+      ],
+      "name": "Arquimedes Gamboa",
+      "signingYear": 2014,
+      "slug": "arquimedes-gamboa",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:26.081Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=143&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:26.882Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=143&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:27.596Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=143&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:28.168Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660614"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "PHI"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-09-11",
+          "date": "2014-07-24",
+          "description": "Seattle Mariners signed free agent OF Brayan Hernandez to a minor league contract.",
+          "fullName": "Brayan Hernandez",
+          "mlbDebutDate": null,
+          "mlbId": 659910
+        }
+      ],
+      "name": "Brayan Hernandez",
+      "signingYear": 2014,
+      "slug": "brayan-hernandez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:29.134Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=136&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:29.890Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=136&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:30.658Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=136&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:31.232Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/659910"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "SEA"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1998-01-15",
+          "date": "2014-08-15",
+          "description": "Boston Red Sox signed free agent RHP Christopher Acosta to a minor league contract.",
+          "fullName": "Christopher Acosta",
+          "mlbDebutDate": null,
+          "mlbId": 659261
+        }
+      ],
+      "name": "Christopher Acosta",
+      "signingYear": 2014,
+      "slug": "christopher-acosta",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:19.971Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:20.756Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:21.523Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=111&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:38.092Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/659261"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "BOS"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1998-01-07",
+          "date": "2014-12-18",
+          "description": "New York Yankees signed free agent SS Dermis Garcia to a minor league contract.",
+          "fullName": "Dérmis Garcia",
+          "mlbDebutDate": "2022-07-12",
+          "mlbId": 660650
+        }
+      ],
+      "name": "Dermis Garcia",
+      "signingYear": 2014,
+      "slug": "dermis-garcia",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:38.841Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660650"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-10-28",
+          "date": "2014-12-18",
+          "description": "New York Yankees signed free agent SS Diego Castillo to a minor league contract.",
+          "fullName": "Diego Castillo",
+          "mlbDebutDate": "2022-04-07",
+          "mlbId": 660636
+        }
+      ],
+      "name": "Diego Castillo",
+      "signingYear": 2014,
+      "slug": "diego-castillo",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:39.600Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660636"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-12-06",
+          "date": "2014-07-02",
+          "description": "Houston Astros signed free agent RHP Franklin Perez to a minor league contract.",
+          "fullName": "Franklin Pérez",
+          "mlbDebutDate": null,
+          "mlbId": 658530
+        }
+      ],
+      "name": "Franklin Perez",
+      "signingYear": 2014,
+      "slug": "franklin-perez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:46.640Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:47.379Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:48.140Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:48.729Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658530"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "HOU"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-10-30",
+          "date": "2014-07-10",
+          "description": "Milwaukee Brewers signed free agent SS Gilbert Lara to a minor league contract.",
+          "fullName": "Gilbert Lara",
+          "mlbDebutDate": null,
+          "mlbId": 658677
+        }
+      ],
+      "name": "Gilbert Lara",
+      "signingYear": 2014,
+      "slug": "gilbert-lara",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:50.410Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:51.219Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:52.767Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=158&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:53.317Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658677"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "MIL"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1998-05-28",
+          "date": "2014-07-02",
+          "description": "Minnesota Twins signed free agent RHP Huascar Ynoa to a minor league contract.",
+          "fullName": "Huascar Ynoa",
+          "mlbDebutDate": "2019-06-16",
+          "mlbId": 660623
+        }
+      ],
+      "name": "Huascar Ynoa",
+      "signingYear": 2014,
+      "slug": "huascar-ynoa",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:56.508Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=142&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:57.242Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=142&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:58.056Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=142&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:58.632Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660623"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "MIN"
+    },
+    {
+      "candidates": [],
+      "name": "Hyo-Jun Park",
+      "signingYear": 2014,
+      "slug": "hyo-jun-park",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:59.960Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Hyo-Jun%20Park"
+        }
+      ],
+      "status": "NOT_FOUND",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Colombia",
+          "birthDate": "1997-11-04",
+          "date": "2014-07-02",
+          "description": "Chicago White Sox signed free agent C Jhoandro Alfaro to a minor league contract.",
+          "fullName": "Jhoandro Alfaro",
+          "mlbDebutDate": null,
+          "mlbId": 658532
+        }
+      ],
+      "name": "Jhoandro Alfaro",
+      "signingYear": 2014,
+      "slug": "jhoandro-alfaro",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:16.959Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:17.665Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:18.459Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=145&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:00.152Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658532"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "CWS"
+    },
+    {
+      "candidates": [],
+      "name": "Jonathan Amundaray",
+      "signingYear": 2014,
+      "slug": "jonathan-amundaray",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:01.579Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Jonathan%20Amundaray"
+        }
+      ],
+      "status": "NOT_FOUND",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-09-13",
+          "date": "2014-07-02",
+          "description": "New York Yankees signed free agent RF Juan De Leon to a minor league contract.",
+          "fullName": "Juan De Leon",
+          "mlbDebutDate": null,
+          "mlbId": 660665
+        }
+      ],
+      "name": "Juan DeLeon",
+      "signingYear": 2014,
+      "slug": "juan-deleon",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:17:59.960Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660665"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1998-02-04",
+          "date": "2014-07-02",
+          "description": "Toronto Blue Jays signed free agent RHP Juan Meza to a minor league contract.",
+          "fullName": "Juan Meza",
+          "mlbDebutDate": null,
+          "mlbId": 660565
+        }
+      ],
+      "name": "Juan Meza",
+      "signingYear": 2014,
+      "slug": "juan-meza",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:08.766Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=141&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:09.525Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=141&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:10.271Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=141&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:10.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660565"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "TOR"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-12-15",
+          "date": "2014-07-02",
+          "description": "Detroit Tigers signed free agent LF Julio Martinez to a minor league contract.",
+          "fullName": "Julio Martinez",
+          "mlbDebutDate": null,
+          "mlbId": 660699
+        }
+      ],
+      "name": "Julio Martinez",
+      "signingYear": 2014,
+      "slug": "julio-martinez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:11.727Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=116&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:12.500Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=116&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:13.252Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=116&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:13.849Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660699"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "DET"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1998-08-13",
+          "date": "2014-08-13",
+          "description": "New York Mets signed free agent SS Kenny Hernandez to a minor league contract.",
+          "fullName": "Kenny Hernandez",
+          "mlbDebutDate": null,
+          "mlbId": 660660
+        }
+      ],
+      "name": "Kenny Hernandez",
+      "signingYear": 2014,
+      "slug": "kenny-hernandez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:14.784Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=121&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:15.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=121&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:16.322Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=121&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:16.874Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660660"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYM"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-12-02",
+          "date": "2014-07-02",
+          "description": "Houston Astros signed free agent SS Miguelangel Sierra to a minor league contract.",
+          "fullName": "Miguelangel Sierra",
+          "mlbDebutDate": null,
+          "mlbId": 658531
+        }
+      ],
+      "name": "Miguel Angel Sierra",
+      "signingYear": 2014,
+      "slug": "miguel-angel-sierra",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:46.640Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:47.379Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:48.140Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:18:02.246Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658531"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "HOU"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-09-14",
+          "date": "2014-07-02",
+          "description": "New York Yankees signed free agent C Miguel Flames to a minor league contract.",
+          "fullName": "Miguel Flames",
+          "mlbDebutDate": null,
+          "mlbId": 660560
+        }
+      ],
+      "name": "Miguel Flames",
+      "signingYear": 2014,
+      "slug": "miguel-flames",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:25.972Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660560"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-10-08",
+          "date": "2014-07-02",
+          "description": "New York Yankees signed free agent 3B Nelson Gomez to a minor league contract.",
+          "fullName": "Nelson Gomez",
+          "mlbDebutDate": null,
+          "mlbId": 660617
+        }
+      ],
+      "name": "Nelson Gomez",
+      "signingYear": 2014,
+      "slug": "nelson-gomez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:26.731Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660617"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-10-27",
+          "date": "2014-07-02",
+          "description": "Colorado Rockies signed free agent CF Pedro Gonzalez to a minor league contract.",
+          "fullName": "Pedro Gonzalez",
+          "mlbDebutDate": null,
+          "mlbId": 660639
+        }
+      ],
+      "name": "Pedro Gonzalez",
+      "signingYear": 2014,
+      "slug": "pedro-gonzalez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:32.924Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:33.684Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:28.393Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:29.015Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660639"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "COL"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1997-12-20",
+          "date": "2014-07-02",
+          "description": "San Diego Padres signed free agent C Ricardo Rodriguez to a minor league contract.",
+          "fullName": "Ricardo Rodriguez",
+          "mlbDebutDate": null,
+          "mlbId": 660616
+        }
+      ],
+      "name": "Ricardo Rodriguez",
+      "signingYear": 2014,
+      "slug": "ricardo-rodriguez",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:30.743Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=135&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:31.493Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=135&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:32.292Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=135&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:32.844Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660616"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "SD"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-10-02",
+          "date": "2014-07-03",
+          "description": "Kansas City Royals signed free agent SS Ricky Aracena to a minor league contract.",
+          "fullName": "Ricky Aracena",
+          "mlbDebutDate": null,
+          "mlbId": 660615
+        }
+      ],
+      "name": "Ricky Aracena",
+      "signingYear": 2014,
+      "slug": "ricky-aracena",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:16:20.810Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=118&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:21.564Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=118&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:33.785Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=118&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:34.375Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660615"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "KC"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Dominican Republic",
+          "birthDate": "1997-10-14",
+          "date": "2014-07-07",
+          "description": "Houston Astros signed free agent CF Ronny Ramirez to a minor league contract.",
+          "fullName": "Ronny Rafael",
+          "mlbDebutDate": null,
+          "mlbId": 658665
+        }
+      ],
+      "name": "Ronny Rafael",
+      "signingYear": 2014,
+      "slug": "ronny-rafael",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:46.640Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:47.379Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:48.140Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=117&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:35.129Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/658665"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "HOU"
+    },
+    {
+      "candidates": [
+        {
+          "birthCountry": "Venezuela",
+          "birthDate": "1998-04-01",
+          "date": "2014-07-02",
+          "description": "New York Yankees signed free agent SS Wilkerman Garcia to a minor league contract.",
+          "fullName": "Wilkerman Garcia",
+          "mlbDebutDate": null,
+          "mlbId": 660564
+        }
+      ],
+      "name": "Wilkerman Garcia",
+      "signingYear": 2014,
+      "slug": "wilkerman-garcia",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:23.038Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:23.812Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:24.591Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:35.910Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/660564"
+        }
+      ],
+      "status": "CLUB_TRANSACTION_MATCH",
+      "teamAbbr": "NYY"
+    },
+    {
+      "candidates": [],
+      "name": "Yeremy Rosario",
+      "signingYear": 2014,
+      "slug": "yeremy-rosario",
+      "sources": [
+        {
+          "retrievedAt": "2026-10-05T23:15:32.924Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2013-01-01&endDate=2013-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:15:33.684Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2014-01-01&endDate=2014-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:28.393Z",
+          "url": "https://statsapi.mlb.com/api/v1/transactions?teamId=115&startDate=2015-01-01&endDate=2015-12-31"
+        },
+        {
+          "retrievedAt": "2026-10-05T23:16:38.754Z",
+          "url": "https://statsapi.mlb.com/api/v1/people/search?names=Yeremy%20Rosario"
+        }
+      ],
+      "status": "NOT_FOUND",
+      "teamAbbr": "COL"
+    }
+  ]
+}
