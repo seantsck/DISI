@@ -36,6 +36,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 25. `025_public_view_grant_hardening.sql` — every public view reduced to SELECT for anon/authenticated (43 legacy views had inherited Supabase default ALL privileges) behind a reviewed inventory and an ACL postcondition (details below; research in `database/research/025/`).
 26. `026_scouting_evaluation_history.sql` — immutable external scouting evaluations (publications, scales, snapshots, grades, rankings, notes), the 48 provenance-backed legacy international ranks backfilled, the empty legacy `evaluations` table dropped behind guards (details below; research in `database/research/026/`).
 27. `027_canonical_seed_drift_reconciliation.sql` — forward, guarded, data-only reconciliation of the committed Migration-002 supplementary seed so live and a fresh replay converge: 8 signing environments and 30 signing links, the Lantigua trade, 2 aliases, 12 sources, 32 evidence claims, 3 source-metadata variants; the unsupported 2-trainer / 4-link seed is removed and three trainer-asserting evidence notes are neutralised (details below; research in `database/research/027/`).
+28. `028_residual_canonical_drift_reconciliation.sql` — small, guarded, data-only correction of the last two substantive live-vs-replay differences: the Yusniel Díaz trade wording and the confidence (VERIFIED → HIGH) of three 2018 class-membership source links (details below; research in `database/research/028/`).
 
 ## 017 research-database layer
 
@@ -136,6 +137,13 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Verifier.** Eleven new presence / integrity checks (never global totals) read `database/research/027/reconciliation-manifest.json`.
 - **Portability.** `initcap()` behaves differently between engines; new migration logic must not use it or any locale-sensitive function.
 - **Rerunnable**; audit, manifest and reproduction in `database/research/027/README.md`.
+
+## 028 residual canonical drift reconciliation
+
+- **Exactly four corrections.** One transaction wording and three class-membership source-link confidence values; nothing else changes. The frozen chain's values are the target.
+- **Guarded.** Each row must be canonical or the exact known live variant (found by stable keys, never by id); a missing, duplicated or otherwise different row aborts. No DDL, grants or policies change.
+- **Verifier.** Two new hard checks (trade wording, class-link confidence); 114 in total.
+- **Rerunnable**; audit, manifest and reproduction in `database/research/028/README.md`.
 
 ## Player identity (020)
 

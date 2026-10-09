@@ -26,6 +26,7 @@
     "023_development_stint_integrity.sql": "bf557b5e87eec89fd1f35006a108b9119eef129d",
     "024_development_progression_decisions.sql": "bfc1d1094fbaec9faf0910c5c4e67bb9bc084ac1",
     "025_public_view_grant_hardening.sql": "c942938953ddd9747064111ef78f420b60fc1f5b",
-    "026_scouting_evaluation_history.sql": "65a60a6fe6b0803a555d9bf12c22c8594976b776"
+    "026_scouting_evaluation_history.sql": "65a60a6fe6b0803a555d9bf12c22c8594976b776",
+    "027_canonical_seed_drift_reconciliation.sql": "cc8df2f06c400f4fc343b2e6035fa3f7ad18086c"
   }
 }

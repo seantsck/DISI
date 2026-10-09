@@ -2126,10 +2126,10 @@ const dayEval = (date, o = {}) => insertEvaluation({
 const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} returning id into i; update player_evaluations set record_status = 'ACTIVE' where id = i; end $seal$`
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
-test('frozen history: migrations 001-026 are byte-for-byte unchanged (line endings normalised); 027 is the only addition', () => {
-  const files = manifest.canonical_sql.filter((f) => f < '027')
-  assert.equal(files.length, 26)
-  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '027'), ['027_canonical_seed_drift_reconciliation.sql'])
+test('frozen history: migrations 001-027 are byte-for-byte unchanged (line endings normalised); 028 is the only addition', () => {
+  const files = manifest.canonical_sql.filter((f) => f < '028')
+  assert.equal(files.length, 27)
+  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '028'), ['028_residual_canonical_drift_reconciliation.sql'])
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {
     const text = readSql(f).replace(/\r\n/g, '\n')

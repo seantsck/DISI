@@ -11,6 +11,8 @@ import fs from 'node:fs'
 
 const manifest = JSON.parse(fs.readFileSync(new URL('../../../database/research/027/reconciliation-manifest.json', import.meta.url), 'utf8'))
 const cats = manifest.categories
+const manifest028 = JSON.parse(fs.readFileSync(new URL('../../../database/research/028/reconciliation-manifest.json', import.meta.url), 'utf8'))
+const cats028 = manifest028.categories
 const lit = (v) => `'${JSON.stringify(v).replace(/'/g, "''")}'::jsonb`
 const claims = [...cats.evidence_missing.entries, ...cats.evidence_variants.entries, ...cats.evidence_note_neutralizations.entries]
 const variantClaims = cats.evidence_variants.entries
@@ -86,6 +88,26 @@ export const RECONCILIATION_QUERIES = {
   // the seed notes that asserted unverified trainer relationships never come back
   reconciliation_trainer_note_violations: `select count(*)::int as n from jsonb_array_elements(${lit(cats.evidence_note_neutralizations.entries.map((c) => c.replay_original.evidence_note))}) x
     where exists (select 1 from public.evidence ev where ev.evidence_note = x #>> '{}')`,
+
+  // Migration 028: the Yusniel Diaz trade carries the canonical wording exactly once, and no known live wording remains
+  reconciliation_trade_wording_violations: `select count(*)::int as n from jsonb_array_elements(${lit(cats028.transaction_descriptions.entries.map((e) => ({ selector: e.selector, canonical: e.canonical, live: e.live })))}) x
+    where (select count(*) from public.transactions t join public.players p on p.id = t.player_id join public.organizations fo on fo.id = t.from_organization_id
+        join public.organizations too on too.id = t.to_organization_id
+        where p.slug = x -> 'selector' ->> 'player_slug' and t.transaction_date = (x -> 'selector' ->> 'transaction_date')::date and t.transaction_type = x -> 'selector' ->> 'transaction_type'
+          and fo.name = x -> 'selector' ->> 'from_organization_name' and too.name = x -> 'selector' ->> 'to_organization_name') <> 1
+      or (select count(*) from public.transactions t join public.players p on p.id = t.player_id
+        where p.slug = x -> 'selector' ->> 'player_slug' and t.transaction_date = (x -> 'selector' ->> 'transaction_date')::date and t.transaction_type = x -> 'selector' ->> 'transaction_type'
+          and t.return_description = x -> 'canonical' ->> 'return_description') <> 1
+      or exists (select 1 from public.transactions t where t.return_description = x -> 'live' ->> 'return_description')`,
+
+  // Migration 028: the three 2018 class-membership source links are HIGH, and the VERIFIED drift variant is gone
+  reconciliation_class_link_confidence_violations: `select count(*)::int as n from jsonb_array_elements(${lit(cats028.class_membership_confidence.entries.map((e) => ({ selector: e.selector, canonical: e.canonical })))}) x
+    where (select count(*) from public.signing_population_member_sources ms join public.signing_population_members m on m.id = ms.member_id
+        join public.signing_populations sp on sp.id = m.population_id join public.signings sg on sg.id = m.signing_id join public.players p on p.id = sg.player_id
+        join public.organizations o on o.id = sg.organization_id join public.sources so on so.id = ms.source_id
+        where sp.population_key = x -> 'selector' ->> 'population_key' and p.slug = x -> 'selector' ->> 'player_slug' and o.name = x -> 'selector' ->> 'organization_name'
+          and sg.signing_year = (x -> 'selector' ->> 'signing_year')::int and so.url = x -> 'selector' ->> 'source_url'
+          and ms.confidence::text = x -> 'canonical' ->> 'confidence' and ms.membership_basis = x -> 'canonical' ->> 'membership_basis') <> 1`,
 
   // the unsupported Migration-002 trainer seed stays removed until 028 retires the legacy objects
   legacy_trainers_rows: 'select count(*)::int as n from public.trainers',

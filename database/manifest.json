@@ -26,7 +26,8 @@
     "024_development_progression_decisions.sql",
     "025_public_view_grant_hardening.sql",
     "026_scouting_evaluation_history.sql",
-    "027_canonical_seed_drift_reconciliation.sql"
+    "027_canonical_seed_drift_reconciliation.sql",
+    "028_residual_canonical_drift_reconciliation.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -35,7 +36,7 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 27,
+    "canonical_build_count": 28,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
@@ -51,6 +52,7 @@
     "v0_15": "Development progression decisions (024): first-appearance milestones stay literal facts; a reviewed development_progression_decisions layer (11 reviewed decisions, 9 pending events) marks early cameos, post-establishment appearances and unresolved cases, v_player_development_progression derives developmental arrival per level (REACHED / SKIPPED / NOT_REACHED / UNRESOLVED), elapsed development metrics and development status use developmental arrival, and the research queue flags non-monotonic progression and heuristic level-skip cameo candidates (database/research/024).",
     "v0_16": "Public view grant hardening (025): every public view is a read-only, security_invoker analytical view; 43 legacy views (migrations 001-016) that had inherited Supabase default ALL privileges are reduced to SELECT for anon and authenticated, guarded by a reviewed inventory of all 86 views and an ACL-level postcondition; service_role, RLS, policies, table grants and view definitions are unchanged (database/research/025).",
     "v0_17": "Scouting / prospect evaluation history (026): immutable point-in-time evaluation snapshots (publications, scales, grades with printed label, numeric base and +/- qualifier, rankings with mandatory scope, short paraphrase notes) kept separate from performance, development, outcomes and DISI model output; the empty legacy evaluations table is dropped behind guards; the 48 legacy MLB Pipeline international ranks with provenance are backfilled and the 11 unsourced ones are queued; five views and a research queue (database/research/026).",
-    "v0_18": "Canonical seed drift reconciliation (027): a forward, guarded, data-only migration that makes a fresh replay and live converge for the committed Migration-002 supplementary seed - 8 signing environments and the 30 signing links, the Lantigua trade, 2 aliases, 12 sources, 32 evidence claims, 3 source-metadata variants - removes the unsupported 2-trainer / 4-link seed and neutralises three trainer-asserting evidence notes (database/research/027)."
+    "v0_18": "Canonical seed drift reconciliation (027): a forward, guarded, data-only migration that makes a fresh replay and live converge for the committed Migration-002 supplementary seed - 8 signing environments and the 30 signing links, the Lantigua trade, 2 aliases, 12 sources, 32 evidence claims, 3 source-metadata variants - removes the unsupported 2-trainer / 4-link seed and neutralises three trainer-asserting evidence notes (database/research/027).",
+    "v0_19": "Residual canonical drift reconciliation (028): a small, guarded, data-only forward migration that removes the last two substantive differences between live and a fresh replay - the Yusniel Diaz trade-package wording and the confidence (VERIFIED -> HIGH) of three 2018 class-membership source links (database/research/028)."
   }
 }

@@ -281,7 +281,8 @@ test('027 is a data-only forward migration: no schema, grant, policy or function
   assert.doesNotMatch(code, /full_name\s*=|canonical_name\s*=/i, 'no mutable player name is used as a key')
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
   assert.ok(frozen['026_scouting_evaluation_history.sql'] && frozen['002_dodgers_seed_cohort.sql'])
-  assert.equal(frozen[FILE], undefined, '027 itself is not yet frozen')
+  assert.ok(frozen[FILE], '027 is now part of the frozen baseline')
+  assert.equal(crypto.createHash('sha1').update(sql027.replace(/\r\n/g, '\n')).digest('hex'), frozen[FILE], '027 was modified after it was frozen')
 })
 
 test('rerun is a no-op: the committed migration applied twice (and over the drifted state) changes nothing the second time', async () => {

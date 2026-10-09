@@ -5,7 +5,7 @@
 // a query function (PGlite for the local canonical chain, or a pg client
 // connected with a URL from an environment variable).
 //
-// Hard invariants are the byte-stable state of the canonical 001→027 chain
+// Hard invariants are the byte-stable state of the canonical 001→028 chain
 // (seeded populations, migration-built rows, schema security properties).
 // Informational metrics are research-coverage numbers that may legitimately
 // move as research progresses; they are reported but never fail the run.
@@ -17,7 +17,7 @@
 
 import { RECONCILIATION_QUERIES } from './seed-reconciliation.mjs'
 
-/** Canonical 001→027 (DISI v0.18) expected state. */
+/** Canonical 001→028 (DISI v0.19) expected state. */
 export const CANONICAL_EXPECTATIONS = {
   // population (seeded by 002/012/013/016/019 and surfaced by v_database_status)
   players_total: 268,
@@ -128,6 +128,9 @@ export const CANONICAL_EXPECTATIONS = {
   reconciliation_evidence_violations: 0,
   reconciliation_evidence_variant_coexistence: 0,
   reconciliation_trainer_note_violations: 0,
+  // Migration 028 residual reconciliation
+  reconciliation_trade_wording_violations: 0,
+  reconciliation_class_link_confidence_violations: 0,
   // the unsupported trainer seed stays removed until 028 retires the legacy trainer objects
   legacy_trainers_rows: 0,
   legacy_player_trainers_rows: 0,

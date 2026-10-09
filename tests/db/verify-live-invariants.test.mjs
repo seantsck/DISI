@@ -1,5 +1,5 @@
 // Offline tests for scripts/db/lib/invariants.mjs against the canonical
-// 001→027 PGlite chain. No live Supabase access is involved.
+// 001→028 PGlite chain. No live Supabase access is involved.
 //
 // Drift conditions are simulated inside transactions that are rolled back, so
 // the shared chain stays pristine for every scenario.
@@ -31,12 +31,12 @@ async function withDrift(driftSql) {
   }
 }
 
-test('clean canonical 001→027 state passes every hard invariant', async () => {
+test('clean canonical 001→028 state passes every hard invariant', async () => {
   const report = await runChecks()
   assert.deepEqual(failedChecks(report).map((c) => c.name), [])
   // population 4 + development 17 + status 2 + progression 3 + integrity 10
   // + scouting 22 + api 9 + privileges 16 + rls 6 + security_invoker 10
-  assert.ok(report.hard.length >= 112, `expected a full battery, got ${report.hard.length}`)
+  assert.ok(report.hard.length >= 114, `expected a full battery, got ${report.hard.length}`)
   // informational coverage numbers are reported but never fail
   assert.ok(report.info.length >= 3)
 })
@@ -284,5 +284,23 @@ test('027 drift: each part of the Migration-002 seed drift fails exactly its rec
   assert.deepEqual(names(await withDrift(`insert into sources (source_name, source_type, title, url) values ('Test', 'ARTICLE', 'Unrelated new source', 'https://example.test/new-source');
     insert into player_aliases (player_id, alias, alias_type) select id, 'Test Alias', 'SOURCE_VARIANT' from players limit 1;`)), [],
     'new sources and aliases are legitimate growth')
+  assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
+})
+
+test('028 drift: the two residual live differences fail exactly their own checks', async () => {
+  const names = (report) => failedChecks(report).map((c) => c.name).sort()
+  const m = JSON.parse((await import('node:fs')).readFileSync(new URL('../../database/research/028/reconciliation-manifest.json', import.meta.url), 'utf8')).categories
+  const tx = m.transaction_descriptions.entries[0]
+  assert.deepEqual(names(await withDrift(`update transactions set return_description = ${lit(tx.live.return_description)}
+    where return_description = ${lit(tx.canonical.return_description)};`)), ['reconciliation_trade_wording_violations'])
+  const slugs = m.class_membership_confidence.entries.map((e) => lit(e.selector.player_slug)).join(', ')
+  assert.deepEqual(names(await withDrift(`update signing_population_member_sources set confidence = 'VERIFIED' where id in (
+    select ms.id from signing_population_member_sources ms join signing_population_members mm on mm.id = ms.member_id join signings sg on sg.id = mm.signing_id
+    join players p on p.id = sg.player_id join sources so on so.id = ms.source_id
+    where p.slug in (${slugs}) and so.url = ${lit(m.class_membership_confidence.entries[0].selector.source_url)});`)), ['reconciliation_class_link_confidence_violations'])
+  // a single link drifting is enough, and unrelated links elsewhere are not examined
+  assert.deepEqual(names(await withDrift(`update signing_population_member_sources set confidence = 'VERIFIED' where confidence = 'HIGH' and id not in (
+    select ms.id from signing_population_member_sources ms join signing_population_members mm on mm.id = ms.member_id join signings sg on sg.id = mm.signing_id
+    join players p on p.id = sg.player_id where p.slug in (${slugs}));`)), [])
   assert.equal(await runVerifier(chain.query, 'restored test state'), 0)
 })
