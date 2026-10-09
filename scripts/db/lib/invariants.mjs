@@ -5,7 +5,7 @@
 // a query function (PGlite for the local canonical chain, or a pg client
 // connected with a URL from an environment variable).
 //
-// Hard invariants are the byte-stable state of the canonical 001→028 chain
+// Hard invariants are the byte-stable state of the canonical 001→029 chain
 // (seeded populations, migration-built rows, schema security properties).
 // Informational metrics are research-coverage numbers that may legitimately
 // move as research progresses; they are reported but never fail the run.
@@ -16,8 +16,9 @@
 // CANONICAL_EXPECTATIONS in the same commit as that migration.
 
 import { RECONCILIATION_QUERIES } from './seed-reconciliation.mjs'
+import { NETWORK_QUERIES } from './network-invariants.mjs'
 
-/** Canonical 001→028 (DISI v0.19) expected state. */
+/** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
   // population (seeded by 002/012/013/016/019 and surfaced by v_database_status)
   players_total: 268,
@@ -83,11 +84,11 @@ export const CANONICAL_EXPECTATIONS = {
   // whole public API surface (025). Checked from the ACLs themselves
   // (aclexplode), so privileges information_schema omits (MAINTAIN) count too.
   // 026 adds six tables (and drops the empty legacy evaluations table: 42 - 1 + 6) and five views.
-  public_views_total: 91,
+  public_views_total: 93,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 47,
+  public_tables_total: 50,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -131,9 +132,20 @@ export const CANONICAL_EXPECTATIONS = {
   // Migration 028 residual reconciliation
   reconciliation_trade_wording_violations: 0,
   reconciliation_class_link_confidence_violations: 0,
-  // the unsupported trainer seed stays removed until 028 retires the legacy trainer objects
-  legacy_trainers_rows: 0,
-  legacy_player_trainers_rows: 0,
+  // Migration 029 signing-network layer: structural integrity only, never research coverage
+  network_legacy_trainer_objects_present: 0,
+  network_entity_provenance_violations: 0,
+  network_entity_anchor_violations: 0,
+  network_alias_violations: 0,
+  network_player_relationship_violations: 0,
+  network_entity_relationship_violations: 0,
+  network_relationship_compatibility_violations: 0,
+  network_signing_player_mismatches: 0,
+  network_period_violations: 0,
+  network_supersession_violations: 0,
+  network_guard_trigger_violations: 0,
+  network_identity_review_violations: 0,
+  network_normalizer_violations: 0,
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -414,6 +426,11 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   // -- canonical seed reconciliation (027) ------------------------------------
   for (const [name, sql] of Object.entries(RECONCILIATION_QUERIES)) {
     check('seed', name, expectations[name], await count(sql))
+  }
+
+  // -- signing-network layer (029) -------------------------------------------
+  for (const [name, sql] of Object.entries(NETWORK_QUERIES)) {
+    check('network', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

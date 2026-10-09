@@ -1,0 +1,46 @@
+{
+  "audited_on": "2026-10-08",
+  "method": "Each page was fetched once with a single request, parsed directly, and judged on what it states. Search-engine summaries were used only to find pages and are never evidence. No paywall, bot protection or HTTP restriction was bypassed and nothing was bulk scraped.",
+  "policy": {
+    "store": "individual source-stated facts with a citation and a short DISI paraphrase (<= 300 characters)",
+    "never_store": ["publisher text", "search-snippet claims", "legacy Migration-002 trainer wording", "inferred or probable relationships"],
+    "terms": "Baseball America material is treated as all-rights-reserved: facts and citations only."
+  },
+  "sources": [
+    {
+      "source": "Baseball America, International Reviews: Los Angeles Dodgers (2015-16 class), Ben Badler, 2016-04-01",
+      "url": "https://www.baseballamerica.com/stories/2015-international-reviews-los-angeles-dodgers/",
+      "access": "free; HTTP 200; full text",
+      "names_network_explicitly": "yes, per player, in the source's own wording",
+      "used_for": [
+        "Cruz: trained with Raul Valera ('Banana')",
+        "Heredia: signed after playing in the Dominican Prospect League and training with Franklin Ferreras",
+        "Brito: signed after playing in the International Prospect League and training with Laurentino Genao",
+        "Christopher Arias: signed after playing in the IPL and training with Amauris Nina"
+      ],
+      "no_attribution": ["Yadier Alvarez", "Yusniel Diaz", "Omar Estevez"],
+      "stable_url": "yes (/stories/...)"
+    },
+    {
+      "source": "Baseball America, International Reviews: Los Angeles Dodgers (2017-18 class), Ben Badler, 2018-04-30",
+      "url": "https://www.baseballamerica.com/stories/international-reviews-los-angeles-dodgers-2018/",
+      "access": "free; HTTP 200; full text",
+      "names_network_explicitly": "yes",
+      "used_for": [
+        "Vivas (spelled Yorbit): signed in July out of Yasser Mendez's academy",
+        "Ferreras' program also produced Heredia"
+      ],
+      "stable_url": "yes"
+    },
+    { "source": "Baseball America, 2023 Dodgers international review", "access": "visible text truncated at about 9,500 characters; names no trainer for Vargas", "used": false },
+    { "source": "MLB.com signing coverage and prospect profiles", "access": "HTTP 406 to automated requests", "used": false, "note": "not circumvented" },
+    { "source": "True Blue LA", "access": "HTTP 403", "used": false, "note": "not circumvented" },
+    { "source": "Dodgers Digest 2023 and 2024 class posts", "access": "readable", "names_network": false, "used": false },
+    { "source": "Baseball America player pages", "access": "HTTP 403 (bot protection)", "used": false, "note": "not circumvented" }
+  ],
+  "known_gaps": [
+    "Only two readable public pages state a network relationship for a DISI-tracked player, so the seed is five players.",
+    "The four MLB.com candidates (Morales, Arias, Melburne, Vargas) remain unverified.",
+    "No public structured source of trainer relationships was found."
+  ]
+}

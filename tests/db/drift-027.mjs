@@ -38,9 +38,9 @@ export const driftParts = {
 }
 
 /** The whole known live drift, in dependency order. */
-export const liveDriftSql = () => [
+export const liveDriftSql = ({ trainers = true } = {}) => [
   driftParts.environments(), driftParts.transaction(), driftParts.aliases(), driftParts.evidence(), driftParts.sourceMetadata(),
-  driftParts.missingSources(), driftParts.trainers(),
+  driftParts.missingSources(), ...(trainers ? [driftParts.trainers()] : []),
 ].join('\n')
 
 /** Removes the leading `begin;` and trailing `commit;` so a migration can run inside a caller-owned transaction. */

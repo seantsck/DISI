@@ -109,9 +109,6 @@ export const RECONCILIATION_QUERIES = {
           and sg.signing_year = (x -> 'selector' ->> 'signing_year')::int and so.url = x -> 'selector' ->> 'source_url'
           and ms.confidence::text = x -> 'canonical' ->> 'confidence' and ms.membership_basis = x -> 'canonical' ->> 'membership_basis') <> 1`,
 
-  // the unsupported Migration-002 trainer seed stays removed until 028 retires the legacy objects
-  legacy_trainers_rows: 'select count(*)::int as n from public.trainers',
-  legacy_player_trainers_rows: 'select count(*)::int as n from public.player_trainers',
 }
 
 export const RECONCILIATION_CHECK_NAMES = Object.keys(RECONCILIATION_QUERIES)

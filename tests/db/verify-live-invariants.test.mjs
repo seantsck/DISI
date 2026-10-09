@@ -1,5 +1,5 @@
 // Offline tests for scripts/db/lib/invariants.mjs against the canonical
-// 001→028 PGlite chain. No live Supabase access is involved.
+// 001→029 PGlite chain. No live Supabase access is involved.
 //
 // Drift conditions are simulated inside transactions that are rolled back, so
 // the shared chain stays pristine for every scenario.
@@ -31,12 +31,12 @@ async function withDrift(driftSql) {
   }
 }
 
-test('clean canonical 001→028 state passes every hard invariant', async () => {
+test('clean canonical 001→029 state passes every hard invariant', async () => {
   const report = await runChecks()
   assert.deepEqual(failedChecks(report).map((c) => c.name), [])
   // population 4 + development 17 + status 2 + progression 3 + integrity 10
   // + scouting 22 + api 9 + privileges 16 + rls 6 + security_invoker 10
-  assert.ok(report.hard.length >= 114, `expected a full battery, got ${report.hard.length}`)
+  assert.ok(report.hard.length >= 125, `expected a full battery, got ${report.hard.length}`)
   // informational coverage numbers are reported but never fail
   assert.ok(report.info.length >= 3)
 })
@@ -267,13 +267,13 @@ test('027 drift: each part of the Migration-002 seed drift fails exactly its rec
     where entity_type = 'signing' and field_name is null and source_id = (select id from sources where url = ${lit(neutral.selector.url)})
       and entity_id = (select sg.id from signings sg join players p on p.id = sg.player_id where p.slug = ${lit(neutral.selector.player_slug)} and sg.signing_year = ${neutral.selector.signing_year});`)),
     ['reconciliation_evidence_violations', 'reconciliation_trainer_note_violations'].sort())
-  // the whole known live drift (trainers are already absent in a post-027 chain)
-  const all = names(await withDrift(liveDriftSql()))
+  // the whole known live drift (the legacy trainer tables no longer exist after 029)
+  const all = names(await withDrift(liveDriftSql({ trainers: false })))
   for (const expected of ['reconciliation_signing_environment_violations', 'reconciliation_signing_link_violations', 'reconciliation_affected_signings_without_environment',
     'reconciliation_transaction_violations', 'reconciliation_alias_violations', 'reconciliation_source_violations', 'reconciliation_evidence_violations',
     'reconciliation_evidence_variant_coexistence']) assert.ok(all.includes(expected), `${expected} should fail on the known live drift`)
-  // the unsupported trainer seed coming back is caught
-  assert.deepEqual(names(await withDrift(`insert into trainers (name, academy_name, country) values ('Jaime Ramos', null, 'Dominican Republic');`)), ['legacy_trainers_rows'])
+  // the retired trainer layer coming back is caught
+  assert.ok(names(await withDrift(`create table public.trainers (id int);`)).includes('network_legacy_trainer_objects_present'))
   // a duplicate claim (the canonical row plus a second one) fails the exact-once check, but growth elsewhere does not fail anything
   const claim = cats027.evidence_variants.entries[0]
   assert.deepEqual(names(await withDrift(`insert into evidence (entity_type, entity_id, field_name, source_id, confidence, evidence_note)

@@ -37,6 +37,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 26. `026_scouting_evaluation_history.sql` — immutable external scouting evaluations (publications, scales, snapshots, grades, rankings, notes), the 48 provenance-backed legacy international ranks backfilled, the empty legacy `evaluations` table dropped behind guards (details below; research in `database/research/026/`).
 27. `027_canonical_seed_drift_reconciliation.sql` — forward, guarded, data-only reconciliation of the committed Migration-002 supplementary seed so live and a fresh replay converge: 8 signing environments and 30 signing links, the Lantigua trade, 2 aliases, 12 sources, 32 evidence claims, 3 source-metadata variants; the unsupported 2-trainer / 4-link seed is removed and three trainer-asserting evidence notes are neutralised (details below; research in `database/research/027/`).
 28. `028_residual_canonical_drift_reconciliation.sql` — small, guarded, data-only correction of the last two substantive live-vs-replay differences: the Yusniel Díaz trade wording and the confidence (VERIFIED → HIGH) of three 2018 class-membership source links (details below; research in `database/research/028/`).
+29. `029_signing_network_intelligence.sql` — source-backed signing-network layer: network entities (people, academies, programs, showcase leagues, agencies) with aliases and identity reviews, entity-to-entity and player-to-network relationships with sealed ACTIVE rows, a deterministic ASCII lookup normaliser, four views and a research queue; the empty Migration-002 trainer layer is replaced and the dossier reads the new view (details below; research in `database/research/029/`).
 
 ## 017 research-database layer
 
@@ -144,6 +145,18 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Guarded.** Each row must be canonical or the exact known live variant (found by stable keys, never by id); a missing, duplicated or otherwise different row aborts. No DDL, grants or policies change.
 - **Verifier.** Two new hard checks (trade wording, class-link confidence); 114 in total.
 - **Rerunnable**; audit, manifest and reproduction in `database/research/028/README.md`.
+
+## 029 signing-network intelligence
+
+- **Associations, not causes.** `player_network_relationships` records what a source directly says (trained with, developed at, signed out of, showcased in, represented by). Absence of a row means no verified network attribution is stored, never that no network existed. No WAR, bonus, rank or success is credited to any network entity.
+- **Entities.** `entity_type` is what the entity is (PERSON, ACADEMY, PROGRAM, SHOWCASE_LEAGUE, AGENCY, OTHER); the role lives on the relationship. `name_basis` (NAMED, DESCRIPTIVE, NICKNAME_ONLY) never invents a proper name, and a descriptive entity's anchor means only that the source described it through that person. Identity and creation provenance are sealed; a new name is an alias.
+- **Aliases.** Exact printed spelling plus a generated search-only `lookup_key` from `disi_network_lookup_key()`: fixed translate maps and a fixed regex, no `lower()` / `initcap()`, identical on PostgreSQL and the PGlite replay. Relationships join on entity ids.
+- **Relationships.** Type compatibility is enforced in the database; stage (PRE_SIGNING, AT_SIGNING, POST_SIGNING, UNKNOWN) is separate from the period (DAY / MONTH / YEAR / SEASON / UNKNOWN per side, no invented day 1); the optional `signing_id` is tied to the same player by a composite foreign key. ACTIVE rows are sealed, deletes are forbidden, and a correction is a new row that supersedes (and retires) its predecessor.
+- **Seed.** Only what two Baseball America Dodgers international reviews directly state, for five players (Cruz, Heredia, Brito, Christopher Arias, Vivas): 9 entities, 1 alias, 9 relationships. The four unverified MLB.com candidates stay in the research backlog.
+- **Coverage.** The primary denominator is the 64 Dodgers LATAM_AMATEUR + CUBAN_AMATEUR signings with a reported bonus, an international rank or verified MLB reach (5 attributed, 59 queued, 34 of them MLB-reaching); CUBAN_PRO is a separate segment.
+- **Legacy.** `trainers`, `player_trainers`, `v_player_trainers` and `v_dodgers_trainer_network` are dropped behind a guard (all empty since 027). The dossier now shows the network from `v_player_signing_network`.
+- **Surface.** 50 public tables and 93 views; every new table has RLS and SELECT-only API grants, every view is `security_invoker`, and the helper functions have EXECUTE revoked. The verifier adds 11 structural checks (125 in total).
+- **Rerunnable**; design, source audit and reproduction in `database/research/029/README.md`.
 
 ## Player identity (020)
 

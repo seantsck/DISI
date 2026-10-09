@@ -128,7 +128,7 @@ function milestoneWhen(m) {
 
 export default async function PlayerPage({ params }) {
   const { slug } = await params
-  const { live, error, player, signings, timeline, transactions, sources, trainers, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable } = await loadDossier(slug)
+  const { live, error, player, signings, timeline, transactions, sources, network, networkAvailable, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable } = await loadDossier(slug)
 
   if (!live) {
     return (
@@ -365,16 +365,24 @@ export default async function PlayerPage({ params }) {
             ))}
           </ul>
         )}
-        <h3 className="sub">Trainer / academy relationships</h3>
-        {trainers.length === 0 ? <p className="unknown">None recorded.</p> : (
-          <ul className="plain-list">
-            {trainers.map((t, i) => (
-              <li key={i}>
-                <strong>{t.trainer_name}</strong>{t.academy_name && ` · ${t.academy_name}`}
-                <span className="muted"> · {humanize(t.relationship_type)}{t.country && ` · ${t.country}`} · confidence {humanize(t.confidence)}</span>
-              </li>
-            ))}
-          </ul>
+        <h3 className="sub">Amateur development &amp; signing network</h3>
+        {!networkAvailable ? <p className="unknown">The signing-network layer is not available in this database yet.</p> : network.length === 0 ? (
+          <p className="unknown">No verified network attribution is stored for this player. This is not evidence that none existed.</p>
+        ) : (
+          <>
+            <ul className="plain-list">
+              {network.map((n) => (
+                <li key={n.relationship_id}>
+                  <strong>{n.entity_name}</strong>
+                  <span className="muted"> · {humanize(n.relationship_type)} · {humanize(n.entity_type)}{n.name_basis === 'DESCRIPTIVE' ? ' (described in the source; no proper name given)' : ''}
+                    {' '}· stage {humanize(n.stage)} · confidence {humanize(n.confidence)}
+                    {n.relationship_tied_to_signing ? ' · tied to the signing' : ''}
+                    {n.source_url && <> · <a href={n.source_url}>{n.source_title ?? 'source'}</a></>}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="muted">Source-stated associations only: they are not causes, and no performance, bonus or success is credited to a trainer, academy, program or league.</p>
+          </>
         )}
         <h3 className="sub">Timeline</h3>
         {timeline.length === 0 ? <p className="unknown">No dated events recorded.</p> : (
