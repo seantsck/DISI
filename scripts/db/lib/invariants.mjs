@@ -17,6 +17,7 @@
 
 import { RECONCILIATION_QUERIES } from './seed-reconciliation.mjs'
 import { NETWORK_QUERIES } from './network-invariants.mjs'
+import { FINANCIAL_QUERIES } from './financial-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -84,11 +85,12 @@ export const CANONICAL_EXPECTATIONS = {
   // whole public API surface (025). Checked from the ACLs themselves
   // (aclexplode), so privileges information_schema omits (MAINTAIN) count too.
   // 026 adds six tables (and drops the empty legacy evaluations table: 42 - 1 + 6) and five views.
-  public_views_total: 93,
+  // 030 adds three tables and four views.
+  public_views_total: 97,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 50,
+  public_tables_total: 53,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -146,6 +148,19 @@ export const CANONICAL_EXPECTATIONS = {
   network_guard_trigger_violations: 0,
   network_identity_review_violations: 0,
   network_normalizer_violations: 0,
+  // Migration 030 financial acquisition intelligence: structural integrity only, never research coverage
+  financial_signing_report_provenance_violations: 0,
+  financial_signing_report_shape_violations: 0,
+  financial_environment_report_violations: 0,
+  financial_supersession_violations: 0,
+  financial_guard_trigger_violations: 0,
+  financial_function_violations: 0,
+  financial_column_ledger_mismatches: 0,
+  financial_environment_column_mismatches: 0,
+  financial_pool_treatment_violations: 0,
+  financial_pool_charge_violations: 0,
+  financial_component_rule_violations: 0,
+  financial_view_semantics_violations: 0,
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -431,6 +446,11 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   // -- signing-network layer (029) -------------------------------------------
   for (const [name, sql] of Object.entries(NETWORK_QUERIES)) {
     check('network', name, expectations[name], await count(sql))
+  }
+
+  // -- financial acquisition intelligence (030) -------------------------------
+  for (const [name, sql] of Object.entries(FINANCIAL_QUERIES)) {
+    check('financial', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

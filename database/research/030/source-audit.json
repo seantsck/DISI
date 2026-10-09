@@ -1,0 +1,181 @@
+{
+  "reviewed_on": "2026-10-09",
+  "policy": "Each new page was fetched once, returned HTTP 200 with the article text and was parsed directly. The two 2016 / 2018 Baseball America reviews were re-read from the copies fetched for Migration 027. No paywall, bot protection or HTTP restriction was bypassed. MLB.com pages answered HTTP 406 and were not used as new evidence.",
+  "sources": [
+    {
+      "key": "ba2013",
+      "url": "https://www.baseballamerica.com/stories/2012-13-international-reviews-los-angeles-dodgers/",
+      "new_in_030": true,
+      "title": "2012-13 International Reviews: Los Angeles Dodgers",
+      "author": "Ben Badler",
+      "publication_date": "2013-02-21",
+      "read_status": "DIRECT_HTTP_200",
+      "signing_reports": [
+        "ryu-bonus-ba",
+        "ryu-posting-ba",
+        "puig-bonus-ba"
+      ],
+      "environment_reports": [],
+      "pool_treatments": [
+        "yasiel-puig",
+        "pre-pool rule"
+      ]
+    },
+    {
+      "key": "cbs2012",
+      "url": "https://www.cbssports.com/mlb/news/dodgers-sign-hyun-jin-ryu-for-six-years-36-million",
+      "new_in_030": true,
+      "title": "Dodgers sign Hyun-jin Ryu for six years, $36 million",
+      "author": "Matt Snyder",
+      "publication_date": "2012-12-09",
+      "read_status": "DIRECT_HTTP_200",
+      "signing_reports": [
+        "ryu-bonus-cbs",
+        "ryu-posting-cbs"
+      ],
+      "environment_reports": [],
+      "pool_treatments": []
+    },
+    {
+      "key": "cbs2025",
+      "url": "https://www.cbssports.com/mlb/news/roki-sasaki-signs-with-dodgers-japanese-ace-agrees-to-deal-with-world-series-champs/",
+      "new_in_030": true,
+      "title": "Roki Sasaki signs with Dodgers: Japanese ace agrees to deal with World Series champs",
+      "author": "R.J. Anderson; Mike Axisa",
+      "publication_date": "2025-01-17",
+      "read_status": "DIRECT_HTTP_200",
+      "signing_reports": [
+        "sasaki-bonus-cbs",
+        "sasaki-posting-cbs"
+      ],
+      "environment_reports": [
+        "env2025-pool-cbs"
+      ],
+      "pool_treatments": [
+        "roki-sasaki"
+      ]
+    },
+    {
+      "key": "mlbtr2025",
+      "url": "https://mlbtraderumors.com/2025/01/roki-sasaki-to-sign-with-dodgers.html",
+      "new_in_030": true,
+      "title": "Dodgers Sign Roki Sasaki",
+      "author": "Anthony Franco",
+      "publication_date": "2025-01-22",
+      "read_status": "DIRECT_HTTP_200",
+      "signing_reports": [
+        "sasaki-bonus-mlbtr",
+        "sasaki-posting-mlbtr"
+      ],
+      "environment_reports": [
+        "env2025-pool-mlbtr"
+      ],
+      "pool_treatments": []
+    },
+    {
+      "key": "ba2016",
+      "url": "https://www.baseballamerica.com/stories/2015-international-reviews-los-angeles-dodgers/",
+      "new_in_030": false,
+      "title": null,
+      "author": null,
+      "publication_date": null,
+      "read_status": "DIRECT_COPY_FROM_027",
+      "signing_reports": [
+        "alvarez-bonus-ba",
+        "diaz-bonus-ba",
+        "estevez-bonus-ba"
+      ],
+      "environment_reports": [
+        "env2015-after-trades",
+        "env2015-tax-rate",
+        "env2015-spend"
+      ],
+      "pool_treatments": [
+        "yadier-alvarez",
+        "yusniel-diaz",
+        "omar-estevez"
+      ]
+    },
+    {
+      "key": "ba2018",
+      "url": "https://www.baseballamerica.com/stories/international-reviews-los-angeles-dodgers-2018/",
+      "new_in_030": false,
+      "title": null,
+      "author": null,
+      "publication_date": null,
+      "read_status": "DIRECT_COPY_FROM_027",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2017-cap"
+      ],
+      "pool_treatments": []
+    },
+    {
+      "key": "roundup2019",
+      "url": "https://www.mlb.com/news/international-signing-period-roundup-2019-2020",
+      "new_in_030": false,
+      "title": null,
+      "author": null,
+      "publication_date": null,
+      "read_status": "NOT_REREAD_HTTP_406_CARRIED_FROM_DISI",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2019-pool",
+        "env2019-spend"
+      ],
+      "pool_treatments": []
+    },
+    {
+      "key": "mlb_callis_ryu",
+      "url": "https://www.mlb.com/news/jim-callis-look-at-how-the-los-angeles-dodgers-playoff-roster-was-built/c-62031828",
+      "new_in_030": false,
+      "title": null,
+      "author": null,
+      "publication_date": null,
+      "read_status": "NOT_REREAD_HTTP_406_CARRIED_FROM_DISI",
+      "signing_reports": [
+        "ryu-posting-mlb"
+      ],
+      "environment_reports": [],
+      "pool_treatments": []
+    },
+    {
+      "key": "mlb_es_valenzuela",
+      "url": "https://www.mlb.com/es/news/fallecio-fernando-valenzuela",
+      "new_in_030": false,
+      "title": null,
+      "author": null,
+      "publication_date": null,
+      "read_status": "NOT_REREAD_HTTP_406_CARRIED_FROM_DISI",
+      "signing_reports": [
+        "valenzuela-transfer-mlb"
+      ],
+      "environment_reports": [],
+      "pool_treatments": []
+    }
+  ],
+  "conflicts": [
+    {
+      "subject": "roki-sasaki POSTING_FEE",
+      "reports": [
+        "sasaki-posting-cbs",
+        "sasaki-posting-mlbtr"
+      ],
+      "resolution": "none; both ACTIVE; canonical NULL; FINANCIAL_REPORT_CONFLICT queued"
+    }
+  ],
+  "unreachable": [
+    {
+      "site": "mlb.com",
+      "status": 406
+    },
+    {
+      "site": "truebluela.com",
+      "status": 403
+    },
+    {
+      "site": "mlbplayers.com CBA PDF",
+      "status": 404
+    }
+  ]
+}

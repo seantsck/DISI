@@ -646,7 +646,7 @@ test('029 is additive plus the guarded legacy drop: no data-bearing table other 
   assert.doesNotMatch(code, /full_name\s*=|canonical_name\s*=\s*['"]/i, 'no player name is a key')
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
   assert.ok(frozen['028_residual_canonical_drift_reconciliation.sql'], '028 is part of the frozen baseline')
-  assert.equal(frozen[FILE], undefined, '029 itself is not yet frozen')
+  assert.equal(frozen[FILE], 'c16e45206f53b2d5adc216d26fbbadfa48bacab3', '029 is frozen at its committed content (by Migration 030)')
   const backlog = fs.readFileSync(path.join(root, 'database/research/029/research-backlog.md'), 'utf8')
   for (const name of ['Emil Morales', 'Rubel Arias', 'Ezequiel Melburne', 'Joendry Vargas']) assert.ok(backlog.includes(name), name)
 })
