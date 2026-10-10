@@ -12,8 +12,9 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildChainThrough, buildCanonicalChain } from './canonical-chain.mjs'
 import { lit, withoutTransaction } from './drift-027.mjs'
-import { FINANCIAL_QUERIES } from '../../scripts/db/lib/financial-invariants.mjs'
-import { checkInvariants, failedChecks } from '../../scripts/db/lib/invariants.mjs'
+import { financialQueries } from '../../scripts/db/lib/financial-invariants.mjs'
+const FINANCIAL_QUERIES = financialQueries(false)
+import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const FILE = '030_financial_acquisition_intelligence.sql'
@@ -507,9 +508,10 @@ test('security: RLS, SELECT-only grants, no PUBLIC, no write policy, invoker vie
 })
 
 test('the full verifier passes on the 030 state, and each financial check catches its own drift', async () => {
-  const full = await checkInvariants(chain.query)
+  // the verifier now expects the 031 table total; this database is the 030 state (53 tables)
+  const full = await checkInvariants(chain.query, { ...CANONICAL_EXPECTATIONS, public_tables_total: 53 })
   assert.deepEqual(failedChecks(full).map((c) => c.name), [])
-  assert.equal(full.hard.length, 137)
+  assert.equal(full.hard.length, 139, '137 from 030 plus the two 031 resolution checks, which pass trivially without the table')
   await inTxn(async () => {
     await chain.db.exec(`set local session_replication_role = replica;
       update signing_environment_financial_reports set amount_usd = 1 where signing_environment_id = ${ENV(2019)} and metric_type = 'BASE_POOL';`)
@@ -548,7 +550,7 @@ test('the full verifier passes on the 030 state, and each financial check catche
 })
 
 test('a fresh 001-030 replay equals the simulated pre-030 state plus 030', async () => {
-  const fresh = await buildCanonicalChain()
+  const fresh = await buildChainThrough('030_financial_acquisition_intelligence.sql')
   try {
     const content = async (query) => ({
       signings: (await query(`select p.slug, sg.signing_year, sg.signing_bonus_usd::text, sg.posting_fee_usd::text, sg.transfer_fee_usd::text, sg.bonus_publicly_reported,

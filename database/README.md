@@ -39,6 +39,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 28. `028_residual_canonical_drift_reconciliation.sql` — small, guarded, data-only correction of the last two substantive live-vs-replay differences: the Yusniel Díaz trade wording and the confidence (VERIFIED → HIGH) of three 2018 class-membership source links (details below; research in `database/research/028/`).
 29. `029_signing_network_intelligence.sql` — source-backed signing-network layer: network entities (people, academies, programs, showcase leagues, agencies) with aliases and identity reviews, entity-to-entity and player-to-network relationships with sealed ACTIVE rows, a deterministic ASCII lookup normaliser, four views and a research queue; the empty Migration-002 trainer layer is replaced and the dossier reads the new view (details below; research in `database/research/029/`).
 30. `030_financial_acquisition_intelligence.sql` — financial acquisition intelligence: a provenance ledger under the unchanged signings money columns (external / legacy carry-forward / rule-derived reports with currency, basis and precision), a signing-environment pool ledger, pathway × component completeness rules, international pool treatment, the Dodgers 2019-20 signing environment, two separate completeness dimensions, descriptive class / market commitment views and a research queue; Ryu's sourced bonus and exact posting fee become canonical and the Sasaki posting-fee conflict is preserved (details below; research in `database/research/030/`).
+31. `031_financial_provenance_coverage_expansion.sql` — financial provenance and coverage expansion: sourced pool capacity for the Dodgers 2012-13, 2013-14, 2014-15, 2017-18 and 2020-21 periods (and the post-penalty 2021-22 allocation), 13 provenance upgrades and 4 newly sourced bonuses over the 030 ledger, one corrected legacy bonus, period-membership environment links, and `signing_financial_resolutions`, a reviewed decision that selects one of several competing ACTIVE reports without rewriting any (details below; research in `database/research/031/`).
 
 ## 017 research-database layer
 
@@ -187,6 +188,18 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Views.** `v_signing_acquisition_financials`, `v_dodgers_financial_commitment_by_class`, `v_dodgers_financial_commitment_by_market` and `v_financial_research_queue`. They contain no WAR, ROI, ranking, network attribution or scouting ROI. The legacy WAR-per-dollar views are untouched; their limitations are in `database/research/030/legacy-war-per-dollar-views.md`.
 - **Surface.** 53 public tables and 97 views, with RLS, SELECT-only API grants, `security_invoker` views and guard functions with EXECUTE revoked. The verifier adds 12 structural checks (137 in total).
 - **Rerunnable**; design, source audit and reproduction in `database/research/030/README.md`.
+
+## 031 financial provenance and coverage expansion
+
+- **Research-data migration.** It adds facts and provenance over the 030 ledger and one small reviewed-decision object; no analytics and no new view.
+- **Pool capacity.** Externally sourced `BASE_POOL` reports for the Dodgers 2012-13 ($2.9M, rounded), 2013-14 ($2,112,900), 2014-15 ($1,963,800), 2017-18 ($4.75M tier, rounded) and 2020-21 ($5,348,100; pool trading was barred) periods. POOL_CAPACITY_UNKNOWN goes from 5 to 0. These are denominators only; true utilization still needs a complete population, known pool charges and a known adjusted pool.
+- **2021-22.** The existing $4,644,000 is the sourced post-penalty allocation. The $500,000 Bauer penalty is stored as a memo and never subtracted again; no pre-penalty base is stored.
+- **Provenance.** 13 known bonuses gain an external report (the legacy carry-forward stays ACTIVE as corroboration) and four unknown bonuses (Soto, Medina, Sanchez, Luna) are sourced. Bonuses: 93 known, 24 externally sourced, 69 legacy-only.
+- **Correction.** Carlos Rincon's unsourced legacy $350,000 is superseded by the directly read $325,000.
+- **Resolutions.** `signing_financial_resolutions` records which ACTIVE report DISI accepts when at least two disagree. Reports are never rewritten, a correction of an unsourced legacy value is a supersession and not a resolution, and absence of a row means unresolved. No decision is recorded in 031: Sasaki stays unresolved, Rosario and Torres are deferred.
+- **Links.** Dodgers signings with a date inside a period window are linked to that period's environment (33). Pathway does not decide membership and pool treatment is untouched.
+- **Surface.** 54 public tables and 97 views, RLS and SELECT-only API grants on the new table, an invoker-rights guard function with EXECUTE revoked. The verifier adds 2 structural checks (139 in total) and its column/ledger reconciliation honors an ACTIVE decision.
+- **Rerunnable**; design, source audit and reproduction in `database/research/031/README.md`.
 
 ## Player identity (020)
 

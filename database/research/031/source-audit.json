@@ -1,0 +1,237 @@
+{
+  "reviewed_on": "2026-10-09",
+  "policy": "Every source below was fetched once (HTTP 200) and parsed as raw HTML by the author of this migration (not through a summarising fetch tool). MLB.com pages answered HTTP 406 and True Blue LA HTTP 403; neither is used and nothing was worked around.",
+  "sources": [
+    {
+      "key": "ba1819",
+      "url": "https://www.baseballamerica.com/stories/2018-19-international-reviews-los-angeles-dodgers/",
+      "new_in_031": true,
+      "title": "2018-19 International Reviews: Los Angeles Dodgers",
+      "author": "Ben Badler",
+      "publication_date": "2019-03-12",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [
+        "dejesus-ba1819"
+      ],
+      "environment_reports": []
+    },
+    {
+      "key": "ba2023",
+      "url": "https://www.baseballamerica.com/stories/2023-international-reviews-los-angeles-dodgers/",
+      "new_in_031": true,
+      "title": "2023 International Reviews: Los Angeles Dodgers",
+      "author": "Ben Badler",
+      "publication_date": "2023-05-11",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [
+        "vargas-ba2023",
+        "tillero-ba2023",
+        "mielcarek-ba2023",
+        "medina-ba2023",
+        "sanchez-ba2023"
+      ],
+      "environment_reports": []
+    },
+    {
+      "key": "dd2018",
+      "url": "https://dodgersdigest.com/2018/07/02/dodgers-sign-diego-cartaya-jerming-rosario-on-first-day-of-2018-19-period/",
+      "new_in_031": true,
+      "title": "Dodgers sign Diego Cartaya, Jerming Rosario on first day of 2018-19 international period",
+      "author": "Dustin Nosler",
+      "publication_date": "2018-07-02",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [
+        "cartaya-dd2018",
+        "yordan-dd2018"
+      ],
+      "environment_reports": []
+    },
+    {
+      "key": "dd2025",
+      "url": "https://dodgersdigest.com/2025/01/28/dodgers-sign-29-players-in-ifa-class-trade-two-prospects-for-bonus-pool-money/",
+      "new_in_031": false,
+      "title": null,
+      "author": null,
+      "publication_date": null,
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [
+        "luna-dd2025"
+      ],
+      "environment_reports": []
+    },
+    {
+      "key": "dd2026",
+      "url": "https://dodgersdigest.com/2026/01/15/rubel-arias-ezequiel-melburne-highlight-dodgers-2026-ifa-signings/",
+      "new_in_031": true,
+      "title": "Rubel Arias & Ezequiel Melburne highlight Dodgers' 2026 IFA class of 22 players",
+      "author": "Josh Thomas",
+      "publication_date": "2026-01-15",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [
+        "rubelarias-dd2026",
+        "melburne-dd2026"
+      ],
+      "environment_reports": []
+    },
+    {
+      "key": "mlbtr2012",
+      "url": "https://www.mlbtraderumors.com/2012/08/dodgers-sign-julio-urias.html",
+      "new_in_031": true,
+      "title": "Dodgers Sign Julio Urias",
+      "author": "Ben Nicholson-Smith",
+      "publication_date": "2012-08-23",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2012-mlbtr"
+      ]
+    },
+    {
+      "key": "mlbtr2013",
+      "url": "https://www.mlbtraderumors.com/2013/07/dodgers-cubs-swap-guerrier-marmol.html",
+      "new_in_031": true,
+      "title": "Dodgers, Cubs Swap Guerrier, Marmol",
+      "author": "Tim Dierkes",
+      "publication_date": "2013-07-02",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2013-mlbtr"
+      ]
+    },
+    {
+      "key": "dd2014",
+      "url": "https://dodgersdigest.com/2014/07/03/dodgers-felix-osorio-johan-calderon-romer-cuadrado-july-2/",
+      "new_in_031": true,
+      "title": "Dodgers sign 5 players on first day of July 2 signing period",
+      "author": "Dustin Nosler",
+      "publication_date": "2014-07-03",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2014-dd"
+      ]
+    },
+    {
+      "key": "ba2017pools",
+      "url": "https://www.baseballamerica.com/stories/2017-18-international-bonus-pools/",
+      "new_in_031": true,
+      "title": "2017-18 International Bonus Pools",
+      "author": "Ben Badler",
+      "publication_date": "2016-12-06",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2017-ba"
+      ]
+    },
+    {
+      "key": "ba2020pools",
+      "url": "https://www.baseballamerica.com/stories/2020-21-mlb-international-bonus-pools/",
+      "new_in_031": true,
+      "title": "2020-21 MLB International Bonus Pools",
+      "author": "Ben Badler",
+      "publication_date": "2020-06-15",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2021-ba"
+      ]
+    },
+    {
+      "key": "mlbtr2021",
+      "url": "https://www.mlbtraderumors.com/2021/01/2020-2021-international-signing-period-opens-today.html",
+      "new_in_031": true,
+      "title": "2020-2021 International Signing Period Opens Today",
+      "author": "TC Zencka",
+      "publication_date": "2021-01-15",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2021-mlbtr"
+      ]
+    },
+    {
+      "key": "ba2022pools",
+      "url": "https://www.baseballamerica.com/stories/mlb-international-bonus-pools-for-2021-22-signing-period/",
+      "new_in_031": true,
+      "title": "MLB International Bonus Pools For 2021-22 Signing Period",
+      "author": "Ben Badler",
+      "publication_date": "2022-01-11",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2022-ba"
+      ]
+    },
+    {
+      "key": "mlbtr2022",
+      "url": "https://www.mlbtraderumors.com/2022/01/bonus-pools-for-2021-22-international-signing-market.html",
+      "new_in_031": true,
+      "title": "Bonus Pools For 2021-22 International Signing Market",
+      "author": "Mark Polishuk",
+      "publication_date": "2022-01-11",
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [],
+      "environment_reports": [
+        "env2022-mlbtr",
+        "env2022-penalty"
+      ]
+    },
+    {
+      "key": "ba2013",
+      "url": "https://www.baseballamerica.com/stories/2012-13-international-reviews-los-angeles-dodgers/",
+      "new_in_031": false,
+      "title": null,
+      "author": null,
+      "publication_date": null,
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [
+        "soto-ba2013"
+      ],
+      "environment_reports": []
+    },
+    {
+      "key": "ba2016",
+      "url": "https://www.baseballamerica.com/stories/2015-international-reviews-los-angeles-dodgers/",
+      "new_in_031": false,
+      "title": null,
+      "author": null,
+      "publication_date": null,
+      "read_status": "DIRECT_HTTP_200_RAW_HTML",
+      "signing_reports": [
+        "heredia-ba2016",
+        "brito-ba2016",
+        "cruz-ba2016",
+        "arias-ba2016",
+        "marte-ba2016",
+        "rincon-ba2016"
+      ],
+      "environment_reports": []
+    }
+  ],
+  "deferred": [
+    {
+      "player_slug": "jerming-rosario",
+      "reason": "Baseball America (2019-03-12) says $650,000; Dodgers Digest (2018-07-02) and DISI say $600,000. Real external disagreement; no resolution chosen in 031."
+    },
+    {
+      "player_slug": "adrian-torres",
+      "reason": "Dodgers Digest says $365K plus a $100K scholarship; DISI has $362,500. Needs more research."
+    },
+    {
+      "player_slug": "roki-sasaki",
+      "reason": "Posting fee stays unresolved: $1,625,000 (25%) versus $1,300,000 (20%). No primary text was readable."
+    }
+  ],
+  "unreachable": [
+    {
+      "site": "mlb.com",
+      "status": 406
+    },
+    {
+      "site": "truebluela.com",
+      "status": 403
+    }
+  ]
+}

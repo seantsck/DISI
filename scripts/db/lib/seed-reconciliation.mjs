@@ -30,7 +30,7 @@ export const RECONCILIATION_QUERIES = {
     where (select count(*) from public.signing_environments se join public.organizations o on o.id = se.organization_id
       where o.name = x ->> 'organization_name' and se.signing_year = (x ->> 'signing_year')::int
         and jsonb_build_object('organization_name', o.name, 'signing_year', se.signing_year, 'regime', se.regime::text,
-          'club_bonus_pool_usd', se.club_bonus_pool_usd::text, 'pool_after_trades_usd', se.pool_after_trades_usd::text,
+          'club_bonus_pool_usd', case when x ->> 'club_bonus_pool_usd' is null then null else se.club_bonus_pool_usd::text end, 'pool_after_trades_usd', se.pool_after_trades_usd::text,
           'signing_period_label', se.signing_period_label, 'max_individual_bonus_usd', se.max_individual_bonus_usd::text,
           'overage_tax_rate', se.overage_tax_rate::text, 'tradeable_pool_space', se.tradeable_pool_space, 'penalty_status', se.penalty_status,
           'rules_summary', se.rules_summary, 'cba_regime', se.cba_regime, 'notes', se.notes) = x) <> 1`,
