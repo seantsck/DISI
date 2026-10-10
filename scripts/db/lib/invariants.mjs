@@ -18,6 +18,7 @@
 import { RECONCILIATION_QUERIES } from './seed-reconciliation.mjs'
 import { NETWORK_QUERIES } from './network-invariants.mjs'
 import { financialQueries } from './financial-invariants.mjs'
+import { valueQueries } from './value-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -85,12 +86,12 @@ export const CANONICAL_EXPECTATIONS = {
   // whole public API surface (025). Checked from the ACLs themselves
   // (aclexplode), so privileges information_schema omits (MAINTAIN) count too.
   // 026 adds six tables (and drops the empty legacy evaluations table: 42 - 1 + 6) and five views.
-  // 030 adds three tables and four views.
-  public_views_total: 97,
+  // 032 adds two tables and four views.
+  public_views_total: 101,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 54,
+  public_tables_total: 56,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -164,6 +165,17 @@ export const CANONICAL_EXPECTATIONS = {
   // Migration 031 reviewed resolutions
   financial_resolution_shape_violations: 0,
   financial_resolution_selection_violations: 0,
+  // Migration 032 player value and organizational realization: structural integrity only
+  value_team_season_shape_violations: 0,
+  value_team_code_resolution_violations: 0,
+  value_team_code_map_violations: 0,
+  value_career_reconciliation_violations: 0,
+  value_event_asset_identity_violations: 0,
+  value_attribution_shape_violations: 0,
+  value_trade_return_timing_violations: 0,
+  value_cost_gating_violations: 0,
+  value_status_semantics_violations: 0,
+  value_guard_violations: 0,
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -455,6 +467,12 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasResolutions = Boolean((await query(`select to_regclass('public.signing_financial_resolutions') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(financialQueries(hasResolutions))) {
     check('financial', name, expectations[name], await count(sql))
+  }
+
+  // -- player value and organizational realization (032) -----------------------
+  const hasValueLayer = Boolean((await query(`select to_regclass('public.player_mlb_team_season_war') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(valueQueries(hasValueLayer))) {
+    check('value', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

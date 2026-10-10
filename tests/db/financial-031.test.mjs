@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url'
 import { buildChainThrough, buildCanonicalChain } from './canonical-chain.mjs'
 import { lit, withoutTransaction } from './drift-027.mjs'
 import { financialQueries } from '../../scripts/db/lib/financial-invariants.mjs'
-import { checkInvariants, failedChecks } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const FILE = '031_financial_provenance_coverage_expansion.sql'
@@ -355,14 +355,15 @@ test('security: RLS and SELECT-only API grants on the new table; no write policy
     left join pg_roles r on r.oid = a.grantee where c.relname = 'signing_financial_resolutions' and coalesce(r.rolname, 'PUBLIC') in ('anon', 'authenticated', 'PUBLIC') group by 1 order by 1`)
   assert.deepEqual(acl, [{ g: 'anon', p: 'SELECT' }, { g: 'authenticated', p: 'SELECT' }])
   assert.deepEqual(await q(`select policyname, cmd from pg_policies where tablename = 'signing_financial_resolutions'`), [{ policyname: 'public_read_signing_financial_resolutions', cmd: 'SELECT' }])
-  const full = await checkInvariants(chain.query)
+  // the verifier now expects the 032 totals; this database is the 031 state (54 tables, 97 views)
+  const full = await checkInvariants(chain.query, { ...CANONICAL_EXPECTATIONS, public_tables_total: 54, public_views_total: 97 })
   assert.deepEqual(failedChecks(full).map((c) => c.name), [])
-  assert.equal(full.hard.length, 139)
+  assert.equal(full.hard.length, 149, '139 from 031 plus the ten 032 checks, which pass trivially without their tables')
   assert.equal(full.hard.find((c) => c.name === 'public_tables_total').actual, 54)
 })
 
 test('a fresh 001-031 replay equals the 001-030 database with 031 applied', async () => {
-  const fresh = await buildCanonicalChain()
+  const fresh = await buildChainThrough('031_financial_provenance_coverage_expansion.sql')
   try {
     const content = async (query) => ({
       signings: await query(`select p.slug, sg.signing_year, sg.signing_bonus_usd::text as b, sg.posting_fee_usd::text as pf, sg.bonus_publicly_reported as f, sg.international_pool_treatment as t, se.signing_year as env
