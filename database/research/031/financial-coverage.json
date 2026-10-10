@@ -1,0 +1,242 @@
+{
+  "generated_from": "canonical replay 001-031 (in memory), database/research/031/test-031.mjs",
+  "totals": {
+    "tables": 54,
+    "views": 97,
+    "signing_environments": 13,
+    "resolutions": 0
+  },
+  "signing_reports_by_origin": {
+    "EXTERNAL_SOURCE": 32,
+    "LEGACY_CARRYFORWARD": 89
+  },
+  "signing_reports_by_status": {
+    "ACTIVE": 120,
+    "RETRACTED": 1
+  },
+  "environment_reports_by_origin": {
+    "EXTERNAL_SOURCE": 17,
+    "LEGACY_CARRYFORWARD": 10
+  },
+  "bonus_provenance_all": {
+    "EXTERNALLY_SOURCED": 24,
+    "LEGACY_CANONICAL_ONLY": 69
+  },
+  "bonus_status_all": {
+    "KNOWN": 93,
+    "UNKNOWN": 175
+  },
+  "bonus_status_dodgers": {
+    "KNOWN": 46,
+    "UNKNOWN": 174
+  },
+  "acquisition_completeness_all": {
+    "COMPLETE": 90,
+    "NO_RULE": 48,
+    "PARTIAL": 3,
+    "UNKNOWN": 127
+  },
+  "acquisition_completeness_dodgers": {
+    "COMPLETE": 44,
+    "NO_RULE": 47,
+    "PARTIAL": 3,
+    "UNKNOWN": 126
+  },
+  "pool_completeness_dodgers": {
+    "NOT_APPLICABLE": 33,
+    "PARTIAL": 4,
+    "UNKNOWN": 183
+  },
+  "research_queue": {
+    "CLASS_FINANCIAL_COVERAGE_INCOMPLETE": 13,
+    "FINANCIAL_REPORT_CONFLICT": 1,
+    "FINANCIAL_SOURCE_MISSING": 75,
+    "POOL_TREATMENT_UNKNOWN": 114,
+    "SIGNING_BONUS_UNKNOWN": 72
+  },
+  "classes": [
+    {
+      "period_label": "2012-13",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 6,
+      "bonus_known": 2,
+      "known_bonus_sum_usd": "5190000.00",
+      "pool_capacity_usd": "2900000.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "179.0",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "NO_DEFINED_POPULATION",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2013-14",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 0,
+      "bonus_known": 0,
+      "known_bonus_sum_usd": null,
+      "pool_capacity_usd": "2112900.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": null,
+      "source_reported_utilization_pct": null,
+      "population_completeness": "NO_DEFINED_POPULATION",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2014-15",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 1,
+      "bonus_known": 1,
+      "known_bonus_sum_usd": "140000.00",
+      "pool_capacity_usd": "1963800.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "7.1",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "NO_DEFINED_POPULATION",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2015-16",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 13,
+      "bonus_known": 13,
+      "known_bonus_sum_usd": "46349500.00",
+      "pool_capacity_usd": "700000.00",
+      "pool_capacity_basis": "POOL_AFTER_TRADES",
+      "known_tracked_bonus_pct_of_pool": "6621.4",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "NO_DEFINED_POPULATION",
+      "pool_adjustment_completeness": "KNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2017-18",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 4,
+      "bonus_known": 2,
+      "known_bonus_sum_usd": "500000.00",
+      "pool_capacity_usd": "4750000.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "10.5",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "NO_DEFINED_POPULATION",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2018-19",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 3,
+      "bonus_known": 3,
+      "known_bonus_sum_usd": "3600000.00",
+      "pool_capacity_usd": "4983500.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "72.2",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "NO_DEFINED_POPULATION",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2019-20",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 3,
+      "bonus_known": 3,
+      "known_bonus_sum_usd": "1200000.00",
+      "pool_capacity_usd": "5366400.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "22.4",
+      "source_reported_utilization_pct": "99.8",
+      "population_completeness": "PARTIAL",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2020-21",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 22,
+      "bonus_known": 0,
+      "known_bonus_sum_usd": null,
+      "pool_capacity_usd": "5348100.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": null,
+      "source_reported_utilization_pct": null,
+      "population_completeness": "SIZE_UNKNOWN",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2021-22",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 1,
+      "bonus_known": 1,
+      "known_bonus_sum_usd": "397500.00",
+      "pool_capacity_usd": "4644000.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "8.6",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "SIZE_UNKNOWN",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2023",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 4,
+      "bonus_known": 3,
+      "known_bonus_sum_usd": "2972500.00",
+      "pool_capacity_usd": "4144000.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "71.7",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "SIZE_UNKNOWN",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2024",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 1,
+      "bonus_known": 1,
+      "known_bonus_sum_usd": "1900000.00",
+      "pool_capacity_usd": "5284000.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "36.0",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "SIZE_UNKNOWN",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2025",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 3,
+      "bonus_known": 3,
+      "known_bonus_sum_usd": "7260000.00",
+      "pool_capacity_usd": "5146200.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "141.1",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "SIZE_UNKNOWN",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    },
+    {
+      "period_label": "2026",
+      "class_basis": "SIGNING_ENVIRONMENT",
+      "signings": 5,
+      "bonus_known": 5,
+      "known_bonus_sum_usd": "3262500.00",
+      "pool_capacity_usd": "6679200.00",
+      "pool_capacity_basis": "BASE_POOL",
+      "known_tracked_bonus_pct_of_pool": "48.8",
+      "source_reported_utilization_pct": null,
+      "population_completeness": "NO_DEFINED_POPULATION",
+      "pool_adjustment_completeness": "UNKNOWN",
+      "true_utilization_eligible": false
+    }
+  ],
+  "true_utilization_periods": 0
+}

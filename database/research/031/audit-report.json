@@ -1,0 +1,151 @@
+{
+  "audited_against": "canonical replay 001-030 (in memory)",
+  "baseline": {
+    "tables": 53,
+    "views": 97,
+    "environments": 9
+  },
+  "signing_reports_by_kind": {
+    "UPGRADE": 13,
+    "NEW": 4,
+    "CORRECTION": 1
+  },
+  "environment_reports": 9,
+  "environments_added": 4,
+  "deferred": [
+    {
+      "slug": "jerming-rosario",
+      "bonus": "600000.00",
+      "posting": null,
+      "conflicting_components": [],
+      "reason": "Baseball America (2019-03-12) says $650,000; Dodgers Digest (2018-07-02) and DISI say $600,000. Real external disagreement; no resolution chosen in 031."
+    },
+    {
+      "slug": "adrian-torres",
+      "bonus": "362500.00",
+      "posting": null,
+      "conflicting_components": [],
+      "reason": "Dodgers Digest says $365K plus a $100K scholarship; DISI has $362,500. Needs more research."
+    },
+    {
+      "slug": "roki-sasaki",
+      "bonus": "6500000.00",
+      "posting": null,
+      "conflicting_components": [
+        "POSTING_FEE"
+      ],
+      "reason": "Posting fee stays unresolved: $1,625,000 (25%) versus $1,300,000 (20%). No primary text was readable."
+    }
+  ],
+  "link_windows": [
+    {
+      "signing_year": 2012,
+      "from": "2012-07-02",
+      "to": "2013-06-15",
+      "signings": 6,
+      "by_pathway": {
+        "LATAM_AMATEUR": 4,
+        "MEXICAN_LEAGUE_TRANSFER": 1,
+        "POSTED_PLAYER": 1
+      },
+      "members": [
+        "julian-leon",
+        "lenix-osuna",
+        "victor-gonzalez",
+        "william-soto",
+        "julio-urias",
+        "hyun-jin-ryu"
+      ]
+    },
+    {
+      "signing_year": 2013,
+      "from": "2013-07-02",
+      "to": "2014-06-15",
+      "signings": 0,
+      "by_pathway": {},
+      "members": []
+    },
+    {
+      "signing_year": 2014,
+      "from": "2014-07-02",
+      "to": "2015-06-15",
+      "signings": 1,
+      "by_pathway": {
+        "LATAM_AMATEUR": 1
+      },
+      "members": [
+        "keibert-ruiz"
+      ]
+    },
+    {
+      "signing_year": 2017,
+      "from": "2017-07-02",
+      "to": "2018-06-15",
+      "signings": 4,
+      "by_pathway": {
+        "LATAM_AMATEUR": 2,
+        "CUBAN_AMATEUR": 2
+      },
+      "members": [
+        "eddys-leonard",
+        "jorbit-vivas",
+        "miguel-vargas",
+        "andy-pages"
+      ]
+    },
+    {
+      "signing_year": 2021,
+      "from": "2021-01-15",
+      "to": "2021-12-15",
+      "signings": 22,
+      "by_pathway": {
+        "LATAM_AMATEUR": 22
+      },
+      "members": [
+        "brian-diaz",
+        "carlos-avila",
+        "christian-romero",
+        "dailoui-abad",
+        "elio-campos",
+        "isaac-barreto",
+        "jesus-galiz",
+        "jhonny-jimenez",
+        "jorge-carpintero",
+        "juan-alonso",
+        "kelvin-ramirez",
+        "luis-guerra",
+        "maximo-martinez",
+        "michael-vilchez",
+        "miguel-bastardo",
+        "missael-soto",
+        "pedro-santillan",
+        "rayne-doncon",
+        "roger-lasso",
+        "sebastian-jimenez",
+        "thayron-liranzo",
+        "wilman-diaz"
+      ]
+    }
+  ],
+  "undated_signings_in_covered_years": [
+    {
+      "signing_year": 2013,
+      "n": 5
+    }
+  ],
+  "legacy_war_per_dollar_view_definitions_md5": {
+    "v_signing_efficiency": "57e57a2d4dc535703e8150be15fd9c56",
+    "v_dodgers_signing_cohort": "cb577b7b770e94412d5ae2365114a57c",
+    "v_dodgers_signing_leaderboard": "2c8de904f680b4d0ae03d880a99bf752",
+    "v_dodgers_asset_realization": "4c5615307dc7842242895a8abfc1b808",
+    "v_signing_asset_outcomes": "0a3fb95b5a32309797842d6efe81ad4f",
+    "v_dodgers_executive_kpis": "7c10c93b627e29a288c5cf9034b74eb6",
+    "v_dodgers_executive_case_studies": "eae11b30644c7354a1d236338aa042d9",
+    "v_dodgers_executive_dashboard_feed": "a24f36c6159731fbaf7849358b70e45e",
+    "v_dodgers_mature_bonus_tiers": "56b3e794816137673faf1d880aac3a83",
+    "v_dodgers_mature_premium_comparison": "aef162aac1d4e45fdd8084c40288bdac",
+    "v_dodgers_mature_year_analysis": "2025f31921fe9d0bc23093cfc0d099e7",
+    "v_dodgers_mature_player_analysis": "4cc3b21ea238e1fb877f30a7c5c4e1ad"
+  },
+  "failures": []
+}

@@ -15,7 +15,7 @@ const PRE_POOL = (s) => `(${s}.signing_date < date '2012-07-02' or (${s}.signing
  * AGREED, more than one (or one outside an interval) is a CONFLICT. A non-null column must equal the
  * AGREED value; a NULL column must not have one (it may sit under a CONFLICT or approximate-only reports).
  */
-const reconciliation = ({ parent, ledger, ledgerKey, typeCol, valueExpr, filter = '', columns }) => `with cols as (
+const reconciliation = ({ parent, ledger, ledgerKey, typeCol, valueExpr, filter = '', columns, resolutions = false }) => `with cols as (
     select p.id as parent_id, v.kind, v.col from ${parent} p
     cross join lateral (values ${columns.map(([kind, col]) => `('${kind}', p.${col}::numeric)`).join(', ')}) v(kind, col)
   ),
@@ -32,14 +32,20 @@ const reconciliation = ({ parent, ledger, ledgerKey, typeCol, valueExpr, filter 
     from cols c
   ),
   t as (select s.*, case when s.n_points > 0 then s.n_points else s.n_rounded end as n_cand, case when s.n_points > 0 then s.point else s.rounded end as cand from s),
+  ${resolutions ? `d as (
+    select d.signing_id as parent_id, d.component_type as kind, rep.amount as selected_amount
+    from public.signing_financial_resolutions d join public.signing_financial_reports rep on rep.id = d.selected_report_id
+    where d.record_status = 'ACTIVE' and rep.record_status = 'ACTIVE' and rep.currency_code = 'USD'
+  ),` : ''}
   u as (
-    select t.*, case when t.n_cand = 0 then 'NONE' when t.n_cand > 1 then 'CONFLICT'
+    select t.*, ${resolutions ? 'd.selected_amount, ' : ''}case ${resolutions ? "when d.selected_amount is not null then 'RESOLVED' " : ''}when t.n_cand = 0 then 'NONE' when t.n_cand > 1 then 'CONFLICT'
       when exists (select 1 from r where r.parent_id = t.parent_id and r.kind = t.kind and r.amount_basis = 'ROUNDED' and abs(r.value - t.cand) > r.amount_precision / 2) then 'CONFLICT'
       else 'AGREED' end as status
-    from t
+    from t${resolutions ? ' left join d on d.parent_id = t.parent_id and d.kind = t.kind' : ''}
   )
   select count(*)::int as n from u
-  where (u.col is not null and (u.status <> 'AGREED' or u.cand <> u.col)) or (u.col is null and u.status = 'AGREED')`
+  where (u.col is not null and (u.status not in ('AGREED', 'RESOLVED') or (u.status = 'AGREED' and u.cand <> u.col)${resolutions ? " or (u.status = 'RESOLVED' and u.selected_amount <> u.col)" : ''}))
+     or (u.col is null and u.status in ('AGREED', 'RESOLVED'))`
 
 const originRule = (r) => `not coalesce(case ${r}.report_origin
       when 'EXTERNAL_SOURCE' then ${r}.source_id is not null and ${r}.retrieved_at is not null and ${r}.amount_basis is not null
@@ -56,8 +62,11 @@ const lifecycle = (table, parentCol, typeCol) => `select count(*) from public.${
             where o.id = r.supersedes_report_id and o.${parentCol} = r.${parentCol} and o.${typeCol} = r.${typeCol} and o.record_status = 'RETRACTED')))
        or (r.supersedes_report_id is not null and exists (select 1 from public.${table} x where x.supersedes_report_id = r.supersedes_report_id and x.id <> r.id))`
 
-/** name -> SQL returning one row { n } = number of violations. */
-export const FINANCIAL_QUERIES = {
+/**
+ * name -> SQL returning one row { n } = number of violations. `resolutions` says whether the Migration 031
+ * resolution table exists (the same checks run on a canonical 030 database, where there is none).
+ */
+export const financialQueries = (resolutions) => ({
   // origin semantics: EXTERNAL needs a source, LEGACY never has one, RULE_DERIVED cites its rule; no orphans
   financial_signing_report_provenance_violations: `select count(*)::int as n from public.signing_financial_reports r
     where not exists (select 1 from public.signings s where s.id = r.signing_id)
@@ -107,6 +116,7 @@ export const FINANCIAL_QUERIES = {
     parent: 'public.signings', ledger: 'public.signing_financial_reports', ledgerKey: 'signing_id', typeCol: 'component_type', valueExpr: 'l.amount',
     filter: `and l.currency_code = 'USD'`,
     columns: [['SIGNING_BONUS', 'signing_bonus_usd'], ['POSTING_FEE', 'posting_fee_usd'], ['TRANSFER_FEE', 'transfer_fee_usd']],
+    resolutions,
   }),
 
   // the signing-environment pool columns are the compatibility layer over the environment ledger
@@ -154,6 +164,37 @@ export const FINANCIAL_QUERIES = {
        or (f.bonus_source_status = 'LEGACY_CANONICAL_ONLY' and exists (select 1 from public.signing_financial_reports r
             where r.signing_id = s.id and r.component_type = 'SIGNING_BONUS' and r.record_status = 'ACTIVE' and r.report_origin = 'EXTERNAL_SOURCE'))
        or f.international_pool_treatment is distinct from s.international_pool_treatment`,
-}
 
+  // Migration 031 reviewed resolutions: shape and lifecycle (0 when the table does not exist)
+  financial_resolution_shape_violations: resolutions ? `select count(*)::int as n from public.signing_financial_resolutions d
+    where d.component_type not in ('SIGNING_BONUS', 'POSTING_FEE', 'TRANSFER_FEE', 'RELEASE_FEE', 'POOL_CHARGE', 'OTHER_ACQUISITION_FEE')
+       or d.basis not in ('AUTHORITATIVE_RULE', 'SOURCE_PRECEDENCE', 'OTHER_REVIEWED') or (d.basis = 'AUTHORITATIVE_RULE' and d.source_id is null)
+       or (d.source_id is not null and not exists (select 1 from public.sources so where so.id = d.source_id))
+       or nullif(btrim(d.rationale), '') is null or nullif(btrim(d.reviewed_by), '') is null
+       or not exists (select 1 from public.signing_financial_reports r where r.id = d.selected_report_id and r.signing_id = d.signing_id and r.component_type = d.component_type)
+       or (d.record_status = 'RETRACTED' and (d.retracted_at is null or nullif(btrim(d.retraction_reason), '') is null))
+       or (d.record_status = 'ACTIVE' and (d.retracted_at is not null or d.retraction_reason is not null))
+       or (d.supersedes_resolution_id is not null and (d.supersedes_resolution_id = d.id or not exists (select 1 from public.signing_financial_resolutions o
+            where o.id = d.supersedes_resolution_id and o.signing_id = d.signing_id and o.component_type = d.component_type and o.record_status = 'RETRACTED')))
+       or exists (select 1 from public.signing_financial_resolutions x where x.supersedes_resolution_id = d.supersedes_resolution_id and x.id <> d.id and d.supersedes_resolution_id is not null)
+       or (d.record_status = 'ACTIVE' and exists (select 1 from public.signing_financial_resolutions x where x.signing_id = d.signing_id and x.component_type = d.component_type
+            and x.record_status = 'ACTIVE' and x.id <> d.id))` : 'select 0::int as n',
+
+  // an ACTIVE decision selects an ACTIVE, non-approximate USD report and still has competing evidence;
+  // the guard trigger exists and covers INSERT, UPDATE and DELETE; the guard function is invoker-rights with no API EXECUTE
+  financial_resolution_selection_violations: resolutions ? `select (
+      (select count(*) from public.signing_financial_resolutions d where d.record_status = 'ACTIVE'
+        and (not exists (select 1 from public.signing_financial_reports r where r.id = d.selected_report_id and r.record_status = 'ACTIVE' and r.currency_code = 'USD' and r.amount_basis is distinct from 'APPROXIMATE')
+          or (select count(distinct r.amount) from public.signing_financial_reports r where r.signing_id = d.signing_id and r.component_type = d.component_type and r.record_status = 'ACTIVE'
+                and r.currency_code = 'USD' and r.amount_basis is distinct from 'APPROXIMATE') < 2))
+    + (select 1 - count(*) from pg_trigger t join pg_class c on c.oid = t.tgrelid
+        where c.relnamespace = 'public'::regnamespace and c.relname = 'signing_financial_resolutions' and not t.tgisinternal and t.tgenabled <> 'D' and (t.tgtype & 28) = 28
+          and t.tgname = 'signing_financial_resolutions_guard')
+    + (select count(*) from pg_proc p where p.pronamespace = 'public'::regnamespace and p.proname = 'disi_signing_financial_resolution_guard'
+        and (p.prosecdef or not (coalesce(p.proconfig, array[]::text[]) @> array['search_path=""'])
+             or has_function_privilege('anon', p.oid, 'execute') or has_function_privilege('authenticated', p.oid, 'execute') or has_function_privilege('public', p.oid, 'execute')))
+    )::int as n` : 'select 0::int as n',
+})
+
+export const FINANCIAL_QUERIES = financialQueries(true)
 export const FINANCIAL_CHECK_NAMES = Object.keys(FINANCIAL_QUERIES)

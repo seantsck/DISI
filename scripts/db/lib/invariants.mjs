@@ -17,7 +17,7 @@
 
 import { RECONCILIATION_QUERIES } from './seed-reconciliation.mjs'
 import { NETWORK_QUERIES } from './network-invariants.mjs'
-import { FINANCIAL_QUERIES } from './financial-invariants.mjs'
+import { financialQueries } from './financial-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -90,7 +90,7 @@ export const CANONICAL_EXPECTATIONS = {
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 53,
+  public_tables_total: 54,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -161,6 +161,9 @@ export const CANONICAL_EXPECTATIONS = {
   financial_pool_charge_violations: 0,
   financial_component_rule_violations: 0,
   financial_view_semantics_violations: 0,
+  // Migration 031 reviewed resolutions
+  financial_resolution_shape_violations: 0,
+  financial_resolution_selection_violations: 0,
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -449,7 +452,8 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   }
 
   // -- financial acquisition intelligence (030) -------------------------------
-  for (const [name, sql] of Object.entries(FINANCIAL_QUERIES)) {
+  const hasResolutions = Boolean((await query(`select to_regclass('public.signing_financial_resolutions') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(financialQueries(hasResolutions))) {
     check('financial', name, expectations[name], await count(sql))
   }
 
