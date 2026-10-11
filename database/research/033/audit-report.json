@@ -1,0 +1,2279 @@
+{
+  "audited_against": "canonical replay 001-032 (in memory)",
+  "baseline": {
+    "tables": 56,
+    "views": 101
+  },
+  "seed": {
+    "events": 161,
+    "event_types": {
+      "RULE5_SELECTION": 1,
+      "TRADE": 48,
+      "RELEASE": 84,
+      "EXPANSION_DRAFT": 1,
+      "FREE_AGENCY": 26,
+      "WAIVER": 1
+    },
+    "assets": 291,
+    "exited_players": 138,
+    "still_controlled": 64,
+    "history_unavailable": 2,
+    "resolutions": 4,
+    "asset_observations": 24
+  },
+  "war_seed": {
+    "persons": 40,
+    "rows": 573,
+    "components": {
+      "BAT": 406,
+      "PITCH": 167
+    },
+    "parsed_rows_sha256": "a7f3c884b4a2b779b5ac88da1dc4fc67746ae041d903174fd625217c5b436503"
+  },
+  "baseline_032": {
+    "portfolio_all": {
+      "grain": "ALL",
+      "grain_value": "All tracked Dodgers signings",
+      "tracked_signings": 220,
+      "mature_signings": 98,
+      "outcome_observed_signings": 88,
+      "verified_mlb_reached": 47,
+      "complete_cost_signings": 44,
+      "direct_ratio_eligible_signings": 26,
+      "attributable_ratio_eligible_signings": 26,
+      "eligible_known_acquisition_cost_usd": "98852237.33",
+      "eligible_direct_dodgers_bwar": "96.60",
+      "aggregate_direct_dodgers_bwar_per_million": "0.977",
+      "attributable_eligible_known_acquisition_cost_usd": "98852237.33",
+      "eligible_attributable_organizational_bwar": "98.54",
+      "aggregate_attributable_organizational_bwar_per_million": "0.997",
+      "direct_ratio_small_sample": false,
+      "attributable_trade_return_bwar": "1.94",
+      "package_return_dodgers_bwar": "4.92",
+      "non_dodgers_mlb_bwar_observed": "432.44",
+      "population_label": "Tracked / verified-set analytic over the eligible rows named above; not an organization-wide rate. Eligible rows: mature, COMPLETE acquisition cost greater than zero, direct Dodgers bWAR observed."
+    },
+    "per_player_md5": "a744d28b88e418f222bf7cc91f2e98f8",
+    "per_player": [
+      {
+        "player_slug": "abel-lorenzo",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "accimias-morales",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "adrian-beltre",
+        "direct": "23.39",
+        "non_dodgers": "70.33",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "23.39",
+        "downstream": false
+      },
+      {
+        "player_slug": "adrian-torres",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "agustin-acosta",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "aldo-espinoza",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "aldrin-batista",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "alex-de-jesus",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "alexander-albertus",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "alexis-dominguez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "alexis-reyes",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "allen-ajoti",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "anderson-estevez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "anderson-jerez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "andres-luna",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "andy-pages",
+        "direct": "10.92",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "10.92",
+        "downstream": false
+      },
+      {
+        "player_slug": "aneudy-almonte",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "angel-cruz",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "angel-ramirez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "antoni-urena",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "antonio-osuna",
+        "direct": "4.89",
+        "non_dodgers": "1.23",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "4.89",
+        "downstream": false
+      },
+      {
+        "player_slug": "ariel-reynoso",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "arnaldo-lantigua",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "arod-mckenzie",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "axel-perez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "ben-serunkuma",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "brian-diaz",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "bryan-lara",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "callum-wallace",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "carlos-avila",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "carlos-frias",
+        "direct": "-0.34",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "-0.34",
+        "downstream": false
+      },
+      {
+        "player_slug": "carlos-ramirez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "carlos-rincon",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "carlos-santana",
+        "direct": "0",
+        "non_dodgers": "38.75",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "carlos-sardina",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "cesar-sanchez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "chan-ho-park",
+        "direct": "19.65",
+        "non_dodgers": "0.28",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "19.65",
+        "downstream": false
+      },
+      {
+        "player_slug": "chico-fernandez",
+        "direct": "0.00",
+        "non_dodgers": "-2.40",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0.00",
+        "downstream": false
+      },
+      {
+        "player_slug": "chin-lung-hu",
+        "direct": "0.09",
+        "non_dodgers": "-0.43",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0.09",
+        "downstream": false
+      },
+      {
+        "player_slug": "christian-muniz",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "christian-romero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "christian-suarez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "christopher-arias",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "dailoui-abad",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "damaso-marte-jr",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "daniel-arrias",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "daniel-mielcarek",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "david-romero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "degerson-diaz",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "derik-aquino",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "devlyn-bautista",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "diego-cartaya",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "domingo-geronimo",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "eddys-leonard",
+        "direct": "0",
+        "non_dodgers": "-0.21",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "edgar-aviles",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "edgar-gomez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "edgar-leon",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "eduardo-guerrero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "eduardo-quintero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "eduardo-rojas",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "elian-herrera",
+        "direct": "0.54",
+        "non_dodgers": "0.11",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0.54",
+        "downstream": false
+      },
+      {
+        "player_slug": "elias-medina",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "elio-campos",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "emil-morales",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "ender-avendano",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "enrike-sevilya",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "erick-batista",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "erick-nava",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "erny-orellana",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "euri-rosa",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "ezequiel-aparicio",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "ezequiel-melburne",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "fernando-valenzuela",
+        "direct": "36.82",
+        "non_dodgers": "4.63",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "36.82",
+        "downstream": false
+      },
+      {
+        "player_slug": "francisco-espinoza",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "franderly-morel",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "gersel-pitre",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "gregory-pereira",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "harold-gonzalez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "hendrik-clementina",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "hendry-arvelo",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "heudy-pena",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "hideo-nomo",
+        "direct": "14.15",
+        "non_dodgers": "6.78",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "14.15",
+        "downstream": false
+      },
+      {
+        "player_slug": "hung-chih-kuo",
+        "direct": "5.08",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "5.08",
+        "downstream": false
+      },
+      {
+        "player_slug": "hyun-jin-ryu",
+        "direct": "15.13",
+        "non_dodgers": "5.06",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "15.13",
+        "downstream": false
+      },
+      {
+        "player_slug": "ilmerson-colon",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "isaac-barreto",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "ismael-valdez",
+        "direct": "18.19",
+        "non_dodgers": "5.94",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "18.19",
+        "downstream": false
+      },
+      {
+        "player_slug": "ivan-pacheco",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "javier-bartolozzi",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "javier-herrera",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "javier-pena",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jecsua-liborius",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jeral-perez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jerami-rodriguez",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "jeremy-castro",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jerming-rosario",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jesus-galiz",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jesus-tillero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jholbran-herder",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jhon-gil",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jhonny-jimenez",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "jhosman-theran",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "joendry-vargas",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jorbit-vivas",
+        "direct": "0",
+        "non_dodgers": "0.51",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "jorge-carpintero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-dominguez",
+        "direct": "-0.21",
+        "non_dodgers": "-0.22",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "-0.21",
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-gonzalez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-lopez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-offerman",
+        "direct": "2.06",
+        "non_dodgers": "15.06",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "2.06",
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-requena",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-rivas",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-torrez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-victorino",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-villegas",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "jose-vizcaino",
+        "direct": "0.19",
+        "non_dodgers": "6.82",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0.19",
+        "downstream": false
+      },
+      {
+        "player_slug": "joseilyn-gonzalez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "joseph-deng-thon",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "josue-de-paula",
+        "direct": "0.46",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0.46",
+        "downstream": false
+      },
+      {
+        "player_slug": "juan-alonso",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "juan-castro",
+        "direct": "-1.73",
+        "non_dodgers": "-3.67",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "-1.73",
+        "downstream": false
+      },
+      {
+        "player_slug": "juan-guzman",
+        "direct": "0",
+        "non_dodgers": "24.28",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "juan-hernandez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "juan-macero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "julian-leon",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "julio-lugo-prospect",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "julio-urias",
+        "direct": "13.80",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "13.80",
+        "downstream": false
+      },
+      {
+        "player_slug": "karim-garcia",
+        "direct": "-0.98",
+        "non_dodgers": "-2.27",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "-0.98",
+        "downstream": false
+      },
+      {
+        "player_slug": "keibert-ruiz",
+        "direct": "0.06",
+        "non_dodgers": "6.88",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0.06",
+        "downstream": false
+      },
+      {
+        "player_slug": "kelvin-ramirez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "kenley-jansen",
+        "direct": "18.89",
+        "non_dodgers": "5.98",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "18.89",
+        "downstream": false
+      },
+      {
+        "player_slug": "kosuke-matsuda",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "leider-padilla",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "lenix-osuna",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "lesther-medrano",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "luciano-romero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "luis-carias",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "luis-gamez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "luis-guerra",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "luis-izturis",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "luis-luna",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "luis-rodriguez-2015",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "luis-rodriguez-2019",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "luis-tovar",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "mairoshendrick-martinus",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "marco-corcho",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "maximo-martinez",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "michael-ramirez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "michael-vilchez",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "miguel-bastardo",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "miguel-dominguez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "miguel-droz",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "miguel-vargas",
+        "direct": "-0.01",
+        "non_dodgers": "6.19",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "-0.01",
+        "downstream": false
+      },
+      {
+        "player_slug": "misja-harcksen",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "missael-soto",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "moises-acacio",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "moises-rangel",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "natanael-castillo",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "nicolas-cruz",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "omar-daal",
+        "direct": "1.28",
+        "non_dodgers": "7.37",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "1.28",
+        "downstream": false
+      },
+      {
+        "player_slug": "omar-estevez",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "oneil-cruz",
+        "direct": "0",
+        "non_dodgers": "8.17",
+        "package_attribution_state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+        "package_return": "0.40",
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "oswaldo-osorio",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "paris-johnson",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "pedro-astacio",
+        "direct": "14.14",
+        "non_dodgers": "11.49",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "14.14",
+        "downstream": false
+      },
+      {
+        "player_slug": "pedro-baez",
+        "direct": "3.69",
+        "non_dodgers": "-0.15",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "3.69",
+        "downstream": false
+      },
+      {
+        "player_slug": "pedro-martinez",
+        "direct": "3.21",
+        "non_dodgers": "80.69",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "3.21",
+        "downstream": false
+      },
+      {
+        "player_slug": "pedro-santillan",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "peter-bonilla",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "rafael-tua",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "rafy-peguero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "railin-familia",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "ramon-martinez",
+        "direct": "25.84",
+        "non_dodgers": "0.02",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "25.84",
+        "downstream": false
+      },
+      {
+        "player_slug": "ramon-rosso",
+        "direct": "0",
+        "non_dodgers": "-0.07",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "ramon-troncoso",
+        "direct": "1.21",
+        "non_dodgers": "-0.45",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "1.21",
+        "downstream": false
+      },
+      {
+        "player_slug": "raul-mondesi",
+        "direct": "21.61",
+        "non_dodgers": "7.90",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "21.61",
+        "downstream": false
+      },
+      {
+        "player_slug": "rayne-doncon",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "raynerd-ortega",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "reyli-mariano",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "ricardo-montero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "ricardo-roman",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "roberto-clemente",
+        "direct": "0",
+        "non_dodgers": "94.96",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "robinson-ventura",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "rodmar-angela",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "roger-cedeno",
+        "direct": "0.82",
+        "non_dodgers": "0.87",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0.82",
+        "downstream": false
+      },
+      {
+        "player_slug": "roger-lasso",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "roiger-mujica",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "roki-sasaki",
+        "direct": "1.14",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "1.14",
+        "downstream": false
+      },
+      {
+        "player_slug": "ronny-brito",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "roque-gutierrez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "rubby-de-la-rosa",
+        "direct": "0.62",
+        "non_dodgers": "0.70",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0.62",
+        "downstream": false
+      },
+      {
+        "player_slug": "rubel-arias",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "samuel-munoz",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "samuel-sanchez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "samuel-savinon",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "sandy-amoros",
+        "direct": "7.73",
+        "non_dodgers": "-0.38",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "7.73",
+        "downstream": false
+      },
+      {
+        "player_slug": "sean-linan",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "sebastian-jimenez",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "shai-romero",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "shakir-albert",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "starling-heredia",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "steven-castillo",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "thayron-liranzo",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "tim-fischer",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "tony-abreu",
+        "direct": "1.23",
+        "non_dodgers": "-1.67",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "1.23",
+        "downstream": false
+      },
+      {
+        "player_slug": "umar-male",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "victor-gonzalez",
+        "direct": "1.37",
+        "non_dodgers": "0.05",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "1.37",
+        "downstream": false
+      },
+      {
+        "player_slug": "victor-rodrigues",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "william-soto",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "willy-aybar",
+        "direct": "1.27",
+        "non_dodgers": "1.47",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "1.27",
+        "downstream": false
+      },
+      {
+        "player_slug": "wilman-diaz",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "yadier-alvarez",
+        "direct": "0",
+        "non_dodgers": "0",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      },
+      {
+        "player_slug": "yasiel-puig",
+        "direct": "17.80",
+        "non_dodgers": "0.97",
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": "17.80",
+        "downstream": false
+      },
+      {
+        "player_slug": "yeiner-fernandez",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "yhonaider-gudino",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "yojackson-laya",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "yordan-alvarez",
+        "direct": "0",
+        "non_dodgers": "30.90",
+        "package_attribution_state": "SOLE_OUTGOING_ATTRIBUTABLE",
+        "package_return": "1.94",
+        "individual_return": "1.94",
+        "attributable": "1.94",
+        "downstream": false
+      },
+      {
+        "player_slug": "yorfran-medina",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "yoryi-simarra",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "yuliangel-de-la-cruz",
+        "direct": null,
+        "non_dodgers": null,
+        "package_attribution_state": "NO_MODELED_TRADE_EVENT",
+        "package_return": null,
+        "individual_return": null,
+        "attributable": null,
+        "downstream": false
+      },
+      {
+        "player_slug": "yusniel-diaz",
+        "direct": "0",
+        "non_dodgers": "-0.03",
+        "package_attribution_state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+        "package_return": "2.58",
+        "individual_return": null,
+        "attributable": "0",
+        "downstream": false
+      }
+    ],
+    "queue": [
+      {
+        "issue": "ACQUISITION_COST_INCOMPLETE",
+        "n": 33
+      },
+      {
+        "issue": "OUTCOME_INCOMPLETE",
+        "n": 8
+      },
+      {
+        "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+        "n": 2
+      },
+      {
+        "issue": "TRADE_RECORD_MISSING",
+        "n": 5
+      }
+    ]
+  },
+  "failures": []
+}

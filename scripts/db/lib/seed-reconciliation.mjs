@@ -13,6 +13,11 @@ const manifest = JSON.parse(fs.readFileSync(new URL('../../../database/research/
 const cats = manifest.categories
 const manifest028 = JSON.parse(fs.readFileSync(new URL('../../../database/research/028/reconciliation-manifest.json', import.meta.url), 'utf8'))
 const cats028 = manifest028.categories
+// Migration 033 date correction of the Diaz / Machado trade (forward-only): the 028 selector date is the press-release date.
+// The check is state aware: a database that has not applied 033 (no transaction_asset_resolutions) must still carry the
+// seeded date; a database with 033 must carry the corrected one, and the old date fails.
+const CORRECTED_DATES = { 'yusniel-diaz|TRADE|2018-07-19': '2018-07-18' }
+const correctedDate = (selector) => CORRECTED_DATES[`${selector.player_slug}|${selector.transaction_type}|${selector.transaction_date}`]
 const lit = (v) => `'${JSON.stringify(v).replace(/'/g, "''")}'::jsonb`
 const claims = [...cats.evidence_missing.entries, ...cats.evidence_variants.entries, ...cats.evidence_note_neutralizations.entries]
 const variantClaims = cats.evidence_variants.entries
@@ -90,13 +95,15 @@ export const RECONCILIATION_QUERIES = {
     where exists (select 1 from public.evidence ev where ev.evidence_note = x #>> '{}')`,
 
   // Migration 028: the Yusniel Diaz trade carries the canonical wording exactly once, and no known live wording remains
-  reconciliation_trade_wording_violations: `select count(*)::int as n from jsonb_array_elements(${lit(cats028.transaction_descriptions.entries.map((e) => ({ selector: e.selector, canonical: e.canonical, live: e.live })))}) x
+  // (Migration 033 corrects this transaction's date from the press-release publication date 2018-07-19 to the official 2018-07-18, so the
+  // expected date is state aware: the seeded date before 033, the corrected date once 033 is applied; the old date then fails.)
+  reconciliation_trade_wording_violations: `select count(*)::int as n from jsonb_array_elements(${lit(cats028.transaction_descriptions.entries.map((e) => ({ selector: e.selector, canonical: e.canonical, live: e.live, corrected_date: correctedDate(e.selector) ?? null })))}) x
     where (select count(*) from public.transactions t join public.players p on p.id = t.player_id join public.organizations fo on fo.id = t.from_organization_id
         join public.organizations too on too.id = t.to_organization_id
-        where p.slug = x -> 'selector' ->> 'player_slug' and t.transaction_date = (x -> 'selector' ->> 'transaction_date')::date and t.transaction_type = x -> 'selector' ->> 'transaction_type'
+        where p.slug = x -> 'selector' ->> 'player_slug' and t.transaction_date::text = case when x ->> 'corrected_date' is not null and to_regclass('public.transaction_asset_resolutions') is not null then x ->> 'corrected_date' else x -> 'selector' ->> 'transaction_date' end and t.transaction_type = x -> 'selector' ->> 'transaction_type'
           and fo.name = x -> 'selector' ->> 'from_organization_name' and too.name = x -> 'selector' ->> 'to_organization_name') <> 1
       or (select count(*) from public.transactions t join public.players p on p.id = t.player_id
-        where p.slug = x -> 'selector' ->> 'player_slug' and t.transaction_date = (x -> 'selector' ->> 'transaction_date')::date and t.transaction_type = x -> 'selector' ->> 'transaction_type'
+        where p.slug = x -> 'selector' ->> 'player_slug' and t.transaction_date::text = case when x ->> 'corrected_date' is not null and to_regclass('public.transaction_asset_resolutions') is not null then x ->> 'corrected_date' else x -> 'selector' ->> 'transaction_date' end and t.transaction_type = x -> 'selector' ->> 'transaction_type'
           and t.return_description = x -> 'canonical' ->> 'return_description') <> 1
       or exists (select 1 from public.transactions t where t.return_description = x -> 'live' ->> 'return_description')`,
 

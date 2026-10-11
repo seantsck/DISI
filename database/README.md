@@ -41,6 +41,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 30. `030_financial_acquisition_intelligence.sql` — financial acquisition intelligence: a provenance ledger under the unchanged signings money columns (external / legacy carry-forward / rule-derived reports with currency, basis and precision), a signing-environment pool ledger, pathway × component completeness rules, international pool treatment, the Dodgers 2019-20 signing environment, two separate completeness dimensions, descriptive class / market commitment views and a research queue; Ryu's sourced bonus and exact posting fee become canonical and the Sasaki posting-fee conflict is preserved (details below; research in `database/research/030/`).
 31. `031_financial_provenance_coverage_expansion.sql` — financial provenance and coverage expansion: sourced pool capacity for the Dodgers 2012-13, 2013-14, 2014-15, 2017-18 and 2020-21 periods (and the post-penalty 2021-22 allocation), 13 provenance upgrades and 4 newly sourced bonuses over the 030 ledger, one corrected legacy bonus, period-membership environment links, and `signing_financial_resolutions`, a reviewed decision that selects one of several competing ACTIVE reports without rewriting any (details below; research in `database/research/031/`).
 32. `032_player_value_organizational_realization.sql` — Baseball-Reference team-season bWAR facts (`player_mlb_team_season_war`, BAT and PITCH kept apart) with a team-code map, a `bref_id` on trade-return assets, reconciliation of the legacy career-WAR stores, and four views that separate direct Dodgers MLB value from non-Dodgers career value and one-hop trade return, with package-level attribution and cost-completeness gating (details below; research in `database/research/032/`).
+33. `033_transaction_asset_chain_completion.sql` — the factual transaction history of the 220 tracked Dodgers international signings (161 events: tracked-player exits, one re-entry and 20 first-hop return-asset exits) with stable MLB / Baseball-Reference / Register identities, multi-team, cash, future-considerations and bonus-pool-space assets, sealed placeholder resolutions and dated control observations, the Diaz / Machado date corrected to the official 2018-07-18, Baseball-Reference bWAR for the 40 first-hop incoming players, explicit trade-return states, and four views (details below; research in `database/research/033/`).
 
 ## 017 research-database layer
 
@@ -214,6 +215,22 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Views.** `v_trade_realization_edges`, `v_player_organizational_realization`, `v_dodgers_international_value_portfolio`, `v_value_research_queue`. The legacy WAR-per-dollar and executive KPI definitions are unchanged.
 - **Surface.** 56 public tables and 101 views, RLS and SELECT-only API grants, invoker-rights guard with EXECUTE revoked. The verifier adds 10 structural checks (149 in total).
 - **Rerunnable**; design, source audit and reproduction in `database/research/032/README.md`.
+
+## 033 transaction and asset-chain completion
+
+- **Complete factual transactions.** 161 events: 140 exits of tracked signings (TRADE, RELEASE, FREE_AGENCY, WAIVER, RULE5_SELECTION, EXPANSION_DRAFT), one re-entry (Valdez 2000) and 20 exits of first-hop return assets. A free-agency event exists only where Dodgers control actually ended (Baez 2020 did; Ryu 2018 and Jansen 2016 did not). Historical mechanism wording is kept in `historical_label` (Clemente's 1954 minor-league "Rule 5" draft).
+- **Partition of the 220 signings.** 138 left Dodgers control, 64 verified still controlled, 16 with no exit evidence, 2 with unavailable history (`v_dodgers_international_exit_summary`). No exit is inferred from absence.
+- **Asset identity.** `mlb_id` (official), `bref_id` (major-league, constraint unchanged) and `bref_register_id` (minor-league Register, separate namespace); 266 PLAYER assets, none without a stable identity. `player_id` stays DISI-tracked signings only. `asset_type` is a closed list of five observed types; cash and pool-space amounts are sourced or NULL, never zero.
+- **Counterparty.** `counterparty_organization_id` per asset and `is_multi_team` per event; the 2024-07-29 White Sox / Cardinals deal is modeled with Dodgers-side flows only.
+- **Placeholders.** `transaction_asset_resolutions` is append-only: a player to be named later is preserved and its resolution recorded beside it (Boston 2012 x2, Fernandez 1957, Valdez 1999). Unresolved: Frias 2017 and the 2024 PTBNL-or-cash.
+- **Observations.** `dodgers_control_observations` holds dated, sourced observations (continued control, history unavailable, no MLB appearance observed through a date, career ended with the Dodgers, exit mechanism unrecorded); a zero return is valid only through its observation date.
+- **Return states.** `v_trade_realization_edges` now shows cash-only and no-player returns (`NO_PLAYER_RETURN`, 0 bWAR, not a statement about total transaction value), `PLAYER_RETURN_PENDING`, `RETURN_UNRECORDED` and `NO_MLB_APPEARANCE_OBSERVED` beside `LOADED` and `TIMING_UNRESOLVED`; the 032 acquisition-relative timing rule is reused, with the asset-level counterparty.
+- **Return-player WAR.** 573 Baseball-Reference team-season rows (406 BAT, 167 PITCH) for 40 incoming players, same files and checksums as 032; four new team codes (NYG, PHA, KCA, WSH to 1960).
+- **Correction.** Diaz / Machado 2018-07-19 -> 2018-07-18 forward-only, with evidence; the press release keeps its publication date.
+- **Not here.** No second-hop or recursive realization and no value for cash, pool space or prospects (Migration 034).
+- **Views.** `v_transaction_event_complete`, `v_transaction_asset_chain_readiness`, `v_dodgers_international_exit_summary`, `v_transaction_research_queue`.
+- **Surface.** 58 public tables and 105 views, RLS and SELECT-only API grants, invoker-rights guards with EXECUTE revoked. The verifier adds 11 structural checks (160 in total).
+- **Rerunnable**; design, identities, effects and reproduction in `database/research/033/README.md`.
 
 ## Player identity (020)
 
