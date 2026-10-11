@@ -31,6 +31,7 @@
     "028_residual_canonical_drift_reconciliation.sql": "4009bcc85fdd2c46223408c618804aa41eb7d18e",
     "029_signing_network_intelligence.sql": "c16e45206f53b2d5adc216d26fbbadfa48bacab3",
     "030_financial_acquisition_intelligence.sql": "8f107128581ff23012e21eb607d51713ac04b65b",
-    "031_financial_provenance_coverage_expansion.sql": "e42cf5a930f098d911d206e5cf514086929dbaa2"
+    "031_financial_provenance_coverage_expansion.sql": "e42cf5a930f098d911d206e5cf514086929dbaa2",
+    "032_player_value_organizational_realization.sql": "73ff1534a8b70f9e1e18bf0619c2695e594296a7"
   }
 }

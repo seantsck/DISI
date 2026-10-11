@@ -1977,6 +1977,7 @@ const views029 = ['v_dodgers_network_coverage', 'v_network_entity_player_history
 const views029Retired = ['v_dodgers_trainer_network', 'v_player_trainers']
 const views030 = ['v_dodgers_financial_commitment_by_class', 'v_dodgers_financial_commitment_by_market', 'v_financial_research_queue', 'v_signing_acquisition_financials']
 const views032 = ['v_dodgers_international_value_portfolio', 'v_player_organizational_realization', 'v_trade_realization_edges', 'v_value_research_queue']
+const views033 = ['v_dodgers_international_exit_summary', 'v_transaction_asset_chain_readiness', 'v_transaction_event_complete', 'v_transaction_research_queue']
 const tables026 = ['evaluation_scales', 'player_evaluation_grades', 'player_evaluation_notes', 'player_evaluation_rankings',
   'player_evaluations', 'scouting_publications']
 // Every API-role privilege on every public relation, straight from the ACLs (MAINTAIN included).
@@ -1996,7 +1997,7 @@ const securitySnapshotOn = async (oneFn) => oneFn(`select
     (select string_agg(c.relname || ':' || pg_get_viewdef(c.oid), ',' order by c.relname) from pg_class c
       join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v') as view_definitions`)
 
-test('025 inventory: the 86 reviewed views are read-only analytics, security_invoker and not updatable; 026 adds five, 029 adds four (and retires two legacy trainer views), 030 and 032 add four each', async () => {
+test('025 inventory: the 86 reviewed views are read-only analytics, security_invoker and not updatable; 026 adds five, 029 adds four (and retires two legacy trainer views), 030, 032 and 033 add four each', async () => {
   assert.equal(inventory025.views.length, 86)
   assert.equal(legacyBroad.length, 43, 'the live audit found 43 legacy views with ALL privileges')
   assert.deepEqual(inventory025.intentionally_writable, [])
@@ -2004,7 +2005,7 @@ test('025 inventory: the 86 reviewed views are read-only analytics, security_inv
     from pg_class c join pg_namespace n on n.oid = c.relnamespace
     join information_schema.views v on v.table_schema = 'public' and v.table_name = c.relname
     where n.nspname = 'public' and c.relkind = 'v' order by 1`)
-  assert.deepEqual(views.map((v) => v.relname), [...inventory025.views.map((v) => v.view).filter((v) => !views029Retired.includes(v)), ...views026, ...views029, ...views030, ...views032].sort())
+  assert.deepEqual(views.map((v) => v.relname), [...inventory025.views.map((v) => v.view).filter((v) => !views029Retired.includes(v)), ...views026, ...views029, ...views030, ...views032, ...views033].sort())
   for (const v of views) {
     assert.match(v.opts, /security_invoker=(true|on)/, v.relname)
     assert.deepEqual([v.is_updatable, v.is_insertable_into], ['NO', 'NO'], v.relname)
@@ -2020,7 +2021,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   for (const kind of ['v', 'r']) {
     for (const role of ['anon', 'authenticated']) {
       const relations = acl.filter((a) => a.kind === kind && a.grantee === role)
-      assert.equal(relations.length, kind === 'v' ? 101 : 56, `${role} ${kind}`)
+      assert.equal(relations.length, kind === 'v' ? 105 : 58, `${role} ${kind}`)
       for (const privilege of ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN']) {
         assert.deepEqual(relations.filter((a) => a.privs.split(',').includes(privilege)).map((a) => a.relname), [], `${role} ${privilege} on ${kind}`)
       }
@@ -2030,7 +2031,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   assert.deepEqual(acl.filter((a) => a.grantee === 'PUBLIC'), [], 'PUBLIC holds nothing')
   const tables = await one(`select count(*)::int as n, count(*) filter (where relrowsecurity)::int as rls from pg_class c
     join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r'`)
-  assert.deepEqual([tables.n, tables.rls], [56, 56])
+  assert.deepEqual([tables.n, tables.rls], [58, 58])
   const write = await one(`select count(*)::int as n from pg_policies where schemaname = 'public' and cmd <> 'SELECT'`)
   assert.equal(write.n, 0, 'no table policy grants writes to anyone')
 })
@@ -2134,10 +2135,10 @@ const dayEval = (date, o = {}) => insertEvaluation({
 const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} returning id into i; update player_evaluations set record_status = 'ACTIVE' where id = i; end $seal$`
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
-test('frozen history: migrations 001-031 are byte-for-byte unchanged (line endings normalised); 032 is the only addition', () => {
-  const files = manifest.canonical_sql.filter((f) => f < '032')
-  assert.equal(files.length, 31)
-  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '032'), ['032_player_value_organizational_realization.sql'])
+test('frozen history: migrations 001-032 are byte-for-byte unchanged (line endings normalised); 033 is the only addition', () => {
+  const files = manifest.canonical_sql.filter((f) => f < '033')
+  assert.equal(files.length, 32)
+  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '033'), ['033_transaction_asset_chain_completion.sql'])
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {
     const text = readSql(f).replace(/\r\n/g, '\n')
@@ -2145,7 +2146,7 @@ test('frozen history: migrations 001-031 are byte-for-byte unchanged (line endin
   }
 })
 
-test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 56 tables / 101 views after 032, all RLS / security_invoker', async () => {
+test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 58 tables / 105 views after 033, all RLS / security_invoker', async () => {
   const t = await rows(`select c.relname, c.relrowsecurity as rls from pg_class c join pg_namespace n on n.oid = c.relnamespace
     where n.nspname = 'public' and c.relkind = 'r' and c.relname = any($1) order by 1`, [tables026])
   assert.deepEqual(t.map((r) => [r.relname, r.rls]), tables026.map((n) => [n, true]))
@@ -2153,7 +2154,7 @@ test('026 shape: six new tables and five new views; the legacy evaluations table
   assert.equal(legacy.gone, true)
   const counts = await one(`select count(*) filter (where relkind = 'r')::int as tables, count(*) filter (where relkind = 'v')::int as views
     from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind in ('r', 'v')`)
-  assert.deepEqual([counts.tables, counts.views], [56, 101])
+  assert.deepEqual([counts.tables, counts.views], [58, 105])
   const v = await rows(`select relname, coalesce(array_to_string(reloptions, ','), '') as opts from pg_class where relname = any($1) and relkind = 'v'`, [views026])
   assert.equal(v.length, 5)
   for (const x of v) assert.match(x.opts, /security_invoker=(true|on)/, x.relname)

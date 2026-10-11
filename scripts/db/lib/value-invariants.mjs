@@ -52,10 +52,10 @@ export const valueQueries = (loaded) => {
       where coalesce(t.metric_war, t.outcomes_war) is null or abs(t.total - coalesce(t.metric_war, t.outcomes_war)) > ${TOL}
          or (t.metric_war is not null and t.outcomes_war is not null and abs(t.metric_war - t.outcomes_war) > ${TOL})`,
 
-    // a bref_id on a trade asset belongs to a PLAYER asset whose identity has loaded team-season facts
+    // a bref_id on a trade asset belongs to a PLAYER asset and is a major-league / career id. (Migration 033 adds the stricter rule that a
+    // first-hop incoming asset of a trade involving a tracked signing has loaded team-season facts, in transaction-invariants.mjs.)
     value_event_asset_identity_violations: `select count(*)::int as n from public.transaction_event_assets a
-      where a.bref_id is not null and (a.asset_type <> 'PLAYER' or a.bref_id !~ '^[a-z0-9]+$'
-        or not exists (select 1 from public.player_mlb_team_season_war w where w.bref_id = a.bref_id and w.record_status = 'ACTIVE'))`,
+      where a.bref_id is not null and (a.asset_type <> 'PLAYER' or a.bref_id !~ '^[a-z0-9]+$')`,
 
     // attribution shape: an individual trade-return share exists only for a sole outgoing asset; non-Dodgers value is never added;
     // zero is used only where the team history is loaded and reconciled or the outcome is audited as no MLB career

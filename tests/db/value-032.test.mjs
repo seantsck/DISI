@@ -10,7 +10,7 @@ import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { buildChainThrough, buildCanonicalChain } from './canonical-chain.mjs'
+import { buildChainThrough } from './canonical-chain.mjs'
 import { lit, withoutTransaction } from './drift-027.mjs'
 import { valueQueries, VALUE_CHECK_NAMES } from '../../scripts/db/lib/value-invariants.mjs'
 import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
@@ -399,7 +399,7 @@ test('research queue: derived issues, nothing hard-coded, no network or scouting
   assert.doesNotMatch(defs, /network_|player_evaluations|CAREER_FWAR/)
 })
 
-test('security: RLS and SELECT-only grants, invoker views, invoker-rights guard with no API EXECUTE; the verifier passes with 149 checks and catches its own drift', async () => {
+test('security: RLS and SELECT-only grants, invoker views, invoker-rights guard with no API EXECUTE; the verifier passes with 149 checks (160 with the 033 checks) and catches its own drift', async () => {
   const t = await q(`select c.relname, c.relrowsecurity as rls from pg_class c where c.relname = any($1) order by 1`, [NEW_TABLES])
   assert.ok(t.every((r) => r.rls))
   const acl = await q(`select c.relname, coalesce(r.rolname, 'PUBLIC') as g, string_agg(a.privilege_type, ',' order by a.privilege_type) as p from pg_class c cross join lateral aclexplode(coalesce(c.relacl, acldefault('r', c.relowner))) a
@@ -408,9 +408,9 @@ test('security: RLS and SELECT-only grants, invoker views, invoker-rights guard 
   assert.ok(acl.every((a) => a.g !== 'PUBLIC' && a.p === 'SELECT'))
   assert.deepEqual(await q(`select tablename, cmd from pg_policies where tablename = any($1) and cmd <> 'SELECT'`, [NEW_TABLES]), [])
   assert.ok((await q(`select coalesce(array_to_string(reloptions, ','), '') as o from pg_class where relname = any($1)`, [NEW_VIEWS])).every((v) => /security_invoker=(true|on)/.test(v.o)))
-  const full = await checkInvariants(chain.query)
+  const full = await checkInvariants(chain.query, { ...CANONICAL_EXPECTATIONS, public_views_total: 101, public_tables_total: 56 })
   assert.deepEqual(failedChecks(full).map((c) => c.name), [])
-  assert.equal(full.hard.length, 149)
+  assert.equal(full.hard.length, 160, '149 through 032 plus the eleven 033 checks, which pass trivially without their tables')
   assert.equal(VALUE_CHECK_NAMES.length, 10)
   // drift detection
   await inTxn(async () => {
@@ -424,7 +424,8 @@ test('security: RLS and SELECT-only grants, invoker views, invoker-rights guard 
     assert.ok((await failing()).includes('value_career_reconciliation_violations'))
   })
   await inTxn(async () => {
-    await chain.db.exec(`update transaction_event_assets set bref_id = 'zzzzzz01' where asset_name = 'Josh Fields'`)
+    await chain.db.exec(`alter table transaction_event_assets drop constraint if exists transaction_event_assets_bref_id_check;
+      update transaction_event_assets set bref_id = 'Bad-ID' where asset_name = 'Josh Fields'`)
     assert.deepEqual(await failing(), ['value_event_asset_identity_violations'])
   })
   await inTxn(async () => {
@@ -443,7 +444,7 @@ test('security: RLS and SELECT-only grants, invoker views, invoker-rights guard 
 })
 
 test('a fresh 001-032 replay equals the 001-031 database with 032 applied', async () => {
-  const fresh = await buildCanonicalChain()
+  const fresh = await buildChainThrough('032_player_value_organizational_realization.sql')
   try {
     const content = async (query) => ({
       facts: await query(`select bref_id, season, bref_team_code, stint_ordinal, component, war::text as war, games, plate_appearances, ip_outs, league, war_system, record_status,

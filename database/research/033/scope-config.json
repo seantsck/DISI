@@ -1,0 +1,84 @@
+{
+ "war_system": "BWAR",
+ "note": "The Baseball-Reference WAR data files are the same two files, with the same checksums, that Migration 032 loaded; no re-download.",
+ "files": {
+  "bat": {
+   "url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+   "sha256": "ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8",
+   "rows": 126547
+  },
+  "pitch": {
+   "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt",
+   "sha256": "061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5",
+   "rows": 57884
+  }
+ },
+ "retrieved_at": "2026-10-10T07:36:40Z",
+ "file_last_modified": "2026-09-28",
+ "team_code_map_additions": [
+  {
+   "code": "NYG",
+   "organization": "SFG",
+   "from": 1883,
+   "to": 1957,
+   "note": "New York Giants (San Francisco franchise)"
+  },
+  {
+   "code": "PHA",
+   "organization": "OAK",
+   "from": 1901,
+   "to": 1954,
+   "note": "Philadelphia Athletics (Oakland franchise)"
+  },
+  {
+   "code": "KCA",
+   "organization": "OAK",
+   "from": 1955,
+   "to": 1967,
+   "note": "Kansas City Athletics (Oakland franchise)"
+  },
+  {
+   "code": "WSH",
+   "organization": "MIN",
+   "from": 1901,
+   "to": 1960,
+   "note": "Washington Senators 1901-1960 (Minnesota franchise); the code was reused from 1961 for the expansion Senators and is deliberately not mapped past 1960"
+  }
+ ],
+ "date_correction": {
+  "event_key": "LAD_BAL_2018_DIAZ_MACHADO",
+  "player_slug": "yusniel-diaz",
+  "legacy_transaction_type": "TRADE",
+  "from": "2018-07-19",
+  "to": "2018-07-18",
+  "evidence_source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=666783",
+  "note": "The official MLB transaction log dates the Machado trade 2018-07-18. DISI carried 2018-07-19, the publication date of the MLB press release; that source keeps its own publication date."
+ },
+ "legacy_transactions": [
+  {
+   "slug": "ramon-rosso",
+   "date": "2016-07-15",
+   "type": "RELEASE"
+  },
+  {
+   "slug": "yordan-alvarez",
+   "date": "2016-08-01",
+   "type": "TRADE"
+  },
+  {
+   "slug": "oneil-cruz",
+   "date": "2017-07-31",
+   "type": "TRADE"
+  },
+  {
+   "slug": "yusniel-diaz",
+   "date": "2018-07-18",
+   "type": "TRADE"
+  },
+  {
+   "slug": "arnaldo-lantigua",
+   "date": "2025-01-17",
+   "type": "TRADE"
+  }
+ ]
+}
