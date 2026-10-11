@@ -1,0 +1,294 @@
+{
+  "war_system": "BWAR",
+  "files": {
+    "bat": {
+      "url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+      "sha256": "ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8",
+      "rows": 126547
+    },
+    "pitch": {
+      "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt",
+      "sha256": "061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5",
+      "rows": 57884
+    }
+  },
+  "retrieved_at": "2026-10-10T07:36:40Z",
+  "file_last_modified": "2026-09-28",
+  "return_assets": [
+    {
+      "event_key": "LAD_HOU_2016_ALVAREZ_FIELDS",
+      "asset_name": "Josh Fields",
+      "bref_id": "fieldjo03",
+      "mlb_id": "451661",
+      "identity_check": "MLB Stats API person 451661 is Josh Fields, RHP, born 1985-08-19; the B-Ref file rows for fieldjo03 carry mlb_ID 451661 and LAD seasons 2016-2018."
+    },
+    {
+      "event_key": "LAD_PIT_2017_CRUZ_WATSON",
+      "asset_name": "Tony Watson",
+      "bref_id": "watsoto01",
+      "mlb_id": "453265",
+      "identity_check": "MLB Stats API person 453265 is Tony Watson, LHP, born 1985-05-30; the B-Ref file rows for watsoto01 carry mlb_ID 453265 and a 2017 LAD stint."
+    },
+    {
+      "event_key": "LAD_BAL_2018_DIAZ_MACHADO",
+      "asset_name": "Manny Machado",
+      "bref_id": "machama01",
+      "mlb_id": "592518",
+      "identity_check": "MLB Stats API person 592518 is Manny Machado, 3B, born 1992-07-06; the B-Ref file rows for machama01 carry mlb_ID 592518 and a 2018 LAD stint."
+    }
+  ],
+  "team_code_map": [
+    {
+      "code": "ANA",
+      "organization": "LAA",
+      "from": 1997,
+      "to": 2004,
+      "note": "Anaheim Angels"
+    },
+    {
+      "code": "ARI",
+      "organization": "ARI",
+      "from": 1998,
+      "to": null,
+      "note": "Arizona Diamondbacks"
+    },
+    {
+      "code": "ATL",
+      "organization": "ATL",
+      "from": 1966,
+      "to": null,
+      "note": "Atlanta Braves"
+    },
+    {
+      "code": "BAL",
+      "organization": "BAL",
+      "from": 1954,
+      "to": null,
+      "note": "Baltimore Orioles"
+    },
+    {
+      "code": "BOS",
+      "organization": "BOS",
+      "from": 1901,
+      "to": null,
+      "note": "Boston Red Sox"
+    },
+    {
+      "code": "BRO",
+      "organization": "BRO",
+      "from": 1884,
+      "to": 1957,
+      "note": "Brooklyn Dodgers (Dodgers franchise)"
+    },
+    {
+      "code": "CAL",
+      "organization": "LAA",
+      "from": 1965,
+      "to": 1996,
+      "note": "California Angels"
+    },
+    {
+      "code": "CHC",
+      "organization": "CHC",
+      "from": 1876,
+      "to": null,
+      "note": "Chicago Cubs"
+    },
+    {
+      "code": "CHW",
+      "organization": "CWS",
+      "from": 1901,
+      "to": null,
+      "note": "Chicago White Sox (B-Ref code CHW)"
+    },
+    {
+      "code": "CIN",
+      "organization": "CIN",
+      "from": 1890,
+      "to": null,
+      "note": "Cincinnati Reds"
+    },
+    {
+      "code": "CLE",
+      "organization": "CLE",
+      "from": 1901,
+      "to": null,
+      "note": "Cleveland franchise"
+    },
+    {
+      "code": "COL",
+      "organization": "COL",
+      "from": 1993,
+      "to": null,
+      "note": "Colorado Rockies"
+    },
+    {
+      "code": "DET",
+      "organization": "DET",
+      "from": 1901,
+      "to": null,
+      "note": "Detroit Tigers"
+    },
+    {
+      "code": "FLA",
+      "organization": "MIA",
+      "from": 1993,
+      "to": 2011,
+      "note": "Florida Marlins (Miami franchise)"
+    },
+    {
+      "code": "HOU",
+      "organization": "HOU",
+      "from": 1962,
+      "to": null,
+      "note": "Houston franchise"
+    },
+    {
+      "code": "KCR",
+      "organization": "KC",
+      "from": 1969,
+      "to": null,
+      "note": "Kansas City Royals (B-Ref code KCR)"
+    },
+    {
+      "code": "LAA",
+      "organization": "LAA",
+      "from": 2005,
+      "to": null,
+      "note": "Los Angeles Angels"
+    },
+    {
+      "code": "LAD",
+      "organization": "LAD",
+      "from": 1958,
+      "to": null,
+      "note": "Los Angeles Dodgers (Dodgers franchise)"
+    },
+    {
+      "code": "MIA",
+      "organization": "MIA",
+      "from": 2012,
+      "to": null,
+      "note": "Miami Marlins"
+    },
+    {
+      "code": "MIL",
+      "organization": "MIL",
+      "from": 1970,
+      "to": null,
+      "note": "Milwaukee Brewers"
+    },
+    {
+      "code": "MIN",
+      "organization": "MIN",
+      "from": 1961,
+      "to": null,
+      "note": "Minnesota Twins"
+    },
+    {
+      "code": "MON",
+      "organization": "WSH",
+      "from": 1969,
+      "to": 2004,
+      "note": "Montreal Expos (Washington franchise)"
+    },
+    {
+      "code": "NYM",
+      "organization": "NYM",
+      "from": 1962,
+      "to": null,
+      "note": "New York Mets"
+    },
+    {
+      "code": "NYY",
+      "organization": "NYY",
+      "from": 1903,
+      "to": null,
+      "note": "New York Yankees"
+    },
+    {
+      "code": "OAK",
+      "organization": "OAK",
+      "from": 1968,
+      "to": null,
+      "note": "Oakland Athletics"
+    },
+    {
+      "code": "PHI",
+      "organization": "PHI",
+      "from": 1883,
+      "to": null,
+      "note": "Philadelphia Phillies"
+    },
+    {
+      "code": "PIT",
+      "organization": "PIT",
+      "from": 1887,
+      "to": null,
+      "note": "Pittsburgh Pirates"
+    },
+    {
+      "code": "SDP",
+      "organization": "SD",
+      "from": 1969,
+      "to": null,
+      "note": "San Diego Padres (B-Ref code SDP)"
+    },
+    {
+      "code": "SEA",
+      "organization": "SEA",
+      "from": 1977,
+      "to": null,
+      "note": "Seattle Mariners"
+    },
+    {
+      "code": "SFG",
+      "organization": "SFG",
+      "from": 1958,
+      "to": null,
+      "note": "San Francisco Giants"
+    },
+    {
+      "code": "STL",
+      "organization": "STL",
+      "from": 1892,
+      "to": null,
+      "note": "St. Louis Cardinals"
+    },
+    {
+      "code": "TBD",
+      "organization": "TB",
+      "from": 1998,
+      "to": 2007,
+      "note": "Tampa Bay Devil Rays (Rays franchise)"
+    },
+    {
+      "code": "TBR",
+      "organization": "TB",
+      "from": 2008,
+      "to": null,
+      "note": "Tampa Bay Rays"
+    },
+    {
+      "code": "TEX",
+      "organization": "TEX",
+      "from": 1972,
+      "to": null,
+      "note": "Texas Rangers"
+    },
+    {
+      "code": "TOR",
+      "organization": "TOR",
+      "from": 1977,
+      "to": null,
+      "note": "Toronto Blue Jays"
+    },
+    {
+      "code": "WSN",
+      "organization": "WSH",
+      "from": 2005,
+      "to": null,
+      "note": "Washington Nationals (B-Ref code WSN)"
+    }
+  ]
+}
