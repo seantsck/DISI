@@ -1,0 +1,57 @@
+{
+ "war_system": "BWAR",
+ "note": "The Baseball-Reference WAR data files are the same two files, with the same checksums, that Migrations 032 and 033 loaded; no re-download.",
+ "files": {
+  "bat": {
+   "url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+   "sha256": "ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8",
+   "rows": 126547
+  },
+  "pitch": {
+   "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt",
+   "sha256": "061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5",
+   "rows": 57884
+  }
+ },
+ "retrieved_at": "2026-10-10T07:36:40Z",
+ "file_last_modified": "2026-09-28",
+ "extra_downstream_bref_ids": [
+  {
+   "bref_id": "kempma01",
+   "mlb_id": "461314",
+   "name": "Matt Kemp",
+   "why": "hop 2 of the Gonzalez exit (2017-12-16)"
+  },
+  {
+   "bref_id": "gyorkje01",
+   "mlb_id": "576397",
+   "name": "Jedd Gyorko",
+   "why": "hop 2 of the Cingrani exit (2019-07-31)"
+  },
+  {
+   "bref_id": "priceda01",
+   "mlb_id": "456034",
+   "name": "David Price",
+   "why": "hop 4 of the Downs exit (2020-02-10)"
+  },
+  {
+   "bref_id": "bettsmo01",
+   "mlb_id": "605141",
+   "name": "Mookie Betts",
+   "why": "hop 4 of the Downs exit (2020-02-10)"
+  },
+  {
+   "bref_id": "halvose01",
+   "mlb_id": "678020",
+   "name": "Seth Halvorsen",
+   "why": "hop 2 of the Frasso exit (2026-07-20)"
+  },
+  {
+   "bref_id": "rortvbe01",
+   "mlb_id": "666163",
+   "name": "Ben Rortvedt",
+   "why": "hop 2 of the McDermott exit (2026-08-03)"
+  }
+ ],
+ "team_code_map_additions": []
+}

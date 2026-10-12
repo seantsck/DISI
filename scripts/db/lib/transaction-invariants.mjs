@@ -21,7 +21,7 @@ export const transactionQueries = (loaded) => {
     // event shape: normalized type from the closed list, a source, a date, and the multi-team flag agrees with the asset counterparties
     transaction_event_shape_violations: `select (
         (select count(*) from public.transaction_events e
-          where e.transaction_type not in ('TRADE', 'RELEASE', 'WAIVER', 'SALE', 'OTHER', 'RULE5_SELECTION', 'FREE_AGENCY', 'EXPANSION_DRAFT')
+          where e.transaction_type not in ('TRADE', 'RELEASE', 'WAIVER', 'SALE', 'OTHER', 'RULE5_SELECTION', 'FREE_AGENCY', 'EXPANSION_DRAFT', 'FREE_AGENT_SIGNING')
              or e.source_id is null or e.transaction_date is null or e.from_organization_id is null
              or (e.historical_label is not null and nullif(btrim(e.historical_label), '') is null))
       + (select count(*) from public.transaction_events e

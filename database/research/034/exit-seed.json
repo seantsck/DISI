@@ -1,0 +1,1898 @@
+{
+ "generated_by": "database/research/034/derive/assemble.py",
+ "retrieved_at": "2026-10-11T00:00:00Z",
+ "events": [
+  {
+   "key": "BRO_NYY_1957_BEN_FLOWERS",
+   "existing": false,
+   "date": "1957-05-24",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "BRO",
+   "to_org": "NYY",
+   "description": "Traded Ben Flowers to the New York Yankees. Received Jim Fridley.",
+   "source_url": "https://www.baseball-reference.com/teams/BRO/1957-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Ben Flowers",
+     "player_slug": null,
+     "mlb_id": "114256",
+     "bref_id": "flowebe01",
+     "bref_register_id": null,
+     "counterparty": "NYY",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Jim Fridley",
+     "player_slug": null,
+     "mlb_id": "114434",
+     "bref_id": "fridlji01",
+     "bref_register_id": null,
+     "counterparty": "NYY",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_RELEASE_1958_ELMER_VALO",
+   "existing": false,
+   "date": "1958-12-31",
+   "type": "RELEASE",
+   "historical_label": "Released (Baseball-Reference: \"Before 1959 Season\"; exact date unknown, placed at the end of the 1958 season)",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Released Elmer Valo.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1958-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Elmer Valo",
+     "player_slug": null,
+     "mlb_id": "123623",
+     "bref_id": "valoel01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_DET_1958_JIM_FRIDLEY",
+   "existing": false,
+   "date": "1958-04-10",
+   "type": "SALE",
+   "historical_label": "Player rights sold (Baseball-Reference: the date is approximate)",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "DET",
+   "description": "Jim Fridley player rights sold to the Detroit Tigers. (Date given is approximate. Exact date is uncertain.)",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1958-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Jim Fridley",
+     "player_slug": null,
+     "mlb_id": "114434",
+     "bref_id": "fridlji01",
+     "bref_register_id": null,
+     "counterparty": "DET",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_NYM_1962_TIM_HARKNESS",
+   "existing": false,
+   "date": "1962-11-30",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "NYM",
+   "description": "Traded Larry Burright and Tim Harkness to the New York Mets. Received Bob Miller.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1962-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Larry Burright",
+     "player_slug": null,
+     "mlb_id": "111768",
+     "bref_id": "burrila01",
+     "bref_register_id": null,
+     "counterparty": "NYM",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Tim Harkness",
+     "player_slug": null,
+     "mlb_id": "115479",
+     "bref_id": "harknti01",
+     "bref_register_id": null,
+     "counterparty": "NYM",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Bob Miller",
+     "player_slug": null,
+     "mlb_id": "119112",
+     "bref_id": "millebo04",
+     "bref_register_id": null,
+     "counterparty": "NYM",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_1993_MIKE_SHARPERSON",
+   "existing": false,
+   "date": "1993-10-08",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Mike Sharperson granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1993-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Mike Sharperson",
+     "player_slug": null,
+     "mlb_id": "122066",
+     "bref_id": "sharpmi01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENT_SIGNING_1994_MIKE_SHARPERSON",
+   "existing": false,
+   "date": "1994-02-23",
+   "type": "FREE_AGENT_SIGNING",
+   "historical_label": "Signed as a free agent",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Signed Mike Sharperson as a free agent.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1994-transactions.shtml",
+   "assets": [
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Mike Sharperson",
+     "player_slug": null,
+     "mlb_id": "122066",
+     "bref_id": "sharpmi01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_RELEASE_1994_MIKE_SHARPERSON",
+   "existing": false,
+   "date": "1994-04-02",
+   "type": "RELEASE",
+   "historical_label": "Released",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Released Mike Sharperson.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1994-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Mike Sharperson",
+     "player_slug": null,
+     "mlb_id": "122066",
+     "bref_id": "sharpmi01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_NYY_1996_BILLY_BREWER",
+   "existing": false,
+   "date": "1996-06-22",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "NYY",
+   "description": "Traded Billy Brewer to the New York Yankees. Received Mike Judd.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1996-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Billy Brewer",
+     "player_slug": null,
+     "mlb_id": "111447",
+     "bref_id": "brewebi01",
+     "bref_register_id": null,
+     "counterparty": "NYY",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Mike Judd",
+     "player_slug": null,
+     "mlb_id": "116781",
+     "bref_id": "juddmi01",
+     "bref_register_id": null,
+     "counterparty": "NYY",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_1996_DELINO_DESHIELDS",
+   "existing": false,
+   "date": "1996-10-29",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Delino DeShields granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1996-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Delino DeShields",
+     "player_slug": null,
+     "mlb_id": "113291",
+     "bref_id": "deshide01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_NYM_1998_GREG_MCMICHAEL",
+   "existing": false,
+   "date": "1998-07-10",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "NYM",
+   "description": "Traded Greg McMichael and cash to the New York Mets. Received Brian Bohanon.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1998-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Greg McMichael",
+     "player_slug": null,
+     "mlb_id": "118825",
+     "bref_id": "mcmicgr01",
+     "bref_register_id": null,
+     "counterparty": "NYM",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "CASH",
+     "name": "Cash",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": null,
+     "counterparty": "NYM",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Brian Bohanon",
+     "player_slug": null,
+     "mlb_id": "111155",
+     "bref_id": "bohanbr01",
+     "bref_register_id": null,
+     "counterparty": "NYM",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_1998_BRIAN_BOHANON",
+   "existing": false,
+   "date": "1998-10-27",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Brian Bohanon granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1998-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Brian Bohanon",
+     "player_slug": null,
+     "mlb_id": "111155",
+     "bref_id": "bohanbr01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_DET_1999_DAVE_MLICKI",
+   "existing": false,
+   "date": "1999-04-16",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "DET",
+   "description": "Traded Dave Mlicki and Mel Rojas to the Detroit Tigers. Received Apostol Garcia (minors), Rick Roberts (minors) and Robinson Checo.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/1999-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Dave Mlicki",
+     "player_slug": null,
+     "mlb_id": "119211",
+     "bref_id": "mlickda01",
+     "bref_register_id": null,
+     "counterparty": "DET",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Mel Rojas",
+     "player_slug": null,
+     "mlb_id": "121404",
+     "bref_id": "rojasme01",
+     "bref_register_id": null,
+     "counterparty": "DET",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Apostol Garcia",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "garcia002apo",
+     "counterparty": "DET",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Rick Roberts",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "robert001ric",
+     "counterparty": "DET",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Robinson Checo",
+     "player_slug": null,
+     "mlb_id": "112226",
+     "bref_id": "checoro01",
+     "bref_register_id": null,
+     "counterparty": "DET",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2000_TODD_HUNDLEY",
+   "existing": false,
+   "date": "2000-10-27",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Todd Hundley granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2000-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Todd Hundley",
+     "player_slug": null,
+     "mlb_id": "116316",
+     "bref_id": "hundlto01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_TB_2001_MIKE_JUDD",
+   "existing": false,
+   "date": "2001-03-28",
+   "type": "TRADE",
+   "historical_label": "Sent as part of a conditional deal (Baseball-Reference); no incoming consideration is recorded",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "TB",
+   "description": "Sent Mike Judd to the Tampa Bay Devil Rays as part of a conditional deal.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2000-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Mike Judd",
+     "player_slug": null,
+     "mlb_id": "116781",
+     "bref_id": "juddmi01",
+     "bref_register_id": null,
+     "counterparty": "TB",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_CWS_2001_GARY_MAJEWSKI",
+   "existing": false,
+   "date": "2001-07-26",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "CWS",
+   "description": "Traded Jeff Barry, Gary Majewski and Onan Masaoka to the Chicago White Sox. Received James Baldwin and cash.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2001-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Jeff Barry",
+     "player_slug": null,
+     "mlb_id": "110633",
+     "bref_id": "barryje01",
+     "bref_register_id": null,
+     "counterparty": "CWS",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Gary Majewski",
+     "player_slug": null,
+     "mlb_id": "400008",
+     "bref_id": "majewga01",
+     "bref_register_id": null,
+     "counterparty": "CWS",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Onan Masaoka",
+     "player_slug": null,
+     "mlb_id": "150385",
+     "bref_id": "masaoon01",
+     "bref_register_id": null,
+     "counterparty": "CWS",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "James Baldwin",
+     "player_slug": null,
+     "mlb_id": "110503",
+     "bref_id": "baldwja01",
+     "bref_register_id": null,
+     "counterparty": "CWS",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "CASH",
+     "name": "Cash",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": null,
+     "counterparty": "CWS",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2001_JAMES_BALDWIN",
+   "existing": false,
+   "date": "2001-11-05",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "James Baldwin granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2001-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "James Baldwin",
+     "player_slug": null,
+     "mlb_id": "110503",
+     "bref_id": "baldwja01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2001_TERRY_ADAMS",
+   "existing": false,
+   "date": "2001-11-05",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Terry Adams granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2001-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Terry Adams",
+     "player_slug": null,
+     "mlb_id": "110067",
+     "bref_id": "adamste01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_TOR_2001_CHAD_RICKETTS",
+   "existing": false,
+   "date": "2001-12-13",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "TOR",
+   "description": "Traded Chad Ricketts (minors) and Luke Prokopec to the Toronto Blue Jays. Received César Izturis and Paul Quantrill.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2001-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Chad Ricketts",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "ricket001rob",
+     "counterparty": "TOR",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Luke Prokopec",
+     "player_slug": null,
+     "mlb_id": "150389",
+     "bref_id": "prokolu01",
+     "bref_register_id": null,
+     "counterparty": "TOR",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "César Izturis",
+     "player_slug": null,
+     "mlb_id": "285131",
+     "bref_id": "izturce01",
+     "bref_register_id": null,
+     "counterparty": "TOR",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Paul Quantrill",
+     "player_slug": null,
+     "mlb_id": "120824",
+     "bref_id": "quantpa01",
+     "bref_register_id": null,
+     "counterparty": "TOR",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_WSH_2002_JORGE_NUNEZ",
+   "existing": false,
+   "date": "2002-03-23",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "WSH",
+   "description": "Traded Jorge Nuñez (minors) and Matt Herges to the Montreal Expos. Received Guillermo Mota and Wilkin Ruan.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2002-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Jorge Núñez",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "nunez-001jor",
+     "counterparty": "WSH",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Matt Herges",
+     "player_slug": null,
+     "mlb_id": "150382",
+     "bref_id": "hergema01",
+     "bref_register_id": null,
+     "counterparty": "WSH",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Guillermo Mota",
+     "player_slug": null,
+     "mlb_id": "150407",
+     "bref_id": "motagu01",
+     "bref_register_id": null,
+     "counterparty": "WSH",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Wilkin Ruan",
+     "player_slug": null,
+     "mlb_id": "400118",
+     "bref_id": "ruanwi01",
+     "bref_register_id": null,
+     "counterparty": "WSH",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "CHC_LAD_2002_TODD_HUNDLEY",
+   "existing": false,
+   "date": "2002-12-04",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "CHC",
+   "description": "Traded Mark Grudzielanek and Eric Karros to the Chicago Cubs. Received Chad Hermansen and Todd Hundley.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2002-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Mark Grudzielanek",
+     "player_slug": null,
+     "mlb_id": "115210",
+     "bref_id": "grudzma01",
+     "bref_register_id": null,
+     "counterparty": "CHC",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Eric Karros",
+     "player_slug": null,
+     "mlb_id": "116852",
+     "bref_id": "karroer01",
+     "bref_register_id": null,
+     "counterparty": "CHC",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Chad Hermansen",
+     "player_slug": null,
+     "mlb_id": "150252",
+     "bref_id": "hermach01",
+     "bref_register_id": null,
+     "counterparty": "CHC",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Todd Hundley",
+     "player_slug": null,
+     "mlb_id": "116316",
+     "bref_id": "hundlto01",
+     "bref_register_id": null,
+     "counterparty": "CHC",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2003_PAUL_QUANTRILL",
+   "existing": false,
+   "date": "2003-10-30",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Paul Quantrill granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2003-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Paul Quantrill",
+     "player_slug": null,
+     "mlb_id": "120824",
+     "bref_id": "quantpa01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_RELEASE_2003_CHAD_HERMANSEN",
+   "existing": false,
+   "date": "2003-11-20",
+   "type": "RELEASE",
+   "historical_label": "Released",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Released Chad Hermansen.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2003-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Chad Hermansen",
+     "player_slug": null,
+     "mlb_id": "150252",
+     "bref_id": "hermach01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_RELEASE_2004_WILKIN_RUAN",
+   "existing": false,
+   "date": "2004-06-19",
+   "type": "RELEASE",
+   "historical_label": "Released",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Released Wilkin Ruan.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2004-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Wilkin Ruan",
+     "player_slug": null,
+     "mlb_id": "400118",
+     "bref_id": "ruanwi01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_MIA_2004_GUILLERMO_MOTA",
+   "existing": false,
+   "date": "2004-07-30",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "MIA",
+   "description": "Traded Juan Encarnación, Paul Lo Duca and Guillermo Mota to the Florida Marlins. Received Hee-Seop Choi, Bill Murphy and Brad Penny.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2004-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Juan Encarnación",
+     "player_slug": null,
+     "mlb_id": "113845",
+     "bref_id": "encarju01",
+     "bref_register_id": null,
+     "counterparty": "MIA",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Paul Lo Duca",
+     "player_slug": null,
+     "mlb_id": "134001",
+     "bref_id": "loducpa01",
+     "bref_register_id": null,
+     "counterparty": "MIA",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Guillermo Mota",
+     "player_slug": null,
+     "mlb_id": "150407",
+     "bref_id": "motagu01",
+     "bref_register_id": null,
+     "counterparty": "MIA",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Hee-Seop Choi",
+     "player_slug": null,
+     "mlb_id": "400292",
+     "bref_id": "choihe01",
+     "bref_register_id": null,
+     "counterparty": "MIA",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Bill Murphy",
+     "player_slug": null,
+     "mlb_id": "430889",
+     "bref_id": "murphbi02",
+     "bref_register_id": null,
+     "counterparty": "MIA",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Brad Penny",
+     "player_slug": null,
+     "mlb_id": "207267",
+     "bref_id": "pennybr01",
+     "bref_register_id": null,
+     "counterparty": "MIA",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_ARI_2004_BILL_MURPHY",
+   "existing": false,
+   "date": "2004-07-31",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "ARI",
+   "description": "Traded Reggie Abercrombie (minors), Koyie Hill and Bill Murphy to the Arizona Diamondbacks. Received Steve Finley and Brent Mayne.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2004-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Reggie Abercrombie",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "abercr001reg",
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Koyie Hill",
+     "player_slug": null,
+     "mlb_id": "425542",
+     "bref_id": "hillko01",
+     "bref_register_id": null,
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Bill Murphy",
+     "player_slug": null,
+     "mlb_id": "430889",
+     "bref_id": "murphbi02",
+     "bref_register_id": null,
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Steve Finley",
+     "player_slug": null,
+     "mlb_id": "114135",
+     "bref_id": "finlest01",
+     "bref_register_id": null,
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Brent Mayne",
+     "player_slug": null,
+     "mlb_id": "118490",
+     "bref_id": "maynebr01",
+     "bref_register_id": null,
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2004_TODD_HUNDLEY",
+   "existing": false,
+   "date": "2004-10-29",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Todd Hundley granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2004-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Todd Hundley",
+     "player_slug": null,
+     "mlb_id": "116316",
+     "bref_id": "hundlto01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_ARI_2005_SHAWN_GREEN",
+   "existing": false,
+   "date": "2005-01-11",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "ARI",
+   "description": "Traded Shawn Green to the Arizona Diamondbacks. Received William Juarez (minors), Danny Muegge (minors), Dioner Navarro and Beltrán Pérez.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2004-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Shawn Green",
+     "player_slug": null,
+     "mlb_id": "115094",
+     "bref_id": "greensh01",
+     "bref_register_id": null,
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "William Juárez",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "juarez001wil",
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Danny Muegge",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "muegge001dan",
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Dioner Navarro",
+     "player_slug": null,
+     "mlb_id": "425900",
+     "bref_id": "navardi01",
+     "bref_register_id": null,
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Beltrán Pérez",
+     "player_slug": null,
+     "mlb_id": "425558",
+     "bref_id": "perezbe01",
+     "bref_register_id": null,
+     "counterparty": "ARI",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_WAIVER_2006_HEE_SEOP_CHOI",
+   "existing": false,
+   "date": "2006-03-24",
+   "type": "WAIVER",
+   "historical_label": "Selected off waivers by the Boston Red Sox",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "BOS",
+   "description": "Hee-Seop Choi selected by the Boston Red Sox off waivers.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2006-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Hee-Seop Choi",
+     "player_slug": null,
+     "mlb_id": "400292",
+     "bref_id": "choihe01",
+     "bref_register_id": null,
+     "counterparty": "BOS",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_TB_2006_DIONER_NAVARRO",
+   "existing": false,
+   "date": "2006-06-27",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "TB",
+   "description": "Traded a player to be named later, Dioner Navarro and Jae Weong Seo to the Tampa Bay Devil Rays. Received Toby Hall, Mark Hendrickson and cash. The Los Angeles Dodgers sent Justin Ruggiano (July 19, 2006) to the Tampa Bay Devil Rays to complete the trade.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2006-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Dioner Navarro",
+     "player_slug": null,
+     "mlb_id": "425900",
+     "bref_id": "navardi01",
+     "bref_register_id": null,
+     "counterparty": "TB",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Jae Weong Seo",
+     "player_slug": null,
+     "mlb_id": "150242",
+     "bref_id": "seoja01",
+     "bref_register_id": null,
+     "counterparty": "TB",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER_TO_BE_NAMED",
+     "name": "Player to be named later",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": null,
+     "counterparty": "TB",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Justin Ruggiano",
+     "player_slug": null,
+     "mlb_id": "448605",
+     "bref_id": "ruggiju01",
+     "bref_register_id": null,
+     "counterparty": "TB",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": "Completed the trade on 2006-07-19."
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Toby Hall",
+     "player_slug": null,
+     "mlb_id": "150134",
+     "bref_id": "hallto02",
+     "bref_register_id": null,
+     "counterparty": "TB",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Mark Hendrickson",
+     "player_slug": null,
+     "mlb_id": "424805",
+     "bref_id": "hendrma01",
+     "bref_register_id": null,
+     "counterparty": "TB",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "CASH",
+     "name": "Cash",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": null,
+     "counterparty": "TB",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_CHC_2006_CESAR_IZTURIS",
+   "existing": false,
+   "date": "2006-07-31",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "CHC",
+   "description": "Traded César Izturis to the Chicago Cubs. Received Greg Maddux.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2006-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "César Izturis",
+     "player_slug": null,
+     "mlb_id": "285131",
+     "bref_id": "izturce01",
+     "bref_register_id": null,
+     "counterparty": "CHC",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Greg Maddux",
+     "player_slug": null,
+     "mlb_id": "118120",
+     "bref_id": "maddugr01",
+     "bref_register_id": null,
+     "counterparty": "CHC",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2006_GREG_MADDUX",
+   "existing": false,
+   "date": "2006-10-31",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Greg Maddux granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2006-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Greg Maddux",
+     "player_slug": null,
+     "mlb_id": "118120",
+     "bref_id": "maddugr01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2006_TOBY_HALL",
+   "existing": false,
+   "date": "2006-10-31",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Toby Hall granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2006-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Toby Hall",
+     "player_slug": null,
+     "mlb_id": "150134",
+     "bref_id": "hallto02",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_NYY_2007_WILSON_BETEMIT",
+   "existing": false,
+   "date": "2007-07-31",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "NYY",
+   "description": "Traded Wilson Betemit to the New York Yankees. Received Scott Proctor.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2007-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Wilson Betemit",
+     "player_slug": null,
+     "mlb_id": "400140",
+     "bref_id": "betemwi01",
+     "bref_register_id": null,
+     "counterparty": "NYY",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Scott Proctor",
+     "player_slug": null,
+     "mlb_id": "429984",
+     "bref_id": "proctsc01",
+     "bref_register_id": null,
+     "counterparty": "NYY",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2007_MARK_HENDRICKSON",
+   "existing": false,
+   "date": "2007-12-12",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Mark Hendrickson granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2007-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Mark Hendrickson",
+     "player_slug": null,
+     "mlb_id": "424805",
+     "bref_id": "hendrma01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "SD_LAD_2008_GREG_MADDUX",
+   "existing": false,
+   "date": "2008-08-19",
+   "type": "TRADE",
+   "historical_label": null,
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": "SD",
+   "description": "Traded players to be named later to the San Diego Padres. Received Greg Maddux. The Los Angeles Dodgers sent Eduardo Perez (minors) (September 30, 2008) and Mike Watt (minors) (September 30, 2008) to the San Diego Padres to complete the trade.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER_TO_BE_NAMED",
+     "name": "Player to be named later #1",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": null,
+     "counterparty": "SD",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER_TO_BE_NAMED",
+     "name": "Player to be named later #2",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": null,
+     "counterparty": "SD",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Eduardo Pérez",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "perez-005edu",
+     "counterparty": "SD",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": "Completed the trade on 2008-09-30."
+    },
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Mike Watt",
+     "player_slug": null,
+     "mlb_id": null,
+     "bref_id": null,
+     "bref_register_id": "watt--001mic",
+     "counterparty": "SD",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": "Completed the trade on 2008-09-30."
+    },
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Greg Maddux",
+     "player_slug": null,
+     "mlb_id": "118120",
+     "bref_id": "maddugr01",
+     "bref_register_id": null,
+     "counterparty": "SD",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2008_GREG_MADDUX",
+   "existing": false,
+   "date": "2008-10-30",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Greg Maddux granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Greg Maddux",
+     "player_slug": null,
+     "mlb_id": "118120",
+     "bref_id": "maddugr01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2008_CASEY_BLAKE",
+   "existing": false,
+   "date": "2008-10-30",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Casey Blake granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Casey Blake",
+     "player_slug": null,
+     "mlb_id": "232694",
+     "bref_id": "blakeca01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENT_SIGNING_2008_CASEY_BLAKE",
+   "existing": false,
+   "date": "2008-12-09",
+   "type": "FREE_AGENT_SIGNING",
+   "historical_label": "Signed as a free agent",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Signed Casey Blake as a free agent.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "assets": [
+    {
+     "side": "INCOMING",
+     "type": "PLAYER",
+     "name": "Casey Blake",
+     "player_slug": null,
+     "mlb_id": "232694",
+     "bref_id": "blakeca01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2008_BRAD_PENNY",
+   "existing": false,
+   "date": "2008-11-05",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Brad Penny granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Brad Penny",
+     "player_slug": null,
+     "mlb_id": "207267",
+     "bref_id": "pennybr01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2008_SCOTT_PROCTOR",
+   "existing": false,
+   "date": "2008-12-12",
+   "type": "FREE_AGENCY",
+   "historical_label": "Granted free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Scott Proctor granted Free Agency.",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Scott Proctor",
+     "player_slug": null,
+     "mlb_id": "429984",
+     "bref_id": "proctsc01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_RELEASE_2013_MIKE_ANTONINI",
+   "existing": false,
+   "date": "2013-03-27",
+   "type": "RELEASE",
+   "historical_label": "Released",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "Albuquerque Isotopes (Los Angeles Dodgers affiliate) released LHP Michael Antonini.",
+   "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=502103",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Mike Antonini",
+     "player_slug": null,
+     "mlb_id": "502103",
+     "bref_id": null,
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2019_JEDD_GYORKO",
+   "existing": false,
+   "date": "2019-11-02",
+   "type": "FREE_AGENCY",
+   "historical_label": "Elected free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "3B Jedd Gyorko elected free agency.",
+   "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=576397",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "Jedd Gyorko",
+     "player_slug": null,
+     "mlb_id": "576397",
+     "bref_id": "gyorkje01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  },
+  {
+   "key": "LAD_FREE_AGENCY_2022_DAVID_PRICE",
+   "existing": false,
+   "date": "2022-11-06",
+   "type": "FREE_AGENCY",
+   "historical_label": "Elected free agency",
+   "is_multi_team": false,
+   "from_org": "LAD",
+   "to_org": null,
+   "description": "LHP David Price elected free agency.",
+   "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=456034",
+   "assets": [
+    {
+     "side": "OUTGOING",
+     "type": "PLAYER",
+     "name": "David Price",
+     "player_slug": null,
+     "mlb_id": "456034",
+     "bref_id": "priceda01",
+     "bref_register_id": null,
+     "counterparty": null,
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "role_note": null
+    }
+   ]
+  }
+ ],
+ "resolutions": [
+  {
+   "event": "LAD_TB_2006_DIONER_NAVARRO",
+   "placeholder": [
+    "OUTGOING",
+    "Player to be named later"
+   ],
+   "resolved": [
+    "OUTGOING",
+    "Justin Ruggiano"
+   ],
+   "date": "2006-07-19",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2006-transactions.shtml",
+   "confidence": "VERIFIED",
+   "note": "The Dodgers sent Justin Ruggiano on July 19, 2006 to complete the trade (Baseball-Reference 2006 Los Angeles Dodgers transactions)."
+  },
+  {
+   "event": "SD_LAD_2008_GREG_MADDUX",
+   "placeholder": [
+    "OUTGOING",
+    "Player to be named later #1"
+   ],
+   "resolved": [
+    "OUTGOING",
+    "Eduardo Pérez"
+   ],
+   "date": "2008-09-30",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "confidence": "VERIFIED",
+   "note": "The Dodgers sent the player on September 30, 2008 to complete the trade (Baseball-Reference 2008 Los Angeles Dodgers transactions)."
+  },
+  {
+   "event": "SD_LAD_2008_GREG_MADDUX",
+   "placeholder": [
+    "OUTGOING",
+    "Player to be named later #2"
+   ],
+   "resolved": [
+    "OUTGOING",
+    "Mike Watt"
+   ],
+   "date": "2008-09-30",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "confidence": "VERIFIED",
+   "note": "The Dodgers sent the player on September 30, 2008 to complete the trade (Baseball-Reference 2008 Los Angeles Dodgers transactions)."
+  }
+ ],
+ "asset_observations": [
+  {
+   "asset": {
+    "event": "LAD_BOS_2020_JETER_DOWNS",
+    "side": "INCOMING",
+    "name": "Mookie Betts"
+   },
+   "type": "DODGERS_CONTROL_OBSERVED",
+   "observed_through": "2026-10-11",
+   "confidence": "HIGH",
+   "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=605141",
+   "note": "The official transaction log shows continued Dodgers activity and no exit through the date."
+  },
+  {
+   "asset": {
+    "event": "LAD_COL_2026_NICK_FRASSO",
+    "side": "INCOMING",
+    "name": "Seth Halvorsen"
+   },
+   "type": "DODGERS_CONTROL_OBSERVED",
+   "observed_through": "2026-10-11",
+   "confidence": "HIGH",
+   "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=678020",
+   "note": "Optioned to Oklahoma City 2026-09-20; no exit through the date."
+  },
+  {
+   "asset": {
+    "event": "LAD_NYM_2026_CHAYCE_MCDERMOTT",
+    "side": "INCOMING",
+    "name": "Ben Rortvedt"
+   },
+   "type": "DODGERS_CONTROL_OBSERVED",
+   "observed_through": "2026-10-11",
+   "confidence": "HIGH",
+   "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=666163",
+   "note": "Outrighted to Oklahoma City 2026-09-03; no exit through the date."
+  },
+  {
+   "asset": {
+    "event": "LAD_FREE_AGENT_SIGNING_2008_CASEY_BLAKE",
+    "side": "INCOMING",
+    "name": "Casey Blake"
+   },
+   "type": "CAREER_ENDED_WITH_DODGERS",
+   "observed_through": "2026-10-11",
+   "confidence": "HIGH",
+   "source_url": "https://www.baseball-reference.com/teams/LAD/2008-transactions.shtml",
+   "note": "The last MLB team-season in the Baseball-Reference files (2011) is with the Dodgers; no exit transaction is recorded."
+  }
+ ],
+ "not_seeded": [
+  {
+   "case": "Ron Negray 1959-06-03",
+   "reason": "Traded to a minor-league club (Toronto, International League) for \"Error and Mike Goliat\"; the counterparty is not a major-league organization and the incoming name is a page artifact. Not canonically supportable."
+  },
+  {
+   "case": "Gail Harris, Greg Smith, Melvin Geho, Rick Clelland, Arnie Gooch, Brian Stephenson, Andre Simpson, Orlando Rodriguez",
+   "reason": "No source-backed exit transaction was found; absence is not an exit."
+  }
+ ]
+}

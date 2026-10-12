@@ -1,0 +1,2199 @@
+{
+ "generated_by": "database/research/034/audit.mjs",
+ "baseline": {
+  "events": 161,
+  "assets": 291,
+  "war_rows": 1327,
+  "resolutions": 4,
+  "observations": 90,
+  "downstream_flag": 20
+ },
+ "failures": [],
+ "unmatched_outgoing_assets": [
+  "CHC_LAD_2002_TODD_HUNDLEY: Eric Karros",
+  "CHC_LAD_2002_TODD_HUNDLEY: Mark Grudzielanek",
+  "LAD_ARI_2004_BILL_MURPHY: Koyie Hill",
+  "LAD_ARI_2004_BILL_MURPHY: Reggie Abercrombie",
+  "LAD_CWS_2001_GARY_MAJEWSKI: Jeff Barry",
+  "LAD_CWS_2001_GARY_MAJEWSKI: Onan Masaoka",
+  "LAD_DET_1999_DAVE_MLICKI: Mel Rojas",
+  "LAD_MIA_2004_GUILLERMO_MOTA: Juan Encarnación",
+  "LAD_MIA_2004_GUILLERMO_MOTA: Paul Lo Duca",
+  "LAD_NYM_1962_TIM_HARKNESS: Larry Burright",
+  "LAD_TB_2006_DIONER_NAVARRO: Jae Weong Seo",
+  "LAD_TB_2006_DIONER_NAVARRO: Justin Ruggiano",
+  "LAD_TOR_2001_CHAD_RICKETTS: Luke Prokopec",
+  "LAD_WSH_2002_JORGE_NUNEZ: Matt Herges",
+  "SD_LAD_2008_GREG_MADDUX: Eduardo Pérez",
+  "SD_LAD_2008_GREG_MADDUX: Mike Watt"
+ ],
+ "seed": {
+  "events": 43,
+  "assets": 91,
+  "resolutions": 3,
+  "asset_observations": 4,
+  "timing_facts": 10,
+  "war_persons": 28,
+  "war_rows": 494
+ },
+ "baseline_033": {
+  "portfolio_all": {
+   "grain": "ALL",
+   "grain_value": "All tracked Dodgers signings",
+   "tracked_signings": 220,
+   "mature_signings": 98,
+   "outcome_observed_signings": 88,
+   "verified_mlb_reached": 47,
+   "complete_cost_signings": 44,
+   "direct_ratio_eligible_signings": 26,
+   "attributable_ratio_eligible_signings": 26,
+   "eligible_known_acquisition_cost_usd": "98852237.33",
+   "eligible_direct_dodgers_bwar": "96.60",
+   "aggregate_direct_dodgers_bwar_per_million": "0.977",
+   "attributable_eligible_known_acquisition_cost_usd": "98852237.33",
+   "eligible_attributable_organizational_bwar": "98.19",
+   "aggregate_attributable_organizational_bwar_per_million": "0.993",
+   "direct_ratio_small_sample": false,
+   "attributable_trade_return_bwar": "15.07",
+   "package_return_dodgers_bwar": "89.27",
+   "non_dodgers_mlb_bwar_observed": "432.44",
+   "population_label": "Tracked / verified-set analytic over the eligible rows named above; not an organization-wide rate. Eligible rows: mature, COMPLETE acquisition cost greater than zero, direct Dodgers bWAR observed."
+  },
+  "per_player": [
+   {
+    "player_slug": "abel-lorenzo",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "accimias-morales",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "adrian-beltre",
+    "direct": "23.39",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "adrian-torres",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "agustin-acosta",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "aldo-espinoza",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "aldrin-batista",
+    "direct": null,
+    "package_return": "0",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "alex-de-jesus",
+    "direct": null,
+    "package_return": "0",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "alexander-albertus",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "alexis-dominguez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "alexis-reyes",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "allen-ajoti",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "anderson-estevez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "anderson-jerez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "andres-luna",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "andy-pages",
+    "direct": "10.92",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "aneudy-almonte",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "angel-cruz",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "angel-ramirez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "antoni-urena",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "antonio-osuna",
+    "direct": "4.89",
+    "package_return": "0",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ariel-reynoso",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "arnaldo-lantigua",
+    "direct": null,
+    "package_return": "0",
+    "individually_attributable": "0",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "arod-mckenzie",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "axel-perez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "RETURN_WAR_UNKNOWN",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "ben-serunkuma",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "brian-diaz",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "bryan-lara",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "callum-wallace",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "carlos-avila",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "carlos-frias",
+    "direct": "-0.34",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "RETURN_WAR_UNKNOWN",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "carlos-ramirez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "carlos-rincon",
+    "direct": "0",
+    "package_return": "-0.35",
+    "individually_attributable": "-0.35",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "carlos-santana",
+    "direct": "0",
+    "package_return": "9.16",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "carlos-sardina",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "cesar-sanchez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "chan-ho-park",
+    "direct": "19.65",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "chico-fernandez",
+    "direct": "0.00",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "RETURN_WAR_UNKNOWN",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "chin-lung-hu",
+    "direct": "0.09",
+    "package_return": "0",
+    "individually_attributable": "0",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "christian-muniz",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "christian-romero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "christian-suarez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "christopher-arias",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "dailoui-abad",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "damaso-marte-jr",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "daniel-arrias",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "daniel-mielcarek",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "david-romero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "degerson-diaz",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "derik-aquino",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "devlyn-bautista",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "diego-cartaya",
+    "direct": "0",
+    "package_return": "0",
+    "individually_attributable": "0",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "domingo-geronimo",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "eddys-leonard",
+    "direct": "0",
+    "package_return": "0",
+    "individually_attributable": "0",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "edgar-aviles",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "edgar-gomez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "edgar-leon",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "eduardo-guerrero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "eduardo-quintero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "eduardo-rojas",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "elian-herrera",
+    "direct": "0.54",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "elias-medina",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "elio-campos",
+    "direct": "0",
+    "package_return": "0",
+    "individually_attributable": "0",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "emil-morales",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ender-avendano",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "enrike-sevilya",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "erick-batista",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "erick-nava",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "erny-orellana",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "euri-rosa",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ezequiel-aparicio",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ezequiel-melburne",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "fernando-valenzuela",
+    "direct": "36.82",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "francisco-espinoza",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "franderly-morel",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "gersel-pitre",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "gregory-pereira",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "harold-gonzalez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "hendrik-clementina",
+    "direct": "0",
+    "package_return": "-0.01",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "hendry-arvelo",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "heudy-pena",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "hideo-nomo",
+    "direct": "14.15",
+    "package_return": "1.17",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "hung-chih-kuo",
+    "direct": "5.08",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "hyun-jin-ryu",
+    "direct": "15.13",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ilmerson-colon",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "isaac-barreto",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ismael-valdez",
+    "direct": "18.19",
+    "package_return": "2.31",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ivan-pacheco",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "javier-bartolozzi",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "javier-herrera",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "javier-pena",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jecsua-liborius",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jeral-perez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "jerami-rodriguez",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jeremy-castro",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jerming-rosario",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jesus-galiz",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jesus-tillero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jholbran-herder",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jhon-gil",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jhonny-jimenez",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jhosman-theran",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "joendry-vargas",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jorbit-vivas",
+    "direct": "0",
+    "package_return": "0",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "jorge-carpintero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jose-dominguez",
+    "direct": "-0.21",
+    "package_return": "0.96",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "jose-gonzalez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jose-lopez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jose-offerman",
+    "direct": "2.06",
+    "package_return": "0",
+    "individually_attributable": "0",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jose-requena",
+    "direct": null,
+    "package_return": "-0.05",
+    "individually_attributable": "-0.05",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "jose-rivas",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jose-torrez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jose-victorino",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jose-villegas",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "jose-vizcaino",
+    "direct": "0.19",
+    "package_return": "-0.10",
+    "individually_attributable": "-0.10",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "joseilyn-gonzalez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "joseph-deng-thon",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "josue-de-paula",
+    "direct": "0.46",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "juan-alonso",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "juan-castro",
+    "direct": "-1.73",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "juan-guzman",
+    "direct": "0",
+    "package_return": "5.91",
+    "individually_attributable": "5.91",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "juan-hernandez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "juan-macero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "julian-leon",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "julio-lugo-prospect",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "julio-urias",
+    "direct": "13.80",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "karim-garcia",
+    "direct": "-0.98",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "keibert-ruiz",
+    "direct": "0.06",
+    "package_return": "10.09",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "kelvin-ramirez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "kenley-jansen",
+    "direct": "18.89",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "kosuke-matsuda",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "leider-padilla",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "lenix-osuna",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "lesther-medrano",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luciano-romero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luis-carias",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luis-gamez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luis-guerra",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luis-izturis",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luis-luna",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luis-rodriguez-2015",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luis-rodriguez-2019",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "luis-tovar",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "mairoshendrick-martinus",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "marco-corcho",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "maximo-martinez",
+    "direct": "0",
+    "package_return": "0",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "michael-ramirez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "michael-vilchez",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "miguel-bastardo",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "miguel-dominguez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "miguel-droz",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "miguel-vargas",
+    "direct": "-0.01",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "misja-harcksen",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "missael-soto",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "moises-acacio",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "moises-rangel",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "natanael-castillo",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "nicolas-cruz",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "omar-daal",
+    "direct": "1.28",
+    "package_return": "0",
+    "individually_attributable": "0",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "omar-estevez",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "oneil-cruz",
+    "direct": "0",
+    "package_return": "0.40",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "oswaldo-osorio",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "paris-johnson",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "pedro-astacio",
+    "direct": "14.14",
+    "package_return": "4.51",
+    "individually_attributable": "4.51",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "pedro-baez",
+    "direct": "3.69",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "pedro-martinez",
+    "direct": "3.21",
+    "package_return": "3.21",
+    "individually_attributable": "3.21",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "pedro-santillan",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "peter-bonilla",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "rafael-tua",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "rafy-peguero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "railin-familia",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ramon-martinez",
+    "direct": "25.84",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ramon-rosso",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ramon-troncoso",
+    "direct": "1.21",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "raul-mondesi",
+    "direct": "21.61",
+    "package_return": "21.01",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "rayne-doncon",
+    "direct": "0",
+    "package_return": "0",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "raynerd-ortega",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "reyli-mariano",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ricardo-montero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ricardo-roman",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "roberto-clemente",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "robinson-ventura",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "rodmar-angela",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "roger-cedeno",
+    "direct": "0.82",
+    "package_return": "2.35",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "roger-lasso",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "roiger-mujica",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "roki-sasaki",
+    "direct": "1.14",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "ronny-brito",
+    "direct": "0",
+    "package_return": "0.71",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "roque-gutierrez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "rubby-de-la-rosa",
+    "direct": "0.62",
+    "package_return": "21.75",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "rubel-arias",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "samuel-munoz",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "samuel-sanchez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "samuel-savinon",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "sandy-amoros",
+    "direct": "7.73",
+    "package_return": "0",
+    "individually_attributable": "0",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "sean-linan",
+    "direct": null,
+    "package_return": "0.54",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "sebastian-jimenez",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "shai-romero",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "shakir-albert",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "starling-heredia",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "steven-castillo",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "thayron-liranzo",
+    "direct": null,
+    "package_return": "0.77",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "tim-fischer",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "tony-abreu",
+    "direct": "1.23",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "RETURN_WAR_UNKNOWN",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "umar-male",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "victor-gonzalez",
+    "direct": "1.37",
+    "package_return": "0",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "victor-rodrigues",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "william-soto",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "willy-aybar",
+    "direct": "1.27",
+    "package_return": "0.55",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "wilman-diaz",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "yadier-alvarez",
+    "direct": "0",
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "yasiel-puig",
+    "direct": "17.80",
+    "package_return": "-0.14",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "yeiner-fernandez",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "yhonaider-gudino",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "yojackson-laya",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "yordan-alvarez",
+    "direct": "0",
+    "package_return": "1.94",
+    "individually_attributable": "1.94",
+    "state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "downstream_flag": true
+   },
+   {
+    "player_slug": "yorfran-medina",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "yoryi-simarra",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "yuliangel-de-la-cruz",
+    "direct": null,
+    "package_return": null,
+    "individually_attributable": null,
+    "state": "NO_MODELED_TRADE_EVENT",
+    "downstream_flag": false
+   },
+   {
+    "player_slug": "yusniel-diaz",
+    "direct": "0",
+    "package_return": "2.58",
+    "individually_attributable": null,
+    "state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "downstream_flag": true
+   }
+  ],
+  "first_hop_edges": [
+   {
+    "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+    "incoming_asset_name": "Adrian Gonzalez",
+    "return_state": "LOADED",
+    "bwar": "14.35"
+   },
+   {
+    "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+    "incoming_asset_name": "Carl Crawford",
+    "return_state": "LOADED",
+    "bwar": "2.73"
+   },
+   {
+    "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+    "incoming_asset_name": "Josh Beckett",
+    "return_state": "LOADED",
+    "bwar": "2.34"
+   },
+   {
+    "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+    "incoming_asset_name": "Nick Punto",
+    "return_state": "LOADED",
+    "bwar": "2.33"
+   },
+   {
+    "event_key": "BRO_PHI_1957_FERNANDEZ",
+    "incoming_asset_name": "Ben Flowers",
+    "return_state": "LOADED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "BRO_PHI_1957_FERNANDEZ",
+    "incoming_asset_name": "Elmer Valo",
+    "return_state": "TIMING_UNRESOLVED",
+    "bwar": null
+   },
+   {
+    "event_key": "BRO_PHI_1957_FERNANDEZ",
+    "incoming_asset_name": "Melvin Geho",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "BRO_PHI_1957_FERNANDEZ",
+    "incoming_asset_name": "Ron Negray",
+    "return_state": "LOADED",
+    "bwar": "-0.09"
+   },
+   {
+    "event_key": "BRO_PHI_1957_FERNANDEZ",
+    "incoming_asset_name": "Tim Harkness",
+    "return_state": "LOADED",
+    "bwar": "0.54"
+   },
+   {
+    "event_key": "LAD_ARI_2009_TONY_ABREU",
+    "incoming_asset_name": null,
+    "return_state": "RETURN_UNRECORDED",
+    "bwar": null
+   },
+   {
+    "event_key": "LAD_ARI_2026_JOSE_REQUENA",
+    "incoming_asset_name": "Alek Thomas",
+    "return_state": "LOADED",
+    "bwar": "-0.05"
+   },
+   {
+    "event_key": "LAD_ATL_2006_AYBAR_BETEMIT",
+    "incoming_asset_name": "Wilson Betemit",
+    "return_state": "LOADED",
+    "bwar": "0.55"
+   },
+   {
+    "event_key": "LAD_ATL_2024_ELIO_CAMPOS",
+    "incoming_asset_name": null,
+    "return_state": "NO_PLAYER_RETURN",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_BAL_2018_DIAZ_MACHADO",
+    "incoming_asset_name": "Manny Machado",
+    "return_state": "LOADED",
+    "bwar": "2.58"
+   },
+   {
+    "event_key": "LAD_BAL_2026_AXEL_PEREZ",
+    "incoming_asset_name": "Chayce McDermott",
+    "return_state": "TIMING_UNRESOLVED",
+    "bwar": null
+   },
+   {
+    "event_key": "LAD_CHC_1990_VIZCAINO",
+    "incoming_asset_name": "Greg Smith",
+    "return_state": "LOADED",
+    "bwar": "-0.10"
+   },
+   {
+    "event_key": "LAD_CHC_1999_VALDEZ",
+    "incoming_asset_name": "Brian Stephenson",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CHC_1999_VALDEZ",
+    "incoming_asset_name": "Chad Ricketts",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CHC_1999_VALDEZ",
+    "incoming_asset_name": "Terry Adams",
+    "return_state": "LOADED",
+    "bwar": "2.31"
+   },
+   {
+    "event_key": "LAD_CHW_2001_OSUNA",
+    "incoming_asset_name": "Andre Simpson",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CHW_2001_OSUNA",
+    "incoming_asset_name": "Gary Majewski",
+    "return_state": "LOADED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CHW_2001_OSUNA",
+    "incoming_asset_name": "Orlando Rodriguez",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CIN_2017_HENDRIK_CLEMENTINA",
+    "incoming_asset_name": "Tony Cingrani",
+    "return_state": "LOADED",
+    "bwar": "-0.01"
+   },
+   {
+    "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+    "incoming_asset_name": "Homer Bailey",
+    "return_state": "LOADED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+    "incoming_asset_name": "Jeter Downs",
+    "return_state": "LOADED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+    "incoming_asset_name": "Josiah Gray",
+    "return_state": "LOADED",
+    "bwar": "-0.14"
+   },
+   {
+    "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+    "incoming_asset_name": null,
+    "return_state": "NO_PLAYER_RETURN",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CLE_2008_SANTANA_BLAKE",
+    "incoming_asset_name": "Casey Blake",
+    "return_state": "LOADED",
+    "bwar": "9.16"
+   },
+   {
+    "event_key": "LAD_CLE_2017_CARLOS_FRIAS",
+    "incoming_asset_name": null,
+    "return_state": "PLAYER_RETURN_PENDING",
+    "bwar": null
+   },
+   {
+    "event_key": "LAD_COL_1997_ASTACIO",
+    "incoming_asset_name": "Eric Young Sr.",
+    "return_state": "LOADED",
+    "bwar": "4.51"
+   },
+   {
+    "event_key": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+    "incoming_asset_name": null,
+    "return_state": "NO_PLAYER_RETURN",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+    "incoming_asset_name": "Michael Kopech",
+    "return_state": "LOADED",
+    "bwar": "1.31"
+   },
+   {
+    "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+    "incoming_asset_name": "Oliver Gonzalez",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+    "incoming_asset_name": "Tommy Edman",
+    "return_state": "TIMING_UNRESOLVED",
+    "bwar": null
+   },
+   {
+    "event_key": "LAD_DET_1960_AMOROS",
+    "incoming_asset_name": "Gail Harris",
+    "return_state": "LOADED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_DET_2023_EDDYS_LEONARD",
+    "incoming_asset_name": null,
+    "return_state": "NO_PLAYER_RETURN",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_DET_2024_THAYRON_LIRANZO",
+    "incoming_asset_name": "Jack Flaherty",
+    "return_state": "LOADED",
+    "bwar": "0.77"
+   },
+   {
+    "event_key": "LAD_HOU_2016_ALVAREZ_FIELDS",
+    "incoming_asset_name": "Josh Fields",
+    "return_state": "LOADED",
+    "bwar": "1.94"
+   },
+   {
+    "event_key": "LAD_KCR_1995_OFFERMAN",
+    "incoming_asset_name": "Billy Brewer",
+    "return_state": "LOADED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+    "incoming_asset_name": "Noah Miller",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_MIN_2025_DIEGO_CARTAYA",
+    "incoming_asset_name": "Jose Vasquez",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_MON_1993_P_MARTINEZ",
+    "incoming_asset_name": "Delino DeShields",
+    "return_state": "LOADED",
+    "bwar": "3.21"
+   },
+   {
+    "event_key": "LAD_MON_1995_DAAL",
+    "incoming_asset_name": "Rick Clelland",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_NYM_1998_CEDENO_HUNDLEY",
+    "incoming_asset_name": "Arnie Gooch",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_NYM_1998_CEDENO_HUNDLEY",
+    "incoming_asset_name": "Todd Hundley",
+    "return_state": "LOADED",
+    "bwar": "2.35"
+   },
+   {
+    "event_key": "LAD_NYM_1998_NOMO",
+    "incoming_asset_name": "Dave Mlicki",
+    "return_state": "LOADED",
+    "bwar": "1.19"
+   },
+   {
+    "event_key": "LAD_NYM_1998_NOMO",
+    "incoming_asset_name": "Greg McMichael",
+    "return_state": "LOADED",
+    "bwar": "-0.02"
+   },
+   {
+    "event_key": "LAD_NYM_2010_CHIN_LUNG_HU",
+    "incoming_asset_name": "Mike Antonini",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_NYM_2021_CARLOS_RINCON",
+    "incoming_asset_name": "Billy McKinney",
+    "return_state": "LOADED",
+    "bwar": "-0.35"
+   },
+   {
+    "event_key": "LAD_NYY_2023_JORBIT_VIVAS",
+    "incoming_asset_name": "Trey Sweeney",
+    "return_state": "LOADED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_PIT_2017_CRUZ_WATSON",
+    "incoming_asset_name": "Tony Watson",
+    "return_state": "LOADED",
+    "bwar": "0.40"
+   },
+   {
+    "event_key": "LAD_TB_2014_JOSE_DOMINGUEZ",
+    "incoming_asset_name": "Adam Liberatore",
+    "return_state": "LOADED",
+    "bwar": "0.99"
+   },
+   {
+    "event_key": "LAD_TB_2014_JOSE_DOMINGUEZ",
+    "incoming_asset_name": "Joel Peralta",
+    "return_state": "LOADED",
+    "bwar": "-0.03"
+   },
+   {
+    "event_key": "LAD_TOR_1987_GUZMAN_SHARPERSON",
+    "incoming_asset_name": "Mike Sharperson",
+    "return_state": "LOADED",
+    "bwar": "5.91"
+   },
+   {
+    "event_key": "LAD_TOR_1999_MONDESI_GREEN",
+    "incoming_asset_name": "Jorge Nunez",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_TOR_1999_MONDESI_GREEN",
+    "incoming_asset_name": "Shawn Green",
+    "return_state": "LOADED",
+    "bwar": "21.01"
+   },
+   {
+    "event_key": "LAD_TOR_2019_RONNY_BRITO",
+    "incoming_asset_name": "Russell Martin",
+    "return_state": "LOADED",
+    "bwar": "0.71"
+   },
+   {
+    "event_key": "LAD_TOR_2022_ALEX_DE_JESUS",
+    "incoming_asset_name": "Moises Brito",
+    "return_state": "NO_MLB_APPEARANCE_OBSERVED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_TOR_2022_ALEX_DE_JESUS",
+    "incoming_asset_name": "Nick Frasso",
+    "return_state": "LOADED",
+    "bwar": "0"
+   },
+   {
+    "event_key": "LAD_WSH_2021_KEIBERT_RUIZ",
+    "incoming_asset_name": "Max Scherzer",
+    "return_state": "LOADED",
+    "bwar": "2.47"
+   },
+   {
+    "event_key": "LAD_WSH_2021_KEIBERT_RUIZ",
+    "incoming_asset_name": "Trea Turner",
+    "return_state": "LOADED",
+    "bwar": "7.62"
+   },
+   {
+    "event_key": "LAD_WSH_2025_SEAN_LINAN",
+    "incoming_asset_name": "Alex Call",
+    "return_state": "LOADED",
+    "bwar": "0.54"
+   }
+  ]
+ }
+}
