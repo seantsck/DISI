@@ -9,6 +9,7 @@
 create or replace view public.v_player_control_intervals
 with (security_invoker = true)
 as
+with m as materialized (
 with recursive as_of as (
   select max(audited_through_date) as analysis_as_of_date from public.outcome_audits
 ),
@@ -233,7 +234,9 @@ left join lateral (
     (select sum(c.war) from cls c where c.sp = 'PRE' or c.ep = 'OUT') as out_war,
     (select count(*) from cls c where c.franchise_key = 'DODGERS' and c.sp <> 'PRE' and c.ep <> 'OUT' and (c.sp = 'AMBIG' or c.ep = 'AMBIG'))::int as ambiguous_rows,
     (select sum(c.war) from cls c where c.franchise_key = 'DODGERS' and c.sp <> 'PRE' and c.ep <> 'OUT' and (c.sp = 'AMBIG' or c.ep = 'AMBIG')) as ambiguous_war
-) w on true;
+) w on true
+)
+select * from m;
 
 comment on view public.v_player_control_intervals is
   'One row per continuous Dodgers organizational tenure of one player identity: the original tracked signing (TRACKED_SIGNING) or an incoming PLAYER asset of a canonical acquisition event (TRADE_ACQUISITION, FREE_AGENT_SIGNING). The interval ends at the first later exit event of the same identity (matched on player_id, mlb_id, bref_id or bref_register_id, never on names); a later re-entry is a new interval and is never reconnected to the earlier one. interval_bounded_dodgers_bwar sums Baseball-Reference bWAR of Dodgers stints inside the interval only: acquisition-relative with the 032 counterparty stint rule, the calendar, or a sourced chronology fact (transaction_asset_timing_observations) - timing_resolution_basis names which; the absence of an earlier modeled interval or a single team row is never accepted as chronology evidence - and exit-relative by an exact-dated exit (offseason, no Dodgers stint that season, or one contiguous Dodgers stint with no same-season re-entry; exit_resolution_basis names which; an approximate exit date never resolves a mid-season stint); a stint that cannot be placed leaves the value NULL (TIMING_UNRESOLVED), never zero. Open intervals report realized bWAR through analysis_as_of_date and may grow.';
@@ -243,6 +246,7 @@ comment on view public.v_player_control_intervals is
 create or replace view public.v_transaction_asset_lineage
 with (security_invoker = true)
 as
+with m as materialized (
 with recursive iv as (
   select * from public.v_player_control_intervals
 ),
@@ -348,7 +352,9 @@ left join lateral (
   from public.transaction_event_assets a
   left join public.transaction_asset_resolutions r on r.placeholder_asset_id = a.id and r.record_status = 'ACTIVE'
   where a.event_id = i.exit_event_id
-) ec on i.exit_event_id is not null;
+) ec on i.exit_event_id is not null
+)
+select * from m;
 
 comment on view public.v_transaction_asset_lineage is
   'One row per root package x path x hop. A root package is a trade event with at least one tracked signing outgoing, keyed event_key | sorted tracked slugs. Hop 1 is an incoming PLAYER asset of that trade; hop N+1 is an incoming PLAYER asset of the trade in which the hop-N asset left Dodgers control (first exit of the same identity). attribution_level degrades and never improves: PLAYER_ATTRIBUTABLE (the root is the sole outgoing asset and every exit on the path sent the asset alone), PACKAGE_ATTRIBUTABLE (one root package, but a boundary carries other outgoing assets or consideration), CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE (another root lineage, another tracked signing or a lineage-less player participates; visible, never added to a root), UNRESOLVED (identity or timing unresolved). Two dimensions are explicit: attribution_resolution (is the attribution level determinable) and value_resolution (is the bWAR value determinable; VALUE_NOT_LOADED means the WAR source has no row for the player, which does not make the attribution unresolved and is never zero without a dated no-MLB-appearance observation). Outgoing cash, pool space and placeholders always degrade at least to PACKAGE_ATTRIBUTABLE. Events and intervals are visited once per path. interval_bounded_dodgers_bwar is NULL when unresolved, never zero.';
@@ -358,6 +364,7 @@ comment on view public.v_transaction_asset_lineage is
 create or replace view public.v_transaction_package_lineage
 with (security_invoker = true)
 as
+with m as materialized (
 with lvl_n(name, n) as (
   values ('PLAYER_ATTRIBUTABLE', 0), ('PACKAGE_ATTRIBUTABLE', 1), ('CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE', 2), ('UNRESOLVED', 3)
 ),
@@ -381,7 +388,9 @@ select
   (r.attribution_level in ('PLAYER_ATTRIBUTABLE', 'PACKAGE_ATTRIBUTABLE') and r.interval_bounded_dodgers_bwar is not null) as is_additive_to_package_total,
   r.analysis_as_of_date
 from ranked r
-where r.rn = 1;
+where r.rn = 1
+)
+select * from m;
 
 comment on view public.v_transaction_package_lineage is
   'One row per root package x downstream acquisition interval, deduplicated from per-signing membership and from alternative paths (the most degraded attribution level and the nearest hop are kept; path_count says how many paths reach it). is_additive_to_package_total is true only for PLAYER_ATTRIBUTABLE and PACKAGE_ATTRIBUTABLE intervals with a resolved value: those belong to exactly one root package, so a package total never counts an interval twice and never counts one for several packages. CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE intervals are visible under every root they descend from and additive to none.';
@@ -391,6 +400,7 @@ comment on view public.v_transaction_package_lineage is
 create or replace view public.v_downstream_organizational_realization
 with (security_invoker = true)
 as
+with m as materialized (
 with pk0 as (
   select p.root_package_key,
     min(p.root_event_key) as root_event_key,
@@ -528,7 +538,9 @@ package_rows as (
 )
 select * from signing_rows
 union all
-select * from package_rows;
+select * from package_rows
+)
+select * from m;
 
 comment on view public.v_downstream_organizational_realization is
   'Downstream organizational realization beside the 032/033 first-hop columns, which are preserved unchanged (legacy_*). row_grain SIGNING: one row per tracked signing; individually attributable value only (interval_bounded_individually_attributable_first_hop_bwar and downstream_individually_attributable_bwar), the package value the signing participated in (package_participation_downstream_bwar, non-additive across the package members) and observable_not_attributable_bwar (mixed lineage, visible only). total_individually_attributable_organizational_bwar = direct Dodgers bWAR + interval-bounded PLAYER_ATTRIBUTABLE first-hop return + downstream PLAYER_ATTRIBUTABLE bWAR; package-attributable, mixed-lineage and unresolved value are never added; it is NULL when any PLAYER_ATTRIBUTABLE interval is unresolved. row_grain PACKAGE: one row per root package, deduplicated, never merged into a signing total. chain_status: COMPLETE_TERMINAL, STILL_ACTIVE (open chains grow), or INCOMPLETE_* (a data deficiency); a known attribution boundary is not incompleteness. Realized value is through analysis_as_of_date.';

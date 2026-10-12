@@ -58,6 +58,12 @@ informational and never makes a chain incomplete.
 counted once (first-hop package value + downstream PLAYER_ATTRIBUTABLE + downstream PACKAGE_ATTRIBUTABLE + CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE
 intervals each once).
 
+## API plan stability
+
+PostgREST always queries with a LIMIT, which let the planner choose a nested-loop plan for the interval, lineage and queue views that
+exceeded the anon statement timeout. Each new or amended 034 view therefore evaluates its whole query as one MATERIALIZED CTE, and the two
+research queues share one materialized evaluation of the lineage and interval views across their branches.
+
 ## Package root
 
 `root_package_key = <root trade event key>|<sorted tracked outgoing slugs>`, deterministic across replays (slugs, never uuids).

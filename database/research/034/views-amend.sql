@@ -129,7 +129,11 @@ comment on view public.v_dodgers_international_value_portfolio is
 create or replace view public.v_value_research_queue
 with (security_invoker = true)
 as
-with r as (select * from public.v_player_organizational_realization),
+with m as materialized (
+with lin as materialized (select * from public.v_transaction_asset_lineage),
+  ivl as materialized (select * from public.v_player_control_intervals),
+  dor as materialized (select * from public.v_downstream_organizational_realization),
+r as (select * from public.v_player_organizational_realization),
 issues as (
   select 'TEAM_WAR_MISSING'::text as issue, 1 as priority, r.player_slug, r.signing_id, null::text as event_key,
     format('Verified MLB-reached %s signing (%s) has no loaded team-season bWAR facts', r.signing_year, r.pathway) as detail
@@ -157,17 +161,17 @@ issues as (
   union all
   select 'TRADE_RETURN_TIMING_UNRESOLVED', 2, null::text, null::uuid, l.acquisition_event_key,
     format('Incoming %s has a Dodgers stint in the acquisition season that cannot be placed against the acquisition; no sourced chronology fact exists, so the return is not counted', l.asset_name)
-  from public.v_transaction_asset_lineage l where l.hop_number = 1 and l.war_state = 'TIMING_UNRESOLVED'
+  from lin l where l.hop_number = 1 and l.war_state = 'TIMING_UNRESOLVED'
   union all
   select 'DOWNSTREAM_ASSET_CHAIN_INCOMPLETE', 3, d.player_slug, d.signing_id, null,
     format('The downstream chain is %s: incomplete data, not a known attribution boundary', d.chain_status)
-  from public.v_downstream_organizational_realization d where d.row_grain = 'SIGNING' and d.chain_status like 'INCOMPLETE%'
+  from dor d where d.row_grain = 'SIGNING' and d.chain_status like 'INCOMPLETE%'
   union all
   select 'LINEAGE_BOUNDARY_NOTED', 4, null::text, null::uuid, b.acquisition_event_key,
     format('Informational: %s is %s (it was %s earlier on the path); the value is visible and not added to a single root', b.asset_name, b.attribution_level, b.prior_attribution_level)
   from (
     select distinct on (l.interval_key) l.interval_key, l.acquisition_event_key, l.asset_name, l.attribution_level, l.prior_attribution_level
-    from public.v_transaction_asset_lineage l
+    from lin l
     where l.prior_attribution_level is not null and l.attribution_level = 'CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE' and l.prior_attribution_level <> l.attribution_level
     order by l.interval_key
   ) b
@@ -188,7 +192,9 @@ issues as (
     and not exists (select 1 from public.transactions t where t.player_id = r.player_id)
     and not exists (select 1 from public.transaction_event_assets a where a.player_id = r.player_id)
 )
-select i.issue, i.priority, i.player_slug, i.signing_id, i.event_key, i.detail from issues i;
+select i.issue, i.priority, i.player_slug, i.signing_id, i.event_key, i.detail from issues i
+)
+select * from m;
 
 comment on view public.v_value_research_queue is
   'Unresolved value research, derived from the facts: missing team-season WAR, unmapped team codes, career-total reconciliation, shared-package attribution, downstream chains, incomplete acquisition cost for verified MLB outcomes, incomplete outcomes, and exits with no recorded transaction. Migration 034 recomputes the trade-return timing and downstream-chain issues from control intervals and lineage, and notes attribution boundaries informationally (LINEAGE_BOUNDARY_NOTED is not missing research). Nothing is queued from unverified snippets.';
@@ -196,7 +202,11 @@ comment on view public.v_value_research_queue is
 create or replace view public.v_transaction_research_queue
 with (security_invoker = true)
 as
-with issues as (
+with m as materialized (
+with lin as materialized (select * from public.v_transaction_asset_lineage),
+  ivl as materialized (select * from public.v_player_control_intervals),
+  dor as materialized (select * from public.v_downstream_organizational_realization),
+issues as (
   select 'EXIT_TRANSACTION_MISSING'::text as issue, 1 as priority, s.player_slug, null::text as event_key, null::text as asset_name,
     'The transaction history is unavailable from the official log; no exit was inferred'::text as detail
   from public.v_dodgers_international_exit_summary s where s.control_state = 'HISTORY_UNAVAILABLE'
@@ -239,7 +249,7 @@ with issues as (
   union all
   select 'TRADE_RETURN_TIMING_UNRESOLVED', 2, null::text, l.acquisition_event_key, l.asset_name,
     'The incoming player has a Dodgers stint in the acquisition season that cannot be placed against the acquisition; no sourced chronology fact exists, so the return is not counted'
-  from public.v_transaction_asset_lineage l where l.hop_number = 1 and l.war_state = 'TIMING_UNRESOLVED'
+  from lin l where l.hop_number = 1 and l.war_state = 'TIMING_UNRESOLVED'
   union all
   select 'TRADE_RETURN_UNRECORDED', 2, null, e.event_key, null,
     'No incoming consideration is recorded for this trade; the return is unknown, not zero'
@@ -263,33 +273,35 @@ with issues as (
   union all
   select 'DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION', 3, null::text, d.exit_event_key, d.display_name,
     'The identity has Dodgers team-season rows after a recorded exit and no recorded acquisition event; the later stint is outside every interval and is not credited to any trade return'
-  from (select distinct on (e.interval_key) e.interval_key, e.exit_event_key, e.display_name from public.v_player_control_intervals e
+  from (select distinct on (e.interval_key) e.interval_key, e.exit_event_key, e.display_name from ivl e
         where e.interval_end is not null and e.bref_id is not null and exists (
           select 1 from public.player_mlb_team_season_war w join public.organizations o on o.id = w.organization_id
           where w.bref_id = e.bref_id and w.record_status = 'ACTIVE' and w.war_system = 'BWAR' and o.franchise_key = 'DODGERS'
             and (w.season > extract(year from e.interval_end)::int
                  or (w.season = extract(year from e.interval_end)::int and extract(month from e.interval_end) <= 2))
-            and not exists (select 1 from public.v_player_control_intervals j where j.bref_id = e.bref_id and j.interval_key <> e.interval_key
+            and not exists (select 1 from ivl j where j.bref_id = e.bref_id and j.interval_key <> e.interval_key
                   and j.interval_start > e.interval_end and extract(year from j.interval_start) <= w.season
                   and (j.interval_end is null or extract(year from j.interval_end) >= w.season)))
         order by e.interval_key) d
   union all
   select 'DOWNSTREAM_TIMING_UNRESOLVED', 2, null::text, d.acquisition_event_key, d.asset_name,
     'A downstream asset has a Dodgers stint that cannot be placed inside its control interval; its value is not counted'
-  from (select distinct on (l.interval_key) l.interval_key, l.acquisition_event_key, l.asset_name from public.v_transaction_asset_lineage l
+  from (select distinct on (l.interval_key) l.interval_key, l.acquisition_event_key, l.asset_name from lin l
         where l.hop_number > 1 and l.war_state = 'TIMING_UNRESOLVED' order by l.interval_key) d
   union all
   select 'EXIT_NOT_RESEARCHED_DOWNSTREAM', 3, null::text, d.acquisition_event_key, d.asset_name,
     'A downstream asset acquired in a recorded trade has no recorded exit and no observation of continued control'
-  from (select distinct on (l.interval_key) l.interval_key, l.acquisition_event_key, l.asset_name from public.v_transaction_asset_lineage l
+  from (select distinct on (l.interval_key) l.interval_key, l.acquisition_event_key, l.asset_name from lin l
         where l.hop_number > 1 and l.branch_status = 'EXIT_NOT_RESEARCHED' and l.war_state <> 'NO_MLB_APPEARANCE_OBSERVED' order by l.interval_key) d
   union all
   select 'DOWNSTREAM_WAR_NOT_LOADED', 3, null::text, d.acquisition_event_key, d.asset_name,
     'A downstream asset has no loaded team-season facts and no dated no-MLB-appearance observation; its value is unknown, not zero'
-  from (select distinct on (l.interval_key) l.interval_key, l.acquisition_event_key, l.asset_name from public.v_transaction_asset_lineage l
+  from (select distinct on (l.interval_key) l.interval_key, l.acquisition_event_key, l.asset_name from lin l
         where l.hop_number > 1 and l.war_state = 'WAR_NOT_LOADED' order by l.interval_key) d
 )
-select i.issue, i.priority, i.player_slug, i.event_key, i.asset_name, i.detail from issues i;
+select i.issue, i.priority, i.player_slug, i.event_key, i.asset_name, i.detail from issues i
+)
+select * from m;
 
 comment on view public.v_transaction_research_queue is
   'Unresolved transaction research, derived from the facts (Migration 034 adds the downstream issues EXIT_NOT_RESEARCHED_DOWNSTREAM, DOWNSTREAM_WAR_NOT_LOADED, DOWNSTREAM_TIMING_UNRESOLVED and DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION and recomputes the first-hop timing issue from control intervals): players with no exit evidence or unavailable history, unresolved players to be named later and future considerations, unknown cash and pool-space amounts, assets with no stable identity, return assets with no recorded exit, unresolved trade-return timing, unrecorded returns, and legacy / canonical date conflicts. Nothing is queued from unverified snippets.';

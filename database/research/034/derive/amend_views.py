@@ -184,6 +184,24 @@ tq_new = tq_new.replace(
     "'Unresolved transaction research, derived from the facts:",
     "'Unresolved transaction research, derived from the facts (Migration 034 adds the downstream issues EXIT_NOT_RESEARCHED_DOWNSTREAM, DOWNSTREAM_WAR_NOT_LOADED, DOWNSTREAM_TIMING_UNRESOLVED and DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION and recomputes the first-hop timing issue from control intervals):", 1)
 
+
+
+def shared(view_sql, ctes):
+    # inject shared CTEs ahead of the first CTE and reference them instead of the views; materialize the whole query
+    head, body = view_sql.split('\nas\n', 1)
+    comment_at = body.index('\ncomment on view')
+    q = body[:comment_at].rstrip().rstrip(';')
+    tail = body[comment_at:]
+    first = q.index('with ') + len('with ')
+    q = q[:first] + ctes + q[first:]
+    return head + '\nas\nwith m as materialized (\n' + q + '\n)\nselect * from m;\n' + tail
+
+
+SHARED = "lin as materialized (select * from public.v_transaction_asset_lineage),\n  ivl as materialized (select * from public.v_player_control_intervals),\n  dor as materialized (select * from public.v_downstream_organizational_realization),\n"
+vq_new = vq_new.replace('public.v_transaction_asset_lineage l', 'lin l').replace('public.v_downstream_organizational_realization d', 'dor d')
+tq_new = tq_new.replace('public.v_transaction_asset_lineage l', 'lin l').replace('public.v_player_control_intervals e', 'ivl e').replace('public.v_player_control_intervals j', 'ivl j')
+vq_new = shared(vq_new, SHARED)
+tq_new = shared(tq_new, SHARED)
 out = new_port.rstrip() + '\n\n' + vq_new.rstrip() + '\n\n' + tq_new.rstrip() + '\n'
 open(DEST, 'w', encoding='utf8').write(out)
 print('wrote', os.path.relpath(DEST), len(out.split('\n')), 'lines')
