@@ -200,6 +200,14 @@ def shared(view_sql, ctes):
 SHARED = "lin as materialized (select * from public.v_transaction_asset_lineage),\n  ivl as materialized (select * from public.v_player_control_intervals),\n  dor as materialized (select * from public.v_downstream_organizational_realization),\n"
 vq_new = vq_new.replace('public.v_transaction_asset_lineage l', 'lin l').replace('public.v_downstream_organizational_realization d', 'dor d')
 tq_new = tq_new.replace('public.v_transaction_asset_lineage l', 'lin l').replace('public.v_player_control_intervals e', 'ivl e').replace('public.v_player_control_intervals j', 'ivl j')
+def wrap(view_sql):
+    head, body = view_sql.split('\nas\n', 1)
+    comment_at = body.index('\ncomment on view')
+    q = body[:comment_at].rstrip().rstrip(';')
+    return head + '\nas\nwith m as materialized (\n' + q + '\n)\nselect * from m;\n' + body[comment_at:]
+
+
+new_port = wrap(new_port)
 vq_new = shared(vq_new, SHARED)
 tq_new = shared(tq_new, SHARED)
 out = new_port.rstrip() + '\n\n' + vq_new.rstrip() + '\n\n' + tq_new.rstrip() + '\n'

@@ -822,6 +822,7 @@ comment on view public.v_downstream_organizational_realization is
 create or replace view public.v_dodgers_international_value_portfolio
 with (security_invoker = true)
 as
+with m as materialized (
 with base as (
   select r.*,
     r.cost_metric_eligible as direct_ratio_eligible,
@@ -942,7 +943,9 @@ from core
 left join sg on sg.grain = core.grain and sg.grain_value = core.grain_value
 left join pm on pm.grain = core.grain and pm.grain_value = core.grain_value
 left join dds on dds.grain = core.grain and dds.grain_value = core.grain_value
-left join pq on pq.grain = core.grain and pq.grain_value = core.grain_value;
+left join pq on pq.grain = core.grain and pq.grain_value = core.grain_value
+)
+select * from m;
 
 comment on view public.v_dodgers_international_value_portfolio is
   'Migration 034 appends downstream columns and leaves every earlier column unchanged (package_return_dodgers_bwar still sums per signing, so a package with several tracked signings repeats; the package-deduplicated measures group by root_package_key first). package_deduplicated_total_bwar is an observed lineage total (first-hop package value + downstream PLAYER_ATTRIBUTABLE + downstream PACKAGE_ATTRIBUTABLE + CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE intervals, each interval once), not an individually attributable total; only the individually-attributable and total_individually_attributable columns are attributable to a signing. Aggregate value per $1M by grain (all, signing year, era, market, pathway) using SUM(value) / SUM(cost) over the same eligible rows: mature, COMPLETE acquisition cost, outcome observed. The eligible counts and cost are explicit. These are tracked / verified-set analytics, not organization-wide hit rates (no signing period is rate-eligible), and they differ from the legacy average-of-ratios KPI by design.';
