@@ -43,11 +43,14 @@ select
 from grains g
 group by g.grain, g.grain_value, g.sort_key
 ),
+dor as materialized (
+  select * from public.v_downstream_organizational_realization
+),
 dsr as (
-  select * from public.v_downstream_organizational_realization where row_grain = 'SIGNING'
+  select * from dor where row_grain = 'SIGNING'
 ),
 pkr as (
-  select * from public.v_downstream_organizational_realization where row_grain = 'PACKAGE'
+  select * from dor where row_grain = 'PACKAGE'
 ),
 sg as (
   select g.grain, g.grain_value,

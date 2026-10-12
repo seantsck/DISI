@@ -32,11 +32,14 @@ sel, comment = rest.split('\ncomment on view', 1)
 sel = sel.rstrip().rstrip(';')
 comment = 'comment on view' + comment
 
-EXTRA = """dsr as (
-  select * from public.v_downstream_organizational_realization where row_grain = 'SIGNING'
+EXTRA = """dor as materialized (
+  select * from public.v_downstream_organizational_realization
+),
+dsr as (
+  select * from dor where row_grain = 'SIGNING'
 ),
 pkr as (
-  select * from public.v_downstream_organizational_realization where row_grain = 'PACKAGE'
+  select * from dor where row_grain = 'PACKAGE'
 ),
 sg as (
   select g.grain, g.grain_value,
