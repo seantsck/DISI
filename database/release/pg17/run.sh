@@ -12,7 +12,7 @@ git -C "$REPO" archive "$CANDIDATE_035" | tar -x -C "$WORK/t035"
 # the verifier libraries import @electric-sql/pglite only through test helpers they do not load here; reuse the repo's modules
 ln -sfn "$REPO/node_modules" "$WORK/t034/node_modules"
 ln -sfn "$REPO/node_modules" "$WORK/t035/node_modules"
-( cd "$WORK/deps" && [ -f package.json ] || npm init -y >/dev/null ) 
+[ -f "$WORK/deps/package.json" ] || ( cd "$WORK/deps" && npm init -y >/dev/null )
 ( cd "$WORK/deps" && npm i --no-audit --no-fund --silent embedded-postgres@17.9.0-beta.17 pg@8 )
 echo "work dir: $WORK"
 node "$REPO/database/release/pg17/validate-035.mjs" "$WORK"
