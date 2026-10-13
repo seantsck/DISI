@@ -2137,10 +2137,13 @@ const dayEval = (date, o = {}) => insertEvaluation({
 const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} returning id into i; update player_evaluations set record_status = 'ACTIVE' where id = i; end $seal$`
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
-test('frozen history: migrations 001-034 are byte-for-byte unchanged (line endings normalised); 035 is the only addition', () => {
-  const files = manifest.canonical_sql.filter((f) => f < '035')
-  assert.equal(files.length, 34)
-  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '035'), ['035_international_benchmark_outcomes.sql'])
+// Migrations added after the frozen baseline and not yet released; each is frozen in tests/db/frozen-migrations.json once applied.
+const UNRELEASED_ADDITIONS = []
+
+test('frozen history: migrations 001-035 are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
+  const files = manifest.canonical_sql.filter((f) => f < '036')
+  assert.equal(files.length, 35)
+  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '036'), UNRELEASED_ADDITIONS)
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {
     const text = readSql(f).replace(/\r\n/g, '\n')
