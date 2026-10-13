@@ -1,0 +1,22 @@
+{
+ "ladder": [
+  "INTERNATIONAL_ROOKIE:1",
+  "COMPLEX_ROOKIE:2",
+  "A:3",
+  "LOW_A:3",
+  "HIGH_A:4",
+  "AA:5",
+  "AAA:6",
+  "MLB:7"
+ ],
+ "coverage": {
+  "dodgers_signings": 220,
+  "players_with_affiliated_history": 167,
+  "affiliated_player_seasons": 560,
+  "latest_observed_season": 2026,
+  "players_with_unresolved_arrivals": 4,
+  "professional_signings": 8,
+  "mature_mlb_players_without_history": 43
+ },
+ "failures": []
+}

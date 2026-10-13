@@ -44,6 +44,9 @@ This folder preserves the SQL lineage behind the DISI research database.
 33. `033_transaction_asset_chain_completion.sql` — the factual transaction history of the 220 tracked Dodgers international signings (161 events: tracked-player exits, one re-entry and 20 first-hop return-asset exits) with stable MLB / Baseball-Reference / Register identities, multi-team, cash, future-considerations and bonus-pool-space assets, sealed placeholder resolutions and dated control observations, the Diaz / Machado date corrected to the official 2018-07-18, Baseball-Reference bWAR for the 40 first-hop incoming players, explicit trade-return states, and four views (details below; research in `database/research/033/`).
 34. `034_downstream_organizational_value_chains.sql` — downstream organizational value chains: derived control intervals with interval-bounded Dodgers bWAR (a free-agent re-signing or reacquisition is a new interval), a cycle-safe derived transaction lineage with attribution levels that only degrade, package-deduplicated lineage and realization views, the sealed `transaction_asset_timing_observations` chronology table, 43 researched exit and re-entry events, bWAR for 28 downstream return players, and additive amendments of the portfolio and research queues; the 032 / 033 first-hop columns are preserved (details below; research in `database/research/034/`).
 35. `035_international_benchmark_outcomes.sql` — international benchmark outcomes: the MLB outcome audit of the 48 non-Dodgers players of the MLB Pipeline 2013 / 2014 Top-30 international signing trackers (43 identity-resolved and audited, 11 reached MLB, 5 identity-unresolved and queued), their Baseball-Reference team-season bWAR, and three views (benchmark player outcomes with comparison tiers, a population coverage model with strict derived rate eligibility, a research queue); a Top-prospect sample benchmark, not a census (details below; research in `database/research/035/`).
+36. `036_scouting_expectation_outcomes.sql` — scouting expectation vs realized outcome: reviewed source-native expectation bands (`scouting_expectation_bands`), the shared realized-outcome spine `v_player_realized_outcome`, every external rank / FV observation with its band and debut order, frozen pre-debut anchors compared with the realized outcome, a descriptive calibration summary gated at 10 comparable outcomes, and a research queue; derived only, no fact added (details below; research in `database/research/036/`).
+37. `037_development_pathway_intelligence.sql` — development pathway intelligence: an observed season path over the 021-023 team stints (primary level by games, PROMOTED / REPEATED / REGRESSED / RETURNED_AFTER_ABSENCE, 2020 never an absence), per-signing pathway features over the 024 developmental arrivals with a DISI-convention pathway class and lifecycle status, a pathway / early-velocity summary against the 036 outcome spine with sample gates and coverage-artefact suppression, and a research queue; no table, no fact, no inferred reason (details below; research in `database/research/037/`).
+38. `038_signing_network_outcomes.sql` — signing network outcomes: the 029 documented trainer / academy / program / showcase associations beside the 036 outcome spine and expectation anchors and the 037 pathways, with an association-strength grade (never a credit share), an entity summary whose denominator is never known and whose sample state is never a census, the known network sample beside the unattributed signings labelled selection-biased, and a research queue; no table, no fact, no rate, ranking, ROI or causal claim (details below; research in `database/research/038/`).
 
 ## 017 research-database layer
 
@@ -254,6 +257,31 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Surface.** No new table; 59 public tables and 112 views; the verifier adds 8 checks (186 in total).
 - **Rerunnable**; design and reproduction in `database/research/035/README.md` and `architecture-report.md`.
 
+## 036 scouting expectation vs realized outcome
+
+- **Bands.** `scouting_expectation_bands` holds 15 reviewed bands in four families (MLB Pipeline Top-30 class rank, Baseball America Top 100, FanGraphs organization rank, FanGraphs FV). Each family reads one publication's own measure; there is no universal expectation number. The outcome rule of each band (MLB reach meets it, a career-bWAR floor exceeds it, FV role floors) is a stated DISI convention.
+- **Spine.** `v_player_realized_outcome` is one row per tracked signing (220 Dodgers + 48 benchmark), passed through from 032-034 and 035 and reused by 036-038; MLB value is NULL without an MLB career, Dodgers attributable value is Dodgers-only.
+- **Comparison.** `v_player_expectation_vs_outcome` anchors the earliest pre-debut observation per player and band family (frozen: later evaluations never move it) and states EXCEEDED / MET / UNDERPERFORMED / TOO_EARLY / OUTCOME_INCOMPLETE / INSUFFICIENT_EXPECTATION_DATA; unaudited, immature or still-active outcomes are never misses. `v_scouting_calibration_summary` shows shares only for 10+ comparable outcomes and is never an accuracy measure.
+- **Surface.** One new table; 60 public tables and 117 views; the verifier adds 8 checks (194 in total).
+- **Rerunnable**; design and reproduction in `database/research/036/README.md` and `architecture-report.md` (the 036-038 bundle).
+
+## 037 development pathway intelligence
+
+- **Season path.** `v_player_development_season_path`: one row per Dodgers player-season of affiliated developmental play; the primary level is the level with the most games (a cameo is not a promotion); transitions are observations, never explained.
+- **Pathway.** `v_player_development_pathway`: one row per Dodgers signing with seasons from the professional debut to each level (024 developmental arrivals, 2020 excluded), repeats, regressions, absences, same-level runs, a pathway class (FAST_TRACK, STANDARD_PROGRESSION, SLOW_PROGRESSION, STALLED, NONLINEAR, EARLY_EXIT, STILL_DEVELOPING, INSUFFICIENT_HISTORY, NOT_CLASSIFIED_PROFESSIONAL_SIGNING) and the 036 outcome spine. A young active player is never an exit; professional signings are never on the amateur ladder.
+- **Summary.** `v_development_pathway_summary` by signing pathway (never blended): shares need 10+ mature players; rows without a classified path are `COVERAGE_ARTEFACT_NOT_COMPARABLE` and carry no share; the Double-A share is shown only for early velocity (a class is itself defined by Double-A arrival).
+- **Surface.** No table; 60 public tables and 121 views; the verifier adds 7 checks (201 in total).
+- **Rerunnable**; design and reproduction in `database/research/037/README.md`.
+
+## 038 signing network outcomes
+
+- **Associations.** `v_network_player_outcomes`: one row per ACTIVE 029 player-network relationship with the 036 outcome and expectation and the 037 pathway; `attribution_confidence` grades how strongly the association is documented and is never a share of credit.
+- **Entities.** `v_network_outcome_summary`: tracked / mature / audited signees, bWAR by side, cost coverage (a cost total only when every signee's cost is COMPLETE); `denominator_known` is always false and `network_sample_state` (ANECDOTAL / SMALL_SAMPLE / DESCRIPTIVE_SAMPLE) is never a census. Every entity is ANECDOTAL today (5 documented Dodgers players).
+- **Coverage.** `v_network_outcome_coverage`: KNOWN_NETWORK_SAMPLE vs UNATTRIBUTED_SIGNINGS for every Dodgers segment, both states always shown, labelled `DESCRIPTIVE_ONLY_SELECTION_BIASED`; no rate or difference.
+- **Not here.** No trainer, academy or showcase effect, ranking, hit rate, ROI, leaderboard or prediction.
+- **Surface.** No table; 60 public tables and 125 views; the verifier adds 6 checks (207 in total).
+- **Rerunnable**; design and reproduction in `database/research/038/README.md`.
+
 ## Player identity (020)
 
 - **Identifier roles.** `players.mlb_id` is the MLB Stats API person id and the anchor of every identity: biography and the other ids are applied only to a player whose MLB id is resolved. `bref_id` is the Baseball-Reference page id, recorded only for players with an MLB debut. `fangraphs_id` comes from MLB's cross-reference and is only an identifier; it never implies fWAR.
@@ -269,7 +297,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 - `004a_diagnose_zero_cohort.sql`
 - `004b_repair_dodgers_signings.sql`
 - `004c_repair_observed_outcomes.sql`
-- `release/README.md` — the 034 / 035 release plan (`034-release-checklist.md`), the read-only hosted-state probe and the disposable PostgreSQL 17 validation and backup-restore tooling.
+- `release/README.md` — the 034 / 035 release plan (`034-release-checklist.md`), the 036-038 bundle release plan (`036-038-release-plan.md`, probe and guarded rollback), the read-only hosted-state probes and the disposable PostgreSQL 17 validation and backup-restore tooling.
 - `repairs/README.md` — provenance for the 2026-10-06 one-time live drift repair (the five 003-era legacy MLB_DEBUT milestones were missing on the production database and were backfilled; 021 then tagged them).
 
 The repair files document issues encountered during the first manual Supabase build and are intentionally kept out of the canonical build sequence.

@@ -557,9 +557,9 @@ test('security: the timing table is RLS + SELECT-only, the guard is invoker-righ
 test('verifier: the 18 downstream checks pass and catch their own drift; the full verifier passes with 186 checks (178 through 034 plus 8 for 035, which pass trivially without their views)', async () => {
   assert.deepEqual(await failing(), [])
   assert.equal(DOWNSTREAM_CHECK_NAMES.length, 18)
-  const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 109 })
+  const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 109, public_tables_total: 59 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 186)
+  assert.equal(full.hard.length, 207)
   const drifts = {
     downstream_timing_observation_violations: `alter table transaction_asset_timing_observations disable trigger transaction_asset_timing_observations_guard;
       update transaction_asset_timing_observations set observed_date = date '1900-01-01', season = 1900 where fact_type = 'FIRST_DODGERS_APPEARANCE' and season = 2024;`,

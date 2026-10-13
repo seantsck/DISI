@@ -1,4 +1,4 @@
-# Release tooling (034 / 035)
+# Release tooling (034 / 035, 036-038 bundle)
 
 Nonproduction tooling and the release plan. Nothing here connects to a hosted database by itself.
 
@@ -12,8 +12,13 @@ Nonproduction tooling and the release plan. Nothing here connects to a hosted da
 | `pg17/upgrade-034.mjs` | each earlier 034 revision -> frozen 034 applies and converges; revision fingerprints |
 | `pg17/expected-probe.mjs` | the probe's expected output for "frozen 034" and "034 + 035" |
 | `pg17/restore-verify.mjs` | proves a `pg_dump -Fc` backup restores and verifies (`--selftest` round-trips the frozen chain) |
+| `036-038-release-plan.md` | the 036-038 bundle: identity and hashes, changes, evidence, expected probe values, backup, apply order, post-apply verification, rollback, PR draft |
+| `sql/bundle-036-038-probe.sql` | read-only probe of the bundle state (marker objects, fact counts, as-of date, API surface) |
+| `sql/rollback-036-038.sql` | WRITE, approval only: guarded logical rollback of the bundle to the exact 001-035 state |
+| `pg17/run-036-038.sh`, `pg17/validate-036-038.mjs` | bundle validation on disposable PostgreSQL 17: frozen 001-035, per-migration additivity and exact idempotency, security, verifier 207/207, convergence, anon reads, rollback |
 
 ```
 database/release/pg17/run.sh                    # ~1 min; needs network once for npm
+database/release/pg17/run-036-038.sh            # ~1.5 min; the 036-038 bundle against the released main
 node database/release/pg17/restore-verify.mjs <work-dir> <backup.dump>
 ```

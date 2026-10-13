@@ -8,7 +8,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { buildChainThrough, buildCanonicalChain } from './canonical-chain.mjs'
+import { buildChainThrough } from './canonical-chain.mjs'
 import { benchmarkQueries, BENCHMARK_CHECK_NAMES } from '../../scripts/db/lib/benchmark-invariants.mjs'
 import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 
@@ -227,12 +227,12 @@ test('refuses a mismatched precondition: an existing audit with a different resu
   }
 })
 
-test('verifier: the eight benchmark checks pass and each catches its own drift; the full verifier passes with 186 checks', async () => {
+test('verifier: the eight benchmark checks pass and each catches its own drift; the full verifier passes on the 035 database', async () => {
   assert.deepEqual(await failing(), [])
   assert.equal(BENCHMARK_CHECK_NAMES.length, 8)
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+  const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 112, public_tables_total: 59 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 186)
+  assert.equal(full.hard.length, 207, '186 through 035 plus the eight 036, seven 037 and six 038 checks, which pass trivially without their objects')
   const cov = 'v_international_benchmark_class_coverage'
   const out = 'v_international_benchmark_player_outcomes'
   assert.deepEqual(await drift(cov, { rate_eligible_strict: 'true', comparison_label: `'CLASS_COMPLETE_COMPARISON'` }), ['benchmark_rate_eligibility_violations'])
@@ -246,7 +246,7 @@ test('verifier: the eight benchmark checks pass and each catches its own drift; 
 })
 
 test('convergence: a fresh 001-035 replay equals the 001-034 database with 035 applied (rows, definitions, grants)', { timeout: 600000 }, async () => {
-  const fresh = await buildCanonicalChain()
+  const fresh = await buildChainThrough('035_international_benchmark_outcomes.sql')
   try {
     const business = async (query) => ({
       audits: await query(`select p.slug, a.audited_through_date::text as d, a.reached_mlb_verified, a.outcome_state, a.confidence::text as c, a.audit_note from outcome_audits a join players p on p.id = a.player_id order by 1`),
