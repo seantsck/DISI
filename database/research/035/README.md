@@ -20,7 +20,13 @@ computes no organizational rate and ranks nothing.
 
 ## Status (2026-10-13)
 
-- **Branch / release.** Lives on `wip/disi-migration-035`, stacked on 034 (draft PR #6, unmerged). Not pushed, no 035 PR, **not applied to live Supabase**; 034 is frozen and unchanged (sha1 in `tests/db/frozen-migrations.json`).
-- **Verification.** `tests/db/benchmark-035.test.mjs` 16/16; full suite 397/397 at `--test-concurrency=1`; lint, typecheck and `next build` clean. Local PGlite only.
-- **Reproducibility.** `build.mjs` reproduces the committed SQL byte-for-byte (tested); no external source was re-fetched (same bWAR files and checksums as 032 - 034, see `scope-config.json`).
-- **Before release.** Merge 034 first, rebase 035, review the diff, then apply to a Supabase branch / staging database before production.
+- **Branch / release.** `wip/disi-migration-035` (pushed to `origin`, no PR), based on `1edf314`, the head of the 034 release PR #6
+  (draft, unmerged). **Not applied to any hosted database.** 034 is frozen and unchanged (SHA-1 `3cb5494f13800a4d44e2ffb6aa6bd1ff88aae5f5`,
+  `tests/db/frozen-migrations.json`).
+- **Verification.** `tests/db/benchmark-035.test.mjs` 16/16; full suite 397/397 at `--test-concurrency=1`; lint, typecheck and
+  `next build` clean (PGlite). Independently on real PostgreSQL 17.9 (`database/release/pg17/run.sh`): 21/21 checks, 035 verifier
+  186/186, rerun no-op, fresh 001-035 replay converges with 001-034 + 035.
+- **Reproducibility.** `build.mjs` reproduces the committed SQL byte-for-byte (tested); no external source was re-fetched (same bWAR
+  files and checksums as 032 - 034, see `scope-config.json`).
+- **Before release.** 034 must be released first; then rebase, re-test and apply as in `database/release/034-release-checklist.md`
+  section 7 (a simulated merge of PR #6 + rebase is conflict-free).
