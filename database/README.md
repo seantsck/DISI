@@ -42,6 +42,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 31. `031_financial_provenance_coverage_expansion.sql` — financial provenance and coverage expansion: sourced pool capacity for the Dodgers 2012-13, 2013-14, 2014-15, 2017-18 and 2020-21 periods (and the post-penalty 2021-22 allocation), 13 provenance upgrades and 4 newly sourced bonuses over the 030 ledger, one corrected legacy bonus, period-membership environment links, and `signing_financial_resolutions`, a reviewed decision that selects one of several competing ACTIVE reports without rewriting any (details below; research in `database/research/031/`).
 32. `032_player_value_organizational_realization.sql` — Baseball-Reference team-season bWAR facts (`player_mlb_team_season_war`, BAT and PITCH kept apart) with a team-code map, a `bref_id` on trade-return assets, reconciliation of the legacy career-WAR stores, and four views that separate direct Dodgers MLB value from non-Dodgers career value and one-hop trade return, with package-level attribution and cost-completeness gating (details below; research in `database/research/032/`).
 33. `033_transaction_asset_chain_completion.sql` — the factual transaction history of the 220 tracked Dodgers international signings (161 events: tracked-player exits, one re-entry and 20 first-hop return-asset exits) with stable MLB / Baseball-Reference / Register identities, multi-team, cash, future-considerations and bonus-pool-space assets, sealed placeholder resolutions and dated control observations, the Diaz / Machado date corrected to the official 2018-07-18, Baseball-Reference bWAR for the 40 first-hop incoming players, explicit trade-return states, and four views (details below; research in `database/research/033/`).
+34. `034_downstream_organizational_value_chains.sql` — downstream organizational value chains: derived control intervals with interval-bounded Dodgers bWAR (a free-agent re-signing or reacquisition is a new interval), a cycle-safe derived transaction lineage with attribution levels that only degrade, package-deduplicated lineage and realization views, the sealed `transaction_asset_timing_observations` chronology table, 43 researched exit and re-entry events, bWAR for 28 downstream return players, and additive amendments of the portfolio and research queues; the 032 / 033 first-hop columns are preserved (details below; research in `database/research/034/`).
 
 ## 017 research-database layer
 
@@ -231,6 +232,17 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Views.** `v_transaction_event_complete`, `v_transaction_asset_chain_readiness`, `v_dodgers_international_exit_summary`, `v_transaction_research_queue`.
 - **Surface.** 58 public tables and 105 views, RLS and SELECT-only API grants, invoker-rights guards with EXECUTE revoked. The verifier adds 11 structural checks (160 in total).
 - **Rerunnable**; design, identities, effects and reproduction in `database/research/033/README.md`.
+
+## 034 downstream organizational value chains
+
+- **Control intervals.** `v_player_control_intervals`: one continuous Dodgers tenure per player identity, ended by the first later exit of the same identity. A free-agent re-signing or reacquisition is a new interval (Blake 2008, Hundley 2002, Sharperson 1994, Maddux 2008, Valdez 2000), so first-hop returns are no longer credited with later re-signing value (Blake 9.16 -> 0.94 bounded). The 033 first-hop columns are preserved beside the bounded values.
+- **Lineage.** `v_transaction_asset_lineage` is a cycle-safe derived traversal (41 root packages, maximum depth 4); no edge table. `v_transaction_package_lineage` deduplicates by `root_package_key`; `v_downstream_organizational_realization` has SIGNING and PACKAGE row grains that are never merged.
+- **Attribution.** PLAYER_ATTRIBUTABLE -> PACKAGE_ATTRIBUTABLE -> CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE -> UNRESOLVED; it only degrades, and outgoing cash or any other consideration degrades at least to PACKAGE_ATTRIBUTABLE. A signing's total individually attributable bWAR adds only direct value and PLAYER_ATTRIBUTABLE returns.
+- **Timing.** `transaction_asset_timing_observations` (sealed, append-only) carries sourced chronology facts; Valo, Edman, McDermott, Rortvedt, Mota, Ruan and Checo are resolved from them (a single Dodgers team row is never accepted as evidence), and Punto and Bailey exit bounds are stated without inventing an exit date.
+- **Facts added.** 43 researched events (91 assets), 3 outgoing-placeholder resolutions, 10 timing facts, 494 team-season rows for 28 downstream return players (same files and checksums as 032 / 033).
+- **Surface.** 59 public tables and 109 views, RLS and SELECT-only API grants, invoker-rights guard with EXECUTE revoked. The verifier adds 18 checks (178 in total).
+- **Not here.** League-wide benchmarking (035) and valuation of cash, pool space or prospects.
+- **Rerunnable**; design, effects and reproduction in `database/research/034/README.md`.
 
 ## Player identity (020)
 

@@ -25,6 +25,8 @@ const seed = rd('event-seed.json')
 const war = rd('war-seed.json')
 const config = rd('scope-config.json')
 const audit = rd('audit-report.json')
+// the chain under test stops at 033: 58 tables / 105 views
+const EXPECT033 = { ...CANONICAL_EXPECTATIONS, public_views_total: 105, public_tables_total: 58 }
 const NEW_TABLES = ['transaction_asset_resolutions', 'dodgers_control_observations']
 const NEW_VIEWS = ['v_transaction_event_complete', 'v_transaction_asset_chain_readiness', 'v_dodgers_international_exit_summary', 'v_transaction_research_queue']
 
@@ -521,7 +523,7 @@ test('downstream chain: more tracked players are flagged because return assets n
 // ---------------------------------------------------------------------------------------------
 
 test('convergence: a fresh 001-033 replay equals the 001-032 database with 033 applied (rows, definitions, grants)', async () => {
-  const fresh = await buildCanonicalChain()
+  const fresh = await buildChainThrough('033_transaction_asset_chain_completion.sql')
   try {
     const hashesOf = async (query) => {
       const tables = (await query(`select relname from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r' order by 1`)).map((r) => r.relname)
@@ -595,11 +597,11 @@ test('observation guard: sealed facts, asset observations only on PLAYER assets,
   })
 })
 
-test('verifier: the 11 transaction checks pass on the canonical state and the data-level ones catch their own drift; the full verifier passes with 160 checks', async () => {
+test('verifier: the 11 transaction checks pass on the canonical state and the data-level ones catch their own drift; the full verifier passes with 178 checks (160 through 033 plus 18 for 034)', async () => {
   assert.deepEqual(await failing(), [])
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+  const full = await checkInvariants(q, EXPECT033)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 160)
+  assert.equal(full.hard.length, 178, '160 through 033 plus the eighteen 034 checks, which pass trivially without their tables')
   assert.equal(TRANSACTION_CHECK_NAMES.length, 11)
   const drifts = {
     transaction_asset_shape_violations: `alter table transaction_event_assets drop constraint transaction_event_assets_mlb_id_check;
@@ -654,7 +656,7 @@ test('identity verifier: a relevant incoming player needs resolved WAR or an obs
   // post-033 the corrected date is required; drifting back to the press-release date fails the verifier
   await inTxn(async () => {
     await chain.db.exec(`update transactions set transaction_date = date '2018-07-19' where player_id = (select id from players where slug = 'yusniel-diaz') and transaction_type = 'TRADE';`)
-    assert.ok(failedChecks(await checkInvariants(q, CANONICAL_EXPECTATIONS)).some((c) => c.name === 'reconciliation_trade_wording_violations'))
+    assert.ok(failedChecks(await checkInvariants(q, EXPECT033)).some((c) => c.name === 'reconciliation_trade_wording_violations'))
   })
-  assert.deepEqual(failedChecks(await checkInvariants(q, CANONICAL_EXPECTATIONS)), [])
+  assert.deepEqual(failedChecks(await checkInvariants(q, EXPECT033)), [])
 })

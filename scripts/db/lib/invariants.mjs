@@ -20,6 +20,7 @@ import { NETWORK_QUERIES } from './network-invariants.mjs'
 import { financialQueries } from './financial-invariants.mjs'
 import { valueQueries } from './value-invariants.mjs'
 import { transactionQueries } from './transaction-invariants.mjs'
+import { downstreamQueries, DOWNSTREAM_CHECK_NAMES } from './downstream-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -88,11 +89,13 @@ export const CANONICAL_EXPECTATIONS = {
   // (aclexplode), so privileges information_schema omits (MAINTAIN) count too.
   // 026 adds six tables (and drops the empty legacy evaluations table: 42 - 1 + 6) and five views.
   // 032 adds two tables and four views.
-  public_views_total: 105,
+  // 033 adds two tables and four views.
+  // 034 adds one table and four views.
+  public_views_total: 109,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 58,
+  public_tables_total: 59,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -189,6 +192,8 @@ export const CANONICAL_EXPECTATIONS = {
   transaction_observation_violations: 0,
   transaction_return_state_violations: 0,
   transaction_guard_violations: 0,
+  // downstream organizational value chains (034)
+  ...Object.fromEntries(DOWNSTREAM_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -492,6 +497,12 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasTransactionLayer = Boolean((await query(`select to_regclass('public.transaction_asset_resolutions') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(transactionQueries(hasTransactionLayer))) {
     check('transactions', name, expectations[name], await count(sql))
+  }
+
+  // -- downstream organizational value chains (034) -------------------------------
+  const hasDownstreamLayer = Boolean((await query(`select to_regclass('public.transaction_asset_timing_observations') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(downstreamQueries(hasDownstreamLayer))) {
+    check('downstream', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

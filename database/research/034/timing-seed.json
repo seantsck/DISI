@@ -1,0 +1,135 @@
+{
+  "note": "Source-backed point-in-time chronology facts that stint order alone cannot supply. Each is attached to the interval's acquisition asset.",
+  "facts": [
+    {
+      "asset": {
+        "event": "BRO_PHI_1957_FERNANDEZ",
+        "side": "INCOMING",
+        "name": "Elmer Valo"
+      },
+      "fact_type": "SEASON_START_CONFIRMS_POST_ACQUISITION",
+      "season": 1957,
+      "observed_date": "1957-04-16",
+      "source_url": "https://www.baseball-reference.com/teams/BRO/1957-schedule-scores.shtml",
+      "confidence": "VERIFIED",
+      "note": "Brooklyn's first 1957 regular-season game was 1957-04-16; Valo was acquired 1957-04-05. His only 1957 team-season row is Brooklyn, so the whole season is post-acquisition."
+    },
+    {
+      "asset": {
+        "event": "LAD_CWS_2024_JERAL_PEREZ",
+        "side": "INCOMING",
+        "name": "Tommy Edman"
+      },
+      "fact_type": "FIRST_DODGERS_APPEARANCE",
+      "season": 2024,
+      "observed_date": "2024-08-19",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/669242/stats?stats=gameLog&season=2024&group=hitting",
+      "confidence": "VERIFIED",
+      "note": "Official game log: 37 games in 2024, all with the Dodgers, the first on 2024-08-19 (acquired 2024-07-29). No 2024 St. Louis game."
+    },
+    {
+      "asset": {
+        "event": "LAD_BAL_2026_AXEL_PEREZ",
+        "side": "INCOMING",
+        "name": "Chayce McDermott"
+      },
+      "fact_type": "FIRST_DODGERS_APPEARANCE",
+      "season": 2026,
+      "observed_date": "2026-05-17",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/694646/stats?stats=gameLog&season=2026&group=pitching",
+      "confidence": "VERIFIED",
+      "note": "Official game log: 2 Dodgers games (2026-05-17 to 2026-06-21) and 3 Mets games from 2026-08-05; acquired 2026-04-16, exited 2026-08-03."
+    },
+    {
+      "asset": {
+        "event": "LAD_BAL_2026_AXEL_PEREZ",
+        "side": "INCOMING",
+        "name": "Chayce McDermott"
+      },
+      "fact_type": "LAST_DODGERS_APPEARANCE",
+      "season": 2026,
+      "observed_date": "2026-06-21",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/694646/stats?stats=gameLog&season=2026&group=pitching",
+      "confidence": "VERIFIED",
+      "note": "Last Dodgers appearance before the 2026-08-03 trade to the Mets."
+    },
+    {
+      "asset": {
+        "event": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+        "side": "INCOMING",
+        "name": "Nick Punto"
+      },
+      "fact_type": "EXIT_BOUNDED_BEFORE",
+      "season": null,
+      "observed_date": "2013-11-13",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=346857",
+      "confidence": "HIGH",
+      "note": "Oakland signed free agent Nick Punto on 2013-11-13, so Dodgers control had ended by then; the Dodgers exit transaction itself is not in the official log."
+    },
+    {
+      "asset": {
+        "event": "LAD_CIN_2018_YASIEL_PUIG",
+        "side": "INCOMING",
+        "name": "Homer Bailey"
+      },
+      "fact_type": "EXIT_BOUNDED_BEFORE",
+      "season": null,
+      "observed_date": "2019-02-09",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=456701",
+      "confidence": "HIGH",
+      "note": "Kansas City signed free agent Homer Bailey on 2019-02-09, so Dodgers control had ended by then; the Dodgers exit transaction itself is not in the official log."
+    },
+    {
+      "asset": {
+        "event": "LAD_NYM_2026_CHAYCE_MCDERMOTT",
+        "side": "INCOMING",
+        "name": "Ben Rortvedt"
+      },
+      "fact_type": "FIRST_DODGERS_APPEARANCE",
+      "season": 2026,
+      "observed_date": "2026-08-04",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666163/stats?stats=gameLog&season=2026&group=hitting",
+      "confidence": "VERIFIED",
+      "note": "Official game log: 16 games in 2026, all with the Dodgers, the first on 2026-08-04 (acquired 2026-08-03). No 2026 Mets game."
+    },
+    {
+      "asset": {
+        "event": "LAD_WSH_2002_JORGE_NUNEZ",
+        "side": "INCOMING",
+        "name": "Guillermo Mota"
+      },
+      "fact_type": "FIRST_DODGERS_APPEARANCE",
+      "season": 2002,
+      "observed_date": "2002-04-21",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/150407/stats?stats=gameLog&season=2002&group=pitching",
+      "confidence": "VERIFIED",
+      "note": "Official game log: 43 games in 2002, all with the Dodgers, the first on 2002-04-21 (acquired 2002-03-23)."
+    },
+    {
+      "asset": {
+        "event": "LAD_WSH_2002_JORGE_NUNEZ",
+        "side": "INCOMING",
+        "name": "Wilkin Ruan"
+      },
+      "fact_type": "FIRST_DODGERS_APPEARANCE",
+      "season": 2002,
+      "observed_date": "2002-09-01",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/400118/stats?stats=gameLog&season=2002&group=hitting",
+      "confidence": "VERIFIED",
+      "note": "Official game log: 12 games in 2002, all with the Dodgers, the first on 2002-09-01 (acquired 2002-03-23)."
+    },
+    {
+      "asset": {
+        "event": "LAD_DET_1999_DAVE_MLICKI",
+        "side": "INCOMING",
+        "name": "Robinson Checo"
+      },
+      "fact_type": "FIRST_DODGERS_APPEARANCE",
+      "season": 1999,
+      "observed_date": "1999-04-19",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112226/stats?stats=gameLog&season=1999&group=pitching",
+      "confidence": "VERIFIED",
+      "note": "Official game log: 9 games in 1999, all with the Dodgers, the first on 1999-04-19 (acquired 1999-04-16)."
+    }
+  ]
+}
