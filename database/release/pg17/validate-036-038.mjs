@@ -22,13 +22,16 @@ const md5 = (v) => crypto.createHash('md5').update(JSON.stringify(v)).digest('he
 const results = []
 const check = (name, pass, detail = '') => { results.push({ name, pass, detail }); console.log(`${pass ? 'PASS' : 'FAIL'}  ${name}${detail ? ' — ' + detail : ''}`) }
 
-const BUNDLE = ['036_scouting_expectation_outcomes.sql', '037_development_pathway_intelligence.sql', '038_signing_network_outcomes.sql']
+const BUNDLE = ['036_scouting_expectation_outcomes.sql', '037_development_pathway_intelligence.sql', '038_signing_network_outcomes.sql', '038a_network_outcome_view_performance.sql']
 const NEW_TABLES = ['scouting_expectation_bands']
 const NEW_VIEWS = {
   '036_scouting_expectation_outcomes.sql': ['v_player_expectation_vs_outcome', 'v_player_realized_outcome', 'v_scouting_calibration_summary', 'v_scouting_expectation_observations', 'v_scouting_expectation_research_queue'],
   '037_development_pathway_intelligence.sql': ['v_development_pathway_research_queue', 'v_development_pathway_summary', 'v_player_development_pathway', 'v_player_development_season_path'],
   '038_signing_network_outcomes.sql': ['v_network_outcome_coverage', 'v_network_outcome_research_queue', 'v_network_outcome_summary', 'v_network_player_outcomes'],
+  '038a_network_outcome_view_performance.sql': [],
 }
+// 038a is a query-shape correction: it may redefine exactly this view and nothing else
+const REDEFINES = { '038a_network_outcome_view_performance.sql': ['v_network_player_outcomes'] }
 const ALL_NEW_VIEWS = Object.values(NEW_VIEWS).flat().sort()
 
 const server = new EmbeddedPostgres({ databaseDir: dataDir, user: 'postgres', password: 'postgres', port, persistent: false, onLog: () => {} })
@@ -92,7 +95,7 @@ try {
   const frozen = JSON.parse(fs.readFileSync(path.join(TC, 'tests/db/frozen-migrations.json'), 'utf8')).files
   const base = sqlFiles(T035), cand = sqlFiles(TC)
   check('baseline manifest ends at 035 (35 files)', base.length === 35 && base.at(-1) === '035_international_benchmark_outcomes.sql')
-  check('candidate manifest = baseline + 036, 037, 038 in order', JSON.stringify(cand) === JSON.stringify([...base, ...BUNDLE]), cand.slice(35).join(','))
+  check('candidate manifest = baseline + 036, 037, 038, 038a in order', JSON.stringify(cand) === JSON.stringify([...base, ...BUNDLE]), cand.slice(35).join(','))
   let frozenOk = true
   for (const f of base) {
     const a = readSql(T035, f), b = readSql(TC, f)
@@ -115,14 +118,16 @@ try {
   const before = await snapshot(A)
   for (const f of BUNDLE) {
     const s0 = await snapshot(A)
+    const o0 = REDEFINES[f] ? await viewOutputs(A) : null
     t0 = Date.now()
     await apply(A, TC, [f])
+    if (o0) check(`${f}: every bundle view returns exactly the same rows as before (query shape only)`, JSON.stringify(await viewOutputs(A)) === JSON.stringify(o0))
     const ms = Date.now() - t0
     const s1 = await snapshot(A)
     const added = Object.keys(s1.views).filter((v) => !(v in s0.views)).sort()
     const redefined = Object.keys(s0.views).filter((v) => s0.views[v] !== s1.views[v])
     check(`${f}: applies in one transaction (${ms} ms) and adds exactly its views`, JSON.stringify(added) === JSON.stringify(NEW_VIEWS[f]), added.join(','))
-    check(`${f}: redefines no earlier view`, redefined.length === 0, redefined.join(','))
+    check(`${f}: redefines ${REDEFINES[f] ? 'exactly ' + REDEFINES[f].join(',') : 'no earlier view'}`, JSON.stringify(redefined) === JSON.stringify(REDEFINES[f] ?? []), redefined.join(','))
     await apply(A, TC, [f])
     const s2 = await snapshot(A)
     check(`${f}: exact idempotency (all rows incl. ids / timestamps, view definitions, ACLs, policies, functions)`, md5(s2) === md5(s1))
@@ -146,7 +151,7 @@ try {
 
   const { checkInvariants: checkCand, failedChecks: failedCand } = await import(path.join(TC, 'scripts/db/lib/invariants.mjs'))
   const rc = await checkCand(q(A)); const fc = failedCand(rc)
-  check(`candidate verifier on 001-035 + 036 + 037 + 038: ${rc.hard.length - fc.length}/${rc.hard.length}`, fc.length === 0 && rc.hard.length === 207, fc.map((x) => x.name).join(', '))
+  check(`candidate verifier on 001-035 + 036 + 037 + 038 + 038a: ${rc.hard.length - fc.length}/${rc.hard.length}`, fc.length === 0 && rc.hard.length === 207, fc.map((x) => x.name).join(', '))
 
   // release rerun safety: the whole bundle applied again on the final state is a no-op
   await apply(A, TC, BUNDLE)
@@ -156,16 +161,16 @@ try {
   const B = await freshDb('disi_b')
   t0 = Date.now()
   await apply(B, TC, cand)
-  console.log(`  fresh 001-038 replay on PG17: ${((Date.now() - t0) / 1000).toFixed(1)}s`)
+  console.log(`  fresh 001-038a replay on PG17: ${((Date.now() - t0) / 1000).toFixed(1)}s`)
   const [ha, hb] = [await contentHashes(A, { stable: true }), await contentHashes(B, { stable: true })]
   const diff = Object.keys({ ...ha, ...hb }).filter((t) => JSON.stringify(ha[t]) !== JSON.stringify(hb[t]))
   const [oa, ob] = [await viewOutputs(A), await viewOutputs(B)]
   const vdiff = ALL_NEW_VIEWS.filter((v) => JSON.stringify(oa[v]) !== JSON.stringify(ob[v]))
-  check('convergence: fresh 001-038 = 001-035 then 036, 037, 038 (table content, view definitions, ACLs, policies, functions, bundle view outputs)',
+  check('convergence: fresh 001-038a = 001-035 then 036, 037, 038, 038a (table content, view definitions, ACLs, policies, functions, bundle view outputs)',
     diff.length === 0 && vdiff.length === 0 && JSON.stringify(await viewDefs(A)) === JSON.stringify(await viewDefs(B)) && JSON.stringify(await acls(A)) === JSON.stringify(await acls(B))
       && JSON.stringify(await policies(A)) === JSON.stringify(await policies(B)) && JSON.stringify(await functions(A)) === JSON.stringify(await functions(B)), [...diff, ...vdiff].join(','))
   const rf = await checkCand(q(B)); const ff = failedCand(rf)
-  check(`candidate verifier on the fresh 001-038 replay: ${rf.hard.length - ff.length}/${rf.hard.length}`, ff.length === 0 && rf.hard.length === 207, ff.map((x) => x.name).join(', '))
+  check(`candidate verifier on the fresh 001-038a replay: ${rf.hard.length - ff.length}/${rf.hard.length}`, ff.length === 0 && rf.hard.length === 207, ff.map((x) => x.name).join(', '))
 
   // anon: reads every bundle view through RLS within the Supabase anon statement timeout; cannot write the new table
   await A.query(`begin; set local role anon; set local statement_timeout = '3s'`)
