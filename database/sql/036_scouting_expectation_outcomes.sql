@@ -129,7 +129,9 @@ on conflict (band_code) do nothing;
 
 -- One row per tracked signing: the realized-outcome spine shared by Migrations 036-038. Every value is passed through from the
 -- 032-034 Dodgers realization layer or the 035 benchmark layer; nothing is recomputed. MLB value columns describe an MLB career and
--- are NULL unless reached_mlb_verified is true (no MLB career is stated by reached_mlb_verified = false, never by a zero).
+-- are NULL unless reached_mlb_verified is true (no MLB career is stated by reached_mlb_verified = false, never by a zero). Within an
+-- MLB career, signing_org_bwar keeps its source semantics: 032's direct Dodgers bWAR is 0 for a Dodgers signing who reached MLB only
+-- elsewhere (no Dodgers MLB value), while 035's original-organization bWAR is NULL for a benchmark player with no season there.
 create or replace view public.v_player_realized_outcome
 with (security_invoker = true)
 as
@@ -187,7 +189,7 @@ with m as materialized (
 select * from m;
 
 comment on view public.v_player_realized_outcome is
-  'Realized-outcome spine (Migration 036), one row per tracked signing: DODGERS_TRACKED rows come from v_player_organizational_realization (032-034), TOP_PROSPECT_BENCHMARK rows from v_international_benchmark_player_outcomes (035). outcome_state UNAUDITED keeps a NULL reach flag (never "no MLB"). career_bwar, signing_org_bwar and elsewhere_bwar are Baseball-Reference team-season sums and are NULL unless the player reached MLB; a side with no loaded season is NULL, not zero. dodgers_attributable_organizational_bwar is Dodgers organizational value (direct plus attributable trade return, 034) and is NULL for benchmark rows: career outcome is not organizational value. career_still_accruing marks a loaded MLB season in the as-of year or the one before. Nothing here is recomputed; read the source layers for the derivations.';
+  'Realized-outcome spine (Migration 036), one row per tracked signing: DODGERS_TRACKED rows come from v_player_organizational_realization (032-034), TOP_PROSPECT_BENCHMARK rows from v_international_benchmark_player_outcomes (035). outcome_state UNAUDITED keeps a NULL reach flag (never "no MLB"). career_bwar, signing_org_bwar and elsewhere_bwar are Baseball-Reference team-season sums and are NULL unless the player reached MLB. Within an MLB career each side keeps its source semantics: for DODGERS_TRACKED rows signing_org_bwar is 032''s direct Dodgers bWAR (0 when the player reached MLB only elsewhere: no Dodgers MLB value) and elsewhere_bwar its non-Dodgers bWAR; for TOP_PROSPECT_BENCHMARK rows they are 035''s original-organization and elsewhere bWAR, NULL (not zero) for a side with no loaded season. dodgers_attributable_organizational_bwar is Dodgers organizational value (direct plus attributable trade return, 034) and is NULL for benchmark rows: career outcome is not organizational value. career_still_accruing marks a loaded MLB season in the as-of year or the one before. Nothing here is recomputed; read the source layers for the derivations.';
 
 -- One row per ACTIVE external expectation observation: each ranking, and each OVERALL / FUTURE (FV) grade with a numeric base, of
 -- an EXTERNAL or TEAM_PUBLIC publication (DISI_RESEARCH, DRAFT and SUPERSEDED evaluations are excluded, as in every 026 view).
