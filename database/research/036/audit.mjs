@@ -26,7 +26,8 @@ const observations = await q(`
   union all
   select sp.publication_slug, 'GRADE', g.scale_code || ':' || g.dimension_code || ':' || g.temporal_basis, null, g.raw_value
   from player_evaluations e join scouting_publications sp on sp.id = e.publication_id join player_evaluation_grades g on g.evaluation_id = e.id
-  where e.record_status = 'ACTIVE' and sp.origin in ('EXTERNAL', 'TEAM_PUBLIC') and g.dimension_code = 'OVERALL' and g.temporal_basis = 'FUTURE' and g.raw_value is not null`)
+  where e.record_status = 'ACTIVE' and sp.origin in ('EXTERNAL', 'TEAM_PUBLIC') and g.dimension_code = 'OVERALL' and g.temporal_basis = 'FUTURE' and g.raw_value is not null
+  order by 1, 2, 3, 5`)
 
 const publications = new Set((await q('select publication_slug from scouting_publications')).map((r) => r.publication_slug))
 const scales = new Set((await q('select scale_code from evaluation_scales')).map((r) => r.scale_code))
@@ -53,7 +54,7 @@ for (const f of bands.families) {
     counts[b.band_code] = (counts[b.band_code] ?? 0) + 1
     banded.add(o)
   }
-  familyCoverage.push({ band_family: f.band_family, observations: mine.length, by_band: counts })
+  familyCoverage.push({ band_family: f.band_family, observations: mine.length, by_band: Object.fromEntries(sorted.filter((b) => counts[b.band_code]).map((b) => [b.band_code, counts[b.band_code]])) })
 }
 const unbanded = observations.filter((o) => !banded.has(o))
 const multi = (await q('select count(*)::int as n from (select player_id from signings group by 1 having count(*) > 1) d'))[0].n

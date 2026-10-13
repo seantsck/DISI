@@ -11,9 +11,9 @@
    "band_family": "MLBP_INTL_CLASS_TOP30_RANK",
    "observations": 48,
    "by_band": {
-    "MLBP_INTL_RANK_21_30": 15,
     "MLBP_INTL_RANK_01_10": 18,
-    "MLBP_INTL_RANK_11_20": 15
+    "MLBP_INTL_RANK_11_20": 15,
+    "MLBP_INTL_RANK_21_30": 15
    }
   },
   {
@@ -34,8 +34,8 @@
    "band_family": "FG_FV_20_80",
    "observations": 2,
    "by_band": {
-    "FG_FV_50": 1,
-    "FG_FV_55": 1
+    "FG_FV_55": 1,
+    "FG_FV_50": 1
    }
   }
  ],

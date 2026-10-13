@@ -2099,10 +2099,10 @@ test('025 leaves the 024 development security intact', async () => {
   const t = await one(`select relrowsecurity as rls from pg_class where relname = 'development_progression_decisions'`)
   assert.equal(t.rls, true)
   const dev = await rows(`select c.relname, coalesce(array_to_string(c.reloptions, ','), '') as opts from pg_class c
-    join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v' and c.relname like '%development%'`)
-  assert.equal(dev.length, 10)
+    join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v' and c.relname like '%development%' and c.relname <> all($1)`, [views037])
+  assert.equal(dev.length, 10, 'the 021-024 development views (037 adds its own, checked in tests/db/pathway-037.test.mjs)')
   assert.ok(dev.every((v) => /security_invoker=(true|on)/.test(v.opts)))
-  const acl = (await apiAcl()).filter((a) => /development|player_season_stints/.test(a.relname) && ['anon', 'authenticated'].includes(a.grantee))
+  const acl = (await apiAcl()).filter((a) => /development|player_season_stints/.test(a.relname) && !views037.includes(a.relname) && ['anon', 'authenticated'].includes(a.grantee))
   assert.equal(acl.length, 34, '7 development tables + 10 development views, x 2 roles')
   assert.ok(acl.every((a) => a.privs === 'SELECT'))
 })

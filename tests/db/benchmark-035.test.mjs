@@ -8,7 +8,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { buildChainThrough, buildCanonicalChain } from './canonical-chain.mjs'
+import { buildChainThrough } from './canonical-chain.mjs'
 import { benchmarkQueries, BENCHMARK_CHECK_NAMES } from '../../scripts/db/lib/benchmark-invariants.mjs'
 import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 
@@ -246,7 +246,7 @@ test('verifier: the eight benchmark checks pass and each catches its own drift; 
 })
 
 test('convergence: a fresh 001-035 replay equals the 001-034 database with 035 applied (rows, definitions, grants)', { timeout: 600000 }, async () => {
-  const fresh = await buildCanonicalChain()
+  const fresh = await buildChainThrough('035_international_benchmark_outcomes.sql')
   try {
     const business = async (query) => ({
       audits: await query(`select p.slug, a.audited_through_date::text as d, a.reached_mlb_verified, a.outcome_state, a.confidence::text as c, a.audit_note from outcome_audits a join players p on p.id = a.player_id order by 1`),
