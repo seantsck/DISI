@@ -36,7 +36,8 @@
     "034_downstream_organizational_value_chains.sql",
     "035_international_benchmark_outcomes.sql",
     "036_scouting_expectation_outcomes.sql",
-    "037_development_pathway_intelligence.sql"
+    "037_development_pathway_intelligence.sql",
+    "038_signing_network_outcomes.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -45,7 +46,7 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 37,
+    "canonical_build_count": 38,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
@@ -71,6 +72,7 @@
     "v0_25": "Downstream organizational value chains (034): derived control intervals with interval-bounded Dodgers bWAR (a free-agent re-signing or reacquisition is a new interval, never part of an earlier trade return), a cycle-safe derived transaction lineage with attribution levels that only degrade (PLAYER_ATTRIBUTABLE, PACKAGE_ATTRIBUTABLE, CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE, UNRESOLVED), package-deduplicated lineage and realization views, the sealed transaction_asset_timing_observations chronology table, 43 researched exit and re-entry events, 28 downstream return players of Baseball-Reference bWAR, and additive amendments of the portfolio and research queues; the 032 / 033 first-hop columns are preserved (database/research/034).",
     "v0_26": "International benchmark outcomes (035): the MLB outcome audit of the 48 non-Dodgers players of the MLB Pipeline 2013 / 2014 Top-30 international signing trackers (43 identity-resolved and audited, 11 reached MLB, 5 identity-unresolved and queued), their Baseball-Reference team-season bWAR, and three views - per-player benchmark outcomes with comparison tiers, a population coverage model with strict derived rate eligibility, and a research queue. A Top-prospect sample benchmark, not a census: no organizational rate, ranking or league comparison is computed (database/research/035).",
     "v0_27": "Scouting expectation vs realized outcome (036): reviewed source-native expectation bands (scouting_expectation_bands: MLB Pipeline Top-30 class ranks, Baseball America Top-100 ranks, FanGraphs organization ranks and FV, each band reading one publication's own measure with a stated DISI-convention outcome rule), the shared realized-outcome spine v_player_realized_outcome (Dodgers 032-034 and benchmark 035 outcomes passed through, MLB value NULL without an MLB career), every external rank / FV observation with its band and debut order, frozen pre-debut anchors compared with the realized outcome (TOO_EARLY and OUTCOME_INCOMPLETE are never misses), a descriptive calibration summary with shares only for 10+ comparable outcomes, and a research queue (database/research/036).",
-    "v0_28": "Development pathway intelligence (037): derived views over the 021-024 development facts - an observed season path (primary level by games, highest level, PROMOTED / REPEATED / REGRESSED / RETURNED_AFTER_ABSENCE, 2020 never an absence), per-signing pathway features (seasons from the professional debut to full-season ball, Double-A, Triple-A and MLB; skips, repeats, regressions, absences, same-level runs) with a DISI-convention pathway class (FAST_TRACK, STANDARD_PROGRESSION, SLOW_PROGRESSION, STALLED, NONLINEAR, EARLY_EXIT, STILL_DEVELOPING, INSUFFICIENT_HISTORY; professional signings never on the amateur ladder), a pathway / early-velocity summary against the 036 outcome spine with sample gates and coverage-artefact suppression, and a research queue; no reason is inferred and no class is causal (database/research/037)."
+    "v0_28": "Development pathway intelligence (037): derived views over the 021-024 development facts - an observed season path (primary level by games, highest level, PROMOTED / REPEATED / REGRESSED / RETURNED_AFTER_ABSENCE, 2020 never an absence), per-signing pathway features (seasons from the professional debut to full-season ball, Double-A, Triple-A and MLB; skips, repeats, regressions, absences, same-level runs) with a DISI-convention pathway class (FAST_TRACK, STANDARD_PROGRESSION, SLOW_PROGRESSION, STALLED, NONLINEAR, EARLY_EXIT, STILL_DEVELOPING, INSUFFICIENT_HISTORY; professional signings never on the amateur ladder), a pathway / early-velocity summary against the 036 outcome spine with sample gates and coverage-artefact suppression, and a research queue; no reason is inferred and no class is causal (database/research/037).",
+    "v0_29": "Signing network outcomes (038): derived views placing the 029 documented trainer / academy / program / showcase associations beside the 036 realized-outcome spine and expectation anchors and the 037 pathways - one row per ACTIVE relationship with an association-strength grade (never a credit share), an entity summary with tracked / mature / audited signees, bWAR by side, cost coverage, denominator_known always false and a sample state that is never a census, the known network sample beside the unattributed signings labelled DESCRIPTIVE_ONLY_SELECTION_BIASED, and a research queue; no rate, ranking, ratio, ROI or causal claim (database/research/038)."
   }
 }

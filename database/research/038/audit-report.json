@@ -1,0 +1,20 @@
+{
+ "coverage": {
+  "entities": 9,
+  "entities_with_active_relationships": 8,
+  "active_relationships": 9,
+  "retracted_relationships": 0,
+  "signing_linked_relationships": 7,
+  "documented_players": 5,
+  "dodgers_signings": 220,
+  "documented_non_dodgers_players": 0
+ },
+ "active_relationships_by_type_and_stage": {
+  "DEVELOPED_AT:UNKNOWN": 1,
+  "SHOWCASED_IN:PRE_SIGNING": 3,
+  "SIGNED_OUT_OF:AT_SIGNING": 1,
+  "TRAINED_WITH:PRE_SIGNING": 3,
+  "TRAINED_WITH:UNKNOWN": 1
+ },
+ "failures": []
+}

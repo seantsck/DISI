@@ -24,6 +24,7 @@ import { downstreamQueries, DOWNSTREAM_CHECK_NAMES } from './downstream-invarian
 import { benchmarkQueries, BENCHMARK_CHECK_NAMES } from './benchmark-invariants.mjs'
 import { expectationQueries, EXPECTATION_CHECK_NAMES } from './expectation-invariants.mjs'
 import { pathwayQueries, PATHWAY_CHECK_NAMES } from './pathway-invariants.mjs'
+import { networkOutcomeQueries, NETWORK_OUTCOME_CHECK_NAMES } from './network-outcome-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -94,8 +95,8 @@ export const CANONICAL_EXPECTATIONS = {
   // 032 adds two tables and four views.
   // 033 adds two tables and four views.
   // 034 adds one table and four views.
-  // 035 adds three views; 036 adds one table and five views; 037 adds four views.
-  public_views_total: 121,
+  // 035 adds three views; 036 adds one table and five views; 037 and 038 add four views each.
+  public_views_total: 125,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
@@ -201,6 +202,7 @@ export const CANONICAL_EXPECTATIONS = {
   ...Object.fromEntries(BENCHMARK_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(EXPECTATION_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(PATHWAY_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(NETWORK_OUTCOME_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -528,6 +530,12 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasPathwayLayer = Boolean((await query(`select to_regclass('public.v_player_development_pathway') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(pathwayQueries(hasPathwayLayer))) {
     check('pathway', name, expectations[name], await count(sql))
+  }
+
+  // -- signing-network outcomes (038) ---------------------------------------------------
+  const hasNetworkOutcomeLayer = Boolean((await query(`select to_regclass('public.v_network_player_outcomes') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(networkOutcomeQueries(hasNetworkOutcomeLayer))) {
+    check('network_outcome', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

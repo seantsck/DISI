@@ -46,6 +46,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 35. `035_international_benchmark_outcomes.sql` — international benchmark outcomes: the MLB outcome audit of the 48 non-Dodgers players of the MLB Pipeline 2013 / 2014 Top-30 international signing trackers (43 identity-resolved and audited, 11 reached MLB, 5 identity-unresolved and queued), their Baseball-Reference team-season bWAR, and three views (benchmark player outcomes with comparison tiers, a population coverage model with strict derived rate eligibility, a research queue); a Top-prospect sample benchmark, not a census (details below; research in `database/research/035/`).
 36. `036_scouting_expectation_outcomes.sql` — scouting expectation vs realized outcome: reviewed source-native expectation bands (`scouting_expectation_bands`), the shared realized-outcome spine `v_player_realized_outcome`, every external rank / FV observation with its band and debut order, frozen pre-debut anchors compared with the realized outcome, a descriptive calibration summary gated at 10 comparable outcomes, and a research queue; derived only, no fact added (details below; research in `database/research/036/`).
 37. `037_development_pathway_intelligence.sql` — development pathway intelligence: an observed season path over the 021-023 team stints (primary level by games, PROMOTED / REPEATED / REGRESSED / RETURNED_AFTER_ABSENCE, 2020 never an absence), per-signing pathway features over the 024 developmental arrivals with a DISI-convention pathway class and lifecycle status, a pathway / early-velocity summary against the 036 outcome spine with sample gates and coverage-artefact suppression, and a research queue; no table, no fact, no inferred reason (details below; research in `database/research/037/`).
+38. `038_signing_network_outcomes.sql` — signing network outcomes: the 029 documented trainer / academy / program / showcase associations beside the 036 outcome spine and expectation anchors and the 037 pathways, with an association-strength grade (never a credit share), an entity summary whose denominator is never known and whose sample state is never a census, the known network sample beside the unattributed signings labelled selection-biased, and a research queue; no table, no fact, no rate, ranking, ROI or causal claim (details below; research in `database/research/038/`).
 
 ## 017 research-database layer
 
@@ -271,6 +272,15 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Summary.** `v_development_pathway_summary` by signing pathway (never blended): shares need 10+ mature players; rows without a classified path are `COVERAGE_ARTEFACT_NOT_COMPARABLE` and carry no share; the Double-A share is shown only for early velocity (a class is itself defined by Double-A arrival).
 - **Surface.** No table; 60 public tables and 121 views; the verifier adds 7 checks (201 in total).
 - **Rerunnable**; design and reproduction in `database/research/037/README.md`.
+
+## 038 signing network outcomes
+
+- **Associations.** `v_network_player_outcomes`: one row per ACTIVE 029 player-network relationship with the 036 outcome and expectation and the 037 pathway; `attribution_confidence` grades how strongly the association is documented and is never a share of credit.
+- **Entities.** `v_network_outcome_summary`: tracked / mature / audited signees, bWAR by side, cost coverage (a cost total only when every signee's cost is COMPLETE); `denominator_known` is always false and `network_sample_state` (ANECDOTAL / SMALL_SAMPLE / DESCRIPTIVE_SAMPLE) is never a census. Every entity is ANECDOTAL today (5 documented Dodgers players).
+- **Coverage.** `v_network_outcome_coverage`: KNOWN_NETWORK_SAMPLE vs UNATTRIBUTED_SIGNINGS for every Dodgers segment, both states always shown, labelled `DESCRIPTIVE_ONLY_SELECTION_BIASED`; no rate or difference.
+- **Not here.** No trainer, academy or showcase effect, ranking, hit rate, ROI, leaderboard or prediction.
+- **Surface.** No table; 60 public tables and 125 views; the verifier adds 6 checks (207 in total).
+- **Rerunnable**; design and reproduction in `database/research/038/README.md`.
 
 ## Player identity (020)
 
