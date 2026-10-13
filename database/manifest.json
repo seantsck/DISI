@@ -39,7 +39,8 @@
     "037_development_pathway_intelligence.sql",
     "038_signing_network_outcomes.sql",
     "038a_network_outcome_view_performance.sql",
-    "039_market_pathway_intelligence.sql"
+    "039_market_pathway_intelligence.sql",
+    "040_historical_archetypes_comparables.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -48,7 +49,7 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 40,
+    "canonical_build_count": 41,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
@@ -77,6 +78,7 @@
     "v0_28": "Development pathway intelligence (037): derived views over the 021-024 development facts - an observed season path (primary level by games, highest level, PROMOTED / REPEATED / REGRESSED / RETURNED_AFTER_ABSENCE, 2020 never an absence), per-signing pathway features (seasons from the professional debut to full-season ball, Double-A, Triple-A and MLB; skips, repeats, regressions, absences, same-level runs) with a DISI-convention pathway class (FAST_TRACK, STANDARD_PROGRESSION, SLOW_PROGRESSION, STALLED, NONLINEAR, EARLY_EXIT, STILL_DEVELOPING, INSUFFICIENT_HISTORY; professional signings never on the amateur ladder), a pathway / early-velocity summary against the 036 outcome spine with sample gates and coverage-artefact suppression, and a research queue; no reason is inferred and no class is causal (database/research/037).",
     "v0_29": "Signing network outcomes (038): derived views placing the 029 documented trainer / academy / program / showcase associations beside the 036 realized-outcome spine and expectation anchors and the 037 pathways - one row per ACTIVE relationship with an association-strength grade (never a credit share), an entity summary with tracked / mature / audited signees, bWAR by side, cost coverage, denominator_known always false and a sample state that is never a census, the known network sample beside the unattributed signings labelled DESCRIPTIVE_ONLY_SELECTION_BIASED, and a research queue; no rate, ranking, ratio, ROI or causal claim (database/research/038).",
     "v0_29_1": "Network outcome view performance (038a): a post-038 query-shape correction applied after 038 and before any 039. v_network_player_outcomes keeps its columns, types, rows, NULLs, labels, grants, comment and security_invoker behaviour but reads the 036 outcome spine once and applies the 036 anchor and 037 pathway-class rules to the documented network players only (every intermediate materialized), instead of computing the spine three times and the expectation and pathway layers for every signing; v_network_outcome_summary and v_network_outcome_research_queue read it unchanged. Proven equivalent on real and synthetic (every-signing) data; about 3x faster as anon. No table, fact, grant or policy changes (database/research/038a).",
-    "v0_30": "Market / country / pathway intelligence (039): reviewed market groups (20 observed markets, 7 groups) and league eras for international amateur signings (before bonus pools, soft-capped from 2 July 2012, hard-capped from 2 July 2017), the leakage-safe signing-time feature record v_signing_time_features (population class, route, market, era, age in the signing year, position at signing, reported bonus, the earliest expectation dated by the signing cutoff; no outcome) shared by 039-041, a descriptive market / pathway context against the 036 outcome spine and 037 pathways, a summary by dimension and population class that never pools populations, shows shares only for eligible samples and ranks nothing, and a research queue (database/research/039)."
+    "v0_30": "Market / country / pathway intelligence (039): reviewed market groups (20 observed markets, 7 groups) and league eras for international amateur signings (before bonus pools, soft-capped from 2 July 2012, hard-capped from 2 July 2017), the leakage-safe signing-time feature record v_signing_time_features (population class, route, market, era, age in the signing year, position at signing, reported bonus, the earliest expectation dated by the signing cutoff; no outcome) shared by 039-041, a descriptive market / pathway context against the 036 outcome spine and 037 pathways, a summary by dimension and population class that never pools populations, shows shares only for eligible samples and ranks nothing, and a research queue (database/research/039).",
+    "v0_31": "Historical archetypes and comparables (040): structured archetype keys (route | position family at signing | age band, plus expectation tier, cost band, market group and era) and deterministic, explainable comparable sets of up to 20 earlier-signed, non-outcome-selected signings with the same route and position family, chosen only from the 039 signing-time features (an unknown or missing value never matches) with outcomes attached after selection; per-class comparable and archetype summaries that never pool populations and show shares only for 10+ mature audited members, and a research queue (database/research/040)."
   }
 }
