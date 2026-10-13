@@ -20,13 +20,16 @@ computes no organizational rate and ranks nothing.
 
 ## Status (2026-10-13)
 
-- **Branch / release.** `wip/disi-migration-035` (pushed to `origin`, no PR), based on `1edf314`, the head of the 034 release PR #6
-  (draft, unmerged). **Not applied to any hosted database.** 034 is frozen and unchanged (SHA-1 `3cb5494f13800a4d44e2ffb6aa6bd1ff88aae5f5`,
-  `tests/db/frozen-migrations.json`).
-- **Verification.** `tests/db/benchmark-035.test.mjs` 16/16; full suite 397/397 at `--test-concurrency=1`; lint, typecheck and
-  `next build` clean (PGlite). Independently on real PostgreSQL 17.9 (`database/release/pg17/run.sh`): 21/21 checks, 035 verifier
-  186/186, rerun no-op, fresh 001-035 replay converges with 001-034 + 035.
-- **Reproducibility.** `build.mjs` reproduces the committed SQL byte-for-byte (tested); no external source was re-fetched (same bWAR
-  files and checksums as 032 - 034, see `scope-config.json`).
-- **Before release.** 034 must be released first; then rebase, re-test and apply as in `database/release/034-release-checklist.md`
-  section 7 (a simulated merge of PR #6 + rebase is conflict-free).
+- **Released.** 035 was applied to the hosted DISI Supabase database on 2026-10-13 (08:58:57 UTC) from the committed file:
+  SHA-256 `b21dd65d744d63d92cb2649b5dc170d5ada8f35f9be495c6a404a90a44cf15f5`, one transaction. The hosted database held exactly the
+  frozen 034 before, which is unchanged (SHA-1 `3cb5494f13800a4d44e2ffb6aa6bd1ff88aae5f5`).
+- **Hosted verification (complete).** The live verifier passed 186/186 hard invariants. Security checks are green (RLS on every table,
+  every view security-invoker, API roles SELECT-only). A second application was a no-op. The hosted state converges with a fresh
+  001-035 replay for every object 035 touches. A restore-verified backup was taken before the apply.
+- **Git and app.** The rebased branch merged to `main` through PR #7 (merge commit `32b7552`), and the Vercel production deployment
+  completed. The `/research` page then hit the 3 s anon statement timeout under its 15 concurrent queries. That was an application
+  problem, not a 035 one, and it is fixed separately by the research-page timeout hotfix PR.
+- **Local verification.** `tests/db/benchmark-035.test.mjs` 16/16; full suite 397/397 at `--test-concurrency=1`; real PostgreSQL 17.9
+  (`database/release/pg17/run.sh`) 21/21.
+- **Reproducibility.** `build.mjs` reproduces the committed SQL byte-for-byte; no external source was re-fetched (same bWAR files and
+  checksums as 032 - 034, see `scope-config.json`).
