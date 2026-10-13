@@ -35,6 +35,9 @@
     "032_player_value_organizational_realization.sql": "73ff1534a8b70f9e1e18bf0619c2695e594296a7",
     "033_transaction_asset_chain_completion.sql": "3318110bbd635aebd15fb35b81acc1e13a8b7c4f",
     "034_downstream_organizational_value_chains.sql": "3cb5494f13800a4d44e2ffb6aa6bd1ff88aae5f5",
-    "035_international_benchmark_outcomes.sql": "25d8460aab954cf50053ac8c15a16b0e98878cf0"
+    "035_international_benchmark_outcomes.sql": "25d8460aab954cf50053ac8c15a16b0e98878cf0",
+    "036_scouting_expectation_outcomes.sql": "dda791e72b10e50829f57235e69b8aebbd1ca6db",
+    "037_development_pathway_intelligence.sql": "895a45373e8732f7987218ed04ff55543b46a4d8",
+    "038_signing_network_outcomes.sql": "c07611249418c33f12e5a1934bb7948652a70dd7"
   }
 }

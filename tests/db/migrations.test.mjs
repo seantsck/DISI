@@ -2141,12 +2141,12 @@ const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} retu
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
 // Migrations added after the frozen baseline and not yet released; each is frozen in tests/db/frozen-migrations.json once applied.
-const UNRELEASED_ADDITIONS = ['036_scouting_expectation_outcomes.sql', '037_development_pathway_intelligence.sql', '038_signing_network_outcomes.sql']
+const UNRELEASED_ADDITIONS = ['038a_network_outcome_view_performance.sql']
 
-test('frozen history: migrations 001-035 are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
-  const files = manifest.canonical_sql.filter((f) => f < '036')
-  assert.equal(files.length, 35)
-  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '036'), UNRELEASED_ADDITIONS)
+test('frozen history: migrations 001-038 are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
+  const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
+  assert.equal(files.length, 38)
+  assert.deepEqual(manifest.canonical_sql.slice(files.length), UNRELEASED_ADDITIONS)
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {
     const text = readSql(f).replace(/\r\n/g, '\n')
