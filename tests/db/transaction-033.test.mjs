@@ -601,7 +601,7 @@ test('verifier: the 11 transaction checks pass on the canonical state and the da
   assert.deepEqual(await failing(), [])
   const full = await checkInvariants(q, EXPECT033)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 207, '160 through 033 plus the eighteen 034, eight 035, eight 036, seven 037 and six 038 checks, which pass trivially without their tables')
+  assert.equal(full.hard.length, 212, '160 through 033 plus the eighteen 034, eight 035, eight 036, seven 037, six 038 and five 039 checks, which pass trivially without their tables')
   assert.equal(TRANSACTION_CHECK_NAMES.length, 11)
   const drifts = {
     transaction_asset_shape_violations: `alter table transaction_event_assets drop constraint transaction_event_assets_mlb_id_check;

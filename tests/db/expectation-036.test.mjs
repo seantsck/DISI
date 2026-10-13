@@ -231,7 +231,7 @@ test('verifier: the eight expectation checks pass, each catches its own drift, a
   assert.equal(EXPECTATION_CHECK_NAMES.length, 8)
   const full = await checkInvariants(q, EXPECT036)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 207, '194 through 036 plus the seven 037 and six 038 checks, which pass trivially without their views')
+  assert.equal(full.hard.length, 212, '194 through 036 plus the seven 037, six 038 and five 039 checks, which pass trivially without their views')
   const x = 'v_player_expectation_vs_outcome'
   assert.ok((await drift(x, { comparison_state: `case when r.reached_mlb_verified is null and r.band_code is not null then 'EXPECTATION_UNDERPERFORMED' else r.comparison_state end` })).includes('expectation_unknown_not_miss_violations'))
   assert.ok((await drift(x, { anchor_debut_order: `case when r.band_code is not null then 'POST_DEBUT' else r.anchor_debut_order end` })).includes('expectation_anchor_violations'))

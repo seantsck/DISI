@@ -1,0 +1,24 @@
+{
+ "markets": 20,
+ "signings_by_market_group": {
+  "ASIA_PACIFIC": 9,
+  "CUBA": 9,
+  "DOMINICAN_REPUBLIC": 89,
+  "EUROPE_AFRICA_OTHER": 6,
+  "MEXICO": 19,
+  "OTHER_LATIN_AMERICA_CARIBBEAN": 22,
+  "VENEZUELA": 85
+ },
+ "coverage": {
+  "signings": 268,
+  "market": 239,
+  "position_at_signing": 225,
+  "signing_date": 197
+ },
+ "eras": [
+  "BEFORE_BONUS_POOLS",
+  "SOFT_CAPPED_BONUS_POOLS",
+  "HARD_CAPPED_BONUS_POOLS"
+ ],
+ "failures": []
+}
