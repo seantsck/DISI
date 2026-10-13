@@ -1,0 +1,39 @@
+{
+ "note": "Reviewed reference data for Migration 039. Market groups follow the observed signing markets (signings.country_market): the four markets with enough signings to describe on their own, then regional groups. Eras are the league rules for international amateur signings; professional routes are not placed on the amateur era scale. A NULL market is UNKNOWN, never guessed.",
+ "market_groups": [
+  { "country_market": "Dominican Republic", "market_group": "DOMINICAN_REPUBLIC", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Venezuela", "market_group": "VENEZUELA", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Mexico", "market_group": "MEXICO", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Cuba", "market_group": "CUBA", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Puerto Rico", "market_group": "OTHER_LATIN_AMERICA_CARIBBEAN", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Curacao", "market_group": "OTHER_LATIN_AMERICA_CARIBBEAN", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Aruba", "market_group": "OTHER_LATIN_AMERICA_CARIBBEAN", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Panama", "market_group": "OTHER_LATIN_AMERICA_CARIBBEAN", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Nicaragua", "market_group": "OTHER_LATIN_AMERICA_CARIBBEAN", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Colombia", "market_group": "OTHER_LATIN_AMERICA_CARIBBEAN", "region": "LATIN_AMERICA_CARIBBEAN" },
+  { "country_market": "Japan", "market_group": "ASIA_PACIFIC", "region": "ASIA_PACIFIC" },
+  { "country_market": "South Korea", "market_group": "ASIA_PACIFIC", "region": "ASIA_PACIFIC" },
+  { "country_market": "Taiwan", "market_group": "ASIA_PACIFIC", "region": "ASIA_PACIFIC" },
+  { "country_market": "Australia", "market_group": "ASIA_PACIFIC", "region": "ASIA_PACIFIC" },
+  { "country_market": "Netherlands", "market_group": "EUROPE_AFRICA_OTHER", "region": "EUROPE_AFRICA_OTHER" },
+  { "country_market": "Italy", "market_group": "EUROPE_AFRICA_OTHER", "region": "EUROPE_AFRICA_OTHER" },
+  { "country_market": "Spain", "market_group": "EUROPE_AFRICA_OTHER", "region": "EUROPE_AFRICA_OTHER" },
+  { "country_market": "Russia", "market_group": "EUROPE_AFRICA_OTHER", "region": "EUROPE_AFRICA_OTHER" },
+  { "country_market": "Uganda", "market_group": "EUROPE_AFRICA_OTHER", "region": "EUROPE_AFRICA_OTHER" },
+  { "country_market": "South Sudan", "market_group": "EUROPE_AFRICA_OTHER", "region": "EUROPE_AFRICA_OTHER" }
+ ],
+ "eras": [
+  { "era_key": "BEFORE_BONUS_POOLS", "era_order": 1, "starts_on": null, "ends_on": "2012-07-01",
+    "label": "Before international bonus pools",
+    "rule_summary": "International amateur signings before the bonus-pool system: no league-wide signing budget per club.",
+    "source_reference": "2012-2016 Basic Agreement (international talent system effective with the signing period beginning 2 July 2012)" },
+  { "era_key": "SOFT_CAPPED_BONUS_POOLS", "era_order": 2, "starts_on": "2012-07-02", "ends_on": "2017-07-01",
+    "label": "Bonus pools with overage penalties (2012-13 to 2016-17)",
+    "rule_summary": "Each club had an international bonus pool; exceeding it was allowed and penalised by an overage tax and, above thresholds, later maximum-bonus restrictions.",
+    "source_reference": "2012-2016 Basic Agreement, international talent acquisition rules" },
+  { "era_key": "HARD_CAPPED_BONUS_POOLS", "era_order": 3, "starts_on": "2017-07-02", "ends_on": null,
+    "label": "Hard-capped bonus pools (2017-18 onward)",
+    "rule_summary": "Each club has a hard-capped international bonus pool that cannot be exceeded; the signing period has opened on 15 January since 2021.",
+    "source_reference": "2017-2021 Basic Agreement (and its successor), international bonus pool rules" }
+ ]
+}

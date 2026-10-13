@@ -1,0 +1,17 @@
+{
+ "note": "Reviewed outcome targets for Migration 041. Every label is defined on a fixed horizon counted in seasons from the signing year and exists only once the horizon has fully elapsed. Support thresholds apply per reference population; populations are never pooled.",
+ "targets": [
+  { "target_key": "REACH_MLB_WITHIN_7_SEASONS", "label": "MLB debut by signing year + 7 seasons", "horizon_seasons": 7, "applies_to": "ALL", "threshold_bwar": null,
+    "label_rule": "TRUE when the audited MLB debut season is at most signing year + 7; FALSE when the audited outcome is no MLB debut, or a debut after the horizon; NULL when unaudited.",
+    "min_reference_n": 50, "min_positives": 10, "min_negatives": 10, "events_per_feature": 10 },
+  { "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS", "label": "Positive bWAR by signing year + 10 seasons", "horizon_seasons": 10, "applies_to": "ALL", "threshold_bwar": 0,
+    "label_rule": "TRUE when the Baseball-Reference team-season bWAR of seasons up to signing year + 10 sums above 0; FALSE for an audited no-MLB outcome, a debut after the horizon, or a sum at or below 0; NULL when unaudited or a reacher has no loaded season.",
+    "min_reference_n": 50, "min_positives": 10, "min_negatives": 10, "events_per_feature": 10 },
+  { "target_key": "BWAR_2_WITHIN_10_SEASONS", "label": "2+ bWAR by signing year + 10 seasons", "horizon_seasons": 10, "applies_to": "ALL", "threshold_bwar": 2,
+    "label_rule": "TRUE when the team-season bWAR of seasons up to signing year + 10 sums to 2 or more; otherwise as POSITIVE_BWAR_WITHIN_10_SEASONS.",
+    "min_reference_n": 50, "min_positives": 10, "min_negatives": 10, "events_per_feature": 10 },
+  { "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS", "label": "Dodgers MLB bWAR above 0 by signing year + 10 seasons", "horizon_seasons": 10, "applies_to": "DODGERS_ONLY", "threshold_bwar": 0,
+    "label_rule": "Dodgers signings only: TRUE when the team-season bWAR with the Dodgers franchise in seasons up to signing year + 10 sums above 0; FALSE for no MLB, a debut after the horizon, or no positive Dodgers bWAR; NULL when unaudited.",
+    "min_reference_n": 50, "min_positives": 10, "min_negatives": 10, "events_per_feature": 10 }
+ ]
+}

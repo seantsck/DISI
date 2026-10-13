@@ -1,4 +1,4 @@
-# Release tooling (034 / 035, 036-038 bundle)
+# Release tooling (034 / 035, 036-038 and 039-041 bundles)
 
 Nonproduction tooling and the release plan. Nothing here connects to a hosted database by itself.
 
@@ -16,9 +16,14 @@ Nonproduction tooling and the release plan. Nothing here connects to a hosted da
 | `sql/bundle-036-038-probe.sql` | read-only probe of the bundle state (marker objects, fact counts, as-of date, API surface) |
 | `sql/rollback-036-038.sql` | WRITE, approval only: guarded logical rollback of the bundle to the exact 001-035 state |
 | `pg17/run-036-038.sh`, `pg17/validate-036-038.mjs` | bundle validation on disposable PostgreSQL 17: frozen 001-035, per-migration additivity and exact idempotency, security, verifier 207/207, convergence, anon reads, rollback |
+| `039-041-release-plan.md` | the 039-041 bundle: hashes, changes, expected probe values, backup, 039 -> 040 -> 041 apply order, verification incl. the anon performance gate, rollback, PR draft |
+| `sql/bundle-039-041-probe.sql` | read-only probe of the 039-041 bundle state |
+| `sql/rollback-039-041.sql` | WRITE, approval only: guarded logical rollback of 039-041 to the exact 001-038a state |
+| `pg17/run-039-041.sh`, `pg17/validate-039-041.mjs` | 039-041 bundle validation on disposable PostgreSQL 17 (frozen history, additivity, idempotency, security, verifier 207 -> 223, convergence, anon reads, rollback) |
 
 ```
 database/release/pg17/run.sh                    # ~1 min; needs network once for npm
 database/release/pg17/run-036-038.sh            # ~1.5 min; the 036-038 bundle against the released main
+database/release/pg17/run-039-041.sh            # ~1.5 min; the 039-041 bundle against the released main
 node database/release/pg17/restore-verify.mjs <work-dir> <backup.dump>
 ```

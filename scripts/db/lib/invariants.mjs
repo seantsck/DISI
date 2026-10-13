@@ -25,6 +25,9 @@ import { benchmarkQueries, BENCHMARK_CHECK_NAMES } from './benchmark-invariants.
 import { expectationQueries, EXPECTATION_CHECK_NAMES } from './expectation-invariants.mjs'
 import { pathwayQueries, PATHWAY_CHECK_NAMES } from './pathway-invariants.mjs'
 import { networkOutcomeQueries, NETWORK_OUTCOME_CHECK_NAMES } from './network-outcome-invariants.mjs'
+import { marketQueries, MARKET_CHECK_NAMES } from './market-invariants.mjs'
+import { archetypeQueries, ARCHETYPE_CHECK_NAMES } from './archetype-invariants.mjs'
+import { probabilityQueries, PROBABILITY_CHECK_NAMES } from './probability-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -96,11 +99,12 @@ export const CANONICAL_EXPECTATIONS = {
   // 033 adds two tables and four views.
   // 034 adds one table and four views.
   // 035 adds three views; 036 adds one table and five views; 037 and 038 add four views each.
-  public_views_total: 125,
+  // 039 adds two tables and four views; 040 adds five views; 041 adds two tables and six views.
+  public_views_total: 140,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 60,
+  public_tables_total: 64,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -203,6 +207,9 @@ export const CANONICAL_EXPECTATIONS = {
   ...Object.fromEntries(EXPECTATION_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(PATHWAY_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(NETWORK_OUTCOME_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(MARKET_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(ARCHETYPE_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(PROBABILITY_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -536,6 +543,24 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasNetworkOutcomeLayer = Boolean((await query(`select to_regclass('public.v_network_player_outcomes') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(networkOutcomeQueries(hasNetworkOutcomeLayer))) {
     check('network_outcome', name, expectations[name], await count(sql))
+  }
+
+  // -- market / pathway intelligence and signing-time features (039) ----------------------
+  const hasMarketLayer = Boolean((await query(`select to_regclass('public.v_signing_time_features') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(marketQueries(hasMarketLayer))) {
+    check('market', name, expectations[name], await count(sql))
+  }
+
+  // -- historical archetypes and comparables (040) --------------------------------------
+  const hasArchetypeLayer = Boolean((await query(`select to_regclass('public.v_player_comparables') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(archetypeQueries(hasArchetypeLayer))) {
+    check('archetype', name, expectations[name], await count(sql))
+  }
+
+  // -- outcome-probability infrastructure (041) -----------------------------------------
+  const hasProbabilityLayer = Boolean((await query(`select to_regclass('public.outcome_targets') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(probabilityQueries(hasProbabilityLayer))) {
+    check('probability', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

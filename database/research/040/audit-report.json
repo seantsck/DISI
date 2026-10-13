@@ -1,0 +1,34 @@
+{
+ "features": {
+  "n": 268,
+  "archetype_defined": 225,
+  "position_unknown": 43
+ },
+ "comparable_pools_by_target_population": [
+  {
+   "population_class": "OPENING_CLASS_CENSUS",
+   "targets": 35,
+   "with_5_plus": 35,
+   "with_20_plus": 16
+  },
+  {
+   "population_class": "OUTCOME_SELECTED_SAMPLE",
+   "targets": 18,
+   "with_5_plus": 2,
+   "with_20_plus": 2
+  },
+  {
+   "population_class": "TOP_PROSPECT_SAMPLE",
+   "targets": 38,
+   "with_5_plus": 10,
+   "with_20_plus": 0
+  },
+  {
+   "population_class": "TRACKED_SAMPLE",
+   "targets": 134,
+   "with_5_plus": 127,
+   "with_20_plus": 91
+  }
+ ],
+ "failures": []
+}
