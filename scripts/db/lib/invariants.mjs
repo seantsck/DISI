@@ -23,6 +23,7 @@ import { transactionQueries } from './transaction-invariants.mjs'
 import { downstreamQueries, DOWNSTREAM_CHECK_NAMES } from './downstream-invariants.mjs'
 import { benchmarkQueries, BENCHMARK_CHECK_NAMES } from './benchmark-invariants.mjs'
 import { expectationQueries, EXPECTATION_CHECK_NAMES } from './expectation-invariants.mjs'
+import { pathwayQueries, PATHWAY_CHECK_NAMES } from './pathway-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -93,8 +94,8 @@ export const CANONICAL_EXPECTATIONS = {
   // 032 adds two tables and four views.
   // 033 adds two tables and four views.
   // 034 adds one table and four views.
-  // 035 adds three views; 036 adds one table and five views.
-  public_views_total: 117,
+  // 035 adds three views; 036 adds one table and five views; 037 adds four views.
+  public_views_total: 121,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
@@ -199,6 +200,7 @@ export const CANONICAL_EXPECTATIONS = {
   ...Object.fromEntries(DOWNSTREAM_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(BENCHMARK_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(EXPECTATION_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(PATHWAY_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -520,6 +522,12 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasExpectationLayer = Boolean((await query(`select to_regclass('public.scouting_expectation_bands') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(expectationQueries(hasExpectationLayer))) {
     check('expectation', name, expectations[name], await count(sql))
+  }
+
+  // -- development pathway intelligence (037) ----------------------------------------
+  const hasPathwayLayer = Boolean((await query(`select to_regclass('public.v_player_development_pathway') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(pathwayQueries(hasPathwayLayer))) {
+    check('pathway', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------
