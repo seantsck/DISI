@@ -33,7 +33,8 @@
     "031_financial_provenance_coverage_expansion.sql",
     "032_player_value_organizational_realization.sql",
     "033_transaction_asset_chain_completion.sql",
-    "034_downstream_organizational_value_chains.sql"
+    "034_downstream_organizational_value_chains.sql",
+    "035_international_benchmark_outcomes.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -42,7 +43,7 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 34,
+    "canonical_build_count": 35,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
@@ -65,6 +66,7 @@
     "v0_22": "Financial provenance and coverage expansion (031): pool capacity for the Dodgers 2012-13, 2013-14, 2014-15, 2017-18 and 2020-21 periods (and the sourced post-penalty 2021-22 allocation), 13 provenance upgrades and 4 newly sourced bonuses over the 030 ledger, one corrected legacy bonus (Rincon), period-membership environment links, and signing_financial_resolutions: a reviewed decision selecting one of several competing ACTIVE reports without rewriting any (database/research/031).",
     "v0_23": "Player value and organizational realization (032): Baseball-Reference team-season bWAR facts (player_mlb_team_season_war, BAT / PITCH kept apart) with a Baseball-Reference team-code map, a bref_id on trade-return assets, reconciliation of the legacy career-WAR stores, and four views (v_trade_realization_edges, v_player_organizational_realization, v_dodgers_international_value_portfolio, v_value_research_queue) that separate direct Dodgers MLB value from non-Dodgers career value and trade return, with package-level attribution and cost-completeness gating (database/research/032).",
     "v0_24": "Transaction and asset-chain completion (033): the factual transaction history of the 220 tracked Dodgers international signings (161 events: 141 tracked-player exits and 20 first-hop return-asset exits), stable MLB / Baseball-Reference / Register identities for every asset, multi-team and cash / future-considerations / pool-space assets, sealed placeholder resolutions and dated control observations, the Diaz / Machado date corrected to the official 2018-07-18, Baseball-Reference team-season bWAR for the first-hop incoming players, an amended trade-realization view with explicit return states, and four views (v_transaction_event_complete, v_transaction_asset_chain_readiness, v_dodgers_international_exit_summary, v_transaction_research_queue); no downstream or recursive value (database/research/033).",
-    "v0_25": "Downstream organizational value chains (034): derived control intervals with interval-bounded Dodgers bWAR (a free-agent re-signing or reacquisition is a new interval, never part of an earlier trade return), a cycle-safe derived transaction lineage with attribution levels that only degrade (PLAYER_ATTRIBUTABLE, PACKAGE_ATTRIBUTABLE, CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE, UNRESOLVED), package-deduplicated lineage and realization views, the sealed transaction_asset_timing_observations chronology table, 43 researched exit and re-entry events, 28 downstream return players of Baseball-Reference bWAR, and additive amendments of the portfolio and research queues; the 032 / 033 first-hop columns are preserved (database/research/034)."
+    "v0_25": "Downstream organizational value chains (034): derived control intervals with interval-bounded Dodgers bWAR (a free-agent re-signing or reacquisition is a new interval, never part of an earlier trade return), a cycle-safe derived transaction lineage with attribution levels that only degrade (PLAYER_ATTRIBUTABLE, PACKAGE_ATTRIBUTABLE, CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE, UNRESOLVED), package-deduplicated lineage and realization views, the sealed transaction_asset_timing_observations chronology table, 43 researched exit and re-entry events, 28 downstream return players of Baseball-Reference bWAR, and additive amendments of the portfolio and research queues; the 032 / 033 first-hop columns are preserved (database/research/034).",
+    "v0_26": "International benchmark outcomes (035): the MLB outcome audit of the 48 non-Dodgers players of the MLB Pipeline 2013 / 2014 Top-30 international signing trackers (43 identity-resolved and audited, 11 reached MLB, 5 identity-unresolved and queued), their Baseball-Reference team-season bWAR, and three views - per-player benchmark outcomes with comparison tiers, a population coverage model with strict derived rate eligibility, and a research queue. A Top-prospect sample benchmark, not a census: no organizational rate, ranking or league comparison is computed (database/research/035)."
   }
 }

@@ -1140,10 +1140,10 @@ test('021 organization changes: per-stint ownership in the same season, plus a S
   assert.equal(flagged.n, 1)
 })
 
-test('021 MLB-reach counts are scope-explicit: 58 tracked = 47 Dodgers signings + 11 benchmark', async () => {
+test('021 MLB-reach counts are scope-explicit: 58 tracked = 47 Dodgers signings + 11 benchmark; all 58 carry verified MLB audits since 035', async () => {
   // "MLB players" always needs its scope: all tracked (Dodgers signings + benchmark players) vs the
-  // outcome-audited subset, which is Dodgers signings only by policy. bref_id is recorded only for
-  // players with an MLB debut, so it must cover the same 58.
+  // outcome-audited subset (Dodgers signings, plus the 43 identity-resolved benchmark players audited by 035,
+  // 11 of whom reached MLB). bref_id is recorded only for players with an MLB debut, so it must cover the same 58.
   const r = await one(`with scope as (
       select p.id, coalesce(bool_or(o.franchise_key = 'DODGERS'), false) as dodgers
       from players p
@@ -1157,10 +1157,10 @@ test('021 MLB-reach counts are scope-explicit: 58 tracked = 47 Dodgers signings 
       (select count(*)::int from scope sc join players p on p.id = sc.id where not sc.dodgers and p.mlb_debut_date is not null) as benchmark_mlb,
       (select count(*)::int from outcome_audits where reached_mlb_verified) as audited_mlb`)
   assert.equal(r.with_bref_id, r.all_tracked_mlb, 'B-Ref id covers every tracked player with verified MLB reach')
-  assert.deepEqual([r.all_tracked_mlb, r.dodgers_mlb, r.benchmark_mlb, r.audited_mlb], [58, 47, 11, 47])
+  assert.deepEqual([r.all_tracked_mlb, r.dodgers_mlb, r.benchmark_mlb, r.audited_mlb], [58, 47, 11, 58])
   assert.equal(r.dodgers_mlb + r.benchmark_mlb, r.all_tracked_mlb)
-  assert.equal(r.audited_mlb, r.dodgers_mlb, 'only Dodgers signings carry verified MLB outcome audits')
-  // the Dodgers-scoped status view reports the same audited figure
+  assert.equal(r.audited_mlb, r.dodgers_mlb + r.benchmark_mlb, 'every tracked MLB player carries a verified MLB outcome audit')
+  // the Dodgers-scoped status view reports the Dodgers audited figure only
   const status = await one(`select verified_mlb_outcomes from v_database_status`)
   assert.equal(status.verified_mlb_outcomes, 47)
 })
@@ -1979,6 +1979,7 @@ const views030 = ['v_dodgers_financial_commitment_by_class', 'v_dodgers_financia
 const views032 = ['v_dodgers_international_value_portfolio', 'v_player_organizational_realization', 'v_trade_realization_edges', 'v_value_research_queue']
 const views033 = ['v_dodgers_international_exit_summary', 'v_transaction_asset_chain_readiness', 'v_transaction_event_complete', 'v_transaction_research_queue']
 const views034 = ['v_downstream_organizational_realization', 'v_player_control_intervals', 'v_transaction_asset_lineage', 'v_transaction_package_lineage']
+const views035 = ['v_international_benchmark_class_coverage', 'v_international_benchmark_player_outcomes', 'v_international_benchmark_research_queue']
 const tables026 = ['evaluation_scales', 'player_evaluation_grades', 'player_evaluation_notes', 'player_evaluation_rankings',
   'player_evaluations', 'scouting_publications']
 // Every API-role privilege on every public relation, straight from the ACLs (MAINTAIN included).
@@ -1998,7 +1999,7 @@ const securitySnapshotOn = async (oneFn) => oneFn(`select
     (select string_agg(c.relname || ':' || pg_get_viewdef(c.oid), ',' order by c.relname) from pg_class c
       join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'v') as view_definitions`)
 
-test('025 inventory: the 86 reviewed views are read-only analytics, security_invoker and not updatable; 026 adds five, 029 adds four (and retires two legacy trainer views), 030, 032, 033 and 034 add four each', async () => {
+test('025 inventory: the 86 reviewed views are read-only analytics, security_invoker and not updatable; 026 adds five, 029 adds four (and retires two legacy trainer views), 030, 032, 033 and 034 add four each, 035 adds three', async () => {
   assert.equal(inventory025.views.length, 86)
   assert.equal(legacyBroad.length, 43, 'the live audit found 43 legacy views with ALL privileges')
   assert.deepEqual(inventory025.intentionally_writable, [])
@@ -2006,7 +2007,7 @@ test('025 inventory: the 86 reviewed views are read-only analytics, security_inv
     from pg_class c join pg_namespace n on n.oid = c.relnamespace
     join information_schema.views v on v.table_schema = 'public' and v.table_name = c.relname
     where n.nspname = 'public' and c.relkind = 'v' order by 1`)
-  assert.deepEqual(views.map((v) => v.relname), [...inventory025.views.map((v) => v.view).filter((v) => !views029Retired.includes(v)), ...views026, ...views029, ...views030, ...views032, ...views033, ...views034].sort())
+  assert.deepEqual(views.map((v) => v.relname), [...inventory025.views.map((v) => v.view).filter((v) => !views029Retired.includes(v)), ...views026, ...views029, ...views030, ...views032, ...views033, ...views034, ...views035].sort())
   for (const v of views) {
     assert.match(v.opts, /security_invoker=(true|on)/, v.relname)
     assert.deepEqual([v.is_updatable, v.is_insertable_into], ['NO', 'NO'], v.relname)
@@ -2022,7 +2023,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   for (const kind of ['v', 'r']) {
     for (const role of ['anon', 'authenticated']) {
       const relations = acl.filter((a) => a.kind === kind && a.grantee === role)
-      assert.equal(relations.length, kind === 'v' ? 109 : 59, `${role} ${kind}`)
+      assert.equal(relations.length, kind === 'v' ? 112 : 59, `${role} ${kind}`)
       for (const privilege of ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN']) {
         assert.deepEqual(relations.filter((a) => a.privs.split(',').includes(privilege)).map((a) => a.relname), [], `${role} ${privilege} on ${kind}`)
       }
@@ -2136,10 +2137,10 @@ const dayEval = (date, o = {}) => insertEvaluation({
 const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} returning id into i; update player_evaluations set record_status = 'ACTIVE' where id = i; end $seal$`
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
-test('frozen history: migrations 001-033 are byte-for-byte unchanged (line endings normalised); 034 is the only addition', () => {
-  const files = manifest.canonical_sql.filter((f) => f < '034')
-  assert.equal(files.length, 33)
-  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '034'), ['034_downstream_organizational_value_chains.sql'])
+test('frozen history: migrations 001-034 are byte-for-byte unchanged (line endings normalised); 035 is the only addition', () => {
+  const files = manifest.canonical_sql.filter((f) => f < '035')
+  assert.equal(files.length, 34)
+  assert.deepEqual(manifest.canonical_sql.filter((f) => f >= '035'), ['035_international_benchmark_outcomes.sql'])
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {
     const text = readSql(f).replace(/\r\n/g, '\n')
@@ -2147,7 +2148,7 @@ test('frozen history: migrations 001-033 are byte-for-byte unchanged (line endin
   }
 })
 
-test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 59 tables / 109 views after 034, all RLS / security_invoker', async () => {
+test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 59 tables / 112 views after 035, all RLS / security_invoker', async () => {
   const t = await rows(`select c.relname, c.relrowsecurity as rls from pg_class c join pg_namespace n on n.oid = c.relnamespace
     where n.nspname = 'public' and c.relkind = 'r' and c.relname = any($1) order by 1`, [tables026])
   assert.deepEqual(t.map((r) => [r.relname, r.rls]), tables026.map((n) => [n, true]))
@@ -2155,7 +2156,7 @@ test('026 shape: six new tables and five new views; the legacy evaluations table
   assert.equal(legacy.gone, true)
   const counts = await one(`select count(*) filter (where relkind = 'r')::int as tables, count(*) filter (where relkind = 'v')::int as views
     from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind in ('r', 'v')`)
-  assert.deepEqual([counts.tables, counts.views], [59, 109])
+  assert.deepEqual([counts.tables, counts.views], [59, 112])
   const v = await rows(`select relname, coalesce(array_to_string(reloptions, ','), '') as opts from pg_class where relname = any($1) and relkind = 'v'`, [views026])
   assert.equal(v.length, 5)
   for (const x of v) assert.match(x.opts, /security_invoker=(true|on)/, x.relname)

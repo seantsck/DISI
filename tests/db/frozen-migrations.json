@@ -33,6 +33,7 @@
     "030_financial_acquisition_intelligence.sql": "8f107128581ff23012e21eb607d51713ac04b65b",
     "031_financial_provenance_coverage_expansion.sql": "e42cf5a930f098d911d206e5cf514086929dbaa2",
     "032_player_value_organizational_realization.sql": "73ff1534a8b70f9e1e18bf0619c2695e594296a7",
-    "033_transaction_asset_chain_completion.sql": "3318110bbd635aebd15fb35b81acc1e13a8b7c4f"
+    "033_transaction_asset_chain_completion.sql": "3318110bbd635aebd15fb35b81acc1e13a8b7c4f",
+    "034_downstream_organizational_value_chains.sql": "3cb5494f13800a4d44e2ffb6aa6bd1ff88aae5f5"
   }
 }

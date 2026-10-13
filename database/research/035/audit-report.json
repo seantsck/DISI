@@ -1,0 +1,14 @@
+{
+ "baseline": {
+  "audits": 93,
+  "outcomes": 47,
+  "war_rows": 1821,
+  "analysis_as_of_date": "2026-10-05"
+ },
+ "benchmark_roster": 48,
+ "researched": 48,
+ "identity_resolved": 43,
+ "reached": 11,
+ "war_rows": 59,
+ "failures": []
+}

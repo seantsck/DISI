@@ -43,6 +43,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 32. `032_player_value_organizational_realization.sql` — Baseball-Reference team-season bWAR facts (`player_mlb_team_season_war`, BAT and PITCH kept apart) with a team-code map, a `bref_id` on trade-return assets, reconciliation of the legacy career-WAR stores, and four views that separate direct Dodgers MLB value from non-Dodgers career value and one-hop trade return, with package-level attribution and cost-completeness gating (details below; research in `database/research/032/`).
 33. `033_transaction_asset_chain_completion.sql` — the factual transaction history of the 220 tracked Dodgers international signings (161 events: tracked-player exits, one re-entry and 20 first-hop return-asset exits) with stable MLB / Baseball-Reference / Register identities, multi-team, cash, future-considerations and bonus-pool-space assets, sealed placeholder resolutions and dated control observations, the Diaz / Machado date corrected to the official 2018-07-18, Baseball-Reference bWAR for the 40 first-hop incoming players, explicit trade-return states, and four views (details below; research in `database/research/033/`).
 34. `034_downstream_organizational_value_chains.sql` — downstream organizational value chains: derived control intervals with interval-bounded Dodgers bWAR (a free-agent re-signing or reacquisition is a new interval), a cycle-safe derived transaction lineage with attribution levels that only degrade, package-deduplicated lineage and realization views, the sealed `transaction_asset_timing_observations` chronology table, 43 researched exit and re-entry events, bWAR for 28 downstream return players, and additive amendments of the portfolio and research queues; the 032 / 033 first-hop columns are preserved (details below; research in `database/research/034/`).
+35. `035_international_benchmark_outcomes.sql` — international benchmark outcomes: the MLB outcome audit of the 48 non-Dodgers players of the MLB Pipeline 2013 / 2014 Top-30 international signing trackers (43 identity-resolved and audited, 11 reached MLB, 5 identity-unresolved and queued), their Baseball-Reference team-season bWAR, and three views (benchmark player outcomes with comparison tiers, a population coverage model with strict derived rate eligibility, a research queue); a Top-prospect sample benchmark, not a census (details below; research in `database/research/035/`).
 
 ## 017 research-database layer
 
@@ -243,6 +244,15 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Surface.** 59 public tables and 109 views, RLS and SELECT-only API grants, invoker-rights guard with EXECUTE revoked. The verifier adds 18 checks (178 in total).
 - **Not here.** League-wide benchmarking (035) and valuation of cash, pool space or prospects.
 - **Rerunnable**; design, effects and reproduction in `database/research/034/README.md`.
+
+## 035 international benchmark outcomes
+
+- **Scope.** The 48 non-Dodgers `MLB_PIPELINE_TOP_PROSPECT` signings (2013: 20, 2014: 28; 19 organizations). A rank-selected sample: it supports reach, debut timing, age, bonus and bWAR comparisons among ranked prospects, and nothing about an organization's signing class as a whole.
+- **Facts added.** 43 outcome audits (11 reached MLB, one active in the minors, 31 with no recorded debut and unestablished status), 11 outcome rows, 59 Baseball-Reference team-season rows (same files and checksums as 032 - 034). Five players with no resolvable MLB identity stay UNAUDITED with a NULL reach flag; missing is never "no MLB". The analytics as-of date does not move.
+- **Views.** `v_international_benchmark_player_outcomes` (outcome state, years to debut, career / original-organization / elsewhere bWAR, comparison tier flags), `v_international_benchmark_class_coverage` (census state, derived `rate_eligible_strict` with every blocker listed, comparison label), `v_international_benchmark_research_queue`.
+- **Not here.** No organizational hit rate, league rate, ranking or percentile; no class is rate-eligible. Full signing-period rosters, denominators and non-Dodgers cost ledgers are deferred (036).
+- **Surface.** No new table; 59 public tables and 112 views; the verifier adds 8 checks (186 in total).
+- **Rerunnable**; design and reproduction in `database/research/035/README.md` and `architecture-report.md`.
 
 ## Player identity (020)
 
