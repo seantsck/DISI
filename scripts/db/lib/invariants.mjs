@@ -22,6 +22,7 @@ import { valueQueries } from './value-invariants.mjs'
 import { transactionQueries } from './transaction-invariants.mjs'
 import { downstreamQueries, DOWNSTREAM_CHECK_NAMES } from './downstream-invariants.mjs'
 import { benchmarkQueries, BENCHMARK_CHECK_NAMES } from './benchmark-invariants.mjs'
+import { expectationQueries, EXPECTATION_CHECK_NAMES } from './expectation-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -92,11 +93,12 @@ export const CANONICAL_EXPECTATIONS = {
   // 032 adds two tables and four views.
   // 033 adds two tables and four views.
   // 034 adds one table and four views.
-  public_views_total: 112,
+  // 035 adds three views; 036 adds one table and five views.
+  public_views_total: 117,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 59,
+  public_tables_total: 60,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -196,6 +198,7 @@ export const CANONICAL_EXPECTATIONS = {
   // downstream organizational value chains (034)
   ...Object.fromEntries(DOWNSTREAM_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(BENCHMARK_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(EXPECTATION_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -511,6 +514,12 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasBenchmarkLayer = Boolean((await query(`select to_regclass('public.v_international_benchmark_player_outcomes') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(benchmarkQueries(hasBenchmarkLayer))) {
     check('benchmark', name, expectations[name], await count(sql))
+  }
+
+  // -- scouting expectation vs realized outcome (036) ----------------------------------
+  const hasExpectationLayer = Boolean((await query(`select to_regclass('public.scouting_expectation_bands') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(expectationQueries(hasExpectationLayer))) {
+    check('expectation', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

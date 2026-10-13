@@ -1,0 +1,50 @@
+{
+ "observations": 53,
+ "observations_by_publication": {
+  "baseball-america-top-100": 1,
+  "fangraphs-organization-prospect-lists": 4,
+  "mlb-pipeline-top-30-international-signings": 48
+ },
+ "bands": 15,
+ "family_coverage": [
+  {
+   "band_family": "MLBP_INTL_CLASS_TOP30_RANK",
+   "observations": 48,
+   "by_band": {
+    "MLBP_INTL_RANK_21_30": 15,
+    "MLBP_INTL_RANK_01_10": 18,
+    "MLBP_INTL_RANK_11_20": 15
+   }
+  },
+  {
+   "band_family": "BA_TOP100_RANK",
+   "observations": 1,
+   "by_band": {
+    "BA_TOP100_RANK_001_010": 1
+   }
+  },
+  {
+   "band_family": "FG_ORG_LIST_RANK",
+   "observations": 2,
+   "by_band": {
+    "FG_ORG_RANK_01_05": 2
+   }
+  },
+  {
+   "band_family": "FG_FV_20_80",
+   "observations": 2,
+   "by_band": {
+    "FG_FV_50": 1,
+    "FG_FV_55": 1
+   }
+  }
+ ],
+ "unbanded_observations": 0,
+ "spine": {
+  "signings": 268,
+  "dodgers_rows": 220,
+  "benchmark_rows": 48,
+  "analysis_as_of_date": "2026-10-05"
+ },
+ "failures": []
+}

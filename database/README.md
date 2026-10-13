@@ -44,6 +44,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 33. `033_transaction_asset_chain_completion.sql` — the factual transaction history of the 220 tracked Dodgers international signings (161 events: tracked-player exits, one re-entry and 20 first-hop return-asset exits) with stable MLB / Baseball-Reference / Register identities, multi-team, cash, future-considerations and bonus-pool-space assets, sealed placeholder resolutions and dated control observations, the Diaz / Machado date corrected to the official 2018-07-18, Baseball-Reference bWAR for the 40 first-hop incoming players, explicit trade-return states, and four views (details below; research in `database/research/033/`).
 34. `034_downstream_organizational_value_chains.sql` — downstream organizational value chains: derived control intervals with interval-bounded Dodgers bWAR (a free-agent re-signing or reacquisition is a new interval), a cycle-safe derived transaction lineage with attribution levels that only degrade, package-deduplicated lineage and realization views, the sealed `transaction_asset_timing_observations` chronology table, 43 researched exit and re-entry events, bWAR for 28 downstream return players, and additive amendments of the portfolio and research queues; the 032 / 033 first-hop columns are preserved (details below; research in `database/research/034/`).
 35. `035_international_benchmark_outcomes.sql` — international benchmark outcomes: the MLB outcome audit of the 48 non-Dodgers players of the MLB Pipeline 2013 / 2014 Top-30 international signing trackers (43 identity-resolved and audited, 11 reached MLB, 5 identity-unresolved and queued), their Baseball-Reference team-season bWAR, and three views (benchmark player outcomes with comparison tiers, a population coverage model with strict derived rate eligibility, a research queue); a Top-prospect sample benchmark, not a census (details below; research in `database/research/035/`).
+36. `036_scouting_expectation_outcomes.sql` — scouting expectation vs realized outcome: reviewed source-native expectation bands (`scouting_expectation_bands`), the shared realized-outcome spine `v_player_realized_outcome`, every external rank / FV observation with its band and debut order, frozen pre-debut anchors compared with the realized outcome, a descriptive calibration summary gated at 10 comparable outcomes, and a research queue; derived only, no fact added (details below; research in `database/research/036/`).
 
 ## 017 research-database layer
 
@@ -253,6 +254,14 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Not here.** No organizational hit rate, league rate, ranking or percentile; no class is rate-eligible. Full signing-period rosters, denominators and non-Dodgers cost ledgers are deferred (036).
 - **Surface.** No new table; 59 public tables and 112 views; the verifier adds 8 checks (186 in total).
 - **Rerunnable**; design and reproduction in `database/research/035/README.md` and `architecture-report.md`.
+
+## 036 scouting expectation vs realized outcome
+
+- **Bands.** `scouting_expectation_bands` holds 15 reviewed bands in four families (MLB Pipeline Top-30 class rank, Baseball America Top 100, FanGraphs organization rank, FanGraphs FV). Each family reads one publication's own measure; there is no universal expectation number. The outcome rule of each band (MLB reach meets it, a career-bWAR floor exceeds it, FV role floors) is a stated DISI convention.
+- **Spine.** `v_player_realized_outcome` is one row per tracked signing (220 Dodgers + 48 benchmark), passed through from 032-034 and 035 and reused by 036-038; MLB value is NULL without an MLB career, Dodgers attributable value is Dodgers-only.
+- **Comparison.** `v_player_expectation_vs_outcome` anchors the earliest pre-debut observation per player and band family (frozen: later evaluations never move it) and states EXCEEDED / MET / UNDERPERFORMED / TOO_EARLY / OUTCOME_INCOMPLETE / INSUFFICIENT_EXPECTATION_DATA; unaudited, immature or still-active outcomes are never misses. `v_scouting_calibration_summary` shows shares only for 10+ comparable outcomes and is never an accuracy measure.
+- **Surface.** One new table; 60 public tables and 117 views; the verifier adds 8 checks (194 in total).
+- **Rerunnable**; design and reproduction in `database/research/036/README.md` and `architecture-report.md` (the 036-038 bundle).
 
 ## Player identity (020)
 

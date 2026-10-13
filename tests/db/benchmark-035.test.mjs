@@ -227,12 +227,12 @@ test('refuses a mismatched precondition: an existing audit with a different resu
   }
 })
 
-test('verifier: the eight benchmark checks pass and each catches its own drift; the full verifier passes with 186 checks', async () => {
+test('verifier: the eight benchmark checks pass and each catches its own drift; the full verifier passes on the 035 database', async () => {
   assert.deepEqual(await failing(), [])
   assert.equal(BENCHMARK_CHECK_NAMES.length, 8)
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+  const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 112, public_tables_total: 59 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 186)
+  assert.equal(full.hard.length, 194, '186 through 035 plus the eight 036 checks, which pass trivially without their objects')
   const cov = 'v_international_benchmark_class_coverage'
   const out = 'v_international_benchmark_player_outcomes'
   assert.deepEqual(await drift(cov, { rate_eligible_strict: 'true', comparison_label: `'CLASS_COMPLETE_COMPARISON'` }), ['benchmark_rate_eligibility_violations'])

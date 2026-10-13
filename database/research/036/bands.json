@@ -1,0 +1,80 @@
+{
+ "note": "Reviewed expectation bands for Migration 036. A band reads one publication's own measure (a rank range of one list scope, or a grade range of one scale dimension); no band crosses publications or scales and no universal expectation number exists. The outcome rule of every band is a DISI convention, stated in the band: met = MLB reach (plus a career-bWAR floor where the source scale defines a role), exceeded = the stated career-bWAR floor. Grades band on the numeric base (45+ and 45- band with 45); the qualifier stays on the observation.",
+ "families": [
+  {
+   "band_family": "MLBP_INTL_CLASS_TOP30_RANK",
+   "family_label": "MLB Pipeline Top-30 international signing class rank",
+   "publication_slug": "mlb-pipeline-top-30-international-signings",
+   "measure": "RANK",
+   "ranking_scope": "INTERNATIONAL_CLASS",
+   "required_list_size": 30,
+   "population_label": "TOP_PROSPECT_SAMPLE",
+   "bands": [
+    { "band_code": "MLBP_INTL_RANK_01_10", "band_order": 1, "lower_value": 1, "upper_value": 10, "band_label": "Class rank 1-10 of 30", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 1-10 of the 30 international amateur prospects MLB Pipeline listed for a signing class at signing time. The list orders prospects within their class and states no outcome; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." },
+    { "band_code": "MLBP_INTL_RANK_11_20", "band_order": 2, "lower_value": 11, "upper_value": 20, "band_label": "Class rank 11-20 of 30", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 11-20 of the 30 international amateur prospects MLB Pipeline listed for a signing class at signing time. The list states no outcome; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." },
+    { "band_code": "MLBP_INTL_RANK_21_30", "band_order": 3, "lower_value": 21, "upper_value": 30, "band_label": "Class rank 21-30 of 30", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 21-30 of the 30 international amateur prospects MLB Pipeline listed for a signing class at signing time. The list states no outcome; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." }
+   ]
+  },
+  {
+   "band_family": "BA_TOP100_RANK",
+   "family_label": "Baseball America Top 100 prospect rank",
+   "publication_slug": "baseball-america-top-100",
+   "measure": "RANK",
+   "ranking_scope": "MLB_GLOBAL",
+   "required_list_size": 100,
+   "population_label": "RANKED_LIST_SAMPLE",
+   "bands": [
+    { "band_code": "BA_TOP100_RANK_001_010", "band_order": 1, "lower_value": 1, "upper_value": 10, "band_label": "Top 100 rank 1-10", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 1-10 on Baseball America's MLB-wide Top 100 prospects list. The list orders prospects and states no outcome; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." },
+    { "band_code": "BA_TOP100_RANK_011_050", "band_order": 2, "lower_value": 11, "upper_value": 50, "band_label": "Top 100 rank 11-50", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 11-50 on Baseball America's MLB-wide Top 100 prospects list. The list states no outcome; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." },
+    { "band_code": "BA_TOP100_RANK_051_100", "band_order": 3, "lower_value": 51, "upper_value": 100, "band_label": "Top 100 rank 51-100", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 51-100 on Baseball America's MLB-wide Top 100 prospects list. The list states no outcome; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." }
+   ]
+  },
+  {
+   "band_family": "FG_ORG_LIST_RANK",
+   "family_label": "FanGraphs organization prospect list rank",
+   "publication_slug": "fangraphs-organization-prospect-lists",
+   "measure": "RANK",
+   "ranking_scope": "ORGANIZATION",
+   "required_list_size": null,
+   "population_label": "ORGANIZATION_LIST_SAMPLE",
+   "bands": [
+    { "band_code": "FG_ORG_RANK_01_05", "band_order": 1, "lower_value": 1, "upper_value": 5, "band_label": "Organization list rank 1-5", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 1-5 on a FanGraphs single-organization prospect list. An organization rank depends on that system's depth and is not comparable across organizations; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." },
+    { "band_code": "FG_ORG_RANK_06_10", "band_order": 2, "lower_value": 6, "upper_value": 10, "band_label": "Organization list rank 6-10", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 6-10 on a FanGraphs single-organization prospect list. Not comparable across organizations; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." },
+    { "band_code": "FG_ORG_RANK_11_30", "band_order": 3, "lower_value": 11, "upper_value": 30, "band_label": "Organization list rank 11-30", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 11-30 on a FanGraphs single-organization prospect list. Not comparable across organizations; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." },
+    { "band_code": "FG_ORG_RANK_31_PLUS", "band_order": 4, "lower_value": 31, "upper_value": null, "band_label": "Organization list rank 31 or lower", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "Ranked 31 or lower on a FanGraphs single-organization prospect list. Not comparable across organizations; DISI convention: MLB reach meets the expectation, 10+ career bWAR exceeds it." }
+   ]
+  },
+  {
+   "band_family": "FG_FV_20_80",
+   "family_label": "FanGraphs future value (FV, 20-80 scale, numeric base)",
+   "publication_slug": "fangraphs-organization-prospect-lists",
+   "measure": "GRADE",
+   "scale_code": "SCOUTING_20_80",
+   "dimension_code": "OVERALL",
+   "temporal_basis": "FUTURE",
+   "population_label": "GRADED_SAMPLE",
+   "bands": [
+    { "band_code": "FG_FV_60_PLUS", "band_order": 1, "lower_value": 60, "upper_value": 80, "band_label": "FV 60 or higher", "met_career_bwar_floor": 15, "exceeded_career_bwar_floor": 30,
+      "expectation_statement": "FV 60+: the 20-80 future-value scale describes an all-star-calibre peak. DISI convention mapping that role to a career: 15+ career bWAR meets it, 30+ exceeds it." },
+    { "band_code": "FG_FV_55", "band_order": 2, "lower_value": 55, "upper_value": 59, "band_label": "FV 55", "met_career_bwar_floor": 10, "exceeded_career_bwar_floor": 15,
+      "expectation_statement": "FV 55: the scale describes an above-average regular. DISI convention: 10+ career bWAR meets it, 15+ exceeds it." },
+    { "band_code": "FG_FV_50", "band_order": 3, "lower_value": 50, "upper_value": 54, "band_label": "FV 50", "met_career_bwar_floor": 5, "exceeded_career_bwar_floor": 10,
+      "expectation_statement": "FV 50: the scale describes an average everyday player or mid-rotation starter. DISI convention: 5+ career bWAR meets it, 10+ exceeds it." },
+    { "band_code": "FG_FV_45", "band_order": 4, "lower_value": 45, "upper_value": 49, "band_label": "FV 45", "met_career_bwar_floor": 2, "exceeded_career_bwar_floor": 5,
+      "expectation_statement": "FV 45: the scale describes a platoon or role player, back-end starter or reliever. DISI convention: 2+ career bWAR meets it, 5+ exceeds it." },
+    { "band_code": "FG_FV_40_OR_LOWER", "band_order": 5, "lower_value": 20, "upper_value": 44, "band_label": "FV 40 or lower", "met_career_bwar_floor": null, "exceeded_career_bwar_floor": 2,
+      "expectation_statement": "FV 40 or lower: the scale describes a bench, depth or up-and-down role. DISI convention: MLB reach meets it, 2+ career bWAR exceeds it." }
+   ]
+  }
+ ]
+}

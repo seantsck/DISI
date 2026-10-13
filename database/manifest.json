@@ -34,7 +34,8 @@
     "032_player_value_organizational_realization.sql",
     "033_transaction_asset_chain_completion.sql",
     "034_downstream_organizational_value_chains.sql",
-    "035_international_benchmark_outcomes.sql"
+    "035_international_benchmark_outcomes.sql",
+    "036_scouting_expectation_outcomes.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -43,7 +44,7 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 35,
+    "canonical_build_count": 36,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
@@ -67,6 +68,7 @@
     "v0_23": "Player value and organizational realization (032): Baseball-Reference team-season bWAR facts (player_mlb_team_season_war, BAT / PITCH kept apart) with a Baseball-Reference team-code map, a bref_id on trade-return assets, reconciliation of the legacy career-WAR stores, and four views (v_trade_realization_edges, v_player_organizational_realization, v_dodgers_international_value_portfolio, v_value_research_queue) that separate direct Dodgers MLB value from non-Dodgers career value and trade return, with package-level attribution and cost-completeness gating (database/research/032).",
     "v0_24": "Transaction and asset-chain completion (033): the factual transaction history of the 220 tracked Dodgers international signings (161 events: 141 tracked-player exits and 20 first-hop return-asset exits), stable MLB / Baseball-Reference / Register identities for every asset, multi-team and cash / future-considerations / pool-space assets, sealed placeholder resolutions and dated control observations, the Diaz / Machado date corrected to the official 2018-07-18, Baseball-Reference team-season bWAR for the first-hop incoming players, an amended trade-realization view with explicit return states, and four views (v_transaction_event_complete, v_transaction_asset_chain_readiness, v_dodgers_international_exit_summary, v_transaction_research_queue); no downstream or recursive value (database/research/033).",
     "v0_25": "Downstream organizational value chains (034): derived control intervals with interval-bounded Dodgers bWAR (a free-agent re-signing or reacquisition is a new interval, never part of an earlier trade return), a cycle-safe derived transaction lineage with attribution levels that only degrade (PLAYER_ATTRIBUTABLE, PACKAGE_ATTRIBUTABLE, CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE, UNRESOLVED), package-deduplicated lineage and realization views, the sealed transaction_asset_timing_observations chronology table, 43 researched exit and re-entry events, 28 downstream return players of Baseball-Reference bWAR, and additive amendments of the portfolio and research queues; the 032 / 033 first-hop columns are preserved (database/research/034).",
-    "v0_26": "International benchmark outcomes (035): the MLB outcome audit of the 48 non-Dodgers players of the MLB Pipeline 2013 / 2014 Top-30 international signing trackers (43 identity-resolved and audited, 11 reached MLB, 5 identity-unresolved and queued), their Baseball-Reference team-season bWAR, and three views - per-player benchmark outcomes with comparison tiers, a population coverage model with strict derived rate eligibility, and a research queue. A Top-prospect sample benchmark, not a census: no organizational rate, ranking or league comparison is computed (database/research/035)."
+    "v0_26": "International benchmark outcomes (035): the MLB outcome audit of the 48 non-Dodgers players of the MLB Pipeline 2013 / 2014 Top-30 international signing trackers (43 identity-resolved and audited, 11 reached MLB, 5 identity-unresolved and queued), their Baseball-Reference team-season bWAR, and three views - per-player benchmark outcomes with comparison tiers, a population coverage model with strict derived rate eligibility, and a research queue. A Top-prospect sample benchmark, not a census: no organizational rate, ranking or league comparison is computed (database/research/035).",
+    "v0_27": "Scouting expectation vs realized outcome (036): reviewed source-native expectation bands (scouting_expectation_bands: MLB Pipeline Top-30 class ranks, Baseball America Top-100 ranks, FanGraphs organization ranks and FV, each band reading one publication's own measure with a stated DISI-convention outcome rule), the shared realized-outcome spine v_player_realized_outcome (Dodgers 032-034 and benchmark 035 outcomes passed through, MLB value NULL without an MLB career), every external rank / FV observation with its band and debut order, frozen pre-debut anchors compared with the realized outcome (TOO_EARLY and OUTCOME_INCOMPLETE are never misses), a descriptive calibration summary with shares only for 10+ comparable outcomes, and a research queue (database/research/036)."
   }
 }
