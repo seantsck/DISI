@@ -21,6 +21,7 @@ import { financialQueries } from './financial-invariants.mjs'
 import { valueQueries } from './value-invariants.mjs'
 import { transactionQueries } from './transaction-invariants.mjs'
 import { downstreamQueries, DOWNSTREAM_CHECK_NAMES } from './downstream-invariants.mjs'
+import { benchmarkQueries, BENCHMARK_CHECK_NAMES } from './benchmark-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -91,7 +92,7 @@ export const CANONICAL_EXPECTATIONS = {
   // 032 adds two tables and four views.
   // 033 adds two tables and four views.
   // 034 adds one table and four views.
-  public_views_total: 109,
+  public_views_total: 112,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
@@ -194,6 +195,7 @@ export const CANONICAL_EXPECTATIONS = {
   transaction_guard_violations: 0,
   // downstream organizational value chains (034)
   ...Object.fromEntries(DOWNSTREAM_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(BENCHMARK_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -503,6 +505,12 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasDownstreamLayer = Boolean((await query(`select to_regclass('public.transaction_asset_timing_observations') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(downstreamQueries(hasDownstreamLayer))) {
     check('downstream', name, expectations[name], await count(sql))
+  }
+
+  // -- international benchmark outcomes (035) ----------------------------------------
+  const hasBenchmarkLayer = Boolean((await query(`select to_regclass('public.v_international_benchmark_player_outcomes') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(benchmarkQueries(hasBenchmarkLayer))) {
+    check('benchmark', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

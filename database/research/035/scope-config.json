@@ -1,0 +1,20 @@
+{
+ "war_system": "BWAR",
+ "note": "The Baseball-Reference WAR data files are the same two files, with the same checksums, that Migrations 032, 033 and 034 loaded; no re-download.",
+ "files": {
+  "bat": {
+   "url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+   "sha256": "ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8",
+   "rows": 126547
+  },
+  "pitch": {
+   "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt",
+   "sha256": "061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5",
+   "rows": 57884
+  }
+ },
+ "retrieved_at": "2026-10-10T07:36:40Z",
+ "file_last_modified": "2026-09-28",
+ "team_code_map_additions": [],
+ "audit_through_date": "2026-10-05"
+}

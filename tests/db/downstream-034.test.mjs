@@ -7,7 +7,7 @@ import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { buildChainThrough, buildCanonicalChain } from './canonical-chain.mjs'
+import { buildChainThrough } from './canonical-chain.mjs'
 import { lit, withoutTransaction } from './drift-027.mjs'
 import { downstreamQueries, DOWNSTREAM_CHECK_NAMES } from '../../scripts/db/lib/downstream-invariants.mjs'
 import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
@@ -507,7 +507,7 @@ test('zero semantics: observed zero only through a dated observation; missing, u
 // ---------------------------------------------------------------------------------------------
 
 test('convergence: a fresh 001-034 replay equals the 001-033 database with 034 applied (rows, definitions, grants)', async () => {
-  const fresh = await buildCanonicalChain()
+  const fresh = await buildChainThrough('034_downstream_organizational_value_chains.sql')
   try {
     const business = async (query) => ({
       events: await query(`select event_key, transaction_date::text as d, transaction_type, historical_label from transaction_events order by 1`),
@@ -554,12 +554,12 @@ test('security: the timing table is RLS + SELECT-only, the guard is invoker-righ
   assert.equal((await one(`select count(*)::int as n from pg_proc where pronamespace = 'public'::regnamespace and proname in ('v_player_control_intervals')`)).n, 0, 'no helper function: pure SQL views')
 })
 
-test('verifier: the 18 downstream checks pass and catch their own drift; the full verifier passes with 178 checks', async () => {
+test('verifier: the 18 downstream checks pass and catch their own drift; the full verifier passes with 186 checks (178 through 034 plus 8 for 035, which pass trivially without their views)', async () => {
   assert.deepEqual(await failing(), [])
   assert.equal(DOWNSTREAM_CHECK_NAMES.length, 18)
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+  const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 109 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 178)
+  assert.equal(full.hard.length, 186)
   const drifts = {
     downstream_timing_observation_violations: `alter table transaction_asset_timing_observations disable trigger transaction_asset_timing_observations_guard;
       update transaction_asset_timing_observations set observed_date = date '1900-01-01', season = 1900 where fact_type = 'FIRST_DODGERS_APPEARANCE' and season = 2024;`,
