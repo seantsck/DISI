@@ -17,6 +17,7 @@ release PR, one Vercel production deploy.
 | `036_scouting_expectation_outcomes.sql` | 48161 | `4426b44a86ff07b036dcc8cc3dc0495a694e0c9ff915248d5a5f8a68d8bf17ac` | `dda791e72b10e50829f57235e69b8aebbd1ca6db` |
 | `037_development_pathway_intelligence.sql` | 29379 | `b2a809cfa32fb83b89b4c962135bae458d3e8acc235edc73624128c8c23e76c6` | `895a45373e8732f7987218ed04ff55543b46a4d8` |
 | `038_signing_network_outcomes.sql` | 20277 | `c4d0e9bf2c46a82870ebd2bcfcb349f4fa3a08ffb79042abc0bb08639215b200` | `c07611249418c33f12e5a1934bb7948652a70dd7` |
+| `038a_network_outcome_view_performance.sql` (post-038 correction, section 9) | 12554 | `b1892ffcbe780ce9785436e6c3b3074945d8fb13eac4eb94d480cb0c9dbf422a` | `57a347479d078e5545fba077b55caaa7d1c7913c` |
 
 Each file is one `begin` … `commit` transaction with guarded preconditions (036 needs 035; 037 needs 036; 038 needs 037) and
 postconditions. All three are idempotent and contain no CRLF.
@@ -145,3 +146,33 @@ safe-run apply database/sql/038_signing_network_outcomes.sql         c4d0e9bf2c4
 > `database/release/sql/rollback-036-038.sql`.
 >
 > 🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+## 9. Production release record (2026-10-13)
+
+| Step | Result |
+|---|---|
+| Preflight | project ref confirmed; production was exactly 035: 59 tables / 112 views, bundle objects absent, as-of 2026-10-05, `main` verifier 186/186 |
+| Backup | `~/backups/disi/disi-pre-036-038-release-20261013-175445.dump`, 1 946 945 bytes, SHA-256 `07e0a5cbf090d9e5d7f8c3b56e663ec4864c3e66b91de6939e1f55ae87fb3da4`, mode 600; restored into disposable PostgreSQL 17, 035 verifier 186/186 |
+| 036 / 037 / 038 | each SHA-256-checked, one transaction, COMMIT (4.0 s / 2.8 s / 6.7 s wall, connection included) |
+| After 038 | 60 tables / 125 views, bands 15 rows, as-of unchanged, verifier 207/207, zero drift of every existing table (all rows incl. ids / timestamps), view, ACL, policy, function and trigger; idempotent re-apply of all three: no change |
+| Anon smoke | **failed**: `v_network_outcome_summary` and `v_network_outcome_research_queue` exceeded the 3 s anon statement timeout (server-side as anon 1.5-3.9 s); the release was halted before the PR |
+
+### Performance addendum: 038a
+
+`038a_network_outcome_view_performance.sql` (SHA-256 `b1892ffcbe780ce9785436e6c3b3074945d8fb13eac4eb94d480cb0c9dbf422a`,
+SHA-1 (LF) `57a347479d078e5545fba077b55caaa7d1c7913c`) is a forward-only, post-038 query-shape correction.
+- **Change:** it redefines only `v_network_player_outcomes`. The view reads the 036 spine once and applies the 036 / 037 rules to the
+  documented players only. Previously it computed the spine three times plus the expectation and pathway layers for every signing.
+- **Unchanged:** columns, types, rows, NULLs, labels, grants, comment and security_invoker. No table, fact, grant or policy changes.
+- **Not edited:** 036-038 are applied and frozen.
+
+| Evidence | Result |
+|---|---|
+| Equivalence | identical rows for all four network views, on the real data and on a synthetic relationship for every signing (all pathway classes and expectation states); on production, read-only before the apply, the 038a query equalled the live 038 view |
+| Local gates | `tests/db/network-038a.test.mjs` 7/7, `network-038` 10/10, `migrations.test` 125/125, PostgreSQL 17 bundle validator 30/30 (incl. 038a additivity, row identity, idempotency, convergence, rollback) |
+| Apply | SHA-256-checked, one transaction, COMMIT (3.1 s) |
+| After 038a | verifier 207/207; only `v_network_player_outcomes` redefined; tables, ACLs, policies, functions, triggers, security identical; the live view equals the original 038 query on production (9 rows, 0 / 0 difference); idempotent re-apply: no change |
+| Anon, server-side (5 runs) | player outcomes 414 (cold) / 102 / 53 / 40 / 40 ms; summary 40-41 ms; queue 39-43 ms; coverage 26-28 ms (before: 110-2688, 137-3908 with timeouts, 142-1959 ms) |
+| Anon public reads | 6 consecutive passes of the four network views: 24/24 OK, max 771 ms client time incl. ~4 round trips; all 13 bundle views read twice: 26/26 OK, 0.50-0.72 s |
+
+The rollback script still covers the bundle: it drops `v_network_player_outcomes` whichever definition it has.
