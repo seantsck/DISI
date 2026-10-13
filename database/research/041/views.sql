@@ -194,7 +194,32 @@ with (security_invoker = true)
 as
 with m as materialized (
   with p as materialized (select * from public.v_outcome_training_population),
-  s as materialized (select * from public.v_outcome_target_support),
+  -- the v_outcome_target_support aggregation, computed once from p (the verifier checks the two agree)
+  s as (
+    select a.*, t.min_reference_n, t.min_positives, t.min_negatives,
+      (a.labelled_n >= t.min_reference_n and a.positive_n >= t.min_positives and a.negative_n >= t.min_negatives) as baseline_supported
+    from (
+      select p.target_key, p.reference_population,
+        count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY'))::int as labelled_n,
+        count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY') and p.label)::int as positive_n,
+        count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY') and p.label = false)::int as negative_n
+      from p where p.reference_population is not null and p.training_state <> 'OUT_OF_SCOPE'
+      group by p.target_key, p.reference_population
+    ) a
+    join public.outcome_targets t on t.target_key = a.target_key
+  ),
+  sb as (
+    select s.*,
+      case when s.baseline_supported then round(s.positive_n::numeric / s.labelled_n, 4) end as baseline_probability,
+      case when s.baseline_supported then round((((s.positive_n::numeric / s.labelled_n) + 1.6449^2 / (2 * s.labelled_n)
+        - 1.6449 * sqrt((s.positive_n::numeric / s.labelled_n) * (1 - s.positive_n::numeric / s.labelled_n) / s.labelled_n + 1.6449^2 / (4 * s.labelled_n^2)))
+        / (1 + 1.6449^2 / s.labelled_n))::numeric, 4) end as baseline_probability_low_90,
+      case when s.baseline_supported then round((((s.positive_n::numeric / s.labelled_n) + 1.6449^2 / (2 * s.labelled_n)
+        + 1.6449 * sqrt((s.positive_n::numeric / s.labelled_n) * (1 - s.positive_n::numeric / s.labelled_n) / s.labelled_n + 1.6449^2 / (4 * s.labelled_n^2)))
+        / (1 + 1.6449^2 / s.labelled_n))::numeric, 4) end as baseline_probability_high_90,
+      case when s.baseline_supported then 'BASELINE_SUPPORTED' when s.labelled_n = 0 then 'NO_LABELLED_OUTCOMES' else 'BASELINE_NOT_SUPPORTED' end as support_state
+    from s
+  ),
   x as materialized (select * from public.v_outcome_feature_matrix),
   ev as (select target_key, bool_or(decision = 'MODEL_SUPPORTED') as model_supported,
            string_agg(format('%s: Brier skill %s (%s rows, %s positives, %s)', model_key, coalesce(brier_skill_vs_base_rate::text, 'n/a'), evaluated_rows, positive_n, validation_method), '; ' order by model_key) as evidence
@@ -218,7 +243,7 @@ with m as materialized (
       when s.baseline_supported is not true then 'REFERENCE_POPULATION_NOT_SUPPORTED'
     end as prediction_exclusion_reason
   from p
-  left join s on s.target_key = p.target_key and s.reference_population = p.reference_population
+  left join sb s on s.target_key = p.target_key and s.reference_population = p.reference_population
   left join x on x.signing_id = p.signing_id
   left join ev on ev.target_key = p.target_key
 ),
@@ -243,18 +268,43 @@ create or replace view public.v_outcome_probability_research_queue
 with (security_invoker = true)
 as
 with m as materialized (
+  with p as materialized (select * from public.v_outcome_training_population),
+  sup as (
+    select a.*, t.min_reference_n, t.min_positives, t.min_negatives,
+      greatest(t.min_positives - a.positive_n, 0) as additional_positives_needed, greatest(t.min_reference_n - a.labelled_n, 0) as additional_labels_needed,
+      (a.labelled_n >= t.min_reference_n and a.positive_n >= t.min_positives and a.negative_n >= t.min_negatives) as baseline_supported
+    from (
+      select p.target_key, p.reference_population,
+        count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY'))::int as labelled_n,
+        count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY') and p.label)::int as positive_n,
+        count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY') and p.label = false)::int as negative_n
+      from p where p.reference_population is not null and p.training_state <> 'OUT_OF_SCOPE'
+      group by p.target_key, p.reference_population
+    ) a
+    join public.outcome_targets t on t.target_key = a.target_key
+  ),
+  live as (
+    select p.target_key,
+      md5(string_agg(concat_ws('|', p.player_slug, p.label::text, p.population_class, coalesce(x.age_in_signing_year::text, ''), x.position_family,
+        x.market_group, x.expectation_tier), E'\n' order by concat_ws('|', p.player_slug, p.label::text, p.population_class,
+        coalesce(x.age_in_signing_year::text, ''), x.position_family, x.market_group, x.expectation_tier) collate "C")) as live_fingerprint
+    from p join public.v_outcome_feature_matrix x on x.signing_id = p.signing_id
+    where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY') and x.model_features_complete
+    group by p.target_key
+  )
   select 'TARGET_REFERENCE_NOT_SUPPORTED'::text as issue, 2 as priority, s.target_key, s.reference_population, null::text as player_slug,
     format('%s labelled rows (%s positive, %s negative); support needs %s rows, %s positives and %s negatives: %s more positive(s) and %s more labelled row(s).',
       s.labelled_n, s.positive_n, s.negative_n, s.min_reference_n, s.min_positives, s.min_negatives, s.additional_positives_needed, s.additional_labels_needed) as detail
-  from public.v_outcome_target_support s where not s.baseline_supported
+  from sup s where not s.baseline_supported
   union all
   select 'LABEL_BLOCKED_BY_MISSING_AUDIT', 2, p.target_key, p.reference_population, p.player_slug,
     format('The %s-season horizon has elapsed but the outcome is not established (unaudited, or a reacher without loaded bWAR facts).', p.horizon_seasons)
-  from public.v_outcome_training_population p where p.training_state = 'OUTCOME_UNAUDITED'
+  from p where p.training_state = 'OUTCOME_UNAUDITED'
   union all
   select 'MODEL_EVALUATION_STALE', 1, e.target_key, null, null,
     format('The %s evaluation was computed on a training set that no longer matches the live data; rebuild it before citing it.', e.model_key)
-  from public.v_outcome_model_evaluation e where not e.evaluation_current
+  from public.outcome_model_evaluations e left join live l on l.target_key = e.target_key
+  where l.live_fingerprint is distinct from e.training_fingerprint
 )
 select * from m;
 
