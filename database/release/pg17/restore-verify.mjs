@@ -1,6 +1,7 @@
 // Proves a pg_dump custom-format backup is recoverable: restores it into a disposable PostgreSQL 17 database and runs the frozen
 // 034 verifier (178 hard invariants) against the restored copy. With --selftest it first builds the frozen 001-034 chain, dumps it
 // with the same pg_dump flags the checklist uses, and verifies the round trip row-for-row. Never connects to a hosted database.
+// Every role the archive grants to or owns by is created as a NOLOGIN placeholder (Supabase platform roles included).
 //   node restore-verify.mjs <work-dir> --selftest
 //   node restore-verify.mjs <work-dir> <backup.dump>
 import fs from 'node:fs'
@@ -26,12 +27,31 @@ const md5 = (v) => crypto.createHash('md5').update(JSON.stringify(v)).digest('he
 
 const server = new EmbeddedPostgres({ databaseDir: dataDir, user: 'postgres', password: 'postgres', port, persistent: false, onLog: () => {} })
 await server.initialise(); await server.start()
-const connect = async (db) => { const c = new pg.Client({ host: 'localhost', port, user: 'postgres', password: 'postgres', database: db }); await c.connect(); return c }
-const createDb = async (name) => {
+const connect = async (db) => {
+  const c = new pg.Client({ host: 'localhost', port, user: 'postgres', password: 'postgres', database: db })
+  c.on('error', () => {}) // the disposable server's shutdown terminates idle connections
+  await c.connect()
+  return c
+}
+// Roles a hosted Supabase dump refers to (API roles, and platform roles such as supabase_admin in ALTER DEFAULT PRIVILEGES).
+// They are created as NOLOGIN placeholders in the disposable cluster so the archive's grants restore exactly.
+const archiveRoles = (dumpFile) => {
+  const sql = execFileSync('pg_restore', ['--schema-only', '-f', '-', dumpFile], { encoding: 'utf8', maxBuffer: 1 << 28 })
+  const found = new Set()
+  const add = (list) => { for (const r of list.split(',')) { const x = r.trim().replace(/^"|"$/g, ''); if (/^[A-Za-z_][\w$]*$/.test(x)) found.add(x) } }
+  for (const line of sql.split('\n')) {
+    let m
+    if ((m = /^ALTER DEFAULT PRIVILEGES FOR ROLE ("?)([A-Za-z_][\w$]*)\1 .* (?:TO|FROM) (.+);$/.exec(line))) { found.add(m[2]); add(m[3]) }
+    else if ((m = /^(?:GRANT|REVOKE) .* (?:TO|FROM) (.+);$/.exec(line))) add(m[1].replace(/ WITH GRANT OPTION$/, '').replace(/ GRANTED BY .*$/, ''))
+    else if ((m = /^ALTER .* OWNER TO ("?)([A-Za-z_][\w$]*)\1;$/.exec(line))) found.add(m[2])
+  }
+  found.delete('PUBLIC'); found.delete('postgres')
+  return [...found].sort()
+}
+const createDb = async (name, roles = ['anon', 'authenticated', 'service_role']) => {
   const a = await connect('postgres')
   await a.query(`create database ${name}`)
-  // Supabase API roles the dump's GRANTs refer to (cluster-wide; created once)
-  for (const r of ['anon', 'authenticated', 'service_role']) await a.query(`create role ${r} nologin`).catch(() => {})
+  for (const r of roles) await a.query(`create role ${pg.escapeIdentifier(r)} nologin`).catch(() => {})
   await a.end()
 }
 const contentHashes = async (c) => {
@@ -68,7 +88,9 @@ try {
   console.log(`archive TOC: ${count(/ TABLE DATA public /)} table-data entries, ${count(/ VIEW public /)} views, ${count(/ POLICY public /)} policies, ${count(/ ACL public /)} ACLs`)
   check('pg_restore --list reads the archive', count(/ TABLE DATA public /) > 0)
 
-  await createDb('restored_db')
+  const roles = archiveRoles(dump)
+  console.log(`roles referenced by the archive (created NOLOGIN in the disposable cluster): ${roles.join(', ')}`)
+  await createDb('restored_db', roles)
   const restored = await connect('restored_db')
   await restored.query('drop schema if exists public cascade')
   execFileSync('pg_restore', [...conn, '-d', 'restored_db', '--exit-on-error', '--single-transaction', '--no-owner', dump], { env, stdio: ['ignore', 'inherit', 'inherit'] })
@@ -78,6 +100,11 @@ try {
   const report = await checkInvariants(async (sql, params) => (await restored.query(sql, params)).rows)
   const f = failedChecks(report)
   check(`frozen 034 verifier on the restored copy: ${report.hard.length - f.length}/${report.hard.length}`, f.length === 0, f.map((x) => x.name).join(', '))
+  // the read-only hosted-state probe, run on the restored copy, for comparison with the probe of the source database
+  const probe = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../sql/live-state-probe.sql'), 'utf8')
+  const probeRows = [].concat(await restored.query(probe)).filter((r) => r.command === 'SELECT').slice(1).map((r) => r.rows)
+  console.log('probe on the restored copy:')
+  for (const rows of probeRows) for (const r of rows) console.log('  ' + Object.values(r).map((v) => v === null ? '' : String(v)).join(' | '))
   if (source) {
     check('round trip: every public table row-for-row identical (ids and timestamps included)', md5(await contentHashes(source)) === md5(await contentHashes(restored)))
     const [ca, cb] = [await catalog(source), await catalog(restored)]
