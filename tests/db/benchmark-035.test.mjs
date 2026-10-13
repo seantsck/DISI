@@ -245,7 +245,7 @@ test('verifier: the eight benchmark checks pass and each catches its own drift; 
   assert.ok((await drift(out, { career_bwar: `r.career_bwar + 1` })).includes('benchmark_bwar_split_violations'))
 })
 
-test('convergence: a fresh 001-035 replay equals the 001-034 database with 035 applied (rows, definitions, grants)', async () => {
+test('convergence: a fresh 001-035 replay equals the 001-034 database with 035 applied (rows, definitions, grants)', { timeout: 600000 }, async () => {
   const fresh = await buildCanonicalChain()
   try {
     const business = async (query) => ({
@@ -267,7 +267,7 @@ test('convergence: a fresh 001-035 replay equals the 001-034 database with 035 a
   } finally {
     await fresh.close()
   }
-}, { timeout: 600000 })
+})
 
 test('reproducible: building from the same inputs produces the committed bytes', () => {
   const before = crypto.createHash('sha1').update(fs.readFileSync(path.join(root, 'database/sql', FILE))).digest('hex')
