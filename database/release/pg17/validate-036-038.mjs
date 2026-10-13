@@ -101,7 +101,10 @@ try {
     const a = readSql(T035, f), b = readSql(TC, f)
     if (a !== b || sha1(a.replace(/\r\n/g, '\n')) !== frozen[f]) { frozenOk = false; console.log('  drift: ' + f) }
   }
-  check('001-035 byte-identical between the baseline and the candidate and equal to frozen-migrations.json (35 entries)', frozenOk && Object.keys(frozen).length === 35)
+  // once applied, 036-038 are frozen too; every frozen entry must match the candidate's bytes
+  const frozenRest = Object.keys(frozen).filter((f) => !base.includes(f))
+  const restOk = frozenRest.every((f) => cand.includes(f) && sha1(readSql(TC, f).replace(/\r\n/g, '\n')) === frozen[f])
+  check(`001-035 byte-identical between the baseline and the candidate; every frozen entry (${Object.keys(frozen).length}) matches the candidate`, frozenOk && restOk && base.every((f) => f in frozen), frozenRest.join(','))
   for (const f of BUNDLE) console.log(`  ${f}: sha256 ${sha256(readSql(TC, f))}  sha1(LF) ${sha1(readSql(TC, f).replace(/\r\n/g, '\n'))}  ${Buffer.byteLength(readSql(TC, f))} bytes`)
   check('bundle files have no CRLF and one transaction each', BUNDLE.every((f) => !readSql(TC, f).includes('\r') && /^begin;$/m.test(readSql(TC, f)) && /^commit;$/m.test(readSql(TC, f))))
 
