@@ -8,9 +8,9 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
-  predictionReadiness, expectedValueCell, scenarioOptimization, decisionStateLabel, budgetStateLabel, NO_PROBABILITY_STATEMENT,
+  predictionReadiness, expectedValueCell, scenarioOptimization, decisionStateLabel, budgetStateLabel, NO_PROBABILITY_STATEMENT, snapshotFreshness,
 } from '../../lib/decision-display.js'
-import { loadPortfolioData, loadReadinessData, loadDossierDecision, getPortfolioData, getReadinessData } from '../../lib/data.js'
+import { loadPortfolioData, loadReadinessData, loadDossierDecision, getPortfolioData, getReadinessData, readinessFromPlayerDecision } from '../../lib/data.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -102,48 +102,74 @@ test('pages never read a predictive column directly: probabilities, expected val
   assert.match(readiness, /readiness\.published \? Number\(overview\.non_null_probabilities\)/)
 })
 
-test('portfolio and readiness loaders run one query at a time and return the empty shape with a safe message on a timeout', async () => {
+const SNAPSHOT_TODAY = { ...TODAY, generation_id: 1, generated_at: '2026-10-14T23:11:15Z', snapshot_as_of_date: '2026-10-14', source_data_as_of_date: '2026-10-05',
+  product_version: 'DISI v1.0.0', schema_version: 'v0.36.1', support_chain_state: 'NO_PREDICTIVE_LAYER_SUPPORTED' }
+
+test('portfolio and readiness loaders read only the persisted snapshots, one query at a time, and return the empty shape with a safe message on a timeout', async () => {
   const fixtures = {
-    v_portfolio_decision_support: [{ decision_support_state: 'HISTORICAL_CONTEXT_ONLY', predictive_recommendations_total: 0 }],
-    v_historical_portfolio_summary: [{ grain: 'ALL' }], v_portfolio_scenario_evaluation: [{ scenario_key: 'BASE_POOL' }],
-    v_expected_value_support: [{ value_model_key: 'EXPECTED_DIRECT_DODGERS_BWAR_V1', expected_value_supported: false }],
-    v_executive_overview: TODAY, v_prediction_readiness: [{ target_key: 'REACH_MLB_WITHIN_7_SEASONS' }], v_outcome_model_evaluation: [{ model_key: 'BASE_RATE' }],
+    product_portfolio_decision_support: [{ decision_support_state: 'HISTORICAL_CONTEXT_ONLY', predictive_recommendations_total: 0 }],
+    product_portfolio_history: [{ grain: 'ALL' }], product_portfolio_scenarios: [{ scenario_key: 'BASE_POOL' }],
+    product_expected_value_support: [{ value_model_key: 'EXPECTED_DIRECT_DODGERS_BWAR_V1', expected_value_supported: false }],
+    product_executive_snapshot: SNAPSHOT_TODAY, product_prediction_readiness: [{ target_key: 'REACH_MLB_WITHIN_7_SEASONS' }], product_model_evaluations: [{ model_key: 'BASE_RATE' }],
   }
   const c1 = fakeClient(fixtures)
   const p = await loadPortfolioData(c1)
   assert.equal(c1.maxInFlight, 1)
-  assert.deepEqual(c1.requests.map((r) => r.relation), ['v_portfolio_decision_support', 'v_historical_portfolio_summary', 'v_portfolio_scenario_evaluation', 'v_expected_value_support'])
+  assert.deepEqual(c1.requests.map((r) => r.relation), ['product_executive_snapshot', 'product_portfolio_decision_support', 'product_portfolio_history', 'product_portfolio_scenarios', 'product_expected_value_support'])
   assert.equal(p.decisionSupport.length, 1)
-  // the portfolio page never selects '*' from the heavy scenario / history views
-  for (const r of c1.requests.filter((x) => ['v_historical_portfolio_summary', 'v_portfolio_scenario_evaluation'].includes(x.relation))) {
+  assert.equal(snapshotFreshness(p.freshness), 'Snapshot generated 2026-10-14 · source data as of 2026-10-05 · DISI v1.0.0')
+  // the portfolio page selects column lists from the larger snapshots
+  for (const r of c1.requests.filter((x) => ['product_portfolio_history', 'product_portfolio_scenarios'].includes(x.relation))) {
     assert.notEqual(r.calls.find((call) => call[0] === 'select')[1], '*')
   }
   const c2 = fakeClient(fixtures)
   const r = await loadReadinessData(c2)
   assert.equal(c2.maxInFlight, 1)
+  assert.deepEqual(c2.requests.map((x) => x.relation), ['product_executive_snapshot', 'product_prediction_readiness', 'product_model_evaluations', 'product_expected_value_support'])
   assert.equal(r.overview.supported_probability_targets, 0)
+  assert.equal(predictionReadiness(r.overview).statement, NO_PROBABILITY_STATEMENT)
   const timeout = { code: '57014', message: 'canceling statement due to statement timeout' }
-  const failed = await getPortfolioData(fakeClient(fixtures, { errorFor: { v_portfolio_scenario_evaluation: timeout } }))
+  const failed = await getPortfolioData(fakeClient(fixtures, { errorFor: { product_portfolio_scenarios: timeout } }))
   assert.deepEqual([failed.live, failed.error, failed.scenarios], [false, 'The database did not respond in time. Please try again shortly.', []])
-  const failed2 = await getReadinessData(fakeClient(fixtures, { errorFor: { v_executive_overview: timeout } }))
+  const failed2 = await getReadinessData(fakeClient(fixtures, { errorFor: { product_executive_snapshot: timeout } }))
   assert.deepEqual([failed2.live, failed2.overview], [false, null])
 })
 
-test('dossier decision sections: sequential, skipped for non-Dodgers players, tolerant of a database without 042-044', async () => {
+test('dossier decision sections: persisted per-player snapshots, sequential, skipped for non-Dodgers players, tolerant of a database without them', async () => {
   const fixtures = {
-    v_player_realized_organizational_value: [{ signing_id: 's1', signing_year: 2019 }],
-    v_portfolio_candidate_readiness: [{ signing_id: 's1', decision_support_state: 'HISTORICAL_CONTEXT_ONLY' }],
-    v_player_expected_organizational_value: [{ signing_id: 's1', expected_value_supported: false }],
-    v_player_comparable_summary: [{ target_signing_id: 's1', comparables: 20 }],
+    product_player_decision: [{ signing_id: 's1', signing_year: 2019, realized_value_state: 'REALIZED_TO_DATE', cost_complete: true, cost_coverage_state: 'COMPLETE',
+      decision_support_state: 'HISTORICAL_CONTEXT_ONLY', readiness_cost_complete: false, readiness_cost_coverage_state: 'PARTIAL', player_data_complete: true }],
+    product_player_expected_value: [{ signing_id: 's1', expected_value_supported: false }],
+    product_player_comparables: [{ target_signing_id: 's1', comparables: 20 }],
+    product_executive_snapshot: SNAPSHOT_TODAY,
   }
   const c = fakeClient(fixtures)
   const d = await loadDossierDecision(c, 'p1')
   assert.equal(c.maxInFlight, 1)
+  assert.deepEqual(c.requests.map((x) => x.relation), ['product_player_decision', 'product_player_expected_value', 'product_player_comparables', 'product_executive_snapshot'])
   assert.deepEqual([d.realizedValue.length, d.readiness.length, d.expectedValue.length, d.comparables.length, d.decisionAvailable], [1, 1, 1, 1, true])
-  const none = fakeClient({ ...fixtures, v_player_realized_organizational_value: [] })
+  // realized value keeps its own cost columns; the readiness row gets the decision-time ones back under their 043 names
+  assert.deepEqual([d.realizedValue[0].cost_complete, d.readiness[0].cost_complete, d.readiness[0].cost_coverage_state], [true, false, 'PARTIAL'])
+  assert.deepEqual(readinessFromPlayerDecision(fixtures.product_player_decision[0]).decision_support_state, 'HISTORICAL_CONTEXT_ONLY')
+  assert.match(snapshotFreshness(d.freshness) ?? '', /^Snapshot generated 2026-10-14/)
+  const none = fakeClient({ ...fixtures, product_player_decision: [] })
   const n = await loadDossierDecision(none, 'p2')
   assert.equal(none.requests.length, 1, 'no further query for a player without a Dodgers signing')
   assert.deepEqual([n.realizedValue, n.decisionAvailable], [[], true])
-  const missing = await loadDossierDecision(fakeClient(fixtures, { errorFor: { v_player_realized_organizational_value: { code: 'PGRST205', message: 'not found' } } }), 'p3')
+  const missing = await loadDossierDecision(fakeClient(fixtures, { errorFor: { product_player_decision: { code: 'PGRST205', message: 'not found' } } }), 'p3')
   assert.deepEqual([missing.realizedValue, missing.decisionAvailable], [[], false])
+})
+
+test('serving boundary: the application reads the 042-045 product only through the persisted snapshots, never the analytical layer', async () => {
+  const { INTERNAL_VIEWS, CONTRACT_REMOVED_EARLIER, SNAPSHOT_TABLES, STAGED_FUNCTIONS, SERVING_FUNCTIONS } = await import('../../database/research/045a/snapshots.mjs')
+  const files = ['lib/data.js', ...fs.readdirSync(path.join(root, 'app'), { recursive: true }).filter((f) => String(f).endsWith('.js')).map((f) => path.join('app', String(f)))]
+  const reads = new Set()
+  for (const f of files) {
+    const src = fs.readFileSync(path.join(root, f), 'utf8')
+    for (const m of src.matchAll(/\.from\('([a-z_0-9]+)'\)/g)) reads.add(m[1])
+    for (const fn of [...STAGED_FUNCTIONS, ...SERVING_FUNCTIONS]) assert.ok(!src.includes(fn), `${f} must not call ${fn}`)
+    assert.doesNotMatch(src, /\.rpc\(/, `${f}: no RPC call`)
+  }
+  for (const v of [...INTERNAL_VIEWS, ...CONTRACT_REMOVED_EARLIER]) assert.ok(!reads.has(v), `the app must not read ${v}`)
+  for (const t of SNAPSHOT_TABLES) assert.ok(reads.has(t), `the app reads ${t}`)
 })
