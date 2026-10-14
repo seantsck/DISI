@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Independent validation of the 042-045 bundle on a disposable PostgreSQL 17 server (embedded-postgres). Read-only with respect to
+# Independent validation of the 042-045 bundle (042, 043, 043a, 044, 045) on a disposable PostgreSQL 17 server (embedded-postgres). Read-only with respect to
 # every hosted database: no connection string is read. Usage: database/release/pg17/run-042-045.sh [work-dir]   (default: mktemp -d)
 #   BASELINE   the released commit holding 001-041 (default origin/main)
 #   CANDIDATE  the bundle commit (default HEAD)

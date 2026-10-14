@@ -1,10 +1,13 @@
 -- DISI 042-045 bundle: logical rollback of the DATABASE part (WRITE; run only with explicit owner approval, after a failed post-release
 -- verification).
 --
--- The bundle is derived only: it adds four tables (expected_value_models, portfolio_scenario_definitions, disi_product_contract -
--- reviewed rows that exist nowhere else and are rebuilt by re-applying 042 / 043 / 045 - and no other) and fifteen views, and writes,
--- redefines or re-grants nothing that existed before. Dropping those eighteen objects in reverse dependency order returns the database
--- to its exact 001-041 state (proven on PostgreSQL 17 by database/release/pg17/validate-042-045.mjs).
+-- The bundle (042, 043, 043a, 044, 045) is derived only: it adds three tables (expected_value_models, portfolio_scenario_definitions,
+-- disi_product_contract - reviewed rows that exist nowhere else and are rebuilt by re-applying 042 / 043 / 045 - and no other), fifteen
+-- views and six staged read-only functions (043a: four, 044: one, 045: one), and writes, redefines or re-grants nothing that existed
+-- before. Dropping those twenty-four objects in reverse dependency order (each wrapper view before its function) returns the database
+-- to its exact 001-041 state (proven on PostgreSQL 17 by database/release/pg17/validate-042-045.mjs). Every drop is "if exists", so it
+-- also completes a partial release: on 2026-10-14 the previous version of this file (without the functions) rolled production back
+-- from 042 + 043 to the exact 001-041 state after the interrupted first release attempt.
 --
 -- It cannot undo anything written after the release by other work, and it does not roll back the application: the 044 pages read
 -- 042-045 views, so a database rollback must be paired with a revert of the application merge (or the pages report "Data unavailable").
@@ -50,10 +53,12 @@ end $$;
 drop view if exists public.v_executive_metric_provenance;
 drop view if exists public.v_research_roadmap;
 drop view if exists public.v_disi_release_status;
+drop function if exists public.disi_research_roadmap();
 drop table if exists public.disi_product_contract;
 -- 044
 drop view if exists public.v_prediction_readiness;
 drop view if exists public.v_executive_overview;
+drop function if exists public.disi_executive_overview();
 -- 043
 drop view if exists public.v_portfolio_research_queue;
 drop view if exists public.v_portfolio_decision_support;
@@ -67,13 +72,21 @@ drop view if exists public.v_player_expected_organizational_value;
 drop view if exists public.v_expected_value_support;
 drop view if exists public.v_historical_org_value_distribution;
 drop view if exists public.v_player_realized_organizational_value;
+-- 043a (its four functions are the bodies of 042 / 043 views dropped above)
+drop function if exists public.disi_portfolio_candidate_readiness();
+drop function if exists public.disi_expected_value_research_queue();
+drop function if exists public.disi_player_expected_organizational_value();
+drop function if exists public.disi_player_realized_organizational_value();
 drop table if exists public.expected_value_models;
 
 do $$
 begin
   if (select count(*) from pg_class where relnamespace = 'public'::regnamespace and relkind = 'v') <> 140
-     or (select count(*) from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r') <> 64 then
-    raise exception 'rollback-042-045 postcondition: the public schema is not back to 64 tables / 140 views';
+     or (select count(*) from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r') <> 64
+     or exists (select 1 from pg_proc where pronamespace = 'public'::regnamespace
+                and proname in ('disi_player_realized_organizational_value', 'disi_player_expected_organizational_value', 'disi_expected_value_research_queue',
+                                'disi_portfolio_candidate_readiness', 'disi_executive_overview', 'disi_research_roadmap')) then
+    raise exception 'rollback-042-045 postcondition: the public schema is not back to 64 tables / 140 views without the staged functions';
   end if;
 end $$;
 

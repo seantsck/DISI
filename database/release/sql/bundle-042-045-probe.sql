@@ -1,4 +1,4 @@
--- DISI hosted database: read-only migration-state probe for the 042-045 bundle release.
+-- DISI hosted database: read-only migration-state probe for the 042-045 bundle release (042, 043, 043a, 044, 045).
 --
 -- Run as ONE statement batch in a read-only transaction, e.g. through the secret-safe runner (credential in the environment only):
 --   psql -X -v ON_ERROR_STOP=1 -f database/release/sql/bundle-042-045-probe.sql
@@ -36,6 +36,24 @@ from (values
 ) as m(migration, object)
 order by 1, 2;
 
+-- 2b. the six staged read-only functions (043a: four, 044: one, 045: one): absent before, present after; and whether each wrapper view
+--     reads its function (false while only 042 / 043 are applied: the views still have their stacked 042 / 043 shape)
+select f.migration, f.fn, p.oid is not null as present,
+  coalesce(p.provolatile = 's' and not p.prosecdef and coalesce(p.proconfig, array[]::text[]) @> array['search_path=""']
+    and not has_function_privilege('public', p.oid, 'EXECUTE') and has_function_privilege('anon', p.oid, 'EXECUTE'), false) as stable_invoker_granted,
+  exists (select 1 from pg_rewrite rw join pg_depend d on d.objid = rw.oid
+          where p.oid is not null and d.refobjid = p.oid and rw.ev_class = to_regclass('public.' || f.view_name)) as view_is_wrapper
+from (values
+  ('043a', 'disi_player_realized_organizational_value', 'v_player_realized_organizational_value'),
+  ('043a', 'disi_player_expected_organizational_value', 'v_player_expected_organizational_value'),
+  ('043a', 'disi_expected_value_research_queue', 'v_expected_value_research_queue'),
+  ('043a', 'disi_portfolio_candidate_readiness', 'v_portfolio_candidate_readiness'),
+  ('044', 'disi_executive_overview', 'v_executive_overview'),
+  ('045', 'disi_research_roadmap', 'v_research_roadmap')
+) as f(migration, fn, view_name)
+left join pg_proc p on p.proname = f.fn and p.pronamespace = 'public'::regnamespace
+order by 1, 2;
+
 -- 3. row counts of the bundle tables (NULL before) and of the facts the bundle reads (it writes none of them)
 select t.table_name,
   case when to_regclass('public.' || t.table_name) is null then null
@@ -64,7 +82,13 @@ select
        and (has_table_privilege(r.role, c.oid, 'INSERT') or has_table_privilege(r.role, c.oid, 'UPDATE') or has_table_privilege(r.role, c.oid, 'DELETE')
          or has_table_privilege(r.role, c.oid, 'TRUNCATE') or has_table_privilege(r.role, c.oid, 'REFERENCES') or has_table_privilege(r.role, c.oid, 'TRIGGER')))::int as api_beyond_select;
 
--- 6. bundle state
-select case when to_regclass('public.v_disi_release_status') is null then 'bundle not applied' else 'bundle applied' end as bundle_state;
+-- 6. bundle state (a partial state names the last migration present)
+select case
+  when to_regclass('public.v_disi_release_status') is not null then 'bundle applied'
+  when to_regclass('public.v_executive_overview') is not null then 'PARTIAL: through 044'
+  when to_regprocedure('public.disi_portfolio_candidate_readiness()') is not null then 'PARTIAL: through 043a'
+  when to_regclass('public.portfolio_scenario_definitions') is not null then 'PARTIAL: through 043'
+  when to_regclass('public.expected_value_models') is not null then 'PARTIAL: through 042'
+  else 'bundle not applied' end as bundle_state;
 
 rollback;
