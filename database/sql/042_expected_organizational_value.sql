@@ -189,28 +189,39 @@ comment on view public.v_historical_org_value_distribution is
 create or replace view public.v_expected_value_support
 with (security_invoker = true)
 as
-with p as materialized (select target_key, reference_population, training_state, label, window_dodgers_bwar, analysis_as_of_date from public.v_outcome_training_population),
-sup as materialized (select * from public.v_outcome_target_support),
-c as (
-  select m.value_model_key, p.reference_population,
+-- one pass over the 041 training population for the model targets: the probability support is the v_outcome_target_support rule
+-- (labelled / positive / negative minimums of outcome_targets), recomputed here so the population is read once (the verifier checks
+-- the two agree)
+with p as materialized (
+  select p.target_key, p.training_state, p.label, p.window_dodgers_bwar, p.analysis_as_of_date
+  from public.v_outcome_training_population p
+  where p.reference_population = 'DODGERS_TRACKED_AND_OPENING_CLASS' and p.training_state <> 'OUT_OF_SCOPE'
+    and p.target_key in (select probability_target_key from public.expected_value_models)
+),
+agg as (
+  select p.target_key,
+    count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY'))::int as labelled_n,
+    count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY') and p.label)::int as positive_n,
+    count(*) filter (where p.training_state in ('TRAINING_ELIGIBLE', 'BENCHMARK_SAMPLE_ONLY') and p.label = false)::int as negative_n,
     count(*) filter (where p.training_state = 'TRAINING_ELIGIBLE' and p.label and p.window_dodgers_bwar is not null)::int as conditional_value_n,
     avg(p.window_dodgers_bwar) filter (where p.training_state = 'TRAINING_ELIGIBLE' and p.label and p.window_dodgers_bwar is not null) as conditional_mean,
     max(p.analysis_as_of_date) as evidence_as_of_date
-  from public.expected_value_models m
-  join p on p.target_key = m.probability_target_key and p.reference_population = 'DODGERS_TRACKED_AND_OPENING_CLASS'
-  group by m.value_model_key, p.reference_population
+  from p group by p.target_key
 ),
 x as (
   select m.value_model_key, m.value_model_version, m.probability_target_key, m.value_component, m.min_conditional_n,
     'DODGERS_TRACKED_AND_OPENING_CLASS'::text as reference_population,
-    coalesce(s.baseline_supported, false) as probability_supported,
-    s.labelled_n, s.positive_n, s.additional_positives_needed, s.additional_labels_needed,
-    coalesce(c.conditional_value_n, 0) as conditional_value_n,
-    (coalesce(c.conditional_value_n, 0) >= m.min_conditional_n) as conditional_value_supported,
-    c.conditional_mean, c.evidence_as_of_date
+    coalesce(a.labelled_n >= t.min_reference_n and a.positive_n >= t.min_positives and a.negative_n >= t.min_negatives, false) as probability_supported,
+    a.labelled_n, a.positive_n,
+    greatest(t.min_positives - coalesce(a.positive_n, 0), 0) as additional_positives_needed,
+    greatest(t.min_reference_n - coalesce(a.labelled_n, 0), 0) as additional_labels_needed,
+    coalesce(a.conditional_value_n, 0) as conditional_value_n,
+    (coalesce(a.conditional_value_n, 0) >= m.min_conditional_n) as conditional_value_supported,
+    a.conditional_mean,
+    coalesce(a.evidence_as_of_date, (select max(audited_through_date) from public.outcome_audits)) as evidence_as_of_date
   from public.expected_value_models m
-  left join sup s on s.target_key = m.probability_target_key and s.reference_population = 'DODGERS_TRACKED_AND_OPENING_CLASS'
-  left join c on c.value_model_key = m.value_model_key
+  join public.outcome_targets t on t.target_key = m.probability_target_key
+  left join agg a on a.target_key = m.probability_target_key
 )
 select x.value_model_key, x.value_model_version, x.probability_target_key, x.value_component, x.reference_population,
   x.probability_supported, x.labelled_n, x.positive_n, x.additional_positives_needed, x.additional_labels_needed,
