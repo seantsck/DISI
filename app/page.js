@@ -6,7 +6,7 @@ import AuditBadge from './components/AuditBadge'
 import RowLink from './components/RowLink'
 import { getHomeData } from '../lib/data.js'
 import { money, moneyExact, bwar, humanize, pctFraction, MISSING } from '../lib/format.js'
-import { predictionReadiness } from '../lib/decision-display.js'
+import { predictionReadiness, snapshotFreshness } from '../lib/decision-display.js'
 
 // Rendered per request so pages always reflect the live database (never a build-time snapshot).
 export const dynamic = 'force-dynamic'
@@ -57,7 +57,8 @@ export default async function HomePage() {
         {executive && (
           <section aria-labelledby="executive-heading" className="section-block">
             <div className="section-heading">
-              <div><span className="eyebrow">Executive overview · data as of {executive.analysis_as_of_date}</span><h2 id="executive-heading">What the Dodgers spent and realized</h2></div>
+              <div><span className="eyebrow">Executive overview · data as of {executive.analysis_as_of_date}</span><h2 id="executive-heading">What the Dodgers spent and realized</h2>
+                {snapshotFreshness(executive) && <p className="snapshot-freshness">{snapshotFreshness(executive)}</p>}</div>
               <Link href="/portfolio">Portfolio detail →</Link>
             </div>
             <div className="stat-grid">

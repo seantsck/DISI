@@ -2,7 +2,7 @@ import Link from 'next/link'
 import DataMode from '../components/DataMode'
 import DataUnavailable from '../components/DataUnavailable'
 import { getReadinessData } from '../../lib/data.js'
-import { predictionReadiness } from '../../lib/decision-display.js'
+import { predictionReadiness, snapshotFreshness } from '../../lib/decision-display.js'
 import { humanize, num, MISSING } from '../../lib/format.js'
 
 export const metadata = { title: 'Prediction Readiness' }
@@ -35,6 +35,7 @@ export default async function PredictionReadinessPage() {
       {!live && <DataUnavailable error={error} />}
 
       {live && overview && <>
+        {snapshotFreshness(overview) && <p className="snapshot-freshness">{snapshotFreshness(overview)}</p>}
         <section aria-labelledby="headline-heading" className="panel section-gap">
           <span className="eyebrow">Current state</span>
           <h2 id="headline-heading" className="readiness-headline">{readiness.statement}</h2>

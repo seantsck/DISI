@@ -261,3 +261,4 @@ th.num .sort-link{flex-direction:row-reverse}
 /* 044: executive product */
 .readiness-headline{font-size:22px;line-height:1.35;letter-spacing:-.02em;margin:8px 0 18px;max-width:900px}
 .decision-block+.decision-block{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.snapshot-freshness{color:var(--muted);font-size:11px;letter-spacing:.02em;margin:8px 0 0}

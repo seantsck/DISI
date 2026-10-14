@@ -2,14 +2,14 @@ import Link from 'next/link'
 import DataMode from '../components/DataMode'
 import DataUnavailable from '../components/DataUnavailable'
 import { getPortfolioData } from '../../lib/data.js'
-import { decisionStateLabel, scenarioOptimization, budgetStateLabel } from '../../lib/decision-display.js'
+import { decisionStateLabel, scenarioOptimization, budgetStateLabel, snapshotFreshness } from '../../lib/decision-display.js'
 import { money, bwar, humanize, pctFraction, num, MISSING } from '../../lib/format.js'
 
 export const metadata = { title: 'Portfolio' }
 export const dynamic = 'force-dynamic'
 
 export default async function PortfolioPage() {
-  const { live, error, decisionSupport, history, scenarios } = await getPortfolioData()
+  const { live, error, freshness, decisionSupport, history, scenarios } = await getPortfolioData()
   const all = history.find((/** @type {any} */ h) => h.grain === 'ALL')
   const byGrain = (/** @type {string} */ g) => history.filter((/** @type {any} */ h) => h.grain === g)
   const basePool = scenarios.filter((/** @type {any} */ s) => s.scenario_key === 'BASE_POOL')
@@ -32,6 +32,7 @@ export default async function PortfolioPage() {
       {!live && <DataUnavailable error={error} />}
 
       {live && <>
+        {snapshotFreshness(freshness) && <p className="snapshot-freshness">{snapshotFreshness(freshness)}</p>}
         <p className="page-guardrail">
           <strong>{recommendations > 0 ? `${recommendations} candidate(s) are eligible for value-based optimization.` : 'No predictive portfolio recommendation is made.'}</strong>{' '}
           {recommendations > 0

@@ -9,7 +9,7 @@ import {
   moneyExact, num, bwar, humanize, dateLabel, yesNoUnknown, statusLabel, populationScopeLabel,
   handLabel, heightLabel, ageLabel, ageBandLabel, MISSING,
 } from '../../../lib/format.js'
-import { decisionStateLabel, expectedValueCell, realizedValueStateLabel } from '../../../lib/decision-display.js'
+import { decisionStateLabel, expectedValueCell, realizedValueStateLabel, snapshotFreshness } from '../../../lib/decision-display.js'
 
 const loadDossier = cache(getPlayerDossier)
 
@@ -129,7 +129,7 @@ function milestoneWhen(m) {
 
 export default async function PlayerPage({ params }) {
   const { slug } = await params
-  const { live, error, player, signings, timeline, transactions, sources, network, networkAvailable, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable, realizedValue, readiness, expectedValue, comparables, decisionAvailable } = await loadDossier(slug)
+  const { live, error, player, signings, timeline, transactions, sources, network, networkAvailable, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable, realizedValue, readiness, expectedValue, comparables, decisionAvailable, freshness } = await loadDossier(slug)
 
   if (!live) {
     return (
@@ -573,6 +573,7 @@ export default async function PlayerPage({ params }) {
       {realizedValue.length > 0 && (
         <section className="panel section-gap" aria-labelledby="org-value-heading">
           <h2 id="org-value-heading">Organizational value and decision support</h2>
+          {snapshotFreshness(freshness) && <p className="snapshot-freshness">{snapshotFreshness(freshness)}</p>}
           {realizedValue.map((/** @type {any} */ v) => {
             const r = readiness.find((/** @type {any} */ x) => x.signing_id === v.signing_id)
             const ev = expectedValueCell(expectedValue.find((/** @type {any} */ x) => x.signing_id === v.signing_id))
