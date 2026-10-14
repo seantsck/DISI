@@ -1,4 +1,4 @@
--- DISI hosted database: read-only migration-state probe for the 042-045 bundle release (042, 043, 043a, 044, 045).
+-- DISI hosted database: read-only migration-state probe for the 042-045 bundle release (042, 043, 043a, 044, 045, 045a).
 --
 -- Run as ONE statement batch in a read-only transaction, e.g. through the secret-safe runner (credential in the environment only):
 --   psql -X -v ON_ERROR_STOP=1 -f database/release/sql/bundle-042-045-probe.sql
@@ -54,6 +54,26 @@ from (values
 left join pg_proc p on p.proname = f.fn and p.pronamespace = 'public'::regnamespace
 order by 1, 2;
 
+-- 2c. 045a serving layer: the snapshot tables (absent before; present, RLS and anon-readable after), the generation, and the API firewall
+select t.n as snapshot_table, c.oid is not null as present, coalesce(c.relrowsecurity, false) as rls,
+  coalesce(has_table_privilege('anon', c.oid, 'SELECT'), false) as anon_select
+from unnest(array['product_executive_snapshot', 'product_prediction_readiness', 'product_model_evaluations', 'product_expected_value_support', 'product_portfolio_decision_support', 'product_portfolio_history', 'product_portfolio_scenarios', 'product_player_decision', 'product_player_expected_value', 'product_player_comparables']) as t(n)
+left join pg_class c on c.relname = t.n and c.relnamespace = 'public'::regnamespace
+order by 1;
+select case when to_regclass('public.product_executive_snapshot') is null then null
+       else (xpath('/row/g/text()', query_to_xml('select max(generation_id) as g from public.product_executive_snapshot', false, true, '')))[1]::text end as snapshot_generation;
+select
+  (select count(*) from pg_class c where c.relnamespace = 'public'::regnamespace and c.relkind = 'v'
+     and c.relname in ('v_player_realized_organizational_value', 'v_historical_org_value_distribution', 'v_expected_value_support',
+       'v_player_expected_organizational_value', 'v_expected_value_research_queue', 'v_portfolio_candidate_readiness', 'v_historical_portfolio_summary',
+       'v_portfolio_scenario_evaluation', 'v_portfolio_decision_support', 'v_portfolio_research_queue', 'v_executive_overview', 'v_prediction_readiness',
+       'v_disi_release_status', 'v_research_roadmap')
+     and (has_table_privilege('anon', c.oid, 'SELECT') or has_table_privilege('authenticated', c.oid, 'SELECT')))::int as internal_views_api_readable,
+  (select count(*) from pg_proc p where p.pronamespace = 'public'::regnamespace
+     and p.proname in ('disi_player_realized_organizational_value', 'disi_player_expected_organizational_value', 'disi_expected_value_research_queue',
+       'disi_portfolio_candidate_readiness', 'disi_executive_overview', 'disi_research_roadmap', 'disi_refresh_product_snapshots', 'disi_product_snapshot_drift')
+     and (has_function_privilege('anon', p.oid, 'EXECUTE') or has_function_privilege('authenticated', p.oid, 'EXECUTE')))::int as internal_functions_api_executable;
+
 -- 3. row counts of the bundle tables (NULL before) and of the facts the bundle reads (it writes none of them)
 select t.table_name,
   case when to_regclass('public.' || t.table_name) is null then null
@@ -84,7 +104,8 @@ select
 
 -- 6. bundle state (a partial state names the last migration present)
 select case
-  when to_regclass('public.v_disi_release_status') is not null then 'bundle applied'
+  when to_regclass('public.product_executive_snapshot') is not null then 'bundle applied'
+  when to_regclass('public.v_disi_release_status') is not null then 'PARTIAL: through 045'
   when to_regclass('public.v_executive_overview') is not null then 'PARTIAL: through 044'
   when to_regprocedure('public.disi_portfolio_candidate_readiness()') is not null then 'PARTIAL: through 043a'
   when to_regclass('public.portfolio_scenario_definitions') is not null then 'PARTIAL: through 043'

@@ -1,10 +1,11 @@
 -- DISI 042-045 bundle: logical rollback of the DATABASE part (WRITE; run only with explicit owner approval, after a failed post-release
 -- verification).
 --
--- The bundle (042, 043, 043a, 044, 045) is derived only: it adds three tables (expected_value_models, portfolio_scenario_definitions,
--- disi_product_contract - reviewed rows that exist nowhere else and are rebuilt by re-applying 042 / 043 / 045 - and no other), fifteen
--- views and six staged read-only functions (043a: four, 044: one, 045: one), and writes, redefines or re-grants nothing that existed
--- before. Dropping those twenty-four objects in reverse dependency order (each wrapper view before its function) returns the database
+-- The bundle (042, 043, 043a, 044, 045, 045a) is derived only: it adds three tables (expected_value_models, portfolio_scenario_definitions,
+-- disi_product_contract - reviewed rows that exist nowhere else and are rebuilt by re-applying 042 / 043 / 045 - and no other), ten
+-- product snapshot tables (045a: derived read models, rebuilt by its refresh), fifteen views, six staged read-only functions (043a: four,
+-- 044: one, 045: one) and two serving functions (045a), and writes, redefines or re-grants nothing that existed before. Dropping those
+-- thirty-six objects in reverse dependency order (each wrapper view before its function) returns the database
 -- to its exact 001-041 state (proven on PostgreSQL 17 by database/release/pg17/validate-042-045.mjs). Every drop is "if exists", so it
 -- also completes a partial release: on 2026-10-14 the previous version of this file (without the functions) rolled production back
 -- from 042 + 043 to the exact 001-041 state after the interrupted first release attempt.
@@ -24,7 +25,8 @@ declare
     'v_player_expected_organizational_value', 'v_expected_value_research_queue',
     'v_portfolio_candidate_readiness', 'v_historical_portfolio_summary', 'v_portfolio_scenario_evaluation', 'v_portfolio_decision_support',
     'v_portfolio_research_queue', 'v_executive_overview', 'v_prediction_readiness',
-    'v_disi_release_status', 'v_research_roadmap', 'v_executive_metric_provenance'];
+    'v_disi_release_status', 'v_research_roadmap', 'v_executive_metric_provenance',
+    'product_executive_snapshot', 'product_prediction_readiness', 'product_model_evaluations', 'product_expected_value_support', 'product_portfolio_decision_support', 'product_portfolio_history', 'product_portfolio_scenarios', 'product_player_decision', 'product_player_expected_value', 'product_player_comparables'];
 begin
   if to_regclass('public.v_player_outcome_probability') is null then
     raise exception 'rollback-042-045: 041 is not present; this is not a 042-045 database';
@@ -49,6 +51,19 @@ begin
   end if;
 end $$;
 
+-- 045a (snapshot tables first: nothing depends on them; then the serving functions)
+drop table if exists public.product_executive_snapshot;
+drop table if exists public.product_prediction_readiness;
+drop table if exists public.product_model_evaluations;
+drop table if exists public.product_expected_value_support;
+drop table if exists public.product_portfolio_decision_support;
+drop table if exists public.product_portfolio_history;
+drop table if exists public.product_portfolio_scenarios;
+drop table if exists public.product_player_decision;
+drop table if exists public.product_player_expected_value;
+drop table if exists public.product_player_comparables;
+drop function if exists public.disi_refresh_product_snapshots();
+drop function if exists public.disi_product_snapshot_drift();
 -- 045
 drop view if exists public.v_executive_metric_provenance;
 drop view if exists public.v_research_roadmap;
@@ -85,7 +100,8 @@ begin
      or (select count(*) from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r') <> 64
      or exists (select 1 from pg_proc where pronamespace = 'public'::regnamespace
                 and proname in ('disi_player_realized_organizational_value', 'disi_player_expected_organizational_value', 'disi_expected_value_research_queue',
-                                'disi_portfolio_candidate_readiness', 'disi_executive_overview', 'disi_research_roadmap')) then
+                                'disi_portfolio_candidate_readiness', 'disi_executive_overview', 'disi_research_roadmap',
+                                'disi_refresh_product_snapshots', 'disi_product_snapshot_drift')) then
     raise exception 'rollback-042-045 postcondition: the public schema is not back to 64 tables / 140 views without the staged functions';
   end if;
 end $$;
