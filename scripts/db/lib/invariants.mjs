@@ -30,6 +30,7 @@ import { archetypeQueries, ARCHETYPE_CHECK_NAMES } from './archetype-invariants.
 import { probabilityQueries, PROBABILITY_CHECK_NAMES } from './probability-invariants.mjs'
 import { orgValueQueries, ORG_VALUE_CHECK_NAMES } from './org-value-invariants.mjs'
 import { portfolioQueries, PORTFOLIO_CHECK_NAMES } from './portfolio-invariants.mjs'
+import { stagedFunctionQueries, STAGED_FUNCTION_CHECK_NAMES } from './staged-function-invariants.mjs'
 import { executiveQueries, EXECUTIVE_CHECK_NAMES } from './executive-invariants.mjs'
 import { releaseQueries, RELEASE_CHECK_NAMES } from './release-invariants.mjs'
 
@@ -104,7 +105,8 @@ export const CANONICAL_EXPECTATIONS = {
   // 034 adds one table and four views.
   // 035 adds three views; 036 adds one table and five views; 037 and 038 add four views each.
   // 039 adds two tables and four views; 040 adds five views; 041 adds two tables and six views.
-  // 042 adds one table and five views; 043 adds one table and five views; 044 adds two views; 045 adds one table and three views.
+  // 042 adds one table and five views; 043 adds one table and five views; 043a redefines four views (no new relation);
+  // 044 adds two views; 045 adds one table and three views.
   public_views_total: 155,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
@@ -217,6 +219,7 @@ export const CANONICAL_EXPECTATIONS = {
   ...Object.fromEntries(PROBABILITY_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(ORG_VALUE_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(PORTFOLIO_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(STAGED_FUNCTION_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(EXECUTIVE_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(RELEASE_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
@@ -582,6 +585,12 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasPortfolioLayer = Boolean((await query(`select to_regclass('public.portfolio_scenario_definitions') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(portfolioQueries(hasPortfolioLayer))) {
     check('portfolio', name, expectations[name], await count(sql))
+  }
+
+  // -- staged, plan-bounded views (043a; the 044 and 045 pairs once their views exist) ---------
+  const hasStagedLayer = Boolean((await query(`select to_regprocedure('public.disi_portfolio_candidate_readiness()') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(stagedFunctionQueries(hasStagedLayer))) {
+    check('staged', name, expectations[name], await count(sql))
   }
 
   // -- executive product contract (044) -----------------------------------------------

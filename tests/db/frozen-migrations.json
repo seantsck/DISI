@@ -42,6 +42,8 @@
     "038a_network_outcome_view_performance.sql": "57a347479d078e5545fba077b55caaa7d1c7913c",
     "039_market_pathway_intelligence.sql": "8e4d82fabab6f46b38395560fc19eb5d8cd6854e",
     "040_historical_archetypes_comparables.sql": "9f33ea9dfa4b72567d36dd7bf16c8b5b22413c27",
-    "041_outcome_probability_infrastructure.sql": "00a960d0404409ef99c5a5d170312d53fbcbf0d7"
+    "041_outcome_probability_infrastructure.sql": "00a960d0404409ef99c5a5d170312d53fbcbf0d7",
+    "042_expected_organizational_value.sql": "696e2436480b9b20d0b62039bb481fd4ff5ed0b6",
+    "043_portfolio_decision_engine.sql": "e9e71b5491a20f8ad8da63f64b46663492da9fb0"
   }
 }
