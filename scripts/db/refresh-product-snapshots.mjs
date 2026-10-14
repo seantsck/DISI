@@ -1,7 +1,7 @@
 // Refreshes the DISI product snapshots (Migration 045a): one validated generation, in one transaction.
 //
 // Usage:
-//   npm run refresh:product-snapshots           -> node --env-file=.env.local scripts/db/refresh-product-snapshots.mjs
+//   npm run refresh:product-snapshots           -> node --env-file-if-exists=.env.local scripts/db/refresh-product-snapshots.mjs
 //   node scripts/db/refresh-product-snapshots.mjs [--drift]
 //
 //   DISI_REFRESH_DB_URL       privileged connection URL (the database owner); required, never printed. Nothing else is read.
