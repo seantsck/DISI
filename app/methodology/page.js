@@ -16,6 +16,17 @@ const rules = [
   ['Pathways stay separate', 'Teenage amateur signings, Cuban professionals, Mexican League transfers and posted NPB/KBO players are distinct acquisition populations.'],
 ]
 
+const decisionLayers = [
+  ['Scouting expectation (036)', 'Public rankings and grades are recorded as opinions at a date. An expectation counts as known at signing only if it was published by the signing date; calibration is descriptive and needs audited outcomes.'],
+  ['Development pathway (037)', 'Season-level levels and progression decisions describe what happened. Pathway summaries are descriptive and never imply that a pathway causes an outcome.'],
+  ['Network context (038)', 'Trainer and academy associations are source-stated. Outcomes by network entity are shown with their selection bias and are never ranked.'],
+  ['Market and pathway intelligence (039)', 'A signing-time feature record holds only facts knowable at signing (no outcome, position at signing). Samples stay separate; a census rate needs a fully audited class.'],
+  ['Historical comparables (040)', 'Up to 20 earlier, non-outcome-selected signings matched on signing-time features; a missing value never matches; outcomes are attached only after the comparables are chosen. Comparables are history, not a forecast.'],
+  ['Outcome probability (041)', 'A probability is published only when its reference population has at least 50 labelled outcomes, 10 positives and 10 negatives. Young, active, censored or unaudited players are never negatives. Today no target qualifies, and no fitted model beats the naive base rate out of time, so every probability is NULL with a reason.'],
+  ['Organizational value (042)', 'Realized value is regular-season bWAR the Dodgers obtained: as Dodgers, plus trade returns attributable to a single outgoing player. Shared-package value, unattributable downstream value and MLB value produced for other clubs are kept separate. Expected value needs a supported probability and enough observed value, so it is not estimated today.'],
+  ['Portfolio decision support (043)', 'Each candidate is assessed with information available at its signing date. Only candidates with a supported expected value, complete cost and complete features may enter value-based optimization; none qualifies today, so DISI shows feasibility, history and the evidence needed, never a ranking.'],
+]
+
 const sources = [
   ['1', 'Official Dodgers / MLB club releases', 'Class membership and stated class totals. Preferred over transaction-log reconstruction whenever a complete class release exists.'],
   ['2', 'Official MLB transaction logs', 'Exact signing dates and additional class members. A log alone does not establish a class total.'],
@@ -27,6 +38,7 @@ const sources = [
 
 export default function MethodologyPage() {
   const layers = manifest.canonical_sql.length
+  const last = manifest.canonical_sql[layers - 1].slice(0, 3)
   return (
     <main className="shell page-main methodology-page">
       <header className="page-hero">
@@ -67,6 +79,24 @@ export default function MethodologyPage() {
         </div>
       </section>
 
+      <section className="section-gap" aria-labelledby="layers-heading">
+        <h2 id="layers-heading" className="section-title">Decision layers and their limits</h2>
+        <p className="page-guardrail">
+          <strong>Each layer inherits the support of the layer below it.</strong> An unsupported outcome probability cannot become an expected
+          value, an expected value cannot become a ranking, and a ranking cannot become a recommendation. The current state of every layer is on
+          the <Link className="text-link" href="/prediction-readiness">Prediction Readiness</Link> page.
+        </p>
+        <div className="principle-grid">
+          {decisionLayers.map(([title, body], i) => (
+            <article className="principle-card" key={title}>
+              <span>{String(i + 1).padStart(2, '0')}</span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="table-panel" aria-labelledby="sources-heading">
         <div className="table-head"><div><span className="eyebrow">Ingestion</span><h2 id="sources-heading">Source priority</h2></div></div>
         <div className="table-scroll">
@@ -87,8 +117,8 @@ export default function MethodologyPage() {
         <article>
           <span className="eyebrow">Database lineage</span>
           <h2>{layers} canonical SQL layers</h2>
-          <p>The repository preserves the full SQL sequence, from the core schema and seed cohort through outcome auditing, trade-package valuation, competitive context, class coverage and the research-database layer.</p>
-          <code>database/sql/001 … {String(layers).padStart(3, '0')}</code>
+          <p>The repository preserves the full SQL sequence, from the core schema and seed cohort through outcome auditing, trade-package valuation, class coverage, organizational value and the decision-support layers, including lettered forward patches.</p>
+          <code>database/sql/001 … {last}</code>
         </article>
         <article>
           <span className="eyebrow">Repair history</span>

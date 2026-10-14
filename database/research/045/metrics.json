@@ -1,0 +1,103 @@
+{
+ "metrics": [
+  {
+   "metric_key": "dodgers_signings",
+   "label": "Dodgers international signings",
+   "definition": "All Dodgers-franchise signing records in DISI (tracked, opening-class census and outcome-selected historical records)",
+   "denominator_column": "dodgers_signings",
+   "provenance": "v_player_realized_organizational_value (one row per Dodgers signing)",
+   "eligibility_rule": "Every Dodgers signing; populations are labelled, never pooled into a rate",
+   "metric_kind": "FACT"
+  },
+  {
+   "metric_key": "dodgers_outcome_selected_signings",
+   "label": "Outcome-selected historical signings",
+   "definition": "Dodgers signings recorded because they became notable",
+   "denominator_column": "dodgers_signings",
+   "provenance": "v_signing_time_features.population_class",
+   "eligibility_rule": "Excluded from every rate, distribution and training population",
+   "metric_kind": "FACT"
+  },
+  {
+   "metric_key": "verified_mlb_players",
+   "label": "Verified MLB players",
+   "definition": "Dodgers signings with an audited MLB debut",
+   "denominator_column": "dodgers_signings",
+   "provenance": "v_player_realized_outcome / outcome_audits",
+   "eligibility_rule": "Unaudited signings are unknown, never failures; a count, not a rate",
+   "metric_kind": "FACT"
+  },
+  {
+   "metric_key": "known_acquisition_spend_usd",
+   "label": "Known acquisition spend",
+   "definition": "Sum of KNOWN acquisition-cost components (bonus, posting, transfer, release, other) of Dodgers signings",
+   "denominator_column": "signings_with_known_cost",
+   "provenance": "v_signing_acquisition_financials; acquisition_cost_component_rules",
+   "eligibility_rule": "A lower bound while spend_state = KNOWN_SPEND_IS_A_LOWER_BOUND; unknown cost is never $0; pool charges are not acquisition cost",
+   "metric_kind": "FACT"
+  },
+  {
+   "metric_key": "realized_org_value_bwar",
+   "label": "Realized organizational value",
+   "definition": "Regular-season bWAR the Dodgers obtained: direct Dodgers bWAR + individually attributable (sole-outgoing-asset) trade-return bWAR",
+   "denominator_column": "signings_with_resolved_value",
+   "provenance": "v_player_realized_organizational_value <- v_downstream_organizational_realization (034) <- player_mlb_team_season_war",
+   "eligibility_rule": "Resolved values only (realized_value_state REALIZED_TO_DATE / TO_DATE_CHAIN_INCOMPLETE); package and observable-not-attributable value never added; bWAR only",
+   "metric_kind": "FACT"
+  },
+  {
+   "metric_key": "value_left_organization_bwar",
+   "label": "MLB value produced for other clubs",
+   "definition": "MLB bWAR of Dodgers signings in non-Dodgers team-seasons",
+   "denominator_column": "signings_with_other_club_value_known",
+   "provenance": "v_player_organizational_realization.non_dodgers_mlb_bwar",
+   "eligibility_rule": "Not Dodgers organizational value; reported separately",
+   "metric_kind": "FACT"
+  },
+  {
+   "metric_key": "supported_probability_targets",
+   "label": "Supported outcome targets",
+   "definition": "Outcome targets whose reference population meets the 50 / 10 / 10 support minimum",
+   "denominator_column": "probability_targets",
+   "provenance": "v_outcome_target_support (041)",
+   "eligibility_rule": "Support rule fixed in outcome_targets; populations never pooled",
+   "metric_kind": "SUPPORT_STATE"
+  },
+  {
+   "metric_key": "non_null_probabilities",
+   "label": "Published player probabilities",
+   "definition": "Player x target probabilities that are not NULL",
+   "denominator_column": "probability_rows",
+   "provenance": "v_player_outcome_probability (041)",
+   "eligibility_rule": "Only eligible, open-outcome Dodgers amateur rows of a supported population",
+   "metric_kind": "SUPPORT_STATE"
+  },
+  {
+   "metric_key": "supported_expected_values",
+   "label": "Supported expected organizational values",
+   "definition": "Player expected values that are not NULL",
+   "denominator_column": "dodgers_signings",
+   "provenance": "v_player_expected_organizational_value (042)",
+   "eligibility_rule": "Requires a supported 041 probability AND a supported conditional value",
+   "metric_kind": "SUPPORT_STATE"
+  },
+  {
+   "metric_key": "predictive_portfolio_recommendations",
+   "label": "Predictive portfolio recommendations",
+   "definition": "Candidates eligible for value-based portfolio optimization",
+   "denominator_column": "dodgers_signings",
+   "provenance": "v_portfolio_candidate_readiness (043)",
+   "eligibility_rule": "Requires a supported expected value, complete cost and complete signing-time features",
+   "metric_kind": "SUPPORT_STATE"
+  },
+  {
+   "metric_key": "open_research_tasks",
+   "label": "Open research tasks",
+   "definition": "Open items in the DISI research queue",
+   "denominator_column": "dodgers_signings",
+   "provenance": "v_database_status / v_research_tasks",
+   "eligibility_rule": "Research needs, not data errors",
+   "metric_kind": "COVERAGE"
+  }
+ ]
+}

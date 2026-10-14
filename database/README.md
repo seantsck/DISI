@@ -51,6 +51,10 @@ This folder preserves the SQL lineage behind the DISI research database.
 40. `039_market_pathway_intelligence.sql` — market / country / pathway intelligence: reviewed market groups and league eras for international amateur signings, the leakage-safe signing-time feature record `v_signing_time_features` shared by 039-041, a descriptive market / pathway context and a summary by dimension and population class (never pooled; shares only for eligible samples; no ranking), and a research queue (research in `database/research/039/`).
 41. `040_historical_archetypes_comparables.sql` — historical archetypes and comparables: structured archetype keys and explainable comparable sets built only from the 039 signing-time features (earlier signings only, never outcome-selected, outcomes attached after selection), per-class comparable and archetype summaries with sample gates, and a research queue (research in `database/research/040/`).
 42. `041_outcome_probability_infrastructure.sql` — outcome-probability infrastructure: four reviewed fixed-horizon targets with support minimums, a censoring-aware training population (no unaudited, censored, young or active row is ever negative; the outcome-selected historical set never trains), a leakage-safe feature matrix, per-population target support, a recorded deterministic leave-one-signing-year-out evaluation (base rate, population-stratified rate, L2 logistic; none beats the base rate today) and probabilities that stay NULL with a reason until a reference population is supported - which no population is today (research in `database/research/041/`).
+43. `042_expected_organizational_value.sql` — expected organizational value: realized organizational value per Dodgers signing with every component separate (direct Dodgers bWAR, individually attributable trade return, package participation, observable-not-attributable value, MLB value for other clubs) and cost components separate with completeness; labelled HISTORICAL_DESCRIPTIVE value distributions; expected value (reviewed value model x 041 probability x supported conditional value), NULL with a reason unless every input is supported - none is today (research in `database/research/042/`, including the bundle design `final-decision-architecture.md`).
+44. `043_portfolio_decision_engine.sql` — portfolio decision engine: candidate readiness at the signing date with decision-support states and blockers (never the candidate's own outcome), RETROSPECTIVE portfolio analysis, reviewed pool scenarios with honest feasibility, and an exact value-maximizing selection only for optimization-eligible candidates - none today (research in `database/research/043/`).
+45. `044_executive_product.sql` — executive product contract: `v_executive_overview` (one row) and `v_prediction_readiness`, read by the home, Portfolio and Prediction Readiness pages and the dossier (research in `database/research/044/`).
+46. `045_final_integration_release.sql` — DISI v1.0.0 final integration: the product contract (`disi_product_contract`, the 48 relations the application reads), `v_disi_release_status`, `v_research_roadmap` and `v_executive_metric_provenance`; the verifier enforces the full support chain (research in `database/research/045/`).
 
 ## 017 research-database layer
 
@@ -285,6 +289,15 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Not here.** No trainer, academy or showcase effect, ranking, hit rate, ROI, leaderboard or prediction.
 - **Surface.** No table; 60 public tables and 125 views; the verifier adds 6 checks (207 in total).
 - **Rerunnable**; design and reproduction in `database/research/038/README.md`.
+
+## 042-045 decision layers (DISI v1.0.0)
+
+- **Support chain.** 041 outcome probability -> 042 expected organizational value -> 043 portfolio decision support -> 044 executive product. Each layer reads the support state of the one below and can only narrow it. Today: 0 supported probability targets, 0 supported expected values, 0 predictive portfolio recommendations; the interface states that DISI does not publish outcome probabilities and shows the evidence needed (`v_prediction_readiness`, `v_research_roadmap`).
+- **Realized vs expected.** Realized organizational value is observed bWAR the Dodgers obtained; a historical distribution is labelled HISTORICAL_DESCRIPTIVE and is never a player's expected value; expected value needs a supported probability and a supported conditional value.
+- **Decisions.** Readiness uses only signing-time facts and population-level support; NULL expected value never enters optimization as zero; budget feasibility is INDETERMINATE when unknown costs could change the answer; retrospective analysis never claims a hindsight-optimal portfolio was knowable.
+- **Contract.** `disi_product_contract` lists exactly the relations `lib/data.js` reads; `v_disi_release_status` reports the version, data freshness, model versions and `support_chain_state`.
+- **Surface.** 67 public tables and 155 views; the verifier adds 5 + 5 + 3 + 5 checks (241 in total).
+- **Rerunnable**; designs and findings in `database/research/042/` to `045/`.
 
 ## Player identity (020)
 
