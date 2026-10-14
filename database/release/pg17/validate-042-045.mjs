@@ -132,10 +132,10 @@ try {
   // every frozen entry must match the candidate's bytes
   const frozenRest = Object.keys(frozen).filter((f) => !base.includes(f))
   const restOk = frozenRest.every((f) => cand.includes(f) && sha1(readSql(TC, f).replace(/\r\n/g, '\n')) === frozen[f])
-  // 042 and 043 were applied to production once (2026-10-14, then rolled back) and are frozen as committed
-  check(`001-041 byte-identical between the baseline and the candidate; 001-043 frozen (${Object.keys(frozen).length} entries)`,
-    frozenOk && restOk && base.every((f) => f in frozen) && Object.keys(frozen).length === 44
-      && JSON.stringify(frozenRest) === JSON.stringify(['042_expected_organizational_value.sql', '043_portfolio_decision_engine.sql']), frozenRest.join(','))
+  // 042-045 (with 043a) were applied to production during the 2026-10-14 attempts (then rolled back) and are frozen as committed
+  check(`001-041 byte-identical between the baseline and the candidate; 001-045 with 043a frozen (${Object.keys(frozen).length} entries)`,
+    frozenOk && restOk && base.every((f) => f in frozen) && Object.keys(frozen).length === 47
+      && JSON.stringify(frozenRest) === JSON.stringify(BUNDLE.filter((f) => !f.startsWith('045a'))), frozenRest.join(','))
   for (const f of BUNDLE) console.log(`  ${f}: sha256 ${sha256(readSql(TC, f))}  sha1(LF) ${sha1(readSql(TC, f).replace(/\r\n/g, '\n'))}  ${Buffer.byteLength(readSql(TC, f))} bytes`)
   check('bundle files have no CRLF and one transaction each', BUNDLE.every((f) => !readSql(TC, f).includes('\r') && /^begin;$/m.test(readSql(TC, f)) && /^commit;$/m.test(readSql(TC, f))))
 
