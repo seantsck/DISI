@@ -2033,7 +2033,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   for (const kind of ['v', 'r']) {
     for (const role of ['anon', 'authenticated']) {
       const relations = acl.filter((a) => a.kind === kind && a.grantee === role)
-      assert.equal(relations.length, kind === 'v' ? 140 : 64, `${role} ${kind}`)
+      assert.equal(relations.length, kind === 'v' ? 155 : 67, `${role} ${kind}`)
       for (const privilege of ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN']) {
         assert.deepEqual(relations.filter((a) => a.privs.split(',').includes(privilege)).map((a) => a.relname), [], `${role} ${privilege} on ${kind}`)
       }
@@ -2043,7 +2043,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   assert.deepEqual(acl.filter((a) => a.grantee === 'PUBLIC'), [], 'PUBLIC holds nothing')
   const tables = await one(`select count(*)::int as n, count(*) filter (where relrowsecurity)::int as rls from pg_class c
     join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r'`)
-  assert.deepEqual([tables.n, tables.rls], [64, 64])
+  assert.deepEqual([tables.n, tables.rls], [67, 67])
   const write = await one(`select count(*)::int as n from pg_policies where schemaname = 'public' and cmd <> 'SELECT'`)
   assert.equal(write.n, 0, 'no table policy grants writes to anyone')
 })

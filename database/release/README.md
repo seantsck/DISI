@@ -1,4 +1,4 @@
-# Release tooling (034 / 035, 036-038 and 039-041 bundles)
+# Release tooling (034 / 035, 036-038, 039-041 and 042-045 bundles)
 
 Nonproduction tooling and the release plan. Nothing here connects to a hosted database by itself.
 
@@ -20,10 +20,15 @@ Nonproduction tooling and the release plan. Nothing here connects to a hosted da
 | `sql/bundle-039-041-probe.sql` | read-only probe of the 039-041 bundle state |
 | `sql/rollback-039-041.sql` | WRITE, approval only: guarded logical rollback of 039-041 to the exact 001-038a state |
 | `pg17/run-039-041.sh`, `pg17/validate-039-041.mjs` | 039-041 bundle validation on disposable PostgreSQL 17 (frozen history, additivity, idempotency, security, verifier 207 -> 223, convergence, anon reads, rollback) |
+| `042-045-release-plan.md` | the 042-045 bundle (DISI v1.0.0, database + application): hashes, changes, expected probe values, backup, 042 -> 043 -> 044 -> 045 apply order, verification incl. the anon / app-read performance gate, PR, smoke, rollback (paired with a merge revert after the merge), PR draft |
+| `sql/bundle-042-045-probe.sql` | read-only probe of the 042-045 bundle state |
+| `sql/rollback-042-045.sql` | WRITE, approval only: guarded logical rollback of 042-045 to the exact 001-041 state |
+| `pg17/run-042-045.sh`, `pg17/validate-042-045.mjs` | 042-045 bundle validation on disposable PostgreSQL 17 (frozen history, additivity, idempotency, security, verifier 223 -> 241, convergence, anon reads, rollback) |
 
 ```
 database/release/pg17/run.sh                    # ~1 min; needs network once for npm
 database/release/pg17/run-036-038.sh            # ~1.5 min; the 036-038 bundle against the released main
 database/release/pg17/run-039-041.sh            # ~1.5 min; the 039-041 bundle against the released main
+database/release/pg17/run-042-045.sh            # ~1 min; the 042-045 bundle against the released main
 node database/release/pg17/restore-verify.mjs <work-dir> <backup.dump>
 ```
