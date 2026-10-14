@@ -2163,7 +2163,7 @@ test('frozen history: migrations 001-045 (with 043a) are byte-for-byte unchanged
   }
 })
 
-test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 67 tables / 155 views after 045, all RLS / security_invoker', async () => {
+test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 77 tables / 155 views after 045a, all RLS / security_invoker', async () => {
   const t = await rows(`select c.relname, c.relrowsecurity as rls from pg_class c join pg_namespace n on n.oid = c.relnamespace
     where n.nspname = 'public' and c.relkind = 'r' and c.relname = any($1) order by 1`, [tables026])
   assert.deepEqual(t.map((r) => [r.relname, r.rls]), tables026.map((n) => [n, true]))
@@ -2171,7 +2171,7 @@ test('026 shape: six new tables and five new views; the legacy evaluations table
   assert.equal(legacy.gone, true)
   const counts = await one(`select count(*) filter (where relkind = 'r')::int as tables, count(*) filter (where relkind = 'v')::int as views
     from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind in ('r', 'v')`)
-  assert.deepEqual([counts.tables, counts.views], [67, 155])
+  assert.deepEqual([counts.tables, counts.views], [77, 155])
   const v = await rows(`select relname, coalesce(array_to_string(reloptions, ','), '') as opts from pg_class where relname = any($1) and relkind = 'v'`, [views026])
   assert.equal(v.length, 5)
   for (const x of v) assert.match(x.opts, /security_invoker=(true|on)/, x.relname)
