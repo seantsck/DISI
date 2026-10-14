@@ -30,6 +30,7 @@ import { archetypeQueries, ARCHETYPE_CHECK_NAMES } from './archetype-invariants.
 import { probabilityQueries, PROBABILITY_CHECK_NAMES } from './probability-invariants.mjs'
 import { orgValueQueries, ORG_VALUE_CHECK_NAMES } from './org-value-invariants.mjs'
 import { portfolioQueries, PORTFOLIO_CHECK_NAMES } from './portfolio-invariants.mjs'
+import { executiveQueries, EXECUTIVE_CHECK_NAMES } from './executive-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -102,8 +103,8 @@ export const CANONICAL_EXPECTATIONS = {
   // 034 adds one table and four views.
   // 035 adds three views; 036 adds one table and five views; 037 and 038 add four views each.
   // 039 adds two tables and four views; 040 adds five views; 041 adds two tables and six views.
-  // 042 adds one table and five views; 043 adds one table and five views.
-  public_views_total: 150,
+  // 042 adds one table and five views; 043 adds one table and five views; 044 adds two views.
+  public_views_total: 152,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
@@ -215,6 +216,7 @@ export const CANONICAL_EXPECTATIONS = {
   ...Object.fromEntries(PROBABILITY_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(ORG_VALUE_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(PORTFOLIO_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(EXECUTIVE_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -578,6 +580,12 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasPortfolioLayer = Boolean((await query(`select to_regclass('public.portfolio_scenario_definitions') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(portfolioQueries(hasPortfolioLayer))) {
     check('portfolio', name, expectations[name], await count(sql))
+  }
+
+  // -- executive product contract (044) -----------------------------------------------
+  const hasExecutiveLayer = Boolean((await query(`select to_regclass('public.v_executive_overview') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(executiveQueries(hasExecutiveLayer))) {
+    check('executive', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

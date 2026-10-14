@@ -9,6 +9,7 @@ import {
   moneyExact, num, bwar, humanize, dateLabel, yesNoUnknown, statusLabel, populationScopeLabel,
   handLabel, heightLabel, ageLabel, ageBandLabel, MISSING,
 } from '../../../lib/format.js'
+import { decisionStateLabel, expectedValueCell, realizedValueStateLabel } from '../../../lib/decision-display.js'
 
 const loadDossier = cache(getPlayerDossier)
 
@@ -128,7 +129,7 @@ function milestoneWhen(m) {
 
 export default async function PlayerPage({ params }) {
   const { slug } = await params
-  const { live, error, player, signings, timeline, transactions, sources, network, networkAvailable, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable } = await loadDossier(slug)
+  const { live, error, player, signings, timeline, transactions, sources, network, networkAvailable, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable, realizedValue, readiness, expectedValue, comparables, decisionAvailable } = await loadDossier(slug)
 
   if (!live) {
     return (
@@ -568,6 +569,55 @@ export default async function PlayerPage({ params }) {
           </article>
         ))}
       </section>
+
+      {realizedValue.length > 0 && (
+        <section className="panel section-gap" aria-labelledby="org-value-heading">
+          <h2 id="org-value-heading">Organizational value and decision support</h2>
+          {realizedValue.map((/** @type {any} */ v) => {
+            const r = readiness.find((/** @type {any} */ x) => x.signing_id === v.signing_id)
+            const ev = expectedValueCell(expectedValue.find((/** @type {any} */ x) => x.signing_id === v.signing_id))
+            const cmp = comparables.filter((/** @type {any} */ c) => c.target_signing_id === v.signing_id)
+            return (
+              <div key={v.signing_id} className="decision-block">
+                {realizedValue.length > 1 && <h3 className="sub">{v.signing_year} signing</h3>}
+                <dl className="fact-grid wide">
+                  <Fact label="Realized organizational value">{v.realized_org_value_bwar == null
+                    ? <span className="unknown">{realizedValueStateLabel(v.realized_value_state)}</span>
+                    : <>{bwar(v.realized_org_value_bwar)} bWAR <span className="muted">{realizedValueStateLabel(v.realized_value_state)}</span></>}</Fact>
+                  <Fact label="Direct Dodgers bWAR">{v.direct_dodgers_bwar == null ? <span className="unknown">{UNKNOWN}</span> : bwar(v.direct_dodgers_bwar)}</Fact>
+                  <Fact label="Individually attributable trade return">{v.individually_attributable_trade_bwar == null ? <span className="unknown">{UNKNOWN}</span> : `${bwar(v.individually_attributable_trade_bwar)} bWAR`}</Fact>
+                  <Fact label="Shared-package participation (not this player's alone)">{v.package_first_hop_participation_bwar == null && v.package_downstream_participation_bwar == null
+                    ? <span className="unknown">None recorded</span>
+                    : `${bwar(v.package_first_hop_participation_bwar)} first hop · ${bwar(v.package_downstream_participation_bwar)} downstream`}</Fact>
+                  <Fact label="MLB value for other clubs (not Dodgers value)">{v.value_left_organization_bwar == null ? <span className="unknown">{UNKNOWN}</span> : `${bwar(v.value_left_organization_bwar)} bWAR`}</Fact>
+                  <Fact label="Acquisition cost">{v.known_acquisition_cost_usd == null
+                    ? <span className="unknown">Unknown — not $0</span>
+                    : <>{moneyExact(v.known_acquisition_cost_usd)} <span className="muted">{v.cost_complete ? 'complete' : `known components only (${humanize(v.cost_coverage_state)})`}</span></>}</Fact>
+                  <Fact label="Realized bWAR per $1M">{v.realized_org_bwar_per_million_usd == null
+                    ? <span className="unknown">Not computed: {humanize(v.ratio_suppression_reason)}</span>
+                    : num(v.realized_org_bwar_per_million_usd, 2)}</Fact>
+                  <Fact label="Expected organizational value">{ev.supported
+                    ? `${bwar(ev.value)} bWAR`
+                    : <span className="unknown">{ev.label}</span>}</Fact>
+                  <Fact label={`Decision support at signing${r?.decision_as_of_date ? ` (${dateLabel(r.decision_as_of_date)})` : ''}`}>{r
+                    ? <>{decisionStateLabel(r.decision_support_state)}{r.decision_blockers?.length ? <span className="muted"> · {r.decision_blockers.map(humanize).join(', ')}</span> : null}</>
+                    : <span className="unknown">{decisionAvailable ? 'Not applicable' : 'Unavailable'}</span>}</Fact>
+                  <Fact label="Earlier comparable signings (historical context)">{cmp.length === 0
+                    ? <span className="unknown">None listed</span>
+                    : cmp.map((/** @type {any} */ c) => `${c.comparables} ${humanize(c.comparable_population_class).toLowerCase()}${c.comparable_reach_share == null ? '' : ` (${Math.round(Number(c.comparable_reach_share) * 100)}% of ${c.mature_audited_comparables} mature audited reached MLB)`}`).join(' · ')}</Fact>
+                </dl>
+                {r?.decision_statement && <p className="method-note">{r.decision_statement}</p>}
+              </div>
+            )
+          })}
+          <p className="method-note">
+            Organizational value is regular-season bWAR the Dodgers obtained: as Dodgers, plus returns from trades in which this player was
+            the only tracked outgoing asset. Value returned for shared packages and MLB value produced for other clubs are shown separately
+            and never added. Expected value is shown only when the outcome evidence supports it; comparables describe earlier signings, not
+            a forecast. <Link href="/prediction-readiness">Prediction readiness →</Link>
+          </p>
+        </section>
+      )}
 
       <section className="panel section-gap">
         <h2>Sources and provenance</h2>

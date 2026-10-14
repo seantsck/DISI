@@ -11,6 +11,8 @@ const links = [
   ['/development', 'Development'],
   ['/asset-conversion', 'Asset Conversion'],
   ['/league', 'League Benchmark'],
+  ['/portfolio', 'Portfolio'],
+  ['/prediction-readiness', 'Prediction Readiness'],
   ['/research', 'Research & Coverage'],
   ['/methodology', 'Methodology'],
 ]
