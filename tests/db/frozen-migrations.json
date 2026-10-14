@@ -39,6 +39,9 @@
     "036_scouting_expectation_outcomes.sql": "dda791e72b10e50829f57235e69b8aebbd1ca6db",
     "037_development_pathway_intelligence.sql": "895a45373e8732f7987218ed04ff55543b46a4d8",
     "038_signing_network_outcomes.sql": "c07611249418c33f12e5a1934bb7948652a70dd7",
-    "038a_network_outcome_view_performance.sql": "57a347479d078e5545fba077b55caaa7d1c7913c"
+    "038a_network_outcome_view_performance.sql": "57a347479d078e5545fba077b55caaa7d1c7913c",
+    "039_market_pathway_intelligence.sql": "8e4d82fabab6f46b38395560fc19eb5d8cd6854e",
+    "040_historical_archetypes_comparables.sql": "9f33ea9dfa4b72567d36dd7bf16c8b5b22413c27",
+    "041_outcome_probability_infrastructure.sql": "00a960d0404409ef99c5a5d170312d53fbcbf0d7"
   }
 }
