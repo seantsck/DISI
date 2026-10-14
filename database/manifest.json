@@ -42,7 +42,8 @@
     "039_market_pathway_intelligence.sql",
     "040_historical_archetypes_comparables.sql",
     "041_outcome_probability_infrastructure.sql",
-    "042_expected_organizational_value.sql"
+    "042_expected_organizational_value.sql",
+    "043_portfolio_decision_engine.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -51,7 +52,7 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 43,
+    "canonical_build_count": 44,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
@@ -83,6 +84,7 @@
     "v0_30": "Market / country / pathway intelligence (039): reviewed market groups (20 observed markets, 7 groups) and league eras for international amateur signings (before bonus pools, soft-capped from 2 July 2012, hard-capped from 2 July 2017), the leakage-safe signing-time feature record v_signing_time_features (population class, route, market, era, age in the signing year, position at signing, reported bonus, the earliest expectation dated by the signing cutoff; no outcome) shared by 039-041, a descriptive market / pathway context against the 036 outcome spine and 037 pathways, a summary by dimension and population class that never pools populations, shows shares only for eligible samples and ranks nothing, and a research queue (database/research/039).",
     "v0_31": "Historical archetypes and comparables (040): structured archetype keys (route | position family at signing | age band, plus expectation tier, cost band, market group and era) and deterministic, explainable comparable sets of up to 20 earlier-signed, non-outcome-selected signings with the same route and position family, chosen only from the 039 signing-time features (an unknown or missing value never matches) with outcomes attached after selection; per-class comparable and archetype summaries that never pool populations and show shares only for 10+ mature audited members, and a research queue (database/research/040).",
     "v0_32": "Outcome-probability infrastructure (041): reviewed fixed-horizon targets (MLB within 7 seasons; positive bWAR, 2+ bWAR and Dodgers MLB value within 10 seasons) with support minimums (50 / 10 / 10; 10 events per model feature), a censoring-aware training population and training states (never coercing unaudited, censored, young or active rows to negatives; the outcome-selected historical set and professional routes never train; the top-prospect sample is its own reference population), a leakage-safe signing-time feature matrix, per-population support with 90% Wilson intervals, a recorded deterministic leave-one-signing-year-out evaluation with a training-set fingerprint (no model beats the base rate: Brier skill -0.12 / -0.15 on 59 rows, 8 positives), and probabilities that stay NULL with a reason until a reference population is supported - none is today (database/research/041).",
-    "v0_33": "Expected organizational value (042): realized organizational value per Dodgers signing with every component separate (direct Dodgers bWAR, individually attributable trade-return bWAR, package participation, observable-not-attributable value, value produced for other clubs) and acquisition-cost components separate with completeness; labelled HISTORICAL_DESCRIPTIVE distributions of realized value (10+ resolved values); and expected-value infrastructure (reviewed value model x 041 probability x supported conditional value) that is NULL with a reason unless every input is supported - none is today (database/research/042)."
+    "v0_33": "Expected organizational value (042): realized organizational value per Dodgers signing with every component separate (direct Dodgers bWAR, individually attributable trade-return bWAR, package participation, observable-not-attributable value, value produced for other clubs) and acquisition-cost components separate with completeness; labelled HISTORICAL_DESCRIPTIVE distributions of realized value (10+ resolved values); and expected-value infrastructure (reviewed value model x 041 probability x supported conditional value) that is NULL with a reason unless every input is supported - none is today (database/research/042).",
+    "v0_34": "Portfolio decision support (043): candidate readiness at the decision date (signing-time features, outcome-free comparable counts and population-level expected-value support, never the candidate's own outcome) with explicit decision-support states and blockers; RETROSPECTIVE portfolio analysis (known spend, concentration, cost coverage, realized value); reviewed budget scenarios with honest feasibility (INDETERMINATE when unknown costs could change the answer); and an exact value-maximizing selection that exists only for optimization-eligible candidates - none today (database/research/043)."
   }
 }

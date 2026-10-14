@@ -111,7 +111,7 @@ test('equivalence on a synthetic relationship for every tracked signing: every p
 test('verifier: every check passes on the 038a database (125 views + the four zz_old copies)', async () => {
   const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 129, public_tables_total: 60 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 228)
+  assert.equal(full.hard.length, 233)
 })
 
 test('rerun: 038a is idempotent', async () => {
