@@ -2033,7 +2033,8 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   for (const kind of ['v', 'r']) {
     for (const role of ['anon', 'authenticated']) {
       const relations = acl.filter((a) => a.kind === kind && a.grantee === role)
-      assert.equal(relations.length, kind === 'v' ? 155 : 67, `${role} ${kind}`)
+      // 045a closes the fourteen 042-045 analytical views to the API roles (155 - 14) and adds ten snapshot tables (67 + 10)
+      assert.equal(relations.length, kind === 'v' ? 141 : 77, `${role} ${kind}`)
       for (const privilege of ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN']) {
         assert.deepEqual(relations.filter((a) => a.privs.split(',').includes(privilege)).map((a) => a.relname), [], `${role} ${privilege} on ${kind}`)
       }
@@ -2043,7 +2044,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   assert.deepEqual(acl.filter((a) => a.grantee === 'PUBLIC'), [], 'PUBLIC holds nothing')
   const tables = await one(`select count(*)::int as n, count(*) filter (where relrowsecurity)::int as rls from pg_class c
     join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r'`)
-  assert.deepEqual([tables.n, tables.rls], [67, 67])
+  assert.deepEqual([tables.n, tables.rls], [77, 77])
   const write = await one(`select count(*)::int as n from pg_policies where schemaname = 'public' and cmd <> 'SELECT'`)
   assert.equal(write.n, 0, 'no table policy grants writes to anyone')
 })
@@ -2148,12 +2149,12 @@ const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} retu
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
 // Migrations added after the frozen baseline and not yet released; each is frozen in tests/db/frozen-migrations.json once applied.
-// 042 and 043 were applied to production once (2026-10-14) and rolled back with the interrupted release; they are frozen as committed
-const UNRELEASED_ADDITIONS = ['043a_decision_engine_performance.sql', '044_executive_product.sql', '045_final_integration_release.sql']
+// 042-045 (with 043a) were applied to production during the 2026-10-14 release attempts and rolled back; they are frozen as committed
+const UNRELEASED_ADDITIONS = ['045a_product_snapshot_serving.sql']
 
-test('frozen history: migrations 001-043 are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
+test('frozen history: migrations 001-045 (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
-  assert.equal(files.length, 44)
+  assert.equal(files.length, 47)
   assert.deepEqual(manifest.canonical_sql.slice(files.length), UNRELEASED_ADDITIONS)
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {

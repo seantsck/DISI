@@ -136,7 +136,7 @@ test('verifier: the five archetype checks pass, each catches its own drift, and 
   assert.equal(ARCHETYPE_CHECK_NAMES.length, 5)
   const full = await checkInvariants(q, EXPECT040)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 243, '217 through 040 plus the six 041 checks, which pass trivially without their objects')
+  assert.equal(full.hard.length, 247, '217 through 040 plus the six 041 checks, which pass trivially without their objects')
   assert.ok((await drift('v_player_comparables', { match_score: 'r.match_score + 1' })).includes('comparable_ordering_violations'))
   assert.ok((await drift('v_player_comparables', { comparable_rank: 'r.comparable_rank + 30' })).includes('comparable_selection_violations'))
   assert.ok((await drift('v_player_historical_archetype', { archetype_defined: 'true' })).includes('archetype_row_violations'))

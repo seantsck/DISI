@@ -3,7 +3,8 @@
 // Each query returns the NUMBER OF VIOLATIONS (expected 0). A staged view is a thin security_invoker wrapper over a read-only (STABLE)
 // PL/pgSQL function with invoker rights and a fixed empty search_path, executable by the API roles that read the view and not by
 // PUBLIC; and no function the API roles can execute may write (VOLATILE) or run with its owner's rights (SECURITY DEFINER).
-// `loaded` says whether 043a exists; the 044 and 045 pairs are checked once their views exist.
+// `loaded` says whether 043a exists; the 044 and 045 pairs are checked once their views exist. Once the 045a serving layer exists
+// (`serving`), the staged functions are internal: the API roles must NOT be able to execute them.
 
 export const STAGED_FUNCTION_CHECK_NAMES = ['staged_function_violations', 'staged_view_wrapper_violations']
 
@@ -17,7 +18,7 @@ const PAIRS = `(values
   ) as p(view_name, fn)`
 
 /** name -> SQL returning one row { n } = number of violations. */
-export const stagedFunctionQueries = (loaded) => {
+export const stagedFunctionQueries = (loaded, serving = false) => {
   if (!loaded) return Object.fromEntries(STAGED_FUNCTION_CHECK_NAMES.map((name) => [name, 'select 0::int as n']))
   return {
     // each present staged view's function: PL/pgSQL, STABLE, invoker rights, search_path fixed, no PUBLIC execute, anon + authenticated
@@ -34,7 +35,8 @@ export const stagedFunctionQueries = (loaded) => {
              or f.provolatile <> 's' or f.prosecdef
              or not (coalesce(f.proconfig, array[]::text[]) @> array['search_path=""'])
              or has_function_privilege('public', f.oid, 'EXECUTE')
-             or not has_function_privilege('anon', f.oid, 'EXECUTE') or not has_function_privilege('authenticated', f.oid, 'EXECUTE'))
+             or has_function_privilege('anon', f.oid, 'EXECUTE') <> ${serving ? 'false' : 'true'}
+             or has_function_privilege('authenticated', f.oid, 'EXECUTE') <> ${serving ? 'false' : 'true'})
       + (select count(*) from pg_proc f
           where f.pronamespace = 'public'::regnamespace and f.proname like 'disi\\_%'
             and (has_function_privilege('anon', f.oid, 'EXECUTE') or has_function_privilege('authenticated', f.oid, 'EXECUTE'))

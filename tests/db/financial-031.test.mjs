@@ -358,7 +358,7 @@ test('security: RLS and SELECT-only API grants on the new table; no write policy
   // the verifier now expects the 032 totals; this database is the 031 state (54 tables, 97 views)
   const full = await checkInvariants(chain.query, { ...CANONICAL_EXPECTATIONS, public_tables_total: 54, public_views_total: 97 })
   assert.deepEqual(failedChecks(full).map((c) => c.name), [])
-  assert.equal(full.hard.length, 243, '139 from 031 plus the ten 032, eleven 033, eighteen 034, eight 035, eight 036, seven 037, six 038, five 039, five 040 and six 041 checks, which pass trivially without their tables')
+  assert.equal(full.hard.length, 247, '139 from 031 plus the ten 032, eleven 033, eighteen 034, eight 035, eight 036, seven 037, six 038, five 039, five 040 and six 041 checks, which pass trivially without their tables')
   assert.equal(full.hard.find((c) => c.name === 'public_tables_total').actual, 54)
 })
 

@@ -7,7 +7,12 @@
 import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import { buildCanonicalChain } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks as allFailedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+
+// Each scenario below damages the canonical data and asserts exactly which checks catch it. Damaged data also makes the 045a product
+// snapshots stale - by design, until the refresh runs - so the snapshot-drift check is left out of those exact sets; the clean chain
+// asserts it separately, and tests/db/serving-045a.test.mjs proves it catches stale and tampered snapshots.
+const failedChecks = (/** @type {any} */ report) => allFailedChecks(report).filter((c) => c.name !== 'product_snapshot_drift_violations')
 import { runVerifier } from '../../scripts/db/verify-live-invariants.mjs'
 import { driftParts, liveDriftSql, cats027, lit } from './drift-027.mjs'
 
@@ -33,7 +38,7 @@ async function withDrift(driftSql) {
 
 test('clean canonical 001→029 state passes every hard invariant', async () => {
   const report = await runChecks()
-  assert.deepEqual(failedChecks(report).map((c) => c.name), [])
+  assert.deepEqual(allFailedChecks(report).map((c) => c.name), [])
   // population 4 + development 17 + status 2 + progression 3 + integrity 10
   // + scouting 22 + api 9 + privileges 16 + rls 6 + security_invoker 10
   assert.ok(report.hard.length >= 125, `expected a full battery, got ${report.hard.length}`)

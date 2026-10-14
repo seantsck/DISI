@@ -33,6 +33,7 @@ import { portfolioQueries, PORTFOLIO_CHECK_NAMES } from './portfolio-invariants.
 import { stagedFunctionQueries, STAGED_FUNCTION_CHECK_NAMES } from './staged-function-invariants.mjs'
 import { executiveQueries, EXECUTIVE_CHECK_NAMES } from './executive-invariants.mjs'
 import { releaseQueries, RELEASE_CHECK_NAMES } from './release-invariants.mjs'
+import { productSnapshotQueries, PRODUCT_SNAPSHOT_CHECK_NAMES } from './product-snapshot-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -106,12 +107,12 @@ export const CANONICAL_EXPECTATIONS = {
   // 035 adds three views; 036 adds one table and five views; 037 and 038 add four views each.
   // 039 adds two tables and four views; 040 adds five views; 041 adds two tables and six views.
   // 042 adds one table and five views; 043 adds one table and five views; 043a redefines four views (no new relation);
-  // 044 adds two views; 045 adds one table and three views.
+  // 044 adds two views; 045 adds one table and three views; 045a adds ten product snapshot tables.
   public_views_total: 155,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 67,
+  public_tables_total: 77,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -222,6 +223,7 @@ export const CANONICAL_EXPECTATIONS = {
   ...Object.fromEntries(STAGED_FUNCTION_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(EXECUTIVE_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(RELEASE_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(PRODUCT_SNAPSHOT_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -589,7 +591,8 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
 
   // -- staged, plan-bounded views (043a; the 044 and 045 pairs once their views exist) ---------
   const hasStagedLayer = Boolean((await query(`select to_regprocedure('public.disi_portfolio_candidate_readiness()') is not null as ok`))[0].ok)
-  for (const [name, sql] of Object.entries(stagedFunctionQueries(hasStagedLayer))) {
+  const hasServingLayer = Boolean((await query(`select to_regclass('public.product_executive_snapshot') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(stagedFunctionQueries(hasStagedLayer, hasServingLayer))) {
     check('staged', name, expectations[name], await count(sql))
   }
 
@@ -603,6 +606,11 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasReleaseLayer = Boolean((await query(`select to_regclass('public.disi_product_contract') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(releaseQueries(hasReleaseLayer))) {
     check('release', name, expectations[name], await count(sql))
+  }
+
+  // -- DISI v1 product snapshots and API boundary (045a) ---------------------------------
+  for (const [name, sql] of Object.entries(productSnapshotQueries(hasServingLayer))) {
+    check('snapshot', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

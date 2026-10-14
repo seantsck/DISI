@@ -44,6 +44,9 @@
     "040_historical_archetypes_comparables.sql": "9f33ea9dfa4b72567d36dd7bf16c8b5b22413c27",
     "041_outcome_probability_infrastructure.sql": "00a960d0404409ef99c5a5d170312d53fbcbf0d7",
     "042_expected_organizational_value.sql": "696e2436480b9b20d0b62039bb481fd4ff5ed0b6",
-    "043_portfolio_decision_engine.sql": "e9e71b5491a20f8ad8da63f64b46663492da9fb0"
+    "043_portfolio_decision_engine.sql": "e9e71b5491a20f8ad8da63f64b46663492da9fb0",
+    "043a_decision_engine_performance.sql": "272999c0585ae9a1f44db061ce6b45442ce60118",
+    "044_executive_product.sql": "7cd12ebe797695bf6071124117a7f2ae54be3377",
+    "045_final_integration_release.sql": "c30998c3ad75ac1a1ec4d704d97bd1b3823725f9"
   }
 }

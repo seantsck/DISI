@@ -90,11 +90,10 @@ test('045 shape: one RLS table, three security-invoker views, SELECT-only grants
   }
 })
 
-test('product contract: exactly the relations the application reads, each existing, secured and readable', async () => {
-  const src = fs.readFileSync(path.join(root, 'lib/data.js'), 'utf8')
-  const read = [...new Set([...src.matchAll(/\.from\('([a-z0-9_]+)'\)/g)].map((m) => m[1]))].sort()
+test('product contract: exactly the reviewed 045 contract (the relations the 045-era application read), each existing, secured and readable', async () => {
+  // 045a later replaces the analytical entries with the product snapshots the application now reads (tests/db/serving-045a.test.mjs)
   const rows = await q(`select relation_name, relation_kind, contract_tier, introduced_in from disi_product_contract order by 1`)
-  assert.deepEqual(rows.map((r) => r.relation_name), read)
+  assert.deepEqual(rows.map((r) => r.relation_name), contract.contract.map((c) => c.relation_name).sort())
   assert.equal(rows.length, contract.contract.length)
   // the introducing migration is the first canonical migration that creates the relation
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'database/manifest.json'), 'utf8')).canonical_sql
@@ -156,12 +155,13 @@ test('executive metric provenance and the research roadmap are complete and cons
   for (const x of r) assert.ok(x.open_items >= 0)
 })
 
-test('verifier: the five 045 checks pass, each catches its own drift, and the full canonical verifier passes on 001-045', async () => {
+test('verifier: the five 045 checks pass, each catches its own drift, and the full verifier passes on 001-045', async () => {
   assert.deepEqual(await failing(), [])
   assert.equal(RELEASE_CHECK_NAMES.length, 5)
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+  // 045a later adds the ten product snapshot tables (77); the 045 database has 67
+  const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_tables_total: 67 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 243)
+  assert.equal(full.hard.length, 247)
   await scratch(async () => {
     await chain.db.exec(`insert into disi_product_contract (relation_name, relation_kind, product_area, contract_tier, app_routes, purpose, introduced_in)
       values ('v_does_not_exist', 'VIEW', 'EXECUTIVE', 'PAGE', '{/}', 'test', '045')`)
