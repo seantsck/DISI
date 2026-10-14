@@ -1,6 +1,6 @@
-// Migration 044: the executive product contract. The 043 database is replayed (001-043), 044 is applied for real, and the one-row
-// executive overview, prediction readiness, the full support-propagation chain (041 -> 042 -> 043 -> 044), the switch, the verifier,
-// idempotency and the deterministic build are checked.
+// Migration 044: the executive product contract. The 043a database is replayed (001-043a), 044 is applied for real, and the one-row
+// executive overview (a staged function behind its view), prediction readiness, the full support-propagation chain (041 -> 042 -> 043
+// -> 044), the switch, plan-boundedness and gating, the verifier, idempotency and the deterministic build are checked.
 
 import test, { before, after } from 'node:test'
 import assert from 'node:assert/strict'
@@ -33,7 +33,7 @@ const tableHashes = async () => {
 const viewDefs = async () => Object.fromEntries((await q(`select relname, pg_get_viewdef(oid) as d from pg_class where relnamespace = 'public'::regnamespace and relkind = 'v'`)).map((r) => [r.relname, r.d]))
 let before044
 before(async () => {
-  chain = await buildChainThrough('043_portfolio_decision_engine.sql')
+  chain = await buildChainThrough('043a_decision_engine_performance.sql')
   before044 = { hashes: await tableHashes(), defs: await viewDefs() }
   await chain.db.exec(sql044)
 }, { timeout: 300000 })
@@ -57,7 +57,7 @@ async function drift(view, overrides) {
   })
 }
 
-test('044 shape: two security-invoker views, SELECT-only grants, no table, nothing earlier changes', async () => {
+test('044 shape: two security-invoker views and the overview function, SELECT-only grants, no table, nothing earlier changes', async () => {
   const c = await one(`select (select count(*) from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r')::int as tables,
     (select count(*) from pg_class where relnamespace = 'public'::regnamespace and relkind = 'v')::int as views`)
   assert.deepEqual(c, { tables: 66, views: 152 })
@@ -72,6 +72,27 @@ test('044 shape: two security-invoker views, SELECT-only grants, no table, nothi
   assert.deepEqual(await tableHashes(), before044.hashes)
   const defs = await viewDefs()
   assert.deepEqual(Object.keys(before044.defs).filter((x) => defs[x] !== before044.defs[x]), [])
+  const f = await one(`select l.lanname, p.provolatile as vol, p.prosecdef as secdef, array_to_string(p.proconfig, ',') as cfg,
+      has_function_privilege('public', p.oid, 'EXECUTE') as public_x, has_function_privilege('anon', p.oid, 'EXECUTE') as anon_x,
+      has_function_privilege('authenticated', p.oid, 'EXECUTE') as auth_x
+    from pg_proc p join pg_language l on l.oid = p.prolang where p.pronamespace = 'public'::regnamespace and p.proname = 'disi_executive_overview'`)
+  assert.deepEqual(f, { lanname: 'plpgsql', vol: 's', secdef: false, cfg: 'search_path=""', public_x: false, anon_x: true, auth_x: true })
+  assert.match(defs.v_executive_overview, /disi_executive_overview\(\)/)
+})
+
+test('plan-bounded and gated: the overview plans in under 2 MB and, while nothing is supported, never plans or runs a per-player predictive layer', async () => {
+  const lines = (await q(`explain (memory, summary, costs off) select * from v_executive_overview`)).map((r) => Object.values(r)[0])
+  assert.ok(Number(lines.find((l) => /Memory: used=/.test(l)).match(/used=(\d+)kB/)[1]) < 2048)
+  await scratch(async () => {
+    // booby-trapped stand-ins fail as soon as they are planned (the planner folds 1 / 0)
+    for (const v of ['v_player_outcome_probability', 'v_player_expected_organizational_value', 'v_portfolio_candidate_readiness']) {
+      await chain.db.exec(`alter view public.${v} rename to zz_${v}`)
+      await chain.db.exec(`create view public.${v} as select (1 / 0)::int as probability, 0 as expected_org_value_bwar, true as optimization_eligible`)
+    }
+    const o = await one(`select * from v_executive_overview`)
+    assert.deepEqual([o.non_null_probabilities, o.supported_expected_values, o.predictive_portfolio_recommendations], [0, 0, 0])
+    assert.equal(o.dodgers_signings, 220)
+  })
 })
 
 test('executive overview: one row whose figures carry their denominators and equal the per-signing layer', async () => {
@@ -166,8 +187,11 @@ test('reproducible: re-running the build produces the committed SQL bytes', () =
   assert.equal(sha(`database/sql/${FILE}`), before)
 })
 
-test('frozen history: 044 adds views only; it never alters, drops, deletes or updates anything', () => {
+test('frozen history: 044 adds two views and one function; it never alters, drops, deletes or updates anything, nor evaluates the overview', () => {
   const code = sql044.replace(/--.*$/gm, '')
+  // the postconditions are structural: the migration never reads the analytical stack it defines
+  assert.doesNotMatch(code, /from public\.v_executive_overview/i)
+  assert.equal((code.match(/create or replace function public\.disi_\w+\(\)/g) || []).length, 1)
   assert.doesNotMatch(code, /\bdrop (table|view|column)\b/i)
   assert.doesNotMatch(code, /\balter (view|column|table)\b/i)
   assert.doesNotMatch(code, /^\s*(delete from|truncate|update |insert into)/im)
