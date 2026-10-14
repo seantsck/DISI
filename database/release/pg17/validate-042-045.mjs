@@ -213,7 +213,7 @@ try {
   const diff = Object.keys({ ...ha, ...hb }).filter((t) => JSON.stringify(ha[t]) !== JSON.stringify(hb[t]))
   const [oa, ob] = [await viewOutputs(A), await viewOutputs(B)]
   const vdiff = ALL_NEW_VIEWS.filter((v) => JSON.stringify(oa[v]) !== JSON.stringify(ob[v]))
-  check('convergence: fresh 001-045 = 001-041 then 042, 043, 044, 045 (table content, view definitions, ACLs, policies, functions, bundle view outputs)',
+  check('convergence: fresh 001-045 = 001-041 then 042, 043, 043a, 044, 045 (table content, view definitions, ACLs, policies, functions, bundle view outputs)',
     diff.length === 0 && vdiff.length === 0 && JSON.stringify(await viewDefs(A)) === JSON.stringify(await viewDefs(B)) && JSON.stringify(await acls(A)) === JSON.stringify(await acls(B))
       && JSON.stringify(await policies(A)) === JSON.stringify(await policies(B)) && JSON.stringify(await functions(A)) === JSON.stringify(await functions(B)), [...diff, ...vdiff].join(','))
   const rf = await checkCand(q(B)); const ff = failedCand(rf)

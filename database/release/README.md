@@ -20,10 +20,10 @@ Nonproduction tooling and the release plan. Nothing here connects to a hosted da
 | `sql/bundle-039-041-probe.sql` | read-only probe of the 039-041 bundle state |
 | `sql/rollback-039-041.sql` | WRITE, approval only: guarded logical rollback of 039-041 to the exact 001-038a state |
 | `pg17/run-039-041.sh`, `pg17/validate-039-041.mjs` | 039-041 bundle validation on disposable PostgreSQL 17 (frozen history, additivity, idempotency, security, verifier 207 -> 223, convergence, anon reads, rollback) |
-| `042-045-release-plan.md` | the 042-045 bundle (DISI v1.0.0, database + application): hashes, changes, expected probe values, backup, 042 -> 043 -> 044 -> 045 apply order, verification incl. the anon / app-read performance gate, PR, smoke, rollback (paired with a merge revert after the merge), PR draft |
-| `sql/bundle-042-045-probe.sql` | read-only probe of the 042-045 bundle state |
-| `sql/rollback-042-045.sql` | WRITE, approval only: guarded logical rollback of 042-045 to the exact 001-041 state |
-| `pg17/run-042-045.sh`, `pg17/validate-042-045.mjs` | 042-045 bundle validation on disposable PostgreSQL 17 (frozen history, additivity, idempotency, security, verifier 223 -> 241, convergence, anon reads, rollback) |
+| `042-045-release-plan.md` | the 042-045 bundle (DISI v1.0.0, database + application), second attempt: the interrupted first attempt (2026-10-14, low-memory restart, clean rollback) and the 043a fix, hashes, changes, expected probe values, backup, 042 -> 043 -> 043a -> 044 -> 045 apply order, verification incl. the anon / app-read performance and memory gate, PR, smoke, rollback (paired with a merge revert after the merge), PR draft |
+| `sql/bundle-042-045-probe.sql` | read-only probe of the 042-045 bundle state, incl. the six staged functions and partial states |
+| `sql/rollback-042-045.sql` | WRITE, approval only: guarded logical rollback of 042-045 (incl. 043a and the six staged functions) to the exact 001-041 state, from the full bundle or any partial state; its previous version rolled production back from 042 + 043 on 2026-10-14 |
+| `pg17/run-042-045.sh`, `pg17/validate-042-045.mjs` | 042-045 bundle validation on disposable PostgreSQL 17 (frozen history, additivity, idempotency, security, verifier 223 -> 243, staged functions, plan-bounded views, convergence, anon reads, full and partial rollback) |
 
 ```
 database/release/pg17/run.sh                    # ~1 min; needs network once for npm
