@@ -174,9 +174,9 @@ test('no accuracy, score or leaderboard column; probabilities are labelled with 
 test('verifier: the six probability checks pass, each catches its own drift, and the full verifier passes on the 041 database', async () => {
   assert.deepEqual(await failing(), [])
   assert.equal(PROBABILITY_CHECK_NAMES.length, 6)
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+  const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 140, public_tables_total: 64 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 223)
+  assert.equal(full.hard.length, 228)
   const tp = 'v_outcome_training_population'
   assert.ok((await drift(tp, { label: `case when r.training_state = 'CENSORED' then false else r.label end` })).includes('outcome_label_state_violations'))
   assert.ok((await drift(tp, { label: `case when r.reached_mlb_verified is null then false else r.label end` })).includes('outcome_no_negative_coercion_violations'))
