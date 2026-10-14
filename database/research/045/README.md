@@ -35,3 +35,11 @@ switch: lowering one 041 threshold moves the chain to `PROBABILITY_ONLY` and no 
 | 6 | Signing-time features | 52 signings |
 | 7 | Scouting coverage | 171 items |
 | 8 | Realized-value resolution | Incomplete or unresolved transaction chains |
+
+## Plan-bounded release status and roadmap (after the 2026-10-14 release attempt)
+
+- `v_disi_release_status` reads its support counts from the executive overview. The definitions are the same, and they are computed once by the staged overview function.
+- `v_research_roadmap` is a wrapper over `disi_research_roadmap()`, which counts each research queue in its own statement.
+- Neither plans the whole stack at once. Before this change they needed about 690 MB and 245 MB of planner memory.
+- Their output is byte-identical to the original definitions.
+- The postconditions are structural only. See `../043a/README.md`.

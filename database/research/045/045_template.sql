@@ -3,7 +3,8 @@
 -- Final integration (DISI v1.0.0): the product contract (the relations the application reads, each with its area, tier, routes and
 -- the migration that introduced it), the release status (version, data freshness, model / value / decision-engine versions and the
 -- support state of every predictive layer), the research roadmap (the highest-value gaps and what each unlocks) and executive metric
--- provenance (population, denominator, provenance and eligibility of every executive figure). Run after 044.
+-- provenance (population, denominator, provenance and eligibility of every executive figure). Run after 044. The release status reads
+-- its support counts from the executive overview and the roadmap is a staged function, so neither plans the whole stack at once.
 --
 -- Built from database/research/045/ (contract.json, metrics.json, views.sql, build.mjs; design in
 -- ../042/final-decision-architecture.md).
@@ -25,7 +26,8 @@ select $m045${{payload_json}}$m045$::jsonb as j;
 
 do $$
 begin
-  if to_regclass('public.v_executive_overview') is null or to_regclass('public.v_prediction_readiness') is null then
+  if to_regclass('public.v_executive_overview') is null or to_regclass('public.v_prediction_readiness') is null
+     or to_regprocedure('public.disi_executive_overview()') is null then
     raise exception '045: Migration 044 has not been applied';
   end if;
 end $$;
@@ -77,6 +79,9 @@ begin
     execute format('revoke all on public.%I from anon, authenticated', t);
     execute format('grant select on public.%I to anon, authenticated', t);
   end loop;
+  -- the roadmap function is reachable only as the view's body: no PUBLIC execute; the API roles that read the view may run it
+  revoke all on function public.disi_research_roadmap() from public;
+  grant execute on function public.disi_research_roadmap() to anon, authenticated;
 end $$;
 
 do $$
@@ -103,8 +108,19 @@ begin
   if missing is not null then
     raise exception '045 postcondition: contract relations missing or of the wrong kind: %', missing;
   end if;
-  if (select count(*) from public.v_disi_release_status) <> 1 then
-    raise exception '045 postcondition: release status must be one row';
+  -- structural only: nothing here evaluates the release status or roadmap (each reads the analytical stack; the verifier checks them)
+  select string_agg(v.relname, ', ') into missing
+  from (values ('v_disi_release_status'), ('v_research_roadmap'), ('v_executive_metric_provenance')) as v(relname)
+  left join pg_class c on c.relnamespace = 'public'::regnamespace and c.relname = v.relname and c.relkind = 'v'
+  where c.oid is null or coalesce(array_to_string(c.reloptions, ','), '') !~ 'security_invoker=(true|on)' or not has_table_privilege('anon', c.oid, 'SELECT');
+  if missing is not null then
+    raise exception '045 postcondition: views missing, not security_invoker or not readable: %', missing;
+  end if;
+  if not exists (select 1 from pg_proc p where p.pronamespace = 'public'::regnamespace and p.proname = 'disi_research_roadmap'
+                   and p.provolatile = 's' and not p.prosecdef and coalesce(p.proconfig, array[]::text[]) @> array['search_path=""']
+                   and not has_function_privilege('public', p.oid, 'EXECUTE')
+                   and has_function_privilege('anon', p.oid, 'EXECUTE') and has_function_privilege('authenticated', p.oid, 'EXECUTE')) then
+    raise exception '045 postcondition: the roadmap function is missing or not read-only invoker-rights';
   end if;
 end $$;
 

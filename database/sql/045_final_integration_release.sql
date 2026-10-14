@@ -3,7 +3,8 @@
 -- Final integration (DISI v1.0.0): the product contract (the relations the application reads, each with its area, tier, routes and
 -- the migration that introduced it), the release status (version, data freshness, model / value / decision-engine versions and the
 -- support state of every predictive layer), the research roadmap (the highest-value gaps and what each unlocks) and executive metric
--- provenance (population, denominator, provenance and eligibility of every executive figure). Run after 044.
+-- provenance (population, denominator, provenance and eligibility of every executive figure). Run after 044. The release status reads
+-- its support counts from the executive overview and the roadmap is a staged function, so neither plans the whole stack at once.
 --
 -- Built from database/research/045/ (contract.json, metrics.json, views.sql, build.mjs; design in
 -- ../042/final-decision-architecture.md).
@@ -25,7 +26,8 @@ select $m045${"contract":[{"app_routes":["/players/[slug]"],"contract_tier":"DOS
 
 do $$
 begin
-  if to_regclass('public.v_executive_overview') is null or to_regclass('public.v_prediction_readiness') is null then
+  if to_regclass('public.v_executive_overview') is null or to_regclass('public.v_prediction_readiness') is null
+     or to_regprocedure('public.disi_executive_overview()') is null then
     raise exception '045: Migration 044 has not been applied';
   end if;
 end $$;
@@ -72,17 +74,13 @@ on conflict (relation_name) do nothing;
 create or replace view public.v_disi_release_status
 with (security_invoker = true)
 as
-with sup as materialized (select target_key, baseline_supported from public.v_outcome_target_support),
-evs as materialized (select expected_value_supported from public.v_expected_value_support),
-flag as (select coalesce(bool_or(expected_value_supported), false) as any_ev from evs),
--- per-candidate recommendations are counted only when some expected value is supported (a one-time filter)
-rec as (select count(*) filter (where optimization_eligible)::int as n from public.v_portfolio_candidate_readiness where (select any_ev from flag)),
-c as (
-  select (select count(distinct target_key) from sup)::int as targets,
-    (select count(distinct target_key) from sup where baseline_supported)::int as supported_targets,
-    (select count(*) from evs)::int as ev_models,
-    (select count(*) from evs where expected_value_supported)::int as supported_ev_models,
-    coalesce((select n from rec), 0) as recommendations
+-- the support counts are the executive overview's (044): the same definitions - 041 targets, 042 value models, and recommendations
+-- counted only when some expected value is supported - computed once by its staged function instead of re-planning every layer here
+with c as materialized (
+  select o.probability_targets as targets, o.supported_probability_targets as supported_targets,
+    o.expected_value_models as ev_models, o.supported_expected_value_models as supported_ev_models,
+    o.predictive_portfolio_recommendations as recommendations
+  from public.v_executive_overview o
 )
 select
   'DISI v1.0.0'::text as product_version,
@@ -114,60 +112,98 @@ comment on view public.v_disi_release_status is
 -- ---------------------------------------------------------------------------
 -- Research roadmap: the highest-value research gaps and what each would unlock
 -- ---------------------------------------------------------------------------
-create or replace view public.v_research_roadmap
-with (security_invoker = true)
-as
-with t as materialized (select task_type from public.v_research_tasks where franchise_key = 'DODGERS'),
-pr as materialized (select * from public.v_prediction_readiness where reference_population = 'DODGERS_TRACKED_AND_OPENING_CLASS'),
-closest as (
-  select target_label, additional_positives_needed, additional_labels_needed, greatest(min_negatives - negative_n, 0) as additional_negatives_needed
-  from pr where not baseline_supported
-  order by additional_positives_needed + additional_labels_needed, target_key limit 1
-),
-chain as materialized (
-  select count(*) filter (where chain_status like 'INCOMPLETE%')::int as incomplete,
-    count(*) filter (where total_individually_attributable_organizational_bwar is null and chain_status in ('COMPLETE_TERMINAL', 'STILL_ACTIVE'))::int as unresolved
-  from public.v_downstream_organizational_realization where row_grain = 'SIGNING'
-),
-gaps(gap_area, priority, open_items, item_unit, unlocks, evidence_needed, source_view) as (
-  select 'OUTCOME_AUDITS', 1, (select count(*) from t where task_type = 'OUTCOME_AUDIT')::int, 'signings awaiting an outcome audit',
-    'Labels for the 041 outcome targets (probability support), resolved realized value (042) and census-eligible rates (039)',
-    'Audit MLB / no-MLB outcomes of mature tracked and opening-class signings first', 'v_research_tasks'
+-- Staged like the executive overview: each research queue is counted by its own statement, so the roadmap never plans every queue in
+-- one statement.
+create or replace function public.disi_research_roadmap()
+returns table (priority integer, gap_area text, open_items integer, item_unit text, unlocks text, evidence_needed text, source_view text)
+language plpgsql
+stable
+security invoker
+set search_path = ''
+as $fn$
+declare
+  v_audits int;
+  v_population int;
+  v_cost int;
+  v_features int;
+  c record;
+  v_closest_found boolean;
+  v_incomplete int;
+  v_unresolved int;
+  v_benchmark int;
+  v_scouting int;
+  v_scouting_expectation int;
+  v_rows int;
+begin
+  execute $q$
+    with t as materialized (select task_type from public.v_research_tasks where franchise_key = 'DODGERS')
+    select (select count(*) from t where task_type = 'OUTCOME_AUDIT')::int,
+      (select count(*) from t where task_type in ('CLASS_MEMBERS_MISSING', 'CLASS_SIZE_SOURCE_NOT_OFFICIAL'))::int,
+      (select count(*) from t where task_type = 'ACQUISITION_COST_UNKNOWN')::int,
+      (select count(*) from t where task_type in ('MARKET_MISSING', 'SIGNING_DATE_MISSING'))::int
+  $q$ into v_audits, v_population, v_cost, v_features;
+  -- the closest unsupported Dodgers target
+  execute $q$
+    select target_label, additional_positives_needed, additional_labels_needed, greatest(min_negatives - negative_n, 0) as additional_negatives_needed
+    from public.v_prediction_readiness
+    where reference_population = 'DODGERS_TRACKED_AND_OPENING_CLASS' and not baseline_supported
+    order by additional_positives_needed + additional_labels_needed, target_key limit 1
+  $q$ into c;
+  get diagnostics v_rows = row_count;
+  v_closest_found := v_rows = 1;
+  execute $q$
+    select count(*) filter (where chain_status like 'INCOMPLETE%')::int,
+      count(*) filter (where total_individually_attributable_organizational_bwar is null and chain_status in ('COMPLETE_TERMINAL', 'STILL_ACTIVE'))::int
+    from public.v_downstream_organizational_realization where row_grain = 'SIGNING'
+  $q$ into v_incomplete, v_unresolved;
+  execute $q$ select count(*)::int from public.v_international_benchmark_research_queue $q$ into v_benchmark;
+  execute $q$ select count(*)::int from public.v_scouting_research_queue $q$ into v_scouting;
+  execute $q$ select count(*)::int from public.v_scouting_expectation_research_queue $q$ into v_scouting_expectation;
+  return query
+  select 1, 'OUTCOME_AUDITS'::text, v_audits, 'signings awaiting an outcome audit'::text,
+    'Labels for the 041 outcome targets (probability support), resolved realized value (042) and census-eligible rates (039)'::text,
+    'Audit MLB / no-MLB outcomes of mature tracked and opening-class signings first'::text, 'v_research_tasks'::text
   union all
-  select 'PREDICTION_SUPPORT', 2, coalesce((select additional_labels_needed from closest), 0),
+  select 2, 'PREDICTION_SUPPORT', case when v_closest_found then coalesce(c.additional_labels_needed, 0) else 0 end,
     'more labelled Dodgers outcomes needed for the closest target',
     'Outcome probabilities (041) -> expected organizational value (042) -> portfolio recommendations (043)',
-    coalesce((select format('Closest Dodgers target "%s": +%s labelled, +%s positive, +%s negative outcomes', target_label, additional_labels_needed,
-      additional_positives_needed, additional_negatives_needed) from closest), 'Every Dodgers target is supported'),
+    case when v_closest_found then format('Closest Dodgers target "%s": +%s labelled, +%s positive, +%s negative outcomes', c.target_label,
+      c.additional_labels_needed, c.additional_positives_needed, c.additional_negatives_needed) else 'Every Dodgers target is supported' end,
     'v_prediction_readiness'
   union all
-  select 'POPULATION_COMPLETENESS', 3, (select count(*) from t where task_type in ('CLASS_MEMBERS_MISSING', 'CLASS_SIZE_SOURCE_NOT_OFFICIAL'))::int,
-    'class-population research items',
+  select 3, 'POPULATION_COMPLETENESS', v_population, 'class-population research items',
     'Complete signing-class censuses: census rates (039) and unbiased training populations (041)',
     'Add audited 2015-2019 Dodgers class censuses and confirm class sizes from official sources', 'v_research_tasks'
   union all
-  select 'COST_COVERAGE', 4, (select count(*) from t where task_type = 'ACQUISITION_COST_UNKNOWN')::int, 'signings with unknown acquisition cost',
+  select 4, 'COST_COVERAGE', v_cost, 'signings with unknown acquisition cost',
     'Complete-cost value ratios (042), budget feasibility and value-per-cost optimization (043)',
     'Find publicly reported signing bonuses (and any posting / transfer fee)', 'v_research_tasks'
   union all
-  select 'BENCHMARK_DEPTH', 5, (select count(*) from public.v_international_benchmark_research_queue)::int, 'benchmark research items',
+  select 5, 'BENCHMARK_DEPTH', v_benchmark, 'benchmark research items',
     'A deeper top-prospect reference population (041 benchmark support)', 'Resolve benchmark identities and extend to the 2015-2018 classes',
     'v_international_benchmark_research_queue'
   union all
-  select 'SIGNING_TIME_FEATURES', 6, (select count(*) from t where task_type in ('MARKET_MISSING', 'SIGNING_DATE_MISSING'))::int,
-    'signings missing market or signing date',
+  select 6, 'SIGNING_TIME_FEATURES', v_features, 'signings missing market or signing date',
     'Complete signing-time features: archetypes and comparables (040), decision readiness (043)', 'Research market and signing date at signing',
     'v_research_tasks'
   union all
-  select 'SCOUTING_COVERAGE', 7, ((select count(*) from public.v_scouting_research_queue) + (select count(*) from public.v_scouting_expectation_research_queue))::int,
-    'scouting research items', 'Expectations at signing for more signings (036 calibration, 040 comparables)',
+  select 7, 'SCOUTING_COVERAGE', (v_scouting + v_scouting_expectation)::int, 'scouting research items',
+    'Expectations at signing for more signings (036 calibration, 040 comparables)',
     'Archive public rankings and evaluations published before each signing', 'v_scouting_research_queue, v_scouting_expectation_research_queue'
   union all
-  select 'REALIZED_VALUE_RESOLUTION', 8, ((select incomplete from chain) + (select unresolved from chain))::int, 'transaction chains incomplete or unresolved',
+  select 8, 'REALIZED_VALUE_RESOLUTION', (v_incomplete + v_unresolved)::int, 'transaction chains incomplete or unresolved',
     'Resolved realized organizational value (042) and conditional-value support', 'Research downstream exits, returns and timing of traded assets',
-    'v_downstream_organizational_realization'
-)
-select g.priority, g.gap_area, g.open_items, g.item_unit, g.unlocks, g.evidence_needed, g.source_view from gaps g;
+    'v_downstream_organizational_realization';
+end
+$fn$;
+
+comment on function public.disi_research_roadmap() is
+  'Staged evaluation of v_research_roadmap (Migration 045): each research queue counted by its own statement. Read-only (STABLE), invoker rights, fixed search_path. Read it through the view.';
+
+create or replace view public.v_research_roadmap
+with (security_invoker = true)
+as
+select * from public.disi_research_roadmap();
 
 comment on view public.v_research_roadmap is
   'Research roadmap (Migration 045): the highest-value research gaps in priority order, each with its open items (from the research queues), what it would unlock in the DISI stack and the evidence needed. Priorities follow the support chain: outcome audits and population completeness come first because prediction support depends on them.';
@@ -208,6 +244,9 @@ begin
     execute format('revoke all on public.%I from anon, authenticated', t);
     execute format('grant select on public.%I to anon, authenticated', t);
   end loop;
+  -- the roadmap function is reachable only as the view's body: no PUBLIC execute; the API roles that read the view may run it
+  revoke all on function public.disi_research_roadmap() from public;
+  grant execute on function public.disi_research_roadmap() to anon, authenticated;
 end $$;
 
 do $$
@@ -234,8 +273,19 @@ begin
   if missing is not null then
     raise exception '045 postcondition: contract relations missing or of the wrong kind: %', missing;
   end if;
-  if (select count(*) from public.v_disi_release_status) <> 1 then
-    raise exception '045 postcondition: release status must be one row';
+  -- structural only: nothing here evaluates the release status or roadmap (each reads the analytical stack; the verifier checks them)
+  select string_agg(v.relname, ', ') into missing
+  from (values ('v_disi_release_status'), ('v_research_roadmap'), ('v_executive_metric_provenance')) as v(relname)
+  left join pg_class c on c.relnamespace = 'public'::regnamespace and c.relname = v.relname and c.relkind = 'v'
+  where c.oid is null or coalesce(array_to_string(c.reloptions, ','), '') !~ 'security_invoker=(true|on)' or not has_table_privilege('anon', c.oid, 'SELECT');
+  if missing is not null then
+    raise exception '045 postcondition: views missing, not security_invoker or not readable: %', missing;
+  end if;
+  if not exists (select 1 from pg_proc p where p.pronamespace = 'public'::regnamespace and p.proname = 'disi_research_roadmap'
+                   and p.provolatile = 's' and not p.prosecdef and coalesce(p.proconfig, array[]::text[]) @> array['search_path=""']
+                   and not has_function_privilege('public', p.oid, 'EXECUTE')
+                   and has_function_privilege('anon', p.oid, 'EXECUTE') and has_function_privilege('authenticated', p.oid, 'EXECUTE')) then
+    raise exception '045 postcondition: the roadmap function is missing or not read-only invoker-rights';
   end if;
 end $$;
 

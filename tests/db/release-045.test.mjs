@@ -76,6 +76,18 @@ test('045 shape: one RLS table, three security-invoker views, SELECT-only grants
   assert.deepEqual(Object.keys(after).filter((t) => after[t] !== before045.hashes[t]).sort(), TABLES)
   const defs = await viewDefs()
   assert.deepEqual(Object.keys(before045.defs).filter((x) => defs[x] !== before045.defs[x]), [])
+  // the roadmap is a wrapper over its staged, read-only, invoker-rights function; the release status reads the overview's counts
+  const f = await one(`select l.lanname, p.provolatile as vol, p.prosecdef as secdef, array_to_string(p.proconfig, ',') as cfg,
+      has_function_privilege('public', p.oid, 'EXECUTE') as public_x, has_function_privilege('anon', p.oid, 'EXECUTE') as anon_x,
+      has_function_privilege('authenticated', p.oid, 'EXECUTE') as auth_x
+    from pg_proc p join pg_language l on l.oid = p.prolang where p.pronamespace = 'public'::regnamespace and p.proname = 'disi_research_roadmap'`)
+  assert.deepEqual(f, { lanname: 'plpgsql', vol: 's', secdef: false, cfg: 'search_path=""', public_x: false, anon_x: true, auth_x: true })
+  assert.match(defs.v_research_roadmap, /disi_research_roadmap\(\)/)
+  assert.match(defs.v_disi_release_status, /v_executive_overview/)
+  for (const v of ['v_disi_release_status', 'v_research_roadmap']) {
+    const lines = (await q(`explain (memory, summary, costs off) select * from public.${v}`)).map((r) => Object.values(r)[0])
+    assert.ok(Number(lines.find((l) => /Memory: used=/.test(l)).match(/used=(\d+)kB/)[1]) < 2048, `${v} plans in under 2 MB`)
+  }
 })
 
 test('product contract: exactly the relations the application reads, each existing, secured and readable', async () => {
@@ -149,7 +161,7 @@ test('verifier: the five 045 checks pass, each catches its own drift, and the fu
   assert.equal(RELEASE_CHECK_NAMES.length, 5)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 241)
+  assert.equal(full.hard.length, 243)
   await scratch(async () => {
     await chain.db.exec(`insert into disi_product_contract (relation_name, relation_kind, product_area, contract_tier, app_routes, purpose, introduced_in)
       values ('v_does_not_exist', 'VIEW', 'EXECUTIVE', 'PAGE', '{/}', 'test', '045')`)
@@ -178,8 +190,10 @@ test('reproducible: re-running the build produces the committed SQL bytes', () =
   assert.equal(sha(`database/sql/${FILE}`), before)
 })
 
-test('frozen history: 045 adds only; it never alters, drops, deletes or updates an earlier object', () => {
+test('frozen history: 045 adds only; it never alters, drops, deletes or updates an earlier object, nor evaluates an analytical view', () => {
   const code = sql045.replace(/--.*$/gm, '')
+  // the postconditions are structural: the migration never reads the release status or the roadmap it defines
+  assert.doesNotMatch(code, /from public\.v_(disi_release_status|research_roadmap)\b/i)
   assert.doesNotMatch(code, /\bdrop (table|view|column)\b/i)
   assert.doesNotMatch(code, /\balter (view|column)\b/i)
   assert.doesNotMatch(code, /^\s*(delete from|truncate|update )/im)
