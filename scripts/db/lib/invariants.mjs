@@ -28,6 +28,12 @@ import { networkOutcomeQueries, NETWORK_OUTCOME_CHECK_NAMES } from './network-ou
 import { marketQueries, MARKET_CHECK_NAMES } from './market-invariants.mjs'
 import { archetypeQueries, ARCHETYPE_CHECK_NAMES } from './archetype-invariants.mjs'
 import { probabilityQueries, PROBABILITY_CHECK_NAMES } from './probability-invariants.mjs'
+import { orgValueQueries, ORG_VALUE_CHECK_NAMES } from './org-value-invariants.mjs'
+import { portfolioQueries, PORTFOLIO_CHECK_NAMES } from './portfolio-invariants.mjs'
+import { stagedFunctionQueries, STAGED_FUNCTION_CHECK_NAMES } from './staged-function-invariants.mjs'
+import { executiveQueries, EXECUTIVE_CHECK_NAMES } from './executive-invariants.mjs'
+import { releaseQueries, RELEASE_CHECK_NAMES } from './release-invariants.mjs'
+import { productSnapshotQueries, PRODUCT_SNAPSHOT_CHECK_NAMES } from './product-snapshot-invariants.mjs'
 
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
@@ -100,11 +106,13 @@ export const CANONICAL_EXPECTATIONS = {
   // 034 adds one table and four views.
   // 035 adds three views; 036 adds one table and five views; 037 and 038 add four views each.
   // 039 adds two tables and four views; 040 adds five views; 041 adds two tables and six views.
-  public_views_total: 140,
+  // 042 adds one table and five views; 043 adds one table and five views; 043a redefines four views (no new relation);
+  // 044 adds two views; 045 adds one table and three views; 045a adds ten product snapshot tables.
+  public_views_total: 155,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 64,
+  public_tables_total: 77,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -210,6 +218,12 @@ export const CANONICAL_EXPECTATIONS = {
   ...Object.fromEntries(MARKET_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(ARCHETYPE_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(PROBABILITY_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(ORG_VALUE_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(PORTFOLIO_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(STAGED_FUNCTION_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(EXECUTIVE_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(RELEASE_CHECK_NAMES.map((name) => [name, 0])),
+  ...Object.fromEntries(PRODUCT_SNAPSHOT_CHECK_NAMES.map((name) => [name, 0])),
   // security surface
   development_base_tables: [
     'player_season_stints',
@@ -561,6 +575,42 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   const hasProbabilityLayer = Boolean((await query(`select to_regclass('public.outcome_targets') is not null as ok`))[0].ok)
   for (const [name, sql] of Object.entries(probabilityQueries(hasProbabilityLayer))) {
     check('probability', name, expectations[name], await count(sql))
+  }
+
+  // -- realized and expected organizational value (042) ---------------------------------
+  const hasOrgValueLayer = Boolean((await query(`select to_regclass('public.expected_value_models') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(orgValueQueries(hasOrgValueLayer))) {
+    check('org_value', name, expectations[name], await count(sql))
+  }
+
+  // -- portfolio decision support (043) -------------------------------------------------
+  const hasPortfolioLayer = Boolean((await query(`select to_regclass('public.portfolio_scenario_definitions') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(portfolioQueries(hasPortfolioLayer))) {
+    check('portfolio', name, expectations[name], await count(sql))
+  }
+
+  // -- staged, plan-bounded views (043a; the 044 and 045 pairs once their views exist) ---------
+  const hasStagedLayer = Boolean((await query(`select to_regprocedure('public.disi_portfolio_candidate_readiness()') is not null as ok`))[0].ok)
+  const hasServingLayer = Boolean((await query(`select to_regclass('public.product_executive_snapshot') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(stagedFunctionQueries(hasStagedLayer, hasServingLayer))) {
+    check('staged', name, expectations[name], await count(sql))
+  }
+
+  // -- executive product contract (044) -----------------------------------------------
+  const hasExecutiveLayer = Boolean((await query(`select to_regclass('public.v_executive_overview') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(executiveQueries(hasExecutiveLayer))) {
+    check('executive', name, expectations[name], await count(sql))
+  }
+
+  // -- DISI v1 final integration (045) ----------------------------------------------------
+  const hasReleaseLayer = Boolean((await query(`select to_regclass('public.disi_product_contract') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(releaseQueries(hasReleaseLayer))) {
+    check('release', name, expectations[name], await count(sql))
+  }
+
+  // -- DISI v1 product snapshots and API boundary (045a) ---------------------------------
+  for (const [name, sql] of Object.entries(productSnapshotQueries(hasServingLayer))) {
+    check('snapshot', name, expectations[name], await count(sql))
   }
 
   // -- whole public API surface (025) -----------------------------------------

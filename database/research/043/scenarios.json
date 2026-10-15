@@ -1,0 +1,8 @@
+{
+ "scenarios": [
+  { "scenario_key": "BASE_POOL", "scenario_label": "Reported pool", "budget_multiplier": 1, "reserve_share": 0, "description": "The club's reported international bonus pool for the signing period (after trades when reported)." },
+  { "scenario_key": "RESERVE_30", "scenario_label": "Reported pool, 30% reserved", "budget_multiplier": 1, "reserve_share": 0.3, "description": "30% of the reported pool held back for in-period opportunities; 70% available to the candidate set." },
+  { "scenario_key": "POOL_PLUS_25", "scenario_label": "Pool +25% (acquired pool space)", "budget_multiplier": 1.25, "reserve_share": 0, "description": "Reported pool increased by 25%, as if additional pool space had been acquired by trade." },
+  { "scenario_key": "POOL_MINUS_25", "scenario_label": "Pool -25% (traded away or penalty)", "budget_multiplier": 0.75, "reserve_share": 0, "description": "Reported pool reduced by 25%, as if pool space had been traded away or forfeited." }
+ ]
+}

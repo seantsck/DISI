@@ -144,7 +144,7 @@ test('verifier: the six network outcome checks pass, each catches its own drift,
   assert.equal(NETWORK_OUTCOME_CHECK_NAMES.length, 6)
   const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 125, public_tables_total: 60 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 223, '207 through 038 plus the five 039, five 040 and six 041 checks, which pass trivially without their objects')
+  assert.equal(full.hard.length, 247, '207 through 038 plus the five 039, five 040 and six 041 checks, which pass trivially without their objects')
   const s = 'v_network_outcome_summary'
   assert.ok((await drift(s, { denominator_known: 'true' })).includes('network_outcome_census_claim_violations'))
   assert.ok((await drift(s, { network_sample_state: `'CENSUS'` })).includes('network_outcome_census_claim_violations'))

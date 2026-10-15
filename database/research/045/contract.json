@@ -1,0 +1,544 @@
+{
+ "product_version": "DISI v1.0.0",
+ "schema_version": "v0.36",
+ "decision_engine_version": "portfolio-decision-v1",
+ "contract": [
+  {
+   "relation_name": "player_metric_observations",
+   "relation_kind": "TABLE",
+   "product_area": "OUTCOMES",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "bWAR / fWAR observations with source and date (never blended)",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "source_tiers",
+   "relation_kind": "TABLE",
+   "product_area": "PROVENANCE",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/research"
+   ],
+   "purpose": "Source priority tiers",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_class_research_coverage",
+   "relation_kind": "VIEW",
+   "product_area": "RESEARCH",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/research"
+   ],
+   "purpose": "Class research coverage",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_database_status",
+   "relation_kind": "VIEW",
+   "product_area": "COVERAGE",
+   "contract_tier": "EXECUTIVE",
+   "app_routes": [
+    "/"
+   ],
+   "purpose": "Database coverage summary",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_dodgers_class_source_reconciliation",
+   "relation_kind": "VIEW",
+   "product_area": "RESEARCH",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/research"
+   ],
+   "purpose": "Unresolved class source conflicts",
+   "introduced_in": "018"
+  },
+  {
+   "relation_name": "v_dodgers_development_by_bonus_band",
+   "relation_kind": "VIEW",
+   "product_area": "DEVELOPMENT",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/development"
+   ],
+   "purpose": "Development by bonus band",
+   "introduced_in": "021"
+  },
+  {
+   "relation_name": "v_dodgers_development_by_market",
+   "relation_kind": "VIEW",
+   "product_area": "DEVELOPMENT",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/development"
+   ],
+   "purpose": "Development by market",
+   "introduced_in": "021"
+  },
+  {
+   "relation_name": "v_dodgers_development_by_signing_class",
+   "relation_kind": "VIEW",
+   "product_area": "DEVELOPMENT",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/development"
+   ],
+   "purpose": "Development by signing class",
+   "introduced_in": "021"
+  },
+  {
+   "relation_name": "v_dodgers_development_coverage",
+   "relation_kind": "VIEW",
+   "product_area": "DEVELOPMENT",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/development"
+   ],
+   "purpose": "Development data coverage",
+   "introduced_in": "021"
+  },
+  {
+   "relation_name": "v_dodgers_development_research_queue",
+   "relation_kind": "VIEW",
+   "product_area": "DEVELOPMENT",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/development"
+   ],
+   "purpose": "Development research queue",
+   "introduced_in": "021"
+  },
+  {
+   "relation_name": "v_dodgers_known_mlb_outcomes",
+   "relation_kind": "VIEW",
+   "product_area": "OUTCOMES",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/"
+   ],
+   "purpose": "Verified MLB outcomes of Dodgers signings",
+   "introduced_in": "016"
+  },
+  {
+   "relation_name": "v_dodgers_outcome_audit_progress",
+   "relation_kind": "VIEW",
+   "product_area": "OUTCOMES",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/research"
+   ],
+   "purpose": "Outcome audit progress",
+   "introduced_in": "019"
+  },
+  {
+   "relation_name": "v_dodgers_outcome_by_signing_class",
+   "relation_kind": "VIEW",
+   "product_area": "OUTCOMES",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/research"
+   ],
+   "purpose": "Outcome audits by signing class",
+   "introduced_in": "019"
+  },
+  {
+   "relation_name": "v_dodgers_player_development_summary",
+   "relation_kind": "VIEW",
+   "product_area": "DEVELOPMENT",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Per-player development summary",
+   "introduced_in": "021"
+  },
+  {
+   "relation_name": "v_dodgers_rate_eligible_summary",
+   "relation_kind": "VIEW",
+   "product_area": "OUTCOMES",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/"
+   ],
+   "purpose": "Rate-eligible class summary (no organization-wide rate otherwise)",
+   "introduced_in": "016"
+  },
+  {
+   "relation_name": "v_dodgers_signing_period_research_queue",
+   "relation_kind": "VIEW",
+   "product_area": "RESEARCH",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/research"
+   ],
+   "purpose": "Signing-period research queue",
+   "introduced_in": "018"
+  },
+  {
+   "relation_name": "v_dodgers_signing_population_coverage",
+   "relation_kind": "VIEW",
+   "product_area": "RESEARCH",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/research"
+   ],
+   "purpose": "Signing-population coverage",
+   "introduced_in": "018"
+  },
+  {
+   "relation_name": "v_executive_overview",
+   "relation_kind": "VIEW",
+   "product_area": "EXECUTIVE",
+   "contract_tier": "EXECUTIVE",
+   "app_routes": [
+    "/",
+    "/prediction-readiness"
+   ],
+   "purpose": "One-row executive summary: coverage, known spend, realized organizational value and predictive support states",
+   "introduced_in": "044"
+  },
+  {
+   "relation_name": "v_expected_value_support",
+   "relation_kind": "VIEW",
+   "product_area": "ORGANIZATIONAL_VALUE",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/portfolio",
+    "/prediction-readiness"
+   ],
+   "purpose": "Expected-value model support and blockers",
+   "introduced_in": "042"
+  },
+  {
+   "relation_name": "v_historical_portfolio_summary",
+   "relation_kind": "VIEW",
+   "product_area": "PORTFOLIO",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/portfolio"
+   ],
+   "purpose": "Retrospective capital allocation, concentration and realized value",
+   "introduced_in": "043"
+  },
+  {
+   "relation_name": "v_league_org_benchmark",
+   "relation_kind": "VIEW",
+   "product_area": "LEAGUE",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/league"
+   ],
+   "purpose": "Cross-organization signing volume",
+   "introduced_in": "013"
+  },
+  {
+   "relation_name": "v_league_period_org_summary",
+   "relation_kind": "VIEW",
+   "product_area": "LEAGUE",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/league"
+   ],
+   "purpose": "Organization period summaries",
+   "introduced_in": "014"
+  },
+  {
+   "relation_name": "v_market_research_summary",
+   "relation_kind": "VIEW",
+   "product_area": "MARKETS",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/markets"
+   ],
+   "purpose": "Signings, cost and outcomes by market",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_outcome_model_evaluation",
+   "relation_kind": "VIEW",
+   "product_area": "PREDICTION_READINESS",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/prediction-readiness"
+   ],
+   "purpose": "Recorded out-of-time model evaluation with currency check",
+   "introduced_in": "041"
+  },
+  {
+   "relation_name": "v_pathway_research_summary",
+   "relation_kind": "VIEW",
+   "product_area": "MARKETS",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/markets"
+   ],
+   "purpose": "Signings, cost and outcomes by pathway",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_player_comparable_summary",
+   "relation_kind": "VIEW",
+   "product_area": "COMPARABLES",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Earlier comparable signings by population class (historical context)",
+   "introduced_in": "040"
+  },
+  {
+   "relation_name": "v_player_development_milestones",
+   "relation_kind": "VIEW",
+   "product_area": "DEVELOPMENT",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Development milestones",
+   "introduced_in": "021"
+  },
+  {
+   "relation_name": "v_player_development_stints",
+   "relation_kind": "VIEW",
+   "product_area": "DEVELOPMENT",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Season-level development stints",
+   "introduced_in": "021"
+  },
+  {
+   "relation_name": "v_player_directory",
+   "relation_kind": "VIEW",
+   "product_area": "PLAYERS",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/players",
+    "/asset-conversion",
+    "/api/player-search"
+   ],
+   "purpose": "Player directory and search",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_player_dossier",
+   "relation_kind": "VIEW",
+   "product_area": "PLAYERS",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "One row per player: identity, acquisition, outcome",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_player_expected_organizational_value",
+   "relation_kind": "VIEW",
+   "product_area": "ORGANIZATIONAL_VALUE",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Expected organizational value state per Dodgers signing",
+   "introduced_in": "042"
+  },
+  {
+   "relation_name": "v_player_filter_options",
+   "relation_kind": "VIEW",
+   "product_area": "PLAYERS",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/players"
+   ],
+   "purpose": "Player directory filter facets",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_player_realized_organizational_value",
+   "relation_kind": "VIEW",
+   "product_area": "ORGANIZATIONAL_VALUE",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Realized organizational value per Dodgers signing, components separate",
+   "introduced_in": "042"
+  },
+  {
+   "relation_name": "v_player_scouting_timeline",
+   "relation_kind": "VIEW",
+   "product_area": "SCOUTING",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "External scouting evaluations over time",
+   "introduced_in": "026"
+  },
+  {
+   "relation_name": "v_player_signing_network",
+   "relation_kind": "VIEW",
+   "product_area": "NETWORK",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Source-stated trainer / academy associations",
+   "introduced_in": "029"
+  },
+  {
+   "relation_name": "v_player_sources",
+   "relation_kind": "VIEW",
+   "product_area": "PROVENANCE",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Sources and provenance per fact",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_player_timeline",
+   "relation_kind": "VIEW",
+   "product_area": "PLAYERS",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Player event timeline",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_player_transactions",
+   "relation_kind": "VIEW",
+   "product_area": "TRANSACTIONS",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]",
+    "/asset-conversion"
+   ],
+   "purpose": "Transactions and trade packages",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_portfolio_candidate_readiness",
+   "relation_kind": "VIEW",
+   "product_area": "PORTFOLIO",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Decision-support state at the signing date",
+   "introduced_in": "043"
+  },
+  {
+   "relation_name": "v_portfolio_decision_support",
+   "relation_kind": "VIEW",
+   "product_area": "PORTFOLIO",
+   "contract_tier": "EXECUTIVE",
+   "app_routes": [
+    "/portfolio"
+   ],
+   "purpose": "Candidates per decision-support state with what DISI may and may not say",
+   "introduced_in": "043"
+  },
+  {
+   "relation_name": "v_portfolio_scenario_evaluation",
+   "relation_kind": "VIEW",
+   "product_area": "PORTFOLIO",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/portfolio"
+   ],
+   "purpose": "Pool scenarios: budget feasibility and (when supported) value optimization",
+   "introduced_in": "043"
+  },
+  {
+   "relation_name": "v_prediction_readiness",
+   "relation_kind": "VIEW",
+   "product_area": "PREDICTION_READINESS",
+   "contract_tier": "EXECUTIVE",
+   "app_routes": [
+    "/prediction-readiness"
+   ],
+   "purpose": "Evidence, minimums and what is still needed per outcome target and reference population",
+   "introduced_in": "044"
+  },
+  {
+   "relation_name": "v_research_tasks",
+   "relation_kind": "VIEW",
+   "product_area": "RESEARCH",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/research"
+   ],
+   "purpose": "Open research tasks",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_signing_ages",
+   "relation_kind": "VIEW",
+   "product_area": "PLAYERS",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Derived ages at signing",
+   "introduced_in": "020"
+  },
+  {
+   "relation_name": "v_signing_data_coverage",
+   "relation_kind": "VIEW",
+   "product_area": "LEAGUE",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/league"
+   ],
+   "purpose": "Signing data coverage by period",
+   "introduced_in": "012"
+  },
+  {
+   "relation_name": "v_signing_filter_options",
+   "relation_kind": "VIEW",
+   "product_area": "SIGNINGS",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/signings"
+   ],
+   "purpose": "Signing table filter facets",
+   "introduced_in": "017"
+  },
+  {
+   "relation_name": "v_signing_population_memberships",
+   "relation_kind": "VIEW",
+   "product_area": "POPULATIONS",
+   "contract_tier": "DOSSIER",
+   "app_routes": [
+    "/players/[slug]"
+   ],
+   "purpose": "Signing-population memberships",
+   "introduced_in": "018"
+  },
+  {
+   "relation_name": "v_signing_records",
+   "relation_kind": "VIEW",
+   "product_area": "SIGNINGS",
+   "contract_tier": "PAGE",
+   "app_routes": [
+    "/",
+    "/signings",
+    "/development",
+    "/league",
+    "/players/[slug]"
+   ],
+   "purpose": "One row per signing record",
+   "introduced_in": "017"
+  }
+ ]
+}

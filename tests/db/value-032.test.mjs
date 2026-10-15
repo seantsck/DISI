@@ -410,7 +410,7 @@ test('security: RLS and SELECT-only grants, invoker views, invoker-rights guard 
   assert.ok((await q(`select coalesce(array_to_string(reloptions, ','), '') as o from pg_class where relname = any($1)`, [NEW_VIEWS])).every((v) => /security_invoker=(true|on)/.test(v.o)))
   const full = await checkInvariants(chain.query, { ...CANONICAL_EXPECTATIONS, public_views_total: 101, public_tables_total: 56 })
   assert.deepEqual(failedChecks(full).map((c) => c.name), [])
-  assert.equal(full.hard.length, 223, '149 through 032 plus the eleven 033, eighteen 034, eight 035, eight 036, seven 037, six 038, five 039, five 040 and six 041 checks, which pass trivially without their tables')
+  assert.equal(full.hard.length, 247, '149 through 032 plus the eleven 033, eighteen 034, eight 035, eight 036, seven 037, six 038, five 039, five 040 and six 041 checks, which pass trivially without their tables')
   assert.equal(VALUE_CHECK_NAMES.length, 10)
   // drift detection
   await inTxn(async () => {

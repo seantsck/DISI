@@ -6,6 +6,7 @@ import AuditBadge from './components/AuditBadge'
 import RowLink from './components/RowLink'
 import { getHomeData } from '../lib/data.js'
 import { money, moneyExact, bwar, humanize, pctFraction, MISSING } from '../lib/format.js'
+import { predictionReadiness, snapshotFreshness } from '../lib/decision-display.js'
 
 // Rendered per request so pages always reflect the live database (never a build-time snapshot).
 export const dynamic = 'force-dynamic'
@@ -17,6 +18,8 @@ const SECTIONS = [
   ['/development', 'Development', 'Signing-to-MLB timing where both dates are recorded.'],
   ['/asset-conversion', 'Asset Conversion', 'Trades and releases, with package-level return attribution.'],
   ['/league', 'League Benchmark', 'Cross-organization signing volume, pools and prospect samples.'],
+  ['/portfolio', 'Portfolio', 'Capital allocation, realized value, pool scenarios and decision-support states.'],
+  ['/prediction-readiness', 'Prediction Readiness', 'Whether the evidence supports outcome probabilities, expected value or recommendations.'],
   ['/research', 'Research & Data Coverage', 'Class coverage, source support and the open research queue.'],
   ['/methodology', 'Methodology', 'Source priority, metric definitions and data-quality rules.'],
 ]
@@ -32,7 +35,8 @@ function Stat({ label, value, note }) {
 }
 
 export default async function HomePage() {
-  const { live, error, status, snapshot, knownMlb, rateSummary } = await getHomeData()
+  const { live, error, status, snapshot, knownMlb, rateSummary, executive } = await getHomeData()
+  const readiness = predictionReadiness(executive)
 
   return (
     <main className="shell page-main">
@@ -50,6 +54,32 @@ export default async function HomePage() {
       {!status && <DataUnavailable error={error} />}
 
       {status && <>
+        {executive && (
+          <section aria-labelledby="executive-heading" className="section-block">
+            <div className="section-heading">
+              <div><span className="eyebrow">Executive overview · data as of {executive.analysis_as_of_date}</span><h2 id="executive-heading">What the Dodgers spent and realized</h2>
+                {snapshotFreshness(executive) && <p className="snapshot-freshness">{snapshotFreshness(executive)}</p>}</div>
+              <Link href="/portfolio">Portfolio detail →</Link>
+            </div>
+            <div className="stat-grid">
+              <Stat label="Dodgers international signings" value={executive.dodgers_signings} note={`${executive.dodgers_outcome_selected_signings} recorded because they became notable; kept out of every rate`} />
+              <Stat label="Verified MLB players" value={executive.verified_mlb_players} note={`${executive.mature_signings} signings are five or more years old`} />
+              <Stat label="Known acquisition spend" value={money(executive.known_acquisition_spend_usd)} note={`Lower bound: cost known for ${executive.signings_with_known_cost} of ${executive.dodgers_signings} signings`} />
+              <Stat label="Realized organizational value" value={`${bwar(executive.realized_org_value_bwar)} bWAR`} note={`${bwar(executive.realized_direct_dodgers_bwar)} as Dodgers + ${bwar(executive.realized_individually_attributable_trade_bwar)} through attributable trades; ${executive.signings_with_resolved_value} signings resolved`} />
+              <Stat label="Value produced for other clubs" value={`${bwar(executive.value_left_organization_bwar)} bWAR`} note="MLB value after leaving; not Dodgers value" />
+              <Stat label="Outcome probabilities" value={readiness.published ? `${readiness.supportedTargets} of ${readiness.targets} targets` : 'Not published'} note={readiness.published ? 'Supported targets only' : `0 of ${readiness.targets} targets meet the support threshold`} />
+              <Stat label="Expected value & recommendations" value={readiness.supportedExpectedValues > 0 ? readiness.supportedExpectedValues : 'Not supported'} note="Each layer requires the layer below it to be supported" />
+              <Stat label="Open research tasks" value={Number(executive.open_research_tasks).toLocaleString()} note={`${executive.outcome_audit_queue} signings await an outcome audit (not failures)`} />
+            </div>
+            {!readiness.published && (
+              <p className="page-guardrail">
+                <strong>{readiness.statement}</strong>{' '}
+                <Link className="text-link" href="/prediction-readiness">See the evidence and what is needed →</Link>
+              </p>
+            )}
+          </section>
+        )}
+
         <section aria-labelledby="status-heading" className="section-block">
           <div className="section-heading">
             <h2 id="status-heading">Database status</h2>

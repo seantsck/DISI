@@ -1,0 +1,13 @@
+{
+ "value_models": [
+  {
+   "value_model_key": "EXPECTED_DIRECT_DODGERS_BWAR_V1",
+   "value_model_version": "expected-org-value-v1",
+   "probability_target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "value_component": "DIRECT_DODGERS_BWAR",
+   "conditional_statistic": "MEAN_WINDOW_DODGERS_BWAR_GIVEN_POSITIVE_LABEL",
+   "min_conditional_n": 10,
+   "description": "Expected direct Dodgers regular-season bWAR within 10 seasons of signing: the 041 probability of positive Dodgers MLB value (the player's reference population) times the mean 10-season Dodgers bWAR of positive-labelled, training-eligible members of the same population. Supported only when the 041 target is supported AND at least min_conditional_n positive observations with a known value exist."
+  }
+ ]
+}

@@ -1,0 +1,289 @@
+// Independent validation of the 042-045 bundle (042, 043, 043a, 044, 045, 045a) on a disposable, real PostgreSQL 17 server (embedded-postgres,
+// scratchpad only).
+// Sources come from git archives: tbase = the released baseline (BASELINE, default origin/main, 001-041), tcand = the bundle candidate
+// (CANDIDATE, default HEAD). Never touches a hosted database: no connection string is read.
+//
+//   node database/release/pg17/validate-042-045.mjs <work-dir>     (run-042-045.sh prepares the work dir)
+import fs from 'node:fs'
+import path from 'node:path'
+import crypto from 'node:crypto'
+import { createRequire } from 'node:module'
+import { pathToFileURL } from 'node:url'
+
+const WORK = path.resolve(process.argv[2])
+const req = createRequire(path.join(WORK, 'deps', 'package.json'))
+const { default: EmbeddedPostgres } = await import(pathToFileURL(req.resolve('embedded-postgres')).href)
+const { default: pg } = await import(pathToFileURL(req.resolve('pg')).href)
+const TBASE = path.join(WORK, 'tbase'), TC = path.join(WORK, 'tcand')
+const port = 54000 + Math.floor(Math.random() * 900)
+const dataDir = path.join(WORK, 'pgdata-' + port)
+const sha1 = (s) => crypto.createHash('sha1').update(s).digest('hex')
+const sha256 = (s) => crypto.createHash('sha256').update(s).digest('hex')
+const md5 = (v) => crypto.createHash('md5').update(JSON.stringify(v)).digest('hex')
+const results = []
+const check = (name, pass, detail = '') => { results.push({ name, pass, detail }); console.log(`${pass ? 'PASS' : 'FAIL'}  ${name}${detail ? ' — ' + detail : ''}`) }
+
+const BUNDLE = ['042_expected_organizational_value.sql', '043_portfolio_decision_engine.sql', '043a_decision_engine_performance.sql', '044_executive_product.sql',
+  '045_final_integration_release.sql', '045a_product_snapshot_serving.sql']
+const { SNAPSHOTS, INTERNAL_VIEWS } = await import(pathToFileURL(path.join(path.resolve(process.argv[2]), 'tcand', 'database/research/045a/snapshots.mjs')).href)
+const SNAPSHOT_TABLES = SNAPSHOTS.map((x) => x.table).sort()
+const NEW_TABLES = ['disi_product_contract', 'expected_value_models', 'portfolio_scenario_definitions']  // + the ten 045a snapshot tables (SNAPSHOT_TABLES)
+const NEW_TABLE_ROWS = { disi_product_contract: 47, expected_value_models: 1, portfolio_scenario_definitions: 4, product_executive_snapshot: 1, product_prediction_readiness: 7,
+  product_model_evaluations: 3, product_expected_value_support: 1, product_portfolio_decision_support: 6, product_portfolio_history: 26, product_portfolio_scenarios: 52,
+  product_player_decision: 220, product_player_expected_value: 220, product_player_comparables: 475 }
+const NEW_VIEWS = {
+  '042_expected_organizational_value.sql': ['v_expected_value_research_queue', 'v_expected_value_support', 'v_historical_org_value_distribution', 'v_player_expected_organizational_value', 'v_player_realized_organizational_value'],
+  '043_portfolio_decision_engine.sql': ['v_historical_portfolio_summary', 'v_portfolio_candidate_readiness', 'v_portfolio_decision_support', 'v_portfolio_research_queue', 'v_portfolio_scenario_evaluation'],
+  '043a_decision_engine_performance.sql': [],
+  '045a_product_snapshot_serving.sql': [],
+  '044_executive_product.sql': ['v_executive_overview', 'v_prediction_readiness'],
+  '045_final_integration_release.sql': ['v_disi_release_status', 'v_executive_metric_provenance', 'v_research_roadmap'],
+}
+// 043a redefines four 042 / 043 views in place as wrappers over staged functions (query shape only: same rows, checked below)
+const REDEFINES = {
+  '043a_decision_engine_performance.sql': ['v_expected_value_research_queue', 'v_player_expected_organizational_value', 'v_player_realized_organizational_value',
+    'v_portfolio_candidate_readiness'],
+  '045a_product_snapshot_serving.sql': ['v_disi_release_status'],
+}
+// the only intended output change of a redefinition: 045a's release status reports schema v0.36.1 and canonical file 045a
+const OUTPUT_CHANGES = { '045a_product_snapshot_serving.sql': ['v_disi_release_status'] }
+// the six staged read-only functions the bundle adds, by migration
+const NEW_FUNCTIONS = {
+  '043a_decision_engine_performance.sql': ['disi_expected_value_research_queue()', 'disi_player_expected_organizational_value()', 'disi_player_realized_organizational_value()',
+    'disi_portfolio_candidate_readiness()'],
+  '044_executive_product.sql': ['disi_executive_overview()'],
+  '045_final_integration_release.sql': ['disi_research_roadmap()'],
+  '045a_product_snapshot_serving.sql': ['disi_product_snapshot_drift()', 'disi_refresh_product_snapshots()'],
+}
+const ALL_NEW_FUNCTIONS = Object.values(NEW_FUNCTIONS).flat().sort()
+const STAGED_VIEWS = ['v_player_realized_organizational_value', 'v_player_expected_organizational_value', 'v_expected_value_research_queue',
+  'v_portfolio_candidate_readiness', 'v_portfolio_scenario_evaluation', 'v_portfolio_decision_support', 'v_portfolio_research_queue',
+  'v_historical_portfolio_summary', 'v_historical_org_value_distribution', 'v_executive_overview', 'v_disi_release_status', 'v_research_roadmap']
+const ALL_NEW_VIEWS = Object.values(NEW_VIEWS).flat().sort()
+
+const server = new EmbeddedPostgres({ databaseDir: dataDir, user: 'postgres', password: 'postgres', port, persistent: false, onLog: () => {} })
+await server.initialise()
+await server.start()
+const connect = async (db) => { const c = new pg.Client({ host: 'localhost', port, user: 'postgres', password: 'postgres', database: db }); c.on('error', () => {}); await c.connect(); return c }
+const sqlFiles = (root) => JSON.parse(fs.readFileSync(path.join(root, 'database/manifest.json'), 'utf8')).canonical_sql
+const readSql = (root, f) => fs.readFileSync(path.join(root, 'database/sql', f), 'utf8')
+
+async function freshDb(name) {
+  const admin = await connect('postgres')
+  await admin.query(`create database ${name}`)
+  await admin.end()
+  const c = await connect(name)
+  await c.query(`do $$ begin
+    if not exists (select 1 from pg_roles where rolname = 'anon') then create role anon nologin; end if;
+    if not exists (select 1 from pg_roles where rolname = 'authenticated') then create role authenticated nologin; end if;
+    if not exists (select 1 from pg_roles where rolname = 'service_role') then create role service_role nologin bypassrls; end if;
+  end $$`)
+  return c
+}
+async function apply(c, root, files) {
+  for (const f of files) {
+    try { await c.query(readSql(root, f)) } catch (e) { throw new Error(`${f}: ${e.message}`) }
+  }
+}
+async function contentHashes(c, { stable }) {
+  const tables = (await c.query(`select relname from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r' order by 1`)).rows.map((r) => r.relname)
+  const out = {}
+  for (const t of tables) {
+    const cols = (await c.query(`select attname, format_type(atttypid, atttypmod) as ty from pg_attribute where attrelid = ('public.' || quote_ident($1))::regclass and attnum > 0 and not attisdropped order by attnum`, [t])).rows
+    const keep = stable ? cols.filter((x) => !/^(uuid|timestamp with time zone|uuid\[\])$/.test(x.ty) && !/^(id|created_at|updated_at)$/.test(x.attname)) : cols
+    const list = keep.map((x) => `t.${pg.escapeIdentifier(x.attname)}`).join(', ') || `1`
+    const rows = (await c.query(`select (${list})::text as r from public.${pg.escapeIdentifier(t)} t`)).rows.map((r) => r.r).sort()
+    out[t] = { n: rows.length, h: md5(rows) }
+  }
+  return out
+}
+// the output of every bundle view, without generated-id columns (ids differ between two independent replays)
+async function viewOutputs(c) {
+  const out = {}
+  const present = (await c.query(`select relname from pg_class where relnamespace = 'public'::regnamespace and relkind = 'v' and relname = any($1)`, [ALL_NEW_VIEWS])).rows.map((r) => r.relname)
+  for (const v of ALL_NEW_VIEWS.filter((x) => present.includes(x))) {
+    const cols = (await c.query(`select attname, format_type(atttypid, atttypmod) as ty from pg_attribute where attrelid = ('public.' || quote_ident($1))::regclass and attnum > 0 and not attisdropped order by attnum`, [v])).rows
+    const keep = cols.filter((x) => !/^(uuid|uuid\[\])$/.test(x.ty))
+    const rows = (await c.query(`select (${keep.map((x) => `t.${pg.escapeIdentifier(x.attname)}`).join(', ')})::text as r from public.${pg.escapeIdentifier(v)} t`)).rows.map((r) => r.r).sort()
+    out[v] = { n: rows.length, h: md5(rows) }
+  }
+  return out
+}
+const viewDefs = async (c) => Object.fromEntries((await c.query(`select relname, pg_get_viewdef(oid) as d from pg_class where relnamespace = 'public'::regnamespace and relkind = 'v' order by 1`)).rows.map((r) => [r.relname, r.d]))
+const acls = async (c) => (await c.query(`select relname, relkind, coalesce(relacl::text, '') as acl, relrowsecurity as rls, coalesce(array_to_string(reloptions, ','), '') as opts from pg_class where relnamespace = 'public'::regnamespace and relkind in ('r','v','m') order by 1`)).rows
+const policies = async (c) => (await c.query(`select tablename, policyname, cmd, roles::text, qual from pg_policies where schemaname = 'public' order by 1, 2`)).rows
+const functions = async (c) => (await c.query(`select p.oid::regprocedure::text as f, md5(pg_get_functiondef(p.oid)) as h, coalesce(p.proacl::text,'') as acl from pg_proc p where p.pronamespace = 'public'::regnamespace and p.prokind in ('f','p') order by 1`)).rows
+const snapshot = async (c) => ({ full: await contentHashes(c, { stable: false }), views: await viewDefs(c), acls: await acls(c), pol: await policies(c), fn: await functions(c) })
+
+try {
+  const vc = await connect('postgres'); const ver = (await vc.query('select version() as v')).rows[0].v; await vc.end()
+  console.log(`server: ${ver}`)
+
+  // --- frozen baseline and bundle identity
+  const frozen = JSON.parse(fs.readFileSync(path.join(TC, 'tests/db/frozen-migrations.json'), 'utf8')).files
+  const base = sqlFiles(TBASE), cand = sqlFiles(TC)
+  check('baseline manifest ends at 041 (42 files)', base.length === 42 && base.at(-1) === '041_outcome_probability_infrastructure.sql')
+  check('candidate manifest = baseline + 042, 043, 043a, 044, 045 in order', JSON.stringify(cand) === JSON.stringify([...base, ...BUNDLE]), cand.slice(40).join(','))
+  let frozenOk = true
+  for (const f of base) {
+    const a = readSql(TBASE, f), b = readSql(TC, f)
+    if (a !== b || sha1(a.replace(/\r\n/g, '\n')) !== frozen[f]) { frozenOk = false; console.log('  drift: ' + f) }
+  }
+  // every frozen entry must match the candidate's bytes
+  const frozenRest = Object.keys(frozen).filter((f) => !base.includes(f))
+  const restOk = frozenRest.every((f) => cand.includes(f) && sha1(readSql(TC, f).replace(/\r\n/g, '\n')) === frozen[f])
+  // 042-045 (with 043a) were applied to production during the 2026-10-14 attempts (then rolled back) and are frozen as committed
+  check(`001-041 byte-identical between the baseline and the candidate; 001-045 with 043a frozen (${Object.keys(frozen).length} entries)`,
+    frozenOk && restOk && base.every((f) => f in frozen) && Object.keys(frozen).length === 47
+      && JSON.stringify(frozenRest) === JSON.stringify(BUNDLE.filter((f) => !f.startsWith('045a'))), frozenRest.join(','))
+  for (const f of BUNDLE) console.log(`  ${f}: sha256 ${sha256(readSql(TC, f))}  sha1(LF) ${sha1(readSql(TC, f).replace(/\r\n/g, '\n'))}  ${Buffer.byteLength(readSql(TC, f))} bytes`)
+  check('bundle files have no CRLF and one transaction each', BUNDLE.every((f) => !readSql(TC, f).includes('\r') && /^begin;$/m.test(readSql(TC, f)) && /^commit;$/m.test(readSql(TC, f))))
+
+  // --- A: the released 001-041, then 042, 043, 044, 045 (the production path)
+  const A = await freshDb('disi_a')
+  let t0 = Date.now()
+  await apply(A, TBASE, base)
+  console.log(`  001-041 replay on PG17: ${((Date.now() - t0) / 1000).toFixed(1)}s`)
+  const q = (c) => async (sql, params) => (await c.query(sql, params)).rows
+  const { checkInvariants: checkBase, failedChecks: failedBase } = await import(path.join(TBASE, 'scripts/db/lib/invariants.mjs'))
+  const rb = await checkBase(q(A)); const fb = failedBase(rb)
+  check(`baseline verifier on 001-041: ${rb.hard.length - fb.length}/${rb.hard.length}`, fb.length === 0 && rb.hard.length === 223, fb.map((x) => x.name).join(', '))
+
+  const before = await snapshot(A)
+  for (const f of BUNDLE) {
+    const s0 = await snapshot(A)
+    const o0 = REDEFINES[f] ? await viewOutputs(A) : null
+    t0 = Date.now()
+    await apply(A, TC, [f])
+    if (o0) {
+      const o1 = await viewOutputs(A)
+      const changed = Object.keys(o0).filter((v) => JSON.stringify(o0[v]) !== JSON.stringify(o1[v])).sort()
+      check(`${f}: every bundle view returns exactly the same rows as before${OUTPUT_CHANGES[f] ? ' except ' + OUTPUT_CHANGES[f].join(', ') : ''} (query shape only)`,
+        JSON.stringify(changed) === JSON.stringify(OUTPUT_CHANGES[f] ?? []), changed.join(','))
+    }
+    const ms = Date.now() - t0
+    const s1 = await snapshot(A)
+    const added = Object.keys(s1.views).filter((v) => !(v in s0.views)).sort()
+    const redefined = Object.keys(s0.views).filter((v) => s0.views[v] !== s1.views[v])
+    const addedFns = s1.fn.map((x) => x.f).filter((x) => !s0.fn.some((y) => y.f === x)).map((x) => x.replace(/^public\./, '')).sort()
+    check(`${f}: applies in one transaction (${ms} ms) and adds exactly its views and functions`, JSON.stringify(added) === JSON.stringify(NEW_VIEWS[f])
+      && JSON.stringify(addedFns) === JSON.stringify(NEW_FUNCTIONS[f] ?? []), `${added.join(',')} | ${addedFns.join(',')}`)
+    check(`${f}: redefines ${REDEFINES[f] ? 'exactly ' + REDEFINES[f].join(',') : 'no earlier view'}`, JSON.stringify(redefined) === JSON.stringify(REDEFINES[f] ?? []), redefined.join(','))
+    await apply(A, TC, [f])
+    const s2 = await snapshot(A)
+    check(`${f}: exact idempotency (all rows incl. ids / timestamps, view definitions, ACLs, policies, functions)`, md5(s2) === md5(s1))
+  }
+  const after = await snapshot(A)
+  const newTables = Object.keys(after.full).filter((t) => !(t in before.full)).sort()
+  const changedTables = Object.keys(before.full).filter((t) => JSON.stringify(before.full[t]) !== JSON.stringify(after.full[t]))
+  const ALL_NEW_TABLES = [...NEW_TABLES, ...SNAPSHOT_TABLES].sort()
+  check(`bundle creates only its 3 tables and 10 product snapshots (${JSON.stringify(NEW_TABLE_ROWS)}) and writes no existing table`, JSON.stringify(newTables) === JSON.stringify(ALL_NEW_TABLES) && ALL_NEW_TABLES.every((t) => after.full[t].n === NEW_TABLE_ROWS[t]) && changedTables.length === 0, `${newTables} ${changedTables}`)
+  const aclChanged = before.acls.filter((x) => JSON.stringify(x) !== JSON.stringify(after.acls.find((y) => y.relname === x.relname)))
+  const fnAdded = after.fn.filter((x) => !before.fn.some((y) => y.f === x.f)).map((x) => x.f.replace(/^public\./, '')).sort()
+  const fnKept = before.fn.every((x) => after.fn.some((y) => JSON.stringify(y) === JSON.stringify(x)))
+  check('bundle changes no existing ACL / RLS / reloption, policy or function; it adds exactly the six staged and two serving functions', aclChanged.length === 0 && fnKept
+    && JSON.stringify(fnAdded) === JSON.stringify(ALL_NEW_FUNCTIONS)
+    && JSON.stringify(after.pol.filter((p) => !ALL_NEW_TABLES.includes(p.tablename))) === JSON.stringify(before.pol), aclChanged.map((x) => x.relname).join(','))
+  const newRel = after.acls.filter((x) => ALL_NEW_VIEWS.includes(x.relname) || ALL_NEW_TABLES.includes(x.relname))
+  const internal = (x) => INTERNAL_VIEWS.includes(x.relname)
+  check('new relations: views security_invoker, tables RLS, PUBLIC nothing; the 14 analytical views closed to the API roles, every other new relation anon / authenticated SELECT only',
+    newRel.length === ALL_NEW_VIEWS.length + ALL_NEW_TABLES.length && newRel.every((x) => (x.relkind === 'v' ? /security_invoker=(true|on)/.test(x.opts) : x.rls) && !/(^|[{,])=/.test(x.acl)
+      && (internal(x) ? !/(anon|authenticated)=/.test(x.acl) : /anon=r\//.test(x.acl) && /authenticated=r\//.test(x.acl))),
+    newRel.filter((x) => internal(x) === /anon=r\//.test(x.acl)).map((x) => x.relname).join(','))
+  const counts = (await A.query(`select count(*) filter (where relkind = 'r')::int as t, count(*) filter (where relkind = 'v')::int as v,
+    count(*) filter (where relkind = 'r' and not relrowsecurity)::int as no_rls,
+    count(*) filter (where relkind = 'v' and not coalesce(array_to_string(reloptions, ',') ~ 'security_invoker=(true|on)', false))::int as not_invoker
+    from pg_class where relnamespace = 'public'::regnamespace and relkind in ('r', 'v')`)).rows[0]
+  check('whole schema: 77 tables / 155 views, every table RLS, every view security_invoker', counts.t === 77 && counts.v === 155 && counts.no_rls === 0 && counts.not_invoker === 0, JSON.stringify(counts))
+
+  const { checkInvariants: checkCand, failedChecks: failedCand } = await import(path.join(TC, 'scripts/db/lib/invariants.mjs'))
+  const rc = await checkCand(q(A)); const fc = failedCand(rc)
+  // the staged functions: read-only (STABLE), invoker rights, fixed search_path, no PUBLIC execute, executable by the view readers
+  const fnProps = (await A.query(`select p.proname, l.lanname, p.provolatile as vol, p.prosecdef as secdef, array_to_string(p.proconfig, ',') as cfg,
+      has_function_privilege('public', p.oid, 'EXECUTE') as public_x, has_function_privilege('anon', p.oid, 'EXECUTE') as anon_x,
+      has_function_privilege('authenticated', p.oid, 'EXECUTE') as auth_x
+    from pg_proc p join pg_language l on l.oid = p.prolang where p.pronamespace = 'public'::regnamespace and (p.proname || '()') = any($1)`, [ALL_NEW_FUNCTIONS])).rows
+  check('eight functions (six staged, two serving): PL/pgSQL, invoker rights, search_path fixed, internal - no PUBLIC, anon or authenticated execute; refresh VOLATILE, the rest STABLE',
+    fnProps.length === 8 && fnProps.every((x) => x.lanname === 'plpgsql' && x.vol === (x.proname === 'disi_refresh_product_snapshots' ? 'v' : 's') && !x.secdef && x.cfg === 'search_path=""' && !x.public_x && !x.anon_x && !x.auth_x),
+    JSON.stringify(fnProps.filter((x) => x.secdef || x.public_x || x.anon_x || x.auth_x)))
+  const driftRows = (await A.query(`select snapshot, missing_rows + extra_rows as n from public.disi_product_snapshot_drift()`)).rows
+  check(`snapshots equal their analytical sources on PG17 (drift 0 for all ${driftRows.length})`, driftRows.length === 10 && driftRows.every((x) => x.n === 0), JSON.stringify(driftRows.filter((x) => x.n !== 0)))
+  // plan-bounded: no staged view (or a view over one) plans the whole stack at once
+  const planKb = {}
+  for (const v of STAGED_VIEWS) {
+    const lines = (await A.query(`explain (memory, summary, costs off) select * from public.${v}`)).rows.map((r) => r['QUERY PLAN'])
+    planKb[v] = Number(lines.find((l) => /Memory: used=/.test(l)).match(/used=(\d+)kB/)[1])
+  }
+  check(`plan-bounded: every staged view and every view over one plans in under 2 MB at the top level (max ${Math.max(...Object.values(planKb))} kB)`,
+    Object.values(planKb).every((x) => x < 2048), JSON.stringify(planKb))
+
+  check(`candidate verifier on 001-041 + 042 + 043 + 043a + 044 + 045 + 045a: ${rc.hard.length - fc.length}/${rc.hard.length}`, fc.length === 0 && rc.hard.length === 247, fc.map((x) => x.name).join(', '))
+
+  // release rerun safety: the whole bundle applied again on the final state is a no-op
+  await apply(A, TC, BUNDLE)
+  check('bundle re-applied in order on the final state is a no-op', md5(await snapshot(A)) === md5(after))
+
+  // convergence: a fresh 001-045 replay equals the incremental path
+  const B = await freshDb('disi_b')
+  t0 = Date.now()
+  await apply(B, TC, cand)
+  console.log(`  fresh 001-045 replay on PG17: ${((Date.now() - t0) / 1000).toFixed(1)}s`)
+  const [ha, hb] = [await contentHashes(A, { stable: true }), await contentHashes(B, { stable: true })]
+  const diff = Object.keys({ ...ha, ...hb }).filter((t) => JSON.stringify(ha[t]) !== JSON.stringify(hb[t]))
+  const [oa, ob] = [await viewOutputs(A), await viewOutputs(B)]
+  const vdiff = ALL_NEW_VIEWS.filter((v) => JSON.stringify(oa[v]) !== JSON.stringify(ob[v]))
+  check('convergence: fresh 001-045a = 001-041 then 042, 043, 043a, 044, 045, 045a (table content, view definitions, ACLs, policies, functions, bundle view outputs)',
+    diff.length === 0 && vdiff.length === 0 && JSON.stringify(await viewDefs(A)) === JSON.stringify(await viewDefs(B)) && JSON.stringify(await acls(A)) === JSON.stringify(await acls(B))
+      && JSON.stringify(await policies(A)) === JSON.stringify(await policies(B)) && JSON.stringify(await functions(A)) === JSON.stringify(await functions(B)), [...diff, ...vdiff].join(','))
+  const rf = await checkCand(q(B)); const ff = failedCand(rf)
+  check(`candidate verifier on the fresh 001-045 replay: ${rf.hard.length - ff.length}/${rf.hard.length}`, ff.length === 0 && rf.hard.length === 247, ff.map((x) => x.name).join(', '))
+
+  // anon: reads every bundle view through RLS within the Supabase anon statement timeout; cannot write the new table
+  await A.query(`begin; set local role anon; set local statement_timeout = '3s'`)
+  const timings = []
+  let anonOk = true
+  // the public product: every snapshot table and the non-internal bundle relations, read in full as anon
+  for (const v of [...SNAPSHOT_TABLES, ...ALL_NEW_VIEWS.filter((x) => !INTERNAL_VIEWS.includes(x)), ...NEW_TABLES]) {
+    const s = Date.now()
+    try { await A.query(`savepoint r; select * from public.${v}`); await A.query('release savepoint r'); timings.push(`${v} ${Date.now() - s}ms`) } catch (e) { anonOk = false; timings.push(`${v} ERROR ${e.code}`); await A.query('rollback to savepoint r') }
+  }
+  // the analytical layer: every internal view denied
+  let denied = 0
+  for (const v of INTERNAL_VIEWS) {
+    try { await A.query(`savepoint d; select 1 from public.${v} limit 1`); await A.query('release savepoint d') } catch (e) { if (e.code === '42501') denied++; await A.query('rollback to savepoint d') }
+  }
+  if (denied !== INTERNAL_VIEWS.length) anonOk = false
+  let anonWrite = 'blocked'
+  try { await A.query(`savepoint s; insert into public.expected_value_models (value_model_key) values ('X')`); anonWrite = 'ALLOWED' } catch { await A.query('rollback to savepoint s') }
+  await A.query('rollback')
+  check(`anon reads the 10 snapshots and the public bundle relations under RLS within 3 s, is denied all ${INTERNAL_VIEWS.length} analytical views (${denied}), cannot write expected_value_models`, anonOk && anonWrite === 'blocked', `write ${anonWrite} denied ${denied}`)
+  console.log('  anon full-read timings (local PG17): ' + timings.join('; '))
+
+  // rollback: the guarded logical rollback returns A to its exact 001-041 state, and the bundle re-applies afterwards
+  const rollback = fs.readFileSync(path.join(TC, 'database/release/sql/rollback-042-045.sql'), 'utf8')
+  await A.query(rollback)
+  check('rollback-042-045.sql returns the database to its exact 001-041 state (all rows incl. ids / timestamps, views, ACLs, policies, functions)', md5(await snapshot(A)) === md5(before))
+  // the interrupted-release cases: only 042 + 043, or 042-045 without 045a; the same rollback completes each
+  for (const k of [2, 5]) {
+    await apply(A, TC, BUNDLE.slice(0, k))
+    await A.query(rollback)
+    check(`rollback-042-045.sql also returns a partial ${BUNDLE.slice(0, k).map((f) => f.slice(0, f.indexOf('_'))).join(' + ')} database to its exact 001-041 state`, md5(await snapshot(A)) === md5(before))
+  }
+  await apply(A, TC, BUNDLE)
+  const rr = await checkCand(q(A)); const fr = failedCand(rr)
+  check(`bundle re-applies after a rollback: ${rr.hard.length - fr.length}/${rr.hard.length}`, fr.length === 0 && rr.hard.length === 247, fr.map((x) => x.name).join(', '))
+  await A.query(`create view public.zz_dependent with (security_invoker = true) as select count(*) as n from public.v_player_realized_organizational_value`)
+  let refused = false
+  try { await A.query(rollback) } catch (e) { refused = /depend on it/.test(e.message); await A.query('rollback').catch(() => {}) }
+  check('rollback refuses while an object outside the bundle depends on it', refused)
+
+  await A.end(); await B.end()
+} catch (e) {
+  check('run', false, e.stack)
+} finally {
+  await server.stop()
+  fs.rmSync(dataDir, { recursive: true, force: true })
+}
+const failedN = results.filter((r) => !r.pass).length
+console.log(`\n${results.length - failedN}/${results.length} real-PostgreSQL checks passed${failedN ? ` — ${failedN} FAILED` : ''}`)
+process.exitCode = failedN ? 1 : 0
