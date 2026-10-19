@@ -2149,12 +2149,12 @@ const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} retu
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
 // Migrations added after the frozen baseline and not yet released; each is frozen in tests/db/frozen-migrations.json once applied.
-// 042-045 (with 043a) were applied to production during the 2026-10-14 release attempts and rolled back; they are frozen as committed
-const UNRELEASED_ADDITIONS = ['045a_product_snapshot_serving.sql']
+// 042-045a were released to production on 2026-10-15 and are frozen
+const UNRELEASED_ADDITIONS = []
 
-test('frozen history: migrations 001-045 (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
+test('frozen history: migrations 001-045a (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
-  assert.equal(files.length, 47)
+  assert.equal(files.length, 48)
   assert.deepEqual(manifest.canonical_sql.slice(files.length), UNRELEASED_ADDITIONS)
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {
