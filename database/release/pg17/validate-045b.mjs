@@ -244,8 +244,8 @@ try {
   check('the eight internal functions: invoker rights, search_path fixed to empty, no PUBLIC / anon / authenticated EXECUTE, refresh VOLATILE and the rest STABLE',
     fnProps.length === 8 && fnProps.every((x) => !x.secdef && !x.api && /search_path=""/.test(x.cfg) && x.vol === (x.proname === 'disi_refresh_product_snapshots' ? 'v' : 's')), JSON.stringify(fnProps.filter((x) => x.secdef || x.api)))
   // the request-time read touches only the persisted table
-  const plan = (await rowsOf(A, `explain (format json) select * from public.product_database_status`))[0]['QUERY PLAN']
-  const planText = JSON.stringify(plan)
+  const qplan = (await rowsOf(A, `explain (format json) select * from public.product_database_status`))[0]['QUERY PLAN']
+  const planText = JSON.stringify(qplan)
   check('the home-page status read is one scan of product_database_status (no view, no function)', /"Relation Name":\s*"product_database_status"/.test(planText) && !/Function Scan|v_database_status/.test(planText))
 
   // --- rollback exercise 1: 045b -> exact 045a
