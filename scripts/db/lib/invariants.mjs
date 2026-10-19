@@ -107,12 +107,12 @@ export const CANONICAL_EXPECTATIONS = {
   // 035 adds three views; 036 adds one table and five views; 037 and 038 add four views each.
   // 039 adds two tables and four views; 040 adds five views; 041 adds two tables and six views.
   // 042 adds one table and five views; 043 adds one table and five views; 043a redefines four views (no new relation);
-  // 044 adds two views; 045 adds one table and three views; 045a adds ten product snapshot tables.
+  // 044 adds two views; 045 adds one table and three views; 045a adds ten product snapshot tables; 045b adds the home-page status snapshot table.
   public_views_total: 155,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 77,
+  public_tables_total: 78,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -608,8 +608,9 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
     check('release', name, expectations[name], await count(sql))
   }
 
-  // -- DISI v1 product snapshots and API boundary (045a) ---------------------------------
-  for (const [name, sql] of Object.entries(productSnapshotQueries(hasServingLayer))) {
+  // -- DISI v1 product snapshots and API boundary (045a; 045b adds the home-page status snapshot) ---------------------------------
+  const hasStatusSnapshot = Boolean((await query(`select to_regclass('public.product_database_status') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(productSnapshotQueries(hasServingLayer, hasStatusSnapshot))) {
     check('snapshot', name, expectations[name], await count(sql))
   }
 

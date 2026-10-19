@@ -26,7 +26,7 @@ declare
     'v_portfolio_candidate_readiness', 'v_historical_portfolio_summary', 'v_portfolio_scenario_evaluation', 'v_portfolio_decision_support',
     'v_portfolio_research_queue', 'v_executive_overview', 'v_prediction_readiness',
     'v_disi_release_status', 'v_research_roadmap', 'v_executive_metric_provenance',
-    'product_executive_snapshot', 'product_prediction_readiness', 'product_model_evaluations', 'product_expected_value_support', 'product_portfolio_decision_support', 'product_portfolio_history', 'product_portfolio_scenarios', 'product_player_decision', 'product_player_expected_value', 'product_player_comparables'];
+    'product_database_status', 'product_executive_snapshot', 'product_prediction_readiness', 'product_model_evaluations', 'product_expected_value_support', 'product_portfolio_decision_support', 'product_portfolio_history', 'product_portfolio_scenarios', 'product_player_decision', 'product_player_expected_value', 'product_player_comparables'];
 begin
   if to_regclass('public.v_player_outcome_probability') is null then
     raise exception 'rollback-042-045: 041 is not present; this is not a 042-045 database';
@@ -51,6 +51,9 @@ begin
   end if;
 end $$;
 
+-- 045b (the home-page status snapshot; v_database_status is public again in the 001-041 state)
+drop table if exists public.product_database_status;
+grant select on table public.v_database_status to anon, authenticated;
 -- 045a (snapshot tables first: nothing depends on them; then the serving functions)
 drop table if exists public.product_executive_snapshot;
 drop table if exists public.product_prediction_readiness;

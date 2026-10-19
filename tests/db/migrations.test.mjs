@@ -2033,8 +2033,9 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   for (const kind of ['v', 'r']) {
     for (const role of ['anon', 'authenticated']) {
       const relations = acl.filter((a) => a.kind === kind && a.grantee === role)
-      // 045a closes the fourteen 042-045 analytical views to the API roles (155 - 14) and adds ten snapshot tables (67 + 10)
-      assert.equal(relations.length, kind === 'v' ? 141 : 77, `${role} ${kind}`)
+      // 045a closes the fourteen 042-045 analytical views to the API roles (155 - 14) and adds ten snapshot tables (67 + 10);
+      // 045b closes v_database_status (140 views) and adds the status snapshot (78 tables)
+      assert.equal(relations.length, kind === 'v' ? 140 : 78, `${role} ${kind}`)
       for (const privilege of ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN']) {
         assert.deepEqual(relations.filter((a) => a.privs.split(',').includes(privilege)).map((a) => a.relname), [], `${role} ${privilege} on ${kind}`)
       }
@@ -2044,7 +2045,7 @@ test('025 grants: anon and authenticated hold SELECT only on every public view a
   assert.deepEqual(acl.filter((a) => a.grantee === 'PUBLIC'), [], 'PUBLIC holds nothing')
   const tables = await one(`select count(*)::int as n, count(*) filter (where relrowsecurity)::int as rls from pg_class c
     join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind = 'r'`)
-  assert.deepEqual([tables.n, tables.rls], [77, 77])
+  assert.deepEqual([tables.n, tables.rls], [78, 78])
   const write = await one(`select count(*)::int as n from pg_policies where schemaname = 'public' and cmd <> 'SELECT'`)
   assert.equal(write.n, 0, 'no table policy grants writes to anyone')
 })
@@ -2149,8 +2150,8 @@ const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} retu
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
 // Migrations added after the frozen baseline and not yet released; each is frozen in tests/db/frozen-migrations.json once applied.
-// 042-045a were released to production on 2026-10-15 and are frozen
-const UNRELEASED_ADDITIONS = []
+// 042-045a were released to production on 2026-10-15 and are frozen; 045b (home-page status snapshot) is frozen once applied
+const UNRELEASED_ADDITIONS = ['045b_database_status_snapshot.sql']
 
 test('frozen history: migrations 001-045a (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
@@ -2163,7 +2164,7 @@ test('frozen history: migrations 001-045a (with 043a) are byte-for-byte unchange
   }
 })
 
-test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 77 tables / 155 views after 045a, all RLS / security_invoker', async () => {
+test('026 shape: six new tables and five new views; the legacy evaluations table is gone; 78 tables / 155 views after 045b, all RLS / security_invoker', async () => {
   const t = await rows(`select c.relname, c.relrowsecurity as rls from pg_class c join pg_namespace n on n.oid = c.relnamespace
     where n.nspname = 'public' and c.relkind = 'r' and c.relname = any($1) order by 1`, [tables026])
   assert.deepEqual(t.map((r) => [r.relname, r.rls]), tables026.map((n) => [n, true]))
@@ -2171,7 +2172,7 @@ test('026 shape: six new tables and five new views; the legacy evaluations table
   assert.equal(legacy.gone, true)
   const counts = await one(`select count(*) filter (where relkind = 'r')::int as tables, count(*) filter (where relkind = 'v')::int as views
     from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relkind in ('r', 'v')`)
-  assert.deepEqual([counts.tables, counts.views], [77, 155])
+  assert.deepEqual([counts.tables, counts.views], [78, 155])
   const v = await rows(`select relname, coalesce(array_to_string(reloptions, ','), '') as opts from pg_class where relname = any($1) and relkind = 'v'`, [views026])
   assert.equal(v.length, 5)
   for (const x of v) assert.match(x.opts, /security_invoker=(true|on)/, x.relname)

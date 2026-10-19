@@ -209,6 +209,8 @@ test('product contract: exactly the relations the application reads, every one e
   const files = ['lib/data.js', ...fs.readdirSync(path.join(root, 'app'), { recursive: true }).filter((f) => String(f).endsWith('.js')).map((f) => path.join('app', String(f)))]
   const reads = new Set()
   for (const f of files) for (const m of fs.readFileSync(path.join(root, f), 'utf8').matchAll(/\.from\('([a-z_0-9]+)'\)/g)) reads.add(m[1])
+  // 045b later points the home page at product_database_status; at 045a the same read was v_database_status
+  if (reads.delete('product_database_status')) reads.add('v_database_status')
   const contract = (await q(`select relation_name from disi_product_contract order by 1`)).map((r) => r.relation_name)
   assert.deepEqual(contract, [...reads].sort())
   assert.equal(contract.length, 47)
@@ -224,7 +226,8 @@ test('verifier: the four snapshot checks pass, each catches its own drift, and t
     return out.sort()
   }
   assert.deepEqual(await failing(), [])
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+  // 045b later adds the home-page status table (78); the 045a database has 77
+  const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_tables_total: 77 })
   assert.deepEqual(failedChecks(full), [])
   assert.equal(full.hard.length, 247)
   await scratch(async () => {
