@@ -41,8 +41,11 @@ product_database_status                PUBLIC: anon / authenticated SELECT, RLS,
 
 ## Order of release
 
-The previous application reads `v_database_status`; the new one reads `product_database_status`. Apply the database migration first,
-then merge: the old application's home-page status block reports "Data unavailable" for the few minutes until the new deploy is live
-(everything else on the home page keeps working). Rollback: `database/release/sql/rollback-045b.sql` (pair it with an application revert).
+The previous application reads `v_database_status`; the new one reads `product_database_status`. Apply the database migration first, then
+merge. Until the new deploy is live the **old application's whole home page** reports "Data unavailable": its single data call fails when
+the status read is denied, and the page renders nothing else without the status row. Every other page is unaffected. Apply and merge
+close together (the deploy takes a few minutes). Merging first is worse: the new application would read a table that does not exist yet.
+A gap-free alternative (keep the grant until the new deploy is live, then revoke) would need a second statement after the deploy; 045b
+does not do that. Rollback: `database/release/sql/rollback-045b.sql` (pair it with an application revert).
 
 After research data changes, refresh as before: `npm run refresh:product-snapshots`.

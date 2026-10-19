@@ -27,7 +27,7 @@ No metric, research datum, threshold or prediction changes. The release status i
 1. Back up (`pg_dump`, restore-verified), as for the previous releases.
 2. Apply `045b_database_status_snapshot.sql` through the safe runner (SHA-checked). It creates the table, re-issues the refresh / drift functions, swaps the contract row, revokes the view, and runs **one** refresh (generation + 1) because the new snapshot is empty. Expect about 20 s (the 045a first generation took 20.5 s).
 3. Verify: the live verifier (247/247), drift 0, the firewall, then the anon snapshot gate.
-4. Merge the PR (normal merge commit); one Vercel production deploy. Between steps 2 and 4 the *old* application's home-page status block shows "Data unavailable" (the rest of the page keeps working). Apply and merge close together.
+4. Merge the PR (normal merge commit); one Vercel production deploy. Between steps 2 and 4 the *old* application's **whole home page** shows "Data unavailable" (its one data call fails on the denied `v_database_status` read; all other pages are unaffected). Apply and merge close together; expect a few minutes. Merging first would be worse (the new app would read a table that does not exist yet).
 5. Smoke the routes (Vercel SSO: needs an authenticated browser) and check runtime errors.
 
 Do not re-apply 045b in production to test idempotency (proven on PostgreSQL 17 / PGlite).
