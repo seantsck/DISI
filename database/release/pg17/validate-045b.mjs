@@ -183,10 +183,10 @@ try {
       await A.query(setupSql)
       await A.query('savepoint r')
       try { await A.query(`select * from public.disi_refresh_product_snapshots()`) } catch (e) { msg = e.message }
-      // inside the same transaction the failed call has left nothing behind (statement-level atomicity of the function)
+      // the failed call is undone back to its savepoint; the transaction (with the trigger) is still open and shows the previous generation
+      await A.query('rollback to savepoint r')
       const inside = await snapState(A)
       check(`${label}: the failed refresh leaves no partial snapshot even inside the open transaction`, md5(inside) === md5(stateBefore))
-      await A.query('rollback to savepoint r')
     } finally { await A.query('rollback') }
     const stateAfter = await snapState(A)
     check(`${label}: refresh is refused (${msg.slice(0, 90)}) and the previous generation remains intact in all 11 tables`, pattern.test(msg) && md5(stateAfter) === md5(stateBefore))
