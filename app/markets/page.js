@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import DataMode from '../components/DataMode'
 import DataUnavailable from '../components/DataUnavailable'
+import ScrollableTable from '../components/ScrollableTable'
 import { getMarketsData } from '../../lib/data.js'
+import { parseSummarySort, sortSummaryRows, summarySortHref } from '../../lib/summary-sort.js'
 import { money, moneyExact, bwar, humanize } from '../../lib/format.js'
 
 export const metadata = { title: 'Markets' }
@@ -9,25 +11,45 @@ export const metadata = { title: 'Markets' }
 // Rendered per request so pages always reflect the live database (never a build-time snapshot).
 export const dynamic = 'force-dynamic'
 
-function SummaryTable({ rows, labelKey, labelFor, hrefFor }) {
+const COLUMNS = [
+  ['tracked', 'Tracked signings'],
+  ['known_cost_count', 'With known cost'],
+  ['known_cost', 'Known acquisition cost'],
+  ['audited', 'Audited'],
+  ['verified_mlb', 'Verified MLB'],
+  ['verified_no_mlb', 'Verified no MLB'],
+  ['not_audited', 'Not audited'],
+  ['bwar', 'Observed bWAR'],
+]
+
+function SummaryHeader({ table, params, sort, sortKey, label, numeric = false }) {
+  const active = sort?.key === sortKey
+  const ariaSort = active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'
   return (
-    <div className="table-scroll">
+    <th aria-sort={ariaSort} className={numeric ? 'num' : undefined} scope="col">
+      <Link href={summarySortHref('/markets', params, table, sortKey)} scroll={false} className={`sort-link${active ? ' active' : ''}`} title={`Sort by ${label}`}>
+        {label}
+        <span aria-hidden="true" className="sort-icon">{active ? (sort.dir === 'asc' ? '▲' : '▼') : '↕'}</span>
+      </Link>
+    </th>
+  )
+}
+
+function SummaryTable({ table, params, rows, labelKey, labelFor, hrefFor }) {
+  const sort = parseSummarySort(params, table)
+  const sorted = sortSummaryRows(rows, sort, labelFor)
+  const head = { table, params, sort }
+  return (
+    <ScrollableTable label={`Signings by ${labelKey.toLowerCase()}`}>
       <table className="research-table">
         <thead>
           <tr>
-            <th>{labelKey}</th>
-            <th className="num">Tracked signings</th>
-            <th className="num">With known cost</th>
-            <th className="num">Known acquisition cost</th>
-            <th className="num">Audited</th>
-            <th className="num">Verified MLB</th>
-            <th className="num">Verified no MLB</th>
-            <th className="num">Not audited</th>
-            <th className="num">Observed bWAR</th>
+            <SummaryHeader {...head} sortKey="label" label={labelKey} />
+            {COLUMNS.map(([key, label]) => <SummaryHeader key={key} {...head} sortKey={key} label={label} numeric />)}
           </tr>
         </thead>
         <tbody>
-          {rows.map((r) => (
+          {sorted.map((r) => (
             <tr key={labelFor(r)}>
               <td><Link className="player-link" href={hrefFor(r)}>{labelFor(r)}</Link></td>
               <td className="num">{r.tracked_signings}</td>
@@ -42,11 +64,12 @@ function SummaryTable({ rows, labelKey, labelFor, hrefFor }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollableTable>
   )
 }
 
-export default async function MarketsPage() {
+export default async function MarketsPage({ searchParams }) {
+  const params = await searchParams
   const { live, error, markets, pathways } = await getMarketsData()
   return (
     <main className="shell page-main">
@@ -66,6 +89,8 @@ export default async function MarketsPage() {
         <section className="table-panel">
           <div className="table-head"><div><span className="eyebrow">Country / market</span><h2>Signings by market</h2></div></div>
           <SummaryTable
+            table="market"
+            params={params}
             rows={markets}
             labelKey="Market"
             labelFor={(r) => r.country_market || 'Unknown market'}
@@ -75,6 +100,8 @@ export default async function MarketsPage() {
         <section className="table-panel">
           <div className="table-head"><div><span className="eyebrow">Acquisition pathway</span><h2>Signings by pathway</h2></div></div>
           <SummaryTable
+            table="pathway"
+            params={params}
             rows={pathways}
             labelKey="Pathway"
             labelFor={(r) => humanize(r.pathway)}

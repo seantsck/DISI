@@ -262,3 +262,9 @@ th.num .sort-link{flex-direction:row-reverse}
 .readiness-headline{font-size:22px;line-height:1.35;letter-spacing:-.02em;margin:8px 0 18px;max-width:900px}
 .decision-block+.decision-block{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 .snapshot-freshness{color:var(--muted);font-size:11px;letter-spacing:.02em;margin:8px 0 0}
+.scroll-table{position:relative}
+.table-scroll-top{overflow-x:auto;overflow-y:hidden;height:14px;margin-bottom:4px}
+.table-scroll-top.inactive{display:none}
+.table-scroll-spacer{height:1px}
+.scroll-table>.table-scroll:focus-visible{outline:2px solid var(--blue2);outline-offset:2px}
+.scroll-table+.pagination{margin:12px 0 0}
