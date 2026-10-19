@@ -19,15 +19,15 @@ const SCHEMA_VERSION = 'v0.36.1'
 const lit = (s) => `'${String(s).replace(/'/g, "''")}'`
 const indent = (s, n) => s.split('\n').map((l) => (l ? ' '.repeat(n) + l : l)).join('\n')
 
-function tables() {
-  return SNAPSHOTS.map((s) => {
+export function tables(snapshots = SNAPSHOTS, migration = '045a') {
+  return snapshots.map((s) => {
     const t = `public.${s.table}`
     const out = [
       `-- ${s.table}: ${s.grain}`,
       `create table if not exists ${t} as\nselect null::bigint as generation_id, x.* from (\n${indent(s.source, 2)}\n) x\nwith no data;`,
       `alter table ${t} alter column generation_id set not null;`,
       `alter table ${t} enable row level security;`,
-      `comment on table ${t} is\n  ${lit(`DISI product snapshot (Migration 045a): ${s.grain}. A derived, persisted read model of the 042-045 analytical layer - not a source of facts; rebuilt only by disi_refresh_product_snapshots(). ${s.purpose}.`)};`,
+      `comment on table ${t} is\n  ${lit(`DISI product snapshot (Migration ${migration}): ${s.grain}. A derived, persisted read model of the 042-045 analytical layer - not a source of facts; rebuilt only by disi_refresh_product_snapshots(). ${s.purpose}.`)};`,
       `revoke all on table ${t} from anon, authenticated;`,
       `grant select on table ${t} to anon, authenticated;`,
       `drop policy if exists public_read_${s.table} on ${t};`,
@@ -38,8 +38,8 @@ function tables() {
   }).join('\n\n')
 }
 
-function refreshFunction() {
-  const stages = SNAPSHOTS.map((s) => `  -- ${s.table}
+export function refreshFunction(snapshots = SNAPSHOTS, { migration = '045a', validation = [] } = {}) {
+  const stages = snapshots.map((s) => `  -- ${s.table}
   v_t := clock_timestamp();
   execute 'delete from public.${s.table}';
   execute $q$
@@ -83,7 +83,7 @@ ${stages}
       case when exists (select 1 from e where e.supported_probability_targets = 0 and e.supported_expected_value_models > 0) then 'expected value supported without probability support' end,
       case when exists (select 1 from e where e.supported_expected_value_models = 0 and (e.supported_expected_values > 0 or e.predictive_portfolio_recommendations > 0)) then 'predictive outputs without a supported value model' end,
       case when exists (select 1 from public.product_portfolio_scenarios where optimized_selection is not null and optimization_eligible_candidates = 0) then 'optimized selection without eligible candidates' end,
-      case when exists (select 1 from public.product_player_expected_value where expected_org_value_bwar is not null and not expected_value_supported) then 'expected value published for an unsupported row' end
+      case when exists (select 1 from public.product_player_expected_value where expected_org_value_bwar is not null and not expected_value_supported) then 'expected value published for an unsupported row' end${validation.map((v) => `,\n      ${v}`).join('')}
     )
   $q$ into v_bad;
   if v_bad <> '' then
@@ -93,11 +93,11 @@ end
 $fn$;
 
 comment on function public.disi_refresh_product_snapshots() is
-  ${lit('Rebuilds every DISI product snapshot (Migration 045a) as one new generation: one staged statement per snapshot, then support-chain validation derived from the snapshot itself; any violation raises and nothing changes. Run it explicitly in its own transaction after DISI research data changes - never from a page request. Owner only: no PUBLIC, anon or authenticated EXECUTE.')};`
+  ${lit(`Rebuilds every DISI product snapshot (Migration ${migration}) as one new generation: one staged statement per snapshot, then support-chain validation derived from the snapshot itself; any violation raises and nothing changes. Run it explicitly in its own transaction after DISI research data changes - never from a page request. Owner only: no PUBLIC, anon or authenticated EXECUTE.`)};`
 }
 
-function driftFunction() {
-  const stages = SNAPSHOTS.map((s) => {
+export function driftFunction(snapshots = SNAPSHOTS, migration = '045a') {
+  const stages = snapshots.map((s) => {
     const drop = `array[${['generation_id', ...(s.volatile ?? [])].map(lit).join(', ')}]`
     const dropSrc = `array[${(s.volatile ?? []).map(lit).join(', ') || "''"}]`
     return `  execute $q$
@@ -127,7 +127,7 @@ end
 $fn$;
 
 comment on function public.disi_product_snapshot_drift() is
-  ${lit('For the verifier (Migration 045a): per product snapshot, the rows its analytical source would produce now that the snapshot lacks (missing_rows) and the snapshot rows it would not produce (extra_rows), ignoring generation metadata. Both 0 = the snapshot is current. Owner only.')};`
+  ${lit(`For the verifier (Migration ${migration}): per product snapshot, the rows its analytical source would produce now that the snapshot lacks (missing_rows) and the snapshot rows it would not produce (extra_rows), ignoring generation metadata. Both 0 = the snapshot is current. Owner only.`)};`
 }
 
 function releaseStatus() {
