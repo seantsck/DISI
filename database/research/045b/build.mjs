@@ -18,7 +18,7 @@ const lit = (s) => `'${String(s).replace(/'/g, "''")}'`
 // the status snapshot is one row and describes the same generation as the executive snapshot (derived from the snapshots themselves)
 const VALIDATION = [
   `case when (select count(*) from public.product_database_status) <> 1 then 'status snapshot is not one row' end`,
-  `case when exists (select 1 from e where e.dodgers_signings <> (select tracked_signings from public.product_database_status)) then 'status snapshot disagrees with the executive snapshot' end`,
+  `case when exists (select 1 from e join public.product_database_status s on s.tracked_signings is distinct from e.dodgers_signings) then 'status snapshot disagrees with the executive snapshot' end`,
 ]
 
 function contract() {

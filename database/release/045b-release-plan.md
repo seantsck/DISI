@@ -18,7 +18,7 @@ No metric, research datum, threshold or prediction changes. The release status i
 
 | File | bytes | sha256 |
 |---|---|---|
-| `database/sql/045b_database_status_snapshot.sql` | 28192 | `a41afa5f560f130027e01e537fe3edf595f09c78b653bacc3cba7a0c3a7fc159` |
+| `database/sql/045b_database_status_snapshot.sql` | 28198 | `3327f3ace59a4a590719b587790068090f26053a4bc28be4a523e892d90c7659` |
 | `database/release/sql/rollback-045b.sql` | | `7f02af795f12547f4cf80b08ce7128ac22691a61797f1b3523301da4a060a0f3` |
 | `database/release/sql/rollback-042-045.sql` (now also drops the status snapshot and restores the grant) | | `ca7ca0d456ff870d21552cc468f3770434c76e13531fb5a2e9af42c553c839d5` |
 

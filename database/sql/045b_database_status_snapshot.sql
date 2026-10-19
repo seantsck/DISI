@@ -227,7 +227,7 @@ begin
       case when exists (select 1 from public.product_portfolio_scenarios where optimized_selection is not null and optimization_eligible_candidates = 0) then 'optimized selection without eligible candidates' end,
       case when exists (select 1 from public.product_player_expected_value where expected_org_value_bwar is not null and not expected_value_supported) then 'expected value published for an unsupported row' end,
       case when (select count(*) from public.product_database_status) <> 1 then 'status snapshot is not one row' end,
-      case when exists (select 1 from e where e.dodgers_signings <> (select tracked_signings from public.product_database_status)) then 'status snapshot disagrees with the executive snapshot' end
+      case when exists (select 1 from e join public.product_database_status s on s.tracked_signings is distinct from e.dodgers_signings) then 'status snapshot disagrees with the executive snapshot' end
     )
   $q$ into v_bad;
   if v_bad <> '' then
