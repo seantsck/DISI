@@ -4,6 +4,7 @@ import DataUnavailable from '../components/DataUnavailable'
 import FilterForm from '../components/FilterForm'
 import SortHeader from '../components/SortHeader'
 import RowLink from '../components/RowLink'
+import ScrollableTable from '../components/ScrollableTable'
 import Pagination from '../components/Pagination'
 import PlayerLink from '../components/PlayerLink'
 import AuditBadge from '../components/AuditBadge'
@@ -98,7 +99,7 @@ export default async function PlayersPage({ searchParams }) {
 
         <section className="table-panel">
           <Pagination spec={PLAYERS_SPEC} state={state} pathname={PATH} total={total} outOfRange={outOfRange} />
-          <div className="table-scroll">
+          <ScrollableTable label="Players table">
             <table className="research-table">
               <thead>
                 <tr>
@@ -138,7 +139,7 @@ export default async function PlayersPage({ searchParams }) {
                 {rows.length === 0 && <tr><td colSpan={10} className="empty-row">No players match these filters.</td></tr>}
               </tbody>
             </table>
-          </div>
+          </ScrollableTable>
           <Pagination spec={PLAYERS_SPEC} state={state} pathname={PATH} total={total} outOfRange={outOfRange} />
         </section>
       </>}

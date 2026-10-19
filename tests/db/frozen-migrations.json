@@ -47,6 +47,7 @@
     "043_portfolio_decision_engine.sql": "e9e71b5491a20f8ad8da63f64b46663492da9fb0",
     "043a_decision_engine_performance.sql": "272999c0585ae9a1f44db061ce6b45442ce60118",
     "044_executive_product.sql": "7cd12ebe797695bf6071124117a7f2ae54be3377",
-    "045_final_integration_release.sql": "c30998c3ad75ac1a1ec4d704d97bd1b3823725f9"
+    "045_final_integration_release.sql": "c30998c3ad75ac1a1ec4d704d97bd1b3823725f9",
+    "045a_product_snapshot_serving.sql": "9a1bb65305e48cad751e739d192ac8c091ad0dc3"
   }
 }

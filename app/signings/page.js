@@ -3,6 +3,7 @@ import DataUnavailable from '../components/DataUnavailable'
 import FilterForm from '../components/FilterForm'
 import SortHeader from '../components/SortHeader'
 import RowLink from '../components/RowLink'
+import ScrollableTable from '../components/ScrollableTable'
 import Pagination from '../components/Pagination'
 import PlayerLink from '../components/PlayerLink'
 import AuditBadge from '../components/AuditBadge'
@@ -94,7 +95,7 @@ export default async function SigningsPage({ searchParams }) {
 
         <section className="table-panel">
           <Pagination spec={SIGNINGS_SPEC} state={state} pathname={PATH} total={total} outOfRange={outOfRange} />
-          <div className="table-scroll">
+          <ScrollableTable label="Signings table">
             <table className="research-table">
               <thead>
                 <tr>
@@ -154,7 +155,7 @@ export default async function SigningsPage({ searchParams }) {
                 )}
               </tbody>
             </table>
-          </div>
+          </ScrollableTable>
           <Pagination spec={SIGNINGS_SPEC} state={state} pathname={PATH} total={total} outOfRange={outOfRange} />
         </section>
       </>}
