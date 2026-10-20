@@ -441,7 +441,7 @@ test('the database path is read-only and anon-only by construction', () => {
 
 test('/prediction-readiness shows blockers derived from the snapshot rows and publishes no new number', () => {
   const page = read('app/prediction-readiness/page.js')
-  assert.match(page, /const \{ live, error, overview, targets, evaluations, expectedValueSupport, blockers \} = await getReadinessData\(\)/)
+  assert.match(page, /const \{ live, error, overview, targets, evaluations, expectedValueSupport, blockers, evidence \} = await getReadinessData\(\)/)
   assert.match(page, /blockers\.layers\.map/)
   assert.match(page, /A count is not a verdict/)
   // the blocker text is rendered from the derived statements; the page holds no blocker numbers of its own
