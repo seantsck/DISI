@@ -28,7 +28,7 @@ Nothing above is recorded as a fact in DISI. Each cell is a pointer to where the
 
 ## Why none was completed in 046
 
-1. Four exits predate the API's transaction history, so there is nothing structured to read.
+1. Five exits predate the API's Dodgers-era transaction history (Nomo, Mondesí, Amorós, Chico Fernández, Offerman), so there is nothing structured to read.
 2. Puig's package returns three players whose chains must be followed; a partial record would change the 034 downstream states without
    the audit that proves them.
 3. Two returns are not named in the only structured text, and a return is never taken from search results or memory.

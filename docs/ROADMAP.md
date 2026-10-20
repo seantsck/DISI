@@ -27,8 +27,9 @@ What the 046 research showed about the bottlenecks:
    (the 2022 class, 55 players, from 2027).
 2. **Acquisition cost is limited by readable sources.** Of the 19 signings whose bonus was looked for, 8 were found, 1 is a source conflict
    and 10 stay unknown; the blocked pages (MLB.com, Baseball America) are the main obstacle.
-3. **Transaction chains need package-level research.** Nine chains are incomplete. Four are pre-1999 players absent from the MLB
-   transaction API; the others involve multi-player packages that the 033 audit must rebuild. They were not completed by inference.
+3. **Transaction chains need package-level research.** Nine chains are incomplete. Five are pre-2000 players whose Dodgers-era exits are
+   absent from the MLB transaction API; the other four involve packages or players to be named that the 033 audit must rebuild. They were
+   not completed by inference.
 
 ## Candidate next phases (not started)
 
