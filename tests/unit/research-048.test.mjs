@@ -14,7 +14,7 @@ import {
   DEVELOPMENT_TIERS, FIRST_RECORD_MAX_GAP_SEASONS, PROFESSIONAL_PATHWAYS, developmentDimensions, developmentQueue, developmentRecords, firstProSeasonKnown,
   firstProSeasonStatus, isProfessionalPathway, timingFacts,
 } from '../../lib/research/development-research.js'
-import { HISTORY_GAP, LEAGUE_SEASON_NOT_PLAYED, historyCoverage, verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
+import { HISTORY_GAP, LEAGUE_SEASON_NOT_PLAYED, RESEARCH_RESULT, SUBSTANTIAL_PRE_MLB_SEASONS, historyCoverage, researchResult, verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
 import { NEED_GROUPS, developmentNeedSummary, developmentNeeds, needGroup } from '../../lib/research/development-needs.js'
 import { LADDER, progressionReviewPacket, renderReviewPacket } from '../../lib/research/progression-review.js'
 import { DATASET_QUERIES, HISTORY_QUERIES, assembleDataset } from '../../lib/research/dataset.js'
@@ -345,7 +345,7 @@ test('a sequence with no inversion yields no competing readings, and a reviewed 
 // ---- dataset / CLI plumbing ---------------------------------------------------------------------------------------------------
 
 test('the history relations are read-only public views and a table the API roles can already read; the base dataset is unchanged', () => {
-  assert.deepEqual(Object.keys(HISTORY_QUERIES), ['stints', 'progression', 'progressionDecisions'])
+  assert.deepEqual(Object.keys(HISTORY_QUERIES), ['stints', 'milestones', 'progression', 'progressionDecisions'])
   for (const sql of Object.values(HISTORY_QUERIES)) {
     assert.match(sql, /^\s*select /i)
     assert.doesNotMatch(sql, /\b(insert|update|delete|drop|alter|grant|truncate)\b/i)
@@ -353,7 +353,7 @@ test('the history relations are read-only public views and a table the API roles
   assert.ok(!('stints' in DATASET_QUERIES), 'the large history is only read by the commands that ask for it')
   assert.match(DATASET_QUERIES.signings, /\bpathway\b/)
   const d = assembleDataset({ signings: [], decisions: [] })
-  assert.deepEqual([d.stints, d.progression, d.progressionDecisions], [[], [], []])
+  assert.deepEqual([d.stints, d.milestones, d.progression, d.progressionDecisions], [[], [], [], []])
 })
 
 test('the research CLI refuses --mlb-coverage and --review without stint history, and never writes', () => {
@@ -378,6 +378,28 @@ test('no analytical threshold moved: the first-record gap, the tiers and the evi
   const m = fs.readFileSync(path.join(root, 'docs/RESEARCH-METHODOLOGY.md'), 'utf8')
   assert.match(m, /FIRST OBSERVED SEASON != FIRST PROFESSIONAL SEASON/)
   assert.match(m, /PARTIAL HISTORY != NO HISTORY/)
+})
+
+// ---- the per-player research result -------------------------------------------------------------------------------------------------------
+
+test('each cohort player gets exactly one research result, in a fixed precedence, and added MLB-level stints alone are not development evidence', () => {
+  assert.deepEqual([...RESEARCH_RESULT], ['SUBSTANTIALLY_EXPANDED', 'PARTIALLY_EXPANDED', 'NO_NEW_RELIABLE_EVIDENCE', 'UNRESOLVED_OR_CONFLICTED'])
+  const path = (rows, over = {}) => historyCoverage({ signing_year: 2010, mlb_debut_date: '2014-05-01', ...over }, rows)
+  const full = path([stint(2011, 'COMPLEX_ROOKIE'), stint(2012, 'LOW_A'), stint(2013, 'AA'), stint(2014, 'MLB')])
+  assert.equal(SUBSTANTIAL_PRE_MLB_SEASONS, 3)
+  assert.equal(researchResult({ added_pre_mlb_stints: 3, pending_review: false, history: full }), 'SUBSTANTIALLY_EXPANDED')
+  // the same path with a level sequence a person must decide: unresolved, whatever its length
+  assert.equal(researchResult({ added_pre_mlb_stints: 3, pending_review: true, history: full }), 'UNRESOLVED_OR_CONFLICTED')
+  // no pre-MLB stint added (already on record, or the source holds nothing before the debut): no new reliable evidence, even if MLB stints were added
+  assert.equal(researchResult({ added_pre_mlb_stints: 0, pending_review: true, history: path([stint(2014, 'MLB')]) }), 'NO_NEW_RELIABLE_EVIDENCE')
+  // a late-starting source, a season gap, or a short path is only partial
+  const late = path([stint(2013, 'AA'), stint(2014, 'MLB')])
+  assert.equal(researchResult({ added_pre_mlb_stints: 1, pending_review: false, history: late }), 'PARTIALLY_EXPANDED')
+  const gap = path([stint(2011, 'COMPLEX_ROOKIE'), stint(2013, 'AA'), stint(2014, 'MLB')])
+  assert.equal(researchResult({ added_pre_mlb_stints: 2, pending_review: false, history: gap }), 'PARTIALLY_EXPANDED')
+  const short = path([stint(2011, 'COMPLEX_ROOKIE'), stint(2012, 'LOW_A')], { mlb_debut_date: '2012-09-01' })
+  assert.equal(researchResult({ added_pre_mlb_stints: 2, pending_review: false, history: short }), 'PARTIALLY_EXPANDED')
+  for (const r of [full, late, gap, short]) assert.ok(RESEARCH_RESULT.includes(researchResult({ added_pre_mlb_stints: 1, pending_review: false, history: r })))
 })
 
 // ---- the page loader -----------------------------------------------------------------------------------------------------------------------
