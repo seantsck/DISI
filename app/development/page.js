@@ -3,6 +3,7 @@ import DataUnavailable from '../components/DataUnavailable'
 import PlayerLink from '../components/PlayerLink'
 import { getDevelopmentData } from '../../lib/data.js'
 import { money, num, bwar, humanize, dateLabel, MISSING } from '../../lib/format.js'
+import { developmentCoverage, timingFacts } from '../../lib/research/development-research.js'
 
 export const metadata = { title: 'Development' }
 
@@ -19,6 +20,15 @@ const ISSUE_LABELS = {
   LEVEL_CONFLICT: 'Source label and canonical classification disagree',
 }
 
+
+const DIMENSION_CARDS = [
+  { key: 'SIGNING_DATE', label: 'Signing date', what: 'tracked signings with a recorded signing date' },
+  { key: 'FIRST_PRO_SEASON', label: 'First professional season', what: 'tracked signings whose earliest record is the signing season or the next; a later start is only the first observed record' },
+  { key: 'HIGHEST_LEVEL', label: 'Highest level reached', what: 'tracked signings with a known highest level (a verified MLB debut counts as MLB)' },
+  { key: 'MLB_DEBUT', label: 'MLB debut date', what: 'verified MLB players with a recorded debut date' },
+  { key: 'CHRONOLOGY', label: 'Affiliate chronology', what: 'tracked signings with stints on record and no open chronology issue; the rest cannot support timing analysis' },
+]
+
 function whenCell(exact, season) {
   if (exact) return <>{dateLabel(exact)} <span className="muted">(exact)</span></>
   if (season != null) return <>{season} <span className="muted">(season only)</span></>
@@ -26,10 +36,14 @@ function whenCell(exact, season) {
 }
 
 export default async function DevelopmentPage() {
-  const { live, error, coverage, byClass, byMarket, byBonus, queue, debuts } = await getDevelopmentData()
+  const { live, error, coverage, byClass, byMarket, byBonus, queue, debuts, devSignings, devSummary } = await getDevelopmentData()
   const timed = debuts.filter((r) => r.years_signing_to_mlb != null)
   const queueByIssue = queue.reduce((acc, r) => { acc[r.issue] = (acc[r.issue] || 0) + 1; return acc }, {})
   const queueIssues = Object.entries(queueByIssue).sort((a, b) => b[1] - a[1])
+  // 047: completeness per dimension (each with its denominator) and descriptive timing; the EXIT dimension lives on /asset-conversion
+  const dataset = { signings: devSignings, developmentSummary: devSummary, developmentQueue: queue, decisions: [], transactionQueue: [] }
+  const completeness = developmentCoverage(dataset, { dimensions: DIMENSION_CARDS.map((d) => d.key) })
+  const timing = timingFacts(dataset)
   return (
     <main className="shell page-main">
       <header className="page-hero">
@@ -61,6 +75,42 @@ export default async function DevelopmentPage() {
             </dl>
           </section>
         )}
+
+
+        <section className="timeline-panel section-gap" aria-labelledby="completeness-heading">
+          <div className="table-head">
+            <div><span className="eyebrow">Completeness</span><h2 id="completeness-heading">Development-history completeness</h2></div>
+            <span className="micro-note">Independent dimensions, each with its own denominator. A count of what is on record, never a success rate</span>
+          </div>
+          <p className="muted">Unknown development history is not “no development”: a player with a gap here is a research task, not a negative result. An audited outcome and a complete development history are separate states.</p>
+          <div className="coverage-grid">
+            {DIMENSION_CARDS.map((d) => {
+              const c = completeness.dimensions[d.key]
+              return (
+                <div key={d.key}>
+                  <span>{d.label}</span>
+                  <strong>{c.known} of {c.applicable}</strong>
+                  <small>{d.what}</small>
+                </div>
+              )
+            })}
+          </div>
+          <h3 className="sub">Signing to MLB, where both dates are exact</h3>
+          <p>
+            <strong>{timing.signing_to_mlb_exact.n} of {timing.signing_to_mlb_exact.of}</strong> verified MLB players have an exact signing date and an exact debut date.
+            {timing.signing_to_mlb_exact.n > 0 && <> Among those {timing.signing_to_mlb_exact.n}: {num(timing.signing_to_mlb_exact.min_years, 2)} to {num(timing.signing_to_mlb_exact.max_years, 2)} years (median {num(timing.signing_to_mlb_exact.median_years, 2)}).</>}
+            {' '}This describes only those players; it is not an organization-wide figure and is not compared across cohorts.
+          </p>
+          <h3 className="sub">Highest level reached among audited non-MLB players</h3>
+          <p>
+            <strong>{timing.highest_level_known.n} of {timing.highest_level_known.of}</strong> audited non-MLB players have a known highest level.
+            Players whose outcome is NOT_AUDITED are not counted here and are not treated as negative outcomes.
+          </p>
+          {Object.keys(timing.highest_level_counts).length > 0 && (
+            <div className="signal-row">{Object.entries(timing.highest_level_counts).map(([level, n]) => <span key={level}>{humanize(level)} · {n}</span>)}</div>
+          )}
+          <p className="muted small-note">Unresolved development research: {queue.length} items across {new Set(queue.map((r) => r.player_id)).size} players (listed below).</p>
+        </section>
 
         <section className="timeline-panel section-gap">
           <div className="table-head">
