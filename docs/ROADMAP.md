@@ -3,7 +3,7 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 046, not yet released)
+## Where DISI stands (after 047, not yet released)
 
 - **v1.0.0 / schema v0.36.1** is in production through Migration 045b. The product reads eleven persisted snapshots; the analytical layer
   is internal; the verifier has 247 hard checks.
@@ -11,8 +11,26 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
   **127** are `NOT_AUDITED`. Of the **98** mature signings, **7** are not audited, and the audit policy correctly holds all seven (five are
   still playing affiliated ball in a class after 2020; two have no usable affiliated record). The other 120 `NOT_AUDITED` signings are in
   classes that are not yet five years old.
-- Acquisition cost is known for **48** signings (**56** with 046), a lower bound of $117.4M ($121.7M with 046).
+- Acquisition cost is known for **56** signings (046), a lower bound of $121.7M.
+- Development history (047): **161** of 220 signings have a known first professional season (**164** with 047) and **16** of 47 verified MLB
+  players have both exact dates for signing-to-MLB (6 before). The transaction chains: **9** incomplete before 047, **7** with it.
 - Nothing is published that is not supported: **0** supported probability targets, **0** supported expected values, **0** recommendations.
+
+## What 047 was for
+
+Make how acquired players moved through the system, and what happened to the asset afterward, auditable. 047 added the development
+research queue, the independent completeness dimensions, the attribution states, a controlled research batch (five Retrosheet-sourced exits and
+ten players' whole development careers), and the asset-path views on `/development`, `/asset-conversion` and the dossier. It built no
+development model, and no probability, expected value or recommendation became supported.
+
+What the 047 research showed:
+
+1. **Transaction gaps hide in downstream hops.** The "nine incomplete chains" are about the players the Dodgers *received*, not the signing's own
+   exit. Five exits were recorded; the rest need an older-era source or the Baseball-Reference WAR files (which answer 403 today).
+2. **Development history was missing for most verified MLB players.** Only 2 of 47 had pre-MLB seasons. The official API fills in most of it, but
+   it starts late for older players and omits many international rookie-league seasons, so first-professional-season stays unknown for them.
+3. **More history makes more gaps visible.** The development research queue grew from 104 to 154 items because ten careers entered, which is
+   what loading real history should do.
 
 ## What 046 was for
 
@@ -33,11 +51,13 @@ What the 046 research showed about the bottlenecks:
 
 ## Candidate next phases (not started)
 
-- **Development history.** The model already supports it (see the audit in the methodology); the work is coverage: 101 of 268 players
-  have no season stints, 111 items are queued.
+- **Development history, continued.** 47's cohort was the first ten rows of the tier-1 queue; the other 37 verified MLB players are the next
+  rows. The 154 queued items (game-log dates, season gaps, unresolved organizations) are mostly coverage, and Jansen's ambiguous sequence needs
+  a person's review.
 - **Cost research with access.** A human retrieval of the pages that answer 403 (Baseball America international reviews, MLB.com) would
   resolve most remaining unknown bonuses in classes since 2012.
-- **Transaction chains.** The nine incomplete exits, then the 26 unresolved package attributions.
+- **Transaction chains.** Seven chains remain incomplete, and 21 trade packages have an open issue (cash, a player to be named, future
+  considerations). Loading Baseball-Reference team-season bWAR (blocked today) would let Bob Miller's 1967 exit be recorded.
 - **Audits as classes mature.** The 2021 class (22) is already mature: five players are active and need a decision rule once their careers
   end; the 2022 class matures in 2027.
 - **Support thresholds.** Unchanged. The closest target remains `POSITIVE_BWAR_WITHIN_10_SEASONS` for the top-prospect benchmark sample

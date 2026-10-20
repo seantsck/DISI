@@ -59,6 +59,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 48. `045a_product_snapshot_serving.sql` — DISI v1.0.0 serving layer: ten persisted, typed product snapshot tables (`product_*`, column-exact projections of the analytical views the pages read) rebuilt only by the explicit, privileged, validated, single-transaction `disi_refresh_product_snapshots()` (`npm run refresh:product-snapshots`), a drift check, the product contract equal to what the app reads, and the 042-045 analytical views and staged functions closed to the API (design in `database/research/045/serving-layer-architecture.md`).
 49. `045b_database_status_snapshot.sql` — post-v1.0.0 home-page hardening: `v_database_status` (26 columns from 25 scalar subqueries over the signing, class and task view stacks) is persisted as the eleventh product snapshot, `product_database_status`, written in the same transaction and generation as the other ten (the refresh and drift functions are re-issued) and proven equal to its source. The view is unchanged but internal (closed to anon / authenticated); the home page reads the snapshot (design in `database/research/045b/README.md`).
 50. `046_outcome_cost_research_batch.sql` — reviewed acquisition-cost research batch (data only: no table, view, function, grant or policy): eight previously unknown signing bonuses recorded with one directly-read source each (known costs 48 -> 56 of 220, known spend $117,377,237.33 -> $121,700,237.33), one source disagreement (Adrian Beltre, $23,000 versus $17,000) kept as an unresolved conflict with a NULL canonical bonus, and one conditional snapshot refresh so the product reads one coherent generation. Nothing unknown is estimated or set to zero; no outcome audit changes (`NOT_AUDITED` stays 127). Built from `database/research/046/`; guarded data-only rollback `database/release/sql/rollback-046.sql`.
+51. `047_development_transaction_research_batch.sql` — reviewed development-history and transaction-chain research batch (data only: no table, view, function, grant or policy): five Retrosheet-sourced downstream exits, ten verified MLB players' whole development careers (255 stints, 41 milestones), fourteen proven season totals, two pending progression reviews, and the retraction of two superseded exit-bound observations. Built from `database/research/047/`.
 
 ## 017 research-database layer
 
@@ -299,6 +300,15 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **What it is.** A research-data migration plus the read-only research commands (`npm run research:outcomes|costs|transactions|readiness|progress|queue`) and the readiness blockers on `/prediction-readiness`. See `docs/RESEARCH-METHODOLOGY.md` (maturity, outcome audits, cost, transaction attribution, readiness) and `docs/ROADMAP.md`.
 - **Principles.** `NOT_AUDITED` is not `AUDITED_NO_MLB`; an unknown cost is not `$0`; disagreeing sources stay a conflict; nothing is published below its support threshold.
 - **Release.** `database/release/046-release-plan.md`. Applying 046, merging its PR and deploying need explicit owner approval.
+
+## 047 development histories and transaction chains
+
+- **What it is.** A research-data migration (no schema change) plus development / transaction research tooling (`npm run research:development`), the asset-path views on `/development`, `/asset-conversion` and the dossier, and the evidence gaps on `/prediction-readiness`. See `docs/RESEARCH-METHODOLOGY.md`.
+- **Principles.** `UNKNOWN DEVELOPMENT HISTORY` is not `NO DEVELOPMENT`; `UNKNOWN TRANSACTION` is not `RELEASED`; `UNKNOWN TRADE RETURN` is not `ZERO VALUE`; a player leaving the organization is not a player failing.
+- **Reused structures.** `player_season_stints`, `development_milestones`, `development_progression_decisions`, `transaction_events`, `transaction_event_assets`, `transaction_asset_timing_observations`, `v_dodgers_international_exit_summary`. No table was necessary.
+- **Pinned counts.** The verifier pins development and progression counts; 047 moves fifteen of them (`CANONICAL_EXPECTATIONS`; the previous values are kept as `EXPECTATIONS_THROUGH_046` for tests that verify an earlier chain).
+- **Rollback.** Deletes exactly what 047 inserted (nothing here is sealed except the two observations, which are restored as new rows); 047 can be applied again afterwards.
+- **Release.** `database/release/047-release-plan.md`. Applying 047, merging its PR and deploying need explicit owner approval.
 
 ## 042-045 decision layers (DISI v1.0.0)
 
