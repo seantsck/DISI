@@ -81,9 +81,11 @@ before(async () => {
 }, { timeout: 600000 })
 after(async () => { await chain?.close() })
 
-test('046 is registered last in the manifest and sorts after 045b', () => {
-  assert.equal(manifest.canonical_sql.at(-1), FILE)
-  assert.equal(manifest.canonical_sql.at(-2), '045b_database_status_snapshot.sql')
+test('046 is registered immediately after 045b in the manifest (047 follows it)', () => {
+  const at = manifest.canonical_sql.indexOf(FILE)
+  assert.ok(at > 0)
+  assert.equal(manifest.canonical_sql[at - 1], '045b_database_status_snapshot.sql')
+  assert.equal(manifest.canonical_sql[at + 1], '047_development_transaction_research_batch.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
 })
 
