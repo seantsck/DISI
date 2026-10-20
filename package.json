@@ -17,7 +17,13 @@
     "research:test": "node --test \"tests/unit/mlb-scripts.test.mjs\"",
     "verify:db": "node scripts/db/verify-live-invariants.mjs --local",
     "verify:db:live": "node --env-file=.env.local scripts/db/verify-live-invariants.mjs --live",
-    "refresh:product-snapshots": "node --env-file-if-exists=.env.local scripts/db/refresh-product-snapshots.mjs"
+    "refresh:product-snapshots": "node --env-file-if-exists=.env.local scripts/db/refresh-product-snapshots.mjs",
+    "research:outcomes": "node scripts/research/outcomes.mjs",
+    "research:costs": "node scripts/research/costs.mjs",
+    "research:transactions": "node scripts/research/transactions.mjs",
+    "research:readiness": "node scripts/research/readiness.mjs",
+    "research:progress": "node scripts/research/progress.mjs",
+    "research:queue": "node scripts/research/queue.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
