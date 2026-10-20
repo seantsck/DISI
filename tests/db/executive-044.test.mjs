@@ -11,7 +11,7 @@ import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { buildChainThrough } from './canonical-chain.mjs'
 import { executiveQueries, EXECUTIVE_CHECK_NAMES } from '../../scripts/db/lib/executive-invariants.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_046 as CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 import { NO_PROBABILITY_STATEMENT, predictionReadiness } from '../../lib/decision-display.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')

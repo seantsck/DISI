@@ -15,7 +15,7 @@ const MODEL_LABELS = /** @type {Record<string, string>} */ ({
 })
 
 export default async function PredictionReadinessPage() {
-  const { live, error, overview, targets, evaluations, expectedValueSupport, blockers } = await getReadinessData()
+  const { live, error, overview, targets, evaluations, expectedValueSupport, blockers, evidence } = await getReadinessData()
   const readiness = predictionReadiness(overview)
 
   return (
@@ -72,6 +72,17 @@ export default async function PredictionReadinessPage() {
               </article>
             ))}
           </div>
+        </section>}
+
+
+        {blockers && evidence.length > 0 && <section aria-labelledby="evidence-heading" className="panel section-gap">
+          <span className="eyebrow">Supporting evidence, not a gate</span>
+          <h2 id="evidence-heading">Development and transaction evidence</h2>
+          <p className="micro-note">
+            These gaps are research tasks. No probability, expected-value or recommendation layer above depends on them, and none is blocked by them.
+            Development-history completeness, by dimension and with its denominator, is on the Development page.
+          </p>
+          <ul className="blocker-list">{evidence.map((/** @type {any} */ g) => <li key={g.code}>{g.statement}</li>)}</ul>
         </section>}
 
         <section aria-labelledby="targets-heading" className="table-panel">

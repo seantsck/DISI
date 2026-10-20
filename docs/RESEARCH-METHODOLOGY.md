@@ -1,7 +1,7 @@
 # DISI research methodology
 
 How DISI decides what is known, what is not, and what may be published. This file consolidates rules that were introduced across
-Migrations 017-046; each section names the object that enforces it. The ingestion workflow (what to record for a new class, player or
+Migrations 017-047; each section names the object that enforces it. The ingestion workflow (what to record for a new class, player or
 transaction) stays in [`INGESTION.md`](INGESTION.md); the plan is in [`ROADMAP.md`](ROADMAP.md).
 
 ## Core principles
@@ -16,6 +16,13 @@ transaction) stays in [`INGESTION.md`](INGESTION.md); the plan is in [`ROADMAP.m
 - **Nothing is published below its support threshold.** A rate, a probability, an expected value or a recommendation appears only when the
   documented methodology says its evidence is sufficient. Thresholds are never lowered so a number can appear.
 - **No claim without provenance.** Every canonical fact has a retrievable source. A model or search-snippet assertion is not evidence.
+- **`UNKNOWN DEVELOPMENT HISTORY` is not `NO DEVELOPMENT`.** A player with no season rows, no known first professional season or no known
+  highest level has a gap in DISI's research. A missing season is never read as "did not play", and a record that starts years after the
+  signing is the first *observed* record, not the first professional season.
+- **`UNKNOWN TRANSACTION` is not `RELEASED`.** No exit is inferred from a player's absence from later records. An exit is a sourced event;
+  without one the exit is unknown (or the player is still with the organization), and DISI does not say which.
+- **`UNKNOWN TRADE RETURN` is not `ZERO VALUE`.** A return that is not recorded or not valued is `NULL`; a zero is a recorded zero.
+- **`PLAYER LEFT THE ORGANIZATION` is not `PLAYER FAILED`.** An exit says what happened to the asset, not how the player turned out.
 
 ## Maturity
 
@@ -120,22 +127,114 @@ Transaction events (`transaction_events`, `transaction_event_assets`, 033/034) r
 A transaction chain is completed by recording the exit event, its assets with stable identities and the return's team-season bWAR under the
 033 audit; it is not completed by inferring from an MLB transaction text alone.
 
-## Development-history readiness (audit, no new structure)
+### What the chain statuses mean (047)
 
-046 checked whether the current model supports the next phase. It does, with no schema addition:
+`chain_status` describes the players the Dodgers **received** in a signing's trade, not the signing itself:
+
+| Status | Meaning |
+|---|---|
+| `NO_TRADE_CHAIN` | the signing has no trade lineage (a release, another exit, or no recorded exit) |
+| `COMPLETE_TERMINAL` | every returned asset's own exit is recorded |
+| `STILL_ACTIVE` | the signing was **traded** and an asset it returned is still under Dodgers control, so value is still accruing |
+| `INCOMPLETE_EXIT_NOT_RESEARCHED` / `INCOMPLETE_EXIT_UNRECORDED` | a returned asset's exit is not recorded |
+| `INCOMPLETE_PENDING_CONSIDERATION` / `INCOMPLETE_RETURN_UNRECORDED` | a returned asset was itself traded for a player to be named later, or for a return that is not recorded |
+
+A signing's **own** exit is established by the exit summary (`v_dodgers_international_exit_summary.control_state`: `STILL_DODGERS_CONTROLLED`,
+`LEFT_DODGERS_CONTROL`, `NO_EXIT_EVIDENCE`, `HISTORY_UNAVAILABLE`), which agrees with the transaction queue's `EXIT_STATUS_UNVERIFIED` and
+`EXIT_TRANSACTION_MISSING` issues.
+
+### Package-level truth before player-level attribution (047)
+
+- **A complete trade package** has a date, both organizations, every outgoing and incoming piece named (or a player to be named later
+  resolved), and a source for each. A transaction sentence naming one side is **not** a complete package. `packageCompleteness` counts, per
+  trade, the open issues (`TRADE_RETURN_UNRECORDED`, `PTBNL_UNRESOLVED`, `FUTURE_CONSIDERATIONS_UNRESOLVED`, `CASH_AMOUNT_UNKNOWN`,
+  `POOL_SPACE_AMOUNT_UNKNOWN`).
+- **Package membership is verified against an independent source** where one exists: the five packages DISI records for Offerman, Mondesí,
+  Amorós, Fernández and the 1962 Miller trade agree with Retrosheet's membership (`database/research/047/transaction-evidence.json`).
+- **Value concepts stay separate and are never summed:** direct Dodgers value the signed player produced; value he produced for other
+  organizations; Dodgers value obtained through the transaction; the package-level amount; and the part of the package attributable to him.
+- **Attribution states** (`attributionState`): `NOT_A_TRADE_EXIT`, `RETURN_STILL_ACCRUING`, `CHAIN_INCOMPLETE`, `VALUE_NOT_DETERMINED`,
+  `PACKAGE_LEVEL_ONLY`, `INDIVIDUALLY_ATTRIBUTED`, `RECORDED_ZERO_RETURN`.
+- **When value can be attributed to one player:** only when he was the sole outgoing asset (`INDIVIDUALLY_ATTRIBUTED`). Value is never split
+  equally among the outgoing players and never credited in full to the DISI signing. **When attribution must stay unresolved:** a shared
+  package, an incomplete chain, or a return whose value is not determined. That is better than false precision.
+
+## Development history (046 audit, 047 research)
+
+046 checked whether the current model supports development research. It does, with no schema addition, and 047 used it:
 
 | Need | Where it lives |
 |---|---|
 | signing date | `signings.signing_date` (197 of 220; the 23 without are queued as `SIGNING_DATE_MISSING`) |
 | birth date and age at signing | `players.birth_date`; `v_player_directory.age_at_signing` (197 of 220) |
 | affiliate history | `player_season_stints` (one row per player / team / league / level / season) |
-| level progression | `development_levels`, `development_level_era_map`, `development_milestones` (exact dates where a dated record exists) |
+| level progression | `development_levels`, `development_level_era_map`, `development_milestones` (exact dates where a dated record exists), `development_progression_decisions` |
 | MLB debut | `outcomes` / `players.mlb_debut_date` (47 verified debuts) |
-| time to MLB | `v_signing_records.years_signing_to_mlb`, and exact elapsed days between milestone endpoints |
-| development duration | derived metrics that need both endpoint dates; season-based approximations are labelled separately |
+| exit | `transaction_events` (033/034), `v_dodgers_international_exit_summary` |
+| time to MLB, time to a level | derived from canonical dates (never stored): exact elapsed days between milestone endpoints; season-based approximations are labelled separately |
 
-The gap is coverage (`v_dodgers_development_coverage`: 167 of 268 players have stints; the development research queue holds 111 items), not
-structure. That is research work for a later phase.
+### What a complete development history is
+
+There is **no single "complete" flag**. Completeness is six independent dimensions (`lib/research/development-research.js`), each `KNOWN`,
+`UNKNOWN` or `NOT_APPLICABLE`, each reported with its own denominator:
+
+| Dimension | Known when | Not applicable |
+|---|---|---|
+| `SIGNING_DATE` | the signing has a recorded date | never |
+| `FIRST_PRO_SEASON` | the earliest recorded season is the signing season or the next | never. A record starting two or more seasons after signing is only the first *observed* record |
+| `HIGHEST_LEVEL` | a highest affiliated level is known, or a verified MLB debut (MLB, derived from the audited outcome) | never |
+| `MLB_DEBUT` | a verified MLB player has a debut date | not a verified MLB player |
+| `EXIT` | the exit summary says the player left control (an exit event exists) | still Dodgers-controlled |
+| `CHRONOLOGY` | stints are on record and no chronology issue is open (season gap, unclassified level, unresolved organization, unresolved multi-org season, missing game date, level-skip cameo candidate, non-monotonic progression) | never |
+
+A player can have a complete outcome audit and an incomplete development history, or complete timing and an incomplete transaction history;
+the states are independent. A **complete transaction chain** is one whose signing exit is recorded and whose returned assets' exits and
+returns are recorded (`COMPLETE_TERMINAL`, or `STILL_ACTIVE` where a returned asset is still held).
+
+### The development research queue
+
+`npm run research:development` orders every signing with at least one `UNKNOWN` dimension, deterministically (no score, no model):
+
+| Tier | Signings |
+|---|---|
+| 1 | verified MLB players missing the signing date, the debut date or the first professional season |
+| 2 | mature audited players missing the highest level |
+| 3 | players who produced Dodgers bWAR and have any other open dimension |
+| 4 | players traded away with an incomplete pre-trade history |
+| 5 | audited no-MLB players with any open dimension |
+| 6 | players not yet audited (younger or active) with any open dimension |
+| 7 | the remainder |
+
+Within a tier: Dodgers bWAR (higher first, `NULL` last), signing year, signing date, sort name, signing id. Same data, same bytes.
+
+### Descriptive timing (never a model)
+
+`--timing` reports signing-to-MLB intervals where both dates are exact (e.g. 16 of 47 verified MLB players) and the highest level reached
+among **audited** non-MLB players (44 of 46). `NOT_AUDITED` players are never counted as negative outcomes, and nothing is compared across
+cohorts or turned into a rate or score. Everything states its denominator.
+
+### Source policy for development and transactions
+
+1. official league or club transaction records; 2. authoritative structured baseball records (the MLB Stats API; Retrosheet's transaction
+database); 3. high-quality historical references; 4. reputable news reporting; 5. SABR and research biographies; 6. archive material;
+7. aggregators only when clearly marked. Authority is not truth: a disagreement is kept as two reports. A URL alone is not evidence: each
+record names the specific fact the source supports (047 stores the exact Retrosheet row). Retrosheet has no tier of its own in
+`source_tiers`; it is registered as `OTHER` (the lowest) with its authority stated in the source notes, rather than borrowing a higher tier.
+
+### Automation safety
+
+Automation may discover, retrieve, parse, propose candidate events, detect discrepancies and queue work. A canonical write is a reviewed,
+provenance-backed migration: an identity is matched on name **and** birth date, never on a name; a total is classified only after the
+migration proves it; an ambiguous level sequence becomes a `PENDING_REVIEW` decision, never a self-asserted review. A language model does
+not write dates, transaction types, affiliate levels, trade participants, bWAR or attribution.
+
+### What 047 recorded
+
+- Five downstream exits (four free-agency grants, one release) from Retrosheet, each closing a real control interval; the assets the source
+  does not cover stay unresolved, and a found-but-unvaluable exit (Bob Miller, 1967) is documented, not recorded.
+- Ten verified MLB players' whole recorded careers (255 stints, 41 first-appearance milestones). Seasons the API does not return stay
+  unknown; level debuts after the MLB debut season (rehab or demotion appearances) are not milestones.
+- Fourteen team-less aggregate rows classified as season totals, each proven equal to its component team stints.
 
 ## Prediction readiness and blockers
 
@@ -165,7 +264,8 @@ npm run research:queue          open queues by category, with what each blocks
 npm run research:outcomes       the audit cohort            -- --mature --status not_audited [--year --market --limit --format csv|json]
 npm run research:costs          the cost queue              -- --missing [--mature --mlb yes|no --year --market --limit]
 npm run research:transactions   transaction / value items   -- --missing | --traded | --unresolved-attribution | --chains
-npm run research:readiness      blockers for every layer
+npm run research:development    development research queue  -- --missing [--mature --mlb yes|no --year --market --player --limit] | --coverage | --timing
+npm run research:readiness      blockers for every layer, plus the development / transaction evidence gaps (reported, not gates)
 npm run research:progress       against database/research/046/baseline.json
 ```
 

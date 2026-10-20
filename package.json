@@ -21,6 +21,7 @@
     "research:outcomes": "node scripts/research/outcomes.mjs",
     "research:costs": "node scripts/research/costs.mjs",
     "research:transactions": "node scripts/research/transactions.mjs",
+    "research:development": "node scripts/research/development.mjs",
     "research:readiness": "node scripts/research/readiness.mjs",
     "research:progress": "node scripts/research/progress.mjs",
     "research:queue": "node scripts/research/queue.mjs"

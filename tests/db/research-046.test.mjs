@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildChainThrough, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_046 as CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 import { productSnapshotQueries } from '../../scripts/db/lib/product-snapshot-invariants.mjs'
 import { ALL_SNAPSHOT_TABLES } from '../../database/research/045b/snapshots.mjs'
 
@@ -81,9 +81,11 @@ before(async () => {
 }, { timeout: 600000 })
 after(async () => { await chain?.close() })
 
-test('046 is registered last in the manifest and sorts after 045b', () => {
-  assert.equal(manifest.canonical_sql.at(-1), FILE)
-  assert.equal(manifest.canonical_sql.at(-2), '045b_database_status_snapshot.sql')
+test('046 is registered immediately after 045b in the manifest (047 follows it)', () => {
+  const at = manifest.canonical_sql.indexOf(FILE)
+  assert.ok(at > 0)
+  assert.equal(manifest.canonical_sql[at - 1], '045b_database_status_snapshot.sql')
+  assert.equal(manifest.canonical_sql[at + 1], '047_development_transaction_research_batch.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
 })
 

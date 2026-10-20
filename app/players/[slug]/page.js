@@ -9,6 +9,7 @@ import {
   moneyExact, num, bwar, humanize, dateLabel, yesNoUnknown, statusLabel, populationScopeLabel,
   handLabel, heightLabel, ageLabel, ageBandLabel, MISSING,
 } from '../../../lib/format.js'
+import { assetPath } from '../../../lib/research/asset-path.js'
 import { decisionStateLabel, expectedValueCell, realizedValueStateLabel, snapshotFreshness } from '../../../lib/decision-display.js'
 
 const loadDossier = cache(getPlayerDossier)
@@ -181,6 +182,22 @@ export default async function PlayerPage({ params }) {
           </small>
         </div>
       </header>
+
+      {signings.some((s) => s.is_dodgers_franchise) && (
+        <section className="panel section-gap" aria-labelledby="asset-path-heading">
+          <h2 id="asset-path-heading">Asset path</h2>
+          <p className="muted">What is on record about how this player moved through the organization. A step marked unknown is missing research, never evidence that nothing happened, and no step is inferred from a player&apos;s absence from later records.</p>
+          <ol className="asset-path">
+            {assetPath({ signings, devSummary, devStints, devMilestones, transactions, realizedValue }).map((step) => (
+              <li key={step.key} data-state={step.state}>
+                <span className="step-label">{step.label}</span>
+                <span className="step-state">{step.state === 'NOT_APPLICABLE' ? 'Not applicable' : step.state === 'UNKNOWN' ? 'Not recorded' : 'Recorded'}</span>
+                <span className="step-detail">{step.detail}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
 
       <section className="panel">
         <h2>Identity</h2>

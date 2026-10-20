@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "asOf": "2026-10-06",
+    "conflicts": 0,
+    "milestones": 41,
+    "stints": 255
+  },
+  "records": [
+    {
+      "slug": "adrian-beltre"
+    },
+    {
+      "slug": "chan-ho-park"
+    },
+    {
+      "slug": "fernando-valenzuela"
+    },
+    {
+      "slug": "hideo-nomo"
+    },
+    {
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "slug": "ismael-valdez"
+    },
+    {
+      "slug": "kenley-jansen"
+    },
+    {
+      "slug": "ramon-martinez"
+    },
+    {
+      "slug": "raul-mondesi"
+    },
+    {
+      "slug": "yasiel-puig"
+    }
+  ]
+}

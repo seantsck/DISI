@@ -47,10 +47,10 @@ test('clean canonical 001→029 state passes every hard invariant', async () => 
 })
 
 test('changing one expected count fails exactly that check', async () => {
-  const expectations = { ...CANONICAL_EXPECTATIONS, coded_milestones: 831 }
+  const expectations = { ...CANONICAL_EXPECTATIONS, coded_milestones: CANONICAL_EXPECTATIONS.coded_milestones - 1 }
   const report = await checkInvariants(chain.query, expectations)
   assert.deepEqual(failedChecks(report).map((c) => c.name), ['coded_milestones'])
-  assert.equal(failedChecks(report)[0].actual, 832)
+  assert.equal(failedChecks(report)[0].actual, CANONICAL_EXPECTATIONS.coded_milestones)
 })
 
 test('a duplicate stint row fails the duplicate-group check', async () => {
@@ -65,8 +65,8 @@ test('a duplicate stint row fails the duplicate-group check', async () => {
     update stints_dup set id = gen_random_uuid();
     insert into public.player_season_stints select * from stints_dup;
   `)
-  // the extra row duplicates a stint group and moves both the raw (828) and
-  // effective team-stint (772) counts
+  // the extra row duplicates a stint group and moves both the raw and the
+  // effective team-stint counts
   assert.deepEqual(
     failedChecks(report).map((c) => c.name).sort(),
     ['duplicate_stint_groups', 'stints', 'team_stints']
