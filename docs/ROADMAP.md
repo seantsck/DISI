@@ -3,18 +3,36 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 047, not yet released)
+## Where DISI stands (after 048 is built; 048 is not yet released)
 
-- **v1.0.0 / schema v0.36.1** is in production through Migration 045b. The product reads eleven persisted snapshots; the analytical layer
-  is internal; the verifier has 247 hard checks.
+- **v1.0.0 / schema v0.36.1** is in production through Migration 047 (released 2026-10-20, PR #17; frozen in PR #18). The product reads eleven
+  persisted snapshots; the analytical layer is internal; the verifier has 247 hard checks. **048 is built, tested and awaiting release.**
 - **220** Dodgers international signings are tracked. **93** have an outcome audit: **47** verified MLB, **46** verified no MLB.
   **127** are `NOT_AUDITED`. Of the **98** mature signings, **7** are not audited, and the audit policy correctly holds all seven (five are
   still playing affiliated ball in a class after 2020; two have no usable affiliated record). The other 120 `NOT_AUDITED` signings are in
   classes that are not yet five years old.
 - Acquisition cost is known for **56** signings (046), a lower bound of $121.7M.
-- Development history (047): **161** of 220 signings have a known first professional season (**164** with 047) and **16** of 47 verified MLB
-  players have both exact dates for signing-to-MLB (6 before). The transaction chains: **9** incomplete before 047, **7** with it.
+- Development history (047, released): **1083** stints and **873** milestones; **16** of 47 verified MLB players had both exact dates for
+  signing-to-MLB; 7 transaction chains incomplete, 21 trade packages with an open issue.
+- Development history (048, built): the other verified MLB players' careers (35 players, 776 stints, 200 milestones): pre-MLB history for **42**
+  of 47 verified MLB players (10 before), signing-to-MLB with both exact dates for **45** of 47 (16 before), a verified first professional
+  season for **19** of 47 under the pathway rule (3 before; 179 of 220 signings, 163 before). No path is complete: 44 of 47 are partial.
 - Nothing is published that is not supported: **0** supported probability targets, **0** supported expected values, **0** recommendations.
+
+## What 048 was for
+
+047 was the controlled proof; 048 is the coverage expansion. Can DISI reconstruct the documented development path of every verified MLB
+Dodgers international signing without inventing missing seasons or pretending a partial history is complete? Mostly yes, as far as the
+official record goes, and the gaps are now named rather than hidden:
+
+1. **The source begins late for older players** (Astacio signed in 1987 and the API begins in 1990; the 1950s players have no minor-league
+   record at all). `FIRST OBSERVED SEASON != FIRST PROFESSIONAL SEASON`, and `PARTIAL HISTORY != NO HISTORY`: those seasons are unknown, not
+   absent.
+2. **Eight of the 47 were established professionals** (Cuban, Mexican League, NPB, KBO). Their first affiliated season is not their first
+   professional season; the pathway rule keeps them out of the first-professional-season count.
+3. **Six more ambiguous level sequences** need a person. 048 records them as pending, never decided, and adds a reviewer's packet.
+4. **The development queue double-counted evidence gaps.** 347 detector rows are 173 distinct pieces of work.
+5. **Game-log dates and organization resolution are the next real work.** Every verified MLB path still has an open chronology issue.
 
 ## What 047 was for
 
@@ -51,9 +69,10 @@ What the 046 research showed about the bottlenecks:
 
 ## Candidate next phases (not started)
 
-- **Development history, continued.** 47's cohort was the first ten rows of the tier-1 queue; the other 37 verified MLB players are the next
-  rows. The 154 queued items (game-log dates, season gaps, unresolved organizations) are mostly coverage, and Jansen's ambiguous sequence needs
-  a person's review.
+- **Development history, continued.** The verified MLB cohort is covered at season precision. What remains: dated game logs for the log-era
+  seasons (exact first and last appearances), organization resolution for non-Dodgers affiliates and historical franchise names, the seven
+  ambiguous sequences (Jansen and the six 048 adds) for a person to decide, and the five players for whom the API holds no record before the MLB
+  debut (three 1950s players, Valenzuela and Ryu). The audited non-MLB signings are the next development cohort after that.
 - **Cost research with access.** A human retrieval of the pages that answer 403 (Baseball America international reviews, MLB.com) would
   resolve most remaining unknown bonuses in classes since 2012.
 - **Transaction chains.** Seven chains remain incomplete, and 21 trade packages have an open issue (cash, a player to be named, future

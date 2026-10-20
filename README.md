@@ -77,7 +77,7 @@ Never put a Supabase secret key or legacy service-role key in a `NEXT_PUBLIC_` v
 | `npm run typecheck` | `tsc` with `checkJs` over `app/`, `lib/` and `tests/` |
 | `npm test` | Unit tests plus the database test, which runs every canonical migration in PGlite (in-process Postgres), reruns the latest migration, and checks class totals, population and rate-eligibility rules, provenance and the security model |
 | `npm run research:test` | Offline tests for the research scripts (also included in `npm test`) |
-| `npm run research:queue` / `research:outcomes` / `research:costs` / `research:transactions` / `research:development` / `research:readiness` / `research:progress` | Read-only research commands over the persisted product snapshots (public `anon` role only). See `scripts/research/README.md` and `docs/RESEARCH-METHODOLOGY.md` |
+| `npm run research:queue` / `research:outcomes` / `research:costs` / `research:transactions` / `research:development` / `research:readiness` / `research:progress` | Read-only research commands over the persisted product snapshots (public `anon` role only); `research:development` also reports the verified MLB coverage, the de-duplicated needs and the pending progression reviews (`--mlb-coverage`, `--needs`, `--review`). See `scripts/research/README.md` and `docs/RESEARCH-METHODOLOGY.md` |
 | `npm run build` | Production build |
 | `npm run check` | All of the above |
 
