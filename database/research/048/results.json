@@ -1,0 +1,741 @@
+{
+  "summary": {
+    "cohort_size": 37,
+    "players_with_new_rows": 35,
+    "stints_added": 776,
+    "milestones_added": 200,
+    "first_professional_seasons_resolved": 16,
+    "exact_signing_to_mlb_added": 29,
+    "ambiguous_sequences_created": 6,
+    "results": {
+      "SUBSTANTIALLY_EXPANDED": 13,
+      "PARTIALLY_EXPANDED": 13,
+      "NO_NEW_RELIABLE_EVIDENCE": 5,
+      "UNRESOLVED_OR_CONFLICTED": 6
+    },
+    "by_result": {
+      "SUBSTANTIALLY_EXPANDED": [
+        "pedro-baez",
+        "willy-aybar",
+        "rubby-de-la-rosa",
+        "josue-de-paula",
+        "chin-lung-hu",
+        "keibert-ruiz",
+        "yordan-alvarez",
+        "eddys-leonard",
+        "jorbit-vivas",
+        "miguel-vargas",
+        "jose-dominguez",
+        "karim-garcia",
+        "juan-castro"
+      ],
+      "PARTIALLY_EXPANDED": [
+        "pedro-astacio",
+        "andy-pages",
+        "antonio-osuna",
+        "pedro-martinez",
+        "jose-offerman",
+        "victor-gonzalez",
+        "omar-daal",
+        "ramon-troncoso",
+        "roki-sasaki",
+        "elian-herrera",
+        "jose-vizcaino",
+        "juan-guzman",
+        "ramon-rosso"
+      ],
+      "NO_NEW_RELIABLE_EVIDENCE": [
+        "sandy-amoros",
+        "roger-cedeno",
+        "chico-fernandez",
+        "roberto-clemente",
+        "carlos-frias"
+      ],
+      "UNRESOLVED_OR_CONFLICTED": [
+        "julio-urias",
+        "hung-chih-kuo",
+        "tony-abreu",
+        "carlos-santana",
+        "oneil-cruz",
+        "yusniel-diaz"
+      ]
+    },
+    "signing_to_mlb_before": {
+      "n": 16,
+      "of": 47,
+      "min_years": 0.15,
+      "median_years": 3.4699999999999998,
+      "max_years": 7.58
+    },
+    "signing_to_mlb_after": {
+      "n": 45,
+      "of": 47,
+      "min_years": 0.15,
+      "median_years": 4.59,
+      "max_years": 9.08
+    }
+  },
+  "players": [
+    {
+      "slug": "pedro-astacio",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 36,
+      "pre_mlb_stints_added": 6,
+      "milestones_added": 5,
+      "first_observed_season": 1990,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "FIRST_OBSERVED_ONLY",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR",
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "julio-urias",
+      "result": "UNRESOLVED_OR_CONFLICTED",
+      "stints_added": 21,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 6,
+      "first_observed_season": 2013,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "PRIOR_PROFESSIONAL_CAREER",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": true,
+      "gaps": [],
+      "notes": [
+        "PRIOR_PROFESSIONAL_CAREER"
+      ]
+    },
+    {
+      "slug": "andy-pages",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 11,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 6,
+      "first_observed_season": 2018,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "NO_EVIDENCE_FOUND",
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": [
+        "LEAGUE_SEASON_NOT_PLAYED"
+      ]
+    },
+    {
+      "slug": "sandy-amoros",
+      "result": "NO_NEW_RELIABLE_EVIDENCE",
+      "stints_added": 9,
+      "pre_mlb_stints_added": 0,
+      "milestones_added": 2,
+      "first_observed_season": 1952,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": false,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "SOURCE_UNAVAILABLE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "hung-chih-kuo",
+      "result": "UNRESOLVED_OR_CONFLICTED",
+      "stints_added": 22,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 6,
+      "first_observed_season": 2000,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "FIRST_OBSERVED_ONLY",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": true,
+      "gaps": [
+        "NO_EVIDENCE_FOUND",
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "antonio-osuna",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 30,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 6,
+      "first_observed_season": 1991,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "NO_EVIDENCE_FOUND",
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "pedro-baez",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 31,
+      "pre_mlb_stints_added": 14,
+      "milestones_added": 8,
+      "first_observed_season": 2007,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "pedro-martinez",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 30,
+      "pre_mlb_stints_added": 5,
+      "milestones_added": 5,
+      "first_observed_season": 1990,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR",
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "jose-offerman",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 30,
+      "pre_mlb_stints_added": 5,
+      "milestones_added": 6,
+      "first_observed_season": 1988,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR",
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "victor-gonzalez",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 24,
+      "pre_mlb_stints_added": 11,
+      "milestones_added": 8,
+      "first_observed_season": 2013,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "NO_EVIDENCE_FOUND"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "omar-daal",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 25,
+      "pre_mlb_stints_added": 3,
+      "milestones_added": 4,
+      "first_observed_season": 1992,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "willy-aybar",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 23,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 7,
+      "first_observed_season": 2000,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "tony-abreu",
+      "result": "UNRESOLVED_OR_CONFLICTED",
+      "stints_added": 23,
+      "pre_mlb_stints_added": 8,
+      "milestones_added": 7,
+      "first_observed_season": 2003,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": true,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "ramon-troncoso",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 23,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 6,
+      "first_observed_season": 2005,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "FIRST_OBSERVED_ONLY",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR",
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "roki-sasaki",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 3,
+      "pre_mlb_stints_added": 1,
+      "milestones_added": 1,
+      "first_observed_season": 2025,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": false,
+      "ambiguous_sequence_created": false,
+      "gaps": [],
+      "notes": [
+        "PRIOR_PROFESSIONAL_CAREER"
+      ]
+    },
+    {
+      "slug": "roger-cedeno",
+      "result": "NO_NEW_RELIABLE_EVIDENCE",
+      "stints_added": 0,
+      "pre_mlb_stints_added": 0,
+      "milestones_added": 0,
+      "first_observed_season": 1992,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": false,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "rubby-de-la-rosa",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 24,
+      "pre_mlb_stints_added": 6,
+      "milestones_added": 7,
+      "first_observed_season": 2007,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [],
+      "notes": []
+    },
+    {
+      "slug": "elian-herrera",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 21,
+      "pre_mlb_stints_added": 12,
+      "milestones_added": 8,
+      "first_observed_season": 2006,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "FIRST_OBSERVED_ONLY",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR",
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "josue-de-paula",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 8,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 4,
+      "first_observed_season": 2022,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": false,
+      "ambiguous_sequence_created": false,
+      "gaps": [],
+      "notes": []
+    },
+    {
+      "slug": "jose-vizcaino",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 28,
+      "pre_mlb_stints_added": 2,
+      "milestones_added": 4,
+      "first_observed_season": 1988,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR",
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "chin-lung-hu",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 17,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 6,
+      "first_observed_season": 2003,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "keibert-ruiz",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 23,
+      "pre_mlb_stints_added": 8,
+      "milestones_added": 7,
+      "first_observed_season": 2015,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "chico-fernandez",
+      "result": "NO_NEW_RELIABLE_EVIDENCE",
+      "stints_added": 10,
+      "pre_mlb_stints_added": 0,
+      "milestones_added": 2,
+      "first_observed_season": 1956,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "SOURCE_UNAVAILABLE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "roberto-clemente",
+      "result": "NO_NEW_RELIABLE_EVIDENCE",
+      "stints_added": 18,
+      "pre_mlb_stints_added": 0,
+      "milestones_added": 1,
+      "first_observed_season": 1955,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "SOURCE_UNAVAILABLE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "juan-guzman",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 27,
+      "pre_mlb_stints_added": 5,
+      "milestones_added": 4,
+      "first_observed_season": 1988,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR",
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "carlos-santana",
+      "result": "UNRESOLVED_OR_CONFLICTED",
+      "stints_added": 40,
+      "pre_mlb_stints_added": 9,
+      "milestones_added": 8,
+      "first_observed_season": 2005,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": true,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "oneil-cruz",
+      "result": "UNRESOLVED_OR_CONFLICTED",
+      "stints_added": 20,
+      "pre_mlb_stints_added": 9,
+      "milestones_added": 6,
+      "first_observed_season": 2016,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": false,
+      "ambiguous_sequence_created": true,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": [
+        "LEAGUE_SEASON_NOT_PLAYED"
+      ]
+    },
+    {
+      "slug": "ramon-rosso",
+      "result": "PARTIALLY_EXPANDED",
+      "stints_added": 12,
+      "pre_mlb_stints_added": 7,
+      "milestones_added": 8,
+      "first_observed_season": 2017,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "FIRST_OBSERVED_ONLY",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR",
+        "SOURCE_BEGINS_LATE"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "yusniel-diaz",
+      "result": "UNRESOLVED_OR_CONFLICTED",
+      "stints_added": 18,
+      "pre_mlb_stints_added": 14,
+      "milestones_added": 7,
+      "first_observed_season": 2016,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "PRIOR_PROFESSIONAL_CAREER",
+      "exact_timing_added": false,
+      "ambiguous_sequence_created": true,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": [
+        "LEAGUE_SEASON_NOT_PLAYED",
+        "PRIOR_PROFESSIONAL_CAREER"
+      ]
+    },
+    {
+      "slug": "yordan-alvarez",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 16,
+      "pre_mlb_stints_added": 6,
+      "milestones_added": 5,
+      "first_observed_season": 2016,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "PRIOR_PROFESSIONAL_CAREER",
+      "exact_timing_added": false,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": [
+        "PRIOR_PROFESSIONAL_CAREER"
+      ]
+    },
+    {
+      "slug": "eddys-leonard",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 16,
+      "pre_mlb_stints_added": 14,
+      "milestones_added": 8,
+      "first_observed_season": 2018,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": [
+        "LEAGUE_SEASON_NOT_PLAYED"
+      ]
+    },
+    {
+      "slug": "jorbit-vivas",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 13,
+      "pre_mlb_stints_added": 11,
+      "milestones_added": 7,
+      "first_observed_season": 2018,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": [
+        "LEAGUE_SEASON_NOT_PLAYED"
+      ]
+    },
+    {
+      "slug": "miguel-vargas",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 18,
+      "pre_mlb_stints_added": 8,
+      "milestones_added": 6,
+      "first_observed_season": 2018,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR"
+      ],
+      "notes": [
+        "LEAGUE_SEASON_NOT_PLAYED"
+      ]
+    },
+    {
+      "slug": "jose-dominguez",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 20,
+      "pre_mlb_stints_added": 9,
+      "milestones_added": 7,
+      "first_observed_season": 2008,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "karim-garcia",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 47,
+      "pre_mlb_stints_added": 3,
+      "milestones_added": 5,
+      "first_observed_season": 1993,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "juan-castro",
+      "result": "SUBSTANTIALLY_EXPANDED",
+      "stints_added": 39,
+      "pre_mlb_stints_added": 5,
+      "milestones_added": 7,
+      "first_observed_season": 1991,
+      "first_pro_before": "UNKNOWN",
+      "first_pro_after": "UNKNOWN",
+      "first_pro_status_after": "NO_AFFILIATED_RECORD",
+      "exact_timing_added": true,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR",
+        "ORGANIZATION_UNCLEAR"
+      ],
+      "notes": []
+    },
+    {
+      "slug": "carlos-frias",
+      "result": "NO_NEW_RELIABLE_EVIDENCE",
+      "stints_added": 0,
+      "pre_mlb_stints_added": 0,
+      "milestones_added": 0,
+      "first_observed_season": 2007,
+      "first_pro_before": "KNOWN",
+      "first_pro_after": "KNOWN",
+      "first_pro_status_after": "KNOWN",
+      "exact_timing_added": false,
+      "ambiguous_sequence_created": false,
+      "gaps": [
+        "LEVEL_UNCLEAR"
+      ],
+      "notes": []
+    }
+  ]
+}

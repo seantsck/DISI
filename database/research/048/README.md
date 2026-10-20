@@ -17,6 +17,9 @@ node database/research/048/build.mjs                       # template + values +
 | `development-values-decisions.json` | the generator's decisions report (no conflicts) |
 | `existing-development.json` | the development rows Migration 021 already holds for Cedeño and Frías (22 and 24 stints): 048 never overwrites or duplicates them |
 | `048_template.sql` / `rollback_template.sql` | hand-written guards, steps, proofs and postconditions |
+| `baseline.json` | the pre-048 measures read from production on 2026-10-20 (generation 5), with the stint history |
+| `results.mjs` / `results.json` | the per-player research result (from the pre- and post-048 datasets), and the totals |
+| `measure.mjs` | prints the 048 measures from a saved dataset that includes the stint history |
 
 ## The research, in order
 
@@ -58,6 +61,21 @@ node database/research/048/build.mjs                       # template + values +
 - Development detector rows 154 to 347; as distinct evidence gaps 113 to 173.
 - No audit, cost, transaction, threshold, probability, expected value or recommendation moved. Snapshot generation +1; the only executive
   column that changed is the development data's as-of date.
+
+## The result for each of the 37 players
+
+`results.mjs` classifies every cohort player in one of four ways (`researchResult`; the precedence is fixed and documented in the code):
+
+| Result | Players |
+|---|---|
+| substantially expanded (the pre-MLB path reaches back to the signing season, 3+ seasons, no gap) | 13: Báez, Aybar, De La Rosa, De Paula, Hu, Ruiz, Álvarez, Leonard, Vivas, Vargas, Domínguez, García, Castro |
+| partially expanded (history added, but it starts late, has a gap, or is short) | 13: Astacio, Pages, Osuna, P. Martínez, Offerman, V. González, Daal, Troncoso, Sasaki, Herrera, Vizcaíno, Guzmán, Rosso |
+| no new reliable evidence (no pre-MLB stint added) | 5: Amorós, Fernández, Clemente (the API holds no minor-league record), Cedeño and Frías (already on record from 021) |
+| unresolved or conflicted (a level sequence a person must decide) | 6: Urías, Kuo, Abreu, Santana, Cruz, Díaz |
+
+Totals: cohort 37; players with new rows 35; stints added 776; milestones added 200; first professional seasons resolved 16; signing-to-MLB with
+both exact dates added 29 (16 to 45); ambiguous sequences created 6 players / 15 decisions. "Substantially" is about the *documented path*, not about
+completeness: every one of the 47 verified MLB paths still has an open chronology issue (game dates, organizations, rookie leagues).
 
 ## Findings worth keeping
 
