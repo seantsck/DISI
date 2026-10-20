@@ -113,6 +113,7 @@ try {
   const verified = (await rowsOf(A, `select player_slug from public.v_signing_records where is_dodgers_franchise and reached_mlb_verified order by 1`)).map((r) => r.player_slug)
   check('cohort = verified MLB players minus the 047 cohort, derived from the database (47 - 10 = 37); two already researched by 021', verified.length === 47 && JSON.stringify([...slugs].sort()) === JSON.stringify(verified.filter((s) => !cohort047.includes(s)).sort()) && cohort.already_researched.length === 2 && fresh.length === 35)
   const totals0 = (await rowsOf(A, `select count(*)::int as n from public.player_season_stints where stint_kind = 'SEASON_TOTAL'`))[0].n
+  const secdef0 = (await rowsOf(A, `select count(*)::int as n from pg_proc p where p.pronamespace = 'public'::regnamespace and p.prosecdef`))[0].n
   t0 = Date.now()
   await apply(A, TC, [FILE])
   const ms = Date.now() - t0
@@ -173,7 +174,7 @@ try {
   check('the research tables stay public-read and API-write-denied; anon / authenticated cannot write or run the refresh (42501)', outcome[0] === 'ALLOWED' && outcome[1] === 'ALLOWED' && outcome.slice(2).every((d) => d === '42501'), outcome.join(','))
   check('the product still reads: anon sees the snapshots and the development views', (await inRole(A, 'anon', `select 1 from public.product_database_status`)) === 'ALLOWED' && (await inRole(A, 'anon', `select 1 from public.v_player_development_stints`)) === 'ALLOWED'
     && (await inRole(A, 'anon', `select 1 from public.v_player_development_progression`)) === 'ALLOWED')
-  check('no SECURITY DEFINER function was added', (await rowsOf(A, `select count(*)::int as n from pg_proc p where p.pronamespace = 'public'::regnamespace and p.prosecdef`))[0].n === 1)
+  check(`no SECURITY DEFINER function was added (${secdef0} before, the same after)`, (await rowsOf(A, `select count(*)::int as n from pg_proc p where p.pronamespace = 'public'::regnamespace and p.prosecdef`))[0].n === secdef0)
 
   // --- B: rollback on a copy of the post-048 state
   await A.end()
