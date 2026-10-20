@@ -128,13 +128,18 @@ try {
   await apply(A, TC, [FILE])
   check('046 exact idempotency (all rows incl. ids / timestamps, definitions, ACLs, policies, functions); no further generation', md5({ cat: await catalog(A), full: await contentHashes(A) }) === md5({ cat: S1.cat, full: S1.full }))
   // API boundary
-  const denial = await Promise.all([
-    inRole(A, 'anon', `select 1 from public.signing_financial_reports limit 1`), inRole(A, 'authenticated', `select 1 from public.sources limit 1`),
-    inRole(A, 'anon', `insert into public.signing_financial_reports (signing_id, component_type, amount, currency_code, report_origin, evidence_basis, confidence) values (gen_random_uuid(), 'SIGNING_BONUS', 1, 'USD', 'EXTERNAL_SOURCE', 'OTHER', 'LOW')`),
-    inRole(A, 'anon', `update public.signings set signing_bonus_usd = 1`), inRole(A, 'authenticated', `delete from public.signing_financial_reports`),
-    inRole(A, 'anon', `select * from public.disi_refresh_product_snapshots()`),
-  ])
-  check('anon / authenticated can neither read the ledger or sources nor write anything, nor run the refresh (42501)', denial.every((d) => d === '42501'), denial.join(','))
+  const attempts = [
+    ['anon', `select 1 from public.signing_financial_reports limit 1`], ['authenticated', `select 1 from public.sources limit 1`],
+    ['anon', `insert into public.signing_financial_reports (signing_id, component_type, amount, currency_code, report_origin, evidence_basis, confidence) values (gen_random_uuid(), 'SIGNING_BONUS', 1, 'USD', 'EXTERNAL_SOURCE', 'OTHER', 'LOW')`],
+    ['anon', `update public.signings set signing_bonus_usd = 1`], ['authenticated', `delete from public.signing_financial_reports`],
+    ['authenticated', `insert into public.sources (source_name, source_type, title, url) values ('x', 'ARTICLE', 'x', 'https://example.org/x')`],
+    ['anon', `select * from public.disi_refresh_product_snapshots()`],
+  ]
+  const outcome = []
+  for (const [role, stmt] of attempts) outcome.push(await inRole(A, role, stmt)) // sequentially: one transaction at a time on one connection
+  // the research ledger and sources are public READ by design (030: public_read policies); nothing may be written, and the refresh is owner-only
+  check('the ledger and sources stay public-read and API-write-denied; anon / authenticated cannot write or run the refresh (42501)',
+    outcome[0] === 'ALLOWED' && outcome[1] === 'ALLOWED' && outcome.slice(2).every((d) => d === '42501'), outcome.join(','))
   check('the product still reads: anon sees the snapshots', (await inRole(A, 'anon', `select 1 from public.product_database_status`)) === 'ALLOWED' && (await inRole(A, 'anon', `select 1 from public.product_player_decision`)) === 'ALLOWED')
   // the ledger refuses a deletion (the rollback must retract)
   await A.query('begin')
