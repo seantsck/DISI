@@ -14,6 +14,7 @@ import path from 'node:path'
 import { parseArgs, requireArg } from './lib/args.mjs'
 import { parseIsoDate } from './lib/normalize.mjs'
 import { auditDecision, DEFAULT_AUDIT_POLICY } from './lib/classify.mjs'
+import { auditCaptureReport } from '../../lib/research/outcome-audit.js'
 import { stableStringify, sortRecords } from './lib/output.mjs'
 
 const args = parseArgs(process.argv.slice(2))
@@ -51,9 +52,19 @@ const blocks = { identity: [], progress: [], audits: [], sources: [], bwar: [] }
 const decisions = []
 for (const r of records) {
   const legacy = legacySlugs.has(r.slug)
-  const decision = legacy
+  let decision = legacy
     ? { audit: false, legacy: true, reason: 'Existing audit kept; structured progress and outcome state added.' }
     : auditDecision(r, r.signingYear, policy)
+  // a new audit must carry its as-of date, identity, rationale and retrievable sources; otherwise it is not written
+  let capture = null
+  if (decision.audit) {
+    capture = auditCaptureReport({
+      conclusion: decision.reachedMlb ? 'VERIFIED_MLB' : 'VERIFIED_NO_MLB', asOfDate: auditDate, mlbId: r.mlbId, rationale: r.reason,
+      outcomeState: decision.outcomeState, mlbDebutDate: r.mlbDebutDate, mlbDebutTeam: r.mlbDebutTeam,
+      lastAffiliatedSeason: r.lastAffiliatedSeason, finalTransaction: r.finalTransaction, sources: r.sources,
+    })
+    if (!capture.writable) decision = { audit: false, reason: `Audit capture incomplete (${capture.blocking.join(', ')}); left unaudited.` }
+  }
   const id = identity[r.slug] || { basis: 'DODGERS_TRANSACTION_MATCH', note: 'MLB "signed free agent" transaction with the Dodgers around the signing year.' }
   blocks.identity.push(row([r.slug, r.mlbId, r.mlbFullName ?? null, id.basis, id.note]))
   blocks.progress.push(row([r.slug, auditDate, r.mlbDebutDate, r.mlbDebutTeam, r.highestLevel, r.highestLevelSeason,
@@ -72,7 +83,7 @@ for (const r of records) {
   }
   decisions.push({ slug: r.slug, name: r.name, signingYear: r.signingYear, mlbId: r.mlbId, recommendation: r.recommendation,
     audited: Boolean(decision.audit), legacy, outcomeState: state, decisionReason: decision.reason, evidence: r.reason,
-    careerBwar: war?.careerBwar ?? null })
+    careerBwar: war?.careerBwar ?? null, captureGaps: capture?.gaps ?? [] })
 }
 
 const header = (name, cols) => `-- ${name}(${cols})`
