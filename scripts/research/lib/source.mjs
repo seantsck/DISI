@@ -1,13 +1,14 @@
 // Read-only dataset loader for the research commands.
 //
 //   --input <file.json>      a dataset saved earlier with --save (raw query results); no database is contacted
+//   --history                also read the per-stint history and the progression decisions (048; larger, only the commands that need it ask)
 //   DISI_RESEARCH_DB_URL     otherwise: a connection URL, falling back to DISI_VERIFY_DB_URL; never printed
 //
 // A database session is opened READ ONLY and switches to the public `anon` role, so the commands can only ever see what the website
 // can see: the product snapshots and public views. They never write.
 
 import fs from 'node:fs'
-import { DATASET_QUERIES, assembleDataset } from '../../../lib/research/dataset.js'
+import { DATASET_QUERIES, HISTORY_QUERIES, assembleDataset } from '../../../lib/research/dataset.js'
 import { stableJson } from '../../../lib/research/format.js'
 
 export async function loadDataset(args) {
@@ -35,7 +36,8 @@ export async function loadDataset(args) {
     await client.query('begin read only')
     await client.query('set local role anon')
     await client.query("set local statement_timeout = '15s'")
-    for (const [key, sql] of Object.entries(DATASET_QUERIES)) raw[key] = (await client.query(sql)).rows
+    const queries = args.history === true ? { ...DATASET_QUERIES, ...HISTORY_QUERIES } : DATASET_QUERIES
+    for (const [key, sql] of Object.entries(queries)) raw[key] = (await client.query(sql)).rows
     await client.query('rollback')
   } catch (e) {
     await client.query('rollback').catch(() => {})
