@@ -1,0 +1,74 @@
+{
+  "rule": "The first ten rows of the deterministic development queue (npm run research:development -- --missing --limit 10) on 2026-10-20. All ten are tier 1 (verified MLB players whose pre-MLB history, first professional season or exit is not on record). The queue orders by tier, then Dodgers bWAR (descending, NULL last), then signing year, signing date, sort name and signing id.",
+  "queue_snapshot": "generation 4, source data as of 2026-10-05",
+  "players": [
+    {
+      "slug": "fernando-valenzuela",
+      "signing_year": 1979,
+      "mlb_id": 123619
+    },
+    {
+      "slug": "ramon-martinez",
+      "signing_year": 1984,
+      "mlb_id": 118378
+    },
+    {
+      "slug": "adrian-beltre",
+      "signing_year": 1994,
+      "mlb_id": 134181
+    },
+    {
+      "slug": "raul-mondesi",
+      "signing_year": 1988,
+      "mlb_id": 119247
+    },
+    {
+      "slug": "chan-ho-park",
+      "signing_year": 1994,
+      "mlb_id": 120221
+    },
+    {
+      "slug": "kenley-jansen",
+      "signing_year": 2004,
+      "mlb_id": 445276
+    },
+    {
+      "slug": "ismael-valdez",
+      "signing_year": 1991,
+      "mlb_id": 123595
+    },
+    {
+      "slug": "yasiel-puig",
+      "signing_year": 2012,
+      "mlb_id": 624577
+    },
+    {
+      "slug": "hyun-jin-ryu",
+      "signing_year": 2012,
+      "mlb_id": 547943
+    },
+    {
+      "slug": "hideo-nomo",
+      "signing_year": 1995,
+      "mlb_id": 119827
+    }
+  ],
+  "progression_reviews": [
+    {
+      "slug": "kenley-jansen",
+      "event_code": "AA_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence: 8 Triple-A games (Albuquerque, 2009) between High-A work (Inland Empire, 38 G in 2009), then High-A (11 G) and Double-A (22 G) in 2010 before the MLB debut on 2010-07-24. Whether the 2009 Triple-A stint was an early cameo or the 2010 Double-A stint a reassignment is not decided; neither AA nor AAA is accepted as a developmental arrival."
+    },
+    {
+      "slug": "kenley-jansen",
+      "event_code": "AAA_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence: 8 Triple-A games (Albuquerque, 2009) between High-A work (Inland Empire, 38 G in 2009), then High-A (11 G) and Double-A (22 G) in 2010 before the MLB debut on 2010-07-24. Whether the 2009 Triple-A stint was an early cameo or the 2010 Double-A stint a reassignment is not decided; neither AA nor AAA is accepted as a developmental arrival."
+    }
+  ]
+}

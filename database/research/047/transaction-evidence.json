@@ -1,0 +1,346 @@
+{
+  "retrieved_at": "2026-10-20T15:19:00Z",
+  "source": {
+    "url": "https://www.retrosheet.org/transactions/tranDB.zip",
+    "source_name": "Retrosheet Transactions Database",
+    "source_type": "TRANSACTIONS",
+    "source_tier": "OTHER",
+    "title": "Retrosheet transactions database (tran.txt, tranDB.zip)",
+    "sha256_zip": "c5cd539f89991afa9a74fdc67b0f71e29413383792404013a2c69fdd450fd932",
+    "rows": 101594,
+    "notes": "Structured transaction records created by Tom Ruane and no longer updated (Retrosheet readme). Read directly from the downloaded archive. Not an official club record: the Baseball-Reference/MLB logs outrank it where they cover the same fact; here the official MLB log lacks the Dodgers-side exit rows."
+  },
+  "exits": [
+    {
+      "key": "LAD_FREE_AGENCY_2004_STEVE_FINLEY",
+      "date": "2004-10-28",
+      "type": "FREE_AGENCY",
+      "historical_label": "Granted free agency",
+      "description": "Steve Finley granted free agency. Retrosheet transaction 16400 (Fg, LAN).",
+      "asset": {
+        "name": "Steve Finley",
+        "mlb_id": "114135",
+        "bref_id": "finlest01"
+      },
+      "acquired_in_event": "LAD_ARI_2004_BILL_MURPHY",
+      "retrosheet": {
+        "transaction_id": 16400,
+        "player_id": "finls001",
+        "row": "\"20041028\",,,,,16400,\"finls001\",\"Fg\",\"LAN\",\"NL\",\"\",\"\",,,,",
+        "birth_date_matched": "1965-03-12"
+      }
+    },
+    {
+      "key": "LAD_FREE_AGENCY_2004_BRENT_MAYNE",
+      "date": "2004-10-29",
+      "type": "FREE_AGENCY",
+      "historical_label": "Granted free agency",
+      "description": "Brent Mayne granted free agency. Retrosheet transaction 33336 (Fg, LAN).",
+      "asset": {
+        "name": "Brent Mayne",
+        "mlb_id": "118490",
+        "bref_id": "maynebr01"
+      },
+      "acquired_in_event": "LAD_ARI_2004_BILL_MURPHY",
+      "retrosheet": {
+        "transaction_id": 33336,
+        "player_id": "maynb001",
+        "row": "\"20041029\",,,,,33336,\"maynb001\",\"Fg\",\"LAN\",\"NL\",\"\",\"\",,,,",
+        "birth_date_matched": "1968-04-19"
+      }
+    },
+    {
+      "key": "LAD_FREE_AGENCY_2005_BELTRAN_PEREZ",
+      "date": "2005-10-15",
+      "type": "FREE_AGENCY",
+      "historical_label": "Granted free agency",
+      "description": "Beltrán Pérez granted free agency. Retrosheet transaction 40769 (Fg, LAN).",
+      "asset": {
+        "name": "Beltrán Pérez",
+        "mlb_id": "425558",
+        "bref_id": "perezbe01"
+      },
+      "acquired_in_event": "LAD_ARI_2005_SHAWN_GREEN",
+      "retrosheet": {
+        "transaction_id": 40769,
+        "player_id": "pereb001",
+        "row": "\"20051015\",,,,,40769,\"pereb001\",\"Fg\",\"LAN\",\"NL\",\"\",\"\",,,,",
+        "birth_date_matched": "1981-10-24"
+      }
+    },
+    {
+      "key": "LAD_FREE_AGENCY_2013_NICK_PUNTO",
+      "date": "2013-10-31",
+      "type": "FREE_AGENCY",
+      "historical_label": "Granted free agency",
+      "description": "Nick Punto granted free agency. Retrosheet transaction 67232 (Fg, LAN).",
+      "asset": {
+        "name": "Nick Punto",
+        "mlb_id": "346857",
+        "bref_id": "puntoni01"
+      },
+      "acquired_in_event": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+      "retrosheet": {
+        "transaction_id": 67232,
+        "player_id": "puntn001",
+        "row": "\"20131031\",,,,,67232,\"puntn001\",\"Fg\",\"LAN\",\"NL\",\"\",\"\",,,,",
+        "birth_date_matched": "1977-11-08"
+      }
+    },
+    {
+      "key": "LAD_RELEASE_2018_HOMER_BAILEY",
+      "date": "2018-12-22",
+      "type": "RELEASE",
+      "historical_label": "Released",
+      "description": "Homer Bailey released. Retrosheet transaction 81460 (R, LAN).",
+      "asset": {
+        "name": "Homer Bailey",
+        "mlb_id": "456701",
+        "bref_id": "baileho02"
+      },
+      "acquired_in_event": "LAD_CIN_2018_YASIEL_PUIG",
+      "retrosheet": {
+        "transaction_id": 81460,
+        "player_id": "bailh001",
+        "row": "\"20181222\",,,,,81460,\"bailh001\",\"R \",\"LAN\",\"NL\",\"\",\"\",,,,",
+        "birth_date_matched": "1986-05-03"
+      }
+    }
+  ],
+  "unresolved": [
+    {
+      "asset": "Gail Harris",
+      "kind": "EXIT_NOT_RECORDED",
+      "mlb_id": "115514",
+      "acquired_in": "LAD_DET_1960_AMOROS",
+      "retro": "harrg101",
+      "reason": "Retrosheet records his 1960-05-07 trade to the Dodgers and no later transaction; his last MLB game (1960-05-03) precedes the trade. Absence of a record is not an exit: unresolved, no exit inferred."
+    },
+    {
+      "asset": "Mike Judd",
+      "kind": "RETURN_NOT_RECORDED",
+      "mlb_id": "116781",
+      "acquired_in": "LAD_NYY_1996_BILLY_BREWER",
+      "retro": "juddm001",
+      "reason": "His Dodgers exit (2001-03-28 to Tampa Bay) is already recorded. Retrosheet lists it as a conditional deal (C) naming no return, so the return side stays unrecorded: unknown, not zero."
+    },
+    {
+      "asset": "Robinson Checo",
+      "kind": "EXIT_NOT_RECORDED",
+      "mlb_id": "112226",
+      "acquired_in": "LAD_DET_1999_DAVE_MLICKI",
+      "retro": "checr001",
+      "reason": "Retrosheet records his 1999-04-16 trade to the Dodgers and no later transaction. No exit inferred."
+    },
+    {
+      "asset": "Apostol Garcia",
+      "kind": "EXIT_NOT_RECORDED",
+      "mlb_id": null,
+      "acquired_in": "LAD_DET_1999_DAVE_MLICKI",
+      "retro": null,
+      "reason": "Listed in Retrosheet by name only (1999-04-16 trade to the Dodgers); no later transaction and no player id to match. No exit inferred."
+    },
+    {
+      "asset": "Rick Roberts",
+      "kind": "EXIT_NOT_RECORDED",
+      "mlb_id": null,
+      "acquired_in": "LAD_DET_1999_DAVE_MLICKI",
+      "retro": null,
+      "reason": "No Retrosheet record of this asset under any transaction, and no player id. No exit inferred."
+    },
+    {
+      "asset": "Danny Muegge",
+      "kind": "EXIT_NOT_RECORDED",
+      "mlb_id": null,
+      "acquired_in": "LAD_ARI_2005_SHAWN_GREEN",
+      "retro": null,
+      "reason": "Listed in Retrosheet by name only (2005-01-11 trade to the Dodgers); no later transaction. No exit inferred."
+    },
+    {
+      "asset": "William Juarez",
+      "kind": "EXIT_NOT_RECORDED",
+      "mlb_id": null,
+      "acquired_in": "LAD_ARI_2005_SHAWN_GREEN",
+      "retro": null,
+      "reason": "Listed in Retrosheet by name only (2005-01-11 trade to the Dodgers); no later transaction. No exit inferred."
+    },
+    {
+      "asset": "Bob Miller",
+      "kind": "EXIT_FOUND_NOT_RECORDED",
+      "mlb_id": "119112",
+      "acquired_in": "LAD_NYM_1962_TIM_HARKNESS",
+      "retro": "millb106",
+      "reason": "Exit found: 1967-11-28 trade to Minnesota (Retrosheet transaction 60573) with Johnny Roseboro and Ron Perranoski for James 'Mudcat' Grant and Zoilo Versalles. NOT RECORDED: the two incoming players would be new downstream assets whose Dodgers-tenure bWAR cannot be loaded (the Baseball-Reference WAR files answer 403), so recording the exit would open a chain DISI cannot value. Package reconstructed in this file only."
+    }
+  ],
+  "package_verification": [
+    {
+      "event": "LAD_KCR_1995_OFFERMAN",
+      "retrosheet_transaction_id": 62744,
+      "date": "1995-12-17",
+      "retrosheet": {
+        "out": [
+          "Jose Offerman"
+        ],
+        "in": [
+          "Billy Brewer"
+        ]
+      },
+      "disi": {
+        "outgoing": [
+          "Jose Offerman"
+        ],
+        "incoming_players": [
+          "Billy Brewer"
+        ],
+        "cash_usd": []
+      },
+      "retrosheet_cash_info": [],
+      "agrees": {
+        "outgoing": true,
+        "incoming": true
+      }
+    },
+    {
+      "event": "LAD_TOR_1999_MONDESI_GREEN",
+      "retrosheet_transaction_id": 63147,
+      "date": "1999-11-08",
+      "retrosheet": {
+        "out": [
+          "Pedro Borbon",
+          "Raul Mondesi"
+        ],
+        "in": [
+          "Jorge Nunez",
+          "Shawn Green"
+        ]
+      },
+      "disi": {
+        "outgoing": [
+          "Pedro Borbon",
+          "Raul Mondesi"
+        ],
+        "incoming_players": [
+          "Jorge Nunez",
+          "Shawn Green"
+        ],
+        "cash_usd": []
+      },
+      "retrosheet_cash_info": [],
+      "agrees": {
+        "outgoing": true,
+        "incoming": true
+      }
+    },
+    {
+      "event": "LAD_DET_1960_AMOROS",
+      "retrosheet_transaction_id": 60183,
+      "date": "1960-05-07",
+      "retrosheet": {
+        "out": [
+          "Sandy Amoros"
+        ],
+        "in": [
+          "Gail Harris"
+        ]
+      },
+      "disi": {
+        "outgoing": [
+          "Sandy Amoros"
+        ],
+        "incoming_players": [
+          "Gail Harris"
+        ],
+        "cash_usd": []
+      },
+      "retrosheet_cash_info": [],
+      "agrees": {
+        "outgoing": true,
+        "incoming": true
+      }
+    },
+    {
+      "event": "BRO_PHI_1957_FERNANDEZ",
+      "retrosheet_transaction_id": 60041,
+      "date": "1957-04-05",
+      "retrosheet": {
+        "out": [
+          "Chico Fernandez"
+        ],
+        "in": [
+          "(unnamed: $75000)",
+          "Ben Flowers",
+          "Elmer Valo",
+          "Melvin Geho",
+          "Ron Negray",
+          "Tim Harkness"
+        ]
+      },
+      "disi": {
+        "outgoing": [
+          "Chico Fernandez"
+        ],
+        "incoming_players": [
+          "Ben Flowers",
+          "Elmer Valo",
+          "Melvin Geho",
+          "Ron Negray",
+          "Tim Harkness"
+        ],
+        "cash_usd": [
+          "75000.00"
+        ]
+      },
+      "retrosheet_cash_info": [
+        "$75000"
+      ],
+      "agrees": {
+        "outgoing": true,
+        "incoming": true
+      }
+    },
+    {
+      "event": "LAD_NYM_1962_TIM_HARKNESS",
+      "retrosheet_transaction_id": 60323,
+      "date": "1962-11-30",
+      "retrosheet": {
+        "out": [
+          "Larry Burright",
+          "Tim Harkness"
+        ],
+        "in": [
+          "Bob Miller"
+        ]
+      },
+      "disi": {
+        "outgoing": [
+          "Larry Burright",
+          "Tim Harkness"
+        ],
+        "incoming_players": [
+          "Bob Miller"
+        ],
+        "cash_usd": []
+      },
+      "retrosheet_cash_info": [],
+      "agrees": {
+        "outgoing": true,
+        "incoming": true
+      }
+    }
+  ],
+  "miller_package_not_recorded": {
+    "retrosheet_transaction_id": 60573,
+    "date": "1967-11-28",
+    "outgoing": [
+      "Bob Miller",
+      "John Roseboro",
+      "Ron Perranoski"
+    ],
+    "incoming": [
+      "Mudcat Grant",
+      "Zoilo Versalles"
+    ],
+    "recorded_in_disi": false
+  }
+}

@@ -49,7 +49,8 @@
     "045_final_integration_release.sql",
     "045a_product_snapshot_serving.sql",
     "045b_database_status_snapshot.sql",
-    "046_outcome_cost_research_batch.sql"
+    "046_outcome_cost_research_batch.sql",
+    "047_development_transaction_research_batch.sql"
   ],
   "repair_history": [
     "004a_diagnose_zero_cohort.sql",
@@ -58,7 +59,7 @@
   ],
   "notes": {
     "uploaded_002_status": "Incomplete 32-line fragment; repository uses the full corrected canonical 002 file.",
-    "canonical_build_count": 50,
+    "canonical_build_count": 51,
     "repair_count": 3,
     "v0_4": "No application fallback data; verified Dodgers international-acquisition set currently reaches 1951; league benchmark starts with MLB Pipeline 2013/2014 Top 30 trackers.",
     "v0_5": "Portfolio-wide homepage, class coverage, source registry, Dodgers class reconstruction, 2019-20 all-club signing/pool rollups.",
@@ -97,6 +98,7 @@
     "v0_36": "Final integration, DISI v1.0.0 (045): disi_product_contract (the 48 relations the application reads, with area, tier, routes and introducing migration), v_disi_release_status (product / schema version, data freshness, probability / value / decision-engine versions and the support state of every predictive layer), v_research_roadmap (the highest-value research gaps and what each unlocks) and v_executive_metric_provenance (definition, denominator, provenance and eligibility of every executive figure). The verifier enforces the full support chain 041 -> 042 -> 043 -> 044 (database/research/045).",
     "v0_36_1": "Product snapshot serving (045a): a post-045 serving-layer correction. The second production release attempt (2026-10-14) showed that four simultaneous anonymous reads of the staged executive overview could stall the 1 GB instance; the bundle was rolled back. The application now reads ten typed, persisted product snapshot tables (product_*), each a column-exact projection of the 042-045 analytical view it replaces plus generation metadata, rebuilt only by the explicit, validated, single-transaction disi_refresh_product_snapshots() (npm run refresh:product-snapshots); disi_product_snapshot_drift() lets the verifier prove they equal their sources. The snapshots are a derived product cache, not facts. The product contract names what the application reads; the 042-045 analytical views and staged functions are closed to anon / authenticated. Release status: schema v0.36.1, canonical through 045a (database/research/045a).",
     "v0_36_1b": "Home-page status snapshot (045b): a post-v1.0.0 performance hardening. v_database_status (25 scalar subqueries over the signing, class and task view stacks) was the last public read the home page evaluated on every request and approached the statement timeout under concurrent visitors. It is now persisted as the eleventh product snapshot, product_database_status, written in the same transaction and generation as the other ten by disi_refresh_product_snapshots() (re-issued with the new stage and its validation) and proven equal to its source by disi_product_snapshot_drift(). v_database_status is unchanged and stays the internal source but is closed to anon / authenticated; the product contract swaps the view for the snapshot. No metric, datum, threshold or prediction changes (database/research/045b).",
-    "v0_36_2": "Reviewed acquisition-cost research batch (046): data only. Eight previously unknown signing bonuses are recorded, each with one directly read source (known costs 48 -> 56 of 220; known spend a lower bound of $121.7M), and one source disagreement is kept as an unresolved conflict. No table, view, function, grant or policy changes; no outcome audit changes. One conditional product-snapshot refresh keeps the read models coherent. Built from database/research/046/."
+    "v0_36_2": "Reviewed acquisition-cost research batch (046): data only. Eight previously unknown signing bonuses are recorded, each with one directly read source (known costs 48 -> 56 of 220; known spend a lower bound of $121.7M), and one source disagreement is kept as an unresolved conflict. No table, view, function, grant or policy changes; no outcome audit changes. One conditional product-snapshot refresh keeps the read models coherent. Built from database/research/046/.",
+    "v0_36_3": "Development-history and transaction-chain research batch (047): data only. Five downstream transaction exits (four free-agency grants and a release) are recorded from Retrosheet, each matched to its asset by name and birth date and closing a real control interval; the assets the source does not cover stay unresolved. Ten verified MLB players' whole recorded development careers (255 stints, 41 first-appearance milestones) are ingested without filling in seasons the API does not return, fourteen team-less aggregate rows are classified as season totals only after the migration proves them, an ambiguous level sequence is recorded as two pending progression reviews, and two superseded exit-bound observations are retracted. No table, view, function, grant or policy changes; no outcome audit, cost or predictive layer changes. One conditional product-snapshot refresh keeps the read models coherent. Built from database/research/047/."
   }
 }

@@ -1,0 +1,116 @@
+{
+  "as_of": "2026-10-05",
+  "generation": "4",
+  "tracked_signings": 220,
+  "development_coverage": {
+    "signings": 220,
+    "dimensions": {
+      "SIGNING_DATE": {
+        "known": 197,
+        "applicable": 220
+      },
+      "FIRST_PRO_SEASON": {
+        "known": 161,
+        "applicable": 220
+      },
+      "HIGHEST_LEVEL": {
+        "known": 212,
+        "applicable": 220
+      },
+      "MLB_DEBUT": {
+        "known": 47,
+        "applicable": 47
+      },
+      "EXIT": {
+        "known": 138,
+        "applicable": 156
+      },
+      "CHRONOLOGY": {
+        "known": 135,
+        "applicable": 220
+      }
+    },
+    "states": {
+      "COMPLETE": 111,
+      "PARTIAL": 109
+    }
+  },
+  "development_queue": {
+    "signings_with_a_gap": 109,
+    "by_tier": {
+      "1": 46,
+      "2": 2,
+      "4": 11,
+      "5": 23,
+      "6": 27
+    }
+  },
+  "timing": {
+    "verified_mlb_players": 47,
+    "signing_to_mlb_exact": {
+      "n": 6,
+      "of": 47,
+      "min_years": 0.15,
+      "median_years": 4.470000000000001,
+      "max_years": 7.58
+    },
+    "audited_no_mlb_players": 46,
+    "highest_level_known": {
+      "n": 44,
+      "of": 46
+    },
+    "highest_level_counts": {
+      "INTERNATIONAL_ROOKIE": 10,
+      "COMPLEX_ROOKIE": 6,
+      "LOW_A": 7,
+      "HIGH_A": 8,
+      "AA": 4,
+      "AAA": 9
+    },
+    "note": "Descriptive facts with stated denominators. NOT_AUDITED players are not counted as negative outcomes, and nothing here is a rate, a score or a cross-cohort comparison."
+  },
+  "transactions": {
+    "signings": 220,
+    "chain_status": {
+      "COMPLETE_TERMINAL": 28,
+      "INCOMPLETE_EXIT_NOT_RESEARCHED": 4,
+      "INCOMPLETE_EXIT_UNRECORDED": 2,
+      "INCOMPLETE_PENDING_CONSIDERATION": 1,
+      "INCOMPLETE_RETURN_UNRECORDED": 2,
+      "NO_TRADE_CHAIN": 175,
+      "STILL_ACTIVE": 8
+    },
+    "incomplete_chains": 9,
+    "individually_attributable_trade_value": 8,
+    "package_first_hop_value": 28,
+    "package_downstream_value": 3,
+    "observable_not_attributable_value": 12,
+    "value_left_organization": 41,
+    "attribution_states": {
+      "CHAIN_INCOMPLETE": 9,
+      "INDIVIDUALLY_ATTRIBUTED": 6,
+      "NOT_A_TRADE_EXIT": 175,
+      "PACKAGE_LEVEL_ONLY": 13,
+      "RECORDED_ZERO_RETURN": 5,
+      "RETURN_STILL_ACCRUING": 8,
+      "VALUE_NOT_DETERMINED": 4
+    },
+    "packages": {
+      "packages_with_open_issues": 21,
+      "packages_with_open_issues_by_issue": {
+        "CASH_AMOUNT_UNKNOWN": 16,
+        "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+        "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+        "PTBNL_UNRESOLVED": 2,
+        "TRADE_RETURN_UNRECORDED": 1
+      },
+      "unresolved_attribution_signings": 26
+    }
+  },
+  "research_queue_items": {
+    "tasks": 349,
+    "transaction": 64,
+    "value": 93,
+    "development": 104
+  }
+}
