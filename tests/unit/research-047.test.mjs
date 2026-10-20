@@ -419,3 +419,66 @@ test('asset path: NOT_AUDITED is unknown, never a negative result; an incomplete
   assert.match(inc.RETURN.detail, /not final/)
   assert.deepEqual(assetPath({}).map((s) => s.state), ['UNKNOWN', 'UNKNOWN', 'UNKNOWN', 'UNKNOWN', 'UNKNOWN'])
 })
+
+// ---- the page loaders --------------------------------------------------------------------------------------------------------------------------
+
+import { getAssetConversionData, getDevelopmentData } from '../../lib/data.js'
+
+function fakeClient(fixtures, errorFor = {}) {
+  const requests = []
+  return {
+    requests,
+    from(relation) {
+      const req = { relation, calls: [] }
+      requests.push(req)
+      const builder = new Proxy({}, {
+        get(_, prop) {
+          if (prop === 'then') {
+            return (resolve, reject) => Promise.resolve().then(() => {
+              const error = errorFor[relation] ?? null
+              return { data: error ? null : (fixtures[relation] ?? []), error }
+            }).then(resolve, reject)
+          }
+          if (prop === 'maybeSingle') return () => builder
+          return (...args) => { req.calls.push([prop, ...args]); return builder }
+        },
+      })
+      return builder
+    },
+  }
+}
+
+test('getDevelopmentData adds the completeness reads from public relations the product contract already names, and degrades to empty on error', async () => {
+  const c = fakeClient({
+    v_dodgers_development_coverage: [], v_signing_records: [{ signing_id: 's1' }], v_dodgers_player_development_summary: [{ player_id: 'p1' }],
+  })
+  const r = await getDevelopmentData(c)
+  assert.equal(r.live, true)
+  assert.deepEqual(r.devSignings, [{ signing_id: 's1' }])
+  assert.deepEqual(r.devSummary, [{ player_id: 'p1' }])
+  const relations = c.requests.map((x) => x.relation)
+  assert.equal(relations.filter((x) => x === 'v_signing_records').length, 2, 'the existing debuts read plus the completeness read')
+  assert.ok(relations.includes('v_dodgers_player_development_summary'))
+  const contract = fs.readFileSync(path.join(root, 'database/sql/045b_database_status_snapshot.sql'), 'utf8') + fs.readFileSync(path.join(root, 'database/sql/045_final_integration_release.sql'), 'utf8')
+  for (const rel of new Set(relations)) assert.ok(contract.includes(rel) || rel === 'v_signing_records', `${rel} is part of the product contract`)
+  const bad = await getDevelopmentData(fakeClient({}, { v_dodgers_player_development_summary: { code: '57014', message: 'timeout' } }))
+  assert.equal(bad.live, false)
+  assert.deepEqual(bad.devSignings, [])
+})
+
+test('getAssetConversionData reads the asset paths from the persisted decision snapshot, never a live analytical view, and tolerates its absence', async () => {
+  const c = fakeClient({
+    v_player_transactions: [], product_player_decision: [{ signing_id: 's1', chain_status: 'COMPLETE_TERMINAL' }],
+  })
+  const r = await getAssetConversionData(c)
+  assert.equal(r.live, true)
+  assert.deepEqual(r.pathDecisions, [{ signing_id: 's1', chain_status: 'COMPLETE_TERMINAL' }])
+  const req = c.requests.find((x) => x.relation === 'product_player_decision')
+  const select = req.calls.find((x) => x[0] === 'select')[1]
+  assert.match(select, /chain_status/)
+  assert.doesNotMatch(select, /\*/, 'a bounded, named column list')
+  for (const x of c.requests) assert.match(x.relation, /^(product_|v_player_transactions$|v_player_directory$)/)
+  const missing = await getAssetConversionData(fakeClient({ v_player_transactions: [] }, { product_player_decision: { code: 'PGRST205', message: 'not found' } }))
+  assert.equal(missing.live, true, 'the page still renders its trade cards')
+  assert.deepEqual(missing.pathDecisions, [])
+})
