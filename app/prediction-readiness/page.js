@@ -15,7 +15,7 @@ const MODEL_LABELS = /** @type {Record<string, string>} */ ({
 })
 
 export default async function PredictionReadinessPage() {
-  const { live, error, overview, targets, evaluations, expectedValueSupport } = await getReadinessData()
+  const { live, error, overview, targets, evaluations, expectedValueSupport, blockers } = await getReadinessData()
   const readiness = predictionReadiness(overview)
 
   return (
@@ -53,6 +53,26 @@ export default async function PredictionReadinessPage() {
             supported expected value. Each layer inherits the layer below it.
           </p>
         </section>
+
+        {blockers && <section aria-labelledby="blockers-heading" className="panel section-gap">
+          <span className="eyebrow">What stands in the way</span>
+          <h2 id="blockers-heading">Blockers by layer</h2>
+          <p className="micro-note">
+            Each line is a measured fact derived from the persisted snapshot. A count is not a verdict: it is shown as passing or failing only
+            where the methodology defines a threshold.
+          </p>
+          <div className="blocker-layers">
+            {blockers.layers.map((/** @type {any} */ layer) => (
+              <article key={layer.key} className="blocker-layer">
+                <h3>{layer.label} <span className={`tag${layer.state === 'SUPPORTED' ? '' : ' emphasis'}`}>{humanize(layer.state)}</span></h3>
+                {layer.facts.length > 0 && <ul className="blocker-facts">{layer.facts.map((/** @type {any} */ f) => <li key={f.code}>{f.statement}</li>)}</ul>}
+                {layer.blockers.length > 0
+                  ? <ul className="blocker-list">{layer.blockers.map((/** @type {any} */ b, /** @type {number} */ i) => <li key={`${b.code}-${i}`}>{b.statement}</li>)}</ul>
+                  : <p className="micro-note">No blocker recorded for this layer.</p>}
+              </article>
+            ))}
+          </div>
+        </section>}
 
         <section aria-labelledby="targets-heading" className="table-panel">
           <div className="table-head">

@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 import { isMatureSigning, maturityStatus, subtractYears } from '../../lib/research/maturity.js'
 import { AUDIT_POLICY, AUDIT_TIERS, MATURITY_YEARS, NEVER_RESEARCHED_BONUS } from '../../lib/research/policy.js'
 import { buildOutcomeCohort, cohortSummary, filterCohort } from '../../lib/research/outcome-cohort.js'
-import { auditCaptureGaps, auditConclusion } from '../../lib/research/outcome-audit.js'
+import { auditCaptureGaps, auditCaptureReport, auditConclusion } from '../../lib/research/outcome-audit.js'
 import { costQueue, costReportGaps, costState, costSummary, costTier, largeClassYears } from '../../lib/research/cost-research.js'
 import { attributionSummary, dispositionOf, incompleteChains, transactionResearchItems } from '../../lib/research/transaction-research.js'
 import { readinessBlockers } from '../../lib/research/readiness-blockers.js'
@@ -434,4 +434,73 @@ test('the database path is read-only and anon-only by construction', () => {
   assert.doesNotMatch(dataset, /\b(insert into|update\s+\w+\s+set|delete from)\b/i)
   // none of the commands take a write option
   for (const f of ['outcomes', 'costs', 'transactions', 'readiness', 'progress', 'queue']) assert.doesNotMatch(read(`scripts/research/${f}.mjs`), /--(write|apply|commit)\b/, f)
+})
+
+// ---- the product: conservative, snapshot-only -----------------------------------------------------------------------------------
+
+test('/prediction-readiness shows blockers derived from the snapshot rows and publishes no new number', () => {
+  const page = read('app/prediction-readiness/page.js')
+  assert.match(page, /const \{ live, error, overview, targets, evaluations, expectedValueSupport, blockers \} = await getReadinessData\(\)/)
+  assert.match(page, /blockers\.layers\.map/)
+  assert.match(page, /A count is not a verdict/)
+  // the blocker text is rendered from the derived statements; the page holds no blocker numbers of its own
+  assert.doesNotMatch(page, /127|\b48 of 220\b|NOT_AUDITED remain/)
+  // support still comes from the existing gates: probabilities, expected values and recommendations are untouched
+  assert.match(page, /readiness\.published \? Number\(overview\.non_null_probabilities\)/)
+  assert.match(page, /readiness\.supportedExpectedValues > 0 \? readiness\.supportedExpectedValues : 'None'/)
+  assert.match(page, /readiness\.recommendations > 0 \? readiness\.recommendations : 'None'/)
+})
+
+test('the readiness loader derives blockers from persisted product snapshots only, never from a live analytical view', () => {
+  const data = read('lib/data.js')
+  const body = data.slice(data.indexOf('export async function loadReadinessData'), data.indexOf('/** @param {any} [supabase] client override (tests) */\nexport async function getReadinessData'))
+  const relations = [...body.matchAll(/\.from\('([a-z_0-9]+)'\)/g)].map((m) => m[1])
+  assert.ok(relations.length >= 7)
+  for (const r of relations) assert.match(r, /^product_/, r)
+  assert.match(body, /readinessBlockers\(/)
+})
+
+test('the readiness layers never mark the economics layer supported or failing: no threshold exists to compare against', () => {
+  const r = readinessBlockers({ status: { tracked_signings: 220, signings_with_known_cost: 220, outcome_audit_queue: 0 }, executive: { signings_with_complete_cost: 220, supported_expected_value_models: 0 }, targets: [], evSupport: [], matureNotAudited: 0 })
+  const econ = r.layers.find((l) => l.key === 'ACQUISITION_ECONOMICS')
+  assert.equal(econ.state, 'NO_THRESHOLD_DEFINED', 'even with every cost known, economics is a measurement, not a verdict')
+  assert.deepEqual(econ.blockers, [])
+})
+
+// ---- the audit SQL generator refuses an audit that lacks its evidence --------------------------------------------------------------
+
+test('auditCaptureReport separates gaps that stop an audit from gaps that are only reported', () => {
+  const good = { conclusion: 'VERIFIED_MLB', asOfDate: AS_OF, mlbId: 1, rationale: 'debut', outcomeState: 'REACHED_MLB', mlbDebutDate: '2024-04-01', mlbDebutTeam: null, sources: [{ url: 'https://x', retrievedAt: '2026-10-05T00:00:00Z' }] }
+  const r = auditCaptureReport(good)
+  assert.deepEqual([r.writable, r.blocking, r.gaps], [true, [], ['mlb_debut_organization']], 'an ambiguous debut organization does not discard a sourced debut')
+  assert.equal(auditCaptureReport({ ...good, sources: [] }).writable, false)
+  assert.equal(auditCaptureReport({ ...good, mlbDebutDate: null }).writable, false)
+  assert.equal(auditCaptureReport({ ...good, conclusion: 'INSUFFICIENT_EVIDENCE' }).writable, false)
+})
+
+test('outcome-sql-values writes an audit only when its capture is writable, and records the remaining gaps', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'disi-r046-sql-'))
+  const source = [{ url: 'https://statsapi.mlb.com/api/v1/people/1', retrievedAt: '2026-10-05T00:00:00Z' }]
+  const base = { signingYear: 2015, mlbId: 1, recommendation: 'VERIFIED_MLB', reachedMlb: true, reason: 'MLB debut 2020-07-24 in the MLB person record.', mlbDebutDate: '2020-07-24', mlbDebutTeam: 'Los Angeles Dodgers', sources: source }
+  const records = [
+    { ...base, name: 'Complete One', slug: 'complete-one' },
+    { ...base, name: 'No Source', slug: 'no-source', mlbId: 2, sources: [] },
+    { ...base, name: 'No Debut Date', slug: 'no-debut-date', mlbId: 3, mlbDebutDate: null },
+    { ...base, name: 'Insufficient', slug: 'insufficient', mlbId: 4, recommendation: 'INSUFFICIENT_EVIDENCE', reachedMlb: false, mlbDebutDate: null, mlbDebutTeam: null },
+  ]
+  fs.writeFileSync(path.join(dir, 'outcomes.json'), JSON.stringify({ records }))
+  const r = spawnSync(process.execPath, [path.join(root, 'scripts/mlb/outcome-sql-values.mjs'), '--outcomes', path.join(dir, 'outcomes.json'), '--audit-date', AS_OF, '--out', path.join(dir, 'values.sql')], { encoding: 'utf8' })
+  assert.equal(r.status, 0, r.stderr)
+  const decisions = JSON.parse(fs.readFileSync(path.join(dir, 'values-decisions.json'), 'utf8')).records
+  const by = Object.fromEntries(decisions.map((d) => [d.slug, d]))
+  assert.equal(by['complete-one'].audited, true)
+  assert.equal(by['no-source'].audited, false)
+  assert.match(by['no-source'].decisionReason, /Audit capture incomplete \(provenance_sources_with_url_and_retrieval_time\)/)
+  assert.equal(by['no-debut-date'].audited, false)
+  assert.equal(by['insufficient'].audited, false)
+  assert.equal(by['insufficient'].outcomeState, null, 'insufficient evidence never becomes a no-MLB state')
+  const sql = fs.readFileSync(path.join(dir, 'values.sql'), 'utf8')
+  const auditsBlock = sql.split('-- audits(')[1].split('-- sources(')[0]
+  assert.match(auditsBlock, /complete-one/)
+  assert.doesNotMatch(auditsBlock, /no-source|no-debut-date|insufficient/)
 })
