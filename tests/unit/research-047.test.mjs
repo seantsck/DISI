@@ -482,3 +482,12 @@ test('getAssetConversionData reads the asset paths from the persisted decision s
   assert.equal(missing.live, true, 'the page still renders its trade cards')
   assert.deepEqual(missing.pathDecisions, [])
 })
+
+test('asset path: dates print as plain calendar dates whether the value is a date or a full timestamp', () => {
+  const sg = { is_dodgers_franchise: true, signing_year: 1988, signing_date: '1988-06-06T00:00:00.000Z', reached_mlb_verified: true, mlb_debut_date: '1993-07-19T00:00:00.000Z', mlb_debut_org: 'LAD', outcome_audit_status: 'VERIFIED_MLB' }
+  const tx = [{ from_franchise_key: 'DODGERS', player_side: 'OUTGOING', record_kind: 'TRANSACTION', transaction_date: '1999-11-08T00:00:00.000Z', transaction_type: 'TRADE', to_organization: 'TOR' }]
+  const by = Object.fromEntries(assetPath({ signings: [sg], transactions: tx }).map((s) => [s.key, s]))
+  assert.equal(by.SIGNED.detail, '1988-06-06')
+  assert.equal(by.MLB_DEBUT.detail, '1993-07-19 with LAD')
+  assert.equal(by.EXIT.detail, '1999-11-08 · trade to TOR')
+})
