@@ -42,7 +42,7 @@ test('first observed season is not the first professional season: a record that 
   assert.equal(firstProSeasonStatus(s, { first_a_season: 1988 }), 'FIRST_OBSERVED_ONLY', 'signed 1985, the API begins in 1988: 1988 is not the first professional season')
   assert.equal(firstProSeasonKnown(s, { first_a_season: 1988 }), false)
   assert.equal(firstProSeasonStatus(s, {}), 'NO_AFFILIATED_RECORD')
-  assert.equal(firstProSeasonStatus(s, null), 'NO_AFFILIATED_RECORD')
+  assert.equal(firstProSeasonStatus(s, null), 'NO_AFFILIATED_RECORD', 'an amateur with no record: the record is missing, not a prior career')
   const dims = developmentDimensions({ signing: s, summary: { first_a_season: 1988 }, decision: null })
   assert.equal(dims.FIRST_PRO_SEASON, 'UNKNOWN')
 })
@@ -55,8 +55,9 @@ test('an established professional\'s first affiliated season is never his first 
     assert.equal(firstProSeasonStatus(s, { first_complex_season: 2012 }), 'PRIOR_PROFESSIONAL_CAREER', pathway)
     assert.equal(firstProSeasonStatus(s, { first_a_season: 2013 }), 'PRIOR_PROFESSIONAL_CAREER', pathway)
     assert.equal(developmentDimensions({ signing: s, summary: { first_complex_season: 2012 }, decision: null }).FIRST_PRO_SEASON, 'UNKNOWN', pathway)
-    // no affiliated record at all stays a missing record, not a prior career
-    assert.equal(firstProSeasonStatus(s, {}), 'NO_AFFILIATED_RECORD')
+    // the prior career is a fact of the signing: it is reported with or without an affiliated record, and the dimension stays UNKNOWN
+    assert.equal(firstProSeasonStatus(s, {}), 'PRIOR_PROFESSIONAL_CAREER')
+    assert.equal(developmentDimensions({ signing: s, summary: {}, decision: null }).FIRST_PRO_SEASON, 'UNKNOWN')
   }
   // an amateur pathway, and an UNKNOWN pathway, are not treated as professional
   for (const pathway of ['LATAM_AMATEUR', 'CUBAN_AMATEUR', 'JAPAN_AMATEUR', 'KOREA_AMATEUR', 'OTHER', null, undefined]) {

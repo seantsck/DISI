@@ -215,7 +215,7 @@ Within a tier: Dodgers bWAR (higher first, `NULL` last), signing year, signing d
 |---|---|
 | `KNOWN` | an amateur signing whose earliest first-appearance season (professional debut, DSL, complex, Low-A) is the signing season or the next |
 | `FIRST_OBSERVED_ONLY` | the earliest record starts two or more seasons after signing: it is the first *observed* record; the earlier seasons are missing |
-| `PRIOR_PROFESSIONAL_CAREER` | the signing pathway is `CUBAN_PRO`, `JAPAN_PRO`, `KOREA_PRO`, `POSTED_PLAYER` or `MEXICAN_LEAGUE_TRANSFER` (the 037 `PROFESSIONAL_SIGNING` route): affiliated records cannot show when his professional career began |
+| `PRIOR_PROFESSIONAL_CAREER` | the signing pathway is `CUBAN_PRO`, `JAPAN_PRO`, `KOREA_PRO`, `POSTED_PLAYER` or `MEXICAN_LEAGUE_TRANSFER` (the 037 `PROFESSIONAL_SIGNING` route), with or without an affiliated record: affiliated records cannot show when his professional career began |
 | `NO_AFFILIATED_RECORD` | no first-appearance season is on record |
 
 A player signed in 1985 whose API history begins in 1988 does not get 1988 as his first professional season. A Japanese, Korean, Cuban or
