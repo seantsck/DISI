@@ -90,8 +90,20 @@ const UNRESOLVED = [
   { asset: 'Rick Roberts', kind: 'EXIT_NOT_RECORDED', mlb_id: null, acquired_in: 'LAD_DET_1999_DAVE_MLICKI', retro: null, reason: 'No Retrosheet record of this asset under any transaction, and no player id. No exit inferred.' },
   { asset: 'Danny Muegge', kind: 'EXIT_NOT_RECORDED', mlb_id: null, acquired_in: 'LAD_ARI_2005_SHAWN_GREEN', retro: null, reason: 'Listed in Retrosheet by name only (2005-01-11 trade to the Dodgers); no later transaction. No exit inferred.' },
   { asset: 'William Juarez', kind: 'EXIT_NOT_RECORDED', mlb_id: null, acquired_in: 'LAD_ARI_2005_SHAWN_GREEN', retro: null, reason: 'Listed in Retrosheet by name only (2005-01-11 trade to the Dodgers); no later transaction. No exit inferred.' },
+  { asset: 'Carlos Frias (signing)', scope: 'SIGNING', kind: 'CONSIDERATION_NOT_NAMED', mlb_id: null, acquired_in: null, retro: 'friac001', retrosheet_transaction_id: 76439,
+    reason: 'Retrosheet records the 2017-01-30 trade to Cleveland and lists the return only as "player to be named or cash", unnamed. The consideration may have been cash, so it is neither resolved to a player nor valued: unknown, not zero.' },
+  { asset: 'Tony Abreu (signing)', scope: 'SIGNING', kind: 'RETURN_FOUND_NOT_RECORDED', mlb_id: null, acquired_in: null, retro: 'abret001', retrosheet_transaction_id: 64131, returned_player: 'garlj001',
+    reason: 'Return found: Retrosheet files the trade under one transaction (64131): Arizona sent Jon Garland to the Dodgers on 2009-08-31, and Tony Abreu was the player to be named later, delivered 2009-10-09. DISI records only the 2009-10-09 completion with no return. NOT RECORDED: doing so means re-dating the event to 2009-08-31 with a PTBNL resolution (a forward-only correction, as 033 did for Diaz / Machado) and loading Garland\'s Dodgers-tenure bWAR, which the blocked Baseball-Reference WAR files would supply.' },
   { asset: 'Bob Miller', kind: 'EXIT_FOUND_NOT_RECORDED', mlb_id: '119112', acquired_in: 'LAD_NYM_1962_TIM_HARKNESS', retro: 'millb106', reason: "Exit found: 1967-11-28 trade to Minnesota (Retrosheet transaction 60573) with Johnny Roseboro and Ron Perranoski for James 'Mudcat' Grant and Zoilo Versalles. NOT RECORDED: the two incoming players would be new downstream assets whose Dodgers-tenure bWAR cannot be loaded (the Baseball-Reference WAR files answer 403), so recording the exit would open a chain DISI cannot value. Package reconstructed in this file only." },
 ]
+for (const u of UNRESOLVED.filter((x) => x.scope === 'SIGNING')) {
+  const rows = byId.get(u.retrosheet_transaction_id) ?? []
+  if (!rows.some((r) => r.player === u.retro && r.type === 'T' && r.from === 'LAN')) throw new Error(`${u.asset}: the source row is missing`)
+  u.retrosheet_rows = rows.map((r) => r.raw)
+  const incomingNamed = rows.filter((r) => r.to === 'LAN' && r.player)
+  if (u.kind === 'CONSIDERATION_NOT_NAMED' && incomingNamed.length > 0) throw new Error(`${u.asset}: the source names a returned player`)
+  if (u.kind === 'RETURN_FOUND_NOT_RECORDED' && !incomingNamed.some((r) => r.player === u.returned_player)) throw new Error(`${u.asset}: the source does not name ${u.returned_player} as the return`)
+}
 const miller = byId.get(60573)
 const millerPackage = miller ? { retrosheet_transaction_id: 60573, date: iso(miller[0].date), outgoing: people(miller, 'OUT'), incoming: people(miller, 'IN'), recorded_in_disi: false } : null
 

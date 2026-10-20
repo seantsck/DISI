@@ -165,6 +165,35 @@
       "reason": "Listed in Retrosheet by name only (2005-01-11 trade to the Dodgers); no later transaction. No exit inferred."
     },
     {
+      "asset": "Carlos Frias (signing)",
+      "scope": "SIGNING",
+      "kind": "CONSIDERATION_NOT_NAMED",
+      "mlb_id": null,
+      "acquired_in": null,
+      "retro": "friac001",
+      "retrosheet_transaction_id": 76439,
+      "reason": "Retrosheet records the 2017-01-30 trade to Cleveland and lists the return only as \"player to be named or cash\", unnamed. The consideration may have been cash, so it is neither resolved to a player nor valued: unknown, not zero.",
+      "retrosheet_rows": [
+        "\"20170130\",,,,,76439,\"friac001\",\"T \",\"LAN\",\"NL\",\"CLE\",\"AL\",,,,",
+        "\"20170130\",,,,,76439,,\"T \",\"CLE\",\"AL\",\"LAN\",\"NL\",,,,\"player to be named or cash\""
+      ]
+    },
+    {
+      "asset": "Tony Abreu (signing)",
+      "scope": "SIGNING",
+      "kind": "RETURN_FOUND_NOT_RECORDED",
+      "mlb_id": null,
+      "acquired_in": null,
+      "retro": "abret001",
+      "retrosheet_transaction_id": 64131,
+      "returned_player": "garlj001",
+      "reason": "Return found: Retrosheet files the trade under one transaction (64131): Arizona sent Jon Garland to the Dodgers on 2009-08-31, and Tony Abreu was the player to be named later, delivered 2009-10-09. DISI records only the 2009-10-09 completion with no return. NOT RECORDED: doing so means re-dating the event to 2009-08-31 with a PTBNL resolution (a forward-only correction, as 033 did for Diaz / Machado) and loading Garland's Dodgers-tenure bWAR, which the blocked Baseball-Reference WAR files would supply.",
+      "retrosheet_rows": [
+        "\"20090831\",,,,,64131,\"garlj001\",\"T \",\"ARI\",\"NL\",\"LAN\",\"NL\",,,,",
+        "\"20091009\",,,,,64131,\"abret001\",\"T \",\"LAN\",\"NL\",\"ARI\",\"NL\",,,,"
+      ]
+    },
+    {
       "asset": "Bob Miller",
       "kind": "EXIT_FOUND_NOT_RECORDED",
       "mlb_id": "119112",

@@ -156,10 +156,11 @@ test('each exit closes the control interval of an asset the Dodgers acquired in 
 
 test('nothing is inferred: assets the source does not record an exit for stay unresolved, and a recorded package is verified against the source', async () => {
   const unresolved = evidence.unresolved
-  assert.ok(unresolved.length >= 8)
+  assert.ok(unresolved.length >= 10)
   assert.ok(unresolved.every((u) => u.reason.length > 40))
-  assert.deepEqual([...new Set(unresolved.map((u) => u.kind))].sort(), ['EXIT_FOUND_NOT_RECORDED', 'EXIT_NOT_RECORDED', 'RETURN_NOT_RECORDED'])
-  for (const u of unresolved.filter((x) => x.mlb_id)) {
+  assert.deepEqual([...new Set(unresolved.map((u) => u.kind))].sort(), ['CONSIDERATION_NOT_NAMED', 'EXIT_FOUND_NOT_RECORDED', 'EXIT_NOT_RECORDED', 'RETURN_FOUND_NOT_RECORDED', 'RETURN_NOT_RECORDED'])
+  assert.equal(unresolved.filter((u) => u.scope === 'SIGNING').length, 2, 'Frías (no named return) and Abreu (return found, not recorded)')
+  for (const u of unresolved.filter((x) => x.mlb_id && x.acquired_in)) {
     const rows = await q(`select exit_event_key, branch_status from public.v_transaction_package_lineage where mlb_id = $1 and acquisition_event_key = $2`, [u.mlb_id, u.acquired_in])
     assert.ok(rows.length >= 1, `${u.asset} still has an interval`)
     for (const r of rows) {
