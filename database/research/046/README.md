@@ -22,6 +22,7 @@ It is a research-data migration. It adds no table, view, function, grant or poli
 | Signings with a known acquisition cost | 48 of 220 | 56 of 220 |
 | Known acquisition spend (lower bound) | $117,377,237.33 | $121,700,237.33 |
 | Open research tasks | 357 | 349 |
+| Scouting queue `SIGNING_WITHOUT_SIGNING_EVALUATION` | 46 | 54 |
 | `NOT_AUDITED` | 127 | 127 |
 | Product snapshot generation | 3 | 4 (one refresh, only when a report was added) |
 

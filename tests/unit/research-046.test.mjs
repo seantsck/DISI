@@ -3,6 +3,7 @@
 //   NOT_AUDITED is not AUDITED_NO_MLB, and an UNKNOWN cost is not $0.
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
+import crypto from 'node:crypto'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
@@ -503,4 +504,13 @@ test('outcome-sql-values writes an audit only when its capture is writable, and 
   const auditsBlock = sql.split('-- audits(')[1].split('-- sources(')[0]
   assert.match(auditsBlock, /complete-one/)
   assert.doesNotMatch(auditsBlock, /no-source|no-debut-date|insufficient/)
+})
+
+test('the release plan names the exact migration and rollback that are committed', () => {
+  const plan = read('database/release/046-release-plan.md')
+  for (const f of ['database/sql/046_outcome_cost_research_batch.sql', 'database/release/sql/rollback-046.sql']) {
+    const bytes = fs.readFileSync(path.join(root, f))
+    assert.ok(plan.includes(`\`${crypto.createHash('sha256').update(bytes).digest('hex')}\``), `${f}: sha256 in the plan`)
+    assert.ok(plan.includes(`| \`${f}\` | ${bytes.length} |`), `${f}: byte count in the plan`)
+  }
 })
