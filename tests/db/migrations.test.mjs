@@ -2150,8 +2150,9 @@ const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} retu
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
 // Migrations added after the frozen baseline and not yet released; each is frozen in tests/db/frozen-migrations.json once applied.
-// 042-045a were released to production on 2026-10-15 and 045b (home-page status snapshot) on 2026-10-19; all are frozen
-const UNRELEASED_ADDITIONS = []
+// 042-045a were released to production on 2026-10-15 and 045b (home-page status snapshot) on 2026-10-19; all are frozen.
+// 046 (reviewed acquisition-cost research batch) is built and not yet released
+const UNRELEASED_ADDITIONS = ['046_outcome_cost_research_batch.sql']
 
 test('frozen history: migrations 001-045b (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))

@@ -1,0 +1,370 @@
+{
+ "policy": {
+  "store": "individual source-stated financial facts with a citation and a short DISI paraphrase (<= 400 characters); never publisher text",
+  "never_store": [
+   "search-snippet claims",
+   "a figure from a page that could not be read directly (HTTP 403/404/406)",
+   "values inferred from other years, other players or league-wide tiers",
+   "a disagreeing report whose resolution has not been reviewed as if it were settled",
+   "zero or any placeholder for an unknown amount"
+  ],
+  "reviewed_on": "2026-10-20",
+  "pages_read": "Every source below was fetched with curl (HTTP 200) and parsed as raw HTML by the author of this migration, not through a summarising fetch tool. The MLB.com and Baseball America pages answered HTTP 403, the Pirates Prospects page 404; none is used and nothing was worked around.",
+  "precision_rule": "Same as Migrations 030/031: a figure printed with every digit is EXACT; 'approximately' is APPROXIMATE and never selects a canonical value. Disagreeing independent reports both stay ACTIVE (a CONFLICT) and the canonical bonus stays NULL."
+ },
+ "organization_name": "Los Angeles Dodgers",
+ "sources": [
+  {
+   "key": "dd_vargas2020",
+   "existing": false,
+   "source_name": "Dodgers Digest",
+   "source_type": "ARTICLE",
+   "title": "2020 Dodgers Top 100 Prospects: No. 5, 3B Miguel Vargas",
+   "url": "https://dodgersdigest.com/2020/03/11/2020-dodgers-top-100-prospects-no-5-3b-miguel-vargas/",
+   "author": "Dustin Nosler",
+   "publication_date": "2020-03-11",
+   "accessed_at": "2026-10-20T02:54:45Z",
+   "source_tier": "OTHER",
+   "notes": "Prospect profile; its acquisition line gives the signing route, month and bonus."
+  },
+  {
+   "key": "dd_2021class",
+   "existing": false,
+   "source_name": "Dodgers Digest",
+   "source_type": "ARTICLE",
+   "title": "Wilman Diaz, Jesus Galiz highlight Dodgers' 2021 international signing class",
+   "url": "https://dodgersdigest.com/2021/01/15/wilman-diaz-jesus-galiz-highlight-dodgers-2021-international-signing-class/",
+   "author": "Dustin Nosler",
+   "publication_date": "2021-01-15",
+   "accessed_at": "2026-10-20T02:58:38Z",
+   "source_tier": "OTHER",
+   "notes": "Opening-day roster of the 2021 class; three signees carry a reported bonus in parentheses and the rest none."
+  },
+  {
+   "key": "cbs_pedrojr",
+   "existing": false,
+   "source_name": "CBS Detroit",
+   "source_type": "ARTICLE",
+   "title": "Tigers Sign 17-Year-Old Son Of Pedro Martinez",
+   "url": "https://www.cbsnews.com/detroit/news/tigers-sign-17-year-old-son-of-pedro-martinez",
+   "author": "CBS Detroit",
+   "publication_date": "2017-09-28",
+   "accessed_at": "2026-10-20T02:57:36Z",
+   "source_tier": "OTHER",
+   "notes": "News report on the son's signing that states the father's 1988 Dodgers bonus."
+  },
+  {
+   "key": "sabr_amoros",
+   "existing": false,
+   "source_name": "SABR Biography Project",
+   "source_type": "ARTICLE",
+   "title": "Sandy Amorós",
+   "url": "https://sabr.org/bioproj/person/sandy-amoros/",
+   "author": "Rory Costello",
+   "publication_date": null,
+   "accessed_at": "2026-10-20T02:55:24Z",
+   "source_tier": "OTHER",
+   "notes": "SABR biography; the page prints no revision date."
+  },
+  {
+   "key": "sabr_guzman",
+   "existing": false,
+   "source_name": "SABR Biography Project",
+   "source_type": "ARTICLE",
+   "title": "Juan Guzmán",
+   "url": "https://sabr.org/bioproj/person/juan-guzman/",
+   "author": "Malcolm Allen",
+   "publication_date": "2021-06-09",
+   "accessed_at": "2026-10-20T02:55:33Z",
+   "source_tier": "OTHER",
+   "notes": "SABR biography; publication_date is the page's last-revised date."
+  },
+  {
+   "key": "sabr_mondesi",
+   "existing": false,
+   "source_name": "SABR Biography Project",
+   "source_type": "ARTICLE",
+   "title": "Raúl Mondesí",
+   "url": "https://sabr.org/bioproj/person/raul-mondesi/",
+   "author": "J.W. Stewart",
+   "publication_date": "2022-10-29",
+   "accessed_at": "2026-10-20T02:55:50Z",
+   "source_tier": "OTHER",
+   "notes": "SABR biography; publication_date is the page's last-revised date."
+  },
+  {
+   "key": "sabr_beltre",
+   "existing": false,
+   "source_name": "SABR Biography Project",
+   "source_type": "ARTICLE",
+   "title": "Adrian Beltré",
+   "url": "https://sabr.org/bioproj/person/adrian-beltre/",
+   "author": "Zac Petrillo",
+   "publication_date": "2024-01-23",
+   "accessed_at": "2026-10-20T02:56:18Z",
+   "source_tier": "OTHER",
+   "notes": "SABR biography; publication_date is the page's last-revised date."
+  },
+  {
+   "key": "espn_beltre1999",
+   "existing": false,
+   "source_name": "ESPN.com (Associated Press)",
+   "source_type": "ARTICLE",
+   "title": "Dodgers fined, but Beltre denied free agency",
+   "url": "https://a.espncdn.com/mlb/news/1999/1221/246027.html",
+   "author": "Associated Press",
+   "publication_date": "1999-12-21",
+   "accessed_at": "2026-10-20T02:57:22Z",
+   "source_tier": "OTHER",
+   "notes": "Wire report on Commissioner Selig's ruling; the date is the one in the page URL."
+  }
+ ],
+ "signing_reports": [
+  {
+   "ref": "amoros-sabr",
+   "kind": "NEW",
+   "player_slug": "sandy-amoros",
+   "signing_year": 1951,
+   "amount": "1000.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "sabr_amoros",
+   "evidence_basis": "OTHER",
+   "confidence": "MEDIUM",
+   "note": "SABR's Amorós biography says Dodgers scout Al Campanis signed the outfielder for a $1,000 bonus. The page places the signing in the winter of 1951-52; DISI's signing year (1951) is unchanged here."
+  },
+  {
+   "ref": "guzman-sabr",
+   "kind": "NEW",
+   "player_slug": "juan-guzman",
+   "signing_year": 1985,
+   "amount": "4000.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "sabr_guzman",
+   "evidence_basis": "OTHER",
+   "confidence": "MEDIUM",
+   "note": "SABR's Guzmán biography says Juan Guzmán signed with the Dodgers for a $4,000 bonus."
+  },
+  {
+   "ref": "mondesi-sabr",
+   "kind": "NEW",
+   "player_slug": "raul-mondesi",
+   "signing_year": 1988,
+   "amount": "4000.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "sabr_mondesi",
+   "evidence_basis": "OTHER",
+   "confidence": "MEDIUM",
+   "note": "SABR's Mondesí biography says he joined the Dodgers organization with his signature and a $4,000 signing bonus."
+  },
+  {
+   "ref": "pmartinez-cbs",
+   "kind": "NEW",
+   "player_slug": "pedro-martinez",
+   "signing_year": 1988,
+   "amount": "6500.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "cbs_pedrojr",
+   "evidence_basis": "NEWS_REPORT",
+   "confidence": "MEDIUM",
+   "note": "CBS Detroit says that when Pedro Martinez's father signed with the Dodgers in 1988 he was given a $6,500 signing bonus."
+  },
+  {
+   "ref": "vargas-dd",
+   "kind": "NEW",
+   "player_slug": "miguel-vargas",
+   "signing_year": 2017,
+   "amount": "300000.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "dd_vargas2020",
+   "evidence_basis": "NEWS_REPORT",
+   "confidence": "MEDIUM",
+   "note": "Dodgers Digest's profile lists Miguel Vargas as an international free agent (Cuba) in September 2017 with a $300,000 signing bonus."
+  },
+  {
+   "ref": "wdiaz-dd",
+   "kind": "NEW",
+   "player_slug": "wilman-diaz",
+   "signing_year": 2021,
+   "amount": "2697500.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "dd_2021class",
+   "evidence_basis": "NEWS_REPORT",
+   "confidence": "MEDIUM",
+   "note": "Dodgers Digest's 2021 class list prints Wilman Diaz (Venezuela) at $2,697,500."
+  },
+  {
+   "ref": "galiz-dd",
+   "kind": "NEW",
+   "player_slug": "jesus-galiz",
+   "signing_year": 2021,
+   "amount": "812500.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "dd_2021class",
+   "evidence_basis": "NEWS_REPORT",
+   "confidence": "MEDIUM",
+   "note": "Dodgers Digest's 2021 class list prints Jesus Galiz (Venezuela) at $812,500."
+  },
+  {
+   "ref": "doncon-dd",
+   "kind": "NEW",
+   "player_slug": "rayne-doncon",
+   "signing_year": 2021,
+   "amount": "497500.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "dd_2021class",
+   "evidence_basis": "NEWS_REPORT",
+   "confidence": "MEDIUM",
+   "note": "Dodgers Digest's 2021 class list prints Rayne Doncon (Dominican Republic) at $497,500."
+  },
+  {
+   "ref": "beltre-sabr",
+   "kind": "CONFLICT",
+   "player_slug": "adrian-beltre",
+   "signing_year": 1994,
+   "amount": "23000.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "sabr_beltre",
+   "evidence_basis": "OTHER",
+   "confidence": "MEDIUM",
+   "note": "SABR's Beltré biography says the Dodgers signed him for $23,000 on July 7, 1994. The AP report of Selig's 1999 ruling gives $17,000; the two disagree, so no canonical bonus is set."
+  },
+  {
+   "ref": "beltre-espn",
+   "kind": "CONFLICT",
+   "player_slug": "adrian-beltre",
+   "signing_year": 1994,
+   "amount": "17000.00",
+   "amount_basis": "EXACT",
+   "amount_precision": null,
+   "source": "espn_beltre1999",
+   "evidence_basis": "NEWS_REPORT",
+   "confidence": "MEDIUM",
+   "note": "AP (ESPN.com, 1999-12-21) says Beltré received a $17,000 signing bonus when he signed. SABR gives $23,000; the disagreement is unresolved and no canonical bonus is set."
+  }
+ ],
+ "examined": [
+  {
+   "player_slug": "sandy-amoros",
+   "signing_year": 1951,
+   "outcome": "RESOLVED",
+   "detail": "SABR biography states a $1,000 bonus."
+  },
+  {
+   "player_slug": "juan-guzman",
+   "signing_year": 1985,
+   "outcome": "RESOLVED",
+   "detail": "SABR biography states a $4,000 bonus."
+  },
+  {
+   "player_slug": "raul-mondesi",
+   "signing_year": 1988,
+   "outcome": "RESOLVED",
+   "detail": "SABR biography states a $4,000 signing bonus."
+  },
+  {
+   "player_slug": "pedro-martinez",
+   "signing_year": 1988,
+   "outcome": "RESOLVED",
+   "detail": "CBS Detroit states a $6,500 signing bonus. MLB.com's version of the same report answered HTTP 403 and is not used."
+  },
+  {
+   "player_slug": "miguel-vargas",
+   "signing_year": 2017,
+   "outcome": "RESOLVED",
+   "detail": "Dodgers Digest states a $300,000 signing bonus. The Baseball America profile answered HTTP 403 and is not used."
+  },
+  {
+   "player_slug": "wilman-diaz",
+   "signing_year": 2021,
+   "outcome": "RESOLVED",
+   "detail": "Dodgers Digest class list prints $2,697,500."
+  },
+  {
+   "player_slug": "jesus-galiz",
+   "signing_year": 2021,
+   "outcome": "RESOLVED",
+   "detail": "Dodgers Digest class list prints $812,500."
+  },
+  {
+   "player_slug": "rayne-doncon",
+   "signing_year": 2021,
+   "outcome": "RESOLVED",
+   "detail": "Dodgers Digest class list prints $497,500."
+  },
+  {
+   "player_slug": "adrian-beltre",
+   "signing_year": 1994,
+   "outcome": "CONFLICT",
+   "detail": "SABR $23,000 versus AP/ESPN $17,000; both stay ACTIVE and the canonical bonus stays unknown."
+  },
+  {
+   "player_slug": "carlos-santana",
+   "signing_year": 2004,
+   "outcome": "UNRESOLVED",
+   "detail": "The Baseball America page answered HTTP 403 and the Pirates Prospects page HTTP 404; no readable source."
+  },
+  {
+   "player_slug": "jorbit-vivas",
+   "signing_year": 2017,
+   "outcome": "UNRESOLVED",
+   "detail": "The Dodgers Digest 2017-18 signing-day post prints a bonus only for Heredia; the Baseball America profile answered HTTP 403."
+  },
+  {
+   "player_slug": "ramon-martinez",
+   "signing_year": 1984,
+   "outcome": "UNRESOLVED",
+   "detail": "The SABR biography was read and states no bonus."
+  },
+  {
+   "player_slug": "pedro-astacio",
+   "signing_year": 1987,
+   "outcome": "UNRESOLVED",
+   "detail": "The SABR biography was read and states no bonus."
+  },
+  {
+   "player_slug": "chico-fernandez",
+   "signing_year": 1951,
+   "outcome": "UNRESOLVED",
+   "detail": "The SABR biography was read and states no signing bonus."
+  },
+  {
+   "player_slug": "jose-offerman",
+   "signing_year": 1986,
+   "outcome": "UNRESOLVED",
+   "detail": "The SABR page returned no biography text."
+  },
+  {
+   "player_slug": "luis-izturis",
+   "signing_year": 2018,
+   "outcome": "UNRESOLVED",
+   "detail": "Dodgers Digest's 2018-19 class table prints the bonus as unknown."
+  },
+  {
+   "player_slug": "gregory-pereira",
+   "signing_year": 2018,
+   "outcome": "UNRESOLVED",
+   "detail": "Dodgers Digest's 2018-19 class table prints the bonus as unknown."
+  },
+  {
+   "player_slug": "ender-avendano",
+   "signing_year": 2018,
+   "outcome": "UNRESOLVED",
+   "detail": "Dodgers Digest's 2018-19 class table prints the bonus as unknown."
+  },
+  {
+   "player_slug": "miguel-droz",
+   "signing_year": 2018,
+   "outcome": "UNRESOLVED",
+   "detail": "Dodgers Digest's 2018-19 class table prints the bonus as unknown."
+  }
+ ]
+}
