@@ -4,12 +4,15 @@ import { notFound } from 'next/navigation'
 import DataUnavailable from '../../components/DataUnavailable'
 import AuditBadge from '../../components/AuditBadge'
 import PlayerLink from '../../components/PlayerLink'
+import DocumentedPath from '../../components/DocumentedPath'
 import { getPlayerDossier } from '../../../lib/data.js'
 import {
   moneyExact, num, bwar, humanize, dateLabel, yesNoUnknown, statusLabel, populationScopeLabel,
   handLabel, heightLabel, ageLabel, ageBandLabel, MISSING,
 } from '../../../lib/format.js'
 import { assetPath } from '../../../lib/research/asset-path.js'
+import { firstProSeasonStatus } from '../../../lib/research/development-research.js'
+import { historyCoverage } from '../../../lib/research/history-coverage.js'
 import { decisionStateLabel, expectedValueCell, realizedValueStateLabel, snapshotFreshness } from '../../../lib/decision-display.js'
 
 const loadDossier = cache(getPlayerDossier)
@@ -148,6 +151,12 @@ export default async function PlayerPage({ params }) {
   const bwarHistory = metrics.filter((m) => m.metric_key === 'CAREER_BWAR')
   const fwarHistory = metrics.filter((m) => m.metric_key === 'CAREER_FWAR')
   const hasProgress = Boolean(p.progress_as_of_date)
+  // 048: how much of the signing-to-debut path is documented (only for the Dodgers signing, and only when there is something to describe)
+  const dodgersSigning = signings.find((s) => s.is_dodgers_franchise) ?? null
+  const pathCoverage = dodgersSigning && (dodgersSigning.reached_mlb_verified || devStints.length > 0)
+    ? historyCoverage({ signing_year: dodgersSigning.signing_year, mlb_debut_date: dodgersSigning.mlb_debut_date, pathway: dodgersSigning.pathway }, devStints)
+    : null
+  const firstProStatus = dodgersSigning ? firstProSeasonStatus(dodgersSigning, devSummary) : null
 
   return (
     <main className="shell page-main dossier">
@@ -336,6 +345,7 @@ export default async function PlayerPage({ params }) {
             <p className="muted small-note">As of {dateLabel(p.progress_as_of_date)} from MLB / MiLB records; see Sources and provenance.</p>
           </>
         ) : <p className="unknown">No professional-progress record yet.</p>}
+        {pathCoverage && <DocumentedPath coverage={pathCoverage} firstProStatus={firstProStatus} />}
         <h3 className="sub">Season-by-season record</h3>
         {devStints.length === 0 ? (
           <p className="unknown">No professional seasons recorded in the sources reviewed. Absence of data is not evidence he did not play.</p>

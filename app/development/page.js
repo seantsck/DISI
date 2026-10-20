@@ -3,7 +3,9 @@ import DataUnavailable from '../components/DataUnavailable'
 import PlayerLink from '../components/PlayerLink'
 import { getDevelopmentData } from '../../lib/data.js'
 import { money, num, bwar, humanize, dateLabel, MISSING } from '../../lib/format.js'
-import { developmentCoverage, timingFacts } from '../../lib/research/development-research.js'
+import { developmentCoverage, developmentRecords, timingFacts } from '../../lib/research/development-research.js'
+import { verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
+import { NEED_GROUPS, developmentNeedSummary, developmentNeeds } from '../../lib/research/development-needs.js'
 
 export const metadata = { title: 'Development' }
 
@@ -18,12 +20,38 @@ const ISSUE_LABELS = {
   MULTI_ORG_SEASON_UNVERIFIED: 'Two organizations appear in the same season; the trade date needs review',
   MLB_PLAYER_MISSING_PRE_MLB_HISTORY: 'Reached MLB but no pre-MLB development record was found',
   LEVEL_CONFLICT: 'Source label and canonical classification disagree',
+  MISSING_FIRST_GAME_DATE: 'A log-era stint has no verified first appearance date',
+  MISSING_LAST_GAME_DATE: 'A log-era stint has no verified last appearance date',
+  GAME_LOG_UNAVAILABLE: 'Log-era stints exist but none carry game-verified dates',
+  SEASON_ONLY_MILESTONE: 'A level debut stays at season precision',
+  MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES: 'Reached MLB with pre-MLB stints, but no level debut carries an exact date',
+  UNKNOWN_LEVEL_GAME_LOG: 'A stint with an unclassified level has no dated appearances',
+  NON_MONOTONIC_PROGRESSION: 'Developmental arrivals run backward and no reviewed decision covers it',
+  LEVEL_SKIP_CAMEO_CANDIDATE: 'A brief higher-level first appearance that skips the level below, with no reviewed decision',
+  EXACT_DATE_CONFLICT: 'Game-log evidence disagrees with an existing exact date',
 }
+
+const GAP_LABELS = {
+  SOURCE_UNAVAILABLE: 'Source returns no pre-MLB record',
+  SOURCE_BEGINS_LATE: 'Source begins late',
+  NO_EVIDENCE_FOUND: 'Season with no record',
+  ORGANIZATION_UNCLEAR: 'Organization unclear',
+  LEVEL_UNCLEAR: 'Level unclear',
+}
+
+const COVERAGE_CARDS = [
+  { key: 'any_pre_mlb_history', label: 'Any pre-MLB history', what: 'at least one minor-league season on record before the debut season' },
+  { key: 'usable_affiliate_chronology', label: 'Usable affiliate chronology', what: 'stints on record and no open chronology issue; the rest cannot support timing analysis' },
+  { key: 'exact_signing_date', label: 'Exact signing date', what: 'a recorded signing date' },
+  { key: 'exact_mlb_debut_date', label: 'Exact MLB debut date', what: 'a verified debut date' },
+  { key: 'signing_to_mlb_both_dates', label: 'Signing to MLB calculable', what: 'both dates exact; a season is never turned into a date' },
+  { key: 'verified_first_professional_season', label: 'Verified first professional season', what: 'earliest record is the signing season or the next, for an amateur signing; a later start is only the first observed season' },
+]
 
 
 const DIMENSION_CARDS = [
   { key: 'SIGNING_DATE', label: 'Signing date', what: 'tracked signings with a recorded signing date' },
-  { key: 'FIRST_PRO_SEASON', label: 'First professional season', what: 'tracked signings whose earliest record is the signing season or the next; a later start is only the first observed record' },
+  { key: 'FIRST_PRO_SEASON', label: 'First professional season', what: 'amateur signings whose earliest record is the signing season or the next; a later start is only the first observed record, and an established professional’s first affiliated season is not his first professional season' },
   { key: 'HIGHEST_LEVEL', label: 'Highest level reached', what: 'tracked signings with a known highest level (a verified MLB debut counts as MLB)' },
   { key: 'MLB_DEBUT', label: 'MLB debut date', what: 'verified MLB players with a recorded debut date' },
   { key: 'CHRONOLOGY', label: 'Affiliate chronology', what: 'tracked signings with stints on record and no open chronology issue; the rest cannot support timing analysis' },
@@ -36,14 +64,19 @@ function whenCell(exact, season) {
 }
 
 export default async function DevelopmentPage() {
-  const { live, error, coverage, byClass, byMarket, byBonus, queue, debuts, devSignings, devSummary } = await getDevelopmentData()
+  const { live, error, coverage, byClass, byMarket, byBonus, queue, debuts, devSignings, devSummary, mlbStints } = await getDevelopmentData()
   const timed = debuts.filter((r) => r.years_signing_to_mlb != null)
-  const queueByIssue = queue.reduce((acc, r) => { acc[r.issue] = (acc[r.issue] || 0) + 1; return acc }, {})
-  const queueIssues = Object.entries(queueByIssue).sort((a, b) => b[1] - a[1])
   // 047: completeness per dimension (each with its denominator) and descriptive timing; the EXIT dimension lives on /asset-conversion
   const dataset = { signings: devSignings, developmentSummary: devSummary, developmentQueue: queue, decisions: [], transactionQueue: [] }
   const completeness = developmentCoverage(dataset, { dimensions: DIMENSION_CARDS.map((d) => d.key) })
   const timing = timingFacts(dataset)
+  // 048: the verified MLB cohort's documented path, player by player (stints read for the 47 players; absent stints leave the table out)
+  const stintsByPlayer = new Map()
+  for (const s of mlbStints ?? []) { if (!stintsByPlayer.has(s.player_id)) stintsByPlayer.set(s.player_id, []); stintsByPlayer.get(s.player_id).push(s) }
+  const mlbCoverage = stintsByPlayer.size > 0 ? verifiedMlbCoverage(dataset, stintsByPlayer, developmentRecords) : null
+  // 048: the same queue, de-duplicated by the evidence gap each item names
+  const needs = developmentNeeds(dataset)
+  const needSummary = developmentNeedSummary(dataset)
   return (
     <main className="shell page-main">
       <header className="page-hero">
@@ -101,6 +134,13 @@ export default async function DevelopmentPage() {
             {timing.signing_to_mlb_exact.n > 0 && <> Among those {timing.signing_to_mlb_exact.n}: {num(timing.signing_to_mlb_exact.min_years, 2)} to {num(timing.signing_to_mlb_exact.max_years, 2)} years (median {num(timing.signing_to_mlb_exact.median_years, 2)}).</>}
             {' '}This describes only those players; it is not an organization-wide figure and is not compared across cohorts.
           </p>
+          <p className="muted">
+            By acquisition route, each with its own denominator: <strong>{timing.signing_to_mlb_exact_by_route.amateur_signing.n} of {timing.signing_to_mlb_exact_by_route.amateur_signing.of}</strong> amateur signings
+            {timing.signing_to_mlb_exact_by_route.amateur_signing.n > 0 && <> ({num(timing.signing_to_mlb_exact_by_route.amateur_signing.min_years, 2)} to {num(timing.signing_to_mlb_exact_by_route.amateur_signing.max_years, 2)} years, median {num(timing.signing_to_mlb_exact_by_route.amateur_signing.median_years, 2)})</>}
+            {' '}and <strong>{timing.signing_to_mlb_exact_by_route.established_professional.n} of {timing.signing_to_mlb_exact_by_route.established_professional.of}</strong> established professionals
+            {timing.signing_to_mlb_exact_by_route.established_professional.n > 0 && <> ({num(timing.signing_to_mlb_exact_by_route.established_professional.min_years, 2)} to {num(timing.signing_to_mlb_exact_by_route.established_professional.max_years, 2)} years, median {num(timing.signing_to_mlb_exact_by_route.established_professional.median_years, 2)})</>}.
+            {' '}An established professional’s interval is acquisition to debut, not development from an amateur signing; the two are not compared.
+          </p>
           <h3 className="sub">Highest level reached among audited non-MLB players</h3>
           <p>
             <strong>{timing.highest_level_known.n} of {timing.highest_level_known.of}</strong> audited non-MLB players have a known highest level.
@@ -109,8 +149,57 @@ export default async function DevelopmentPage() {
           {Object.keys(timing.highest_level_counts).length > 0 && (
             <div className="signal-row">{Object.entries(timing.highest_level_counts).map(([level, n]) => <span key={level}>{humanize(level)} · {n}</span>)}</div>
           )}
-          <p className="muted small-note">Unresolved development research: {queue.length} items across {new Set(queue.map((r) => r.player_id)).size} players (listed below).</p>
+          <p className="muted small-note">Unresolved development research: {needSummary.needs} distinct evidence gaps across {needSummary.players} players, merged from {needSummary.detector_rows} detector rows (listed below).</p>
         </section>
+
+        {mlbCoverage && (
+          <section className="timeline-panel section-gap" aria-labelledby="mlb-coverage-heading">
+            <div className="table-head">
+              <div><span className="eyebrow">Verified MLB players</span><h2 id="mlb-coverage-heading">How much of each path is documented</h2></div>
+              <span className="micro-note">{mlbCoverage.players} verified MLB players · season-level records · a count of what is on record, never a rate</span>
+            </div>
+            <p className="muted">A partial chronology stays partial. The source often begins after the professional career did, and a missing season is unknown, not a season the player did not play. {mlbCoverage.prior_professional_career.n} of the {mlbCoverage.players} were established professionals when signed (Cuban, Mexican, Japanese or Korean leagues); affiliated records do not describe that earlier career, and their first affiliated season is not their first professional season.</p>
+            <div className="coverage-grid">
+              {COVERAGE_CARDS.map((c) => {
+                const v = mlbCoverage[c.key]
+                return (
+                  <div key={c.key}>
+                    <span>{c.label}</span>
+                    <strong>{v.n} of {v.of}</strong>
+                    <small>{c.what}</small>
+                  </div>
+                )
+              })}
+              <div>
+                <span>Documented path</span>
+                <strong>{mlbCoverage.path_state.NO_OPEN_GAP} of {mlbCoverage.path_state.of}</strong>
+                <small>no gap visible at season precision (never “complete”); the other {mlbCoverage.path_state.PARTIAL} are partial</small>
+              </div>
+              <div>
+                <span>Pending progression review</span>
+                <strong>{mlbCoverage.progression_review_pending.n} of {mlbCoverage.progression_review_pending.of}</strong>
+                <small>an ambiguous level sequence a person has not yet decided</small>
+              </div>
+            </div>
+            <details>
+              <summary className="muted">The {mlbCoverage.players} paths, with why each record is silent where it is</summary>
+              <table className="compact-table">
+                <thead><tr><th>Player</th><th className="num">Signed</th><th className="num">First observed</th><th className="num">Pre-MLB seasons</th><th>Record</th><th>Where the record is silent</th><th>First professional season</th></tr></thead>
+                <tbody>{mlbCoverage.rows.map((r) => (
+                  <tr key={r.player_id}>
+                    <td><PlayerLink slug={r.player_slug} name={r.full_name} /></td>
+                    <td className="num">{r.signing_year}</td>
+                    <td className="num">{r.history.first_observed_season ?? MISSING}</td>
+                    <td className="num">{r.history.pre_mlb_seasons_observed}</td>
+                    <td>{r.history.state === 'NO_OPEN_GAP' ? 'No gap visible' : <strong>Partial</strong>}{r.progression_review_pending && <span className="muted"> · review pending</span>}</td>
+                    <td className="muted">{r.history.gaps.length ? r.history.gaps.map((g) => GAP_LABELS[g.code] ?? humanize(g.code)).join(' · ') : MISSING}{r.history.notes.some((n) => n.code === 'PRIOR_PROFESSIONAL_CAREER') && ' · prior professional career'}</td>
+                    <td>{r.dims.FIRST_PRO_SEASON === 'KNOWN' ? 'Known' : <span className="unknown">{r.first_pro_status === 'PRIOR_PROFESSIONAL_CAREER' ? 'Not established (prior professional career)' : r.first_pro_status === 'FIRST_OBSERVED_ONLY' ? 'Only the first observed season' : 'Unknown'}</span>}</td>
+                  </tr>
+                ))}</tbody>
+              </table>
+            </details>
+          </section>
+        )}
 
         <section className="timeline-panel section-gap">
           <div className="table-head">
@@ -183,23 +272,24 @@ export default async function DevelopmentPage() {
         <section className="timeline-panel section-gap">
           <div className="table-head">
             <div><span className="eyebrow">Research queue</span><h2>What still needs review</h2></div>
-            <span className="micro-note">{queue.length} open items</span>
+            <span className="micro-note">{needSummary.needs} evidence gaps · {needSummary.detector_rows} detector rows merged</span>
           </div>
+          <p className="muted">Several detectors fire on the same missing evidence (a stint with no game dates also keeps every level debut at season precision), and researching one closes all of them. Each gap below is one piece of work; nothing is dropped, and a gap closes only when every detector it merges is quiet.</p>
           <ul className="plain-list">
-            {queueIssues.map(([issue, count]) => (
-              <li key={issue}><strong>{count}</strong> · {ISSUE_LABELS[issue] ?? humanize(issue)}</li>
+            {NEED_GROUPS.filter((g) => needSummary.by_need[g.key]).map((g) => (
+              <li key={g.key}><strong>{needSummary.by_need[g.key]}</strong> · {g.action}</li>
             ))}
           </ul>
           <details>
-            <summary className="muted">All {queue.length} queued players</summary>
+            <summary className="muted">All {needs.length} gaps by player</summary>
             <table className="compact-table">
-              <thead><tr><th>Player</th><th>Class</th><th>Issue</th><th>Detail</th></tr></thead>
-              <tbody>{queue.map((r, i) => (
-                <tr key={`${r.player_slug}-${r.issue}-${i}`}>
-                  <td><PlayerLink slug={r.player_slug} name={r.full_name} /></td>
+              <thead><tr><th>Player</th><th>Class</th><th>Gap</th><th>Detectors merged</th></tr></thead>
+              <tbody>{needs.map((r) => (
+                <tr key={`${r.player_id}-${r.need}`}>
+                  <td>{r.player_slug ? <PlayerLink slug={r.player_slug} name={r.full_name} /> : MISSING}</td>
                   <td>{r.signing_year ?? MISSING}</td>
-                  <td>{ISSUE_LABELS[r.issue] ?? humanize(r.issue)}</td>
-                  <td className="muted">{r.detail}</td>
+                  <td>{humanize(r.need)}</td>
+                  <td className="muted">{r.issues.map((i) => ISSUE_LABELS[i] ?? humanize(i)).join(' · ')}</td>
                 </tr>
               ))}</tbody>
             </table>
