@@ -58,6 +58,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 47. `045_final_integration_release.sql` — DISI v1.0.0 final integration: the product contract (`disi_product_contract`, the 48 relations the application reads), `v_disi_release_status`, `v_research_roadmap` and `v_executive_metric_provenance`; the verifier enforces the full support chain (research in `database/research/045/`).
 48. `045a_product_snapshot_serving.sql` — DISI v1.0.0 serving layer: ten persisted, typed product snapshot tables (`product_*`, column-exact projections of the analytical views the pages read) rebuilt only by the explicit, privileged, validated, single-transaction `disi_refresh_product_snapshots()` (`npm run refresh:product-snapshots`), a drift check, the product contract equal to what the app reads, and the 042-045 analytical views and staged functions closed to the API (design in `database/research/045/serving-layer-architecture.md`).
 49. `045b_database_status_snapshot.sql` — post-v1.0.0 home-page hardening: `v_database_status` (26 columns from 25 scalar subqueries over the signing, class and task view stacks) is persisted as the eleventh product snapshot, `product_database_status`, written in the same transaction and generation as the other ten (the refresh and drift functions are re-issued) and proven equal to its source. The view is unchanged but internal (closed to anon / authenticated); the home page reads the snapshot (design in `database/research/045b/README.md`).
+50. `046_outcome_cost_research_batch.sql` — reviewed acquisition-cost research batch (data only: no table, view, function, grant or policy): eight previously unknown signing bonuses recorded with one directly-read source each (known costs 48 -> 56 of 220, known spend $117,377,237.33 -> $121,700,237.33), one source disagreement (Adrian Beltre, $23,000 versus $17,000) kept as an unresolved conflict with a NULL canonical bonus, and one conditional snapshot refresh so the product reads one coherent generation. Nothing unknown is estimated or set to zero; no outcome audit changes (`NOT_AUDITED` stays 127). Built from `database/research/046/`; guarded data-only rollback `database/release/sql/rollback-046.sql`.
 
 ## 017 research-database layer
 
@@ -292,6 +293,12 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Not here.** No trainer, academy or showcase effect, ranking, hit rate, ROI, leaderboard or prediction.
 - **Surface.** No table; 60 public tables and 125 views; the verifier adds 6 checks (207 in total).
 - **Rerunnable**; design and reproduction in `database/research/038/README.md`.
+
+## 046 research completion
+
+- **What it is.** A research-data migration plus the read-only research commands (`npm run research:outcomes|costs|transactions|readiness|progress|queue`) and the readiness blockers on `/prediction-readiness`. See `docs/RESEARCH-METHODOLOGY.md` (maturity, outcome audits, cost, transaction attribution, readiness) and `docs/ROADMAP.md`.
+- **Principles.** `NOT_AUDITED` is not `AUDITED_NO_MLB`; an unknown cost is not `$0`; disagreeing sources stay a conflict; nothing is published below its support threshold.
+- **Release.** `database/release/046-release-plan.md`. Applying 046, merging its PR and deploying need explicit owner approval.
 
 ## 042-045 decision layers (DISI v1.0.0)
 

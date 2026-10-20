@@ -111,6 +111,7 @@ test('portfolio and readiness loaders read only the persisted snapshots, one que
     product_portfolio_history: [{ grain: 'ALL' }], product_portfolio_scenarios: [{ scenario_key: 'BASE_POOL' }],
     product_expected_value_support: [{ value_model_key: 'EXPECTED_DIRECT_DODGERS_BWAR_V1', expected_value_supported: false }],
     product_executive_snapshot: SNAPSHOT_TODAY, product_prediction_readiness: [{ target_key: 'REACH_MLB_WITHIN_7_SEASONS' }], product_model_evaluations: [{ model_key: 'BASE_RATE' }],
+    product_database_status: { tracked_signings: 220, outcome_audit_queue: 127, signings_with_known_cost: 48 }, product_player_decision: [{ maturity_status: 'MATURE', outcome_state: null }],
   }
   const c1 = fakeClient(fixtures)
   const p = await loadPortfolioData(c1)
@@ -125,7 +126,8 @@ test('portfolio and readiness loaders read only the persisted snapshots, one que
   const c2 = fakeClient(fixtures)
   const r = await loadReadinessData(c2)
   assert.equal(c2.maxInFlight, 1)
-  assert.deepEqual(c2.requests.map((x) => x.relation), ['product_executive_snapshot', 'product_prediction_readiness', 'product_model_evaluations', 'product_expected_value_support'])
+  assert.deepEqual(c2.requests.map((x) => x.relation), ['product_executive_snapshot', 'product_prediction_readiness', 'product_model_evaluations', 'product_expected_value_support', 'product_database_status', 'product_portfolio_decision_support', 'product_player_decision'])
+  assert.ok(r.blockers.layers.some((l) => l.key === 'OUTCOME_RATES' && l.blockers.some((b) => /127 of 220 tracked signings remain NOT_AUDITED/.test(b.statement))))
   assert.equal(r.overview.supported_probability_targets, 0)
   assert.equal(predictionReadiness(r.overview).statement, NO_PROBABILITY_STATEMENT)
   const timeout = { code: '57014', message: 'canceling statement due to statement timeout' }

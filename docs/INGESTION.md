@@ -1,5 +1,7 @@
 # DISI ingestion and provenance workflow
 
+The rules behind this workflow (maturity, outcome audits, acquisition cost, transaction attribution, readiness) are consolidated in [`RESEARCH-METHODOLOGY.md`](RESEARCH-METHODOLOGY.md). Two never change: `NOT_AUDITED` is not `AUDITED_NO_MLB`, and an unknown cost is not `$0`.
+
 How new facts enter the database. The goal is complete signing classes from authoritative sources, not a hand-picked list of well-known players.
 
 ## Source priority

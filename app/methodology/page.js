@@ -6,6 +6,7 @@ export const metadata = { title: 'Methodology' }
 const rules = [
   ['Missing is never zero', 'Unknown bonuses, fees, dates, outcomes and biography fields stay NULL and display as “—” or “Unknown”. A sum of known costs never treats an unknown component as $0.'],
   ['Unaudited is never failure', 'A player is “not audited” until public records support either a verified MLB debut or a verified absence of one. Only audited players count as reaching or not reaching MLB.'],
+  ['Disagreeing sources stay disagreeing', 'When independent sources report different amounts, every report is kept, the canonical value stays unknown and the signing is queued as a conflict. A reviewed decision, never the latest report, is the only way to choose one.'],
   ['Samples are not censuses', 'A historically verified set or an MLB Pipeline Top 30/50 tracker is a sample. A population is complete only when a source states its size, every member is in the database and no source conflict is open.'],
   ['Announcement total ≠ signing-period total', 'A club’s class announcement usually describes the players signed when the period opens; signing continues afterwards. A complete announced opening class is never treated as a complete signing period.'],
   ['Rates require eligible denominators', 'An organization MLB reach rate requires a complete full signing-period population, a complete outcome audit and five years of maturity. Statistics over an opening class are labelled opening-class cohort rates. Otherwise verified MLB players are reported as counts.'],

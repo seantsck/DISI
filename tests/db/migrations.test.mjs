@@ -2150,8 +2150,9 @@ const sealed = (insertSql) => `do $seal$ declare i uuid; begin ${insertSql} retu
 const evaluationId = (slug, pub) => `(select e.id from player_evaluations e where e.player_id = ${PLAYER(slug)} and e.publication_id = ${PUBLICATION(pub)} order by e.created_at limit 1)`
 
 // Migrations added after the frozen baseline and not yet released; each is frozen in tests/db/frozen-migrations.json once applied.
-// 042-045a were released to production on 2026-10-15 and 045b (home-page status snapshot) on 2026-10-19; all are frozen
-const UNRELEASED_ADDITIONS = []
+// 042-045a were released to production on 2026-10-15 and 045b (home-page status snapshot) on 2026-10-19; all are frozen.
+// 046 (reviewed acquisition-cost research batch) is built and not yet released
+const UNRELEASED_ADDITIONS = ['046_outcome_cost_research_batch.sql']
 
 test('frozen history: migrations 001-045b (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
@@ -2724,7 +2725,7 @@ test('026 views: timeline derivations, latest-per-publication, at-signing window
 
 test('026 research queue: meaningful gaps only; nothing the schema forbids; differing opinions are not conflicts', async () => {
   const issues = Object.fromEntries((await rows(`select issue, count(*)::int as n from v_scouting_research_queue group by 1`)).map((r) => [r.issue, r.n]))
-  assert.deepEqual(issues, { LEGACY_RANK_WITHOUT_EVALUATION: 11, MISSING_ARCHIVE_REFERENCE: 3, PLAYER_WITHOUT_SCOUTING_HISTORY: 53, SIGNING_WITHOUT_SIGNING_EVALUATION: 46 })
+  assert.deepEqual(issues, { LEGACY_RANK_WITHOUT_EVALUATION: 11, MISSING_ARCHIVE_REFERENCE: 3, PLAYER_WITHOUT_SCOUTING_HISTORY: 53, SIGNING_WITHOUT_SIGNING_EVALUATION: 54 })
   for (const forbidden of ['RANK_WITHOUT_SCOPE', 'FV_WITHOUT_SCALE', 'EVALUATION_WITHOUT_SOURCE', 'CONFLICTING_SOURCE_VALUES', 'UNRESOLVED_PLAYER_IDENTITY']) assert.equal(issues[forbidden], undefined, forbidden)
   // independent oracles for the two scoped issues
   const history = await one(`select count(*)::int as n from players p
@@ -2735,8 +2736,9 @@ test('026 research queue: meaningful gaps only; nothing the schema forbids; diff
   const signing = await one(`select count(*)::int as n from signings sg join organizations o on o.id = sg.organization_id and o.franchise_key = 'DODGERS'
     where (sg.bonus_publicly_reported or sg.international_rank is not null)
       and not exists (select 1 from player_evaluations e where e.player_id = sg.player_id and (e.evaluation_context in ('PRE_SIGNING', 'SIGNING') or e.evaluation_year = sg.signing_year))`)
-  // 41 before 030; 030 added Ryu (42); 031 added four newly sourced bonuses (Soto, Medina, Sanchez, Luna) that carry bonus_publicly_reported and have no signing-time evaluation (46)
-  assert.equal(signing.n, 46)
+  // 41 before 030; 030 added Ryu (42); 031 added four newly sourced bonuses (Soto, Medina, Sanchez, Luna) that carry bonus_publicly_reported and have no signing-time evaluation (46);
+  // 046 added eight more (Amoros, Guzman, Mondesi, P. Martinez, Vargas, W. Diaz, Galiz, Doncon), all without a signing-time evaluation (54)
+  assert.equal(signing.n, 54)
   // date-quality issues appear when a coarse or undated evaluation exists
   await db.exec('begin;')
   try {

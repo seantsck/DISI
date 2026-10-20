@@ -77,6 +77,7 @@ Never put a Supabase secret key or legacy service-role key in a `NEXT_PUBLIC_` v
 | `npm run typecheck` | `tsc` with `checkJs` over `app/`, `lib/` and `tests/` |
 | `npm test` | Unit tests plus the database test, which runs every canonical migration in PGlite (in-process Postgres), reruns the latest migration, and checks class totals, population and rate-eligibility rules, provenance and the security model |
 | `npm run research:test` | Offline tests for the research scripts (also included in `npm test`) |
+| `npm run research:queue` / `research:outcomes` / `research:costs` / `research:transactions` / `research:readiness` / `research:progress` | Read-only research commands over the persisted product snapshots (public `anon` role only). See `scripts/research/README.md` and `docs/RESEARCH-METHODOLOGY.md` |
 | `npm run build` | Production build |
 | `npm run check` | All of the above |
 
@@ -88,6 +89,8 @@ Never put a Supabase secret key or legacy service-role key in a `NEXT_PUBLIC_` v
 - `database/repairs/` — the 004a–004c troubleshooting scripts from the first manual Supabase build.
 - `database/README.md` — what each layer does.
 - `docs/INGESTION.md` — source priority and the workflow for adding classes, players, outcomes and bWAR.
+- `docs/RESEARCH-METHODOLOGY.md` — maturity, outcome audits, acquisition cost, transaction attribution and prediction-readiness rules (`NOT_AUDITED != AUDITED_NO_MLB`, `UNKNOWN COST != $0`).
+- `docs/ROADMAP.md` — where DISI stands and what the next phases are for.
 
 The SQL was applied manually in the Supabase SQL Editor and is kept as analytical provenance. Do not treat it as Supabase CLI migration history without creating a clean baseline first.
 
