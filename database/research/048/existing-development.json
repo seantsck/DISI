@@ -1,0 +1,378 @@
+{
+ "note": "The development rows already on record (Migration 021) for cohort players, read from the canonical 001-047 state. 048 never overwrites or duplicates them.",
+ "players": {
+  "roger-cedeno": {
+   "stints": [
+    [
+     1992,
+     "Great Falls Dodgers",
+     "Pioneer League",
+     "OTHER"
+    ],
+    [
+     1993,
+     "Albuquerque Dukes",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     1993,
+     "San Antonio Missions",
+     "Texas League",
+     "AA"
+    ],
+    [
+     1994,
+     "Albuquerque Dukes",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     1995,
+     "Albuquerque Dukes",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     1995,
+     "Los Angeles Dodgers",
+     "National League",
+     "MLB"
+    ],
+    [
+     1996,
+     "Albuquerque Dukes",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     1996,
+     "Los Angeles Dodgers",
+     "National League",
+     "MLB"
+    ],
+    [
+     1997,
+     "Albuquerque Dukes",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     1997,
+     "Los Angeles Dodgers",
+     "National League",
+     "MLB"
+    ],
+    [
+     1998,
+     "Los Angeles Dodgers",
+     "National League",
+     "MLB"
+    ],
+    [
+     1998,
+     "Vero Beach Dodgers",
+     "Florida State League",
+     "HIGH_A"
+    ],
+    [
+     1999,
+     "New York Mets",
+     "National League",
+     "MLB"
+    ],
+    [
+     2000,
+     "Houston Astros",
+     "National League",
+     "MLB"
+    ],
+    [
+     2000,
+     "New Orleans Zephyrs",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     2001,
+     "Detroit Tigers",
+     "American League",
+     "MLB"
+    ],
+    [
+     2002,
+     "New York Mets",
+     "National League",
+     "MLB"
+    ],
+    [
+     2003,
+     "New York Mets",
+     "National League",
+     "MLB"
+    ],
+    [
+     2004,
+     "Memphis Redbirds",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     2004,
+     "St. Louis Cardinals",
+     "National League",
+     "MLB"
+    ],
+    [
+     2005,
+     "Memphis Redbirds",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     2005,
+     "St. Louis Cardinals",
+     "National League",
+     "MLB"
+    ]
+   ],
+   "milestones": [
+    [
+     "AAA_DEBUT",
+     null,
+     1993
+    ],
+    [
+     "AA_DEBUT",
+     null,
+     1993
+    ],
+    [
+     "HIGH_A_DEBUT",
+     null,
+     1998
+    ],
+    [
+     "MLB_DEBUT",
+     "1995-06-20",
+     1995
+    ],
+    [
+     "ORGANIZATION_CHANGE",
+     null,
+     1999
+    ],
+    [
+     "PROFESSIONAL_SIGNING",
+     "1991-03-03",
+     null
+    ]
+   ]
+  },
+  "carlos-frias": {
+   "stints": [
+    [
+     2007,
+     "DSL Dodgers",
+     "Dominican Summer League",
+     "INTERNATIONAL_ROOKIE"
+    ],
+    [
+     2008,
+     "GCL Dodgers",
+     "Gulf Coast League",
+     "COMPLEX_ROOKIE"
+    ],
+    [
+     2009,
+     "",
+     "",
+     "OTHER"
+    ],
+    [
+     2009,
+     "AZL Dodgers",
+     "Arizona League",
+     "COMPLEX_ROOKIE"
+    ],
+    [
+     2009,
+     "Ogden Raptors",
+     "Pioneer League",
+     "OTHER"
+    ],
+    [
+     2010,
+     "Ogden Raptors",
+     "Pioneer League",
+     "OTHER"
+    ],
+    [
+     2011,
+     "Rancho Cucamonga Quakes",
+     "California League",
+     "HIGH_A"
+    ],
+    [
+     2012,
+     "Ogden Raptors",
+     "Pioneer League",
+     "OTHER"
+    ],
+    [
+     2012,
+     "Rancho Cucamonga Quakes",
+     "California League",
+     "HIGH_A"
+    ],
+    [
+     2013,
+     "Chattanooga Lookouts",
+     "Southern League",
+     "AA"
+    ],
+    [
+     2013,
+     "Great Lakes Loons",
+     "Midwest League",
+     "LOW_A"
+    ],
+    [
+     2013,
+     "Rancho Cucamonga Quakes",
+     "California League",
+     "HIGH_A"
+    ],
+    [
+     2014,
+     "Albuquerque Isotopes",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     2014,
+     "Chattanooga Lookouts",
+     "Southern League",
+     "AA"
+    ],
+    [
+     2014,
+     "Los Angeles Dodgers",
+     "National League",
+     "MLB"
+    ],
+    [
+     2015,
+     "Los Angeles Dodgers",
+     "National League",
+     "MLB"
+    ],
+    [
+     2015,
+     "Oklahoma City Dodgers",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     2015,
+     "Rancho Cucamonga Quakes",
+     "California League",
+     "HIGH_A"
+    ],
+    [
+     2016,
+     "Los Angeles Dodgers",
+     "National League",
+     "MLB"
+    ],
+    [
+     2016,
+     "Oklahoma City Dodgers",
+     "Pacific Coast League",
+     "AAA"
+    ],
+    [
+     2016,
+     "Tulsa Drillers",
+     "Texas League",
+     "AA"
+    ],
+    [
+     2017,
+     "Columbus Clippers",
+     "International League",
+     "AAA"
+    ],
+    [
+     2018,
+     "Leones de Yucatan",
+     "Mexican League",
+     "FOREIGN_PRO"
+    ],
+    [
+     2019,
+     "Tigres de Quintana Roo",
+     "Mexican League",
+     "FOREIGN_PRO"
+    ]
+   ],
+   "milestones": [
+    [
+     "AAA_DEBUT",
+     "2014-04-30",
+     2014
+    ],
+    [
+     "AA_DEBUT",
+     "2013-07-31",
+     2013
+    ],
+    [
+     "A_DEBUT",
+     "2013-04-07",
+     2013
+    ],
+    [
+     "COMPLEX_DEBUT",
+     "2008-06-23",
+     2008
+    ],
+    [
+     "DSL_DEBUT",
+     "2007-06-05",
+     2007
+    ],
+    [
+     "HIGH_A_DEBUT",
+     "2011-07-08",
+     2011
+    ],
+    [
+     "MLB_DEBUT",
+     "2014-08-04",
+     2014
+    ],
+    [
+     "ORGANIZATION_CHANGE",
+     null,
+     2017
+    ],
+    [
+     "PROFESSIONAL_DEBUT",
+     "2007-06-05",
+     2007
+    ],
+    [
+     "PROFESSIONAL_SIGNING",
+     "2007-01-03",
+     null
+    ],
+    [
+     "RELEASED",
+     "2019-05-20",
+     2019
+    ]
+   ]
+  }
+ }
+}

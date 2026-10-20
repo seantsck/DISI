@@ -37,10 +37,10 @@ test('manifest lists every canonical SQL file, in order', () => {
 })
 
 // Each migration replaces some views of the one before it, so rerunnability is
-// checked for the latest migration of the chain this file builds (046; 047 proves its own rerun in tests/db/research-047.test.mjs).
+// checked for the latest migration of the chain this file builds (046; 047 and 048 prove their own reruns in tests/db/research-047.test.mjs and research-048.test.mjs).
 test('the latest migration is rerunnable without changing data', async () => {
   const latest = '046_outcome_cost_research_batch.sql'
-  assert.equal(manifest.canonical_sql.at(-2), latest)
+  assert.equal(manifest.canonical_sql.at(-3), latest)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
       (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
@@ -2157,7 +2157,8 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 042-045a were released to production on 2026-10-15 and 045b (home-page status snapshot) on 2026-10-19; all are frozen.
 // 046 (reviewed acquisition-cost research batch) was released on 2026-10-20 (PR #15, 36ea96b) and is frozen.
 // 047 (development-history and transaction-chain research batch) was released on 2026-10-20 (PR #17, 154c7c0) and is frozen
-const UNRELEASED_ADDITIONS = []
+// 048 (verified MLB development coverage) is built and awaiting release; it is frozen after it is applied to production
+const UNRELEASED_ADDITIONS = ['048_verified_mlb_development_coverage.sql']
 
 test('frozen history: migrations 001-047 (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
