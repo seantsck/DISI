@@ -453,6 +453,10 @@ test('/development reads the verified MLB players\' stints from a relation the p
   }
   const contract = fs.readFileSync(path.join(root, 'database/sql/045_final_integration_release.sql'), 'utf8') + fs.readFileSync(path.join(root, 'database/sql/045b_database_status_snapshot.sql'), 'utf8')
   assert.ok(contract.includes('v_player_development_stints'), 'the relation is part of the product contract')
+  // the columns the coverage table needs are selected: the acquisition pathway (a prior professional career) and the pending-review flag
+  const selectOf = (relation) => c.requests.filter((x) => x.relation === relation).flatMap((x) => x.calls.filter((y) => y[0] === 'select').map((y) => y[1])).join(' ')
+  assert.match(selectOf('v_signing_records'), /\bpathway\b/)
+  assert.match(selectOf('v_dodgers_player_development_summary'), /\bprogression_review_pending\b/)
   // the page reads no relation outside the contract: the decisions table and the progression view are for the research CLI only
   assert.ok(!c.requests.some((x) => /progression/.test(x.relation)))
 })
