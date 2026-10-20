@@ -22,7 +22,10 @@ const rows = async (sql, params) => (await db.query(sql, params)).rows
 const one = async (sql, params) => (await rows(sql, params))[0]
 
 before(async () => {
-  db = (await buildCanonicalChain()).db
+  // This file pins the exact data of the frozen chain through 046 (the 021-024 development counts among them). Migration 047 is a data-only
+  // research batch that legitimately moves those counts; it is verified in tests/db/research-047.test.mjs, and the complete chain including it
+  // is built and checked by tests/db/verify-live-invariants.test.mjs (the 247-check verifier).
+  db = (await buildChainThrough('046_outcome_cost_research_batch.sql')).db
 }, { timeout: 180000 })
 
 after(async () => { await db?.close() })
@@ -34,9 +37,10 @@ test('manifest lists every canonical SQL file, in order', () => {
 })
 
 // Each migration replaces some views of the one before it, so rerunnability is
-// checked for the latest migration in the manifest.
+// checked for the latest migration of the chain this file builds (046; 047 proves its own rerun in tests/db/research-047.test.mjs).
 test('the latest migration is rerunnable without changing data', async () => {
-  const latest = manifest.canonical_sql.at(-1)
+  const latest = '046_outcome_cost_research_batch.sql'
+  assert.equal(manifest.canonical_sql.at(-2), latest)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
       (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
@@ -2151,8 +2155,9 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 
 // Migrations added after the frozen baseline and not yet released; each is frozen in tests/db/frozen-migrations.json once applied.
 // 042-045a were released to production on 2026-10-15 and 045b (home-page status snapshot) on 2026-10-19; all are frozen.
-// 046 (reviewed acquisition-cost research batch) was released on 2026-10-20 (PR #15, 36ea96b) and is frozen
-const UNRELEASED_ADDITIONS = []
+// 046 (reviewed acquisition-cost research batch) was released on 2026-10-20 (PR #15, 36ea96b) and is frozen.
+// 047 (development-history and transaction-chain research batch) is built and not yet released
+const UNRELEASED_ADDITIONS = ['047_development_transaction_research_batch.sql']
 
 test('frozen history: migrations 001-046 (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))

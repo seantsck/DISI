@@ -11,7 +11,7 @@ import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { buildChainThrough } from './canonical-chain.mjs'
 import { orgValueQueries, ORG_VALUE_CHECK_NAMES } from '../../scripts/db/lib/org-value-invariants.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_046 as CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const FILE = '042_expected_organizational_value.sql'

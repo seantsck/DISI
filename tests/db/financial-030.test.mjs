@@ -14,7 +14,7 @@ import { buildChainThrough, buildCanonicalChain } from './canonical-chain.mjs'
 import { lit, withoutTransaction } from './drift-027.mjs'
 import { financialQueries } from '../../scripts/db/lib/financial-invariants.mjs'
 const FINANCIAL_QUERIES = financialQueries(false)
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_046 as CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const FILE = '030_financial_acquisition_intelligence.sql'

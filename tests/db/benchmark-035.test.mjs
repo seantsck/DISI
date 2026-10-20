@@ -10,7 +10,7 @@ import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { buildChainThrough } from './canonical-chain.mjs'
 import { benchmarkQueries, BENCHMARK_CHECK_NAMES } from '../../scripts/db/lib/benchmark-invariants.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_046 as CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const FILE = '035_international_benchmark_outcomes.sql'
