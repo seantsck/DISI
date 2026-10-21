@@ -145,7 +145,7 @@ try {
   const ivs = await rowsOf(A, `select asset_name, exit_event_key, war_state, interval_bounded_dodgers_bwar from public.v_transaction_package_lineage where mlb_id in ('115046', '123713', '279782') order by 1`)
   check('Garland, Grant and Versalles each have a recorded exit and an unloaded WAR whose interval value is NULL, never zero', ivs.length === 3 && ivs.every((r) => r.exit_event_key && r.war_state === 'WAR_NOT_LOADED' && r.interval_bounded_dodgers_bwar === null), JSON.stringify(ivs.map((r) => [r.asset_name, r.exit_event_key])))
   check('chain statuses: the seven incomplete chains become five whose history is open and two (Abreu, Fernandez) whose history is recorded and whose WAR is not loaded',
-    JSON.stringify(S1.chains) === JSON.stringify({ ...S0.chains, INCOMPLETE_EXIT_NOT_RESEARCHED: S0.chains.INCOMPLETE_EXIT_NOT_RESEARCHED - 1, INCOMPLETE_RETURN_UNRECORDED: S0.chains.INCOMPLETE_RETURN_UNRECORDED - 1, INCOMPLETE_WAR_NOT_LOADED: 2 }), JSON.stringify(S1.chains))
+    md5(Object.entries(S1.chains).sort()) === md5(Object.entries({ ...S0.chains, INCOMPLETE_EXIT_NOT_RESEARCHED: S0.chains.INCOMPLETE_EXIT_NOT_RESEARCHED - 1, INCOMPLETE_RETURN_UNRECORDED: S0.chains.INCOMPLETE_RETURN_UNRECORDED - 1, INCOMPLETE_WAR_NOT_LOADED: 2 }).sort()), JSON.stringify(S1.chains))
   check('queues: the transaction queue keeps 59 items (return unrecorded -1, Miller exit -1, Grant and Versalles WAR +2), the value queue 91; PTBNL / future-consideration / cash / pool-space items are unchanged',
     Object.values(S1.queues.tx).reduce((a, b) => a + b, 0) === 59 && Object.values(S1.queues.val).reduce((a, b) => a + b, 0) === 91 && JSON.stringify(S1.queues.val) === JSON.stringify(S0.queues.val)
       && S1.queues.tx.TRADE_RETURN_UNRECORDED === undefined && S1.queues.tx.DOWNSTREAM_WAR_NOT_LOADED === S0.queues.tx.DOWNSTREAM_WAR_NOT_LOADED + 2 && S1.queues.tx.EXIT_NOT_RESEARCHED_DOWNSTREAM === S0.queues.tx.EXIT_NOT_RESEARCHED_DOWNSTREAM - 1
@@ -191,7 +191,7 @@ try {
   check(`rollback-049 commits in one transaction (${rms} ms)`, true)
   check('after rollback the transaction events, assets and resolutions equal the pre-049 state, row for row', SB.counts.events === S0.counts.events && SB.counts.assets === S0.counts.assets && SB.counts.resolutions === S0.counts.resolutions
     && ['transaction_events', 'transaction_event_assets', 'transaction_asset_resolutions', 'player_mlb_team_season_war'].every((t) => SB.full[t].h === S0.full[t].h), JSON.stringify(SB.counts))
-  check('after rollback the chain statuses and both queues equal the pre-049 state and the snapshots are coherent with zero drift', JSON.stringify(SB.chains) === JSON.stringify(S0.chains) && JSON.stringify(SB.queues) === JSON.stringify(S0.queues) && (await drift(B)).length === 0)
+  check('after rollback the chain statuses and both queues equal the pre-049 state and the snapshots are coherent with zero drift', md5(Object.entries(SB.chains).sort()) === md5(Object.entries(S0.chains).sort()) && md5(SB.queues) === md5(S0.queues) && (await drift(B)).length === 0)
   check('after rollback the catalog is unchanged', md5(SB.cat) === md5(S0.cat))
   let again = ''
   try { await B.query(rbSql) } catch (e) { again = e.message; await B.query('rollback').catch(() => {}) }
