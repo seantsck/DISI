@@ -1,0 +1,368 @@
+{
+  "rule": "Every verified MLB player (reached_mlb_verified) that was not in the 047 controlled cohort (database/research/047/development-cohort.json), derived from the production dataset on 2026-10-20 (generation 5) and ordered by the deterministic development queue: tier, Dodgers bWAR (descending, NULL last), signing year, signing date, sort name, signing id. No difficult player is excluded; difficulty produces a partial or unresolved result, never an omission.",
+  "queue_snapshot": "the pre-048 state (canonical 001-047, production generation 5, source data as of 2026-10-05), ranked by the 048 pathway-aware development queue",
+  "verified_mlb_players": 47,
+  "excluded_047_cohort": [
+    "fernando-valenzuela",
+    "ramon-martinez",
+    "adrian-beltre",
+    "raul-mondesi",
+    "chan-ho-park",
+    "kenley-jansen",
+    "ismael-valdez",
+    "yasiel-puig",
+    "hyun-jin-ryu",
+    "hideo-nomo"
+  ],
+  "players": [
+    {
+      "slug": "pedro-astacio",
+      "signing_year": 1987,
+      "mlb_id": 110359,
+      "queue_rank": 9
+    },
+    {
+      "slug": "julio-urias",
+      "signing_year": 2012,
+      "mlb_id": 628711,
+      "queue_rank": 10
+    },
+    {
+      "slug": "andy-pages",
+      "signing_year": 2017,
+      "mlb_id": 681624,
+      "queue_rank": 11
+    },
+    {
+      "slug": "sandy-amoros",
+      "signing_year": 1951,
+      "mlb_id": 110222,
+      "queue_rank": 12
+    },
+    {
+      "slug": "hung-chih-kuo",
+      "signing_year": 1999,
+      "mlb_id": 425539,
+      "queue_rank": 13
+    },
+    {
+      "slug": "antonio-osuna",
+      "signing_year": 1991,
+      "mlb_id": 120107,
+      "queue_rank": 14
+    },
+    {
+      "slug": "pedro-baez",
+      "signing_year": 2007,
+      "mlb_id": 520980,
+      "queue_rank": 15
+    },
+    {
+      "slug": "pedro-martinez",
+      "signing_year": 1988,
+      "mlb_id": 118377,
+      "queue_rank": 16
+    },
+    {
+      "slug": "jose-offerman",
+      "signing_year": 1986,
+      "mlb_id": 119948,
+      "queue_rank": 17
+    },
+    {
+      "slug": "victor-gonzalez",
+      "signing_year": 2012,
+      "mlb_id": 624647,
+      "queue_rank": 18
+    },
+    {
+      "slug": "omar-daal",
+      "signing_year": 1990,
+      "mlb_id": 112984,
+      "queue_rank": 19
+    },
+    {
+      "slug": "willy-aybar",
+      "signing_year": 2000,
+      "mlb_id": 430632,
+      "queue_rank": 20
+    },
+    {
+      "slug": "tony-abreu",
+      "signing_year": 2002,
+      "mlb_id": 473234,
+      "queue_rank": 21
+    },
+    {
+      "slug": "ramon-troncoso",
+      "signing_year": 2002,
+      "mlb_id": 470462,
+      "queue_rank": 22
+    },
+    {
+      "slug": "roki-sasaki",
+      "signing_year": 2025,
+      "mlb_id": 808963,
+      "queue_rank": 23
+    },
+    {
+      "slug": "roger-cedeno",
+      "signing_year": 1991,
+      "mlb_id": 112155,
+      "queue_rank": 24
+    },
+    {
+      "slug": "rubby-de-la-rosa",
+      "signing_year": 2007,
+      "mlb_id": 523989,
+      "queue_rank": 25
+    },
+    {
+      "slug": "elian-herrera",
+      "signing_year": 2003,
+      "mlb_id": 467070,
+      "queue_rank": 26
+    },
+    {
+      "slug": "josue-de-paula",
+      "signing_year": 2022,
+      "mlb_id": 800543,
+      "queue_rank": 27
+    },
+    {
+      "slug": "jose-vizcaino",
+      "signing_year": 1986,
+      "mlb_id": 123743,
+      "queue_rank": 28
+    },
+    {
+      "slug": "chin-lung-hu",
+      "signing_year": 2003,
+      "mlb_id": 464341,
+      "queue_rank": 29
+    },
+    {
+      "slug": "keibert-ruiz",
+      "signing_year": 2014,
+      "mlb_id": 660688,
+      "queue_rank": 30
+    },
+    {
+      "slug": "chico-fernandez",
+      "signing_year": 1951,
+      "mlb_id": 114077,
+      "queue_rank": 31
+    },
+    {
+      "slug": "roberto-clemente",
+      "signing_year": 1954,
+      "mlb_id": 112391,
+      "queue_rank": 32
+    },
+    {
+      "slug": "juan-guzman",
+      "signing_year": 1985,
+      "mlb_id": 115267,
+      "queue_rank": 33
+    },
+    {
+      "slug": "carlos-santana",
+      "signing_year": 2004,
+      "mlb_id": 467793,
+      "queue_rank": 34
+    },
+    {
+      "slug": "oneil-cruz",
+      "signing_year": 2015,
+      "mlb_id": 665833,
+      "queue_rank": 35
+    },
+    {
+      "slug": "ramon-rosso",
+      "signing_year": 2015,
+      "mlb_id": 665759,
+      "queue_rank": 36
+    },
+    {
+      "slug": "yusniel-diaz",
+      "signing_year": 2015,
+      "mlb_id": 666783,
+      "queue_rank": 37
+    },
+    {
+      "slug": "yordan-alvarez",
+      "signing_year": 2016,
+      "mlb_id": 670541,
+      "queue_rank": 38
+    },
+    {
+      "slug": "eddys-leonard",
+      "signing_year": 2017,
+      "mlb_id": 678760,
+      "queue_rank": 39
+    },
+    {
+      "slug": "jorbit-vivas",
+      "signing_year": 2017,
+      "mlb_id": 678391,
+      "queue_rank": 40
+    },
+    {
+      "slug": "miguel-vargas",
+      "signing_year": 2017,
+      "mlb_id": 678246,
+      "queue_rank": 41
+    },
+    {
+      "slug": "jose-dominguez",
+      "signing_year": 2007,
+      "mlb_id": 523848,
+      "queue_rank": 42
+    },
+    {
+      "slug": "karim-garcia",
+      "signing_year": 1992,
+      "mlb_id": 114588,
+      "queue_rank": 43
+    },
+    {
+      "slug": "juan-castro",
+      "signing_year": 1991,
+      "mlb_id": 112128,
+      "queue_rank": 44
+    },
+    {
+      "slug": "carlos-frias",
+      "signing_year": 2007,
+      "mlb_id": 516910,
+      "queue_rank": 53
+    }
+  ],
+  "as_of_date": "2026-10-20",
+  "progression_reviews": [
+    {
+      "slug": "carlos-santana",
+      "event_code": "A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2010-06-11: 2005 Complex 32 G; 2006 High-A 54 G; 2007 Low-A 86 G; 2008 High-A 128 G; 2008 Double-A 2 G; 2009 Double-A 130 G; 2010 Triple-A 57 G. First appearances run backward: Low-A (first recorded 2007), High-A (first recorded 2006). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "carlos-santana",
+      "event_code": "HIGH_A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2010-06-11: 2005 Complex 32 G; 2006 High-A 54 G; 2007 Low-A 86 G; 2008 High-A 128 G; 2008 Double-A 2 G; 2009 Double-A 130 G; 2010 Triple-A 57 G. First appearances run backward: Low-A (first recorded 2007), High-A (first recorded 2006). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "hung-chih-kuo",
+      "event_code": "A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2005-09-02: 2000 High-A 1 G; 2001 Complex 7 G; 2002 Complex 3 G; 2002 High-A 4 G; 2004 Low-A 3 G; 2005 High-A 11 G; 2005 Double-A 17 G. First appearances run backward: Complex (first recorded 2001), Low-A (first recorded 2004), High-A (first recorded 2000). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "hung-chih-kuo",
+      "event_code": "COMPLEX_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2005-09-02: 2000 High-A 1 G; 2001 Complex 7 G; 2002 Complex 3 G; 2002 High-A 4 G; 2004 Low-A 3 G; 2005 High-A 11 G; 2005 Double-A 17 G. First appearances run backward: Complex (first recorded 2001), Low-A (first recorded 2004), High-A (first recorded 2000). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "hung-chih-kuo",
+      "event_code": "HIGH_A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2005-09-02: 2000 High-A 1 G; 2001 Complex 7 G; 2002 Complex 3 G; 2002 High-A 4 G; 2004 Low-A 3 G; 2005 High-A 11 G; 2005 Double-A 17 G. First appearances run backward: Complex (first recorded 2001), Low-A (first recorded 2004), High-A (first recorded 2000). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "julio-urias",
+      "event_code": "A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2016-05-27: 2013 Low-A 18 G; 2014 High-A 25 G; 2015 Complex 2 G; 2015 High-A 1 G; 2015 Double-A 13 G; 2015 Triple-A 2 G; 2016 Triple-A 11 G. First appearances run backward: Complex (first recorded 2015), Low-A (first recorded 2013), High-A (first recorded 2014). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "julio-urias",
+      "event_code": "COMPLEX_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2016-05-27: 2013 Low-A 18 G; 2014 High-A 25 G; 2015 Complex 2 G; 2015 High-A 1 G; 2015 Double-A 13 G; 2015 Triple-A 2 G; 2016 Triple-A 11 G. First appearances run backward: Complex (first recorded 2015), Low-A (first recorded 2013), High-A (first recorded 2014). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "julio-urias",
+      "event_code": "HIGH_A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2016-05-27: 2013 Low-A 18 G; 2014 High-A 25 G; 2015 Complex 2 G; 2015 High-A 1 G; 2015 Double-A 13 G; 2015 Triple-A 2 G; 2016 Triple-A 11 G. First appearances run backward: Complex (first recorded 2015), Low-A (first recorded 2013), High-A (first recorded 2014). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "oneil-cruz",
+      "event_code": "A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2021-10-02: 2016 DSL 55 G; 2017 Low-A 105 G; 2018 Low-A 103 G; 2019 Complex 3 G; 2019 High-A 35 G; 2019 Double-A 35 G; 2021 Double-A 62 G; 2021 Triple-A 6 G. First appearances run backward: Complex (first recorded 2019), Low-A (first recorded 2017). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "oneil-cruz",
+      "event_code": "COMPLEX_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2021-10-02: 2016 DSL 55 G; 2017 Low-A 105 G; 2018 Low-A 103 G; 2019 Complex 3 G; 2019 High-A 35 G; 2019 Double-A 35 G; 2021 Double-A 62 G; 2021 Triple-A 6 G. First appearances run backward: Complex (first recorded 2019), Low-A (first recorded 2017). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "tony-abreu",
+      "event_code": "A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2007-05-22: 2003 Complex 45 G; 2003 High-A 3 G; 2004 Low-A 104 G; 2004 High-A 11 G; 2005 High-A 96 G; 2005 Double-A 24 G; 2006 Double-A 118 G; 2007 Triple-A 54 G. First appearances run backward: Low-A (first recorded 2004), High-A (first recorded 2003). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "tony-abreu",
+      "event_code": "HIGH_A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2007-05-22: 2003 Complex 45 G; 2003 High-A 3 G; 2004 Low-A 104 G; 2004 High-A 11 G; 2005 High-A 96 G; 2005 Double-A 24 G; 2006 Double-A 118 G; 2007 Triple-A 54 G. First appearances run backward: Low-A (first recorded 2004), High-A (first recorded 2003). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "yusniel-diaz",
+      "event_code": "AA_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2022-08-02: 2016 Complex 3 G; 2016 High-A 82 G; 2017 High-A 83 G; 2017 Double-A 31 G; 2018 Double-A 97 G; 2019 Low-A 3 G; 2019 High-A 6 G; 2019 Double-A 76 G; 2021 Double-A 11 G; 2021 Triple-A 54 G; 2022 Complex 2 G; 2022 High-A 5 G; 2022 Triple-A 70 G. First appearances run backward: Low-A (first recorded 2019), High-A (first recorded 2016), Double-A (first recorded 2017). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "yusniel-diaz",
+      "event_code": "A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2022-08-02: 2016 Complex 3 G; 2016 High-A 82 G; 2017 High-A 83 G; 2017 Double-A 31 G; 2018 Double-A 97 G; 2019 Low-A 3 G; 2019 High-A 6 G; 2019 Double-A 76 G; 2021 Double-A 11 G; 2021 Triple-A 54 G; 2022 Complex 2 G; 2022 High-A 5 G; 2022 Triple-A 70 G. First appearances run backward: Low-A (first recorded 2019), High-A (first recorded 2016), Double-A (first recorded 2017). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    },
+    {
+      "slug": "yusniel-diaz",
+      "event_code": "HIGH_A_DEBUT",
+      "decision_basis": "STINT_CHRONOLOGY_REVIEW",
+      "confidence": "LOW",
+      "as_of_date": "2026-10-20",
+      "notes": "Unresolved sequence before the MLB debut on 2022-08-02: 2016 Complex 3 G; 2016 High-A 82 G; 2017 High-A 83 G; 2017 Double-A 31 G; 2018 Double-A 97 G; 2019 Low-A 3 G; 2019 High-A 6 G; 2019 Double-A 76 G; 2021 Double-A 11 G; 2021 Triple-A 54 G; 2022 Complex 2 G; 2022 High-A 5 G; 2022 Triple-A 70 G. First appearances run backward: Low-A (first recorded 2019), High-A (first recorded 2016), Double-A (first recorded 2017). Whether the later lower-level appearance was a rehabilitation or a reassignment, or the earlier higher-level one an early cameo, is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides."
+    }
+  ],
+  "already_researched": [
+    "carlos-frias",
+    "roger-cedeno"
+  ]
+}

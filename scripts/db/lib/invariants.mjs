@@ -50,23 +50,26 @@ export const CANONICAL_EXPECTATIONS = {
   // players, whose first/last game dates have not been researched yet (a coverage
   // gap queued as MISSING_FIRST_GAME_DATE, not a failure).
   // 047 (ten verified MLB players' whole careers): +255 stints, +41 milestones, +10 players.
-  stints: 1083,
-  stint_players: 177,
+  // 048 (the other thirty-five verified MLB players with new rows; Cedeno and Frias were already on record from 021): +776 stints, +200 milestones,
+  // +35 players, +50 season totals (each proven), +15 pending progression reviews. The 4 + 89 undated log-era stints become 534: 441 more
+  // log-era team stints whose game dates have not been researched (a coverage gap queued as MISSING_FIRST_GAME_DATE, not a failure).
+  stints: 1859,
+  stint_players: 212,
   dated_stints: 746,
-  undated_log_era_stints: 93,
-  team_stints: 1013,
-  season_total_stints: 70,
+  undated_log_era_stints: 534,
+  team_stints: 1739,
+  season_total_stints: 120,
   unresolved_stints: 0,
-  season_total_same_level: 47,
-  season_total_cross_level: 22,
+  season_total_same_level: 90,
+  season_total_cross_level: 29,
   season_total_sub_season: 1,
-  coded_milestones: 873,
+  coded_milestones: 1073,
   professional_debut_milestones: 166,
   legacy_milestones: 5,
-  mlb_debut_milestones: 17,
-  mlb_debut_players: 17,
-  organization_change_milestones: 28,
-  aa_debut_milestones: 32,
+  mlb_debut_milestones: 47,
+  mlb_debut_players: 47,
+  organization_change_milestones: 44,
+  aa_debut_milestones: 61,
   // 024: status is the highest unambiguously established developmental level;
   // pending milestones do not count as reached and do not invalidate a
   // separately verified higher level (Frias stays MLB). Five reviewed early
@@ -83,12 +86,12 @@ export const CANONICAL_EXPECTATIONS = {
     OUT_OF_AFFILIATED_BASEBALL: 1,
   },
   // progression decisions (024): reviewed interpretation of first appearances
-  progression_decisions: 22,
-  progression_decisions_pending: 11,
+  progression_decisions: 37,
+  progression_decisions_pending: 26,
   progression_roles: {
     EARLY_CAMEO: 8,
     POST_ESTABLISHMENT_APPEARANCE: 3,
-    REVIEW_REQUIRED: 11,
+    REVIEW_REQUIRED: 26,
   },
   // integrity
   duplicate_stint_groups: 0,
@@ -251,12 +254,36 @@ export const CANONICAL_EXPECTATIONS = {
 }
 
 /**
+ * The pinned expectations as they stood through Migration 047. Tests that verify a chain built only through 047 use this;
+ * CANONICAL_EXPECTATIONS is always the current head. Migration 048 (the other verified MLB players' development careers) moved the
+ * development and progression counts below; nothing else differs.
+ */
+export const EXPECTATIONS_THROUGH_047 = Object.freeze({
+  ...CANONICAL_EXPECTATIONS,
+  stints: 1083,
+  stint_players: 177,
+  undated_log_era_stints: 93,
+  team_stints: 1013,
+  season_total_stints: 70,
+  season_total_same_level: 47,
+  season_total_cross_level: 22,
+  coded_milestones: 873,
+  mlb_debut_milestones: 17,
+  mlb_debut_players: 17,
+  organization_change_milestones: 28,
+  aa_debut_milestones: 32,
+  progression_decisions: 22,
+  progression_decisions_pending: 11,
+  progression_roles: { EARLY_CAMEO: 8, POST_ESTABLISHMENT_APPEARANCE: 3, REVIEW_REQUIRED: 11 },
+})
+
+/**
  * The pinned expectations as they stood through Migration 046. Tests that verify a chain built only through an earlier migration use
  * this; CANONICAL_EXPECTATIONS is always the current head. Migration 047 (ten verified MLB players' whole development careers) moved the
  * development and progression counts below; nothing else differs.
  */
 export const EXPECTATIONS_THROUGH_046 = Object.freeze({
-  ...CANONICAL_EXPECTATIONS,
+  ...EXPECTATIONS_THROUGH_047,
   stints: 828,
   stint_players: 167,
   undated_log_era_stints: 4,

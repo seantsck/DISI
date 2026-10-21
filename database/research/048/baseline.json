@@ -1,0 +1,148 @@
+{
+  "as_of": "2026-10-05",
+  "generation": "5",
+  "tracked_signings": 220,
+  "stints": 1083,
+  "development_coverage": {
+    "signings": 220,
+    "dimensions": {
+      "SIGNING_DATE": {
+        "known": 197,
+        "applicable": 220
+      },
+      "FIRST_PRO_SEASON": {
+        "known": 163,
+        "applicable": 220
+      },
+      "HIGHEST_LEVEL": {
+        "known": 212,
+        "applicable": 220
+      },
+      "MLB_DEBUT": {
+        "known": 47,
+        "applicable": 47
+      },
+      "EXIT": {
+        "known": 138,
+        "applicable": 156
+      },
+      "CHRONOLOGY": {
+        "known": 135,
+        "applicable": 220
+      }
+    },
+    "states": {
+      "COMPLETE": 111,
+      "PARTIAL": 109
+    }
+  },
+  "verified_mlb_coverage": {
+    "players": 47,
+    "any_pre_mlb_history": {
+      "n": 10,
+      "of": 47
+    },
+    "usable_affiliate_chronology": {
+      "n": 0,
+      "of": 47
+    },
+    "exact_signing_date": {
+      "n": 45,
+      "of": 47
+    },
+    "exact_mlb_debut_date": {
+      "n": 47,
+      "of": 47
+    },
+    "signing_to_mlb_both_dates": {
+      "n": 16,
+      "of": 47
+    },
+    "verified_first_professional_season": {
+      "n": 3,
+      "of": 47
+    },
+    "prior_professional_career": {
+      "n": 8,
+      "of": 47
+    },
+    "progression_review_pending": {
+      "n": 2,
+      "of": 47
+    },
+    "path_state": {
+      "NO_OPEN_GAP": 1,
+      "PARTIAL": 46,
+      "of": 47
+    },
+    "history_start": {
+      "FROM_SIGNING_SEASON": 7,
+      "NO_PRE_MLB_RECORD": 37,
+      "SOURCE_BEGINS_LATE": 3
+    }
+  },
+  "development_queue": {
+    "signings_with_a_gap": 109,
+    "by_tier": {
+      "1": 44,
+      "2": 2,
+      "3": 2,
+      "4": 11,
+      "5": 23,
+      "6": 27
+    }
+  },
+  "development_needs": {
+    "detector_rows": 154,
+    "needs": 113,
+    "players": 85,
+    "by_need": {
+      "SEQUENCE_REVIEW": 5,
+      "SEASON_COVERAGE": 62,
+      "LEVEL_CLASSIFICATION": 13,
+      "ORGANIZATION": 20,
+      "GAME_DATES": 13
+    }
+  },
+  "timing": {
+    "verified_mlb_players": 47,
+    "signing_to_mlb_exact": {
+      "n": 16,
+      "of": 47,
+      "min_years": 0.15,
+      "median_years": 3.4699999999999998,
+      "max_years": 7.58
+    },
+    "signing_to_mlb_exact_by_route": {
+      "amateur_signing": {
+        "n": 10,
+        "of": 39,
+        "min_years": 0.22,
+        "median_years": 4.470000000000001,
+        "max_years": 7.58
+      },
+      "established_professional": {
+        "n": 6,
+        "of": 8,
+        "min_years": 0.15,
+        "median_years": 0.615,
+        "max_years": 2.98
+      }
+    },
+    "audited_no_mlb_players": 46,
+    "highest_level_known": {
+      "n": 44,
+      "of": 46
+    },
+    "highest_level_counts": {
+      "INTERNATIONAL_ROOKIE": 10,
+      "COMPLEX_ROOKIE": 6,
+      "LOW_A": 7,
+      "HIGH_A": 8,
+      "AA": 4,
+      "AAA": 9
+    },
+    "note": "Descriptive facts with stated denominators. NOT_AUDITED players are not counted as negative outcomes, and nothing here is a rate, a score or a cross-cohort comparison."
+  },
+  "pending_progression_decisions": 11
+}

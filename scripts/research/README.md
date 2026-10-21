@@ -1,4 +1,4 @@
-# DISI research commands (046, 047)
+# DISI research commands (046, 047, 048)
 
 Read-only commands that tell a researcher what to work on next. They connect as the public `anon` role in a read-only session, so they can
 only see what the website can see (the persisted `product_*` snapshots and the public views). They never write. Their output has no
@@ -13,6 +13,9 @@ npm run research:transactions -- --missing | --traded | --unresolved-attribution
 npm run research:development  -- --missing [--mature] [--mlb yes|no] [--year 2018] [--market Venezuela] [--player slug] [--limit 25]
 npm run research:development  -- --coverage        # per-dimension coverage with denominators
 npm run research:development  -- --timing          # descriptive signing-to-MLB and highest-level facts (no rates, no scores)
+npm run research:development  -- --mlb-coverage    # 048: the verified MLB cohort's documented path, player by player, with denominators
+npm run research:development  -- --needs           # 048: the queue de-duplicated by the evidence gap each item names
+npm run research:development  -- --review [--player kenley-jansen]   # 048: the reviewer's packet for pending progression decisions (decides nothing)
 npm run research:readiness
 npm run research:progress     -- --baseline database/research/046/baseline.json
 ```
@@ -35,3 +38,18 @@ the missing fields as stable codes (`SIGNING_DATE_MISSING`, `FIRST_PRO_SEASON_UN
 `EXIT_TRANSACTION_MISSING`, `CHRONOLOGY_INCOMPLETE`), the current highest level, MLB debut, exit status and source count. `UNKNOWN DEVELOPMENT
 HISTORY` is never shown as "no development". Read-only; `--input` reads a saved dataset. `research:readiness` additionally lists the
 development / transaction evidence gaps, labelled as supporting evidence and not gates.
+
+## research:development, 048 modes
+
+| Flag | Reads | Prints |
+|---|---|---|
+| `--mlb-coverage` | the base dataset plus the per-stint history (`--history` is implied) | for the verified MLB players: any pre-MLB history, usable affiliate chronology, exact signing date, exact debut date, both dates for signing-to-MLB, verified first professional season, prior professional career, pending reviews, each with its denominator; then one row per player with the documented-path state, where the record is silent (`SOURCE_UNAVAILABLE`, `SOURCE_BEGINS_LATE`, `NO_EVIDENCE_FOUND`, `ORGANIZATION_UNCLEAR`, `LEVEL_UNCLEAR`) and the notes (`PRIOR_PROFESSIONAL_CAREER`, `LEAGUE_SEASON_NOT_PLAYED`) |
+| `--needs` | the base dataset | the development queue merged by evidence gap (`SOURCE_CONFLICT`, `SEQUENCE_REVIEW`, `SEASON_COVERAGE`, `LEVEL_CLASSIFICATION`, `ORGANIZATION`, `GAME_DATES`), with the detector rows each need merges |
+| `--review [--player slug]` | the base dataset plus stints, the progression view and the decisions table | for every player with a `PENDING_REVIEW` decision: the pending rows and notes, the source stints in chronological order, the first appearance at each level, the levels that run backward, the competing readings with the decision each would produce, and the evidence that would settle it |
+
+`--review` never writes and never decides: a pending row is reported exactly as stored, and `--format json` carries `decided: false` on every packet.
+A decision is a reviewed migration (Migration 024's roles: `EARLY_CAMEO`, `POST_ESTABLISHMENT_APPEARANCE`, `DEVELOPMENTAL_ARRIVAL`). `--save` with
+`--mlb-coverage` or `--review` keeps the history rows, so a saved dataset can be reviewed offline (`--input`).
+
+The 048 research is rebuilt with `node database/research/048/derive-development.mjs <dir>`, `derive-reviews.mjs <dir>` and `build.mjs` (see
+`database/research/048/README.md`).

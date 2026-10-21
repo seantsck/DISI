@@ -159,7 +159,7 @@ A signing's **own** exit is established by the exit summary (`v_dodgers_internat
   equally among the outgoing players and never credited in full to the DISI signing. **When attribution must stay unresolved:** a shared
   package, an incomplete chain, or a return whose value is not determined. That is better than false precision.
 
-## Development history (046 audit, 047 research)
+## Development history (046 audit, 047 research, 048 coverage)
 
 046 checked whether the current model supports development research. It does, with no schema addition, and 047 used it:
 
@@ -181,7 +181,7 @@ There is **no single "complete" flag**. Completeness is six independent dimensio
 | Dimension | Known when | Not applicable |
 |---|---|---|
 | `SIGNING_DATE` | the signing has a recorded date | never |
-| `FIRST_PRO_SEASON` | the earliest recorded season is the signing season or the next | never. A record starting two or more seasons after signing is only the first *observed* record |
+| `FIRST_PRO_SEASON` | the earliest recorded season is the signing season or the next, **and** the player was an amateur signing | never. A record starting two or more seasons after signing is only the first *observed* record; an established professional's first affiliated season is not his first professional season (048) |
 | `HIGHEST_LEVEL` | a highest affiliated level is known, or a verified MLB debut (MLB, derived from the audited outcome) | never |
 | `MLB_DEBUT` | a verified MLB player has a debut date | not a verified MLB player |
 | `EXIT` | the exit summary says the player left control (an exit event exists) | still Dodgers-controlled |
@@ -207,11 +207,75 @@ returns are recorded (`COMPLETE_TERMINAL`, or `STILL_ACTIVE` where a returned as
 
 Within a tier: Dodgers bWAR (higher first, `NULL` last), signing year, signing date, sort name, signing id. Same data, same bytes.
 
+### First observed season, first professional season (048)
+
+`FIRST OBSERVED SEASON != FIRST PROFESSIONAL SEASON`. `firstProSeasonStatus` returns exactly one of:
+
+| Status | Meaning |
+|---|---|
+| `KNOWN` | an amateur signing whose earliest first-appearance season (professional debut, DSL, complex, Low-A) is the signing season or the next |
+| `FIRST_OBSERVED_ONLY` | the earliest record starts two or more seasons after signing: it is the first *observed* record; the earlier seasons are missing |
+| `PRIOR_PROFESSIONAL_CAREER` | the signing pathway is `CUBAN_PRO`, `JAPAN_PRO`, `KOREA_PRO`, `POSTED_PLAYER` or `MEXICAN_LEAGUE_TRANSFER` (the 037 `PROFESSIONAL_SIGNING` route), with or without an affiliated record: affiliated records cannot show when his professional career began |
+| `NO_AFFILIATED_RECORD` | no first-appearance season is on record |
+
+A player signed in 1985 whose API history begins in 1988 does not get 1988 as his first professional season. A Japanese, Korean, Cuban or
+Mexican League professional entering MLB is not an amateur beginning professional baseball. Honouring the pathway corrected the 047 figure on
+the pre-048 state from 164 to 163 of 220 (Puig, a Cuban professional, had been counted). Prior professional leagues stay `FOREIGN_PRO` stints
+(never an affiliated level, never on the progression ladder); where the API holds none (Sasaki's NPB years) that career is a documented
+limitation, not an invented row, and no subsystem was added for it.
+
+### How much of a path is documented (048)
+
+`historyCoverage` (`lib/research/history-coverage.js`) describes the path from signing to the MLB debut at season precision. It never fills a
+season, a level or an organization; it names why the record is silent:
+
+| Gap | Meaning |
+|---|---|
+| `SOURCE_UNAVAILABLE` | the source returns no structured pre-MLB record for the player |
+| `SOURCE_BEGINS_LATE` | the first structured record is two or more seasons after signing |
+| `NO_EVIDENCE_FOUND` | a season between the first record and the debut season has no record |
+| `ORGANIZATION_UNCLEAR` | a pre-MLB stint has no organization resolved from its team, league and season |
+| `LEVEL_UNCLEAR` | a pre-MLB stint could not be placed on the level ladder |
+
+Notes explain and do not open an obligation: `LEAGUE_SEASON_NOT_PLAYED` (the 2020 minor-league season was cancelled, so no affiliated record
+exists for any player that year; this says nothing about where a player was) and `PRIOR_PROFESSIONAL_CAREER`. There is no "complete":
+`NO_OPEN_GAP` means only that no gap is visible at season precision, and a path with a prior professional career is `PARTIAL` by construction.
+`PARTIAL HISTORY != NO HISTORY`. A post-MLB minor-league stint (rehabilitation, demotion, a late reassignment) is not part of the pre-MLB path
+and is never a developmental arrival: `POST-MLB MINOR-LEAGUE STINT != DEVELOPMENTAL ARRIVAL`.
+
+### Career events are not exits (048)
+
+A sourced `RELEASED` / `RETIRED` development milestone records a dated career event. It is not an organization exit unless the transaction model
+independently establishes that exit. `DATED RELEASE/RETIREMENT EVENT KNOWN != ORGANIZATION KNOWN`; `UNKNOWN ORGANIZATION != DODGERS`. Where the source
+does not name the organization it stays NULL and is never filled from an adjacent stint. The Dodgers exit comes only from `transaction_events` /
+`transaction_event_assets` and `v_dodgers_international_exit_summary` (proved by `tests/db/research-048.test.mjs`).
+
+### Ambiguous level sequences are reviewed by a person (048)
+
+`AMBIGUOUS LEVEL SEQUENCE != CANONICAL LEVEL DEBUT`. When a lower level is first recorded in a *later* season than a higher one, every level in
+the inverted pairs becomes a `REVIEW_REQUIRED` / `PENDING_REVIEW` decision (confidence `LOW`) whose note lists the season-by-season path. Neither
+reading (an early cameo at the higher level, or a later reassignment, demotion or rehabilitation at the lower one) is asserted. Players whose
+reviewed decisions already exist (Migration 024) are not asked again. `npm run research:development -- --review [--player slug]` prints the
+reviewer's packet: the pending decisions and their notes, the source stints in chronological order, the first appearance at each level, the exact
+pairs that run backward, the competing readings with the decision each would produce, and the evidence that would settle it. It reads only; it
+decides nothing and writes nothing.
+
+### The development queue, de-duplicated (048)
+
+`v_dodgers_development_research_queue` raises one row per detector, and several detectors fire on the same missing evidence (an undated log-era
+stint raises `MISSING_FIRST_GAME_DATE`, `MISSING_LAST_GAME_DATE` and `GAME_LOG_UNAVAILABLE`, and the same absence keeps level debuts at season
+precision). `developmentNeeds` merges them into one need per player and evidence gap: `SOURCE_CONFLICT`, `SEQUENCE_REVIEW`, `SEASON_COVERAGE`,
+`LEVEL_CLASSIFICATION`, `ORGANIZATION`, `GAME_DATES`. Nothing is deleted: each need lists the detectors it merges, the raw detector count is kept
+beside it, an unrecognised detector is its own need, and the order is deterministic. The player-level queue (the seven tiers above) is unchanged.
+
 ### Descriptive timing (never a model)
 
-`--timing` reports signing-to-MLB intervals where both dates are exact (e.g. 16 of 47 verified MLB players) and the highest level reached
-among **audited** non-MLB players (44 of 46). `NOT_AUDITED` players are never counted as negative outcomes, and nothing is compared across
-cohorts or turned into a rate or score. Everything states its denominator.
+`--timing` reports signing-to-MLB intervals where both dates are exact (45 of 47 verified MLB players after 048; 16 before) and the highest
+level reached among **audited** non-MLB players (44 of 46). `NOT_AUDITED` players are never counted as negative outcomes, and nothing is
+compared across cohorts or turned into a rate or score. Everything states its denominator. Because an established professional's interval is
+acquisition to debut, not development from an amateur signing, the two routes are described separately (amateur signings 38 of 39,
+established professionals 7 of 8) and never compared. The interval is never inferred from a signing year or a debut season: two players
+(Amorós, Díaz) have no recorded signing date, so theirs is not calculable.
 
 ### Source policy for development and transactions
 
@@ -235,6 +299,17 @@ not write dates, transaction types, affiliate levels, trade participants, bWAR o
 - Ten verified MLB players' whole recorded careers (255 stints, 41 first-appearance milestones). Seasons the API does not return stay
   unknown; level debuts after the MLB debut season (rehab or demotion appearances) are not milestones.
 - Fourteen team-less aggregate rows classified as season totals, each proven equal to its component team stints.
+
+### What 048 recorded
+
+- The whole recorded careers of the remaining verified MLB players: 35 with new rows (776 stints, 200 first-appearance milestones, 50 proven
+  season totals); Cedeño and Frías were already on record from Migration 021 and are unchanged. The verified MLB cohort's pre-MLB history went
+  from 10 to 42 of 47; a verified first professional season from 3 to 19 (under the pathway rule); signing-to-MLB with both exact dates from 16
+  to 45. Of the 47 paths, 44 are partial and 3 show no gap at season precision; none is "complete".
+- Fifteen pending progression reviews for six players (Kuo, Santana, Urías, Cruz, Abreu and Díaz); Jansen's two stay pending, and none is decided.
+- Not done on purpose: a player's final release or retirement transaction is a milestone that names no organization and is never read as a
+  Dodgers exit; organizations are not re-resolved (the 021 affiliation table is unchanged); game-log dates are not retrieved; minor-league
+  years the API does not hold (the 1950s, most pre-1990 rookie leagues) stay unknown.
 
 ## Prediction readiness and blockers
 
