@@ -3,23 +3,48 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 048 is built; 048 is not yet released)
+## Where DISI stands (after 049 is built; 049 is not yet released)
 
-- **v1.0.0 / schema v0.36.1** is in production through Migration 047 (released 2026-10-20, PR #17; frozen in PR #18). The product reads eleven
-  persisted snapshots; the analytical layer is internal; the verifier has 247 hard checks. **048 is built, tested and awaiting release.**
+- **v1.0.0 / schema v0.36.1** is in production through Migration 048 (released 2026-10-21, PR #19; production-verified; frozen in PR #20). The
+  product reads eleven persisted snapshots; the analytical layer is internal; the verifier has 247 hard checks (generation 6, drift 0).
+  **049 is built, tested and awaiting its release gate.**
 - **220** Dodgers international signings are tracked. **93** have an outcome audit: **47** verified MLB, **46** verified no MLB.
   **127** are `NOT_AUDITED`. Of the **98** mature signings, **7** are not audited, and the audit policy correctly holds all seven (five are
   still playing affiliated ball in a class after 2020; two have no usable affiliated record). The other 120 `NOT_AUDITED` signings are in
   classes that are not yet five years old.
 - Acquisition cost is known for **56** signings (046), a lower bound of $121.7M.
-- Development history (047, released): **1083** stints and **873** milestones; **16** of 47 verified MLB players had both exact dates for
-  signing-to-MLB; 7 transaction chains incomplete, 21 trade packages with an open issue.
-- Development history (048, built): the other verified MLB players' careers (35 players, 776 stints, 200 milestones): pre-MLB history for **42**
-  of 47 verified MLB players (10 before), signing-to-MLB with both exact dates for **45** of 47 (16 before), a verified first professional
-  season for **19** of 47 under the pathway rule (3 before; 179 of 220 signings, 163 before). No path is complete: 44 of 47 are partial.
+- Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
+  players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
+  (179 of 220 signings). No path is complete: 44 of 47 are partial. 347 detector rows are 173 distinct pieces of development work.
+- Transactions (after 048): **209** events, **387** assets, **7** incomplete chains, **21** trade packages with an open issue, transaction queue **59**,
+  value queue **91**.
+- Transactions (049, built): `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
+  value of what came back unavailable, so the seven incomplete chains read as **five** whose transaction history is open and **two** whose history
+  is recorded and whose returned players' Baseball-Reference WAR is not loaded. Open packages: **20** (membership open **5**, only terms open **15**).
+  The queues keep **59** and **91** items. Nothing was valued and no unknown became zero. One published figure moves as a consequence: Abreu's
+  return is now recorded with its WAR unknown, so his organizational value is unresolved instead of resolved at a false `0.00` return, and the home
+  page's realized organizational value reads 297.60 bWAR (was 298.83; signings with resolved value 87, was 88).
 - Nothing is published that is not supported: **0** supported probability targets, **0** supported expected values, **0** recommendations.
 
-## What 048 was for
+## What 049 was for
+
+048 finished the broad development-history expansion. 049 returns to the other evidence gap: what happened to the asset after a Dodgers
+international signing left, what the Dodgers received, and how much of that return DISI can value. The order is transaction truth, package truth,
+return identity, return value, player attribution, and it is never reversed.
+
+1. **Transaction truth did not need to wait for value.** The database already represents a known trade whose returned player has no loaded
+   Baseball-Reference WAR (`RETURN_WAR_UNKNOWN`, `INCOMPLETE_WAR_NOT_LOADED`). The coupling was a verifier rule that required every returned
+   player of a tracked-signing trade to have WAR, and the 047 decision not to record Bob Miller's 1967 exit or Tony Abreu's return. 049 records
+   both, keeps the value `NULL`, and narrows the verifier rule to one pinned, explicitly reviewed id (Jon Garland) instead of removing it.
+2. **What was missing is three different things.** The research tooling now classifies every open issue as a transaction-history or
+   package-membership blocker, a terms blocker (cash or pool-space amount) or a value blocker, without storing the classification.
+3. **The Abreu trade was a PTBNL completion stored as if it were the trade.** It is corrected forward to the 2009-08-31 agreement (Jon Garland
+   for a player to be named later) with the 2009-10-09 delivery kept in the record.
+4. **The obscure cases stay open for honest reasons.** No readable source states a Dodgers exit for the minor-league assets of the Mondesí, Nomo
+   and Amorós trades, the Offerman return, the Frías player-to-be-named-or-cash, any cash amount or any pool-space amount. Disappearance from
+   later records is not a release.
+
+## What 048 was for (released 2026-10-21)
 
 047 was the controlled proof; 048 is the coverage expansion. Can DISI reconstruct the documented development path of every verified MLB
 Dodgers international signing without inventing missing seasons or pretending a partial history is complete? Mostly yes, as far as the
@@ -30,7 +55,7 @@ official record goes, and the gaps are now named rather than hidden:
    absent.
 2. **Eight of the 47 were established professionals** (Cuban, Mexican League, NPB, KBO). Their first affiliated season is not their first
    professional season; the pathway rule keeps them out of the first-professional-season count.
-3. **Six more ambiguous level sequences** need a person. 048 records them as pending, never decided, and adds a reviewer's packet.
+3. **Six more ambiguous level sequences** need a person. 048 recorded them as pending, never decided, and added a reviewer's packet.
 4. **The development queue double-counted evidence gaps.** 347 detector rows are 173 distinct pieces of work.
 5. **Game-log dates and organization resolution are the next real work.** Every verified MLB path still has an open chronology issue.
 
@@ -75,8 +100,11 @@ What the 046 research showed about the bottlenecks:
   debut (three 1950s players, Valenzuela and Ryu). The audited non-MLB signings are the next development cohort after that.
 - **Cost research with access.** A human retrieval of the pages that answer 403 (Baseball America international reviews, MLB.com) would
   resolve most remaining unknown bonuses in classes since 2012.
-- **Transaction chains.** Seven chains remain incomplete, and 21 trade packages have an open issue (cash, a player to be named, future
-  considerations). Loading Baseball-Reference team-season bWAR (blocked today) would let Bob Miller's 1967 exit be recorded.
+- **Transaction chains.** Five chains still have an open transaction history (Mondesí and Nomo: minor-league assets with no readable exit; Amorós:
+  Gail Harris; Offerman: an unnamed conditional return; Frías: a player to be named or cash), and 20 trade packages have an open issue (cash, a
+  player to be named, future considerations, pool space). The evidence that would close them is older-era club records or a human retrieval of
+  the blocked pages. Two more chains (Abreu, Fernández) are recorded to their end and wait only for Baseball-Reference team-season bWAR, which
+  answers 403 today: Garland, Grant and Versalles are the returned players whose value is unknown.
 - **Audits as classes mature.** The 2021 class (22) is already mature: five players are active and need a decision rule once their careers
   end; the 2022 class matures in 2027.
 - **Support thresholds.** Unchanged. The closest target remains `POSITIVE_BWAR_WITHIN_10_SEASONS` for the top-prospect benchmark sample

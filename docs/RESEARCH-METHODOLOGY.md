@@ -1,7 +1,7 @@
 # DISI research methodology
 
 How DISI decides what is known, what is not, and what may be published. This file consolidates rules that were introduced across
-Migrations 017-047; each section names the object that enforces it. The ingestion workflow (what to record for a new class, player or
+Migrations 017-049; each section names the object that enforces it. The ingestion workflow (what to record for a new class, player or
 transaction) stays in [`INGESTION.md`](INGESTION.md); the plan is in [`ROADMAP.md`](ROADMAP.md).
 
 ## Core principles
@@ -23,6 +23,14 @@ transaction) stays in [`INGESTION.md`](INGESTION.md); the plan is in [`ROADMAP.m
   without one the exit is unknown (or the player is still with the organization), and DISI does not say which.
 - **`UNKNOWN TRADE RETURN` is not `ZERO VALUE`.** A return that is not recorded or not valued is `NULL`; a zero is a recorded zero.
 - **`PLAYER LEFT THE ORGANIZATION` is not `PLAYER FAILED`.** An exit says what happened to the asset, not how the player turned out.
+- **`KNOWN TRANSACTION` is not `KNOWN RETURN VALUE`.** A verified trade is recorded even when the Baseball-Reference WAR of what came back is
+  not loaded; its return then reads `RETURN_WAR_UNKNOWN` (`NULL`). Transaction facts and value facts stay separate.
+- **`KNOWN PACKAGE` is not `INDIVIDUALLY ATTRIBUTABLE VALUE`.** Knowing who was in a trade says nothing about how its value is shared.
+- **`MISSING BWAR` is not `ZERO BWAR`.** A returned player with no loaded Baseball-Reference team-season WAR has an unknown Dodgers value.
+  fWAR, estimates, search snippets and copied numbers without provenance are not substitutes.
+- **`CASH AMOUNT UNKNOWN` is not `CASH AMOUNT ZERO`**, and an unstated pool-space amount is never estimated.
+- **`PTBNL UNRESOLVED` is not `NO PLAYER RETURN`.** A player to be named later, a player-to-be-named-or-cash and future considerations stay
+  unresolved until a source resolves them; DISI does not assume cash, a player or zero.
 
 ## Maturity
 
@@ -119,10 +127,13 @@ Transaction events (`transaction_events`, `transaction_event_assets`, 033/034) r
   share is `NULL`. The full value of a package is never credited to one signing.
 - **Explicit return states:** `LOADED`, `NO_MLB_APPEARANCE_OBSERVED`, `NO_PLAYER_RETURN`, `PLAYER_RETURN_PENDING`, `RETURN_UNRECORDED`,
   `RETURN_WAR_UNKNOWN`, `TIMING_UNRESOLVED`. Cash, pool space and prospects are not valued.
-- **Chain status** (`product_player_decision.chain_status`): `NO_TRADE_CHAIN`, `STILL_ACTIVE`, `COMPLETE_TERMINAL`, and four incomplete
-  states (`INCOMPLETE_EXIT_NOT_RESEARCHED`, `INCOMPLETE_EXIT_UNRECORDED`, `INCOMPLETE_PENDING_CONSIDERATION`, `INCOMPLETE_RETURN_UNRECORDED`).
-- `npm run research:transactions -- --missing | --traded | --unresolved-attribution | --chains` lists the open work in a fixed order
-  (queue priority, then the documented issue rank, then player and event).
+- **Chain status** (`product_player_decision.chain_status`): `NO_TRADE_CHAIN`, `STILL_ACTIVE`, `COMPLETE_TERMINAL`, and the incomplete states.
+  Five describe an open transaction history (`INCOMPLETE_IDENTITY`, `INCOMPLETE_EXIT_NOT_RESEARCHED`, `INCOMPLETE_EXIT_UNRECORDED`,
+  `INCOMPLETE_PENDING_CONSIDERATION`, `INCOMPLETE_RETURN_UNRECORDED`); two describe a chain recorded to its end whose returned players' value is
+  unavailable (`INCOMPLETE_WAR_NOT_LOADED`, `INCOMPLETE_TIMING`). The tooling reports the two kinds separately (049).
+- `npm run research:transactions -- --missing | --traded | --unresolved-attribution | --chains | --packages | --ptbnl | --future-consideration |
+  --cash-unknown | --value-blocked | --bucket ...` lists the open work in a fixed order (queue priority, then the documented issue rank, then
+  player and event); every item carries its blocker bucket and the evidence that would close it.
 
 A transaction chain is completed by recording the exit event, its assets with stable identities and the return's team-season bWAR under the
 033 audit; it is not completed by inferring from an MLB transaction text alone.
@@ -138,6 +149,7 @@ A transaction chain is completed by recording the exit event, its assets with st
 | `STILL_ACTIVE` | the signing was **traded** and an asset it returned is still under Dodgers control, so value is still accruing |
 | `INCOMPLETE_EXIT_NOT_RESEARCHED` / `INCOMPLETE_EXIT_UNRECORDED` | a returned asset's exit is not recorded |
 | `INCOMPLETE_PENDING_CONSIDERATION` / `INCOMPLETE_RETURN_UNRECORDED` | a returned asset was itself traded for a player to be named later, or for a return that is not recorded |
+| `INCOMPLETE_WAR_NOT_LOADED` / `INCOMPLETE_TIMING` (049: **value** blockers) | the transaction chain is recorded to its end; a returned player has no loaded Baseball-Reference team-season WAR, or his same-season stint order cannot be resolved. The chain is **not** transaction-incomplete |
 
 A signing's **own** exit is established by the exit summary (`v_dodgers_international_exit_summary.control_state`: `STILL_DODGERS_CONTROLLED`,
 `LEFT_DODGERS_CONTROL`, `NO_EXIT_EVIDENCE`, `HISTORY_UNAVAILABLE`), which agrees with the transaction queue's `EXIT_STATUS_UNVERIFIED` and
@@ -158,6 +170,49 @@ A signing's **own** exit is established by the exit summary (`v_dodgers_internat
 - **When value can be attributed to one player:** only when he was the sole outgoing asset (`INDIVIDUALLY_ATTRIBUTED`). Value is never split
   equally among the outgoing players and never credited in full to the DISI signing. **When attribution must stay unresolved:** a shared
   package, an incomplete chain, or a return whose value is not determined. That is better than false precision.
+
+### Transaction truth, package truth, return identity, return value, attribution (049)
+
+The order is fixed and never reversed: **1** what happened to the asset, **2** who was in the package, **3** who the returned players are, **4**
+what the returned players were worth to the Dodgers, **5** how much of that belongs to one signing. A later layer never blocks an earlier one.
+
+**Policy.** A verified transaction or package is recorded when the model can represent its value as unresolved. Lack of valuation evidence is not a
+reason to erase known transaction history. (047 left Bob Miller's 1967 exit and Tony Abreu's return unrecorded because the returned players' WAR
+could not be loaded; the model already represents that as `RETURN_WAR_UNKNOWN` and `INCOMPLETE_WAR_NOT_LOADED`, so 049 records them.)
+
+**Three kinds of missing evidence** (`BLOCKER_BUCKETS`, derived by `lib/research/transaction-research.js`, stored nowhere):
+
+| Bucket | Meaning | Examples |
+|---|---|---|
+| `CHAIN_OR_MEMBERSHIP` | DISI does not know what happened to the asset or who was in the package | `TRADE_RETURN_UNRECORDED`, `PTBNL_UNRESOLVED`, `FUTURE_CONSIDERATIONS_UNRESOLVED`, a returned asset's missing exit |
+| `TERMS` | the players are known; an amount is not | `CASH_AMOUNT_UNKNOWN`, `POOL_SPACE_AMOUNT_UNKNOWN` |
+| `VALUE` | the transaction is known; the value of the return, or its attribution, is not | `DOWNSTREAM_WAR_NOT_LOADED`, `TIMING_UNRESOLVED`, `TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED` |
+
+A package count hides the split: a package whose membership is open is a different problem from one whose players are all known and only a cash
+amount is not. `packageBlockerSplit` reports both (they overlap, and are not added). `INCOMPLETE_WAR_NOT_LOADED` and `INCOMPLETE_TIMING` chains
+read as `VALUE_NOT_DETERMINED` in the attribution state, never as `CHAIN_INCOMPLETE`.
+
+**Recording a deferred player.** When a trade is agreed on one date and a player to be named later is delivered on another, the event carries
+the **agreement** date (the date the return is measured from), the delivery date is kept in the event description and the delivered player's
+asset note, and a corrected event quotes the text DISI stored before it. The migration is forward-only. A separate "player to be named later"
+asset is **not** added when the named player is the only outgoing asset: the model counts every outgoing asset, so a placeholder and the player it
+resolved to would turn a one-player trade into a "shared package" in the older package views. (Where several players leave, the existing
+placeholder-and-resolution pattern still applies.)
+
+**Identity.** A player is joined to a source row by an identifier crosswalk (Retrosheet id, MLBAM id, Baseball-Reference id from the Chadwick
+Register) **and** an exact birth-date match against Retrosheet's BIOFILE and the MLB person record, never by name alone. A minor leaguer with no
+Baseball-Reference career id gets an MLB id only, reconciled by official season-by-season affiliations that bracket the trade (a counterparty-side
+season before it, a Dodgers-organization season after it).
+
+**Value.** Dodgers bWAR is Baseball-Reference team-season WAR measured after the acquisition (the 032 / 033 timing rule, unchanged): the
+counterparty's single stint anchors a same-season Dodgers stint, and if the order cannot be resolved the return is `TIMING_UNRESOLVED`,
+not zero. fWAR cannot be stored as team-season WAR (`war_system = 'BWAR'`), and `CAREER_BWAR` must cite a Baseball-Reference source. The
+verifier's identity rule (a returned player of a tracked-signing trade needs loaded WAR or an observed zero) is relaxed **only** for ids pinned in
+`CANONICAL_EXPECTATIONS.transaction_war_unavailable_mlb_ids`, and only while the model shows the player as `RETURN_WAR_UNKNOWN` with a `NULL`
+Dodgers bWAR. Today the list is one id: Jon Garland.
+
+**Attribution** is unchanged: individual only for a sole outgoing asset, package-level for a shared package, never split, weighted or credited
+in full to one signing, and withheld while the value is unknown.
 
 ## Development history (046 audit, 047 research, 048 coverage)
 
@@ -311,6 +366,27 @@ not write dates, transaction types, affiliate levels, trade participants, bWAR o
   Dodgers exit; organizations are not re-resolved (the 021 affiliation table is unchanged); game-log dates are not retrieved; minor-league
   years the API does not hold (the 1950s, most pre-1990 rookie leagues) stay unknown.
 
+### What 049 recorded
+
+- **The 2009 Tony Abreu trade, corrected forward** (official MLB log + Retrosheet 64131): Arizona sent Jon Garland to the Dodgers on 2009-08-31 for
+  a player to be named later; Abreu was named and delivered 2009-10-09; Garland elected free agency 2009-11-05. Garland's Dodgers bWAR is not
+  loaded, so the return is `RETURN_WAR_UNKNOWN` (`NULL`); Abreu stays the only outgoing asset, so the trade becomes individually attributable the
+  day Garland's Baseball-Reference WAR is loaded. Before 049 the unrecorded return read as a 0.00 individually attributable amount; it is now `NULL`.
+- **The 1967 Dodgers-Twins trade** that ended Bob Miller's Dodgers career (Retrosheet 60573, read independently in the SABR biographies of
+  Versalles, Grant and Perranoski): Miller, Roseboro and Perranoski for Mudcat Grant and Zoilo Versalles, and Grant's and Versalles's 1968
+  expansion-draft exits. Chico Fernández's chain is recorded to its end; Grant's and Versalles's value is unknown, not zero. The sources disagree
+  on one day (November 27 or 28); the disagreement is in the record.
+- **Four MLB ids** for assets recorded by name only (Apostol Garcia, Rick Roberts, Danny Muegge, William Juárez), each reconciled by affiliations
+  bracketing the trade. **No exit was recorded** for any of them, for Gail Harris or for Robinson Checo: no readable source states one, and a
+  disappearance is not a release.
+- **Left open on purpose:** the Offerman return (an unnamed conditional deal), the Frías player-to-be-named-or-cash (neither club's log records a
+  delivery), the Jeral Pérez player-to-be-named-or-cash, three future-consideration packages and every cash and pool-space amount.
+- **Effect:** seven incomplete chains read as five whose transaction history is open and two whose history is recorded and whose value is unknown;
+  open packages 21 to 20; the queues keep 59 and 91 items; no audit, cost, threshold, probability, expected value or recommendation moved. One published
+  figure moves: while Abreu's return was unrecorded it read as a `0.00` return, so his organizational value counted as resolved; now that the return is recorded
+  and its WAR is unknown, his organizational value is `VALUE_UNRESOLVED` and the realized totals drop by his 1.23 direct bWAR (298.83 to 297.60; resolved
+  signings 88 to 87). That is the existing `RETURN_WAR_UNKNOWN` rule working, not a loss of value.
+
 ## Prediction readiness and blockers
 
 The product publishes an estimate only when its evidence meets a documented threshold, and it states exactly what is missing.
@@ -338,7 +414,7 @@ They connect as the public `anon` role in a read-only session (or read a saved d
 npm run research:queue          open queues by category, with what each blocks
 npm run research:outcomes       the audit cohort            -- --mature --status not_audited [--year --market --limit --format csv|json]
 npm run research:costs          the cost queue              -- --missing [--mature --mlb yes|no --year --market --limit]
-npm run research:transactions   transaction / value items   -- --missing | --traded | --unresolved-attribution | --chains
+npm run research:transactions   transaction / value items   -- --missing | --traded | --unresolved-attribution | --chains [--value-blocked] | --packages [--membership|--terms] | --ptbnl | --future-consideration | --cash-unknown | --value-blocked | --bucket CHAIN_OR_MEMBERSHIP|TERMS|VALUE|OTHER
 npm run research:development    development research queue  -- --missing [--mature --mlb yes|no --year --market --player --limit] | --coverage | --timing
 npm run research:readiness      blockers for every layer, plus the development / transaction evidence gaps (reported, not gates)
 npm run research:progress       against database/research/046/baseline.json
