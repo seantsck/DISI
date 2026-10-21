@@ -243,6 +243,13 @@ exists for any player that year; this says nothing about where a player was) and
 `PARTIAL HISTORY != NO HISTORY`. A post-MLB minor-league stint (rehabilitation, demotion, a late reassignment) is not part of the pre-MLB path
 and is never a developmental arrival: `POST-MLB MINOR-LEAGUE STINT != DEVELOPMENTAL ARRIVAL`.
 
+### Career events are not exits (048)
+
+A sourced `RELEASED` / `RETIRED` development milestone records a dated career event. It is not an organization exit unless the transaction model
+independently establishes that exit. `DATED RELEASE/RETIREMENT EVENT KNOWN != ORGANIZATION KNOWN`; `UNKNOWN ORGANIZATION != DODGERS`. Where the source
+does not name the organization it stays NULL and is never filled from an adjacent stint. The Dodgers exit comes only from `transaction_events` /
+`transaction_event_assets` and `v_dodgers_international_exit_summary` (proved by `tests/db/research-048.test.mjs`).
+
 ### Ambiguous level sequences are reviewed by a person (048)
 
 `AMBIGUOUS LEVEL SEQUENCE != CANONICAL LEVEL DEBUT`. When a lower level is first recorded in a *later* season than a higher one, every level in

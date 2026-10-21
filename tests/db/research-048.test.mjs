@@ -545,3 +545,78 @@ test('the research CLI reports the verified MLB coverage, the de-duplicated need
   assert.equal(packets.pending_players, pendingPlayers(pre.raw) + 6, 'the six new players join them')
   assert.ok(packets.packets.every((p) => p.decided === false))
 })
+
+// ---- the career-event boundary: a dated RELEASED / RETIRED development milestone is not an organization exit ------------------------------------
+//   DATED RELEASE/RETIREMENT EVENT KNOWN != ORGANIZATION KNOWN    DEVELOPMENT RELEASE/RETIREMENT MILESTONE != DODGERS EXIT    UNKNOWN ORGANIZATION != DODGERS
+
+test('the 18 organization-less RELEASED / RETIRED milestones are typed, dated, sourced by evidence basis, and keep organization NULL', async () => {
+  const rows = await q(`select p.slug, m.event_code, m.milestone_date::text d, m.date_precision::text prec, m.evidence_basis, m.organization_id, m.affiliate, m.source_id
+    from public.development_milestones m join public.players p on p.id = m.player_id
+    where m.as_of_date = date '2026-10-20' and m.evidence_basis = 'MLB_TRANSACTION_LOG' order by 1, 2`)
+  assert.equal(rows.length, 18)
+  assert.deepEqual([rows.filter((r) => r.event_code === 'RELEASED').length, rows.filter((r) => r.event_code === 'RETIRED').length], [17, 1])
+  for (const r of rows) {
+    assert.match(r.d, /^\d{4}-\d{2}-\d{2}$/, r.slug)
+    assert.equal(r.prec, 'DAY', r.slug)
+    assert.equal(r.organization_id, null, `${r.slug}: the organization is not established by the source and is not inferred`)
+    assert.equal(r.affiliate, null, r.slug)
+  }
+  // the transaction-log request that evidences them is a recorded source
+  assert.ok((await one(`select count(*)::int as n from public.sources where url like 'https://statsapi.mlb.com/api/v1/transactions%'`)).n >= 1)
+  // the organization of a nearby stint is not copied onto the event: the milestone has none
+  const filled = await q(`select p.slug from public.development_milestones m join public.players p on p.id = m.player_id where m.event_code in ('RELEASED', 'RETIRED') and m.evidence_basis = 'MLB_TRANSACTION_LOG' and m.as_of_date = date '2026-10-20' and m.organization_id is not null`)
+  assert.deepEqual(filled, [])
+})
+
+test('adding an organization-less RELEASED or RETIRED milestone changes no Dodgers exit, control interval, chain, queue or value attribution', async () => {
+  const c = await clone(await chain.db.dumpDataDir('none'))
+  try {
+    const snap = async () => ({
+      exits: await c.query(`select * from public.v_dodgers_international_exit_summary order by signing_id`),
+      lineage: await c.query(`select * from public.v_transaction_package_lineage order by 1, 2, 3, 4`).catch(() => []),
+      decisions: (await c.query(`select * from public.product_player_decision order by signing_id`)).map(({ generation_id, generated_at, ...r }) => r),
+      txq: await c.query(`select issue, priority, player_slug, event_key from public.v_transaction_research_queue order by 1, 3, 4`),
+      valq: await c.query(`select issue, priority, player_slug, event_key from public.v_value_research_queue order by 1, 3, 4`),
+      events: (await c.query(`select count(*)::int as n from public.transaction_events`))[0].n,
+      assets: (await c.query(`select count(*)::int as n from public.transaction_event_assets`))[0].n,
+      ctl: (await c.query(`select count(*)::int as n from public.dodgers_control_observations`))[0].n,
+    })
+    const before = await snap()
+    // a player the Dodgers have traded away (chain recorded) and an unexited one, each given a release and a retirement with NO organization
+    const slugs = (await c.query(`select p.slug from public.v_dodgers_international_exit_summary e join public.players p on p.id = e.player_id where e.control_state = 'LEFT_DODGERS_CONTROL' order by 1 limit 2`)).map((r) => r.slug)
+      .concat((await c.query(`select p.slug from public.v_dodgers_international_exit_summary e join public.players p on p.id = e.player_id where e.control_state <> 'LEFT_DODGERS_CONTROL' order by 1 limit 2`)).map((r) => r.slug))
+    assert.equal(slugs.length, 4)
+    for (const [i, slug] of slugs.entries()) {
+      await c.db.exec(`insert into public.development_milestones (player_id, milestone, milestone_date, event_code, date_precision, season_year, evidence_basis, confidence, as_of_date, notes)
+        select p.id, 'OTHER', date '2031-0${i + 1}-15', '${i % 2 ? 'RETIRED' : 'RELEASED'}', 'DAY', 2031, 'MLB_TRANSACTION_LOG', 'VERIFIED', date '2026-10-21', 'regression: a dated career event with no organization'
+        from public.players p where p.slug = '${slug}'`)
+    }
+    const after = await snap()
+    assert.deepEqual(after.exits, before.exits, 'v_dodgers_international_exit_summary')
+    assert.deepEqual(after.lineage, before.lineage, 'control intervals and transaction-chain lineage')
+    assert.deepEqual(after.decisions, before.decisions, 'chain state and value attribution (the persisted decision snapshot is rebuilt from these views)')
+    assert.deepEqual(after.txq, before.txq, 'transaction research queue')
+    assert.deepEqual(after.valq, before.valq, 'value research queue')
+    assert.deepEqual([after.events, after.assets, after.ctl], [before.events, before.assets, before.ctl])
+    // a refresh rebuilds every snapshot from the views: still no change to what the product reads
+    await c.db.exec('select * from public.disi_refresh_product_snapshots()')
+    const refreshed = (await c.query(`select * from public.product_player_decision order by signing_id`)).map(({ generation_id, generated_at, ...r }) => r)
+    assert.deepEqual(refreshed, before.decisions)
+    // the organization stays NULL: it is not filled from the adjacent stint
+    const inserted = await c.query(`select organization_id, affiliate from public.development_milestones where as_of_date = date '2026-10-21'`)
+    assert.equal(inserted.length, 4)
+    assert.ok(inserted.every((r) => r.organization_id === null && r.affiliate === null))
+  } finally { await c.close() }
+})
+
+test('no view or function that decides an exit, a control interval, a chain or a value reads the career-event milestones', () => {
+  const read = (f) => fs.readFileSync(path.join(root, 'database/sql', f), 'utf8')
+  // the exit and chain model is built from transaction tables only (033/034); development_milestones feeds development views and one pathway feature (PROFESSIONAL_DEBUT)
+  for (const f of ['033_transaction_asset_chain_completion.sql', '034_downstream_organizational_value_chains.sql', '032_player_value_organizational_realization.sql']) {
+    assert.doesNotMatch(read(f), /development_milestones/, `${f} must not read development milestones`)
+  }
+  const exitView = read('033_transaction_asset_chain_completion.sql')
+  const i = exitView.indexOf('create or replace view public.v_dodgers_international_exit_summary')
+  assert.ok(i > 0)
+  assert.doesNotMatch(exitView.slice(i, i + 6000), /\bRELEASED\b.*development|development_milestones/s)
+})
