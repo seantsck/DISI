@@ -1,0 +1,196 @@
+{
+  "as_of": "2026-10-05",
+  "generation": "6",
+  "tracked_signings": 220,
+  "chain_status": {
+    "COMPLETE_TERMINAL": 28,
+    "INCOMPLETE_EXIT_NOT_RESEARCHED": 4,
+    "INCOMPLETE_PENDING_CONSIDERATION": 1,
+    "INCOMPLETE_RETURN_UNRECORDED": 2,
+    "NO_TRADE_CHAIN": 175,
+    "STILL_ACTIVE": 10
+  },
+  "chains": {
+    "incomplete_chains": 7,
+    "transaction_chains_incomplete": 7,
+    "value_blocked_chains": 0
+  },
+  "attribution_states": {
+    "CHAIN_INCOMPLETE": 7,
+    "INDIVIDUALLY_ATTRIBUTED": 6,
+    "NOT_A_TRADE_EXIT": 175,
+    "PACKAGE_LEVEL_ONLY": 13,
+    "RECORDED_ZERO_RETURN": 5,
+    "RETURN_STILL_ACCRUING": 10,
+    "VALUE_NOT_DETERMINED": 4
+  },
+  "packages": {
+    "packages_with_open_issues": 21,
+    "packages_with_open_issues_by_issue": {
+      "CASH_AMOUNT_UNKNOWN": 16,
+      "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+      "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+      "PTBNL_UNRESOLVED": 2,
+      "TRADE_RETURN_UNRECORDED": 1
+    },
+    "unresolved_attribution_signings": 26,
+    "packages_with_open_membership": 6,
+    "packages_with_open_terms": 17,
+    "packages_with_only_open_terms": 15
+  },
+  "transaction_queue": {
+    "items": 59,
+    "by_issue": {
+      "CASH_AMOUNT_UNKNOWN": 16,
+      "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION": 7,
+      "DOWNSTREAM_WAR_NOT_LOADED": 4,
+      "EXIT_NOT_RESEARCHED_DOWNSTREAM": 6,
+      "EXIT_STATUS_UNVERIFIED": 16,
+      "EXIT_TRANSACTION_MISSING": 2,
+      "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+      "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+      "PTBNL_UNRESOLVED": 2,
+      "RETURN_ASSET_EXIT_MISSING": 1,
+      "TRADE_RETURN_UNRECORDED": 1
+    }
+  },
+  "value_queue": {
+    "items": 91,
+    "by_issue": {
+      "ACQUISITION_COST_INCOMPLETE": 28,
+      "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE": 7,
+      "LINEAGE_BOUNDARY_NOTED": 22,
+      "OUTCOME_INCOMPLETE": 8,
+      "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED": 26
+    }
+  },
+  "items_by_bucket": {
+    "CHAIN_OR_MEMBERSHIP": 45,
+    "OTHER": 50,
+    "TERMS": 17,
+    "VALUE": 38
+  },
+  "open_packages": [
+    {
+      "event_key": "LAD_ARI_2009_TONY_ABREU",
+      "package_state": "MEMBERSHIP_OPEN",
+      "issues": "TRADE_RETURN_UNRECORDED"
+    },
+    {
+      "event_key": "LAD_CLE_2017_CARLOS_FRIAS",
+      "package_state": "MEMBERSHIP_OPEN",
+      "issues": "PTBNL_UNRESOLVED"
+    },
+    {
+      "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+      "package_state": "MEMBERSHIP_OPEN",
+      "issues": "PTBNL_UNRESOLVED"
+    },
+    {
+      "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+      "package_state": "MEMBERSHIP_OPEN",
+      "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED"
+    },
+    {
+      "event_key": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+      "package_state": "MEMBERSHIP_OPEN",
+      "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED POOL_SPACE_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_STL_2019_TONY_CINGRANI",
+      "package_state": "MEMBERSHIP_OPEN",
+      "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "CHC_LAD_2000_VALDEZ_REACQ",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_ATL_2006_AYBAR_BETEMIT",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_ATL_2024_ELIO_CAMPOS",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_BOS_2020_JETER_DOWNS",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_CLE_2008_SANTANA_BLAKE",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_CWS_2001_GARY_MAJEWSKI",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_DET_2023_EDDYS_LEONARD",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_NYM_1998_GREG_MCMICHAEL",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_TB_2006_DIONER_NAVARRO",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_TEX_2021_BILLY_MCKINNEY",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    },
+    {
+      "event_key": "LAD_TOR_2019_RONNY_BRITO",
+      "package_state": "TERMS_OPEN",
+      "issues": "CASH_AMOUNT_UNKNOWN"
+    }
+  ],
+  "read_from": "production, read-only, 2026-10-21 (after the 048 release, frozen at faf762d)",
+  "counts": {
+    "transaction_events": 209,
+    "transaction_event_assets": 387,
+    "transaction_asset_resolutions": 7,
+    "sources": 2467,
+    "timing_observations": 10,
+    "control_observations": 94
+  },
+  "status": {
+    "tracked_signings": 220,
+    "signings_with_known_cost": 56,
+    "known_acquisition_cost_usd": "121700237.33",
+    "outcome_audits_completed": 93,
+    "not_audited": 127
+  }
+}

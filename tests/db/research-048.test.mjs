@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildChainThrough, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_048 as CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 import { productSnapshotQueries } from '../../scripts/db/lib/product-snapshot-invariants.mjs'
 import { ALL_SNAPSHOT_TABLES } from '../../database/research/045b/snapshots.mjs'
 import { DATASET_QUERIES, HISTORY_QUERIES, assembleDataset } from '../../lib/research/dataset.js'
@@ -111,11 +111,12 @@ before(async () => {
 }, { timeout: 900000 })
 after(async () => { await chain?.close() })
 
-test('048 is registered last in the manifest and sorts after 047', () => {
-  assert.equal(manifest.canonical_sql.at(-1), FILE)
-  assert.equal(manifest.canonical_sql.at(-2), '047_development_transaction_research_batch.sql')
+test('048 is registered after 047 and before 049', () => {
+  assert.equal(manifest.canonical_sql.at(-2), FILE)
+  assert.equal(manifest.canonical_sql.at(-3), '047_development_transaction_research_batch.sql')
+  assert.equal(manifest.canonical_sql.at(-1), '049_transaction_package_completion.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
-  assert.equal(manifest.canonical_sql.length, 52)
+  assert.equal(manifest.canonical_sql.length, 53)
 })
 
 test('048 adds research DATA only: no table, view, function, trigger, policy or privilege changes', async () => {

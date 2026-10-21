@@ -15,7 +15,12 @@ export const TRANSACTION_CHECK_NAMES = [
 ]
 
 /** name -> SQL returning one row { n } = number of violations. */
-export const transactionQueries = (loaded) => {
+export const transactionQueries = (loaded, warUnavailableMlbIds = []) => {
+  // 049: KNOWN TRANSACTION != KNOWN RETURN VALUE. A returned player of a tracked-signing trade needs loaded Baseball-Reference WAR or an observed
+  // zero, UNLESS his id is on the pinned list of players whose WAR is knowingly unavailable AND the model represents him as RETURN_WAR_UNKNOWN with a
+  // NULL (never zero) Dodgers bWAR. Nothing else is relaxed: any other returned player without WAR is still a violation.
+  for (const id of warUnavailableMlbIds) if (!/^[0-9]+$/.test(String(id))) throw new Error('warUnavailableMlbIds must be MLB ids')
+  const warUnavailable = `array[${warUnavailableMlbIds.map((i) => `'${i}'`).join(', ')}]::text[]`
   if (!loaded) return Object.fromEntries(TRANSACTION_CHECK_NAMES.map((name) => [name, 'select 0::int as n']))
   return {
     // event shape: normalized type from the closed list, a source, a date, and the multi-team flag agrees with the asset counterparties
@@ -55,6 +60,8 @@ export const transactionQueries = (loaded) => {
             and not (a.bref_id is not null and exists (select 1 from public.player_mlb_team_season_war w where w.bref_id = a.bref_id and w.record_status = 'ACTIVE'))
             and not exists (select 1 from public.dodgers_control_observations o where o.subject_asset_id = a.id and o.record_status = 'ACTIVE'
                             and o.observation_type = 'NO_MLB_APPEARANCE_OBSERVED' and o.observed_through_date is not null)
+            and not (a.mlb_id = any (${warUnavailable}) and a.bref_id is not null
+                     and exists (select 1 from public.v_trade_realization_edges x where x.incoming_asset_id = a.id and x.return_state = 'RETURN_WAR_UNKNOWN' and x.incoming_dodgers_bwar is null))
             and a.asset_side = 'INCOMING' and exists (select 1 from public.transaction_event_assets t where t.event_id = a.event_id and t.asset_side = 'OUTGOING' and t.player_id is not null)
             and exists (select 1 from public.transaction_events e where e.id = a.event_id and e.transaction_type = 'TRADE'))
       )::int as n`,

@@ -1,0 +1,436 @@
+{
+  "expansion_exits": [
+    {
+      "acquired_in_event": "LAD_MIN_1967_BOB_MILLER",
+      "date": "1968-10-14",
+      "franchise_name": "Montreal Expos",
+      "key": "LAD_MON_1968_GRANT_EXPANSION",
+      "pick": 36,
+      "player": {
+        "birth_date_matched": "1935-08-13",
+        "bref_id": "grantmu01",
+        "mlb_id": "115046",
+        "name": "Mudcat Grant",
+        "retrosheet_id": "granj101",
+        "row": "\"19671128\",,,,,60573,\"granj101\",\"T \",\"MIN\",\"AL\",\"LAN\",\"NL\",,,,",
+        "side": "INCOMING"
+      },
+      "retrosheet_transaction_id": 19808,
+      "row": "\"19681014\",,,,,19808,\"granj101\",\"X \",\"LAN\",\"NL\",\"MON\",\"NL\",,,36,",
+      "to": "WSH"
+    },
+    {
+      "acquired_in_event": "LAD_MIN_1967_BOB_MILLER",
+      "date": "1968-10-14",
+      "franchise_name": "San Diego Padres",
+      "key": "LAD_SD_1968_VERSALLES_EXPANSION",
+      "pick": 20,
+      "player": {
+        "birth_date_matched": "1939-12-18",
+        "bref_id": "versazo01",
+        "mlb_id": "123713",
+        "name": "Zoilo Versalles",
+        "retrosheet_id": "versz101",
+        "row": "\"19671128\",,,,,60573,\"versz101\",\"T \",\"MIN\",\"AL\",\"LAN\",\"NL\",,,,",
+        "side": "INCOMING"
+      },
+      "retrosheet_transaction_id": 54511,
+      "row": "\"19681014\",,,,,54511,\"versz101\",\"X \",\"LAN\",\"NL\",\"SDN\",\"NL\",,,20,",
+      "to": "SD"
+    }
+  ],
+  "garland_exit": {
+    "acquired_in_event": "LAD_ARI_2009_TONY_ABREU",
+    "date": "2009-11-05",
+    "historical_label": "Granted free agency",
+    "key": "LAD_FREE_AGENCY_2009_JON_GARLAND",
+    "mlb_log": {
+      "date": "2009-11-05",
+      "description": "RHP Jon Garland elected free agency.",
+      "typeCode": "DFA"
+    },
+    "player": {
+      "birth_date_matched": "1979-09-27",
+      "bref_id": "garlajo01",
+      "mlb_id": "279782",
+      "name": "Jon Garland",
+      "retrosheet_id": "garlj001"
+    },
+    "retrosheet_row": "\"20091105\",,,,,18248,\"garlj001\",\"Fg\",\"LAN\",\"NL\",\"\",\"\",,,,",
+    "retrosheet_transaction_id": 18248,
+    "type": "FREE_AGENCY"
+  },
+  "identities": [
+    {
+      "affiliation_after_trade": {
+        "parent_organization": "Los Angeles Dodgers",
+        "season": 1999,
+        "team": "San Antonio Missions"
+      },
+      "affiliation_before_trade": {
+        "parent_organization": "Detroit Tigers",
+        "season": 1998,
+        "team": "Lakeland Tigers"
+      },
+      "asset": "Apostol Garcia",
+      "birth_date": "1976-08-03",
+      "event": "LAD_DET_1999_DAVE_MLICKI",
+      "mlb_id": "472796",
+      "register_key_bbref_minors": "garcia002apo",
+      "trade_date": "1999-04-16"
+    },
+    {
+      "affiliation_after_trade": {
+        "parent_organization": "Los Angeles Dodgers",
+        "season": 1999,
+        "team": "Vero Beach Dodgers"
+      },
+      "affiliation_before_trade": {
+        "parent_organization": "Detroit Tigers",
+        "season": 1998,
+        "team": "Jamestown Jammers"
+      },
+      "asset": "Rick Roberts",
+      "birth_date": "1979-05-20",
+      "event": "LAD_DET_1999_DAVE_MLICKI",
+      "mlb_id": "425540",
+      "register_key_bbref_minors": "robert001ric",
+      "trade_date": "1999-04-16"
+    },
+    {
+      "affiliation_after_trade": {
+        "parent_organization": "Los Angeles Dodgers",
+        "season": 2005,
+        "team": "Vero Beach Dodgers"
+      },
+      "affiliation_before_trade": {
+        "parent_organization": "Arizona Diamondbacks",
+        "season": 2004,
+        "team": "South Bend Silver Hawks"
+      },
+      "asset": "Danny Muegge",
+      "birth_date": "1981-03-06",
+      "event": "LAD_ARI_2005_SHAWN_GREEN",
+      "mlb_id": "458260",
+      "register_key_bbref_minors": "muegge001dan",
+      "trade_date": "2005-01-11"
+    },
+    {
+      "affiliation_after_trade": {
+        "parent_organization": "Los Angeles Dodgers",
+        "season": 2005,
+        "team": "Jacksonville Suns"
+      },
+      "affiliation_before_trade": {
+        "parent_organization": "Arizona Diamondbacks",
+        "season": 2004,
+        "team": "El Paso Diablos"
+      },
+      "asset": "William Juárez",
+      "birth_date": "1981-04-22",
+      "event": "LAD_ARI_2005_SHAWN_GREEN",
+      "mlb_id": "452705",
+      "register_key_bbref_minors": "juarez001wil",
+      "trade_date": "2005-01-11"
+    }
+  ],
+  "ptbnl_correction": {
+    "completed": "2009-10-09",
+    "event_key": "LAD_ARI_2009_TONY_ABREU",
+    "incoming": {
+      "birth_date_matched": "1979-09-27",
+      "bref_id": "garlajo01",
+      "mlb_id": "279782",
+      "name": "Jon Garland",
+      "retrosheet_id": "garlj001"
+    },
+    "initiated": "2009-08-31",
+    "mlb_log": {
+      "abreu_delivery": {
+        "date": "2009-10-09",
+        "description": "Los Angeles Dodgers traded 2B Tony Abreu to Arizona Diamondbacks.",
+        "typeCode": "TR"
+      },
+      "trade": {
+        "date": "2009-08-31",
+        "description": "Arizona Diamondbacks traded RHP Jon Garland to Los Angeles Dodgers.",
+        "typeCode": "TR"
+      }
+    },
+    "original": {
+      "date": "2009-10-09",
+      "description": "Los Angeles Dodgers traded 2B Tony Abreu to Arizona Diamondbacks."
+    },
+    "ptbnl": {
+      "birth_date_matched": "1984-11-13",
+      "bref_id": "abreuto01",
+      "mlb_id": "473234",
+      "name": "Tony Abreu",
+      "retrosheet_id": "abret001"
+    },
+    "retrosheet_rows": [
+      "\"20090831\",,,,,64131,\"garlj001\",\"T \",\"ARI\",\"NL\",\"LAN\",\"NL\",,,,",
+      "\"20091009\",,,,,64131,\"abret001\",\"T \",\"LAN\",\"NL\",\"ARI\",\"NL\",,,,"
+    ],
+    "retrosheet_transaction_id": 64131
+  },
+  "recorded": [
+    {
+      "issue": "TRADE_RETURN_UNRECORDED",
+      "note": "Jon Garland (agreement 2009-08-31); Abreu the player to be named later, delivered 2009-10-09. Official MLB log and Retrosheet 64131 agree on both dates.",
+      "result": "RESOLVED_PACKAGE",
+      "subject": "Tony Abreu trade (2009): the consideration the Dodgers received"
+    },
+    {
+      "issue": "TRADE_RETURN_UNRECORDED",
+      "note": "Baseball-Reference WAR answers 403; the return is RETURN_WAR_UNKNOWN (NULL). Abreu was the only outgoing asset, so the trade is individually attributable once WAR is loaded.",
+      "result": "TRANSACTION_KNOWN_VALUE_UNKNOWN",
+      "subject": "Jon Garland: Dodgers value of the Abreu return"
+    },
+    {
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "note": "Elected free agency 2009-11-05 (official MLB log; Retrosheet 18248).",
+      "result": "RESOLVED_TRANSACTION",
+      "subject": "Jon Garland: Dodgers exit"
+    },
+    {
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "note": "Traded 1967-11-28 to Minnesota (Retrosheet 60573; SABR Versalles, Grant and Perranoski biographies).",
+      "result": "RESOLVED_TRANSACTION",
+      "subject": "Bob Miller: Dodgers exit (Fernandez chain)"
+    },
+    {
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "note": "Miller, Roseboro, Perranoski out; Grant, Versalles in. Identities matched by crosswalk and birth date.",
+      "result": "RESOLVED_PACKAGE",
+      "subject": "1967 Dodgers-Twins package"
+    },
+    {
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "note": "1968 expansion draft, Montreal, pick 36 (Retrosheet 19808; SABR Grant biography).",
+      "result": "RESOLVED_TRANSACTION",
+      "subject": "Mudcat Grant: Dodgers exit"
+    },
+    {
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "note": "1968 expansion draft, San Diego, pick 20 (Retrosheet 54511; SABR Versalles biography).",
+      "result": "RESOLVED_TRANSACTION",
+      "subject": "Zoilo Versalles: Dodgers exit"
+    },
+    {
+      "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+      "note": "Baseball-Reference WAR answers 403; value NULL, not zero.",
+      "result": "TRANSACTION_KNOWN_VALUE_UNKNOWN",
+      "subject": "Mudcat Grant and Zoilo Versalles: Dodgers value"
+    },
+    {
+      "issue": "SOURCE_DATE_DISAGREEMENT",
+      "note": "Retrosheet and the SABR Perranoski biography say November 28; the SABR Versalles biography says November 27. Retrosheet's date is recorded and the disagreement is in the description.",
+      "result": "CONFLICT",
+      "subject": "1967 trade date"
+    },
+    {
+      "issue": "ASSET_IDENTITY_UNRESOLVED",
+      "note": "MLB ids added; reconciled by affiliations whose parent organizations bracket the trade. No exit recorded.",
+      "result": "RESOLVED_TRANSACTION",
+      "subject": "Apostol Garcia, Rick Roberts, Danny Muegge, William Juarez"
+    }
+  ],
+  "retrieved_at": "2026-10-21T21:30:00Z",
+  "sources": {
+    "garland_log": {
+      "notes": "Official MLB transaction log for Jon Garland (MLBAM 279782): the 2009-08-31 trade from Arizona and the 2009-11-05 election of free agency.",
+      "source_name": "MLB Stats API",
+      "source_tier": "MLB_TRANSACTION_LOG",
+      "source_type": "MLB_TRANSACTION_LOG",
+      "title": "MLB Stats API: transaction log (Jon Garland)",
+      "url": "https://statsapi.mlb.com/api/v1/transactions?playerId=279782"
+    },
+    "register": {
+      "notes": "Open identifier crosswalk (Retrosheet, MLBAM, Baseball-Reference). Used for identity only, always together with an exact birth-date match against Retrosheet BIOFILE and the MLB person record; never as evidence of a transaction.",
+      "source_name": "Chadwick Bureau Register",
+      "source_tier": "OTHER",
+      "source_type": "IDENTITY_CROSSWALK",
+      "title": "Chadwick Bureau Register (people-*.csv)",
+      "url": "https://github.com/chadwickbureau/register"
+    },
+    "retrosheet": {
+      "sha256_tran_txt": "8b117abe4505dd427893c7fbc5af94f89d83cb58d93b96c99136bab1d7d31c06",
+      "url": "https://www.retrosheet.org/transactions/tranDB.zip"
+    },
+    "sabr": [
+      {
+        "sha256_html": "c6b0e81a82b8edd24903875205d1041be4dfef4c17298b67d9a54a9dcca52752",
+        "url": "https://sabr.org/bioproj/person/zoilo-versalles/"
+      },
+      {
+        "sha256_html": "faa783942ce29ea552d464705774e70282b25267ba51b44ee66d446fe79c1be4",
+        "url": "https://sabr.org/bioproj/person/mudcat-grant/"
+      },
+      {
+        "sha256_html": "edf410ef2a16bd6c4ad9192e73a314c055bd5b62fe839fee5b5c2eb8eb76938b",
+        "url": "https://sabr.org/bioproj/person/ron-perranoski/"
+      }
+    ]
+  },
+  "trade_1967": {
+    "date": "1967-11-28",
+    "date_note": "Retrosheet and the SABR Perranoski biography give November 28, 1967; the SABR Versalles biography says November 27. Retrosheet's date is recorded and the disagreement is kept in the description.",
+    "event_key": "LAD_MIN_1967_BOB_MILLER",
+    "players": [
+      {
+        "birth_date_matched": "1939-02-18",
+        "bref_id": "millebo04",
+        "mlb_id": "119112",
+        "name": "Bob Miller",
+        "retrosheet_id": "millb106",
+        "row": "\"19671128\",,,,,60573,\"millb106\",\"T \",\"LAN\",\"NL\",\"MIN\",\"AL\",,,,",
+        "side": "OUTGOING"
+      },
+      {
+        "birth_date_matched": "1933-05-13",
+        "bref_id": "rosebjo01",
+        "mlb_id": "121456",
+        "name": "John Roseboro",
+        "retrosheet_id": "rosej101",
+        "row": "\"19671128\",,,,,60573,\"rosej101\",\"T \",\"LAN\",\"NL\",\"MIN\",\"AL\",,,,",
+        "side": "OUTGOING"
+      },
+      {
+        "birth_date_matched": "1936-04-01",
+        "bref_id": "perraro01",
+        "mlb_id": "120430",
+        "name": "Ron Perranoski",
+        "retrosheet_id": "perrr101",
+        "row": "\"19671128\",,,,,60573,\"perrr101\",\"T \",\"LAN\",\"NL\",\"MIN\",\"AL\",,,,",
+        "side": "OUTGOING"
+      },
+      {
+        "birth_date_matched": "1935-08-13",
+        "bref_id": "grantmu01",
+        "mlb_id": "115046",
+        "name": "Mudcat Grant",
+        "retrosheet_id": "granj101",
+        "row": "\"19671128\",,,,,60573,\"granj101\",\"T \",\"MIN\",\"AL\",\"LAN\",\"NL\",,,,",
+        "side": "INCOMING"
+      },
+      {
+        "birth_date_matched": "1939-12-18",
+        "bref_id": "versazo01",
+        "mlb_id": "123713",
+        "name": "Zoilo Versalles",
+        "retrosheet_id": "versz101",
+        "row": "\"19671128\",,,,,60573,\"versz101\",\"T \",\"MIN\",\"AL\",\"LAN\",\"NL\",,,,",
+        "side": "INCOMING"
+      }
+    ],
+    "retrosheet_transaction_id": 60573,
+    "sabr": {
+      "grant": ", Grant was looking for a fresh start and an exit from Minnesota. He got his wish when he and shortstop Zoilo Versalles were shipped to Los Angeles for catcher John Roseboro and pitchers Ron Perranoski and Bob Miller . Grant was elated to be joining the Dodgers. “During last season I felt so terrible, I couldn’t be happy,” remarked the right-hander. “It was a problem between the Minnesota manager and management and myself. Some of it was racial,",
+      "grant_expansion": "ces, going 6-4 with a 2.08 ERA. “I tell you, he’s working his tail off for us,” said Alston. 14 Before the 1969 season, Grant was selected by the Montreal Expos in the expansion draft. He made 10 starts with a record of 1-6 before being dealt to St. Louis for pitcher Gary Waslewski on June 3. Pitching in long relief, Grant went 7-5 for the Cardinals. At the end of the year, St. Louis sold Grant to Oakland. Pitching exclusively out of the bullpen,",
+      "perranoski": "enough, however, as the Dodgers dropped to eighth with a 73-89 record. Feeling the need to shake things up, Los Angeles swapped Perranoski, Miller and catcher John Roseboro to the Twins on November 28 for shortstop Zoilo Versalles and pitcher Mudcat Grant . As of 2021, Perranoski’s 101 saves for the Dodgers rank sixth in franchise history behind Kenley Jansen (335), Eric Gagne (161), Jeff Shaw (129), Todd Worrell (127) and Jim Brewer (125). Perra",
+      "versalles": "rsalles was no longer a valued commodity in the Twin Cities. Zoilo’s Minnesota career came to an abrupt end when he was shipped off to the Los Angeles Dodgers on November 27, 1967. The headline deal also included Jim “Mudcat” Grant and brought catcher John Roseboro and relievers Bob Miller and Ron Perranoski to the Twins. The three Dodgers had all played major roles in the Los Angeles World Series triumph only two years earlier. For the rapidly f",
+      "versalles_expansion": "pidly in L.A., Zoilo was left exposed by the Dodgers in the 1968 NL expansion lottery. The newborn and talent-desperate San Diego Padres took a chance on drafting Versalles, but he never played for them. They quickly traded him to Cleveland on December 2. Worse yet, during the temporary stop in Los Angeles, Versalles once again severely aggravated his earlier back problems. The spinal hematoma first suffered in July 1966 flared up once again afte"
+    }
+  },
+  "unresolved": [
+    {
+      "asset": "Gail Harris",
+      "event": "LAD_DET_1960_AMOROS",
+      "issue": "RETURN_ASSET_EXIT_MISSING",
+      "reason": "Retrosheet (60183) records only the 1960-05-07 trade to the Dodgers; his last MLB game (1960-05-03) predates it. The MLB transaction log does not reach 1960 and the SABR page body is not in the raw response. No Dodgers disposition is stated anywhere readable: no exit is inferred.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    },
+    {
+      "asset": "Robinson Checo",
+      "event": "LAD_DET_1999_DAVE_MLICKI",
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "reason": "Retrosheet ends at the 1999-04-16 trade to the Dodgers; the official affiliations (parent organization read from each team record) show his last Dodgers-organization season is 2000 (Albuquerque Dukes) and nothing after. Disappearance is not a release.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    },
+    {
+      "asset": "Apostol Garcia",
+      "event": "LAD_DET_1999_DAVE_MLICKI",
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "reason": "Identity reconciled (MLBAM 472796). Retrosheet lists him by name only with no later transaction; his last Dodgers-organization season is 2000 (San Antonio Missions). No exit stated.",
+      "result": "PARTIALLY_RESOLVED"
+    },
+    {
+      "asset": "Rick Roberts",
+      "event": "LAD_DET_1999_DAVE_MLICKI",
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "reason": "Identity reconciled (MLBAM 425540). His last Dodgers-organization season is 2003 (Las Vegas 51s). No exit stated.",
+      "result": "PARTIALLY_RESOLVED"
+    },
+    {
+      "asset": "Danny Muegge",
+      "event": "LAD_ARI_2005_SHAWN_GREEN",
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "reason": "Identity reconciled (MLBAM 458260). His last Dodgers-organization season is 2008 (Jacksonville Suns). The MLB transaction log has no row for him. No exit stated.",
+      "result": "PARTIALLY_RESOLVED"
+    },
+    {
+      "asset": "William Juárez",
+      "event": "LAD_ARI_2005_SHAWN_GREEN",
+      "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+      "reason": "Identity reconciled (MLBAM 452705). The official log shows him activated by Las Vegas on 2006-04-04 and his last Dodgers-organization season is 2007 (Jacksonville Suns); 2008 is a Mexican League club. No transaction ends his Dodgers control in any readable source.",
+      "result": "PARTIALLY_RESOLVED"
+    },
+    {
+      "asset": "Mike Judd",
+      "event": "LAD_TB_2001_MIKE_JUDD",
+      "issue": "RETURN_UNRECORDED",
+      "reason": "Both Baseball-Reference and Retrosheet describe a conditional deal that names no return. An unnamed conditional return is not zero, cash or no return.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    },
+    {
+      "asset": "Carlos Frías",
+      "event": "LAD_CLE_2017_CARLOS_FRIAS",
+      "issue": "PTBNL_UNRESOLVED",
+      "reason": "Retrosheet (76439: \"player to be named or cash\") and the official MLB log (\"for Player To Be Named Later\", 2017-01-30) agree it was a deferred consideration. Neither club's log through 2018-03 records a delivery (6 Cleveland/Dodgers rows read). It may have been cash; DISI does not assume cash, a player or zero.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    },
+    {
+      "asset": "Jeral Perez trade (player to be named later or cash considerations)",
+      "event": "LAD_CWS_2024_JERAL_PEREZ",
+      "issue": "PTBNL_UNRESOLVED",
+      "reason": "The official log (2024-07-29) names a player to be named later or cash considerations. The Dodgers and White Sox logs through 2026-10-21 record no completion.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    },
+    {
+      "asset": "Future considerations",
+      "event": "LAD_STL_2019_TONY_CINGRANI",
+      "issue": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+      "reason": "Retrosheet (82425) describes the Cardinals side of this package as cash and \"international bonus slot money\" where the MLB log says cash and future considerations. No amount or named item is given. Recorded as a description, not as a value.",
+      "result": "PARTIALLY_RESOLVED"
+    },
+    {
+      "asset": "Future considerations",
+      "event": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+      "issue": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+      "reason": "The official log names future considerations and no completion is recorded through 2026-10-21.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    },
+    {
+      "asset": "Future considerations",
+      "event": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+      "issue": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+      "reason": "The official log names future considerations and international signing bonus slot money with no amount.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    },
+    {
+      "asset": "International signing bonus slot money",
+      "event": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+      "issue": "POOL_SPACE_AMOUNT_UNKNOWN",
+      "reason": "No source states the amount; DISI does not estimate pool space.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    },
+    {
+      "asset": "Cash (16 packages)",
+      "event": null,
+      "issue": "CASH_AMOUNT_UNKNOWN",
+      "reason": "Retrosheet marks cash with \"$\" and no amount for every one of the sixteen packages; the MLB log says \"cash\". No amount is stated in any readable source. An unnamed cash payment is not $0.",
+      "result": "UNRESOLVED_NO_EVIDENCE"
+    }
+  ]
+}

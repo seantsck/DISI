@@ -37,10 +37,10 @@ test('manifest lists every canonical SQL file, in order', () => {
 })
 
 // Each migration replaces some views of the one before it, so rerunnability is
-// checked for the latest migration of the chain this file builds (046; 047 and 048 prove their own reruns in tests/db/research-047.test.mjs and research-048.test.mjs).
+// checked for the latest migration of the chain this file builds (046; 047, 048 and 049 prove their own reruns in tests/db/research-047.test.mjs, research-048.test.mjs and research-049.test.mjs).
 test('the latest migration is rerunnable without changing data', async () => {
   const latest = '046_outcome_cost_research_batch.sql'
-  assert.equal(manifest.canonical_sql.at(-3), latest)
+  assert.equal(manifest.canonical_sql.at(-4), latest)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
       (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
@@ -2158,7 +2158,8 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 046 (reviewed acquisition-cost research batch) was released on 2026-10-20 (PR #15, 36ea96b) and is frozen.
 // 047 (development-history and transaction-chain research batch) was released on 2026-10-20 (PR #17, 154c7c0) and is frozen
 // 048 (verified MLB development coverage) was released on 2026-10-21 (PR #19, da91c21) and is frozen
-const UNRELEASED_ADDITIONS = []
+// 049 (transaction-package completion) is built and awaiting its release gate; it is frozen in tests/db/frozen-migrations.json once released.
+const UNRELEASED_ADDITIONS = ['049_transaction_package_completion.sql']
 
 test('frozen history: migrations 001-048 (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
