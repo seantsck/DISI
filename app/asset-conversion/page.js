@@ -3,7 +3,7 @@ import DataUnavailable from '../components/DataUnavailable'
 import PlayerLink from '../components/PlayerLink'
 import { getAssetConversionData } from '../../lib/data.js'
 import { bwar, humanize, dateLabel, MISSING } from '../../lib/format.js'
-import { attributionLedger, attributionStateCounts } from '../../lib/research/transaction-research.js'
+import { attributionLedger, attributionStateCounts, chainBlocker } from '../../lib/research/transaction-research.js'
 
 export const metadata = { title: 'Asset Conversion' }
 
@@ -14,8 +14,8 @@ export const dynamic = 'force-dynamic'
 const STATE_TEXT = {
   NOT_A_TRADE_EXIT: ['Not a trade exit', 'No trade return to attribute (a release, another exit, or no exit event).'],
   RETURN_STILL_ACCRUING: ['Return still accruing', 'The signing was traded and an asset it returned is still under Dodgers control. Value is to date, not final.'],
-  CHAIN_INCOMPLETE: ['Chain incomplete', 'The exit or a later hop is not yet recorded. Value shown is to date and not final.'],
-  VALUE_NOT_DETERMINED: ['Value not determined', 'The return exists but its value is not determined. This is not zero.'],
+  CHAIN_INCOMPLETE: ['Transaction history open', 'The exit, the package or a later hop is not yet recorded. Value shown is to date and not final.'],
+  VALUE_NOT_DETERMINED: ['Value not determined', 'The transaction is recorded; the value of what came back is not determined (for example, a returned player\'s Baseball-Reference WAR is not loaded). This is unknown, not zero.'],
   INDIVIDUALLY_ATTRIBUTED: ['Individually attributed', 'The signing was the sole outgoing asset, so the return is attributed to it.'],
   PACKAGE_LEVEL_ONLY: ['Package level only', 'Shared package: the return is observable at package level and is not credited to this player.'],
   RECORDED_ZERO_RETURN: ['Recorded zero return', 'Every recorded return amount is exactly zero.'],
@@ -24,6 +24,22 @@ const STATE_ORDER = ['CHAIN_INCOMPLETE', 'RETURN_STILL_ACCRUING', 'VALUE_NOT_DET
 const UNRESOLVED_STATES = new Set(['CHAIN_INCOMPLETE', 'RETURN_STILL_ACCRUING', 'VALUE_NOT_DETERMINED', 'PACKAGE_LEVEL_ONLY'])
 // null is "not determined", never zero; a recorded zero prints as 0.00
 const measure = (v) => (v == null ? <span className="unknown">not determined</span> : bwar(v))
+
+// 049: KNOWN TRANSACTION != KNOWN RETURN VALUE. What is missing is one of three different things, and they are never shown as one generic "incomplete".
+const MISSING_TEXT = {
+  CHAIN_OR_MEMBERSHIP: 'Transaction history: what happened to a returned asset, or who was in the package, is not recorded',
+  VALUE: 'Value: the transaction chain is recorded; a returned player\'s WAR (or same-season timing) is not available',
+}
+// why individual attribution is withheld, in the model\'s own terms
+const WITHHELD_TEXT = {
+  CHAIN_INCOMPLETE: 'the transaction history is open',
+  RETURN_STILL_ACCRUING: 'a returned asset is still under Dodgers control',
+  VALUE_NOT_DETERMINED: 'the value of the return is not determined',
+  PACKAGE_LEVEL_ONLY: 'shared package: never split or weighted',
+  INDIVIDUALLY_ATTRIBUTED: null,
+  RECORDED_ZERO_RETURN: null,
+  NOT_A_TRADE_EXIT: null,
+}
 
 function Assets({ assets }) {
   if (!assets?.length) return MISSING
@@ -34,6 +50,8 @@ export default async function AssetConversionPage() {
   const { live, error, packages, dispositions, bwarBySlug, pathDecisions } = await getAssetConversionData()
   const stateCounts = attributionStateCounts(pathDecisions)
   const ledger = attributionLedger(pathDecisions)
+  const historyOpen = pathDecisions.filter((d) => chainBlocker(d.chain_status) === 'CHAIN_OR_MEMBERSHIP').length
+  const valueBlocked = pathDecisions.filter((d) => chainBlocker(d.chain_status) === 'VALUE').length
   return (
     <main className="shell page-main">
       <header className="page-hero">
@@ -47,7 +65,7 @@ export default async function AssetConversionPage() {
       {!live && <DataUnavailable error={error} />}
       {live && <>
         <div className="page-guardrail">
-          <strong>A player&apos;s later career bWAR and the Dodgers&apos; return are different measures.</strong> When several players were traded together, the return is shown at package level and is not credited to any one of them.
+          <strong>A player&apos;s later career bWAR and the Dodgers&apos; return are different measures, and a known trade is not a known value.</strong> When several players were traded together, the return is shown at package level and is not credited to any one of them.
         </div>
 
         <section className="table-panel" aria-labelledby="asset-paths-heading">
@@ -61,11 +79,17 @@ export default async function AssetConversionPage() {
               </div>
             ))}
           </div>
+          {(historyOpen > 0 || valueBlocked > 0) && (
+            <div className="coverage-grid">
+              <div><span>Transaction history open</span><strong>{historyOpen} of {pathDecisions.length}</strong><small>{MISSING_TEXT.CHAIN_OR_MEMBERSHIP}.</small></div>
+              <div><span>Transaction recorded, value unavailable</span><strong>{valueBlocked} of {pathDecisions.length}</strong><small>{MISSING_TEXT.VALUE}.</small></div>
+            </div>
+          )}
           <p className="muted small-note">Unresolved cases are shown, not dropped and not valued at zero. Direct Dodgers value, value produced for other clubs, the part of a return attributable to the player and package-level amounts are separate measures and are never added together.</p>
           <div className="table-scroll">
             <table className="research-table">
               <thead><tr>
-                <th>Class</th><th>Player</th><th>State</th><th>Chain</th>
+                <th>Class</th><th>Player</th><th>State</th><th>Chain</th><th>What is missing</th><th>Why attribution is withheld</th>
                 <th className="num">Direct Dodgers bWAR</th><th className="num">For other clubs</th><th className="num">Attributable to player</th>
                 <th className="num">Package, first hop</th><th className="num">Package, downstream</th><th className="num">Observable, not attributable</th>
               </tr></thead>
@@ -75,6 +99,8 @@ export default async function AssetConversionPage() {
                   <td><PlayerLink slug={r.player_slug} name={r.full_name} /></td>
                   <td><span className={`state-chip ${UNRESOLVED_STATES.has(r.attribution_state) ? 'unresolved' : r.attribution_state === 'INDIVIDUALLY_ATTRIBUTED' ? 'attributed' : ''}`}>{STATE_TEXT[r.attribution_state][0]}</span></td>
                   <td>{humanize(r.chain_status)}</td>
+                  <td className="wrap">{MISSING_TEXT[chainBlocker(r.chain_status)] ?? '—'}</td>
+                  <td className="wrap">{WITHHELD_TEXT[r.attribution_state] ?? '—'}</td>
                   <td className="num">{measure(r.direct_dodgers_bwar)}</td>
                   <td className="num">{measure(r.value_left_organization_bwar)}</td>
                   <td className="num">{measure(r.individually_attributable_trade_bwar)}</td>
@@ -104,7 +130,7 @@ export default async function AssetConversionPage() {
                   <div>
                     <span>Dodgers return</span>
                     <strong><Assets assets={t.incoming_assets} /></strong>
-                    <small>{t.return_dodgers_regular_season_bwar == null ? 'Return bWAR not recorded' : `${bwar(t.return_dodgers_regular_season_bwar)} LAD regular-season bWAR`}</small>
+                    <small>{t.return_dodgers_regular_season_bwar == null ? 'Return value not determined (not zero)' : `${bwar(t.return_dodgers_regular_season_bwar)} LAD regular-season bWAR`}</small>
                   </div>
                 </div>
                 <p>Outgoing package: <Assets assets={t.outgoing_assets} /></p>
