@@ -51,6 +51,7 @@
     "045a_product_snapshot_serving.sql": "9a1bb65305e48cad751e739d192ac8c091ad0dc3",
     "045b_database_status_snapshot.sql": "9a5e0759b8849168817f8b6b08d1c5ea340c5201",
     "046_outcome_cost_research_batch.sql": "88d014339df502d2c9351782c2da054d9f3ec62a",
-    "047_development_transaction_research_batch.sql": "cf844a94111a178169bfaf3402cf7399b37aa9bd"
+    "047_development_transaction_research_batch.sql": "cf844a94111a178169bfaf3402cf7399b37aa9bd",
+    "048_verified_mlb_development_coverage.sql": "1de435805f74154e0a0b8320412303d12e444d77"
   }
 }
