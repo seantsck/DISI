@@ -3,6 +3,7 @@ import DataUnavailable from '../components/DataUnavailable'
 import PlayerLink from '../components/PlayerLink'
 import { getLeagueData } from '../../lib/data.js'
 import { money, humanize } from '../../lib/format.js'
+import { benchmarkClassSummary, benchmarkLabelCoverage } from '../../lib/research/benchmark-sample.js'
 
 export const metadata = { title: 'League Benchmark' }
 
@@ -10,22 +11,74 @@ export const metadata = { title: 'League Benchmark' }
 export const dynamic = 'force-dynamic'
 
 export default async function LeaguePage() {
-  const { live, error, rows, orgs, coverage, periodOrgs } = await getLeagueData()
+  const { live, error, rows, orgs, coverage, periodOrgs, benchmarkReadiness } = await getLeagueData()
   const years = [...new Set(rows.map(r => r.signing_year))].sort()
+  const classes = benchmarkClassSummary(rows, coverage)
+  const labels = benchmarkLabelCoverage(benchmarkReadiness)
+  const classYears = classes.map((c) => c.class_year)
   return (
     <main className="shell page-main">
       <header className="page-hero">
         <div>
           <span className="eyebrow">Cross-organization comparison</span>
           <h1>League Benchmark</h1>
-          <p>League-wide international acquisition records with explicit coverage labels. The first benchmark layer uses MLB Pipeline Top 30 signing trackers; it is not presented as a complete signing census.</p>
+          <p>League-wide international acquisition records with explicit coverage labels. The benchmark is a rank-selected sample: the players MLB Pipeline ranked in its international Top 30 lists, not every international signing.</p>
         </div>
         <DataMode live={live} error={error} />
       </header>
       {!live && <DataUnavailable error={error} />}
       <div className="page-guardrail">
-        <strong>Benchmark ≠ census.</strong> The 2013 and 2014 rows are top-prospect tracker samples. DISI will add full club-year classes only when source coverage supports that claim.
+        <strong>Rank-selected sample, not a census.</strong> The benchmark rows are MLB Pipeline Top 30 international prospects
+        {classYears.length ? ` (${classYears.join(', ')} lists)` : ''} with a verified signing. They describe ranked prospects only: no figure here is a rate of
+        international signings, an organization&apos;s hit rate or a Dodgers comparison. A player appears under the list he was ranked on; his signing year is the
+        year of his official signing. DISI will add full club-year classes only when source coverage supports that claim.
       </div>
+
+      {classes.length > 0 && <section className="table-panel" aria-labelledby="benchmark-classes-heading">
+        <div className="table-head">
+          <div><span className="eyebrow">MLB Pipeline international Top 30</span><h2 id="benchmark-classes-heading">The benchmark sample by source list</h2></div>
+          <span className="micro-note">Counts with their denominators; never a rate</span>
+        </div>
+        <div className="table-scroll"><table>
+          <thead><tr><th>List</th><th className="num">List size</th><th className="num">Benchmark signings</th><th className="num">Outcome audited</th><th className="num">Reached MLB</th><th className="num">Audited, no MLB debut</th><th className="num">Not audited</th><th className="num">Professional route</th><th>Signing years</th></tr></thead>
+          <tbody>{classes.map((c) => <tr key={c.class_year}>
+            <td><strong>{c.class_year}</strong></td>
+            <td className="num">{c.list_size ?? '—'}</td>
+            <td className="num">{c.benchmark_signings}</td>
+            <td className="num">{c.audited}</td>
+            <td className="num">{c.reached_mlb}</td>
+            <td className="num">{c.audited_no_mlb}</td>
+            <td className="num">{c.not_audited}</td>
+            <td className="num">{c.professional_route}</td>
+            <td>{Object.entries(c.signing_years).map(([y, k]) => `${y}: ${k}`).join(' · ')}</td>
+          </tr>)}</tbody>
+        </table></div>
+        <p className="micro-note table-foot">
+          Among this MLB Pipeline Top 30 benchmark sample only. A listed player the Dodgers signed is a Dodgers record, not a benchmark row; a listed player whose
+          signing or identity could not be verified is not counted (the list size minus the benchmark signings). No MLB debut found is not a career end, and an
+          unaudited player is unknown, not a non-reacher. Professional-route signings (prior professional play) are shown but never train an amateur estimate.
+        </p>
+      </section>}
+
+      {labels.length > 0 && <section className="table-panel" aria-labelledby="benchmark-labels-heading">
+        <div className="table-head">
+          <div><span className="eyebrow">Fixed-horizon outcome labels (041)</span><h2 id="benchmark-labels-heading">What the sample can label</h2></div>
+          <span className="micro-note">The benchmark&apos;s own reference population</span>
+        </div>
+        <div className="table-scroll"><table>
+          <thead><tr><th>Target</th><th className="num">Labelled</th><th className="num">Positive</th><th className="num">Negative</th><th className="num">Unaudited</th><th className="num">Open horizon</th><th>Reading</th></tr></thead>
+          <tbody>{labels.map((t) => <tr key={t.target_key}>
+            <td><strong>{t.target_label}</strong></td>
+            <td className="num">{t.labelled}</td><td className="num">{t.positives}</td><td className="num">{t.negatives}</td>
+            <td className="num">{t.unaudited}</td><td className="num">{t.open_horizon}</td>
+            <td className="wrap">{t.statement}</td>
+          </tr>)}</tbody>
+        </table></div>
+        <p className="micro-note table-foot">
+          Benchmark support is not Dodgers support: a target supported in this sample never produces a probability for a Dodgers player, and the two
+          populations are never pooled. A reacher whose Baseball-Reference team-season WAR is not loaded has no bWAR label (missing WAR is not zero WAR).
+        </p>
+      </section>}
 
       <section className="table-panel">
         <div className="table-head"><div><span className="eyebrow">League-wide period totals</span><h2>2019–20 organization signing volume</h2></div><span className="micro-note">MLB-reported totals</span></div>
@@ -73,10 +126,10 @@ export default async function LeaguePage() {
       <section className="table-panel">
         <div className="table-head"><div><span className="eyebrow">Player ledger</span><h2>League benchmark signings</h2></div><span className="micro-note">{rows.length} live rows</span></div>
         <div className="table-scroll"><table>
-          <thead><tr><th>Year</th><th>Rank</th><th>Player</th><th>Club</th><th>Market</th><th>Position</th><th>Bonus</th></tr></thead>
+          <thead><tr><th>Signing year</th><th>List rank</th><th>Player</th><th>Club</th><th>Market</th><th>Position</th><th>Bonus</th></tr></thead>
           <tbody>{rows.map((r) => <tr key={r.signing_id}>
             <td>{r.signing_year}</td><td>{r.international_rank ?? '—'}</td><td><PlayerLink slug={r.player_slug} name={r.full_name} /></td>
-            <td>{r.organization}</td><td>{r.country_market}</td><td>{r.primary_position || '—'}</td><td>{money(r.signing_bonus_usd)}</td>
+            <td>{r.organization}</td><td>{r.country_market || '—'}</td><td>{r.primary_position || '—'}</td><td>{money(r.signing_bonus_usd)}</td>
           </tr>)}</tbody>
         </table></div>
       </section>

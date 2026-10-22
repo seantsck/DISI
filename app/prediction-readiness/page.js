@@ -4,6 +4,7 @@ import DataUnavailable from '../components/DataUnavailable'
 import { getReadinessData } from '../../lib/data.js'
 import { predictionReadiness, snapshotFreshness } from '../../lib/decision-display.js'
 import { humanize, num, MISSING } from '../../lib/format.js'
+import { DODGERS_REFERENCE_POPULATION } from '../../lib/research/readiness-blockers.js'
 
 export const metadata = { title: 'Prediction Readiness' }
 export const dynamic = 'force-dynamic'
@@ -17,6 +18,8 @@ const MODEL_LABELS = /** @type {Record<string, string>} */ ({
 export default async function PredictionReadinessPage() {
   const { live, error, overview, targets, evaluations, expectedValueSupport, blockers, evidence } = await getReadinessData()
   const readiness = predictionReadiness(overview)
+  // BENCHMARK SUPPORT != DODGERS SUPPORT: probabilities are made only for the Dodgers population; a benchmark baseline is a reference result
+  const benchmarkSupported = targets.filter((/** @type {any} */ t) => t.baseline_supported && t.reference_population !== DODGERS_REFERENCE_POPULATION)
 
   return (
     <main className="shell page-main">
@@ -40,7 +43,8 @@ export default async function PredictionReadinessPage() {
           <span className="eyebrow">Current state</span>
           <h2 id="headline-heading" className="readiness-headline">{readiness.statement}</h2>
           <div className="mini-kpis">
-            <div><span>Supported outcome targets</span><strong>{readiness.supportedTargets} of {readiness.targets}</strong></div>
+            <div><span>Supported Dodgers outcome targets</span><strong>{readiness.supportedTargets} of {readiness.targets}</strong></div>
+            <div><span>Benchmark reference baselines</span><strong>{benchmarkSupported.length > 0 ? `${benchmarkSupported.length} supported` : 'None supported'}</strong><small>Rank-selected sample; never used for a Dodgers player</small></div>
             <div><span>Published player probabilities</span><strong>{readiness.published ? Number(overview.non_null_probabilities).toLocaleString() : 'None'}</strong></div>
             <div><span>Supported expected values</span><strong>{readiness.supportedExpectedValues > 0 ? readiness.supportedExpectedValues : 'None'}</strong></div>
             <div><span>Predictive portfolio recommendations</span><strong>{readiness.recommendations > 0 ? readiness.recommendations : 'None'}</strong></div>
@@ -52,6 +56,12 @@ export default async function PredictionReadinessPage() {
             Expected organizational value needs a supported probability and enough observed value; portfolio recommendations need a
             supported expected value. Each layer inherits the layer below it.
           </p>
+          {benchmarkSupported.length > 0 && <p className="page-guardrail">
+            <strong>Benchmark support is not Dodgers support.</strong> {benchmarkSupported.map((/** @type {any} */ t) => t.target_label).join(', ')} now
+            meets its support minimum in the MLB Pipeline Top 30 benchmark sample, a rank-selected reference population. That is an empirical result for those
+            ranked prospects only. It is not a rate of international signings, it is never pooled with the Dodgers population, and it does not produce a
+            probability for any Dodgers player; the Dodgers targets below still need their own evidence.
+          </p>}
         </section>
 
         {blockers && <section aria-labelledby="blockers-heading" className="panel section-gap">
@@ -92,7 +102,7 @@ export default async function PredictionReadinessPage() {
           <div className="table-scroll">
             <table className="research-table">
               <thead><tr>
-                <th>Target</th><th>Reference population</th><th className="num">Labelled</th><th className="num">Positive</th><th className="num">Negative</th>
+                <th>Target</th><th>Reference population</th><th>Used for</th><th className="num">Labelled</th><th className="num">Positive</th><th className="num">Negative</th>
                 <th className="num">Open horizon</th><th className="num">Unaudited</th><th>Minimum</th><th>State</th><th>What is needed</th>
               </tr></thead>
               <tbody>
@@ -100,6 +110,7 @@ export default async function PredictionReadinessPage() {
                   <tr key={`${t.target_key}-${t.reference_population}`}>
                     <td className="sticky-col"><strong>{t.target_label}</strong></td>
                     <td>{humanize(t.reference_population)}</td>
+                    <td className="wrap">{t.reference_population === DODGERS_REFERENCE_POPULATION ? 'Dodgers player probabilities' : 'Benchmark reference only; never a Dodgers probability'}</td>
                     <td className="num">{t.labelled_n}</td>
                     <td className="num">{t.positive_n}</td>
                     <td className="num">{t.negative_n}</td>
@@ -107,13 +118,15 @@ export default async function PredictionReadinessPage() {
                     <td className="num">{t.unaudited_n}</td>
                     <td>{t.min_reference_n} / {t.min_positives} / {t.min_negatives}</td>
                     <td><span className={`tag${t.baseline_supported ? '' : ' emphasis'}`}>{humanize(t.readiness_state)}</span></td>
-                    <td className="wrap">{t.baseline_supported ? 'Supported' : `+${t.additional_labels_needed} labelled, +${t.additional_positives_needed} positive, +${t.additional_negatives_needed} negative`}</td>
+                    <td className="wrap">{t.baseline_supported
+                      ? (t.reference_population === DODGERS_REFERENCE_POPULATION ? 'Supported' : 'Supported for this rank-selected sample only')
+                      : `+${t.additional_labels_needed} labelled, +${t.additional_positives_needed} positive, +${t.additional_negatives_needed} negative`}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="micro-note table-foot">Minimum = labelled / positive / negative outcomes. The top-prospect benchmark sample is its own reference population and is never pooled with Dodgers signings.</p>
+          <p className="micro-note table-foot">Minimum = labelled / positive / negative outcomes. The top-prospect benchmark sample is its own reference population and is never pooled with Dodgers signings; its support never produces a Dodgers probability.</p>
         </section>
 
         <section aria-labelledby="models-heading" className="table-panel">

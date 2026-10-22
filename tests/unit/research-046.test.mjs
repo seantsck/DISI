@@ -294,7 +294,7 @@ test('transaction research items are ordered deterministically and filterable', 
 const status = { tracked_signings: 220, outcome_audit_queue: 127, outcome_audits_completed: 93, signings_with_known_cost: 48, known_acquisition_cost_usd: 117377237.33, rate_eligible_populations: 0, class_members_missing: 3 }
 const executive = { mature_signings: 98, signings_with_complete_cost: 44, supported_expected_value_models: 0, predictive_portfolio_recommendations: 0 }
 const targets = [
-  { target_key: 'T1', reference_population: 'POP', baseline_supported: false, labelled_n: 11, positive_n: 1, negative_n: 10, unaudited_n: 5, min_reference_n: 50, min_positives: 10, min_negatives: 10, additional_labels_needed: 39, additional_positives_needed: 9, additional_negatives_needed: 0 },
+  { target_key: 'T1', reference_population: 'DODGERS_TRACKED_AND_OPENING_CLASS', baseline_supported: false, labelled_n: 11, positive_n: 1, negative_n: 10, unaudited_n: 5, min_reference_n: 50, min_positives: 10, min_negatives: 10, additional_labels_needed: 39, additional_positives_needed: 9, additional_negatives_needed: 0 },
 ]
 const populations = [
   { rate_eligible: false, rate_exclusion_reason: 'POPULATION_INCOMPLETE', unresolved_conflicts: 0 },
