@@ -112,11 +112,11 @@ before(async () => {
 after(async () => { await chain?.close() })
 
 test('048 is registered after 047 and before 049', () => {
-  assert.equal(manifest.canonical_sql.at(-2), FILE)
-  assert.equal(manifest.canonical_sql.at(-3), '047_development_transaction_research_batch.sql')
-  assert.equal(manifest.canonical_sql.at(-1), '049_transaction_package_completion.sql')
+  const i = manifest.canonical_sql.indexOf(FILE)
+  assert.equal(i, 51, '048 is the 52nd canonical file; later migrations follow it')
+  assert.equal(manifest.canonical_sql[i - 1], '047_development_transaction_research_batch.sql')
+  assert.equal(manifest.canonical_sql[i + 1], '049_transaction_package_completion.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
-  assert.equal(manifest.canonical_sql.length, 53)
 })
 
 test('048 adds research DATA only: no table, view, function, trigger, policy or privilege changes', async () => {
@@ -410,11 +410,11 @@ test('idempotent: a rerun adds nothing, runs no second refresh and changes no ta
   assert.equal((await one(`select max(generation_id)::int as g from product_executive_snapshot`)).g, g)
 })
 
-test('the verifier passes on 001-048 (247 hard checks), each snapshot check is clean, and a drifted pin is caught', async () => {
+test('the verifier passes on 001-048 (248 hard checks), each snapshot check is clean, and a drifted pin is caught', async () => {
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 247)
+  assert.equal(full.hard.length, 248)
   // a pinned count that differs by one is caught (the other pins are exercised by the verifier's own drift test)
   const bad = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, progression_decisions_pending: CANONICAL_EXPECTATIONS.progression_decisions_pending - 1 })
   assert.deepEqual(failedChecks(bad).map((c) => c.name), ['progression_decisions_pending'])

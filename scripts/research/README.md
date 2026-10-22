@@ -43,6 +43,12 @@ the missing fields as stable codes (`SIGNING_DATE_MISSING`, `FIRST_PRO_SEASON_UN
 HISTORY` is never shown as "no development". Read-only; `--input` reads a saved dataset. `research:readiness` additionally lists the
 development / transaction evidence gaps, labelled as supporting evidence and not gates.
 
+## research:readiness, 050
+
+The player-probability layer is supported only by the Dodgers tracked / opening-class population, the only population probabilities are made
+for. A baseline supported only in the rank-selected benchmark sample is printed as a fact (`BENCHMARK_REFERENCE_BASELINE_SUPPORTED`) and never
+makes the layer supported; the layer's blockers are the Dodgers population's. `BENCHMARK SUPPORT != DODGERS SUPPORT`.
+
 ## research:development, 048 modes
 
 | Flag | Reads | Prints |

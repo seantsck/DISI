@@ -232,7 +232,7 @@ test('verifier: the eight benchmark checks pass and each catches its own drift; 
   assert.equal(BENCHMARK_CHECK_NAMES.length, 8)
   const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 112, public_tables_total: 59 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 247, '186 through 035 plus the eight 036, seven 037, six 038, five 039, five 040 and six 041 checks, which pass trivially without their objects')
+  assert.equal(full.hard.length, 248, '186 through 035 plus the eight 036, seven 037, six 038, five 039, five 040 and seven 041 checks, which pass trivially without their objects')
   const cov = 'v_international_benchmark_class_coverage'
   const out = 'v_international_benchmark_player_outcomes'
   assert.deepEqual(await drift(cov, { rate_eligible_strict: 'true', comparison_label: `'CLASS_COMPLETE_COMPARISON'` }), ['benchmark_rate_eligibility_violations'])

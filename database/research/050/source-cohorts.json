@@ -1,0 +1,710 @@
+{
+ "cohorts": [
+  {
+   "class_year": 2015,
+   "club_capture": {
+    "bytes": 854888,
+    "last_updated": "2018-12-06T23:16:57.559Z",
+    "sha256": "3fc916c3ab3f6980c2048ef5b43db5c14eab9020a2281ae12d8e6ca42b229316",
+    "url": "https://web.archive.org/web/20190430161634id_/http://m.mlb.com/gen/players/prospects/2015/playerProspects.json"
+   },
+   "list_basis": "PRE_SIGNING_LIST",
+   "list_capture": {
+    "bytes": 767619,
+    "last_updated": "2015-05-11T20:38:53.875Z",
+    "sha256": "28ee252c655f5960f9a680ac489a52108c7ebe1ccbc13ee39a25f27d15f22f80",
+    "url": "https://web.archive.org/web/20150511221143id_/http://m.mlb.com/gen/players/prospects/2015/playerProspects.json"
+   },
+   "list_size": 30,
+   "members": [
+    {
+     "list_club": "PHI",
+     "pipeline_slug": "ortiz_jhailyn",
+     "published_name": "Jhailyn Ortiz",
+     "published_position": "OF",
+     "rank": 1
+    },
+    {
+     "list_club": "TOR",
+     "pipeline_slug": "guerrero_vladimir",
+     "published_name": "Vladimir Guerrero Jr.",
+     "published_position": "OF",
+     "rank": 2
+    },
+    {
+     "list_club": "LAD",
+     "pipeline_slug": "heredia_starling",
+     "published_name": "Starling Heredia",
+     "published_position": "OF",
+     "rank": 3
+    },
+    {
+     "list_club": "MIN",
+     "pipeline_slug": "javier_wander",
+     "published_name": "Wander Javier",
+     "published_position": "SS",
+     "rank": 4
+    },
+    {
+     "list_club": "KC",
+     "pipeline_slug": "matias_seuly",
+     "published_name": "Seuly Matias",
+     "published_position": "OF",
+     "rank": 5
+    },
+    {
+     "list_club": "STL",
+     "pipeline_slug": "seijas_alvaro",
+     "published_name": "Alvaro Seijas",
+     "published_position": "RHP",
+     "rank": 6
+    },
+    {
+     "list_club": "COL",
+     "pipeline_slug": "montano_daniel",
+     "published_name": "Daniel Montano",
+     "published_position": "OF",
+     "rank": 7
+    },
+    {
+     "list_club": "HOU",
+     "pipeline_slug": "celestino_gilberto",
+     "published_name": "Gilberto Celestino",
+     "published_position": "OF",
+     "rank": 8
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "perlaza_yonathan",
+     "published_name": "Yonathan Perlaza",
+     "published_position": "SS",
+     "rank": 9
+    },
+    {
+     "list_club": "ATL",
+     "pipeline_slug": "pache_cristian",
+     "published_name": "Cristian Pache",
+     "published_position": "OF",
+     "rank": 10
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "guaimaro_albert",
+     "published_name": "Albert Guaimaro",
+     "published_position": "OF",
+     "rank": 11
+    },
+    {
+     "list_club": "NYM",
+     "pipeline_slug": "gimenez_andres",
+     "published_name": "Andres Gimenez",
+     "published_position": "INF",
+     "rank": 12
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "sierra_estiwal_yonathan",
+     "published_name": "Yonathan Sierra Estiwal",
+     "published_position": "OF",
+     "rank": 13
+    },
+    {
+     "list_club": "NYM",
+     "pipeline_slug": "guerrero_gregory",
+     "published_name": "Gregory Guerrero",
+     "published_position": "SS",
+     "rank": 14
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "taveras_leodys",
+     "published_name": "Leodys Taveras",
+     "published_position": "OF",
+     "rank": 15
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "ademan_aramis",
+     "published_name": "Aramis Ademan",
+     "published_position": "SS",
+     "rank": 16
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "amarista_anderson",
+     "published_name": "Anderson Amarista",
+     "published_position": "RHP",
+     "rank": 17
+    },
+    {
+     "list_club": "LAD",
+     "pipeline_slug": "brito_ronny",
+     "published_name": "Ronny Brito",
+     "published_position": "SS",
+     "rank": 18
+    },
+    {
+     "list_club": "WSH",
+     "pipeline_slug": "soto_juan",
+     "published_name": "Juan Soto",
+     "published_position": "OF",
+     "rank": 19
+    },
+    {
+     "list_club": "CIN",
+     "pipeline_slug": "olivo_cristian",
+     "published_name": "Cristian Olivo",
+     "published_position": "OF",
+     "rank": 20
+    },
+    {
+     "list_club": "ATL",
+     "pipeline_slug": "cruz_derian",
+     "published_name": "Derian Cruz",
+     "published_position": "SS",
+     "rank": 21
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "aparicio_miguel",
+     "published_name": "Miguel Aparicio",
+     "published_position": "OF",
+     "rank": 22
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "amaya_miguel",
+     "published_name": "Miguel Amaya",
+     "published_position": "C",
+     "rank": 23
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "muzziotti_simon",
+     "published_name": "Simon Muzziotti",
+     "published_position": "OF",
+     "rank": 24
+    },
+    {
+     "list_club": "CWS",
+     "pipeline_slug": "tatis_fernando",
+     "published_name": "Fernando Tatis Jr.",
+     "published_position": "SS",
+     "rank": 25
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "martinez_christopher",
+     "published_name": "Christopher Martinez",
+     "published_position": "3B",
+     "rank": 26
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "guzman_jeison",
+     "published_name": "Jeison Guzman",
+     "published_position": "SS",
+     "rank": 27
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "marchan_rafael",
+     "published_name": "Rafael Marchan",
+     "published_position": "C",
+     "rank": 28
+    },
+    {
+     "list_club": "SEA",
+     "pipeline_slug": "vargas_carlos",
+     "published_name": "Carlos Vargas",
+     "published_position": "SS",
+     "rank": 29
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "reyes_franklin",
+     "published_name": "Franklin Reyes",
+     "published_position": "OF",
+     "rank": 30
+    }
+   ],
+   "note": "Published before the 2015-16 international signing period opened (feed last_updated 2015-05-11); no club is named. Clubs are read from the later revision of the same list (last_updated 2018-12-06), which names the club each listed player signed with.",
+   "population_key": "MLB-2015-PIPELINE-TOP30",
+   "signing_window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "class_year": 2016,
+   "club_capture": {
+    "bytes": 847776,
+    "last_updated": "2017-05-27T16:46:54.667Z",
+    "sha256": "8104d6b6caee939c3993b04e2eab9a6b4014e0266aa979d2d5e33dc5efff0443",
+    "url": "https://web.archive.org/web/20170916032009id_/http://www.mlb.com:80/gen/players/prospects/2016/playerProspects.json"
+   },
+   "list_basis": "SIGNING_PERIOD_LIST",
+   "list_capture": {
+    "bytes": 847776,
+    "last_updated": "2017-05-27T16:46:54.667Z",
+    "sha256": "8104d6b6caee939c3993b04e2eab9a6b4014e0266aa979d2d5e33dc5efff0443",
+    "url": "https://web.archive.org/web/20170916032009id_/http://www.mlb.com:80/gen/players/prospects/2016/playerProspects.json"
+   },
+   "list_size": 30,
+   "members": [
+    {
+     "list_club": "CWS",
+     "pipeline_slug": "robert_luis",
+     "published_name": "Luis Robert",
+     "published_position": "OF",
+     "rank": 1
+    },
+    {
+     "list_club": "ATL",
+     "pipeline_slug": "maitan_kevin",
+     "published_name": "Kevin Maitan",
+     "published_position": "SS",
+     "rank": 2
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "morejon_adrian",
+     "published_name": "Adrian Morejon",
+     "published_position": "LHP",
+     "rank": 3
+    },
+    {
+     "list_club": "OAK",
+     "pipeline_slug": "ruiz_norge",
+     "published_name": "Norge Ruiz",
+     "published_position": "RHP",
+     "rank": 4
+    },
+    {
+     "list_club": "HOU",
+     "pipeline_slug": "perez_cionel",
+     "published_name": "Cionel Perez",
+     "published_position": "LHP",
+     "rank": 5
+    },
+    {
+     "list_club": "CIN",
+     "pipeline_slug": "gutierrez_vladimir",
+     "published_name": "Vladimir Gutierrez",
+     "published_position": "RHP",
+     "rank": 6
+    },
+    {
+     "list_club": "TOR",
+     "pipeline_slug": "gurriel_lourdes",
+     "published_name": "Lourdes Gurriel",
+     "published_position": "INF/OF",
+     "rank": 7
+    },
+    {
+     "list_club": "CIN",
+     "pipeline_slug": "rodriguez_alfredo",
+     "published_name": "Alfredo Rodriguez",
+     "published_position": "SS",
+     "rank": 8
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "almanzar_luis",
+     "published_name": "Luis Almanzar",
+     "published_position": "SS",
+     "rank": 9
+    },
+    {
+     "list_club": "OAK",
+     "pipeline_slug": "armenteros_lazaro",
+     "published_name": "Lazaro Armenteros",
+     "published_position": "OF",
+     "rank": 10
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "arias_gabriel",
+     "published_name": "Gabriel Arias",
+     "published_position": "SS",
+     "rank": 11
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "ona_jorge",
+     "published_name": "Jorge Ona",
+     "published_position": "OF",
+     "rank": 12
+    },
+    {
+     "list_club": "WSH",
+     "pipeline_slug": "garcia_luis",
+     "published_name": "Luis Garcia",
+     "published_position": "SS",
+     "rank": 13
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "perez_yanio",
+     "published_name": "Yanio Perez",
+     "published_position": "3B",
+     "rank": 14
+    },
+    {
+     "list_club": "HOU",
+     "pipeline_slug": "nova_freudis",
+     "published_name": "Freudis Nova",
+     "published_position": "SS",
+     "rank": 15
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "rosario_jeisson",
+     "published_name": "Jeisson Rosario",
+     "published_position": "OF",
+     "rank": 16
+    },
+    {
+     "list_club": "STL",
+     "pipeline_slug": "machado_jonathan",
+     "published_name": "Jonathan Machado",
+     "published_position": "CF",
+     "rank": 17
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "garcia_david",
+     "published_name": "David Garcia",
+     "published_position": "C",
+     "rank": 18
+    },
+    {
+     "list_club": "STL",
+     "pipeline_slug": "garcia_victor",
+     "published_name": "Victor Garcia",
+     "published_position": "OF",
+     "rank": 19
+    },
+    {
+     "list_club": "STL",
+     "pipeline_slug": "arozarena_randy",
+     "published_name": "Randy Arozarena",
+     "published_position": "CF/2B",
+     "rank": 20
+    },
+    {
+     "list_club": "WSH",
+     "pipeline_slug": "antuna_yasel",
+     "published_name": "Yasel Antuna",
+     "published_position": "SS",
+     "rank": 21
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "barley_jordy",
+     "published_name": "Jordy Barley",
+     "published_position": "SS",
+     "rank": 22
+    },
+    {
+     "list_club": "PHI",
+     "pipeline_slug": "morales_francisco",
+     "published_name": "Francisco Morales",
+     "published_position": "RHP",
+     "rank": 23
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "bolanos_ronald",
+     "published_name": "Ronald Bolanos",
+     "published_position": "RHP",
+     "rank": 24
+    },
+    {
+     "list_club": "ATL",
+     "pipeline_slug": "gutierrez_abrahan",
+     "published_name": "Abrahan Gutierrez",
+     "published_position": "C",
+     "rank": 25
+    },
+    {
+     "list_club": "ATL",
+     "pipeline_slug": "severino_yunior",
+     "published_name": "Yunior Severino",
+     "published_position": "SS",
+     "rank": 26
+    },
+    {
+     "list_club": "WSH",
+     "pipeline_slug": "sanchez_jose",
+     "published_name": "Jose Sanchez",
+     "published_position": "SS",
+     "rank": 27
+    },
+    {
+     "list_club": "OAK",
+     "pipeline_slug": "vargas_yerdeluis",
+     "published_name": "Yerdeluis Vargas",
+     "published_position": "SS",
+     "rank": 28
+    },
+    {
+     "list_club": "ATL",
+     "pipeline_slug": "pena_yenci",
+     "published_name": "Yenci Pena",
+     "published_position": "3B",
+     "rank": 29
+    },
+    {
+     "list_club": "OAK",
+     "pipeline_slug": "brito_marcos",
+     "published_name": "Marcos Brito",
+     "published_position": "SS",
+     "rank": 30
+    }
+   ],
+   "note": "No capture of the data feed exists from before the 2016-17 signing period opened; the earliest is the list as updated on 2017-05-27, inside the period, naming each signing club. It is a signing-period observation, not a pre-signing one.",
+   "population_key": "MLB-2016-PIPELINE-TOP30",
+   "signing_window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  }
+ ],
+ "generated_by": "database/research/050/derive-research.mjs",
+ "later_revisions": [
+  {
+   "added_in_revision": [
+    {
+     "club": "LAD",
+     "name": "Yadier Alvarez",
+     "position": "RHP",
+     "rank": 1
+    },
+    {
+     "club": null,
+     "name": "Vladimir Gutierrez",
+     "position": "RHP",
+     "rank": 2
+    },
+    {
+     "club": "LAD",
+     "name": "Yusniel Diaz",
+     "position": "OF",
+     "rank": 3
+    },
+    {
+     "club": null,
+     "name": "Alfredo Rodriguez",
+     "position": "SS",
+     "rank": 4
+    },
+    {
+     "club": "CHC",
+     "name": "Eddie Martinez",
+     "position": "OF",
+     "rank": 5
+    },
+    {
+     "club": "SF",
+     "name": "Lucius Fox",
+     "position": "SS",
+     "rank": 6
+    },
+    {
+     "club": null,
+     "name": "Lazaro Armenteros",
+     "position": "OF",
+     "rank": 8
+    }
+   ],
+   "class_year": 2015,
+   "club_changes": [
+    {
+     "cohort_club": null,
+     "name": "Vladimir Guerrero Jr.",
+     "revision_club": "TOR"
+    },
+    {
+     "cohort_club": null,
+     "name": "Starling Heredia",
+     "revision_club": "LAD"
+    },
+    {
+     "cohort_club": null,
+     "name": "Jhailyn Ortiz",
+     "revision_club": "PHI"
+    },
+    {
+     "cohort_club": null,
+     "name": "Gilberto Celestino",
+     "revision_club": "HOU"
+    },
+    {
+     "cohort_club": null,
+     "name": "Wander Javier",
+     "revision_club": "MIN"
+    },
+    {
+     "cohort_club": null,
+     "name": "Seuly Matias",
+     "revision_club": "KC"
+    },
+    {
+     "cohort_club": null,
+     "name": "Cristian Pache",
+     "revision_club": "ATL"
+    },
+    {
+     "cohort_club": null,
+     "name": "Alvaro Seijas",
+     "revision_club": "STL"
+    },
+    {
+     "cohort_club": null,
+     "name": "Daniel Montano",
+     "revision_club": "COL"
+    },
+    {
+     "cohort_club": null,
+     "name": "Yonathan Perlaza",
+     "revision_club": "CHC"
+    },
+    {
+     "cohort_club": null,
+     "name": "Andres Gimenez",
+     "revision_club": "NYM"
+    },
+    {
+     "cohort_club": null,
+     "name": "Yonathan Sierra Estiwal",
+     "revision_club": "CHC"
+    },
+    {
+     "cohort_club": null,
+     "name": "Gregory Guerrero",
+     "revision_club": "NYM"
+    },
+    {
+     "cohort_club": null,
+     "name": "Leodys Taveras",
+     "revision_club": "TEX"
+    },
+    {
+     "cohort_club": null,
+     "name": "Aramis Ademan",
+     "revision_club": "CHC"
+    },
+    {
+     "cohort_club": null,
+     "name": "Ronny Brito",
+     "revision_club": "LAD"
+    },
+    {
+     "cohort_club": null,
+     "name": "Juan Soto",
+     "revision_club": "WSH"
+    },
+    {
+     "cohort_club": null,
+     "name": "Cristian Olivo",
+     "revision_club": "CIN"
+    },
+    {
+     "cohort_club": null,
+     "name": "Derian Cruz",
+     "revision_club": "ATL"
+    },
+    {
+     "cohort_club": null,
+     "name": "Miguel Amaya",
+     "revision_club": "CHC"
+    },
+    {
+     "cohort_club": null,
+     "name": "Carlos Vargas",
+     "revision_club": "SEA"
+    },
+    {
+     "cohort_club": null,
+     "name": "Fernando Tatis Jr.",
+     "revision_club": "CWS"
+    }
+   ],
+   "cohort_capture": "https://web.archive.org/web/20150511221143id_/http://m.mlb.com/gen/players/prospects/2015/playerProspects.json",
+   "dropped_in_revision": [
+    {
+     "name": "Anderson Amarista",
+     "position": "RHP",
+     "rank": 17
+    },
+    {
+     "name": "Miguel Aparicio",
+     "position": "OF",
+     "rank": 22
+    },
+    {
+     "name": "Simon Muzziotti",
+     "position": "OF",
+     "rank": 24
+    },
+    {
+     "name": "Christopher Martinez",
+     "position": "3B",
+     "rank": 26
+    },
+    {
+     "name": "Jeison Guzman",
+     "position": "SS",
+     "rank": 27
+    },
+    {
+     "name": "Rafael Marchan",
+     "position": "C",
+     "rank": 28
+    },
+    {
+     "name": "Franklin Reyes",
+     "position": "OF",
+     "rank": 30
+    }
+   ],
+   "revision_capture": "https://web.archive.org/web/20190430161634id_/http://m.mlb.com/gen/players/prospects/2015/playerProspects.json",
+   "revision_last_updated": "2018-12-06T23:16:57.559Z",
+   "revision_sha256": "3fc916c3ab3f6980c2048ef5b43db5c14eab9020a2281ae12d8e6ca42b229316"
+  },
+  {
+   "added_in_revision": [],
+   "class_year": 2016,
+   "club_changes": [
+    {
+     "cohort_club": "ATL",
+     "name": "Kevin Maitan",
+     "revision_club": null
+    },
+    {
+     "cohort_club": "ATL",
+     "name": "Abrahan Gutierrez",
+     "revision_club": null
+    },
+    {
+     "cohort_club": "ATL",
+     "name": "Yunior Severino",
+     "revision_club": null
+    },
+    {
+     "cohort_club": "ATL",
+     "name": "Yenci Pena",
+     "revision_club": null
+    }
+   ],
+   "cohort_capture": "https://web.archive.org/web/20170916032009id_/http://www.mlb.com:80/gen/players/prospects/2016/playerProspects.json",
+   "dropped_in_revision": [],
+   "revision_capture": "https://web.archive.org/web/20190430161634id_/http://m.mlb.com/gen/players/prospects/2016/playerProspects.json",
+   "revision_last_updated": "2018-12-06T23:37:27.303Z",
+   "revision_sha256": "8d0f0280dd2a672d9ee22ef2da106dbe7dd78b3bd68541c7af0b0a78df306b9b"
+  }
+ ],
+ "retrieved_at": "2026-10-22",
+ "source_family": "MLB Pipeline (MLB.com) international Top 30 prospect list: the official data feed /gen/players/prospects/<year>/playerProspects.json, list \"int\", read through archived captures (www.mlb.com answers 403 to direct reads)"
+}

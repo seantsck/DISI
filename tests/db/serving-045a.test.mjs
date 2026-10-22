@@ -229,7 +229,7 @@ test('verifier: the four snapshot checks pass, each catches its own drift, and t
   // 045b later adds the home-page status table (78); the 045a database has 77
   const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_tables_total: 77 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 247)
+  assert.equal(full.hard.length, 248)
   await scratch(async () => {
     await chain.db.exec(`grant select on public.v_executive_overview to anon`)
     assert.deepEqual(await failing(), ['product_snapshot_api_violations'])

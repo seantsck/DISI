@@ -3,11 +3,19 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 049 is built; 049 is not yet released)
+## Where DISI stands (after 050 is built; 050 is not yet released)
 
-- **v1.0.0 / schema v0.36.1** is in production through Migration 048 (released 2026-10-21, PR #19; production-verified; frozen in PR #20). The
-  product reads eleven persisted snapshots; the analytical layer is internal; the verifier has 247 hard checks (generation 6, drift 0).
-  **049 is built, tested and awaiting its release gate.**
+- **v1.0.0** is in production through Migration 049 (transaction-package completion, released 2026-10-22, PR #21 merged as `519fad7`;
+  production-verified; frozen in PR #22). Canonical `main` is `f378eeefb687ec6aef839c728e4abd0af63ec5f3`. The product reads eleven persisted
+  snapshots; the analytical layer is internal; the verifier had 247 hard checks (generation 7, drift 0). **050 is built, tested and awaiting its
+  release gate.**
+- International benchmark (050, built): the MLB Pipeline international Top 30 lists of the 2015 and 2016 classes join the 2013 / 2014 trackers.
+  Benchmark signings **48 -> 102** (27 + 27 verified non-Dodgers signings; the two listed Dodgers signings stay Dodgers records; 4 listed players
+  are queued), identity-resolved **43 -> 99**, MLB reachers **11 -> 34**. `REACH_MLB_WITHIN_7_SEASONS` now meets its support minimum **in the
+  benchmark sample only** (90 labelled, 19 positive, 71 negative): a reference baseline for those ranked prospects, never a Dodgers probability.
+  `BENCHMARK SUPPORT != DODGERS SUPPORT`: no Dodgers target moved, no probability is published, and expected value and recommendations stay
+  unsupported. The bWAR targets gain labels but no positives (no Baseball-Reference WAR is loaded; the files answer 403). The verifier has 248
+  checks.
 - **220** Dodgers international signings are tracked. **93** have an outcome audit: **47** verified MLB, **46** verified no MLB.
   **127** are `NOT_AUDITED`. Of the **98** mature signings, **7** are not audited, and the audit policy correctly holds all seven (five are
   still playing affiliated ball in a class after 2020; two have no usable affiliated record). The other 120 `NOT_AUDITED` signings are in
@@ -16,15 +24,34 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
   (179 of 220 signings). No path is complete: 44 of 47 are partial. 347 detector rows are 173 distinct pieces of development work.
-- Transactions (after 048): **209** events, **387** assets, **7** incomplete chains, **21** trade packages with an open issue, transaction queue **59**,
-  value queue **91**.
-- Transactions (049, built): `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
+- Transactions (049, released): **213** events, **396** assets, **7** resolutions; the transaction queue keeps **59** items and the value queue **91**. `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
   value of what came back unavailable, so the seven incomplete chains read as **five** whose transaction history is open and **two** whose history
   is recorded and whose returned players' Baseball-Reference WAR is not loaded. Open packages: **20** (membership open **5**, only terms open **15**).
-  The queues keep **59** and **91** items. Nothing was valued and no unknown became zero. One published figure moves as a consequence: Abreu's
-  return is now recorded with its WAR unknown, so his organizational value is unresolved instead of resolved at a false `0.00` return, and the home
-  page's realized organizational value reads 297.60 bWAR (was 298.83; signings with resolved value 87, was 88).
-- Nothing is published that is not supported: **0** supported probability targets, **0** supported expected values, **0** recommendations.
+  Nothing was valued and no unknown became zero. Abreu's return is recorded with its WAR unknown, so the home page's realized organizational value
+  reads 297.60 bWAR (signings with resolved value 87).
+- Nothing is published that is not supported: **0** supported Dodgers probability targets, **0** supported expected values, **0** recommendations.
+  After 050, one **benchmark reference baseline** is supported (reach within 7 seasons, in the rank-selected Top-prospect sample); it is shown on
+  Prediction readiness and the League Benchmark page as a reference result and never produces a Dodgers probability.
+
+## What 050 was for
+
+049 left the remaining transaction work blocked by sources DISI cannot read today. The next tractable bottleneck was outcome support: the nearest
+041 target was the benchmark's positive-bWAR target (43 labelled, 7 positive), and the five unresolved benchmark identities alone could not reach the
+50-row minimum. 050 extended the same MLB Pipeline international Top 30 methodology to the mature 2015 and 2016 classes, without lowering any
+threshold, and let the evidence decide.
+
+1. **A ranked list is not a signing, and a list year is not a signing year.** A listed player became a benchmark row only with an official MLB
+   signing transaction and an identity resolved by more than his name (club, signing window, birth date, register, position). The two listed
+   Dodgers signings stayed Dodgers records. Signing years come from the official dates: Luis Robert Jr. is on the 2016 list and signed in 2017.
+2. **Reach crossed; value did not.** With 47 more labelled amateur rows, reach within 7 seasons met its minimums in the benchmark sample (19
+   positives). The bWAR targets gained 32 labels but no positive: 23 reachers have no loaded Baseball-Reference WAR, so their labels stay NULL.
+3. **Benchmark support is not Dodgers support, and one layer had pooled them.** The executive overview counted a target as supported when any
+   population supported it. With the benchmark supported, it would have reported published probabilities while none exist. 050 fixed that one
+   statement (and the snapshot check that mirrored it) so the published state follows the population DISI actually predicts for.
+4. **The evaluation was re-run, not kept.** More labelled rows made the stored 041 evaluation stale; the same evaluation on the new data (101 rows,
+   19 positives) still finds no model that beats the base rate out of time.
+5. **Two of five legacy identities resolved, one is an open conflict.** DeJesus (reached MLB in 2023) and Zapata (Micker Adolfo) are resolved; Yrizarry's
+   only matching signing disagrees with the stored country, and Rosario and Amundaray have no official record.
 
 ## What 049 was for
 
@@ -107,8 +134,11 @@ What the 046 research showed about the bottlenecks:
   answers 403 today: Garland, Grant and Versalles are the returned players whose value is unknown.
 - **Audits as classes mature.** The 2021 class (22) is already mature: five players are active and need a decision rule once their careers
   end; the 2022 class matures in 2027.
-- **Support thresholds.** Unchanged. The closest target remains `POSITIVE_BWAR_WITHIN_10_SEASONS` for the top-prospect benchmark sample
-  (43 labelled, 7 positives; 7 more labels and 3 more positives needed; its 5 unaudited reference players are the first step).
+- **Support thresholds.** Unchanged. In the benchmark sample, reach within 7 seasons is supported (050); `POSITIVE_BWAR_WITHIN_10_SEASONS` has 75
+  labelled rows and 7 positives, and its 18 unlabelled rows are 15 reachers whose Baseball-Reference team-season WAR is not loaded (the files answer 403 today) and 3 unresolved identities. No
+  Dodgers target is close: reach within 7 seasons has 25 labelled rows and 2 positives.
+- **Benchmark depth.** The 2017 and 2018 Top 30 lists are already past the 7-season reach horizon (2024 and 2025 seasons) and are the next classes; the 2016 list's three Cuban signees
+  whose route no readable source states, Christopher Martinez (2015), and the three remaining legacy identities are queued.
 
 ## Not on the roadmap
 

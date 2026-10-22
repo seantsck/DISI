@@ -335,13 +335,37 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Rollback.** `database/release/sql/rollback-049.sql` restores the three transaction tables to their exact pre-049 content (nothing here is sealed; no resolution was added), refuses if later research depends on the removed assets, and 049 can be applied again afterwards.
 - **Release.** `database/release/049-release-plan.md`. Applying 049, merging its PR and deploying need explicit owner approval.
 
+## 050 international benchmark expansion and probability-support audit
+
+- **What it is.** A research-data migration plus one demonstrated definition fix. The MLB Pipeline international Top 30 lists of the 2015 and 2016
+  classes (read from the archived official data feed) become two `TOP_PROSPECT_SAMPLE` populations with 27 + 27 verified non-Dodgers benchmark
+  signings; two of the five 035 identity gaps are resolved; benchmark outcome audits at the unchanged 2026-10-05 boundary; the stored 041
+  evaluation is re-run on the new data.
+- **Principles.** `RANKING APPEARANCE != NEW SIGNING`; `RANKING CLASS YEAR != SIGNING YEAR`; `SOURCE LIST MEMBERSHIP != VERIFIED SIGNING`;
+  `RANKED PROSPECT SAMPLE != LEAGUE CENSUS`; `BENCHMARK SUPPORT != DODGERS SUPPORT`; `UNKNOWN BWAR != ZERO BWAR`.
+- **Reused structures.** `players`, `player_aliases`, `signings`, `signing_populations`, `signing_population_members` (+ sources),
+  `signing_census_coverage`, `evidence`, the 026 evaluations and rankings, `outcome_evidence`, `outcome_audits`, `outcomes`,
+  `outcome_model_evaluations`. No table, view, function, grant, policy or trigger is added.
+- **The definition fix.** `disi_executive_overview()` (044) and the validation inside `disi_refresh_product_snapshots()` (045b) counted a target
+  supported in any reference population as a supported probability target, while probabilities are made only for the Dodgers population. One
+  statement of each now counts the Dodgers population only; the migration proves each live body is the 044 / 045b one before replacing it.
+- **Result.** Benchmark players 48 -> 102; `REACH_MLB_WITHIN_7_SEASONS` supported in the benchmark sample only (90 labelled, 19 positive); every
+  Dodgers count, audit, cost, transaction, development and WAR row byte-identical; 0 probabilities, 0 supported Dodgers targets, 0 expected values,
+  0 recommendations. No Baseball-Reference WAR is loaded (403).
+- **Verifier.** 248 checks: the existing 247 (three of them now population-aware) plus `outcome_population_isolation_violations`. Pinned counts
+  move (`CANONICAL_EXPECTATIONS`); the 049 values are kept as `EXPECTATIONS_THROUGH_049`.
+- **Rollback.** `database/release/sql/rollback-050.sql` removes exactly what 050 added (the 050 rankings with the two 026 guard triggers disabled
+  inside its own transaction only and re-enabled before commit), restores the 041 evaluation rows and the 044 / 045b function bodies exactly, and
+  050 can be applied again afterwards.
+- **Release.** `database/release/050-release-plan.md`. Applying 050, merging its PR and deploying need explicit owner approval.
+
 ## 042-045 decision layers (DISI v1.0.0)
 
-- **Support chain.** 041 outcome probability -> 042 expected organizational value -> 043 portfolio decision support -> 044 executive product. Each layer reads the support state of the one below and can only narrow it. Today: 0 supported probability targets, 0 supported expected values, 0 predictive portfolio recommendations; the interface states that DISI does not publish outcome probabilities and shows the evidence needed (`v_prediction_readiness`, `v_research_roadmap`).
+- **Support chain.** 041 outcome probability -> 042 expected organizational value -> 043 portfolio decision support -> 044 executive product. Each layer reads the support state of the one below and can only narrow it. Today: 0 supported Dodgers probability targets (one benchmark reference baseline is supported after 050; it never reaches a Dodgers player), 0 supported expected values, 0 predictive portfolio recommendations; the interface states that DISI does not publish outcome probabilities and shows the evidence needed (`v_prediction_readiness`, `v_research_roadmap`).
 - **Realized vs expected.** Realized organizational value is observed bWAR the Dodgers obtained; a historical distribution is labelled HISTORICAL_DESCRIPTIVE and is never a player's expected value; expected value needs a supported probability and a supported conditional value.
 - **Decisions.** Readiness uses only signing-time facts and population-level support; NULL expected value never enters optimization as zero; budget feasibility is INDETERMINATE when unknown costs could change the answer; retrospective analysis never claims a hindsight-optimal portfolio was knowable.
 - **Contract.** `disi_product_contract` lists exactly the relations `lib/data.js` reads; `v_disi_release_status` reports the version, data freshness, model versions and `support_chain_state`.
-- **Surface.** 78 public tables (eleven of them product snapshots; 045b added the home-page status), 155 views and eight internal functions (six staged, refresh, drift); the verifier adds 5 + 5 + 2 + 3 + 5 + 4 checks (247 in total).
+- **Surface.** 78 public tables (eleven of them product snapshots; 045b added the home-page status), 155 views and eight internal functions (six staged, refresh, drift); the verifier adds 5 + 5 + 2 + 3 + 5 + 4 checks (247 in total; 050 adds the population-isolation check: 248).
 - **Serving.** Pages read only the persisted `product_*` snapshots; a request never recomputes the analytical graph. Refresh explicitly after research data changes (`npm run refresh:product-snapshots`; `--drift` reports staleness), and the verifier reports a stale snapshot.
 - **Plan-bounded.** No public view plans the whole 041 -> 042 -> 043 stack in one statement: the heavy layers are staged functions whose stages are planned only when they run (043a). Validated on a PostgreSQL 17 limited to 1 GB with the production memory settings.
 - **Rerunnable**; designs and findings in `database/research/042/` to `045/`.

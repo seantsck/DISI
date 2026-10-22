@@ -55,7 +55,9 @@ export const productSnapshotQueries = (loaded, statusLoaded = false) => {
 
     product_snapshot_support_violations: `with e as materialized (select * from public.product_executive_snapshot)
       select (
-        (select count(*) from e where e.supported_probability_targets <> (select count(distinct target_key) from public.product_prediction_readiness where baseline_supported)
+        -- a supported probability target is one supported for the population predictions are made for (050: never a benchmark-only baseline)
+        (select count(*) from e where e.supported_probability_targets <> (select count(distinct target_key) from public.product_prediction_readiness
+              where baseline_supported and reference_population = 'DODGERS_TRACKED_AND_OPENING_CLASS')
            or e.supported_expected_value_models <> (select count(*) from public.product_expected_value_support where expected_value_supported)
            or e.supported_expected_values <> (select count(expected_org_value_bwar) from public.product_player_expected_value)
            or e.predictive_portfolio_recommendations <> (select count(*) from public.product_player_decision where optimization_eligible)

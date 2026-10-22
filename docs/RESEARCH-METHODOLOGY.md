@@ -387,9 +387,51 @@ not write dates, transaction types, affiliate levels, trade participants, bWAR o
   and its WAR is unknown, his organizational value is `VALUE_UNRESOLVED` and the realized totals drop by his 1.23 direct bWAR (298.83 to 297.60; resolved
   signings 88 to 87). That is the existing `RETURN_WAR_UNKNOWN` rule working, not a loss of value.
 
+## International benchmark (035, 050)
+
+```
+RANKING APPEARANCE != NEW SIGNING     RANKING CLASS YEAR != SIGNING YEAR     SOURCE LIST MEMBERSHIP != VERIFIED SIGNING
+RANKED PROSPECT SAMPLE != LEAGUE CENSUS     BENCHMARK SUPPORT != DODGERS SUPPORT     MLB REACH != POSITIVE BWAR
+```
+
+The benchmark is a rank-selected sample: the players MLB Pipeline ranked in its international Top 30 lists (2013-2016) who have a verified
+non-Dodgers signing. It is not every international signing, not an organization's population and not a Dodgers comparison denominator, and no
+figure from it is a rate of international signings. Allowed framing: "Among this MLB Pipeline Top-30 benchmark sample (2015 list, 27 signings) ...".
+
+- **Membership.** A listed player becomes a benchmark signing only when the official MLB transaction log shows his signing inside the class
+  window and his identity is resolved by more than his name (section "Recording player identity" in `INGESTION.md`). A listed player the Dodgers
+  signed stays his one Dodgers signing (never a second, benchmark copy). An unresolved member is queued, never added and never a non-reacher; the
+  population's `stated_composition` records every member's decision.
+- **Signing year.** The year of the official signing, not the list's class year: a 2016-list player signed in 2017 has `signing_year` 2017, and
+  the 041 horizons use it (`signing_year + horizon <= last complete season`).
+- **Route.** A Cuban signee with prior professional play (Cuban National Series, or a professional season in the official record before the
+  signing year) is a professional route and never trains an amateur estimate; a route no readable source states is not guessed, and the signing
+  is not added.
+- **Outcome.** The 035 conventions at the unchanged analysis boundary (2026-10-05). No MLB debut found is not a career end; a reacher without
+  loaded Baseball-Reference team-season WAR has no bWAR label (NULL, never zero).
+- **Rankings.** Each listed benchmark signing carries its point-in-time MLB Pipeline rank as a 026 evaluation (`INTERNATIONAL_CLASS`, list size
+  30), dated by the feed it was read from. A ranking published after the signing gives no signing-time expectation feature.
+
+### What 050 recorded
+
+- The 2015 list (pre-signing, 2015-05-11) and the 2016 list (signing period, 2017-05-27) from the archived official MLB Pipeline feed: 27 + 27
+  verified non-Dodgers benchmark signings; Starling Heredia and Ronny Brito (2015) stay Dodgers records; Christopher Martinez (2015) is
+  unresolved; three Cuban signees of the 2016 list (Armenteros, Yanio Pérez, Machado) have no readable route and are not added.
+- Nine professional-route Cuban signings (2016 list) are benchmark rows but out of every amateur training row; Jorge Oña is `CUBAN_AMATEUR`.
+- Of the five 035 gaps: Emmanuel DeJesus and Micker Zapata resolved, Yeyson Yrizarry a conflict (birth country), Yeremy Rosario and Jonathan
+  Amundaray without an official record.
+- Reach within 7 seasons is now supported in the benchmark sample (90 labelled, 19 positive, 71 negative; baseline 0.211, 90% 0.149-0.290). The
+  bWAR targets gained labels but no positives. No Dodgers target moved.
+
 ## Prediction readiness and blockers
 
 The product publishes an estimate only when its evidence meets a documented threshold, and it states exactly what is missing.
+
+**Benchmark support is not Dodgers support (050).** Player probabilities are made only for the Dodgers tracked / opening-class population, so a
+supported probability target is a target supported in that population. A baseline supported only in the benchmark sample is reported as a
+benchmark reference result (`BENCHMARK_REFERENCE_BASELINE_SUPPORTED`), never as a supported Dodgers target, never pooled, and never borrowed as a
+Dodgers base rate, prior or transfer. The executive overview, the snapshot refresh check, the verifier and `readiness-blockers.js` all count it this
+way; before 050 the overview counted a target supported in any population, which was harmless only because none was.
 `lib/research/readiness-blockers.js` derives the statements from persisted snapshot rows only (`product_database_status`,
 `product_executive_snapshot`, `product_prediction_readiness`, `product_expected_value_support`, `product_portfolio_decision_support`,
 `product_player_decision`). The same function feeds `/prediction-readiness` and `npm run research:readiness`.
@@ -397,7 +439,7 @@ The product publishes an estimate only when its evidence meets a documented thre
 | Layer | Supported when | Blockers it can report |
 |---|---|---|
 | Organization outcome rates | at least one population is rate-eligible (018: complete, fully audited, mature, a full signing period) | population size unknown or incomplete; scope is not a full signing period; `N of M` signings `NOT_AUDITED`; mature signings `NOT_AUDITED`; unresolved class-membership conflicts; expected class signees missing |
-| Player outcome probabilities | a target / reference population meets its 041 minimums (labelled, positives, negatives) | labelled / positive / negative outcomes still needed; reference players `NOT_AUDITED` |
+| Player outcome probabilities | a target meets its 041 minimums (labelled, positives, negatives) in the Dodgers tracked / opening-class population; a benchmark-only baseline is reported as a fact and never supports this layer | Dodgers labelled / positive / negative outcomes still needed; reference players `NOT_AUDITED` |
 | Acquisition economics | **no threshold is defined**: shown as measured facts | signings with unknown cost; signings `NOT_AUDITED`; only signings with complete cost are eligible for cost-aware ratios |
 | Expected value | a supported probability and enough mature value observations | the probability is not supported; observations needed |
 | Recommendations | a supported expected value | no supported expected value; no optimization-eligible candidate |
