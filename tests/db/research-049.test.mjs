@@ -98,11 +98,12 @@ before(async () => {
 }, { timeout: 900000 })
 after(async () => { await chain?.close() })
 
-test('049 is registered last in the manifest and sorts after 048', () => {
-  assert.equal(manifest.canonical_sql.at(-1), FILE)
-  assert.equal(manifest.canonical_sql.at(-2), '048_verified_mlb_development_coverage.sql')
+test('049 is registered after 048 and before 050', () => {
+  const i = manifest.canonical_sql.indexOf(FILE)
+  assert.equal(i, 52, '049 is the 53rd canonical file; later migrations follow it')
+  assert.equal(manifest.canonical_sql[i - 1], '048_verified_mlb_development_coverage.sql')
+  assert.equal(manifest.canonical_sql[i + 1], '050_international_benchmark_support_expansion.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
-  assert.equal(manifest.canonical_sql.length, 53)
 })
 
 test('049 adds research DATA only: no table, view, function, trigger, policy or privilege changes', async () => {

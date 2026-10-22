@@ -112,11 +112,11 @@ before(async () => {
 after(async () => { await chain?.close() })
 
 test('048 is registered after 047 and before 049', () => {
-  assert.equal(manifest.canonical_sql.at(-2), FILE)
-  assert.equal(manifest.canonical_sql.at(-3), '047_development_transaction_research_batch.sql')
-  assert.equal(manifest.canonical_sql.at(-1), '049_transaction_package_completion.sql')
+  const i = manifest.canonical_sql.indexOf(FILE)
+  assert.equal(i, 51, '048 is the 52nd canonical file; later migrations follow it')
+  assert.equal(manifest.canonical_sql[i - 1], '047_development_transaction_research_batch.sql')
+  assert.equal(manifest.canonical_sql[i + 1], '049_transaction_package_completion.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
-  assert.equal(manifest.canonical_sql.length, 53)
 })
 
 test('048 adds research DATA only: no table, view, function, trigger, policy or privilege changes', async () => {
