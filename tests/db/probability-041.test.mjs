@@ -171,9 +171,9 @@ test('no accuracy, score or leaderboard column; probabilities are labelled with 
   }
 })
 
-test('verifier: the six probability checks pass, each catches its own drift, and the full verifier passes on the 041 database', async () => {
+test('verifier: the seven probability checks pass, each catches its own drift, and the full verifier passes on the 041 database', async () => {
   assert.deepEqual(await failing(), [])
-  assert.equal(PROBABILITY_CHECK_NAMES.length, 6)
+  assert.equal(PROBABILITY_CHECK_NAMES.length, 7)
   const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_views_total: 140, public_tables_total: 64 })
   assert.deepEqual(failedChecks(full), [])
   assert.equal(full.hard.length, 248)
@@ -183,6 +183,8 @@ test('verifier: the six probability checks pass, each catches its own drift, and
   assert.ok((await drift('v_outcome_feature_matrix', { position_family: `'PITCHER'` })).includes('outcome_feature_leakage_violations'))
   assert.ok((await drift('v_outcome_target_support', { baseline_probability: '0.1' })).includes('outcome_support_violations'))
   assert.ok((await drift('v_player_outcome_probability', { probability: '0' })).includes('outcome_probability_eligibility_violations'))
+  // 050: a probability for a benchmark (non-Dodgers) row is a population-isolation violation
+  assert.ok((await drift('v_player_outcome_probability', { probability: `case when r.training_population = 'TOP_PROSPECT_SAMPLE' then 0.2 else r.probability end` })).includes('outcome_population_isolation_violations'))
   await scratch(async () => {
     await chain.db.exec(`update outcome_model_evaluations set decision = 'MODEL_SUPPORTED' where model_key = 'LOGISTIC_L2'`)
     assert.ok((await failing()).includes('outcome_model_registry_violations'))
