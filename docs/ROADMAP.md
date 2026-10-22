@@ -3,19 +3,19 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 050 is built; 050 is not yet released)
+## Where DISI stands (after 050 is released and frozen; 051 is built and awaiting its release gate)
 
-- **v1.0.0** is in production through Migration 049 (transaction-package completion, released 2026-10-22, PR #21 merged as `519fad7`;
-  production-verified; frozen in PR #22). Canonical `main` is `f378eeefb687ec6aef839c728e4abd0af63ec5f3`. The product reads eleven persisted
-  snapshots; the analytical layer is internal; the verifier had 247 hard checks (generation 7, drift 0). **050 is built, tested and awaiting its
-  release gate.**
-- International benchmark (050, built): the MLB Pipeline international Top 30 lists of the 2015 and 2016 classes join the 2013 / 2014 trackers.
-  Benchmark signings **48 -> 102** (27 + 27 verified non-Dodgers signings; the two listed Dodgers signings stay Dodgers records; 4 listed players
-  are queued), identity-resolved **43 -> 99**, MLB reachers **11 -> 34**. `REACH_MLB_WITHIN_7_SEASONS` now meets its support minimum **in the
-  benchmark sample only** (90 labelled, 19 positive, 71 negative): a reference baseline for those ranked prospects, never a Dodgers probability.
-  `BENCHMARK SUPPORT != DODGERS SUPPORT`: no Dodgers target moved, no probability is published, and expected value and recommendations stay
-  unsupported. The bWAR targets gain labels but no positives (no Baseball-Reference WAR is loaded; the files answer 403). The verifier has 248
-  checks.
+- **v1.0.0** is in production through Migration 050 (international benchmark expansion and probability-support audit, released 2026-10-22,
+  PR #23 merged as `459460d`; production-verified 248/248, generation 8, drift 0; frozen in PR #24, merged). Canonical `main` before 051 is
+  `f3cfbb0a8143bf2de47cbabaaf906b8b41aa592b`. The product reads eleven persisted snapshots; the analytical layer is internal.
+- International benchmark (050, released): the MLB Pipeline international Top 30 lists of the 2015 and 2016 classes join the 2013 / 2014 trackers.
+  Benchmark signings **48 -> 102**, identity-resolved **43 -> 99**, MLB reachers **11 -> 34**. `REACH_MLB_WITHIN_7_SEASONS` meets its support
+  minimum **in the benchmark sample only** (90 labelled, 19 positive, 71 negative): a reference baseline for those ranked prospects, never a Dodgers
+  probability. `BENCHMARK SUPPORT != DODGERS SUPPORT`.
+- Audited no-MLB development coverage (051, built, no migration): the 46 audited no-MLB players' recorded careers were checked fact by fact against
+  the official season splits and game logs. **Every** stint (306), dated stint (278) and dated milestone (182) matches; the source holds nothing
+  DISI lacks, so no canonical row is written. 051 reports the cohort's documented paths with the Dodgers-affiliate part and later play elsewhere
+  apart, and adds one verifier check (249).
 - **220** Dodgers international signings are tracked. **93** have an outcome audit: **47** verified MLB, **46** verified no MLB.
   **127** are `NOT_AUDITED`. Of the **98** mature signings, **7** are not audited, and the audit policy correctly holds all seven (five are
   still playing affiliated ball in a class after 2020; two have no usable affiliated record). The other 120 `NOT_AUDITED` signings are in
@@ -32,6 +32,22 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Nothing is published that is not supported: **0** supported Dodgers probability targets, **0** supported expected values, **0** recommendations.
   After 050, one **benchmark reference baseline** is supported (reach within 7 seasons, in the rank-selected Top-prospect sample); it is shown on
   Prediction readiness and the League Benchmark page as a reference result and never produces a Dodgers probability.
+
+## What 051 was for
+
+047 and 048 described the verified MLB players' documented paths. 051 asked the same of the 46 audited no-MLB players, under
+`AUDITED NO MLB != CAREER FAILURE`, `LAST OBSERVED SEASON != CAREER END` and `DEVELOPMENT HISTORY != PREDICTION FEATURE`.
+
+1. **The record was already the source.** Migration 021 had loaded every cohort player's whole recorded career, and the re-read on 2026-10-22
+   matched it exactly: 306 of 306 stints, 278 of 278 dated stints, 182 of 182 dated milestones, no conflict, no organization to resolve, no new
+   sequence review. 051 therefore writes nothing; a migration with no reviewed fact in it would only add a frozen file.
+2. **Highest level is two questions.** The published distribution counts the whole recorded career. Seven players first reached their highest
+   level with another organization after leaving, so the Dodgers-affiliate figure (Triple-A 5, not 9) is now shown beside it, never blended.
+3. **What remains open is explained, not researched away.** Every season gap in the cohort is 2020; the level gaps are Pioneer League
+   rookie-advanced seasons the taxonomy has no place for (documented, not forced); two players have no structured record at all and keep an unknown
+   highest level; Carlos Ávila's sequence stays pending for a person.
+4. **No prediction moved.** Development history is post-signing information; it never reaches the signing-time feature matrix, and a test proves
+   new development rows leave the matrix, support, evaluation and probabilities byte-identical.
 
 ## What 050 was for
 

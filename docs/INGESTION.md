@@ -138,6 +138,17 @@ Use `transaction_events` + `transaction_event_assets` for every trade so the who
 6. **Report gaps by cause** (`SOURCE_UNAVAILABLE`, `SOURCE_BEGINS_LATE`, `NO_EVIDENCE_FOUND`, `ORGANIZATION_UNCLEAR`, `LEVEL_UNCLEAR`), not as one
    missing-data count, and keep the MLB debut milestone equal to the verified outcome-audit date (the migration refuses a mismatch).
 
+### Re-checking a cohort that is already on record (051)
+
+1. **Derive the cohort from the canonical audits** (051: `outcome_audit_status = 'VERIFIED_NO_MLB'`), save the canonical state read-only
+   (`npm run research:development -- --no-mlb-coverage --save dataset.json`), and run the four official pipeline scripts for exactly that cohort.
+2. **Compare fact for fact before writing anything:** `node database/research/051/derive.mjs <dir> dataset.json` reports, per player, every stint,
+   date and milestone the source carries that DISI lacks, and every disagreement. Write a migration only for reviewed facts it finds; if it finds
+   none (051), write none.
+3. **Keep the Dodgers-affiliate part and later play elsewhere apart**, from each stint's own organization; never infer control from an adjacent season.
+4. **Stop on an outcome contradiction** (an MLB-level stint or debut for a VERIFIED_NO_MLB player): report it as its own reviewed outcome question;
+   the verifier check `no_mlb_development_contradictions` fails until it is resolved.
+
 ### Completing transaction chains and packages (049)
 
 1. **Order of truth.** Transaction, then package membership, then returned-player identity, then the value of the return, then attribution to a
