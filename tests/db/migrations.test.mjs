@@ -24,7 +24,7 @@ const one = async (sql, params) => (await rows(sql, params))[0]
 before(async () => {
   // This file pins the exact data of the frozen chain through 046 (the 021-024 development counts among them). Migration 047 is a data-only
   // research batch that legitimately moves those counts; it is verified in tests/db/research-047.test.mjs, and the complete chain including it
-  // is built and checked by tests/db/verify-live-invariants.test.mjs (the 247-check verifier).
+  // is built and checked by tests/db/verify-live-invariants.test.mjs (the 248-check verifier).
   db = (await buildChainThrough('046_outcome_cost_research_batch.sql')).db
 }, { timeout: 180000 })
 
@@ -37,10 +37,11 @@ test('manifest lists every canonical SQL file, in order', () => {
 })
 
 // Each migration replaces some views of the one before it, so rerunnability is
-// checked for the latest migration of the chain this file builds (046; 047, 048 and 049 prove their own reruns in tests/db/research-047.test.mjs, research-048.test.mjs and research-049.test.mjs).
+// checked for the latest migration of the chain this file builds (046; 047, 048, 049 and 050 prove their own reruns in tests/db/research-047.test.mjs, research-048.test.mjs,
+// research-049.test.mjs and research-050.test.mjs).
 test('the latest migration is rerunnable without changing data', async () => {
   const latest = '046_outcome_cost_research_batch.sql'
-  assert.equal(manifest.canonical_sql.at(-4), latest)
+  assert.equal(manifest.canonical_sql.at(-5), latest)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
       (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
@@ -2159,7 +2160,8 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 047 (development-history and transaction-chain research batch) was released on 2026-10-20 (PR #17, 154c7c0) and is frozen
 // 048 (verified MLB development coverage) was released on 2026-10-21 (PR #19, da91c21) and is frozen
 // 049 (transaction-package completion) was released on 2026-10-22 (PR #21, 519fad7) and is frozen
-const UNRELEASED_ADDITIONS = []
+// 050 (international benchmark expansion and probability-support audit) is built and awaiting its release gate; it is frozen in tests/db/frozen-migrations.json once released.
+const UNRELEASED_ADDITIONS = ['050_international_benchmark_support_expansion.sql']
 
 test('frozen history: migrations 001-049 (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))

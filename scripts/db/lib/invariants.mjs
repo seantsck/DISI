@@ -38,9 +38,11 @@ import { productSnapshotQueries, PRODUCT_SNAPSHOT_CHECK_NAMES } from './product-
 /** Canonical 001→029 (DISI v0.20) expected state. */
 export const CANONICAL_EXPECTATIONS = {
   // population (seeded by 002/012/013/016/019 and surfaced by v_database_status)
-  players_total: 268,
+  // 050 (the 2015 / 2016 MLB Pipeline international Top-30 benchmark): +54 non-Dodgers benchmark players and signings. The two listed Dodgers
+  // signings stay Dodgers records (no duplicate player or signing); dodgers_players and verified_mlb_outcomes (Dodgers) do not move.
+  players_total: 322,
   dodgers_players: 220,
-  league_benchmark_players: 48,
+  league_benchmark_players: 102,
   verified_mlb_outcomes: 47,
   // development dataset (021 stints; 022 exact dates; 023 stint integrity)
   // `stints` is the RAW row count. 023 classifies the team-less season totals (56;
@@ -125,15 +127,17 @@ export const CANONICAL_EXPECTATIONS = {
   public_role_relation_grants: 0,
   // scouting / evaluation history (026). Only the migration-built canonical state is pinned;
   // research that adds evaluations later updates these numbers in the same commit.
+  // 050: one MLB Pipeline international-class ranking per new benchmark signing (54), each equal to that signing's rank, so the legacy ranks
+  // grow by 54 and are all represented; the 11 unrepresented Dodgers ranks are unchanged.
   scouting_publications: 3,
   scouting_disi_research_publications: 0,
   evaluation_scales: 1,
-  player_evaluations: 51,
+  player_evaluations: 105,
   player_evaluations_superseded: 0,
   legacy_evaluations_table_present: 0,
   scouting_guard_triggers: 5,
-  scouting_legacy_ranks_total: 59,
-  scouting_legacy_ranks_backfilled: 48,
+  scouting_legacy_ranks_total: 113,
+  scouting_legacy_ranks_backfilled: 102,
   scouting_legacy_ranks_unrepresented: 11,
   scouting_legacy_rank_mismatches: 0,
   scouting_orphan_evaluations: 0,
@@ -258,12 +262,25 @@ export const CANONICAL_EXPECTATIONS = {
 }
 
 /**
- * The pinned expectations as they stood through Migration 048. Tests that verify a chain built only through 048 use this; CANONICAL_EXPECTATIONS is
- * always the current head. Migration 049 (transaction-package completion) pinned the one returned player whose WAR is knowingly unavailable;
- * nothing else differs.
+ * The pinned expectations as they stood through Migration 049. Tests that verify a chain built only through 049 use this; CANONICAL_EXPECTATIONS is
+ * always the current head. Migration 050 (the 2015 / 2016 international benchmark) moved the population and scouting counts below; nothing else
+ * differs.
+ */
+export const EXPECTATIONS_THROUGH_049 = Object.freeze({
+  ...CANONICAL_EXPECTATIONS,
+  players_total: 268,
+  league_benchmark_players: 48,
+  player_evaluations: 51,
+  scouting_legacy_ranks_total: 59,
+  scouting_legacy_ranks_backfilled: 48,
+})
+
+/**
+ * The pinned expectations as they stood through Migration 048. Tests that verify a chain built only through 048 use this. Migration 049
+ * (transaction-package completion) pinned the one returned player whose WAR is knowingly unavailable; nothing else differs.
  */
 export const EXPECTATIONS_THROUGH_048 = Object.freeze({
-  ...CANONICAL_EXPECTATIONS,
+  ...EXPECTATIONS_THROUGH_049,
   transaction_war_unavailable_mlb_ids: [],
 })
 

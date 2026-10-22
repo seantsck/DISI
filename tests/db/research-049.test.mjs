@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildChainThrough, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_049 as CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 import { productSnapshotQueries } from '../../scripts/db/lib/product-snapshot-invariants.mjs'
 import { ALL_SNAPSHOT_TABLES } from '../../database/research/045b/snapshots.mjs'
 import { attributionState, attributionStateCounts, attributionSummary, openPackages, packageBlockerSplit, packageCompleteness } from '../../lib/research/transaction-research.js'
@@ -373,11 +373,11 @@ test('the one published figure that moves: Abreu leaves the resolved-value set w
   }
 })
 
-test('the verifier passes on 001-049 (247 hard checks); the identity check accepts a returned player without WAR only for the pinned id', async () => {
+test('the verifier passes on 001-049 (248 hard checks); the identity check accepts a returned player without WAR only for the pinned id', async () => {
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 247)
+  assert.equal(full.hard.length, 248)
   assert.deepEqual(CANONICAL_EXPECTATIONS.transaction_war_unavailable_mlb_ids, [IDS.garland])
   // without the pin the same data is a violation: the relaxation is explicit, narrow and reviewed
   const unpinned = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, transaction_war_unavailable_mlb_ids: [] })

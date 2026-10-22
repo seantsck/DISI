@@ -410,11 +410,11 @@ test('idempotent: a rerun adds nothing, runs no second refresh and changes no ta
   assert.equal((await one(`select max(generation_id)::int as g from product_executive_snapshot`)).g, g)
 })
 
-test('the verifier passes on 001-048 (247 hard checks), each snapshot check is clean, and a drifted pin is caught', async () => {
+test('the verifier passes on 001-048 (248 hard checks), each snapshot check is clean, and a drifted pin is caught', async () => {
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 247)
+  assert.equal(full.hard.length, 248)
   // a pinned count that differs by one is caught (the other pins are exercised by the verifier's own drift test)
   const bad = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, progression_decisions_pending: CANONICAL_EXPECTATIONS.progression_decisions_pending - 1 })
   assert.deepEqual(failedChecks(bad).map((c) => c.name), ['progression_decisions_pending'])

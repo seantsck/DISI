@@ -7,6 +7,7 @@
 export const PROBABILITY_CHECK_NAMES = [
   'outcome_label_state_violations', 'outcome_no_negative_coercion_violations', 'outcome_feature_leakage_violations',
   'outcome_support_violations', 'outcome_probability_eligibility_violations', 'outcome_model_registry_violations',
+  'outcome_population_isolation_violations',
 ]
 
 /** name -> SQL returning one row { n } = number of violations. */
@@ -65,6 +66,18 @@ export const probabilityQueries = (loaded) => {
       where (e.decision = 'MODEL_SUPPORTED' and (e.positive_n < t.events_per_feature * greatest(cardinality(e.feature_list), 1) or not (e.brier_skill_vs_base_rate > 0)))
          or ((e.model_key = 'BASE_RATE') <> (e.decision = 'BASELINE_REFERENCE'))
          or e.validation_method <> 'LEAVE_ONE_SIGNING_YEAR_OUT'`,
+
+    // 050: BENCHMARK SUPPORT != DODGERS SUPPORT. Populations are never pooled: a baseline supported in the rank-selected Top-prospect sample
+    // never produces a probability (for a benchmark row or a Dodgers row) and never makes a Dodgers row eligible; a Dodgers row is eligible
+    // only through the Dodgers population's own support. (042's expected_value_support_violations already ties expected value to that
+    // population's support.)
+    outcome_population_isolation_violations: `select (
+        (select count(*) from public.v_player_outcome_probability o
+          where (o.probability is not null or o.prediction_eligible) and o.training_population is distinct from 'DODGERS_TRACKED_AND_OPENING_CLASS')
+      + (select count(*) from public.v_player_outcome_probability o
+          where o.prediction_eligible and not exists (select 1 from public.v_outcome_target_support s
+            where s.target_key = o.target_key and s.reference_population = 'DODGERS_TRACKED_AND_OPENING_CLASS' and s.baseline_supported))
+      )::int as n`,
   }
 }
 

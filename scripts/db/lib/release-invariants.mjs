@@ -29,7 +29,9 @@ export const releaseQueries = (loaded) => {
         abs((select count(*) from s) - 1)
       + (select count(*) from s where s.product_version is null or s.probability_model_version is null or s.value_model_version is null
           or s.analysis_as_of_date is distinct from (select max(audited_through_date) from public.outcome_audits)
-          or s.supported_probability_targets <> (select count(distinct target_key) from public.v_outcome_target_support where baseline_supported)
+          -- supported for the population predictions are made for (050: a benchmark-only baseline is not a supported probability target)
+          or s.supported_probability_targets <> (select count(distinct target_key) from public.v_outcome_target_support
+               where baseline_supported and reference_population = 'DODGERS_TRACKED_AND_OPENING_CLASS')
           or s.supported_expected_value_models <> (select count(*) from public.v_expected_value_support where expected_value_supported)
           or s.predictive_portfolio_recommendations <> (select count(*) from public.v_portfolio_candidate_readiness where optimization_eligible)
           or s.product_contract_relations <> (select count(*) from public.disi_product_contract))
