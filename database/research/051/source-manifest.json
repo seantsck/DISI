@@ -1,0 +1,24 @@
+{
+  "by_kind": {
+    "gameLog": 195,
+    "person record": 44,
+    "yearByYear season splits": 176
+  },
+  "distinct_urls_cited_by_rows": 415,
+  "endpoints": {
+    "game_log_milb": "https://statsapi.mlb.com/api/v1/people/{id}/stats?stats=gameLog&group={hitting|pitching}&season={yyyy}&leagueListId=milb_all",
+    "person": "https://statsapi.mlb.com/api/v1/people/{id}",
+    "season_splits_milb": "https://statsapi.mlb.com/api/v1/people/{id}/stats?stats=yearByYear&group={hitting|pitching}&leagueListId=milb_all",
+    "season_splits_mlb": "https://statsapi.mlb.com/api/v1/people/{id}/stats?stats=yearByYear&group={hitting|pitching}&sportId=1"
+  },
+  "generated": {
+    "game_logs": null,
+    "seasons": null
+  },
+  "not_used": [
+    "Baseball-Reference (answers 403 to direct reads)",
+    "MLB.com and MiLB.com pages (403)",
+    "any search-result snippet"
+  ],
+  "policy": "Official MLB Stats API only (public, read-only, cached, one request every 750 ms). No source answering 403, requiring authentication or applying an anti-bot control was read or worked around. Search results are discovery only. No article is stored."
+}

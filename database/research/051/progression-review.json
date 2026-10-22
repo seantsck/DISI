@@ -1,0 +1,134 @@
+{
+  "inversions": [
+    {
+      "decisions": [
+        {
+          "confidence": "HIGH",
+          "event_code": "COMPLEX_DEBUT",
+          "progression_role": "POST_ESTABLISHMENT_APPEARANCE",
+          "review_status": "REVIEWED"
+        }
+      ],
+      "first_appearances": {
+        "AAA_DEBUT": "2021-05-06",
+        "AA_DEBUT": "2019-04-04",
+        "A_DEBUT": "2016-04-09",
+        "COMPLEX_DEBUT": "2019-06-24",
+        "HIGH_A_DEBUT": "2017-04-07"
+      },
+      "inverted_events": [
+        "AA_DEBUT",
+        "A_DEBUT",
+        "COMPLEX_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "open_in_queue": false,
+      "player_slug": "omar-estevez"
+    },
+    {
+      "decisions": [
+        {
+          "confidence": "MEDIUM",
+          "event_code": "HIGH_A_DEBUT",
+          "progression_role": "EARLY_CAMEO",
+          "review_status": "REVIEWED"
+        }
+      ],
+      "first_appearances": {
+        "A_DEBUT": "2019-06-14",
+        "COMPLEX_DEBUT": "2017-06-24",
+        "DSL_DEBUT": "2016-06-04",
+        "HIGH_A_DEBUT": "2019-05-30"
+      },
+      "inverted_events": [
+        "A_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "open_in_queue": false,
+      "player_slug": "ronny-brito"
+    },
+    {
+      "decisions": [
+        {
+          "confidence": "LOW",
+          "event_code": "AAA_DEBUT",
+          "progression_role": "REVIEW_REQUIRED",
+          "review_status": "PENDING_REVIEW"
+        },
+        {
+          "confidence": "LOW",
+          "event_code": "AA_DEBUT",
+          "progression_role": "REVIEW_REQUIRED",
+          "review_status": "PENDING_REVIEW"
+        },
+        {
+          "confidence": "LOW",
+          "event_code": "A_DEBUT",
+          "progression_role": "REVIEW_REQUIRED",
+          "review_status": "PENDING_REVIEW"
+        }
+      ],
+      "first_appearances": {
+        "AAA_DEBUT": "2025-09-05",
+        "AA_DEBUT": "2024-08-16",
+        "A_DEBUT": "2025-07-09",
+        "COMPLEX_DEBUT": "2023-06-09",
+        "DSL_DEBUT": "2021-07-13"
+      },
+      "inverted_events": [
+        "AA_DEBUT",
+        "A_DEBUT"
+      ],
+      "open_in_queue": false,
+      "player_slug": "carlos-avila"
+    },
+    {
+      "decisions": [
+        {
+          "confidence": "HIGH",
+          "event_code": "AAA_DEBUT",
+          "progression_role": "EARLY_CAMEO",
+          "review_status": "REVIEWED"
+        },
+        {
+          "confidence": "MEDIUM",
+          "event_code": "COMPLEX_DEBUT",
+          "progression_role": "POST_ESTABLISHMENT_APPEARANCE",
+          "review_status": "REVIEWED"
+        }
+      ],
+      "first_appearances": {
+        "AAA_DEBUT": "2025-08-01",
+        "A_DEBUT": "2025-04-04",
+        "COMPLEX_DEBUT": "2025-06-10",
+        "DSL_DEBUT": "2021-07-17"
+      },
+      "inverted_events": [
+        "A_DEBUT",
+        "COMPLEX_DEBUT"
+      ],
+      "open_in_queue": false,
+      "player_slug": "elio-campos"
+    }
+  ],
+  "new_reviews_created": 0,
+  "pending_decisions": [
+    {
+      "confidence": "LOW",
+      "event_code": "AAA_DEBUT",
+      "player_slug": "carlos-avila"
+    },
+    {
+      "confidence": "LOW",
+      "event_code": "AA_DEBUT",
+      "player_slug": "carlos-avila"
+    },
+    {
+      "confidence": "LOW",
+      "event_code": "A_DEBUT",
+      "player_slug": "carlos-avila"
+    }
+  ],
+  "reason": "Every inversion in the cohort is already covered by a 024 decision (reviewed, or pending for a person); the development queue reports no open NON_MONOTONIC_PROGRESSION for any cohort player.",
+  "rule": "The 048 rule: a lower ladder level first recorded after a higher one (rookie levels share a tier). A model may find the ambiguity; a person decides it."
+}

@@ -1,0 +1,247 @@
+{
+  "as_of": "2026-10-05",
+  "audited_no_mlb_coverage": {
+    "any_development_history": {
+      "n": 44,
+      "of": 46
+    },
+    "contradictions": [],
+    "exact_dates": {
+      "dated": 278,
+      "log_era_stints": 281,
+      "of_players": 46
+    },
+    "exit_control_state": {
+      "HISTORY_UNAVAILABLE": 2,
+      "LEFT_DODGERS_CONTROL": 37,
+      "NO_EXIT_EVIDENCE": 3,
+      "STILL_DODGERS_CONTROLLED": 4
+    },
+    "first_professional_season": {
+      "FIRST_OBSERVED_ONLY": 5,
+      "KNOWN": 39,
+      "NO_AFFILIATED_RECORD": 2
+    },
+    "foreign_professional_seasons_recorded": {
+      "n": 1,
+      "of": 46
+    },
+    "highest_level_at_dodgers_affiliate": {
+      "AA": 4,
+      "AAA": 5,
+      "COMPLEX_ROOKIE": 8,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 11,
+      "LOW_A": 8
+    },
+    "highest_level_known": {
+      "n": 44,
+      "of": 46,
+      "unresolved": [
+        "damaso-marte-jr",
+        "sebastian-jimenez"
+      ]
+    },
+    "highest_level_reached_elsewhere": {
+      "n": 7,
+      "of": 46,
+      "players": [
+        "julian-leon",
+        "hendrik-clementina",
+        "carlos-rincon",
+        "ronny-brito",
+        "alex-de-jesus",
+        "elio-campos",
+        "rayne-doncon"
+      ]
+    },
+    "highest_level_whole_career": {
+      "AA": 4,
+      "AAA": 9,
+      "COMPLEX_ROOKIE": 6,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 10,
+      "LOW_A": 7
+    },
+    "history_start": {
+      "FROM_SIGNING_SEASON": 39,
+      "NO_PRE_MLB_RECORD": 2,
+      "SOURCE_BEGINS_LATE": 5
+    },
+    "later_career_with_other_organizations": {
+      "n": 9,
+      "of": 46
+    },
+    "no_structured_affiliated_record": {
+      "n": 2,
+      "of": 46,
+      "players": [
+        "damaso-marte-jr",
+        "sebastian-jimenez"
+      ]
+    },
+    "path_state": {
+      "NO_OPEN_GAP": 30,
+      "PARTIAL": 16,
+      "of": 46
+    },
+    "players": 46,
+    "progression_review_pending": {
+      "n": 1,
+      "of": 46
+    },
+    "season_gap_only_league_not_played": {
+      "n": 11,
+      "of": 11
+    },
+    "unplaceable_level_on_record": {
+      "n": 9,
+      "of": 46
+    },
+    "usable_chronology": {
+      "n": 27,
+      "of": 46
+    }
+  },
+  "cohort_players": 46,
+  "cohort_rows": {
+    "milestones": 255,
+    "progression_decisions": 7,
+    "sources_per_player": {
+      "aldo-espinoza": 23,
+      "alex-de-jesus": 24,
+      "brian-diaz": 24,
+      "carlos-avila": 24,
+      "carlos-rincon": 23,
+      "christian-suarez": 22,
+      "christopher-arias": 23,
+      "damaso-marte-jr": 22,
+      "diego-cartaya": 24,
+      "elio-campos": 24,
+      "ender-avendano": 22,
+      "gersel-pitre": 24,
+      "gregory-pereira": 23,
+      "hendrik-clementina": 24,
+      "jerami-rodriguez": 24,
+      "jerming-rosario": 23,
+      "jhonny-jimenez": 24,
+      "juan-alonso": 24,
+      "julian-leon": 23,
+      "julio-lugo-prospect": 25,
+      "lenix-osuna": 22,
+      "lesther-medrano": 23,
+      "luis-guerra": 24,
+      "luis-izturis": 23,
+      "luis-rodriguez-2015": 24,
+      "luis-rodriguez-2019": 24,
+      "maximo-martinez": 24,
+      "michael-vilchez": 24,
+      "miguel-bastardo": 24,
+      "miguel-droz": 23,
+      "misja-harcksen": 24,
+      "missael-soto": 23,
+      "omar-estevez": 25,
+      "pedro-santillan": 25,
+      "rafael-tua": 23,
+      "rayne-doncon": 24,
+      "roger-lasso": 24,
+      "ronny-brito": 23,
+      "roque-gutierrez": 22,
+      "sebastian-jimenez": 22,
+      "shakir-albert": 24,
+      "starling-heredia": 23,
+      "william-soto": 23,
+      "wilman-diaz": 24,
+      "yadier-alvarez": 23,
+      "yeiner-fernandez": 22
+    },
+    "stints": 306
+  },
+  "database": {
+    "milestones": 1073,
+    "progression_decisions": 37,
+    "progression_decisions_pending": 26,
+    "stints": 1859
+  },
+  "description": "The canonical pre-051 state of the audited no-MLB cohort, read from production as the public anon role in a read-only session.",
+  "development_coverage_all_signings": {
+    "dimensions": {
+      "CHRONOLOGY": {
+        "applicable": 220,
+        "known": 135
+      },
+      "EXIT": {
+        "applicable": 156,
+        "known": 138
+      },
+      "FIRST_PRO_SEASON": {
+        "applicable": 220,
+        "known": 179
+      },
+      "HIGHEST_LEVEL": {
+        "applicable": 220,
+        "known": 212
+      },
+      "MLB_DEBUT": {
+        "applicable": 47,
+        "known": 47
+      },
+      "SIGNING_DATE": {
+        "applicable": 220,
+        "known": 197
+      }
+    },
+    "signings": 220,
+    "states": {
+      "COMPLETE": 111,
+      "PARTIAL": 109
+    }
+  },
+  "development_needs": {
+    "audited_no_mlb_cohort": {
+      "by_need": {
+        "GAME_DATES": 1,
+        "LEVEL_CLASSIFICATION": 9,
+        "ORGANIZATION": 4,
+        "SEASON_COVERAGE": 13,
+        "SEQUENCE_REVIEW": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      "detector_rows": 28,
+      "detector_rows_by_issue": {
+        "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS": 2,
+        "MISSING_FIRST_GAME_DATE": 1,
+        "MISSING_LAST_GAME_DATE": 1,
+        "MULTI_ORG_SEASON_UNVERIFIED": 4,
+        "SEASON_GAP": 11,
+        "UNKNOWN_LEVEL_CLASSIFICATION": 9
+      },
+      "distinct_needs": 27,
+      "players_with_needs": 19
+    },
+    "whole_database": {
+      "by_need": {
+        "GAME_DATES": 45,
+        "LEVEL_CLASSIFICATION": 26,
+        "ORGANIZATION": 51,
+        "SEASON_COVERAGE": 46,
+        "SEQUENCE_REVIEW": 5
+      },
+      "detector_rows": 347,
+      "needs": 173,
+      "players": 85
+    }
+  },
+  "excluded": {
+    "benchmark_players_in_cohort": 0,
+    "not_audited": 127,
+    "verified_mlb": 47
+  },
+  "outcome_audit_status": {
+    "NOT_AUDITED": 127,
+    "VERIFIED_MLB": 47,
+    "VERIFIED_NO_MLB": 46
+  },
+  "read_from": "production (generation 8)",
+  "tracked_signings": 220
+}
