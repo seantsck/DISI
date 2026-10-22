@@ -7,9 +7,10 @@
 //   npm run research:development -- --mlb-coverage   # 048: the verified MLB cohort's documented path, player by player, with denominators
 //   npm run research:development -- --needs          # 048: the queue de-duplicated by the evidence gap each item names
 //   npm run research:development -- --review [--player slug]   # 048: the reviewer's packet for pending progression decisions (decides nothing)
+//   npm run research:development -- --no-mlb-coverage   # 051: the audited no-MLB cohort's documented path, Dodgers-affiliate and later career apart
 
 import { developmentCoverage, developmentQueue, developmentRecords, timingFacts } from '../../lib/research/development-research.js'
-import { verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
+import { auditedNoMlbCoverage, verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
 import { developmentNeedSummary, developmentNeeds } from '../../lib/research/development-needs.js'
 import { progressionReviewPacket, renderReviewPacket } from '../../lib/research/progression-review.js'
 import { stableJson } from '../../lib/research/format.js'
@@ -28,7 +29,7 @@ function stintsByPlayer(data) {
 
 run(async () => {
   const args = parseArgs(process.argv.slice(2))
-  const wantsHistory = args['mlb-coverage'] === true || args.review === true
+  const wantsHistory = args['mlb-coverage'] === true || args['no-mlb-coverage'] === true || args.review === true
   if (wantsHistory) args.history = true
   const { data } = await loadDataset(args)
   if (args.coverage === true || args.timing === true) {
@@ -50,6 +51,25 @@ run(async () => {
         gaps: r.history.gaps.map((g) => g.code).join(' '), notes: r.history.notes.map((g) => g.code).join(' '), days_to_mlb: r.days_signing_to_mlb_exact ?? '',
       })),
       columns: ['player', 'signed', 'debut', 'path', 'start', 'first_observed', 'first_pro', 'pre_mlb_seasons', 'gaps', 'notes', 'days_to_mlb'],
+    })
+    return
+  }
+  if (args['no-mlb-coverage'] === true) {
+    if (!(data.stints ?? []).length) throw new Error('No stint history in this dataset: load it from the database, or save one with --history --save.')
+    const cov = auditedNoMlbCoverage(data, stintsByPlayer(data), developmentRecords, developmentNeeds)
+    if (args.format === 'json') { console.log(stableJson(cov)); return }
+    const { rows, ...summary } = cov
+    const lv = (h) => (h ? `${h.level} (${h.season})` : '')
+    emit(args, {
+      title: `Audited no-MLB development coverage as of ${data.asOf} (descriptive; not a success or failure rate, not a causal explanation)`,
+      summary,
+      rows: rows.map((r) => ({
+        player: r.full_name, signed: r.signing_year, route: r.pathway ?? '', first_observed: r.history.first_observed_season ?? '', first_pro: r.first_pro_status,
+        highest: r.highest_level_recorded ?? 'UNKNOWN', at_dodgers_affiliate: lv(r.segments.highest_level_at_dodgers_affiliate),
+        last_observed: r.segments.last_observed_affiliated ? `${r.segments.last_observed_affiliated.season} ${r.segments.last_observed_affiliated.organizations.join('/')}` : '',
+        chronology: r.dims.CHRONOLOGY, dated: `${r.exact_dates.dated}/${r.exact_dates.log_era_stints}`, gaps: r.history.gaps.map((g) => g.code).join(' '), needs: r.needs.join(' '),
+      })),
+      columns: ['player', 'signed', 'route', 'first_observed', 'first_pro', 'highest', 'at_dodgers_affiliate', 'last_observed', 'chronology', 'dated', 'gaps', 'needs'],
     })
     return
   }
