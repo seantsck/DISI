@@ -203,6 +203,10 @@ export const CANONICAL_EXPECTATIONS = {
   value_cost_gating_violations: 0,
   value_status_semantics_violations: 0,
   value_guard_violations: 0,
+  // 049: KNOWN TRANSACTION != KNOWN RETURN VALUE. The only returned player of a tracked-signing trade whose Baseball-Reference WAR is knowingly not
+  // loaded (the files answer 403): Jon Garland, acquired 2009-08-31 for Tony Abreu. The identity check accepts him ONLY while the model shows him as
+  // RETURN_WAR_UNKNOWN with a NULL Dodgers bWAR; any other returned player without WAR is still a violation.
+  transaction_war_unavailable_mlb_ids: ['279782'],
   // transaction and asset-chain completion (033)
   transaction_event_shape_violations: 0,
   transaction_asset_shape_violations: 0,
@@ -254,12 +258,22 @@ export const CANONICAL_EXPECTATIONS = {
 }
 
 /**
+ * The pinned expectations as they stood through Migration 048. Tests that verify a chain built only through 048 use this; CANONICAL_EXPECTATIONS is
+ * always the current head. Migration 049 (transaction-package completion) pinned the one returned player whose WAR is knowingly unavailable;
+ * nothing else differs.
+ */
+export const EXPECTATIONS_THROUGH_048 = Object.freeze({
+  ...CANONICAL_EXPECTATIONS,
+  transaction_war_unavailable_mlb_ids: [],
+})
+
+/**
  * The pinned expectations as they stood through Migration 047. Tests that verify a chain built only through 047 use this;
  * CANONICAL_EXPECTATIONS is always the current head. Migration 048 (the other verified MLB players' development careers) moved the
  * development and progression counts below; nothing else differs.
  */
 export const EXPECTATIONS_THROUGH_047 = Object.freeze({
-  ...CANONICAL_EXPECTATIONS,
+  ...EXPECTATIONS_THROUGH_048,
   stints: 1083,
   stint_players: 177,
   undated_log_era_stints: 93,
@@ -579,7 +593,7 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
 
   // -- transaction and asset-chain completion (033) -------------------------------
   const hasTransactionLayer = Boolean((await query(`select to_regclass('public.transaction_asset_resolutions') is not null as ok`))[0].ok)
-  for (const [name, sql] of Object.entries(transactionQueries(hasTransactionLayer))) {
+  for (const [name, sql] of Object.entries(transactionQueries(hasTransactionLayer, expectations.transaction_war_unavailable_mlb_ids ?? []))) {
     check('transactions', name, expectations[name], await count(sql))
   }
 

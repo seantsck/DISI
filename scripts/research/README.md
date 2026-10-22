@@ -1,4 +1,4 @@
-# DISI research commands (046, 047, 048)
+# DISI research commands (046, 047, 048, 049)
 
 Read-only commands that tell a researcher what to work on next. They connect as the public `anon` role in a read-only session, so they can
 only see what the website can see (the persisted `product_*` snapshots and the public views). They never write. Their output has no
@@ -9,7 +9,11 @@ DISI_RESEARCH_DB_URL=... npm run research:queue
 npm run research:outcomes     -- --mature --status not_audited [--year 2021] [--market Venezuela] [--limit 20] [--format text|json|csv]
 npm run research:outcomes     -- --evaluate research-output/046/player-outcomes.json    # audit conclusions for a scripts/mlb artifact
 npm run research:costs        -- --missing [--mature] [--mlb yes|no] [--year 2018] [--market Venezuela] [--limit 25]
-npm run research:transactions -- --missing | --traded | --unresolved-attribution | --chains
+npm run research:transactions -- --missing | --traded | --unresolved-attribution
+npm run research:transactions -- --chains [--value-blocked]            # 049: chains whose TRANSACTION history is open (or, with --value-blocked, recorded chains whose value is unavailable)
+npm run research:transactions -- --packages [--membership | --terms]    # 049: trade packages with an open issue, and the evidence that would close each
+npm run research:transactions -- --ptbnl | --future-consideration | --cash-unknown | --value-blocked    # 049: one issue family, item by item
+npm run research:transactions -- --bucket CHAIN_OR_MEMBERSHIP | TERMS | VALUE | OTHER                  # 049: by what kind of evidence is missing
 npm run research:development  -- --missing [--mature] [--mlb yes|no] [--year 2018] [--market Venezuela] [--player slug] [--limit 25]
 npm run research:development  -- --coverage        # per-dimension coverage with denominators
 npm run research:development  -- --timing          # descriptive signing-to-MLB and highest-level facts (no rates, no scores)
@@ -53,3 +57,20 @@ A decision is a reviewed migration (Migration 024's roles: `EARLY_CAMEO`, `POST_
 
 The 048 research is rebuilt with `node database/research/048/derive-development.mjs <dir>`, `derive-reviews.mjs <dir>` and `build.mjs` (see
 `database/research/048/README.md`).
+
+## research:transactions, 049 modes
+
+`KNOWN TRANSACTION != KNOWN RETURN VALUE`: every item carries a blocker **bucket** and the **next evidence** that would close it.
+
+| Bucket | Means | Issues |
+|---|---|---|
+| `CHAIN_OR_MEMBERSHIP` | DISI does not know what happened to the asset or who was in the package | `TRADE_RETURN_UNRECORDED`, `PTBNL_UNRESOLVED`, `FUTURE_CONSIDERATIONS_UNRESOLVED`, a returned asset's missing exit, `DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION` |
+| `TERMS` | the players are known; an amount is not | `CASH_AMOUNT_UNKNOWN`, `POOL_SPACE_AMOUNT_UNKNOWN` |
+| `VALUE` | the transaction is known; the value of the return, or its attribution, is not | `DOWNSTREAM_WAR_NOT_LOADED`, `OUTCOME_INCOMPLETE`, `TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED` |
+| `OTHER` | acquisition cost and documented boundaries | `ACQUISITION_COST_INCOMPLETE`, `LINEAGE_BOUNDARY_NOTED` |
+
+`--chains` splits the incomplete chains: by default the ones whose transaction history is open; with `--value-blocked` the ones recorded to their end whose
+returned players' Baseball-Reference WAR is not loaded (`INCOMPLETE_WAR_NOT_LOADED`, `INCOMPLETE_TIMING`). `--packages` counts a package once and says whether
+its membership or only its terms are open (the two overlap and are never added). The summary line reports `incomplete_chains` (every `INCOMPLETE_*` chain, as the
+database names them), `transaction_chains_incomplete`, `value_blocked_chains`, the attribution-state counts and the package counts. All modes are read-only.
+The logic is `lib/research/transaction-research.js`, tested in `tests/unit/research-049.test.mjs`.

@@ -61,6 +61,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 50. `046_outcome_cost_research_batch.sql` — reviewed acquisition-cost research batch (data only: no table, view, function, grant or policy): eight previously unknown signing bonuses recorded with one directly-read source each (known costs 48 -> 56 of 220, known spend $117,377,237.33 -> $121,700,237.33), one source disagreement (Adrian Beltre, $23,000 versus $17,000) kept as an unresolved conflict with a NULL canonical bonus, and one conditional snapshot refresh so the product reads one coherent generation. Nothing unknown is estimated or set to zero; no outcome audit changes (`NOT_AUDITED` stays 127). Built from `database/research/046/`; guarded data-only rollback `database/release/sql/rollback-046.sql`.
 51. `047_development_transaction_research_batch.sql` — reviewed development-history and transaction-chain research batch (data only: no table, view, function, grant or policy): five Retrosheet-sourced downstream exits, ten verified MLB players' whole development careers (255 stints, 41 milestones), fourteen proven season totals, two pending progression reviews, and the retraction of two superseded exit-bound observations. Built from `database/research/047/`.
 52. `048_verified_mlb_development_coverage.sql` — verified MLB development coverage (data only: no table, view, function, grant or policy): the whole documented careers of the 35 verified MLB players not in the 047 cohort that had no development rows (776 stints, 200 first-appearance milestones), fifty proven season totals, and fifteen pending progression reviews for six players, which a person (not DISI) decides. The two players Migration 021 had already researched are untouched. Built from `database/research/048/`.
+53. `049_transaction_package_completion.sql` — transaction-package completion (data only: no table, view, function, grant or policy): the 2009 Tony Abreu trade corrected forward to Jon Garland for a player to be named later (agreement 2009-08-31, delivery 2009-10-09 kept), Garland's free agency, the 1967 Dodgers-Twins trade that ended Bob Miller's Dodgers career with the 1968 expansion-draft exits of Mudcat Grant and Zoilo Versalles, and four MLB ids for assets recorded by name only; no WAR is loaded, so the returns read `RETURN_WAR_UNKNOWN` (`NULL`, never zero).
 
 ## 017 research-database layer
 
@@ -320,6 +321,19 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Pinned counts.** The verifier pins fifteen development and progression counts; 048 moves them (`CANONICAL_EXPECTATIONS`; the 047 values are kept as `EXPECTATIONS_THROUGH_047`, and the 046 values as `EXPECTATIONS_THROUGH_046`).
 - **Rollback.** `database/release/sql/rollback-048.sql` deletes exactly what 048 inserted, refuses if a reviewer has since decided a pending row or later research exists, and 048 can be applied again afterwards.
 - **Release.** `database/release/048-release-plan.md`. Applying 048, merging its PR and deploying need explicit owner approval.
+
+## 049 transaction-package completion
+
+- **What it is.** A research-data migration (no schema change) that records transactions whose returned players cannot be valued, corrects the
+  2009 Tony Abreu trade forward (agreement 2009-08-31: Jon Garland for a player to be named later, Abreu delivered 2009-10-09), records the 1967
+  Dodgers-Twins trade that ended Bob Miller's Dodgers career, three Dodgers exits (Garland's free agency; Grant's and Versalles's 1968 expansion-draft
+  selections) and four MLB ids, plus the blocker classification in the research tooling, the asset-conversion and dossier wording, and the pinned verifier exception below.
+- **Principles.** `KNOWN TRANSACTION != KNOWN RETURN VALUE`; `KNOWN PACKAGE != INDIVIDUALLY ATTRIBUTABLE VALUE`; `MISSING BWAR != ZERO BWAR`; `CASH AMOUNT UNKNOWN != CASH AMOUNT ZERO`; `PTBNL UNRESOLVED != NO PLAYER RETURN`.
+- **Reused structures.** `transaction_events`, `transaction_event_assets`, `v_trade_realization_edges` (`RETURN_WAR_UNKNOWN`), `v_transaction_asset_lineage` (`INCOMPLETE_WAR_NOT_LOADED`). No table, view, function, grant or policy changed.
+- **Safety.** The migration refuses to run if the Abreu trade is not in the stored state or already records a different return, if a later Dodgers exit is recorded for Bob Miller, if the four named-only assets are not as researched, or if Garland, Grant or Versalles is already recorded elsewhere; it loads no WAR row and writes no cash, pool-space or future-consideration row.
+- **Verifier.** Still 247 checks. The identity rule (a returned player of a tracked-signing trade needs loaded WAR or an observed zero) accepts one pinned id, Jon Garland (`CANONICAL_EXPECTATIONS.transaction_war_unavailable_mlb_ids`), only while the model shows him as `RETURN_WAR_UNKNOWN` with a `NULL` Dodgers bWAR; the 048 values are kept as `EXPECTATIONS_THROUGH_048`.
+- **Rollback.** `database/release/sql/rollback-049.sql` restores the three transaction tables to their exact pre-049 content (nothing here is sealed; no resolution was added), refuses if later research depends on the removed assets, and 049 can be applied again afterwards.
+- **Release.** `database/release/049-release-plan.md`. Applying 049, merging its PR and deploying need explicit owner approval.
 
 ## 042-045 decision layers (DISI v1.0.0)
 
