@@ -321,10 +321,10 @@ test('product: snapshots move to one generation with zero drift; readiness shows
   assert.deepEqual(cov.map((x) => [x.period_start_year, x.expected_signings, x.tracked_signings]), [[2013, 30, 20], [2014, 30, 28], [2015, 30, 27], [2016, 30, 27]])
 })
 
-test('verifier: 248/248 at the 050 head, the frozen 049 pins fail as they should, and the isolation check is part of the count', async () => {
+test('verifier: 249/249 at the 050 head (051 adds a read-only check), the frozen 049 pins fail as they should, and the isolation check is part of the count', async () => {
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 248)
+  assert.equal(full.hard.length, 249)
   assert.ok(full.hard.some((h) => h.name === 'outcome_population_isolation_violations' && h.pass))
   const old = await checkInvariants(q, EXPECTATIONS_THROUGH_049)
   assert.deepEqual(failedChecks(old).map((f) => f.name).sort(), ['league_benchmark_players', 'player_evaluations', 'players_total', 'scouting_legacy_ranks_backfilled', 'scouting_legacy_ranks_total'])

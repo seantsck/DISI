@@ -106,6 +106,8 @@ export const CANONICAL_EXPECTATIONS = {
   vancouver_2011plus_non_bluejays: 0,
   developmental_inversion_players: 0,
   decision_milestone_mismatch: 0,
+  // 051: a VERIFIED_NO_MLB outcome audit is never contradicted by the development record
+  no_mlb_development_contradictions: 0,
   // whole public API surface (025). Checked from the ACLs themselves
   // (aclexplode), so privileges information_schema omits (MAINTAIN) count too.
   // 026 adds six tables (and drops the empty legacy evaluations table: 42 - 1 + 6) and five views.
@@ -498,6 +500,13 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
     where not exists (select 1 from development_milestones m
       where m.id = d.milestone_id and m.player_id = d.player_id and m.event_code = d.event_code)`)
   check('integrity', 'decision_milestone_mismatch', expectations.decision_milestone_mismatch, mismatch024.n)
+  // 051: AUDITED NO MLB is a fact the development record must not contradict. No signing whose outcome audit is VERIFIED_NO_MLB holds an MLB-level
+  // stint or an MLB_DEBUT milestone; a development load that found one would be an outcome question, reviewed on its own, never a silent change.
+  const [noMlb] = await query(`select count(distinct s.player_id)::int as n from v_signing_records s
+    where s.outcome_audit_status = 'VERIFIED_NO_MLB'
+      and (exists (select 1 from player_season_stints t where t.player_id = s.player_id and t.level = 'MLB')
+        or exists (select 1 from development_milestones m where m.player_id = s.player_id and m.event_code = 'MLB_DEBUT'))`)
+  check('integrity', 'no_mlb_development_contradictions', expectations.no_mlb_development_contradictions, noMlb.n)
 
   // -- scouting / evaluation history (026) ------------------------------------
   const count = async (sql) => (await query(sql))[0].n

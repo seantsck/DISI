@@ -374,11 +374,11 @@ test('the one published figure that moves: Abreu leaves the resolved-value set w
   }
 })
 
-test('the verifier passes on 001-049 (248 hard checks); the identity check accepts a returned player without WAR only for the pinned id', async () => {
+test('the verifier passes on 001-049 (249 hard checks); the identity check accepts a returned player without WAR only for the pinned id', async () => {
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 248)
+  assert.equal(full.hard.length, 249)
   assert.deepEqual(CANONICAL_EXPECTATIONS.transaction_war_unavailable_mlb_ids, [IDS.garland])
   // without the pin the same data is a violation: the relaxation is explicit, narrow and reviewed
   const unpinned = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, transaction_war_unavailable_mlb_ids: [] })
