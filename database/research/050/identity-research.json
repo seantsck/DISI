@@ -1,0 +1,3123 @@
+{
+ "entries": [
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-11-18",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-11-18",
+     "club": "PHI",
+     "date": "2015-07-10",
+     "match": "EXACT",
+     "name": "Jhailyn Ortiz",
+     "person_id": 665560
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "PHI",
+   "mlb_id": "665560",
+   "mlb_name": "Jhailyn Ortiz",
+   "mlb_primary_position": "RF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "ortiz_jhailyn",
+   "published_name": "Jhailyn Ortiz",
+   "published_position": "OF",
+   "rank": 1,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-11-18",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-10 (PHI): \"Philadelphia Phillies signed free agent OF Jhailyn Ortiz to a minor league contract.\"",
+    "the list names PHI",
+    "name identical to the MLB person record (Jhailyn Ortiz)",
+    "birth date 1998-11-18 (born Dominican Republic)",
+    "register birth date 1998-11-18 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (RF)"
+   ],
+   "signing": {
+    "club": "PHI",
+    "date": "2015-07-10",
+    "description": "Philadelphia Phillies signed free agent OF Jhailyn Ortiz to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Canada",
+   "birth_date": "1999-03-16",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-03-16",
+     "club": "TOR",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Vladimir Guerrero Jr.",
+     "person_id": 665489
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "TOR",
+   "mlb_id": "665489",
+   "mlb_name": "Vladimir Guerrero Jr.",
+   "mlb_primary_position": "1B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "guerrero_vladimir",
+   "published_name": "Vladimir Guerrero Jr.",
+   "published_position": "OF",
+   "rank": 2,
+   "register_bbref_id": "guerrvl02",
+   "register_birth_date": "1999-03-16",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (TOR): \"Toronto Blue Jays signed free agent OF Vladimir Guerrero Jr. to a minor league contract.\"",
+    "the list names TOR",
+    "name identical to the MLB person record (Vladimir Guerrero Jr.)",
+    "birth date 1999-03-16 (born Canada)",
+    "register birth date 1999-03-16 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (1B)"
+   ],
+   "signing": {
+    "club": "TOR",
+    "date": "2015-07-02",
+    "description": "Toronto Blue Jays signed free agent OF Vladimir Guerrero Jr. to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-02-06",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-02-06",
+     "club": "LAD",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Starling Heredia",
+     "person_id": 665752
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "LAD",
+   "mlb_id": "665752",
+   "mlb_name": "Starling Heredia",
+   "mlb_primary_position": "LF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "heredia_starling",
+   "published_name": "Starling Heredia",
+   "published_position": "OF",
+   "rank": 3,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-02-06",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (LAD): \"Los Angeles Dodgers signed free agent OF Starling Heredia to a minor league contract.\"",
+    "the list names LAD",
+    "name identical to the MLB person record (Starling Heredia)",
+    "birth date 1999-02-06 (born Dominican Republic)",
+    "register birth date 1999-02-06 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (LF)"
+   ],
+   "signing": {
+    "club": "LAD",
+    "date": "2015-07-02",
+    "description": "Los Angeles Dodgers signed free agent OF Starling Heredia to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-12-29",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-12-29",
+     "club": "MIN",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Wander Javier",
+     "person_id": 665820
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "MIN",
+   "mlb_id": "665820",
+   "mlb_name": "Wander Javier",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "javier_wander",
+   "published_name": "Wander Javier",
+   "published_position": "SS",
+   "rank": 4,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-12-29",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (MIN): \"Minnesota Twins signed free agent SS Wander Javier to a minor league contract.\"",
+    "the list names MIN",
+    "name identical to the MLB person record (Wander Javier)",
+    "birth date 1998-12-29 (born Dominican Republic)",
+    "register birth date 1998-12-29 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "MIN",
+    "date": "2015-07-02",
+    "description": "Minnesota Twins signed free agent SS Wander Javier to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-09-04",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-09-04",
+     "club": "KC",
+     "date": "2015-07-04",
+     "match": "EXACT",
+     "name": "Seuly Matias",
+     "person_id": 665890
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "KC",
+   "mlb_id": "665890",
+   "mlb_name": "Seuly Matias",
+   "mlb_primary_position": "OF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "matias_seuly",
+   "published_name": "Seuly Matias",
+   "published_position": "OF",
+   "rank": 5,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-09-04",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-04 (KC): \"Kansas City Royals signed free agent OF Seuly Matias to a minor league contract.\"",
+    "the list names KC",
+    "name identical to the MLB person record (Seuly Matias)",
+    "birth date 1998-09-04 (born Dominican Republic)",
+    "register birth date 1998-09-04 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (OF)"
+   ],
+   "signing": {
+    "club": "KC",
+    "date": "2015-07-04",
+    "description": "Kansas City Royals signed free agent OF Seuly Matias to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1998-10-10",
+   "candidates_considered": [
+    {
+     "birth_date": null,
+     "club": "STL",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "person_id": 665906
+    },
+    {
+     "birth_date": "1998-10-10",
+     "club": "STL",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Alvaro Seijas",
+     "person_id": 661099
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "STL",
+   "mlb_id": "661099",
+   "mlb_name": "Alvaro Seijas",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "seijas_alvaro",
+   "published_name": "Alvaro Seijas",
+   "published_position": "RHP",
+   "rank": 6,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-10-10",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (STL): \"St. Louis Cardinals signed RHP Alvaro Seijas.\"",
+    "the list names STL",
+    "name identical to the MLB person record (Alvaro Seijas)",
+    "birth date 1998-10-10 (born Venezuela)",
+    "register birth date 1998-10-10 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "STL",
+    "date": "2015-07-02",
+    "description": "St. Louis Cardinals signed RHP Alvaro Seijas."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1999-03-31",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-03-31",
+     "club": "COL",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Daniel Montano",
+     "person_id": 665914
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "COL",
+   "mlb_id": "665914",
+   "mlb_name": "Daniel Montano",
+   "mlb_primary_position": "LF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "montano_daniel",
+   "published_name": "Daniel Montano",
+   "published_position": "OF",
+   "rank": 7,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-03-31",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (COL): \"Colorado Rockies signed free agent OF Daniel Montano to a minor league contract.\"",
+    "the list names COL",
+    "name identical to the MLB person record (Daniel Montano)",
+    "birth date 1999-03-31 (born Venezuela)",
+    "register birth date 1999-03-31 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (LF)"
+   ],
+   "signing": {
+    "club": "COL",
+    "date": "2015-07-02",
+    "description": "Colorado Rockies signed free agent OF Daniel Montano to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-02-13",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-02-13",
+     "club": "HOU",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Gilberto Celestino",
+     "person_id": 665482
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "HOU",
+   "mlb_id": "665482",
+   "mlb_name": "Gilberto Celestino",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "celestino_gilberto",
+   "published_name": "Gilberto Celestino",
+   "published_position": "OF",
+   "rank": 8,
+   "register_bbref_id": "celesgi01",
+   "register_birth_date": "1999-02-13",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (HOU): \"Houston Astros signed free agent CF Gilberto Celestino to a minor league contract.\"",
+    "the list names HOU",
+    "name identical to the MLB person record (Gilberto Celestino)",
+    "birth date 1999-02-13 (born Dominican Republic)",
+    "register birth date 1999-02-13 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "HOU",
+    "date": "2015-07-02",
+    "description": "Houston Astros signed free agent CF Gilberto Celestino to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1998-11-10",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-11-10",
+     "club": "CHC",
+     "date": "2015-08-26",
+     "match": "EXACT",
+     "name": "Yonathan Perlaza",
+     "person_id": 666632
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "CHC",
+   "mlb_id": "666632",
+   "mlb_name": "Yonathan Perlaza",
+   "mlb_primary_position": "2B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "perlaza_yonathan",
+   "published_name": "Yonathan Perlaza",
+   "published_position": "SS",
+   "rank": 9,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-11-10",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-08-26 (CHC): \"Chicago Cubs signed free agent SS Yonathan Perlaza to a minor league contract.\"",
+    "the list names CHC",
+    "name identical to the MLB person record (Yonathan Perlaza)",
+    "birth date 1998-11-10 (born Venezuela)",
+    "register birth date 1998-11-10 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (2B)"
+   ],
+   "signing": {
+    "club": "CHC",
+    "date": "2015-08-26",
+    "description": "Chicago Cubs signed free agent SS Yonathan Perlaza to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-11-19",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-11-19",
+     "club": "ATL",
+     "date": "2015-07-04",
+     "match": "EXACT",
+     "name": "Cristian Pache",
+     "person_id": 665506
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "ATL",
+   "mlb_id": "665506",
+   "mlb_name": "Cristian Pache",
+   "mlb_primary_position": "OF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "pache_cristian",
+   "published_name": "Cristian Pache",
+   "published_position": "OF",
+   "rank": 10,
+   "register_bbref_id": "pachecr01",
+   "register_birth_date": "1998-11-19",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-04 (ATL): \"Atlanta Braves signed free agent OF Cristian Pache to a minor league contract.\"",
+    "the list names ATL",
+    "name identical to the MLB person record (Cristian Pache)",
+    "birth date 1998-11-19 (born Dominican Republic)",
+    "register birth date 1998-11-19 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (OF)"
+   ],
+   "signing": {
+    "club": "ATL",
+    "date": "2015-07-04",
+    "description": "Atlanta Braves signed free agent OF Cristian Pache to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1999-01-17",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-01-17",
+     "club": "BOS",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Albert Guaimaro",
+     "person_id": 665911
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": null,
+   "mlb_id": "665911",
+   "mlb_name": "Albert Guaimaro",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "guaimaro_albert",
+   "published_name": "Albert Guaimaro",
+   "published_position": "OF",
+   "rank": 11,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-01-17",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (BOS): \"Boston Red Sox signed free agent RF Albert Guaimaro to a minor league contract.\"",
+    "the list names no club",
+    "name identical to the MLB person record (Albert Guaimaro)",
+    "birth date 1999-01-17 (born Venezuela)",
+    "register birth date 1999-01-17 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "BOS",
+    "date": "2015-07-02",
+    "description": "Boston Red Sox signed free agent RF Albert Guaimaro to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1998-09-04",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-10-23",
+     "club": "BOS",
+     "date": "2015-07-02",
+     "match": "VARIANT",
+     "name": "Andres Jimenez",
+     "person_id": 665992
+    },
+    {
+     "birth_date": "1998-09-04",
+     "club": "NYM",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Andrés Giménez",
+     "person_id": 665926
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "NYM",
+   "mlb_id": "665926",
+   "mlb_name": "Andrés Giménez",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "gimenez_andres",
+   "published_name": "Andres Gimenez",
+   "published_position": "INF",
+   "rank": 12,
+   "register_bbref_id": "gimenan01",
+   "register_birth_date": "1998-09-04",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (NYM): \"New York Mets signed free agent SS Andres Gimenez to a minor league contract.\"",
+    "the list names NYM",
+    "name identical to the MLB person record (Andrés Giménez)",
+    "birth date 1998-09-04 (born Venezuela)",
+    "register birth date 1998-09-04 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "NYM",
+    "date": "2015-07-02",
+    "description": "New York Mets signed free agent SS Andres Gimenez to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-10-17",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-10-17",
+     "club": "CHC",
+     "date": "2015-08-23",
+     "match": "VARIANT",
+     "name": "Jonathan Sierra",
+     "person_id": 666626
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "CHC",
+   "mlb_id": "666626",
+   "mlb_name": "Jonathan Sierra",
+   "mlb_primary_position": "RF",
+   "name_match": "VARIANT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "sierra_estiwal_yonathan",
+   "published_name": "Yonathan Sierra Estiwal",
+   "published_position": "OF",
+   "rank": 13,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-10-17",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-08-23 (CHC): \"Chicago Cubs signed free agent OF Jonathan Sierra to a minor league contract.\"",
+    "the list names CHC",
+    "name a one-letter or spacing variant of the MLB person record (Jonathan Sierra)",
+    "birth date 1998-10-17 (born Dominican Republic)",
+    "register birth date 1998-10-17 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (RF)"
+   ],
+   "signing": {
+    "club": "CHC",
+    "date": "2015-08-23",
+    "description": "Chicago Cubs signed free agent OF Jonathan Sierra to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-01-20",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-01-20",
+     "club": "NYM",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Gregory Guerrero",
+     "person_id": 665872
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "NYM",
+   "mlb_id": "665872",
+   "mlb_name": "Gregory Guerrero",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "guerrero_gregory",
+   "published_name": "Gregory Guerrero",
+   "published_position": "SS",
+   "rank": 14,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-01-20",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (NYM): \"New York Mets signed free agent SS Gregory Guerrero to a minor league contract.\"",
+    "the list names NYM",
+    "name identical to the MLB person record (Gregory Guerrero)",
+    "birth date 1999-01-20 (born Dominican Republic)",
+    "register birth date 1999-01-20 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "NYM",
+    "date": "2015-07-02",
+    "description": "New York Mets signed free agent SS Gregory Guerrero to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-09-08",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-09-08",
+     "club": "TEX",
+     "date": "2015-07-02",
+     "match": "VARIANT",
+     "name": "Leody Taveras",
+     "person_id": 665750
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "TEX",
+   "mlb_id": "665750",
+   "mlb_name": "Leody Taveras",
+   "mlb_primary_position": "CF",
+   "name_match": "VARIANT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "taveras_leodys",
+   "published_name": "Leodys Taveras",
+   "published_position": "OF",
+   "rank": 15,
+   "register_bbref_id": "taverle01",
+   "register_birth_date": "1998-09-08",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (TEX): \"Texas Rangers signed free agent OF Leody Taveras to a minor league contract.\"",
+    "the list names TEX",
+    "name a one-letter or spacing variant of the MLB person record (Leody Taveras)",
+    "birth date 1998-09-08 (born Dominican Republic)",
+    "register birth date 1998-09-08 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "TEX",
+    "date": "2015-07-02",
+    "description": "Texas Rangers signed free agent OF Leody Taveras to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-09-13",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-09-13",
+     "club": "CHC",
+     "date": "2015-08-23",
+     "match": "EXACT",
+     "name": "Aramis Ademan",
+     "person_id": 666620
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "CHC",
+   "mlb_id": "666620",
+   "mlb_name": "Aramis Ademan",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "ademan_aramis",
+   "published_name": "Aramis Ademan",
+   "published_position": "SS",
+   "rank": 16,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-09-13",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-08-23 (CHC): \"Chicago Cubs signed free agent SS Aramis Ademan to a minor league contract.\"",
+    "the list names CHC",
+    "name identical to the MLB person record (Aramis Ademan)",
+    "birth date 1998-09-13 (born Dominican Republic)",
+    "register birth date 1998-09-13 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "CHC",
+    "date": "2015-08-23",
+    "description": "Chicago Cubs signed free agent SS Aramis Ademan to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1998-09-15",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-09-15",
+     "club": "COL",
+     "date": "2015-07-19",
+     "match": "EXACT",
+     "name": "Anderson Amarista",
+     "person_id": 665915
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": null,
+   "mlb_id": "665915",
+   "mlb_name": "Anderson Amarista",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "amarista_anderson",
+   "published_name": "Anderson Amarista",
+   "published_position": "RHP",
+   "rank": 17,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-09-15",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-19 (COL): \"Colorado Rockies signed free agent RHP Anderson Amarista to a minor league contract.\"",
+    "the list names no club",
+    "name identical to the MLB person record (Anderson Amarista)",
+    "birth date 1998-09-15 (born Venezuela)",
+    "register birth date 1998-09-15 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "COL",
+    "date": "2015-07-19",
+    "description": "Colorado Rockies signed free agent RHP Anderson Amarista to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-03-22",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-03-22",
+     "club": "LAD",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Ronny Brito",
+     "person_id": 665798
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "LAD",
+   "mlb_id": "665798",
+   "mlb_name": "Ronny Brito",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "brito_ronny",
+   "published_name": "Ronny Brito",
+   "published_position": "SS",
+   "rank": 18,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-03-22",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (LAD): \"Los Angeles Dodgers signed free agent SS Ronny Brito to a minor league contract.\"",
+    "the list names LAD",
+    "name identical to the MLB person record (Ronny Brito)",
+    "birth date 1999-03-22 (born Dominican Republic)",
+    "register birth date 1999-03-22 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "LAD",
+    "date": "2015-07-02",
+    "description": "Los Angeles Dodgers signed free agent SS Ronny Brito to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-10-25",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-10-25",
+     "club": "WSH",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Juan Soto",
+     "person_id": 665742
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "WSH",
+   "mlb_id": "665742",
+   "mlb_name": "Juan Soto",
+   "mlb_primary_position": "LF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "soto_juan",
+   "published_name": "Juan Soto",
+   "published_position": "OF",
+   "rank": 19,
+   "register_bbref_id": "sotoju01",
+   "register_birth_date": "1998-10-25",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (WSH): \"Washington Nationals signed free agent OF Juan Soto to a minor league contract.\"",
+    "the list names WSH",
+    "name identical to the MLB person record (Juan Soto)",
+    "birth date 1998-10-25 (born Dominican Republic)",
+    "register birth date 1998-10-25 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (LF)"
+   ],
+   "signing": {
+    "club": "WSH",
+    "date": "2015-07-02",
+    "description": "Washington Nationals signed free agent OF Juan Soto to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-09-30",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-09-30",
+     "club": "CIN",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Cristian Olivo",
+     "person_id": 665891
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "CIN",
+   "mlb_id": "665891",
+   "mlb_name": "Cristian Olivo",
+   "mlb_primary_position": "DH",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "olivo_cristian",
+   "published_name": "Cristian Olivo",
+   "published_position": "OF",
+   "rank": 20,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-09-30",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (CIN): \"Cincinnati Reds signed free agent OF Cristian Olivo to a minor league contract.\"",
+    "the list names CIN",
+    "name identical to the MLB person record (Cristian Olivo)",
+    "birth date 1998-09-30 (born Dominican Republic)",
+    "register birth date 1998-09-30 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (DH)"
+   ],
+   "signing": {
+    "club": "CIN",
+    "date": "2015-07-02",
+    "description": "Cincinnati Reds signed free agent OF Cristian Olivo to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-10-03",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-10-03",
+     "club": "ATL",
+     "date": "2015-07-04",
+     "match": "EXACT",
+     "name": "Derian Cruz",
+     "person_id": 665505
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "ATL",
+   "mlb_id": "665505",
+   "mlb_name": "Derian Cruz",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "cruz_derian",
+   "published_name": "Derian Cruz",
+   "published_position": "SS",
+   "rank": 21,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-10-03",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-04 (ATL): \"Atlanta Braves signed free agent SS Derian Cruz to a minor league contract.\"",
+    "the list names ATL",
+    "name identical to the MLB person record (Derian Cruz)",
+    "birth date 1998-10-03 (born Dominican Republic)",
+    "register birth date 1998-10-03 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "ATL",
+    "date": "2015-07-04",
+    "description": "Atlanta Braves signed free agent SS Derian Cruz to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1999-03-17",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-03-17",
+     "club": "TEX",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Miguel Aparicio",
+     "person_id": 665918
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": null,
+   "mlb_id": "665918",
+   "mlb_name": "Miguel Aparicio",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "aparicio_miguel",
+   "published_name": "Miguel Aparicio",
+   "published_position": "OF",
+   "rank": 22,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-03-17",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (TEX): \"Texas Rangers signed free agent CF Miguel Aparicio to a minor league contract.\"",
+    "the list names no club",
+    "name identical to the MLB person record (Miguel Aparicio)",
+    "birth date 1999-03-17 (born Venezuela)",
+    "register birth date 1999-03-17 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "TEX",
+    "date": "2015-07-02",
+    "description": "Texas Rangers signed free agent CF Miguel Aparicio to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Panama",
+   "birth_date": "1999-03-09",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-03-09",
+     "club": "CHC",
+     "date": "2015-07-17",
+     "match": "EXACT",
+     "name": "Miguel Amaya",
+     "person_id": 665804
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "CHC",
+   "mlb_id": "665804",
+   "mlb_name": "Miguel Amaya",
+   "mlb_primary_position": "C",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "amaya_miguel",
+   "published_name": "Miguel Amaya",
+   "published_position": "C",
+   "rank": 23,
+   "register_bbref_id": "amayami01",
+   "register_birth_date": "1999-03-09",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-17 (CHC): \"Chicago Cubs signed free agent C Miguel Amaya to a minor league contract.\"",
+    "the list names CHC",
+    "name identical to the MLB person record (Miguel Amaya)",
+    "birth date 1999-03-09 (born Panama)",
+    "register birth date 1999-03-09 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (C)"
+   ],
+   "signing": {
+    "club": "CHC",
+    "date": "2015-07-17",
+    "description": "Chicago Cubs signed free agent C Miguel Amaya to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1998-12-27",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-12-27",
+     "club": "BOS",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Símon Muzziotti",
+     "person_id": 665922
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": null,
+   "mlb_id": "665922",
+   "mlb_name": "Símon Muzziotti",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "muzziotti_simon",
+   "published_name": "Simon Muzziotti",
+   "published_position": "OF",
+   "rank": 24,
+   "register_bbref_id": "muzzisi01",
+   "register_birth_date": "1998-12-27",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (BOS): \"Boston Red Sox signed free agent CF Simon Muzziotti to a minor league contract.\"",
+    "the list names no club",
+    "name identical to the MLB person record (Símon Muzziotti)",
+    "birth date 1998-12-27 (born Venezuela)",
+    "register birth date 1998-12-27 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "BOS",
+    "date": "2015-07-02",
+    "description": "Boston Red Sox signed free agent CF Simon Muzziotti to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-01-02",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-01-02",
+     "club": "CWS",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Fernando Tatis Jr.",
+     "person_id": 665487
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "CWS",
+   "mlb_id": "665487",
+   "mlb_name": "Fernando Tatis Jr.",
+   "mlb_primary_position": "RF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "tatis_fernando",
+   "published_name": "Fernando Tatis Jr.",
+   "published_position": "SS",
+   "rank": 25,
+   "register_bbref_id": "tatisfe02",
+   "register_birth_date": "1999-01-02",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (CWS): \"Chicago White Sox signed free agent 3B Fernando Tatis Jr. to a minor league contract.\"",
+    "the list names CWS",
+    "name identical to the MLB person record (Fernando Tatis Jr.)",
+    "birth date 1999-01-02 (born Dominican Republic)",
+    "register birth date 1999-01-02 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (RF)"
+   ],
+   "signing": {
+    "club": "CWS",
+    "date": "2015-07-02",
+    "description": "Chicago White Sox signed free agent 3B Fernando Tatis Jr. to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "candidates_considered": [
+    {
+     "birth_date": "1998-07-16",
+     "club": "HOU",
+     "date": "2016-06-15",
+     "match": "EXACT",
+     "name": "Christopher Javier",
+     "person_id": 671770
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": null,
+   "pipeline_slug": "martinez_christopher",
+   "published_name": "Christopher Martinez",
+   "published_position": "3B",
+   "rank": 26,
+   "reason": "A name-matching signing exists in the window but the birth year or position family does not fit the published entry",
+   "result": "INSUFFICIENT_EVIDENCE",
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1998-10-08",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-10-08",
+     "club": "KC",
+     "date": "2015-07-03",
+     "match": "EXACT",
+     "name": "Jeison Guzmán",
+     "person_id": 665834
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": null,
+   "mlb_id": "665834",
+   "mlb_name": "Jeison Guzmán",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "guzman_jeison",
+   "published_name": "Jeison Guzman",
+   "published_position": "SS",
+   "rank": 27,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-10-08",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-03 (KC): \"Kansas City Royals signed free agent SS Jeison Guzman to a minor league contract.\"",
+    "the list names no club",
+    "name identical to the MLB person record (Jeison Guzmán)",
+    "birth date 1998-10-08 (born Dominican Republic)",
+    "register birth date 1998-10-08 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "KC",
+    "date": "2015-07-03",
+    "description": "Kansas City Royals signed free agent SS Jeison Guzman to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1999-02-25",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-02-25",
+     "club": "PHI",
+     "date": "2015-07-03",
+     "match": "EXACT",
+     "name": "Rafael Marchán",
+     "person_id": 665561
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": null,
+   "mlb_id": "665561",
+   "mlb_name": "Rafael Marchán",
+   "mlb_primary_position": "C",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "marchan_rafael",
+   "published_name": "Rafael Marchan",
+   "published_position": "C",
+   "rank": 28,
+   "register_bbref_id": "marchra01",
+   "register_birth_date": "1999-02-25",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-03 (PHI): \"Philadelphia Phillies signed free agent SS Rafael Marchan to a minor league contract.\"",
+    "the list names no club",
+    "name identical to the MLB person record (Rafael Marchán)",
+    "birth date 1999-02-25 (born Venezuela)",
+    "register birth date 1999-02-25 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (C)"
+   ],
+   "signing": {
+    "club": "PHI",
+    "date": "2015-07-03",
+    "description": "Philadelphia Phillies signed free agent SS Rafael Marchan to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-03-18",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-03-18",
+     "club": "SEA",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Carlos Vargas",
+     "person_id": 665799
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": "SEA",
+   "mlb_id": "665799",
+   "mlb_name": "Carlos Vargas",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "vargas_carlos",
+   "published_name": "Carlos Vargas",
+   "published_position": "SS",
+   "rank": 29,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-03-18",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (SEA): \"Seattle Mariners signed free agent SS Carlos Vargas to a minor league contract.\"",
+    "the list names SEA",
+    "name identical to the MLB person record (Carlos Vargas)",
+    "birth date 1999-03-18 (born Dominican Republic)",
+    "register birth date 1999-03-18 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "SEA",
+    "date": "2015-07-02",
+    "description": "Seattle Mariners signed free agent SS Carlos Vargas to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "USA",
+   "birth_date": "1998-09-11",
+   "candidates_considered": [
+    {
+     "birth_date": "1998-09-11",
+     "club": "CWS",
+     "date": "2015-07-02",
+     "match": "EXACT",
+     "name": "Franklin Reyes",
+     "person_id": 665485
+    }
+   ],
+   "class_year": 2015,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "list_club": null,
+   "mlb_id": "665485",
+   "mlb_name": "Franklin Reyes",
+   "mlb_primary_position": "RF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "reyes_franklin",
+   "published_name": "Franklin Reyes",
+   "published_position": "OF",
+   "rank": 30,
+   "register_bbref_id": null,
+   "register_birth_date": "1998-09-11",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2015-07-02 (CWS): \"Chicago White Sox signed free agent OF Franklin Reyes to a minor league contract.\"",
+    "the list names no club",
+    "name identical to the MLB person record (Franklin Reyes)",
+    "birth date 1998-09-11 (born USA)",
+    "register birth date 1998-09-11 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (RF)"
+   ],
+   "signing": {
+    "club": "CWS",
+    "date": "2015-07-02",
+    "description": "Chicago White Sox signed free agent OF Franklin Reyes to a minor league contract."
+   },
+   "window": [
+    "2015-06-01",
+    "2016-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1997-08-03",
+   "candidates_considered": [
+    {
+     "birth_date": "1997-08-03",
+     "club": "CWS",
+     "date": "2017-05-27",
+     "match": "EXACT",
+     "name": "Luis Robert Jr.",
+     "person_id": 673357
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "CWS",
+   "mlb_id": "673357",
+   "mlb_name": "Luis Robert Jr.",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "robert_luis",
+   "published_name": "Luis Robert",
+   "published_position": "OF",
+   "rank": 1,
+   "register_bbref_id": "roberlu01",
+   "register_birth_date": "1997-08-03",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "Robert played in the Cuban National Series for Ciego de Ávila from 2013 to 2015."
+    ],
+    "wiki_title": "Luis Robert Jr.",
+    "wiki_url": "https://en.wikipedia.org/?curid=53307518"
+   },
+   "signals": [
+    "official signing transaction 2017-05-27 (CWS): \"Chicago White Sox signed free agent OF Luis Robert to a minor league contract.\"",
+    "the list names CWS",
+    "name identical to the MLB person record (Luis Robert Jr.)",
+    "birth date 1997-08-03 (born Cuba)",
+    "register birth date 1997-08-03 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "CWS",
+    "date": "2017-05-27",
+    "description": "Chicago White Sox signed free agent OF Luis Robert to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2000-02-12",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-02-12",
+     "club": "ATL",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Kevin Maitan",
+     "person_id": 670867
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "ATL",
+   "mlb_id": "670867",
+   "mlb_name": "Kevin Maitan",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "maitan_kevin",
+   "published_name": "Kevin Maitan",
+   "published_position": "SS",
+   "rank": 2,
+   "register_bbref_id": null,
+   "register_birth_date": "2000-02-12",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (ATL): \"Atlanta Braves signed free agent SS Kevin Maitan to a minor league contract.\"",
+    "the list names ATL",
+    "name identical to the MLB person record (Kevin Maitan)",
+    "birth date 2000-02-12 (born Venezuela)",
+    "register birth date 2000-02-12 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "ATL",
+    "date": "2016-07-02",
+    "description": "Atlanta Braves signed free agent SS Kevin Maitan to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1999-02-27",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-02-27",
+     "club": "SD",
+     "date": "2016-07-07",
+     "match": "EXACT",
+     "name": "Adrian Morejon",
+     "person_id": 670970
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "670970",
+   "mlb_name": "Adrian Morejon",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "morejon_adrian",
+   "published_name": "Adrian Morejon",
+   "published_position": "LHP",
+   "rank": 3,
+   "register_bbref_id": "morejad01",
+   "register_birth_date": "1999-02-27",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "He appeared in the Cuban National Series for the Huracanes de Mayabeque that year."
+    ],
+    "wiki_title": "Adrián Morejón",
+    "wiki_url": "https://en.wikipedia.org/?curid=51021230"
+   },
+   "signals": [
+    "official signing transaction 2016-07-07 (SD): \"San Diego Padres signed free agent LHP Adrian Morejon to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Adrian Morejon)",
+    "birth date 1999-02-27 (born Cuba)",
+    "register birth date 1999-02-27 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2016-07-07",
+    "description": "San Diego Padres signed free agent LHP Adrian Morejon to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1994-03-15",
+   "candidates_considered": [
+    {
+     "birth_date": "1994-03-15",
+     "club": "OAK",
+     "date": "2016-12-23",
+     "match": "EXACT",
+     "name": "Norge Ruiz",
+     "person_id": 650204
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "OAK",
+   "mlb_id": "650204",
+   "mlb_name": "Norge Ruiz",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "ruiz_norge",
+   "published_name": "Norge Ruiz",
+   "published_position": "RHP",
+   "rank": 4,
+   "register_bbref_id": "ruizno01",
+   "register_birth_date": "1994-03-15",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [
+     {
+      "league": "Caribbean Series",
+      "season": 2013,
+      "team": "Cuba"
+     },
+     {
+      "league": "Caribbean Series",
+      "season": 2014,
+      "team": "Cuba"
+     }
+    ],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "Ruiz played in the Cuban National Series for Camagüey.",
+     "He won the Cuban National Series Rookie of the Year Award for 2012/2013."
+    ],
+    "wiki_title": "Norge Ruiz",
+    "wiki_url": "https://en.wikipedia.org/?curid=44314092"
+   },
+   "signals": [
+    "official signing transaction 2016-12-23 (OAK): \"Oakland Athletics signed free agent RHP Norge Ruiz to a minor league contract.\"",
+    "the list names OAK",
+    "name identical to the MLB person record (Norge Ruiz)",
+    "birth date 1994-03-15 (born Cuba)",
+    "register birth date 1994-03-15 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "OAK",
+    "date": "2016-12-23",
+    "description": "Oakland Athletics signed free agent RHP Norge Ruiz to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1996-04-21",
+   "candidates_considered": [
+    {
+     "birth_date": "1996-04-21",
+     "club": "HOU",
+     "date": "2016-12-09",
+     "match": "EXACT",
+     "name": "Cionel Pérez",
+     "person_id": 672335
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "HOU",
+   "mlb_id": "672335",
+   "mlb_name": "Cionel Pérez",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "perez_cionel",
+   "published_name": "Cionel Perez",
+   "published_position": "LHP",
+   "rank": 5,
+   "register_bbref_id": "perezci01",
+   "register_birth_date": "1996-04-21",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "Pérez played two seasons for Matanzas of the Cuban National Series."
+    ],
+    "wiki_title": "Cionel Pérez",
+    "wiki_url": "https://en.wikipedia.org/?curid=55807603"
+   },
+   "signals": [
+    "official signing transaction 2016-12-09 (HOU): \"Houston Astros signed free agent LHP Cionel Perez to a minor league contract.\"",
+    "the list names HOU",
+    "name identical to the MLB person record (Cionel Pérez)",
+    "birth date 1996-04-21 (born Cuba)",
+    "register birth date 1996-04-21 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "HOU",
+    "date": "2016-12-09",
+    "description": "Houston Astros signed free agent LHP Cionel Perez to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1995-09-18",
+   "candidates_considered": [
+    {
+     "birth_date": "1995-09-18",
+     "club": "CIN",
+     "date": "2016-09-07",
+     "match": "EXACT",
+     "name": "Vladimir Gutierrez",
+     "person_id": 661269
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "CIN",
+   "mlb_id": "661269",
+   "mlb_name": "Vladimir Gutierrez",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "gutierrez_vladimir",
+   "published_name": "Vladimir Gutierrez",
+   "published_position": "RHP",
+   "rank": 6,
+   "register_bbref_id": "gutievl01",
+   "register_birth_date": "1995-09-18",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "He played in the Cuban National Series for the Vegueros de Pinar del Río and was the Rookie of the Year for the 2013–2014 season."
+    ],
+    "wiki_title": "Vladimir Gutiérrez",
+    "wiki_url": "https://en.wikipedia.org/?curid=45299269"
+   },
+   "signals": [
+    "official signing transaction 2016-09-07 (CIN): \"Cincinnati Reds signed free agent RHP Vladimir Gutierrez to a minor league contract.\"",
+    "the list names CIN",
+    "name identical to the MLB person record (Vladimir Gutierrez)",
+    "birth date 1995-09-18 (born Cuba)",
+    "register birth date 1995-09-18 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "CIN",
+    "date": "2016-09-07",
+    "description": "Cincinnati Reds signed free agent RHP Vladimir Gutierrez to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1993-10-10",
+   "candidates_considered": [
+    {
+     "birth_date": "1993-10-10",
+     "club": "TOR",
+     "date": "2016-11-12",
+     "match": "EXACT",
+     "name": "Lourdes Gurriel Jr.",
+     "person_id": 666971
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "TOR",
+   "mlb_id": "666971",
+   "mlb_name": "Lourdes Gurriel Jr.",
+   "mlb_primary_position": "LF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "gurriel_lourdes",
+   "published_name": "Lourdes Gurriel",
+   "published_position": "INF/OF",
+   "rank": 7,
+   "register_bbref_id": "gurrilo01",
+   "register_birth_date": "1993-10-10",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [
+     {
+      "league": "Caribbean Series",
+      "season": 2015,
+      "team": "Cuba"
+     }
+    ],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "He also played for Sancti Spíritus and the Industriales of the Cuban National Series before defecting from Cuba.",
+     "Gurriel debuted in the Cuban National Series with Sancti Spíritus in 2010 as a 16-year-old.",
+     "Gurriel's older brother, Yuli, also played in Cuba before defecting, and they are sons of former Cuban National Series player Lourdes Gourriel."
+    ],
+    "wiki_title": "Lourdes Gurriel Jr.",
+    "wiki_url": "https://en.wikipedia.org/?curid=45269809"
+   },
+   "signals": [
+    "official signing transaction 2016-11-12 (TOR): \"Toronto Blue Jays signed free agent Lourdes Gurriel.\"",
+    "the list names TOR",
+    "name identical to the MLB person record (Lourdes Gurriel Jr.)",
+    "birth date 1993-10-10 (born Cuba)",
+    "register birth date 1993-10-10 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (LF)"
+   ],
+   "signing": {
+    "club": "TOR",
+    "date": "2016-11-12",
+    "description": "Toronto Blue Jays signed free agent Lourdes Gurriel."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1994-06-17",
+   "candidates_considered": [
+    {
+     "birth_date": "1994-06-17",
+     "club": "CIN",
+     "date": "2016-07-04",
+     "match": "EXACT",
+     "name": "Alfredo Rodriguez",
+     "person_id": 670895
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "CIN",
+   "mlb_id": "670895",
+   "mlb_name": "Alfredo Rodriguez",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "rodriguez_alfredo",
+   "published_name": "Alfredo Rodriguez",
+   "published_position": "SS",
+   "rank": 8,
+   "register_bbref_id": null,
+   "register_birth_date": "1994-06-17",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "Rodríguez began his professional career in the Cuban National Series for Isla de la Juventud."
+    ],
+    "wiki_title": "Alfredo Rodríguez (baseball)",
+    "wiki_url": "https://en.wikipedia.org/?curid=62379616"
+   },
+   "signals": [
+    "official signing transaction 2016-07-04 (CIN): \"Cincinnati Reds signed free agent SS Alfredo Rodriguez to a minor league contract.\"",
+    "the list names CIN",
+    "name identical to the MLB person record (Alfredo Rodriguez)",
+    "birth date 1994-06-17 (born Cuba)",
+    "register birth date 1994-06-17 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "CIN",
+    "date": "2016-07-04",
+    "description": "Cincinnati Reds signed free agent SS Alfredo Rodriguez to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-11-01",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-11-01",
+     "club": "SD",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Luis Almanzar",
+     "person_id": 671275
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "671275",
+   "mlb_name": "Luis Almanzar",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "almanzar_luis",
+   "published_name": "Luis Almanzar",
+   "published_position": "SS",
+   "rank": 9,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-11-01",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (SD): \"San Diego Padres signed free agent SS Luis Almanzar to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Luis Almanzar)",
+    "birth date 1999-11-01 (born Dominican Republic)",
+    "register birth date 1999-11-01 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2016-07-02",
+    "description": "San Diego Padres signed free agent SS Luis Almanzar to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1999-05-22",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-05-22",
+     "club": "OAK",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Lazaro Armenteros",
+     "person_id": 670860
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "OAK",
+   "mlb_id": "670860",
+   "mlb_name": "Lazaro Armenteros",
+   "mlb_primary_position": "LF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "armenteros_lazaro",
+   "published_name": "Lazaro Armenteros",
+   "published_position": "OF",
+   "rank": 10,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-05-22",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": null,
+    "wiki_sentences": [],
+    "wiki_title": "Lázaro Armenteros",
+    "wiki_url": "https://en.wikipedia.org/?curid=49233641"
+   },
+   "signals": [
+    "official signing transaction 2016-07-02 (OAK): \"Oakland Athletics signed free agent OF Lazaro Armenteros to a minor league contract.\"",
+    "the list names OAK",
+    "name identical to the MLB person record (Lazaro Armenteros)",
+    "birth date 1999-05-22 (born Cuba)",
+    "register birth date 1999-05-22 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (LF)"
+   ],
+   "signing": {
+    "club": "OAK",
+    "date": "2016-07-02",
+    "description": "Oakland Athletics signed free agent OF Lazaro Armenteros to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2000-02-27",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-02-27",
+     "club": "SD",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Gabriel Arias",
+     "person_id": 672356
+    },
+    {
+     "birth_date": "1989-12-06",
+     "club": "WSH",
+     "date": "2016-12-23",
+     "match": "EXACT",
+     "name": "Gabriel Arias",
+     "person_id": 525734
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "672356",
+   "mlb_name": "Gabriel Arias",
+   "mlb_primary_position": "3B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "arias_gabriel",
+   "published_name": "Gabriel Arias",
+   "published_position": "SS",
+   "rank": 11,
+   "register_bbref_id": "ariasga01",
+   "register_birth_date": "2000-02-27",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (SD): \"San Diego Padres signed free agent SS Gabriel Arias to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Gabriel Arias)",
+    "birth date 2000-02-27 (born Venezuela)",
+    "register birth date 2000-02-27 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (3B)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2016-07-02",
+    "description": "San Diego Padres signed free agent SS Gabriel Arias to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1996-12-31",
+   "candidates_considered": [
+    {
+     "birth_date": "1996-12-31",
+     "club": "SD",
+     "date": "2016-07-20",
+     "match": "EXACT",
+     "name": "Jorge Ona",
+     "person_id": 671250
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "671250",
+   "mlb_name": "Jorge Ona",
+   "mlb_primary_position": "OF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "ona_jorge",
+   "published_name": "Jorge Ona",
+   "published_position": "OF",
+   "rank": 12,
+   "register_bbref_id": "onajo01",
+   "register_birth_date": "1996-12-31",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": "CUBAN_AMATEUR",
+    "wiki_sentences": [
+     "He began his professional career in 2017 with the Fort Wayne TinCaps of the Single–A Midwest League and spent the whole season there, posting a .277 batting average with 11 home runs and 64 RBIs in 107 games."
+    ],
+    "wiki_title": "Jorge Oña",
+    "wiki_url": "https://en.wikipedia.org/?curid=51139697"
+   },
+   "signals": [
+    "official signing transaction 2016-07-20 (SD): \"San Diego Padres signed free agent OF Jorge Ona to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Jorge Ona)",
+    "birth date 1996-12-31 (born Cuba)",
+    "register birth date 1996-12-31 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (OF)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2016-07-20",
+    "description": "San Diego Padres signed free agent OF Jorge Ona to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "USA",
+   "birth_date": "2000-05-16",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-05-16",
+     "club": "WSH",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Luis García Jr.",
+     "person_id": 671277
+    },
+    {
+     "birth_date": "1999-07-20",
+     "club": "NYM",
+     "date": "2016-07-07",
+     "match": "EXACT",
+     "name": "Luis Santana",
+     "person_id": 670919
+    },
+    {
+     "birth_date": "2000-06-23",
+     "club": "CLE",
+     "date": "2016-07-15",
+     "match": "EXACT",
+     "name": "Luis D. Garcia",
+     "person_id": 672554
+    },
+    {
+     "birth_date": "1997-04-26",
+     "club": "CLE",
+     "date": "2016-10-12",
+     "match": "EXACT",
+     "name": "Luis C. Garcia",
+     "person_id": 673185
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "WSH",
+   "mlb_id": "671277",
+   "mlb_name": "Luis García Jr.",
+   "mlb_primary_position": "1B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "garcia_luis",
+   "published_name": "Luis Garcia",
+   "published_position": "SS",
+   "rank": 13,
+   "register_bbref_id": "garcilu04",
+   "register_birth_date": "2000-05-16",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (WSH): \"Washington Nationals signed free agent SS Luis Garcia to a minor league contract.\"",
+    "the list names WSH",
+    "name identical to the MLB person record (Luis García Jr.)",
+    "birth date 2000-05-16 (born USA)",
+    "register birth date 2000-05-16 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (1B)"
+   ],
+   "signing": {
+    "club": "WSH",
+    "date": "2016-07-02",
+    "description": "Washington Nationals signed free agent SS Luis Garcia to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1995-08-10",
+   "candidates_considered": [
+    {
+     "birth_date": "1995-08-10",
+     "club": "TEX",
+     "date": "2016-09-23",
+     "match": "EXACT",
+     "name": "Yanio Perez",
+     "person_id": 672350
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "TEX",
+   "mlb_id": "672350",
+   "mlb_name": "Yanio Perez",
+   "mlb_primary_position": "OF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "perez_yanio",
+   "published_name": "Yanio Perez",
+   "published_position": "3B",
+   "rank": 14,
+   "register_bbref_id": null,
+   "register_birth_date": "1995-08-10",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": null,
+    "wiki_sentences": [],
+    "wiki_title": null,
+    "wiki_url": null
+   },
+   "signals": [
+    "official signing transaction 2016-09-23 (TEX): \"Texas Rangers signed free agent OF Yanio Perez to a minor league contract.\"",
+    "the list names TEX",
+    "name identical to the MLB person record (Yanio Perez)",
+    "birth date 1995-08-10 (born Cuba)",
+    "register birth date 1995-08-10 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (OF)"
+   ],
+   "signing": {
+    "club": "TEX",
+    "date": "2016-09-23",
+    "description": "Texas Rangers signed free agent OF Yanio Perez to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2000-01-12",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-01-12",
+     "club": "HOU",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Freudis Nova",
+     "person_id": 671265
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "HOU",
+   "mlb_id": "671265",
+   "mlb_name": "Freudis Nova",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "nova_freudis",
+   "published_name": "Freudis Nova",
+   "published_position": "SS",
+   "rank": 15,
+   "register_bbref_id": null,
+   "register_birth_date": "2000-01-12",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (HOU): \"Houston Astros signed free agent SS Freudys Nova to a minor league contract.\"",
+    "the list names HOU",
+    "name identical to the MLB person record (Freudis Nova)",
+    "birth date 2000-01-12 (born Dominican Republic)",
+    "register birth date 2000-01-12 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "HOU",
+    "date": "2016-07-02",
+    "description": "Houston Astros signed free agent SS Freudys Nova to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-10-22",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-10-22",
+     "club": "SD",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Jeisson Rosario",
+     "person_id": 671271
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "671271",
+   "mlb_name": "Jeisson Rosario",
+   "mlb_primary_position": "OF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "rosario_jeisson",
+   "published_name": "Jeisson Rosario",
+   "published_position": "OF",
+   "rank": 16,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-10-22",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (SD): \"San Diego Padres signed free agent OF Jeisson Rosario to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Jeisson Rosario)",
+    "birth date 1999-10-22 (born Dominican Republic)",
+    "register birth date 1999-10-22 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (OF)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2016-07-02",
+    "description": "San Diego Padres signed free agent OF Jeisson Rosario to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1999-01-21",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-01-21",
+     "club": "STL",
+     "date": "2016-07-15",
+     "match": "EXACT",
+     "name": "Jonatan Machado",
+     "person_id": 671054
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "STL",
+   "mlb_id": "671054",
+   "mlb_name": "Jonatan Machado",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "machado_jonathan",
+   "published_name": "Jonathan Machado",
+   "published_position": "CF",
+   "rank": 17,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-01-21",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": null,
+    "wiki_sentences": [],
+    "wiki_title": null,
+    "wiki_url": null
+   },
+   "signals": [
+    "official signing transaction 2016-07-15 (STL): \"St. Louis Cardinals signed free agent CF Jonathan Machado to a minor league contract.\"",
+    "the list names STL",
+    "name identical to the MLB person record (Jonatan Machado)",
+    "birth date 1999-01-21 (born Cuba)",
+    "register birth date 1999-01-21 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "STL",
+    "date": "2016-07-15",
+    "description": "St. Louis Cardinals signed free agent CF Jonathan Machado to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2000-02-06",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-02-06",
+     "club": "TEX",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "David García",
+     "person_id": 671272
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "TEX",
+   "mlb_id": "671272",
+   "mlb_name": "David García",
+   "mlb_primary_position": "C",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "garcia_david",
+   "published_name": "David Garcia",
+   "published_position": "C",
+   "rank": 18,
+   "register_bbref_id": null,
+   "register_birth_date": "2000-02-06",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (TEX): \"Texas Rangers signed free agent C David Garcia to a minor league contract.\"",
+    "the list names TEX",
+    "name identical to the MLB person record (David García)",
+    "birth date 2000-02-06 (born Venezuela)",
+    "register birth date 2000-02-06 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (C)"
+   ],
+   "signing": {
+    "club": "TEX",
+    "date": "2016-07-02",
+    "description": "Texas Rangers signed free agent C David Garcia to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1999-09-16",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-09-16",
+     "club": "STL",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Victor Garcia",
+     "person_id": 671270
+    },
+    {
+     "birth_date": "1999-01-31",
+     "club": "NYY",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Victor Hernandez",
+     "person_id": 672852
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "STL",
+   "mlb_id": "671270",
+   "mlb_name": "Victor Garcia",
+   "mlb_primary_position": "OF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "garcia_victor",
+   "published_name": "Victor Garcia",
+   "published_position": "OF",
+   "rank": 19,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-09-16",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (STL): \"St. Louis Cardinals signed free agent OF Victor Garcia to a minor league contract.\"",
+    "the list names STL",
+    "name identical to the MLB person record (Victor Garcia)",
+    "birth date 1999-09-16 (born Venezuela)",
+    "register birth date 1999-09-16 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (OF)"
+   ],
+   "signing": {
+    "club": "STL",
+    "date": "2016-07-02",
+    "description": "St. Louis Cardinals signed free agent OF Victor Garcia to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1995-02-28",
+   "candidates_considered": [
+    {
+     "birth_date": "1995-02-28",
+     "club": "STL",
+     "date": "2016-08-01",
+     "match": "EXACT",
+     "name": "Randy Arozarena",
+     "person_id": 668227
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "STL",
+   "mlb_id": "668227",
+   "mlb_name": "Randy Arozarena",
+   "mlb_primary_position": "LF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "arozarena_randy",
+   "published_name": "Randy Arozarena",
+   "published_position": "CF/2B",
+   "rank": 20,
+   "register_bbref_id": "arozara01",
+   "register_birth_date": "1995-02-28",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "During the 2013–14 and 2014–15 seasons, Arozarena played for Vegueros de Pinar del Río of the Cuban National Series."
+    ],
+    "wiki_title": "Randy Arozarena",
+    "wiki_url": "https://en.wikipedia.org/?curid=57016671"
+   },
+   "signals": [
+    "official signing transaction 2016-08-01 (STL): \"St. Louis Cardinals signed free agent CF Randy Arozarena to a minor league contract.\"",
+    "the list names STL",
+    "name identical to the MLB person record (Randy Arozarena)",
+    "birth date 1995-02-28 (born Cuba)",
+    "register birth date 1995-02-28 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (LF)"
+   ],
+   "signing": {
+    "club": "STL",
+    "date": "2016-08-01",
+    "description": "St. Louis Cardinals signed free agent CF Randy Arozarena to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-10-26",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-10-26",
+     "club": "WSH",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Yasel Antuna",
+     "person_id": 671276
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "WSH",
+   "mlb_id": "671276",
+   "mlb_name": "Yasel Antuna",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "antuna_yasel",
+   "published_name": "Yasel Antuna",
+   "published_position": "SS",
+   "rank": 21,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-10-26",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (WSH): \"Washington Nationals signed free agent SS Yasel Antuna to a minor league contract.\"",
+    "the list names WSH",
+    "name identical to the MLB person record (Yasel Antuna)",
+    "birth date 1999-10-26 (born Dominican Republic)",
+    "register birth date 1999-10-26 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "WSH",
+    "date": "2016-07-02",
+    "description": "Washington Nationals signed free agent SS Yasel Antuna to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-12-03",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-12-03",
+     "club": "SD",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Jordy Barley",
+     "person_id": 672357
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "672357",
+   "mlb_name": "Jordy Barley",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "barley_jordy",
+   "published_name": "Jordy Barley",
+   "published_position": "SS",
+   "rank": 22,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-12-03",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (SD): \"San Diego Padres signed free agent SS Jordy Barley to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Jordy Barley)",
+    "birth date 1999-12-03 (born Dominican Republic)",
+    "register birth date 1999-12-03 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2016-07-02",
+    "description": "San Diego Padres signed free agent SS Jordy Barley to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1999-10-27",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-10-27",
+     "club": "PHI",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Francisco Morales",
+     "person_id": 672839
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "PHI",
+   "mlb_id": "672839",
+   "mlb_name": "Francisco Morales",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "morales_francisco",
+   "published_name": "Francisco Morales",
+   "published_position": "RHP",
+   "rank": 23,
+   "register_bbref_id": "moralfr02",
+   "register_birth_date": "1999-10-27",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (PHI): \"Philadelphia Phillies signed free agent RHP Francisco Morales to a minor league contract.\"",
+    "the list names PHI",
+    "name identical to the MLB person record (Francisco Morales)",
+    "birth date 1999-10-27 (born Venezuela)",
+    "register birth date 1999-10-27 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "PHI",
+    "date": "2016-07-02",
+    "description": "Philadelphia Phillies signed free agent RHP Francisco Morales to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Cuba",
+   "birth_date": "1996-08-23",
+   "candidates_considered": [
+    {
+     "birth_date": "1996-08-23",
+     "club": "SD",
+     "date": "2016-08-11",
+     "match": "EXACT",
+     "name": "Ronald Bolaños",
+     "person_id": 671790
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "671790",
+   "mlb_name": "Ronald Bolaños",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "bolanos_ronald",
+   "published_name": "Ronald Bolanos",
+   "published_position": "RHP",
+   "rank": 24,
+   "register_bbref_id": "bolanro01",
+   "register_birth_date": "1996-08-23",
+   "result": "RESOLVED",
+   "route_evidence": {
+    "official_winter_or_caribbean_seasons": [],
+    "route": "CUBAN_PRO",
+    "wiki_sentences": [
+     "Before coming to the United States, Bolaños played for Mayabeque of the Cuban National Series."
+    ],
+    "wiki_title": "Ronald Bolaños",
+    "wiki_url": "https://en.wikipedia.org/?curid=61668828"
+   },
+   "signals": [
+    "official signing transaction 2016-08-11 (SD): \"San Diego Padres signed free agent RHP Ronald Bolanos to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Ronald Bolaños)",
+    "birth date 1996-08-23 (born Cuba)",
+    "register birth date 1996-08-23 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2016-08-11",
+    "description": "San Diego Padres signed free agent RHP Ronald Bolanos to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1999-10-31",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-10-31",
+     "club": "ATL",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Abrahan Gutierrez",
+     "person_id": 670868
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "ATL",
+   "mlb_id": "670868",
+   "mlb_name": "Abrahan Gutierrez",
+   "mlb_primary_position": "C",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "gutierrez_abrahan",
+   "published_name": "Abrahan Gutierrez",
+   "published_position": "C",
+   "rank": 25,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-10-31",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (ATL): \"Atlanta Braves signed C Abraham Gutierrez.\"",
+    "the list names ATL",
+    "name identical to the MLB person record (Abrahan Gutierrez)",
+    "birth date 1999-10-31 (born Venezuela)",
+    "register birth date 1999-10-31 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (C)"
+   ],
+   "signing": {
+    "club": "ATL",
+    "date": "2016-07-02",
+    "description": "Atlanta Braves signed C Abraham Gutierrez."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1999-10-03",
+   "candidates_considered": [
+    {
+     "birth_date": "1999-10-03",
+     "club": "ATL",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Yunior Severino",
+     "person_id": 670870
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "ATL",
+   "mlb_id": "670870",
+   "mlb_name": "Yunior Severino",
+   "mlb_primary_position": "1B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "severino_yunior",
+   "published_name": "Yunior Severino",
+   "published_position": "SS",
+   "rank": 26,
+   "register_bbref_id": null,
+   "register_birth_date": "1999-10-03",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (ATL): \"Atlanta Braves signed free agent SS Yunior Severino to a minor league contract.\"",
+    "the list names ATL",
+    "name identical to the MLB person record (Yunior Severino)",
+    "birth date 1999-10-03 (born Dominican Republic)",
+    "register birth date 1999-10-03 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (1B)"
+   ],
+   "signing": {
+    "club": "ATL",
+    "date": "2016-07-02",
+    "description": "Atlanta Braves signed free agent SS Yunior Severino to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2000-07-12",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-07-12",
+     "club": "WSH",
+     "date": "2016-07-13",
+     "match": "EXACT",
+     "name": "José Sánchez",
+     "person_id": 672566
+    },
+    {
+     "birth_date": "1998-02-19",
+     "club": "SD",
+     "date": "2016-12-21",
+     "match": "EXACT",
+     "name": "Jose Garcia",
+     "person_id": 673309
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "WSH",
+   "mlb_id": "672566",
+   "mlb_name": "José Sánchez",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "sanchez_jose",
+   "published_name": "Jose Sanchez",
+   "published_position": "SS",
+   "rank": 27,
+   "register_bbref_id": null,
+   "register_birth_date": "2000-07-12",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-13 (WSH): \"Washington Nationals signed free agent SS Jose Sanchez to a minor league contract.\"",
+    "the list names WSH",
+    "name identical to the MLB person record (José Sánchez)",
+    "birth date 2000-07-12 (born Venezuela)",
+    "register birth date 2000-07-12 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "WSH",
+    "date": "2016-07-13",
+    "description": "Washington Nationals signed free agent SS Jose Sanchez to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2000-02-17",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-02-17",
+     "club": "OAK",
+     "date": "2016-07-02",
+     "match": "VARIANT",
+     "name": "Yerdel Vargas",
+     "person_id": 670864
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "OAK",
+   "mlb_id": "670864",
+   "mlb_name": "Yerdel Vargas",
+   "mlb_primary_position": "SS",
+   "name_match": "VARIANT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "vargas_yerdeluis",
+   "published_name": "Yerdeluis Vargas",
+   "published_position": "SS",
+   "rank": 28,
+   "register_bbref_id": null,
+   "register_birth_date": "2000-02-17",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (OAK): \"Oakland Athletics signed free agent SS Yerdel Vargas to a minor league contract.\"",
+    "the list names OAK",
+    "name a one-letter or spacing variant of the MLB person record (Yerdel Vargas)",
+    "birth date 2000-02-17 (born Dominican Republic)",
+    "register birth date 2000-02-17 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "OAK",
+    "date": "2016-07-02",
+    "description": "Oakland Athletics signed free agent SS Yerdel Vargas to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2000-07-13",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-07-13",
+     "club": "ATL",
+     "date": "2016-07-13",
+     "match": "EXACT",
+     "name": "Yenci Pena",
+     "person_id": 672562
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "ATL",
+   "mlb_id": "672562",
+   "mlb_name": "Yenci Pena",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "pena_yenci",
+   "published_name": "Yenci Pena",
+   "published_position": "3B",
+   "rank": 29,
+   "register_bbref_id": null,
+   "register_birth_date": "2000-07-13",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-13 (ATL): \"Atlanta Braves signed free agent SS Yenci Pena to a minor league contract.\"",
+    "the list names ATL",
+    "name identical to the MLB person record (Yenci Pena)",
+    "birth date 2000-07-13 (born Dominican Republic)",
+    "register birth date 2000-07-13 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "ATL",
+    "date": "2016-07-13",
+    "description": "Atlanta Braves signed free agent SS Yenci Pena to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2000-03-06",
+   "candidates_considered": [
+    {
+     "birth_date": "2000-03-06",
+     "club": "OAK",
+     "date": "2016-07-02",
+     "match": "EXACT",
+     "name": "Marcos Brito",
+     "person_id": 670862
+    }
+   ],
+   "class_year": 2016,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "list_club": "OAK",
+   "mlb_id": "670862",
+   "mlb_name": "Marcos Brito",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "brito_marcos",
+   "published_name": "Marcos Brito",
+   "published_position": "SS",
+   "rank": 30,
+   "register_bbref_id": null,
+   "register_birth_date": "2000-03-06",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2016-07-02 (OAK): \"Oakland Athletics signed free agent SS Marcos Brito to a minor league contract.\"",
+    "the list names OAK",
+    "name identical to the MLB person record (Marcos Brito)",
+    "birth date 2000-03-06 (born Dominican Republic)",
+    "register birth date 2000-03-06 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "OAK",
+    "date": "2016-07-02",
+    "description": "Oakland Athletics signed free agent SS Marcos Brito to a minor league contract."
+   },
+   "window": [
+    "2016-06-01",
+    "2017-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "1996-12-10",
+   "candidates_considered": [
+    {
+     "birth_date": "1996-12-10",
+     "club": "BOS",
+     "date": "2013-08-09",
+     "match": "VARIANT",
+     "name": "Enmanuel De Jesus",
+     "person_id": 646241
+    }
+   ],
+   "class_year": 2013,
+   "cohort": "LEGACY_035",
+   "list_club": "BOS",
+   "mlb_id": "646241",
+   "mlb_name": "Enmanuel De Jesus",
+   "mlb_primary_position": "P",
+   "name_match": "VARIANT",
+   "other_signings_in_window": [],
+   "published_name": "Emmanuel DeJesus",
+   "published_position": "LHP",
+   "rank": 24,
+   "register_bbref_id": "dejesen01",
+   "register_birth_date": "1996-12-10",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2013-08-09 (BOS): \"Boston Red Sox signed free agent LHP Enmanuel De Jesus to a minor league contract.\"",
+    "the list names BOS",
+    "name a one-letter or spacing variant of the MLB person record (Enmanuel De Jesus)",
+    "birth date 1996-12-10 (born Venezuela)",
+    "register birth date 1996-12-10 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "BOS",
+    "date": "2013-08-09",
+    "description": "Boston Red Sox signed free agent LHP Enmanuel De Jesus to a minor league contract."
+   },
+   "slug": "emmanuel-dejesus",
+   "stored_country": "Venezuela",
+   "window": [
+    "2013-06-01",
+    "2014-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "1996-09-11",
+   "candidates_considered": [
+    {
+     "birth_date": "1996-09-11",
+     "club": "CWS",
+     "date": "2013-07-02",
+     "match": "EXACT",
+     "name": "Micker Adolfo",
+     "person_id": 650520
+    }
+   ],
+   "class_year": 2013,
+   "cohort": "LEGACY_035",
+   "list_club": "CWS",
+   "mlb_id": "650520",
+   "mlb_name": "Micker Adolfo",
+   "mlb_primary_position": "RF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "published_name": "Micker Zapata",
+   "published_position": "OF",
+   "rank": 2,
+   "register_bbref_id": null,
+   "register_birth_date": "1996-09-11",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2013-07-02 (CWS): \"Chicago White Sox signed free agent RF Micker Adolfo to a minor league contract.\"",
+    "the list names CWS",
+    "name identical to the MLB person record (Micker Adolfo)",
+    "birth date 1996-09-11 (born Dominican Republic)",
+    "register birth date 1996-09-11 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (RF)"
+   ],
+   "signing": {
+    "club": "CWS",
+    "date": "2013-07-02",
+    "description": "Chicago White Sox signed free agent RF Micker Adolfo to a minor league contract."
+   },
+   "slug": "micker-zapata",
+   "stored_country": "Dominican Republic",
+   "window": [
+    "2013-06-01",
+    "2014-06-30"
+   ]
+  },
+  {
+   "candidate_mlb_id": "650979",
+   "candidate_mlb_name": "Yeyson Yrizarri",
+   "candidate_signing": {
+    "club": "TEX",
+    "date": "2013-07-02",
+    "description": "Texas Rangers signed free agent SS Yeyson Yrizarri to a minor league contract."
+   },
+   "candidates_considered": [
+    {
+     "birth_date": "1997-02-02",
+     "club": "TEX",
+     "date": "2013-07-02",
+     "match": "VARIANT",
+     "name": "Yeyson Yrizarri",
+     "person_id": 650979
+    }
+   ],
+   "class_year": 2013,
+   "cohort": "LEGACY_035",
+   "list_club": "TEX",
+   "published_name": "Yeyson Yrizarry",
+   "published_position": "SS",
+   "rank": 23,
+   "reason": "The matching official signing (Yeyson Yrizarri, TEX, 2013-07-02) is born in Venezuela; DISI's tracker row records Dominican Republic. The disagreement stays open: identity is not resolved and the stored country is not rewritten.",
+   "result": "CONFLICT",
+   "slug": "yeyson-yrizarry",
+   "stored_country": "Dominican Republic",
+   "window": [
+    "2013-06-01",
+    "2014-06-30"
+   ]
+  },
+  {
+   "candidates_considered": [],
+   "class_year": 2014,
+   "cohort": "LEGACY_035",
+   "list_club": "COL",
+   "published_name": "Yeremy Rosario",
+   "published_position": "SS",
+   "rank": 22,
+   "reason": "No official signing transaction in the class window names a player matching the published name",
+   "result": "INSUFFICIENT_EVIDENCE",
+   "slug": "yeremy-rosario",
+   "stored_country": "Dominican Republic",
+   "window": [
+    "2014-06-01",
+    "2015-06-30"
+   ]
+  },
+  {
+   "candidates_considered": [],
+   "class_year": 2014,
+   "cohort": "LEGACY_035",
+   "list_club": "NYY",
+   "published_name": "Jonathan Amundaray",
+   "published_position": "OF",
+   "rank": 7,
+   "reason": "No official signing transaction in the class window names a player matching the published name",
+   "result": "INSUFFICIENT_EVIDENCE",
+   "slug": "jonathan-amundaray",
+   "stored_country": "Venezuela",
+   "window": [
+    "2014-06-01",
+    "2015-06-30"
+   ]
+  }
+ ],
+ "generated_by": "database/research/050/derive-research.mjs",
+ "method": "An entry is RESOLVED only when exactly one person the official MLB transaction log shows signing (typeCode SFA) inside the class window matches the published name, the club agrees with the list (when it names one), the birth year fits the class, the position family agrees, and the register birth date (when held) equals the MLB person record. A spelling variant alone is never enough without the list naming the same club. Otherwise CONFLICT or INSUFFICIENT_EVIDENCE.",
+ "register": {
+  "files": [
+   "people-0.csv",
+   "people-1.csv",
+   "people-2.csv",
+   "people-3.csv",
+   "people-4.csv",
+   "people-5.csv",
+   "people-6.csv",
+   "people-7.csv",
+   "people-8.csv",
+   "people-9.csv",
+   "people-a.csv",
+   "people-b.csv",
+   "people-c.csv",
+   "people-d.csv",
+   "people-e.csv",
+   "people-f.csv"
+  ],
+  "sha256": "f82a14346b26ac5a65da0a9964c9db8d67d61376840622b0736a7d70983cb513",
+  "url": "https://github.com/chadwickbureau/register"
+ },
+ "retrieved_at": "2026-10-22"
+}

@@ -1,0 +1,213 @@
+{
+ "generated_by": "database/research/050/evaluate.mjs",
+ "method": "database/research/041/evaluate.mjs, unchanged, on the 001-049 chain plus the 050 data",
+ "target": "REACH_MLB_WITHIN_7_SEASONS",
+ "evaluated_rows": 101,
+ "positives": 19,
+ "negatives": 82,
+ "folds": [
+  2013,
+  2014,
+  2015,
+  2016,
+  2018,
+  2019
+ ],
+ "fingerprint": "af9ec05feb3ee1518cb7608193cd209a",
+ "previous": {
+  "fingerprint": "683251fe2e7522fcd346cf6a26004e08",
+  "evaluation_current_on_050_data": [
+   false,
+   false,
+   false
+  ]
+ },
+ "by_population": {
+  "TOP_PROSPECT_SAMPLE": {
+   "rows": 80,
+   "positives": 17
+  },
+  "TRACKED_SAMPLE": {
+   "rows": 21,
+   "positives": 2
+  },
+  "OPENING_CLASS_CENSUS": {
+   "rows": 0,
+   "positives": 0
+  }
+ },
+ "evaluations": [
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "BASE_RATE",
+   "model_version": "outcome-probability-v1",
+   "validation_method": "LEAVE_ONE_SIGNING_YEAR_OUT",
+   "feature_list": [],
+   "training_populations": [
+    "DODGERS_TRACKED_AND_OPENING_CLASS",
+    "TOP_PROSPECT_SAMPLE"
+   ],
+   "evaluated_rows": 101,
+   "positive_n": 19,
+   "folds": 6,
+   "brier_score": 0.159576,
+   "log_loss": 0.507326,
+   "auc": null,
+   "brier_skill_vs_base_rate": 0,
+   "calibration_bins": [
+    {
+     "bin": "0-0.1",
+     "n": 0,
+     "mean_predicted": null,
+     "observed_rate": null
+    },
+    {
+     "bin": "0.1-0.2",
+     "n": 70,
+     "mean_predicted": 0.160259,
+     "observed_rate": 0.242857
+    },
+    {
+     "bin": "0.2-0.3",
+     "n": 31,
+     "mean_predicted": 0.216568,
+     "observed_rate": 0.064516
+    },
+    {
+     "bin": "0.3-0.5",
+     "n": 0,
+     "mean_predicted": null,
+     "observed_rate": null
+    },
+    {
+     "bin": "0.5-1",
+     "n": 0,
+     "mean_predicted": null,
+     "observed_rate": null
+    }
+   ],
+   "decision": "BASELINE_REFERENCE",
+   "decision_reason": "Naive reference: the training-fold positive rate. 19 positives in 101 labelled rows of two reference populations, pooled for this out-of-time comparison only. A population's own reference baseline is shown for a player only when that population's support minimums are met, and only for the Dodgers population.",
+   "training_fingerprint": "af9ec05feb3ee1518cb7608193cd209a",
+   "data_as_of_date": "2026-10-05"
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "POPULATION_STRATIFIED_RATE",
+   "model_version": "outcome-probability-v1",
+   "validation_method": "LEAVE_ONE_SIGNING_YEAR_OUT",
+   "feature_list": [
+    "population_class"
+   ],
+   "training_populations": [
+    "DODGERS_TRACKED_AND_OPENING_CLASS",
+    "TOP_PROSPECT_SAMPLE"
+   ],
+   "evaluated_rows": 101,
+   "positive_n": 19,
+   "folds": 6,
+   "brier_score": 0.161933,
+   "log_loss": 0.720781,
+   "auc": 0.445443,
+   "brier_skill_vs_base_rate": -0.014767,
+   "calibration_bins": [
+    {
+     "bin": "0-0.1",
+     "n": 11,
+     "mean_predicted": 0,
+     "observed_rate": 0.181818
+    },
+    {
+     "bin": "0.1-0.2",
+     "n": 49,
+     "mean_predicted": 0.166976,
+     "observed_rate": 0.244898
+    },
+    {
+     "bin": "0.2-0.3",
+     "n": 41,
+     "mean_predicted": 0.248935,
+     "observed_rate": 0.121951
+    },
+    {
+     "bin": "0.3-0.5",
+     "n": 0,
+     "mean_predicted": null,
+     "observed_rate": null
+    },
+    {
+     "bin": "0.5-1",
+     "n": 0,
+     "mean_predicted": null,
+     "observed_rate": null
+    }
+   ],
+   "decision": "MODEL_NOT_SUPPORTED",
+   "decision_reason": "NO_SKILL_OVER_BASELINE: out-of-time Brier skill -0.014767 is not above 0.",
+   "training_fingerprint": "af9ec05feb3ee1518cb7608193cd209a",
+   "data_as_of_date": "2026-10-05"
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "LOGISTIC_L2",
+   "model_version": "outcome-probability-v1",
+   "validation_method": "LEAVE_ONE_SIGNING_YEAR_OUT",
+   "feature_list": [
+    "is_top_prospect_sample",
+    "is_top_expectation_band",
+    "age_in_signing_year_minus_17",
+    "is_pitcher",
+    "is_dominican_republic",
+    "is_venezuela"
+   ],
+   "training_populations": [
+    "DODGERS_TRACKED_AND_OPENING_CLASS",
+    "TOP_PROSPECT_SAMPLE"
+   ],
+   "evaluated_rows": 101,
+   "positive_n": 19,
+   "folds": 6,
+   "brier_score": 0.165416,
+   "log_loss": 0.530401,
+   "auc": 0.47208,
+   "brier_skill_vs_base_rate": -0.036597,
+   "calibration_bins": [
+    {
+     "bin": "0-0.1",
+     "n": 25,
+     "mean_predicted": 0.064764,
+     "observed_rate": 0.16
+    },
+    {
+     "bin": "0.1-0.2",
+     "n": 39,
+     "mean_predicted": 0.14394,
+     "observed_rate": 0.282051
+    },
+    {
+     "bin": "0.2-0.3",
+     "n": 28,
+     "mean_predicted": 0.264038,
+     "observed_rate": 0.035714
+    },
+    {
+     "bin": "0.3-0.5",
+     "n": 6,
+     "mean_predicted": 0.430895,
+     "observed_rate": 0.166667
+    },
+    {
+     "bin": "0.5-1",
+     "n": 3,
+     "mean_predicted": 0.593223,
+     "observed_rate": 0.666667
+    }
+   ],
+   "decision": "MODEL_NOT_SUPPORTED",
+   "decision_reason": "INSUFFICIENT_EVENTS: 19 positives for 6 feature(s); at least 60 are required (10 per feature). Out-of-time Brier skill against the base rate -0.036597.",
+   "training_fingerprint": "af9ec05feb3ee1518cb7608193cd209a",
+   "data_as_of_date": "2026-10-05"
+  }
+ ],
+ "failures": []
+}

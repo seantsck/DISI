@@ -1,0 +1,1247 @@
+{
+ "audit_through_date": "2026-10-05",
+ "generated_by": "database/research/050/derive-research.mjs",
+ "players": [
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "Acereros del Norte",
+     "date": "2025-06-12",
+     "description": "Acereros del Norte signed free agent RF Jhailyn Ortiz."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665560",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665560",
+   "published_name": "Jhailyn Ortiz",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665560/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665560"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2019-04-26",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 1119,
+   "mlb_id": "665489",
+   "mlb_ip": null,
+   "mlb_pa": 4829,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665489",
+   "published_name": "Vladimir Guerrero Jr.",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665489/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665489"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665752",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665752",
+   "published_name": "Starling Heredia",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665752/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665752"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "SD",
+     "date": "2023-01-31",
+     "description": "San Diego Padres signed free agent SS Wander Javier to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665820",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665820",
+   "published_name": "Wander Javier",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665820/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665820"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "KC",
+     "date": "2022-12-13",
+     "description": "Kansas City Royals signed free agent CF Seuly Matias to a minor league contract."
+    },
+    {
+     "club": "Dorados de Chihuahua",
+     "date": "2024-07-04",
+     "description": "Dorados de Chihuahua signed free agent CF Seuly Matias."
+    },
+    {
+     "club": "Dorados de Chihuahua",
+     "date": "2025-06-24",
+     "description": "Dorados de Chihuahua signed free agent OF Seuly Matias."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665890",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665890",
+   "published_name": "Seuly Matias",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665890/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665890"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "661099",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/661099",
+   "published_name": "Alvaro Seijas",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/661099/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=661099"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665914",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665914",
+   "published_name": "Daniel Montano",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665914/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665914"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "PIT",
+     "date": "2023-11-19",
+     "description": "Pittsburgh Pirates signed free agent CF Gilberto Celestino to a minor league contract."
+    },
+    {
+     "club": "NYM",
+     "date": "2025-02-05",
+     "description": "New York Mets signed free agent CF Gilberto Celestino to a minor league contract."
+    },
+    {
+     "club": "TEX",
+     "date": "2026-02-23",
+     "description": "Texas Rangers signed free agent OF Gilberto Celestino to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": "2021-06-02",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 145,
+   "mlb_id": "665482",
+   "mlb_ip": null,
+   "mlb_pa": 409,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665482",
+   "published_name": "Gilberto Celestino",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665482/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665482"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "SD",
+     "date": "2024-12-02",
+     "description": "San Diego Padres signed free agent 2B Yonathan Perlaza to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "666632",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/666632",
+   "published_name": "Yonathan Perlaza",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/666632/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=666632"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "ARI",
+     "date": "2025-01-02",
+     "description": "Arizona Diamondbacks signed free agent OF Cristian Pache to a minor league contract."
+    },
+    {
+     "club": "NYM",
+     "date": "2025-12-15",
+     "description": "New York Mets signed free agent OF Cristian Pache to a minor league contract and invited him to spring training."
+    }
+   ],
+   "mlb_debut_date": "2020-08-21",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 266,
+   "mlb_id": "665506",
+   "mlb_ip": null,
+   "mlb_pa": 618,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665506",
+   "published_name": "Cristian Pache",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665506/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665506"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "MIA",
+     "date": "2016-07-07",
+     "description": "Miami Marlins signed free agent OF Albert Guaimaro to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665911",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665911",
+   "published_name": "Albert Guaimaro",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665911/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665911"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2020-07-24",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 817,
+   "mlb_id": "665926",
+   "mlb_ip": null,
+   "mlb_pa": 3025,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665926",
+   "published_name": "Andres Gimenez",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665926/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665926"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "666626",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/666626",
+   "published_name": "Yonathan Sierra Estiwal",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/666626/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=666626"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665872",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665872",
+   "published_name": "Gregory Guerrero",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665872/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665872"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "BAL",
+     "date": "2025-11-06",
+     "description": "Baltimore Orioles signed free agent OF Leody Taveras."
+    }
+   ],
+   "mlb_debut_date": "2020-07-24",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 672,
+   "mlb_id": "665750",
+   "mlb_ip": null,
+   "mlb_pa": 2405,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665750",
+   "published_name": "Leodys Taveras",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665750/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665750"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "666620",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/666620",
+   "published_name": "Aramis Ademan",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/666620/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=666620"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665915",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665915",
+   "published_name": "Anderson Amarista",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665915/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665915"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665798",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665798",
+   "published_name": "Ronny Brito",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665798/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665798"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "NYM",
+     "date": "2024-12-11",
+     "description": "New York Mets signed free agent RF Juan Soto."
+    }
+   ],
+   "mlb_debut_date": "2018-05-15",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 1207,
+   "mlb_id": "665742",
+   "mlb_ip": null,
+   "mlb_pa": 5285,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665742",
+   "published_name": "Juan Soto",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665742/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665742"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665891",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665891",
+   "published_name": "Cristian Olivo",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665891/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665891"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665505",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665505",
+   "published_name": "Derian Cruz",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665505/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665505"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "Pericos de Puebla",
+     "date": "2025-04-17",
+     "description": "Pericos de Puebla signed free agent RF Miguel Aparicio."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665918",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665918",
+   "published_name": "Miguel Aparicio",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665918/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665918"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2023-05-04",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 281,
+   "mlb_id": "665804",
+   "mlb_ip": null,
+   "mlb_pa": 876,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665804",
+   "published_name": "Miguel Amaya",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665804/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665804"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "PHI",
+     "date": "2016-07-05",
+     "description": "Philadelphia Phillies signed free agent OF Simon Muzziotti to a minor league contract."
+    },
+    {
+     "club": "Pericos de Puebla",
+     "date": "2025-04-17",
+     "description": "Pericos de Puebla signed free agent CF Símon Muzziotti."
+    }
+   ],
+   "mlb_debut_date": "2022-04-11",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 9,
+   "mlb_id": "665922",
+   "mlb_ip": null,
+   "mlb_pa": 9,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665922",
+   "published_name": "Simon Muzziotti",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665922/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665922"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2019-03-28",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 830,
+   "mlb_id": "665487",
+   "mlb_ip": null,
+   "mlb_pa": 3643,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665487",
+   "published_name": "Fernando Tatis Jr.",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665487/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665487"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "KC",
+     "date": "2020-12-13",
+     "description": "Kansas City Royals signed free agent SS Jeison Guzman to a minor league contract."
+    },
+    {
+     "club": "ARI",
+     "date": "2021-11-24",
+     "description": "Arizona Diamondbacks signed free agent SS Jeison Guzman to a minor league contract."
+    },
+    {
+     "club": "KC",
+     "date": "2022-08-10",
+     "description": "Kansas City Royals signed free agent SS Jeison Guzman to a minor league contract."
+    },
+    {
+     "club": "Staten Island Ferry Hawks",
+     "date": "2024-03-20",
+     "description": "Staten Island Ferry Hawks signed free agent SS Jeison Guzmán."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665834",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665834",
+   "published_name": "Jeison Guzman",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665834/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665834"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2020-09-14",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 116,
+   "mlb_id": "665561",
+   "mlb_ip": null,
+   "mlb_pa": 334,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665561",
+   "published_name": "Rafael Marchan",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665561/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665561"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665799",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665799",
+   "published_name": "Carlos Vargas",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665799/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665799"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2015-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "665485",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/665485",
+   "published_name": "Franklin Reyes",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/665485/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665485"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2020-07-24",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 638,
+   "mlb_id": "673357",
+   "mlb_ip": null,
+   "mlb_pa": 2605,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/673357",
+   "published_name": "Luis Robert",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/673357/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=673357"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "LAA",
+     "date": "2017-12-16",
+     "description": "Los Angeles Angels signed free agent SS Kevin Maitan to a minor league contract."
+    },
+    {
+     "club": "MIN",
+     "date": "2024-05-16",
+     "description": "Minnesota Twins signed free agent SS Kevin Maitan to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "670867",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/670867",
+   "published_name": "Kevin Maitan",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/670867/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=670867"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2019-07-21",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 522,
+   "mlb_id": "670970",
+   "mlb_ip": "298.1",
+   "mlb_pa": 2,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/670970",
+   "published_name": "Adrian Morejon",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/670970/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=670970"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2022-08-19",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 14,
+   "mlb_id": "650204",
+   "mlb_ip": "19.0",
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/650204",
+   "published_name": "Norge Ruiz",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/650204/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=650204"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "WSH",
+     "date": "2026-02-16",
+     "description": "Washington Nationals signed free agent LHP Cionel Pérez to a minor league contract."
+    },
+    {
+     "club": "NYM",
+     "date": "2026-05-09",
+     "description": "New York Mets signed free agent LHP Cionel Pérez to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": "2018-07-11",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 554,
+   "mlb_id": "672335",
+   "mlb_ip": "282.1",
+   "mlb_pa": 2,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/672335",
+   "published_name": "Cionel Perez",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/672335/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=672335"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "MIA",
+     "date": "2024-02-22",
+     "description": "Miami Marlins signed free agent RHP Vladimir Gutierrez to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": "2021-05-28",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 65,
+   "mlb_id": "661269",
+   "mlb_ip": "154.2",
+   "mlb_pa": 42,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/661269",
+   "published_name": "Vladimir Gutierrez",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/661269/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=661269"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "ARI",
+     "date": "2023-12-22",
+     "description": "Arizona Diamondbacks signed free agent SS Lourdes Gurriel Jr.."
+    }
+   ],
+   "mlb_debut_date": "2018-04-20",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 926,
+   "mlb_id": "666971",
+   "mlb_ip": null,
+   "mlb_pa": 3756,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/666971",
+   "published_name": "Lourdes Gurriel",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/666971/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=666971"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "670895",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/670895",
+   "published_name": "Alfredo Rodriguez",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/670895/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=670895"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "671275",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671275",
+   "published_name": "Luis Almanzar",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671275/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671275"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "670860",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/670860",
+   "published_name": "Lazaro Armenteros",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/670860/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=670860"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2022-04-20",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 371,
+   "mlb_id": "672356",
+   "mlb_ip": null,
+   "mlb_pa": 1183,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/672356",
+   "published_name": "Gabriel Arias",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/672356/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=672356"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2020-09-07",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 5,
+   "mlb_id": "671250",
+   "mlb_ip": null,
+   "mlb_pa": 15,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671250",
+   "published_name": "Jorge Ona",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671250/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671250"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2020-08-14",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 751,
+   "mlb_id": "671277",
+   "mlb_ip": null,
+   "mlb_pa": 2842,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671277",
+   "published_name": "Luis Garcia",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671277/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671277"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "672350",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/672350",
+   "published_name": "Yanio Perez",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/672350/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=672350"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "671265",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671265",
+   "published_name": "Freudis Nova",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671265/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671265"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "OAK",
+     "date": "2023-11-21",
+     "description": "Oakland Athletics signed free agent OF Jeisson Rosario to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "671271",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671271",
+   "published_name": "Jeisson Rosario",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671271/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671271"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "671054",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671054",
+   "published_name": "Jonathan Machado",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671054/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671054"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "TEX",
+     "date": "2021-12-01",
+     "description": "Texas Rangers signed free agent C David Garcia to a minor league contract and invited him to spring training."
+    },
+    {
+     "club": "TEX",
+     "date": "2022-12-07",
+     "description": "Texas Rangers signed free agent C David García to a minor league contract."
+    },
+    {
+     "club": "MIL",
+     "date": "2023-12-26",
+     "description": "Milwaukee Brewers signed free agent C David García to a minor league contract."
+    },
+    {
+     "club": "MIL",
+     "date": "2024-11-19",
+     "description": "Milwaukee Brewers signed free agent C David García to a minor league contract and invited him to spring training."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "671272",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671272",
+   "published_name": "David Garcia",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671272/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671272"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "671270",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671270",
+   "published_name": "Victor Garcia",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671270/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671270"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": "2019-08-14",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 955,
+   "mlb_id": "668227",
+   "mlb_ip": null,
+   "mlb_pa": 4029,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/668227",
+   "published_name": "Randy Arozarena",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/668227/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=668227"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "671276",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671276",
+   "published_name": "Yasel Antuna",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671276/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671276"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "672357",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/672357",
+   "published_name": "Jordy Barley",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/672357/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=672357"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "ARI",
+     "date": "2023-11-19",
+     "description": "Arizona Diamondbacks signed free agent RHP Francisco Morales to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": "2022-05-09",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 3,
+   "mlb_id": "672839",
+   "mlb_ip": "5.0",
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/672839",
+   "published_name": "Francisco Morales",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/672839/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=672839"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "MIA",
+     "date": "2023-04-08",
+     "description": "Miami Marlins signed free agent RHP Ronald Bolaños to a minor league contract."
+    },
+    {
+     "club": "Diablos Rojos del Mexico",
+     "date": "2024-03-23",
+     "description": "Diablos Rojos del Mexico signed free agent RHP Ronald Bolaños."
+    },
+    {
+     "club": "Guerreros de Oaxaca",
+     "date": "2024-04-28",
+     "description": "Guerreros de Oaxaca signed free agent RHP Ronald Bolaños."
+    },
+    {
+     "club": "Conspiradores de Queretaro",
+     "date": "2025-04-22",
+     "description": "Conspiradores de Queretaro signed free agent RHP Ronald Bolaños."
+    }
+   ],
+   "mlb_debut_date": "2019-09-03",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 36,
+   "mlb_id": "671790",
+   "mlb_ip": "48.0",
+   "mlb_pa": 5,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/671790",
+   "published_name": "Ronald Bolanos",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/671790/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=671790"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "PHI",
+     "date": "2018-03-06",
+     "description": "Philadelphia Phillies signed free agent C Abrahan Gutierrez to a minor league contract."
+    },
+    {
+     "club": "PIT",
+     "date": "2025-01-02",
+     "description": "Pittsburgh Pirates signed free agent C Abrahan Gutierrez to a minor league contract."
+    },
+    {
+     "club": "OAK",
+     "date": "2025-12-04",
+     "description": "Athletics signed free agent C Abrahan Gutierrez to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "670868",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/670868",
+   "published_name": "Abrahan Gutierrez",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/670868/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=670868"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "MIN",
+     "date": "2017-12-08",
+     "description": "Minnesota Twins signed free agent 2B Yunior Severino to a minor league contract."
+    },
+    {
+     "club": "MIN",
+     "date": "2024-11-18",
+     "description": "Minnesota Twins signed free agent 1B Yunior Severino to a minor league contract."
+    },
+    {
+     "club": "Olmecas de Tabasco",
+     "date": "2025-07-12",
+     "description": "Olmecas de Tabasco signed free agent 1B Yunior Severino."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "670870",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/670870",
+   "published_name": "Yunior Severino",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/670870/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=670870"
+  },
+  {
+   "active": true,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "672566",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/672566",
+   "published_name": "Jose Sanchez",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/672566/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=672566"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "670864",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/670864",
+   "published_name": "Yerdeluis Vargas",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/670864/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=670864"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [
+    {
+     "club": "TEX",
+     "date": "2017-12-08",
+     "description": "Texas Rangers signed free agent SS Yenci Pena to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "672562",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/672562",
+   "published_name": "Yenci Pena",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/672562/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=672562"
+  },
+  {
+   "active": false,
+   "cohort": "MLB-2016-PIPELINE-TOP30",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "670862",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/670862",
+   "published_name": "Marcos Brito",
+   "slug": null,
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/670862/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=670862"
+  },
+  {
+   "active": true,
+   "cohort": "LEGACY_035",
+   "later_club_moves": [
+    {
+     "club": "BOS",
+     "date": "2020-11-17",
+     "description": "Boston Red Sox signed free agent LHP Enmanuel De Jesus to a minor league contract."
+    },
+    {
+     "club": "SF",
+     "date": "2021-12-15",
+     "description": "San Francisco Giants signed free agent LHP Enmanuel De Jesus to a minor league contract."
+    },
+    {
+     "club": "MIA",
+     "date": "2022-12-10",
+     "description": "Miami Marlins signed free agent LHP Enmanuel De Jesus to a minor league contract."
+    },
+    {
+     "club": "DET",
+     "date": "2025-12-15",
+     "description": "Detroit Tigers signed free agent LHP Enmanuel De Jesus to a minor league contract."
+    }
+   ],
+   "mlb_debut_date": "2023-09-09",
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": 32,
+   "mlb_id": "646241",
+   "mlb_ip": "48.2",
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/646241",
+   "published_name": "Emmanuel DeJesus",
+   "slug": "emmanuel-dejesus",
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/646241/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=646241"
+  },
+  {
+   "active": false,
+   "cohort": "LEGACY_035",
+   "later_club_moves": [],
+   "mlb_debut_date": null,
+   "mlb_debut_date_after_boundary": null,
+   "mlb_games": null,
+   "mlb_id": "650520",
+   "mlb_ip": null,
+   "mlb_pa": null,
+   "person_url": "https://statsapi.mlb.com/api/v1/people/650520",
+   "published_name": "Micker Zapata",
+   "slug": "micker-zapata",
+   "stats_url": "https://statsapi.mlb.com/api/v1/people/650520/stats?stats=career&group=hitting,pitching&gameType=R",
+   "transactions_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=650520"
+  }
+ ],
+ "retrieved_at": "2026-10-22"
+}

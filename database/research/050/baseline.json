@@ -1,0 +1,356 @@
+{
+ "counts": {
+  "players": 268,
+  "benchmark_players": 48,
+  "dodgers_players": 220,
+  "dodgers_signings": 220,
+  "dodgers_audits": 93,
+  "dodgers_verified_mlb": 47,
+  "dodgers_verified_no_mlb": 46,
+  "dodgers_not_audited": 127,
+  "known_costs": 56,
+  "known_spend_usd": "121700237.33",
+  "open_research_tasks": 349,
+  "outcome_audits": 136,
+  "outcomes": 58,
+  "player_evaluations": 51,
+  "signings": 268,
+  "benchmark_signings": 48,
+  "signing_populations": 17,
+  "population_members": 316,
+  "census_coverage_rows": 10,
+  "sources": 2472,
+  "war_rows": 1880,
+  "stints": 1859,
+  "milestones": 1073,
+  "transaction_events": 213,
+  "transaction_assets": 396,
+  "tables": 78,
+  "views": 155,
+  "functions": 73,
+  "snapshot_generation": "6"
+ },
+ "hashes": {
+  "dodgers_signings_hash": "920139fa59e9b34b828c2acbc657dc35",
+  "dodgers_audits_hash": "e9cc257e0fbb8ac4d292d514f033c81e",
+  "war_hash": "b1e5c548732436adc6b405be76b956f2",
+  "financial_reports_hash": "91d4a30dff7844d6ecdffad4b2882b33",
+  "transactions_hash": "e50b1db7b49598c0481409540e3f61e2",
+  "development_hash": "e0f1625ccf0b496d327b8ce3c8329788",
+  "benchmark_signings_hash": "8de4ebecde0c4df74bbca49110f4fa7d"
+ },
+ "support": [
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "labelled_n": 11,
+   "positive_n": 1,
+   "negative_n": 10,
+   "censored_n": 157,
+   "unaudited_n": 0,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 9,
+   "additional_labels_needed": 39
+  },
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "labelled_n": 43,
+   "positive_n": 3,
+   "negative_n": 40,
+   "censored_n": 0,
+   "unaudited_n": 5,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 7,
+   "additional_labels_needed": 7
+  },
+  {
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "labelled_n": 11,
+   "positive_n": 0,
+   "negative_n": 11,
+   "censored_n": 157,
+   "unaudited_n": 0,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 10,
+   "additional_labels_needed": 39
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "labelled_n": 11,
+   "positive_n": 1,
+   "negative_n": 10,
+   "censored_n": 157,
+   "unaudited_n": 0,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 9,
+   "additional_labels_needed": 39
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "labelled_n": 43,
+   "positive_n": 7,
+   "negative_n": 36,
+   "censored_n": 0,
+   "unaudited_n": 5,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 3,
+   "additional_labels_needed": 7
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "labelled_n": 25,
+   "positive_n": 2,
+   "negative_n": 23,
+   "censored_n": 143,
+   "unaudited_n": 0,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 8,
+   "additional_labels_needed": 25
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "labelled_n": 43,
+   "positive_n": 6,
+   "negative_n": 37,
+   "censored_n": 0,
+   "unaudited_n": 5,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 4,
+   "additional_labels_needed": 7
+  }
+ ],
+ "evaluation": [
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "BASE_RATE",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 59,
+   "positive_n": 8,
+   "folds": 5,
+   "brier_score": "0.124032",
+   "log_loss": "0.428292",
+   "auc": null,
+   "brier_skill_vs_base_rate": "0",
+   "decision": "BASELINE_REFERENCE",
+   "training_fingerprint": "683251fe2e7522fcd346cf6a26004e08",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 59
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "LOGISTIC_L2",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 59,
+   "positive_n": 8,
+   "folds": 5,
+   "brier_score": "0.13927",
+   "log_loss": "0.454953",
+   "auc": "0.564951",
+   "brier_skill_vs_base_rate": "-0.12286",
+   "decision": "MODEL_NOT_SUPPORTED",
+   "training_fingerprint": "683251fe2e7522fcd346cf6a26004e08",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 59
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "POPULATION_STRATIFIED_RATE",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 59,
+   "positive_n": 8,
+   "folds": 5,
+   "brier_score": "0.142827",
+   "log_loss": "0.843747",
+   "auc": "0.355392",
+   "brier_skill_vs_base_rate": "-0.151533",
+   "decision": "MODEL_NOT_SUPPORTED",
+   "training_fingerprint": "683251fe2e7522fcd346cf6a26004e08",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 59
+  }
+ ],
+ "probabilities": [
+  {
+   "training_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "rows": 684,
+   "non_null": 0
+  },
+  {
+   "training_population": "NONE",
+   "rows": 196,
+   "non_null": 0
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "rows": 192,
+   "non_null": 0
+  }
+ ],
+ "probability_reasons": [
+  {
+   "training_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "reason": "OUTCOME_ALREADY_OBSERVED",
+   "rows": 58
+  },
+  {
+   "training_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "reason": "PROFESSIONAL_ROUTE_NOT_MODELLED",
+   "rows": 12
+  },
+  {
+   "training_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "reason": "REFERENCE_POPULATION_NOT_SUPPORTED",
+   "rows": 614
+  },
+  {
+   "training_population": "NONE",
+   "reason": "OUTCOME_SELECTED_POPULATION",
+   "rows": 196
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "reason": "OUTCOME_ALREADY_OBSERVED",
+   "rows": 129
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "reason": "OUTCOME_UNAUDITED_PAST_HORIZON",
+   "rows": 15
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "reason": "TARGET_NOT_APPLICABLE",
+   "rows": 48
+  }
+ ],
+ "executive": {
+  "probability_targets": 4,
+  "supported_probability_targets": 0,
+  "non_null_probabilities": 0,
+  "supported_expected_value_models": 0,
+  "supported_expected_values": 0,
+  "predictive_portfolio_recommendations": 0,
+  "supported_fitted_models": 0,
+  "prediction_readiness_state": "NO_SUPPORTED_PROBABILITY_TARGET"
+ },
+ "release": {
+  "support_chain_state": "NO_PREDICTIVE_LAYER_SUPPORTED",
+  "supported_probability_targets": 0,
+  "supported_expected_value_models": 0,
+  "predictive_portfolio_recommendations": 0
+ },
+ "expected_value": [
+  {
+   "value_model_key": "EXPECTED_DIRECT_DODGERS_BWAR_V1",
+   "probability_supported": false,
+   "expected_value_supported": false,
+   "support_state": "PROBABILITY_NOT_SUPPORTED"
+  }
+ ],
+ "benchmark_classes": [
+  {
+   "population_key": "MLB-2013-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 20,
+   "members_identity_resolved": 17,
+   "members_audited": 17,
+   "members_reached": 6,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  },
+  {
+   "population_key": "MLB-2014-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 28,
+   "members_identity_resolved": 26,
+   "members_audited": 26,
+   "members_reached": 5,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  }
+ ],
+ "benchmark_queue": [
+  {
+   "issue": "BENCHMARK_BONUS_UNKNOWN",
+   "items": 1
+  },
+  {
+   "issue": "BENCHMARK_IDENTITY_UNRESOLVED",
+   "items": 5
+  },
+  {
+   "issue": "POPULATION_DENOMINATOR_NOT_SOURCED",
+   "items": 5
+  },
+  {
+   "issue": "POPULATION_MEMBERS_NOT_TRACKED",
+   "items": 5
+  },
+  {
+   "issue": "SAMPLE_HAS_NO_DODGERS_COMPARATOR",
+   "items": 2
+  }
+ ],
+ "executive_overview_body_md5": "9af9066c6d69a93ef1232799f342952a",
+ "refresh_function_body_md5": "4095c4c128ba03f27c359c4a5184ed9a"
+}
