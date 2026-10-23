@@ -1,0 +1,156 @@
+{
+  "as_of": "2026-10-23",
+  "cited_urls": 624,
+  "milestone_candidates_not_on_record": [
+    {
+      "event": "COMPLEX_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2004,
+      "slug": "pedro-astacio"
+    },
+    {
+      "event": "COMPLEX_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2007,
+      "slug": "pedro-martinez"
+    },
+    {
+      "event": "HIGH_A_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 1998,
+      "slug": "ismael-valdez"
+    },
+    {
+      "event": "AA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 1996,
+      "slug": "karim-garcia"
+    },
+    {
+      "event": "AAA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2001,
+      "slug": "adrian-beltre"
+    },
+    {
+      "event": "COMPLEX_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2004,
+      "slug": "chan-ho-park"
+    },
+    {
+      "event": "AAA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 1995,
+      "slug": "chan-ho-park"
+    },
+    {
+      "event": "AA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 1999,
+      "slug": "hideo-nomo"
+    },
+    {
+      "event": "AAA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 1999,
+      "slug": "hideo-nomo"
+    },
+    {
+      "event": "AAA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2006,
+      "slug": "hung-chih-kuo"
+    },
+    {
+      "event": "COMPLEX_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2011,
+      "slug": "chin-lung-hu"
+    },
+    {
+      "event": "HIGH_A_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2012,
+      "slug": "rubby-de-la-rosa"
+    },
+    {
+      "event": "AAA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2013,
+      "slug": "rubby-de-la-rosa"
+    },
+    {
+      "event": "COMPLEX_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2023,
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "event": "A_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2023,
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "event": "HIGH_A_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2016,
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "event": "AAA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2016,
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "event": "AAA_DEBUT",
+      "reason": "A level first appearance after the MLB debut season: a rehabilitation or reassignment appearance, never a development milestone (the 048 rule).",
+      "season": 2016,
+      "slug": "yasiel-puig"
+    }
+  ],
+  "not_used": [
+    "MiLB.com and MLB.com league histories (403: not read, not worked around)",
+    "Baseball-Reference (403)",
+    "Search results and snippets (discovery only, never evidence)",
+    "Wikipedia (read for discovery; the classification rests on the official sport per season)"
+  ],
+  "official_endpoints": [
+    {
+      "endpoint": "https://statsapi.mlb.com/api/v1/teams/{teamId}?season={season}&hydrate=league,sport",
+      "errors": 0,
+      "requests": 775,
+      "used_for": "the parent organization, sport and league of every team stint, per season"
+    },
+    {
+      "endpoint": "https://statsapi.mlb.com/api/v1/schedule?sportId={sport}&season={season}&gameType=R",
+      "errors": 0,
+      "requests": 21,
+      "used_for": "whether a level played a regular season (2019-2021)"
+    },
+    {
+      "endpoint": "https://statsapi.mlb.com/api/v1/league/128?season={season}",
+      "errors": 0,
+      "requests": 23,
+      "used_for": "the Pioneer League sport per season"
+    },
+    {
+      "endpoint": "https://statsapi.mlb.com/api/v1/people/{id}/stats?stats=yearByYear (season splits)",
+      "errors": 0,
+      "requests": 156,
+      "used_for": "the fact-for-fact stint comparison (904 / 904 matched) for the players with undated stints"
+    },
+    {
+      "endpoint": "https://statsapi.mlb.com/api/v1/people/{id}/stats?stats=gameLog",
+      "errors": 0,
+      "requests": 539,
+      "used_for": "exact first / last appearance dates and level debuts"
+    }
+  ],
+  "season_split_comparison": {
+    "players": 39,
+    "source_stints": 904
+  }
+}

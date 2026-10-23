@@ -1,0 +1,3005 @@
+{
+  "after": {
+    "by_need": {
+      "GAME_DATES": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 29,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 0
+      },
+      "LEVEL_CLASSIFICATION": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 0,
+        "TAXONOMY_GAP": 26,
+        "TRANSACTION_BLOCKED": 0
+      },
+      "ORGANIZATION": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 2,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 18
+      },
+      "SEASON_COVERAGE": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 30,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 0
+      },
+      "SEQUENCE_REVIEW": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 5,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 0,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 0
+      },
+      "SOURCE_CONFLICT": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 0,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 0
+      }
+    },
+    "counts": {
+      "FACT_MISSING": 0,
+      "HUMAN_REVIEW": 5,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 0,
+      "SOURCE_LIMITED": 61,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 18
+    },
+    "needs": [
+      {
+        "cause": "Seasons with no record in the official source: 2023 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "accimias-morales"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "adrian-beltre"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "closes_with": "A reviewed progression decision; DISI never chooses one.",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "agustin-acosta"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2019 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "andy-pages"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "closes_with": "A structured season record from an approved source; no season is invented.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "angel-ramirez"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "antonio-osuna"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 1992 (NO_RECORD_IN_OFFICIAL_SOURCE), 2006 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "antonio-osuna"
+      },
+      {
+        "cause": "Foreign professional seasons: the official minor-league game log does not carry them.",
+        "closes_with": "A dated record from the foreign league itself.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "carlos-frias"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "carlos-frias"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "carlos-rincon"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "carlos-santana"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "carlos-santana"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2022 (NO_CANONICAL_TRANSACTION), 2023 (NO_CANONICAL_TRANSACTION), 2025 (NO_CANONICAL_TRANSACTION), 2026 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "carlos-santana"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "chan-ho-park"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2005 (NO_CANONICAL_TRANSACTION), 2007 (NO_CANONICAL_TRANSACTION), 2010 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "chan-ho-park"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1963 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "chico-fernandez"
+      },
+      {
+        "cause": "The pre-MLB career predates the structured minor-league records the official source carries.",
+        "closes_with": "An approved historical minor-league record.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_HISTORY"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "chico-fernandez"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "chin-lung-hu"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "chin-lung-hu"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "closes_with": "A structured season record from an approved source; no season is invented.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "damaso-marte-jr"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2025 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "diego-cartaya"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "closes_with": "A reviewed progression decision; DISI never chooses one.",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "domingo-geronimo"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "eddys-leonard"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "closes_with": "A structured season record from an approved source; no season is invented.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "edgar-gomez"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "edgar-leon"
+      },
+      {
+        "cause": "Foreign professional seasons: the official minor-league game log does not carry them.",
+        "closes_with": "A dated record from the foreign league itself.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "elian-herrera"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "elian-herrera"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2017 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "elian-herrera"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "fernando-valenzuela"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "fernando-valenzuela"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 1992 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "fernando-valenzuela"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "gersel-pitre"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "hendrik-clementina"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "hideo-nomo"
+      },
+      {
+        "cause": "The official team-season record names no MLB parent organization for the team (a co-operative or independent club).",
+        "closes_with": "A record of which organization held the player's contract that season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "hideo-nomo"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2007 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "hideo-nomo"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "closes_with": "A reviewed progression decision; DISI never chooses one.",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "hideo-nomo"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "hung-chih-kuo"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2003 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "hung-chih-kuo"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "hyun-jin-ryu"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2015 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "hyun-jin-ryu"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "closes_with": "A structured season record from an approved source; no season is invented.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "isaac-barreto"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "ismael-valdez"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2002 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "ismael-valdez"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 1992 (NO_RECORD_IN_OFFICIAL_SOURCE), 2006 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2007 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2008 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2009 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2010 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2011 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2012 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "ismael-valdez"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2025 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jesus-galiz"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "closes_with": "A structured season record from an approved source; no season is invented.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jorge-carpintero"
+      },
+      {
+        "cause": "Foreign professional seasons: the official minor-league game log does not carry them.",
+        "closes_with": "A dated record from the foreign league itself.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "jose-dominguez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "jose-dominguez"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2017 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jose-dominguez"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "jose-offerman"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "jose-offerman"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION), 2005 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "jose-offerman"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2003 (NO_RECORD_IN_OFFICIAL_SOURCE), 2007 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jose-offerman"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "jose-vizcaino"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1996 (NO_CANONICAL_TRANSACTION), 2000 (NO_CANONICAL_TRANSACTION), 2006 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "jose-vizcaino"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2023 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "joseilyn-gonzalez"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "juan-castro"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "juan-castro"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2006 (NO_CANONICAL_TRANSACTION), 2008 (MORE_THAN_TWO_ORGANIZATIONS), 2010 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "juan-castro"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "juan-guzman"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1998 (NO_CANONICAL_TRANSACTION), 1999 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "juan-guzman"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "julian-leon"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "karim-garcia"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (NO_CANONICAL_TRANSACTION), 2002 (NO_CANONICAL_TRANSACTION), 2003 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "karim-garcia"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2005 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2006 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2008 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2009 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2010 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "karim-garcia"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "keibert-ruiz"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "kenley-jansen"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "kenley-jansen"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "closes_with": "A structured season record from an approved source; no season is invented.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "kosuke-matsuda"
+      },
+      {
+        "cause": "Foreign professional seasons: the official minor-league game log does not carry them.",
+        "closes_with": "A dated record from the foreign league itself.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "lenix-osuna"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "lenix-osuna"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "miguel-vargas"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "misja-harcksen"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "omar-daal"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION), 2000 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "omar-daal"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "pedro-astacio"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2001 (NO_CANONICAL_TRANSACTION), 2005 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "pedro-astacio"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "pedro-baez"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2022 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "pedro-baez"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "pedro-martinez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "pedro-martinez"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "ramon-martinez"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "ramon-troncoso"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "ramon-troncoso"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "raul-mondesi"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "raul-mondesi"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION), 2003 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "raul-mondesi"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "closes_with": "A reviewed progression decision; DISI never chooses one.",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "reyli-mariano"
+      },
+      {
+        "cause": "The pre-MLB career predates the structured minor-league records the official source carries.",
+        "closes_with": "An approved historical minor-league record.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_HISTORY"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "roberto-clemente"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "roger-cedeno"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "roger-cedeno"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2024 (NO_RECORD_IN_OFFICIAL_SOURCE), 2025 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "roiger-mujica"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "ronny-brito"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2018 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "rubby-de-la-rosa"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1960 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "sandy-amoros"
+      },
+      {
+        "cause": "The pre-MLB career predates the structured minor-league records the official source carries.",
+        "closes_with": "An approved historical minor-league record.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_HISTORY",
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "sandy-amoros"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "closes_with": "A structured season record from an approved source; no season is invented.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "sebastian-jimenez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "starling-heredia"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "tony-abreu"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2008 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "tony-abreu"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "closes_with": "A reviewed progression decision; DISI never chooses one.",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "umar-male"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "victor-gonzalez"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2017 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "victor-gonzalez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "william-soto"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "closes_with": "A dated game record for the debut season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "willy-aybar"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "closes_with": "A reviewed taxonomy decision; the official record files these seasons under the Rookie sport, so no existing level fits without an assumption.",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "willy-aybar"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2007 (NO_RECORD_IN_OFFICIAL_SOURCE), 2011 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2013 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2014 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "closes_with": "A structured record of where the player was those seasons. A missing season is unknown, never \"did not play\".",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "willy-aybar"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2019 (NO_CANONICAL_TRANSACTION).",
+        "closes_with": "A canonical transaction moving the player between the two organizations, with game dates on both sides of it.",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "yasiel-puig"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "closes_with": "A structured season record from an approved source; no season is invented.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "yhonaider-gudino"
+      }
+    ]
+  },
+  "as_of": "2026-10-23",
+  "before": {
+    "by_need": {
+      "GAME_DATES": {
+        "FACT_MISSING": 37,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 8,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 0
+      },
+      "LEVEL_CLASSIFICATION": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 0,
+        "TAXONOMY_GAP": 26,
+        "TRANSACTION_BLOCKED": 0
+      },
+      "ORGANIZATION": {
+        "FACT_MISSING": 39,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 7,
+        "SOURCE_LIMITED": 2,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 3
+      },
+      "SEASON_COVERAGE": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 16,
+        "SOURCE_LIMITED": 30,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 0
+      },
+      "SEQUENCE_REVIEW": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 5,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 0,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 0
+      },
+      "SOURCE_CONFLICT": {
+        "FACT_MISSING": 0,
+        "HUMAN_REVIEW": 0,
+        "IDENTITY_BLOCKED": 0,
+        "NOT_A_GAP": 0,
+        "SOURCE_LIMITED": 0,
+        "TAXONOMY_GAP": 0,
+        "TRANSACTION_BLOCKED": 0
+      }
+    },
+    "counts": {
+      "FACT_MISSING": 76,
+      "HUMAN_REVIEW": 5,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 23,
+      "SOURCE_LIMITED": 40,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 3
+    },
+    "needs": [
+      {
+        "cause": "Seasons with no record in the official source: 2023 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "accimias-morales"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "adrian-beltre"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "adrian-beltre"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "agustin-acosta"
+      },
+      {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction and game dates.",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "aldrin-batista"
+      },
+      {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction and game dates.",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "alex-de-jesus"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "alex-de-jesus"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "andy-pages"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "andy-pages"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2019 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "andy-pages"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "angel-ramirez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "antonio-osuna"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "antonio-osuna"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 1992 (NO_RECORD_IN_OFFICIAL_SOURCE), 2006 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "antonio-osuna"
+      },
+      {
+        "cause": "Foreign professional seasons: the official minor-league game log does not carry them.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "carlos-frias"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "carlos-frias"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "carlos-frias"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "carlos-rincon"
+      },
+      {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction and game dates.",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "carlos-rincon"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "carlos-rincon"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "carlos-santana"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION",
+          "UNKNOWN_LEVEL_GAME_LOG"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "carlos-santana"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "carlos-santana"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "chan-ho-park"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "chan-ho-park"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1963 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "chico-fernandez"
+      },
+      {
+        "cause": "The pre-MLB career predates the structured minor-league records the official source carries.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_HISTORY"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "chico-fernandez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "chin-lung-hu"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "chin-lung-hu"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "chin-lung-hu"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "christian-suarez"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "damaso-marte-jr"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2025 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "diego-cartaya"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "diego-cartaya"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "domingo-geronimo"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "eddys-leonard"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "eddys-leonard"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "eddys-leonard"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "edgar-gomez"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "edgar-leon"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "elian-herrera"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION",
+          "UNKNOWN_LEVEL_GAME_LOG"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "elian-herrera"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "elian-herrera"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2017 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "elian-herrera"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "fernando-valenzuela"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "fernando-valenzuela"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 1992 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "fernando-valenzuela"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "gersel-pitre"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "hendrik-clementina"
+      },
+      {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction and game dates.",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "hendrik-clementina"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "hendrik-clementina"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "hideo-nomo"
+      },
+      {
+        "cause": "The official team-season record names no MLB parent organization for the team (a co-operative or independent club).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "hideo-nomo"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2007 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "hideo-nomo"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "hideo-nomo"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "hung-chih-kuo"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "hung-chih-kuo"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2003 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "hung-chih-kuo"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "hyun-jin-ryu"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "hyun-jin-ryu"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2015 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "hyun-jin-ryu"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "isaac-barreto"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "ismael-valdez"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "ismael-valdez"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 1992 (NO_RECORD_IN_OFFICIAL_SOURCE), 2006 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2007 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2008 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2009 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2010 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2011 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2012 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "ismael-valdez"
+      },
+      {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction and game dates.",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "jeral-perez"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jerming-rosario"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2025 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jesus-galiz"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "jorbit-vivas"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "jorbit-vivas"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jorbit-vivas"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jorge-carpintero"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "jose-dominguez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION",
+          "UNKNOWN_LEVEL_GAME_LOG"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "jose-dominguez"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "jose-dominguez"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2017 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jose-dominguez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "jose-offerman"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "jose-offerman"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "jose-offerman"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2003 (NO_RECORD_IN_OFFICIAL_SOURCE), 2007 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "jose-offerman"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "jose-vizcaino"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "jose-vizcaino"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2023 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "joseilyn-gonzalez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "josue-de-paula"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "juan-castro"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "juan-castro"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "juan-castro"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "juan-guzman"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "juan-guzman"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "julian-leon"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "julio-urias"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "karim-garcia"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "karim-garcia"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2005 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2006 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2008 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2009 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2010 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "karim-garcia"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "keibert-ruiz"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION",
+          "UNKNOWN_LEVEL_GAME_LOG"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "keibert-ruiz"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "keibert-ruiz"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "kenley-jansen"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION",
+          "UNKNOWN_LEVEL_GAME_LOG"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "kenley-jansen"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "kenley-jansen"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "kosuke-matsuda"
+      },
+      {
+        "cause": "Foreign professional seasons: the official minor-league game log does not carry them.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "lenix-osuna"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "lenix-osuna"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "miguel-droz"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "miguel-vargas"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION",
+          "UNKNOWN_LEVEL_GAME_LOG"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "miguel-vargas"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "miguel-vargas"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "miguel-vargas"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "misja-harcksen"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "omar-daal"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "omar-daal"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "omar-estevez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "oneil-cruz"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "oneil-cruz"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "oneil-cruz"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "pedro-astacio"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "pedro-astacio"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "pedro-baez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION",
+          "UNKNOWN_LEVEL_GAME_LOG"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "pedro-baez"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "pedro-baez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "pedro-martinez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "pedro-martinez"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "pedro-martinez"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "rafael-tua"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "ramon-martinez"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "ramon-martinez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "ramon-rosso"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "ramon-rosso"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "ramon-troncoso"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "ramon-troncoso"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "ramon-troncoso"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "raul-mondesi"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "raul-mondesi"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "raul-mondesi"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "reyli-mariano"
+      },
+      {
+        "cause": "The pre-MLB career predates the structured minor-league records the official source carries.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_HISTORY"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "roberto-clemente"
+      },
+      {
+        "cause": "Level debuts before 2006, which the official game log does not cover; they stay season-precision.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "roger-cedeno"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "roger-cedeno"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2024 (NO_RECORD_IN_OFFICIAL_SOURCE), 2025 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "roiger-mujica"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "roki-sasaki"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "ronny-brito"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "ronny-brito"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "rubby-de-la-rosa"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "rubby-de-la-rosa"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2018 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "rubby-de-la-rosa"
+      },
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1960 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "sandy-amoros"
+      },
+      {
+        "cause": "The pre-MLB career predates the structured minor-league records the official source carries.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "MLB_PLAYER_MISSING_PRE_MLB_HISTORY",
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "sandy-amoros"
+      },
+      {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction and game dates.",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "sean-linan"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "sebastian-jimenez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "starling-heredia"
+      },
+      {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction and game dates.",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "thayron-liranzo"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "tony-abreu"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "tony-abreu"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2008 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "tony-abreu"
+      },
+      {
+        "cause": "An ambiguous level sequence (an early cameo, a later lower-level appearance or a skipped level).",
+        "gap_class": "HUMAN_REVIEW",
+        "issues": [
+          "LEVEL_SKIP_CAMEO_CANDIDATE"
+        ],
+        "need": "SEQUENCE_REVIEW",
+        "player_slug": "umar-male"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "victor-gonzalez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION",
+          "UNKNOWN_LEVEL_GAME_LOG"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "victor-gonzalez"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "victor-gonzalez"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2017 (NO_RECORD_IN_OFFICIAL_SOURCE).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "victor-gonzalez"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "william-soto"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "willy-aybar"
+      },
+      {
+        "cause": "Rookie-sport seasons in Pioneer League that the reviewed ladder has no level for (neither an international nor a complex league).",
+        "gap_class": "TAXONOMY_GAP",
+        "issues": [
+          "UNKNOWN_LEVEL_CLASSIFICATION"
+        ],
+        "need": "LEVEL_CLASSIFICATION",
+        "player_slug": "willy-aybar"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "MULTI_ORG_SEASON_UNVERIFIED",
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "willy-aybar"
+      },
+      {
+        "cause": "Seasons with no record in the official source: 2007 (NO_RECORD_IN_OFFICIAL_SOURCE), 2011 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2013 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY), 2014 (ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY).",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "willy-aybar"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "yadier-alvarez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "yasiel-puig"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "yasiel-puig"
+      },
+      {
+        "cause": "The official person record exists and the season splits return no structured season.",
+        "gap_class": "SOURCE_LIMITED",
+        "issues": [
+          "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "yhonaider-gudino"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "yordan-alvarez"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "yordan-alvarez"
+      },
+      {
+        "cause": "The official game log dates stints or level debuts this player lacks.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "GAME_LOG_UNAVAILABLE",
+          "MISSING_FIRST_GAME_DATE",
+          "MISSING_LAST_GAME_DATE",
+          "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+          "SEASON_ONLY_MILESTONE"
+        ],
+        "need": "GAME_DATES",
+        "player_slug": "yusniel-diaz"
+      },
+      {
+        "cause": "The official team-season record names the parent organization of every unresolved stint.",
+        "gap_class": "FACT_MISSING",
+        "issues": [
+          "UNRESOLVED_ORGANIZATION"
+        ],
+        "need": "ORGANIZATION",
+        "player_slug": "yusniel-diaz"
+      },
+      {
+        "cause": "Every missing season is a league season that was not played (2020).",
+        "gap_class": "NOT_A_GAP",
+        "issues": [
+          "SEASON_GAP"
+        ],
+        "need": "SEASON_COVERAGE",
+        "player_slug": "yusniel-diaz"
+      }
+    ]
+  },
+  "classes": {
+    "FACT_MISSING": "An approved source holds the fact and DISI does not yet.",
+    "HUMAN_REVIEW": "The facts are on record and more than one interpretation is defensible; a person decides.",
+    "IDENTITY_BLOCKED": "The player cannot be researched safely until the identity is resolved.",
+    "NOT_A_GAP": "The detector read a known structural condition as missing evidence.",
+    "SOURCE_LIMITED": "No approved readable source holds the fact. Not a research failure, and not evidence that the fact does not exist.",
+    "TAXONOMY_GAP": "The evidence exists, but the reviewed level taxonomy cannot place it; a future architecture decision is needed.",
+    "TRANSACTION_BLOCKED": "The chronology depends on a transaction DISI has not recorded; a team change is never a transaction."
+  }
+}

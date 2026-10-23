@@ -1,0 +1,3471 @@
+{
+  "after_052_values": {
+    "by_state": {
+      "BRACKETED": 14,
+      "MORE_THAN_TWO_ORGANIZATIONS": 1,
+      "NO_CANONICAL_TRANSACTION": 38,
+      "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 4
+    },
+    "players": 32,
+    "players_all_seasons_bracketed": [
+      "aldrin-batista",
+      "alex-de-jesus",
+      "carlos-rincon",
+      "hendrik-clementina",
+      "jeral-perez",
+      "keibert-ruiz",
+      "miguel-vargas",
+      "oneil-cruz",
+      "sean-linan",
+      "thayron-liranzo",
+      "willy-aybar",
+      "yusniel-diaz"
+    ],
+    "seasons": 57
+  },
+  "as_of": "2026-10-23",
+  "before": {
+    "by_state": {
+      "BRACKETED": 7,
+      "NO_CANONICAL_TRANSACTION": 21,
+      "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 2,
+      "TRANSACTION_RECORDED_DATES_MISSING": 1
+    },
+    "players": 24,
+    "seasons": 31
+  },
+  "rule": "A two-organization season is BRACKETED when one canonical transaction of this player moves him between the two organizations inside that season and his last game-dated appearance for the first is on or before the transaction date while his first for the second is on or after it. The transaction date, the last game before it and the first game after it are three facts and stay three. A team change never creates a transaction; a season with no canonical transaction stays open.",
+  "seasons": [
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Chicago White Sox"
+      ],
+      "player_slug": "aldrin-batista",
+      "season": 2023,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2023-06-05",
+          "last_appearance": "2023-07-29",
+          "levels": [
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "ACL Dodgers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2023-08-09",
+          "last_appearance": "2023-09-06",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "Chicago White Sox",
+          "teams": [
+            "Kannapolis Cannon Ballers"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2023-08-04",
+        "event_key": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+        "from": "Los Angeles Dodgers",
+        "to": "Chicago White Sox",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "alex-de-jesus",
+      "season": 2022,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2022-04-12",
+          "last_appearance": "2022-07-31",
+          "levels": [
+            "HIGH_A",
+            "LOW_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Great Lakes Loons",
+            "Rancho Cucamonga Quakes"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2022-08-08",
+          "last_appearance": "2022-09-10",
+          "levels": [
+            "COMPLEX_ROOKIE",
+            "HIGH_A"
+          ],
+          "organization": "Toronto Blue Jays",
+          "teams": [
+            "FCL Blue Jays",
+            "Vancouver Canadians"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2022-08-02",
+        "event_key": "LAD_TOR_2022_ALEX_DE_JESUS",
+        "from": "Los Angeles Dodgers",
+        "to": "Toronto Blue Jays",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "New York Mets"
+      ],
+      "player_slug": "carlos-rincon",
+      "season": 2021,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2021-05-04",
+          "last_appearance": "2021-07-18",
+          "levels": [
+            "AA"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Tulsa Drillers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2021-07-23",
+          "last_appearance": "2021-09-18",
+          "levels": [
+            "AA"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "Binghamton Rumble Ponies"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2021-07-21",
+        "event_key": "LAD_NYM_2021_CARLOS_RINCON",
+        "from": "Los Angeles Dodgers",
+        "to": "New York Mets",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Cleveland Guardians"
+      ],
+      "player_slug": "carlos-santana",
+      "season": 2008,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2008-04-03",
+          "last_appearance": "2008-07-24",
+          "levels": [
+            "HIGH_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Inland Empire 66ers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2008-07-28",
+          "last_appearance": "2008-09-01",
+          "levels": [
+            "AA",
+            "HIGH_A"
+          ],
+          "organization": "Cleveland Guardians",
+          "teams": [
+            "Akron Aeros",
+            "Kinston Indians"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2008-07-26",
+        "event_key": "LAD_CLE_2008_SANTANA_BLAKE",
+        "from": "Los Angeles Dodgers",
+        "to": "Cleveland Guardians",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Kansas City Royals",
+        "Seattle Mariners"
+      ],
+      "player_slug": "carlos-santana",
+      "season": 2022,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2022-04-07",
+          "last_appearance": "2022-06-26",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Kansas City Royals",
+          "teams": [
+            "Kansas City Royals"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2022-06-28",
+          "last_appearance": "2022-10-05",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Seattle Mariners",
+          "teams": [
+            "Seattle Mariners"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Pittsburgh Pirates",
+        "Milwaukee Brewers"
+      ],
+      "player_slug": "carlos-santana",
+      "season": 2023,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2023-03-30",
+          "last_appearance": "2023-07-26",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Pittsburgh Pirates",
+          "teams": [
+            "Pittsburgh Pirates"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2023-07-29",
+          "last_appearance": "2023-10-01",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Milwaukee Brewers",
+          "teams": [
+            "Milwaukee Brewers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Cleveland Guardians",
+        "Chicago Cubs"
+      ],
+      "player_slug": "carlos-santana",
+      "season": 2025,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2025-03-27",
+          "last_appearance": "2025-08-25",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cleveland Guardians",
+          "teams": [
+            "Cleveland Guardians"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2025-09-01",
+          "last_appearance": "2025-09-23",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Chicago Cubs",
+          "teams": [
+            "Chicago Cubs"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Arizona Diamondbacks",
+        "Atlanta Braves"
+      ],
+      "player_slug": "carlos-santana",
+      "season": 2026,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2026-03-26",
+          "last_appearance": "2026-06-22",
+          "levels": [
+            "AAA",
+            "COMPLEX_ROOKIE",
+            "MLB"
+          ],
+          "organization": "Arizona Diamondbacks",
+          "teams": [
+            "ACL D-backs",
+            "Arizona Diamondbacks",
+            "Reno Aces"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2026-07-02",
+          "last_appearance": "2026-08-15",
+          "levels": [
+            "AAA",
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Atlanta Braves",
+          "teams": [
+            "FCL Braves",
+            "Gwinnett Stripers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "San Diego Padres",
+        "Texas Rangers"
+      ],
+      "player_slug": "chan-ho-park",
+      "season": 2005,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "San Diego Padres",
+          "teams": [
+            "San Diego Padres"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Texas Rangers",
+          "teams": [
+            "Texas Rangers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "New York Mets",
+        "Houston Astros"
+      ],
+      "player_slug": "chan-ho-park",
+      "season": 2007,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2007-04-08",
+          "last_appearance": "2007-06-02",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New Orleans Zephyrs",
+            "New York Mets"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2007-06-16",
+          "last_appearance": "2007-08-31",
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Houston Astros",
+          "teams": [
+            "Round Rock Express"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "New York Yankees",
+        "Pittsburgh Pirates"
+      ],
+      "player_slug": "chan-ho-park",
+      "season": 2010,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2010-04-04",
+          "last_appearance": "2010-07-29",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "New York Yankees",
+          "teams": [
+            "New York Yankees",
+            "Scranton/Wilkes-Barre Yankees"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2010-08-06",
+          "last_appearance": "2010-10-01",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Pittsburgh Pirates",
+          "teams": [
+            "Pittsburgh Pirates"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Detroit Tigers",
+        "New York Mets"
+      ],
+      "player_slug": "chico-fernandez",
+      "season": 1963,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "Detroit Tigers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Minnesota Twins",
+        "San Francisco Giants"
+      ],
+      "player_slug": "diego-cartaya",
+      "season": 2025,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2025-04-01",
+          "last_appearance": "2025-06-29",
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Minnesota Twins",
+          "teams": [
+            "St. Paul Saints"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2025-09-01",
+          "last_appearance": "2025-09-06",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "San Francisco Giants",
+          "teams": [
+            "San Jose Giants"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Detroit Tigers"
+      ],
+      "player_slug": "eddys-leonard",
+      "season": 2023,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2023-04-06",
+          "last_appearance": "2023-07-27",
+          "levels": [
+            "AA"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Tulsa Drillers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2023-08-03",
+          "last_appearance": "2023-09-24",
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "Toledo Mud Hens"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2023-08-01",
+        "event_key": "LAD_DET_2023_EDDYS_LEONARD",
+        "from": "Los Angeles Dodgers",
+        "to": "Detroit Tigers",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Milwaukee Brewers",
+        "San Francisco Giants"
+      ],
+      "player_slug": "eddys-leonard",
+      "season": 2026,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2026-03-28",
+          "last_appearance": "2026-07-12",
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Milwaukee Brewers",
+          "teams": [
+            "Nashville Sounds"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2026-07-24",
+          "last_appearance": "2026-09-20",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "San Francisco Giants",
+          "teams": [
+            "Sacramento River Cats",
+            "San Francisco Giants"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Detroit Tigers"
+      ],
+      "player_slug": "edgar-leon",
+      "season": 2026,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2026-05-02",
+          "last_appearance": "2026-05-18",
+          "levels": [
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "ACL Dodgers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2026-07-28",
+          "last_appearance": "2026-08-17",
+          "levels": [
+            "INTERNATIONAL_ROOKIE"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "DSL Tigers 1",
+            "DSL Tigers 2"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "San Diego Padres",
+        "St. Louis Cardinals"
+      ],
+      "player_slug": "fernando-valenzuela",
+      "season": 1997,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "San Diego Padres",
+          "teams": [
+            "San Diego Padres"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "St. Louis Cardinals",
+          "teams": [
+            "St. Louis Cardinals"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "hendrik-clementina",
+      "season": 2017,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2017-06-19",
+          "last_appearance": "2017-07-29",
+          "levels": [
+            "OTHER"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Ogden Raptors"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2017-08-03",
+          "last_appearance": "2017-09-08",
+          "levels": [
+            "OTHER"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Billings Mustangs"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2017-07-31",
+        "event_key": "LAD_CIN_2017_HENDRIK_CLEMENTINA",
+        "from": "Los Angeles Dodgers",
+        "to": "Cincinnati Reds",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "New York Mets"
+      ],
+      "player_slug": "hideo-nomo",
+      "season": 1998,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+      "transaction": {
+        "date": "1998-06-04",
+        "event_key": "LAD_NYM_1998_NOMO",
+        "from": "Los Angeles Dodgers",
+        "to": "New York Mets",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Chicago Cubs",
+        "Milwaukee Brewers"
+      ],
+      "player_slug": "hideo-nomo",
+      "season": 1999,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Chicago Cubs",
+          "teams": [
+            "Iowa Cubs"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AA",
+            "MLB"
+          ],
+          "organization": "Milwaukee Brewers",
+          "teams": [
+            "Huntsville Stars",
+            "Milwaukee Brewers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "New York Yankees",
+        "Tampa Bay Rays"
+      ],
+      "player_slug": "hideo-nomo",
+      "season": 2005,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA"
+          ],
+          "organization": "New York Yankees",
+          "teams": [
+            "Columbus Clippers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Tampa Bay Rays",
+          "teams": [
+            "Tampa Bay Devil Rays"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Chicago Cubs",
+        "Los Angeles Dodgers"
+      ],
+      "player_slug": "ismael-valdez",
+      "season": 2000,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "HIGH_A",
+            "MLB"
+          ],
+          "organization": "Chicago Cubs",
+          "teams": [
+            "Chicago Cubs",
+            "Daytona Cubs"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        }
+      ],
+      "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+      "transaction": {
+        "date": "2000-07-26",
+        "event_key": "CHC_LAD_2000_VALDEZ_REACQ",
+        "from": "Los Angeles Dodgers",
+        "to": "Chicago Cubs",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Seattle Mariners",
+        "Texas Rangers"
+      ],
+      "player_slug": "ismael-valdez",
+      "season": 2002,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Seattle Mariners",
+          "teams": [
+            "Seattle Mariners"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Texas Rangers",
+          "teams": [
+            "Texas Rangers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Miami Marlins",
+        "San Diego Padres"
+      ],
+      "player_slug": "ismael-valdez",
+      "season": 2004,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Miami Marlins",
+          "teams": [
+            "Florida Marlins"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "San Diego Padres",
+          "teams": [
+            "San Diego Padres"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Chicago White Sox"
+      ],
+      "player_slug": "jeral-perez",
+      "season": 2024,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2024-04-05",
+          "last_appearance": "2024-07-28",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Rancho Cucamonga Quakes"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2024-08-01",
+          "last_appearance": "2024-09-08",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "Chicago White Sox",
+          "teams": [
+            "Kannapolis Cannon Ballers"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2024-07-29",
+        "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+        "from": "Los Angeles Dodgers",
+        "to": "Chicago White Sox",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Boston Red Sox",
+        "Seattle Mariners"
+      ],
+      "player_slug": "jose-offerman",
+      "season": 2002,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Boston Red Sox",
+          "teams": [
+            "Boston Red Sox"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Seattle Mariners",
+          "teams": [
+            "Seattle Mariners"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "New York Mets",
+        "Philadelphia Phillies"
+      ],
+      "player_slug": "jose-offerman",
+      "season": 2005,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets",
+            "Norfolk Tides"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Philadelphia Phillies",
+          "teams": [
+            "Philadelphia Phillies"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Cleveland Guardians",
+        "New York Mets"
+      ],
+      "player_slug": "jose-vizcaino",
+      "season": 1996,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cleveland Guardians",
+          "teams": [
+            "Cleveland Indians"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "New York Yankees"
+      ],
+      "player_slug": "jose-vizcaino",
+      "season": 2000,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Yankees",
+          "teams": [
+            "New York Yankees"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "San Francisco Giants",
+        "St. Louis Cardinals"
+      ],
+      "player_slug": "jose-vizcaino",
+      "season": 2006,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2006-04-07",
+          "last_appearance": "2006-08-13",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "San Francisco Giants",
+          "teams": [
+            "San Francisco Giants"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2006-08-23",
+          "last_appearance": "2006-10-01",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "St. Louis Cardinals",
+          "teams": [
+            "St. Louis Cardinals"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Minnesota Twins",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "juan-castro",
+      "season": 2006,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2006-04-04",
+          "last_appearance": "2006-06-13",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Minnesota Twins",
+          "teams": [
+            "Minnesota Twins"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2006-06-18",
+          "last_appearance": "2006-10-01",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Cincinnati Reds"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Cincinnati Reds",
+        "Baltimore Orioles",
+        "Colorado Rockies"
+      ],
+      "player_slug": "juan-castro",
+      "season": 2008,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2008-04-04",
+          "last_appearance": "2008-04-17",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Cincinnati Reds"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2008-04-28",
+          "last_appearance": "2008-09-24",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2008-05-05",
+          "last_appearance": "2008-07-14",
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Colorado Rockies",
+          "teams": [
+            "Colorado Springs Sky Sox"
+          ]
+        }
+      ],
+      "state": "MORE_THAN_TWO_ORGANIZATIONS",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Philadelphia Phillies",
+        "Los Angeles Dodgers"
+      ],
+      "player_slug": "juan-castro",
+      "season": 2010,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2010-04-12",
+          "last_appearance": "2010-07-16",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Philadelphia Phillies",
+          "teams": [
+            "Philadelphia Phillies"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2010-08-06",
+          "last_appearance": "2010-08-15",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Albuquerque Isotopes",
+            "Los Angeles Dodgers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "juan-guzman",
+      "season": 1998,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Toronto Blue Jays",
+          "teams": [
+            "Toronto Blue Jays"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "juan-guzman",
+      "season": 1999,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Cincinnati Reds"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "Detroit Tigers"
+      ],
+      "player_slug": "karim-garcia",
+      "season": 2000,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles",
+            "Rochester Red Wings"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "Detroit Tigers",
+            "Toledo Mud Hens"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Cleveland Guardians",
+        "New York Yankees"
+      ],
+      "player_slug": "karim-garcia",
+      "season": 2002,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Cleveland Guardians",
+          "teams": [
+            "Buffalo Bisons",
+            "Cleveland Indians"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "New York Yankees",
+          "teams": [
+            "Columbus Clippers",
+            "New York Yankees"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Cleveland Guardians",
+        "New York Yankees"
+      ],
+      "player_slug": "karim-garcia",
+      "season": 2003,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Cleveland Guardians",
+          "teams": [
+            "Buffalo Bisons",
+            "Cleveland Indians"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Yankees",
+          "teams": [
+            "New York Yankees"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "New York Mets"
+      ],
+      "player_slug": "karim-garcia",
+      "season": 2004,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AA",
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "Binghamton Mets",
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Washington Nationals"
+      ],
+      "player_slug": "keibert-ruiz",
+      "season": 2021,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2021-05-04",
+          "last_appearance": "2021-07-27",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers",
+            "Oklahoma City Dodgers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2021-08-03",
+          "last_appearance": "2021-10-03",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Washington Nationals",
+          "teams": [
+            "Rochester Red Wings",
+            "Washington Nationals"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2021-07-30",
+        "event_key": "LAD_WSH_2021_KEIBERT_RUIZ",
+        "from": "Los Angeles Dodgers",
+        "to": "Washington Nationals",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Chicago White Sox"
+      ],
+      "player_slug": "miguel-vargas",
+      "season": 2024,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2024-03-29",
+          "last_appearance": "2024-07-27",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers",
+            "Oklahoma City Baseball Club"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2024-07-30",
+          "last_appearance": "2024-09-29",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Chicago White Sox",
+          "teams": [
+            "Chicago White Sox"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2024-07-29",
+        "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+        "from": "Los Angeles Dodgers",
+        "to": "Chicago White Sox",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Toronto Blue Jays",
+        "Washington Nationals"
+      ],
+      "player_slug": "omar-daal",
+      "season": 1997,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Toronto Blue Jays",
+          "teams": [
+            "Syracuse SkyChiefs",
+            "Toronto Blue Jays"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Washington Nationals",
+          "teams": [
+            "Montreal Expos",
+            "Ottawa Lynx"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Arizona Diamondbacks",
+        "Philadelphia Phillies"
+      ],
+      "player_slug": "omar-daal",
+      "season": 2000,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Arizona Diamondbacks",
+          "teams": [
+            "Arizona Diamondbacks"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Philadelphia Phillies",
+          "teams": [
+            "Philadelphia Phillies"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Pittsburgh Pirates"
+      ],
+      "player_slug": "oneil-cruz",
+      "season": 2017,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2017-04-07",
+          "last_appearance": "2017-07-27",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Great Lakes Loons"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2017-08-05",
+          "last_appearance": "2017-09-03",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "Pittsburgh Pirates",
+          "teams": [
+            "West Virginia Power"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2017-07-31",
+        "event_key": "LAD_PIT_2017_CRUZ_WATSON",
+        "from": "Los Angeles Dodgers",
+        "to": "Pittsburgh Pirates",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Colorado Rockies",
+        "Los Angeles Dodgers"
+      ],
+      "player_slug": "pedro-astacio",
+      "season": 1997,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Colorado Rockies",
+          "teams": [
+            "Colorado Rockies"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        }
+      ],
+      "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+      "transaction": {
+        "date": "1997-08-19",
+        "event_key": "LAD_COL_1997_ASTACIO",
+        "from": "Los Angeles Dodgers",
+        "to": "Colorado Rockies",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Colorado Rockies",
+        "Houston Astros"
+      ],
+      "player_slug": "pedro-astacio",
+      "season": 2001,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Colorado Rockies",
+          "teams": [
+            "Colorado Rockies"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Houston Astros",
+          "teams": [
+            "Houston Astros"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "San Diego Padres",
+        "Texas Rangers"
+      ],
+      "player_slug": "pedro-astacio",
+      "season": 2005,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "San Diego Padres",
+          "teams": [
+            "Portland Beavers",
+            "San Diego Padres"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Texas Rangers",
+          "teams": [
+            "Texas Rangers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Houston Astros",
+        "Los Angeles Dodgers"
+      ],
+      "player_slug": "pedro-baez",
+      "season": 2022,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2022-04-08",
+          "last_appearance": "2022-04-19",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Houston Astros",
+          "teams": [
+            "Houston Astros"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2022-07-05",
+          "last_appearance": "2022-08-19",
+          "levels": [
+            "AAA",
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "ACL Dodgers",
+            "Oklahoma City Dodgers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "New York Yankees",
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "raul-mondesi",
+      "season": 2002,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Yankees",
+          "teams": [
+            "New York Yankees"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Toronto Blue Jays",
+          "teams": [
+            "Toronto Blue Jays"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Arizona Diamondbacks",
+        "New York Yankees"
+      ],
+      "player_slug": "raul-mondesi",
+      "season": 2003,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Arizona Diamondbacks",
+          "teams": [
+            "Arizona Diamondbacks"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Yankees",
+          "teams": [
+            "New York Yankees"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Angels",
+        "Pittsburgh Pirates"
+      ],
+      "player_slug": "raul-mondesi",
+      "season": 2004,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "HIGH_A",
+            "MLB"
+          ],
+          "organization": "Los Angeles Angels",
+          "teams": [
+            "Anaheim Angels",
+            "Rancho Cucamonga Quakes",
+            "Salt Lake City Stingers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Pittsburgh Pirates",
+          "teams": [
+            "Pittsburgh Pirates"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Detroit Tigers",
+        "Los Angeles Dodgers"
+      ],
+      "player_slug": "sandy-amoros",
+      "season": 1960,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "Detroit Tigers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        }
+      ],
+      "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+      "transaction": {
+        "date": "1960-05-07",
+        "event_key": "LAD_DET_1960_AMOROS",
+        "from": "Los Angeles Dodgers",
+        "to": "Detroit Tigers",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Washington Nationals"
+      ],
+      "player_slug": "sean-linan",
+      "season": 2025,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2025-04-06",
+          "last_appearance": "2025-07-26",
+          "levels": [
+            "AAA",
+            "HIGH_A",
+            "LOW_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Great Lakes Loons",
+            "Oklahoma City Comets",
+            "Rancho Cucamonga Quakes"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2025-08-09",
+          "last_appearance": "2025-08-09",
+          "levels": [
+            "HIGH_A"
+          ],
+          "organization": "Washington Nationals",
+          "teams": [
+            "Wilmington Blue Rocks"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2025-07-31",
+        "event_key": "LAD_WSH_2025_SEAN_LINAN",
+        "from": "Los Angeles Dodgers",
+        "to": "Washington Nationals",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Detroit Tigers"
+      ],
+      "player_slug": "thayron-liranzo",
+      "season": 2024,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2024-04-05",
+          "last_appearance": "2024-07-25",
+          "levels": [
+            "HIGH_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Great Lakes Loons"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2024-08-01",
+          "last_appearance": "2024-09-07",
+          "levels": [
+            "HIGH_A"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "West Michigan Whitecaps"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2024-07-30",
+        "event_key": "LAD_DET_2024_THAYRON_LIRANZO",
+        "from": "Los Angeles Dodgers",
+        "to": "Detroit Tigers",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Atlanta Braves"
+      ],
+      "player_slug": "willy-aybar",
+      "season": 2006,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2006-04-06",
+          "last_appearance": "2006-07-26",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Las Vegas 51s",
+            "Los Angeles Dodgers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2006-07-30",
+          "last_appearance": "2006-09-30",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Atlanta Braves",
+          "teams": [
+            "Atlanta Braves",
+            "Richmond Braves"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2006-07-28",
+        "event_key": "LAD_ATL_2006_AYBAR_BETEMIT",
+        "from": "Los Angeles Dodgers",
+        "to": "Atlanta Braves",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Cincinnati Reds",
+        "Cleveland Guardians"
+      ],
+      "player_slug": "yasiel-puig",
+      "season": 2019,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2019-03-28",
+          "last_appearance": "2019-07-30",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Cincinnati Reds"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2019-08-01",
+          "last_appearance": "2019-09-27",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cleveland Guardians",
+          "teams": [
+            "Cleveland Indians"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Baltimore Orioles"
+      ],
+      "player_slug": "yusniel-diaz",
+      "season": 2018,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2018-04-19",
+          "last_appearance": "2018-07-13",
+          "levels": [
+            "AA"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Tulsa Drillers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2018-07-20",
+          "last_appearance": "2018-09-02",
+          "levels": [
+            "AA"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Bowie Baysox"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2018-07-18",
+        "event_key": "LAD_BAL_2018_DIAZ_MACHADO",
+        "from": "Los Angeles Dodgers",
+        "to": "Baltimore Orioles",
+        "type": "TRADE"
+      }
+    }
+  ],
+  "seasons_before": [
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Chicago White Sox"
+      ],
+      "player_slug": "aldrin-batista",
+      "season": 2023,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2023-06-05",
+          "last_appearance": "2023-07-29",
+          "levels": [
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "ACL Dodgers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2023-08-09",
+          "last_appearance": "2023-09-06",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "Chicago White Sox",
+          "teams": [
+            "Kannapolis Cannon Ballers"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2023-08-04",
+        "event_key": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+        "from": "Los Angeles Dodgers",
+        "to": "Chicago White Sox",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "alex-de-jesus",
+      "season": 2022,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2022-04-12",
+          "last_appearance": "2022-07-31",
+          "levels": [
+            "HIGH_A",
+            "LOW_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Great Lakes Loons",
+            "Rancho Cucamonga Quakes"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2022-08-08",
+          "last_appearance": "2022-09-10",
+          "levels": [
+            "COMPLEX_ROOKIE",
+            "HIGH_A"
+          ],
+          "organization": "Toronto Blue Jays",
+          "teams": [
+            "FCL Blue Jays",
+            "Vancouver Canadians"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2022-08-02",
+        "event_key": "LAD_TOR_2022_ALEX_DE_JESUS",
+        "from": "Los Angeles Dodgers",
+        "to": "Toronto Blue Jays",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "New York Mets"
+      ],
+      "player_slug": "carlos-rincon",
+      "season": 2021,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2021-05-04",
+          "last_appearance": "2021-07-18",
+          "levels": [
+            "AA"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Tulsa Drillers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2021-07-23",
+          "last_appearance": "2021-09-18",
+          "levels": [
+            "AA"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "Binghamton Rumble Ponies"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2021-07-21",
+        "event_key": "LAD_NYM_2021_CARLOS_RINCON",
+        "from": "Los Angeles Dodgers",
+        "to": "New York Mets",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Cleveland Indians",
+        "Cleveland Indians/Guardians"
+      ],
+      "player_slug": "carlos-santana",
+      "season": 2010,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cleveland Indians",
+          "teams": [
+            "Cleveland Indians"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Cleveland Indians/Guardians",
+          "teams": [
+            "Columbus Clippers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Milwaukee Brewers",
+        "Pittsburgh Pirates"
+      ],
+      "player_slug": "carlos-santana",
+      "season": 2023,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Milwaukee Brewers",
+          "teams": [
+            "Milwaukee Brewers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Pittsburgh Pirates",
+          "teams": [
+            "Pittsburgh Pirates"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Arizona Diamondbacks",
+        "Atlanta Braves"
+      ],
+      "player_slug": "carlos-santana",
+      "season": 2026,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Arizona Diamondbacks",
+          "teams": [
+            "Arizona Diamondbacks"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Atlanta Braves",
+          "teams": [
+            "FCL Braves",
+            "Gwinnett Stripers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Houston Astros",
+        "New York Mets"
+      ],
+      "player_slug": "chan-ho-park",
+      "season": 2007,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Houston Astros",
+          "teams": [
+            "New Orleans Zephyrs"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Detroit Tigers",
+        "New York Mets"
+      ],
+      "player_slug": "chico-fernandez",
+      "season": 1963,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "Detroit Tigers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Minnesota Twins",
+        "San Francisco Giants"
+      ],
+      "player_slug": "diego-cartaya",
+      "season": 2025,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2025-04-01",
+          "last_appearance": "2025-06-29",
+          "levels": [
+            "AAA"
+          ],
+          "organization": "Minnesota Twins",
+          "teams": [
+            "St. Paul Saints"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2025-09-01",
+          "last_appearance": "2025-09-06",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "San Francisco Giants",
+          "teams": [
+            "San Jose Giants"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Detroit Tigers"
+      ],
+      "player_slug": "edgar-leon",
+      "season": 2026,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2026-05-02",
+          "last_appearance": "2026-05-18",
+          "levels": [
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "ACL Dodgers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2026-07-28",
+          "last_appearance": "2026-08-17",
+          "levels": [
+            "INTERNATIONAL_ROOKIE"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "DSL Tigers 1",
+            "DSL Tigers 2"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "hendrik-clementina",
+      "season": 2017,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2017-06-19",
+          "last_appearance": "2017-07-29",
+          "levels": [
+            "OTHER"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Ogden Raptors"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2017-08-03",
+          "last_appearance": "2017-09-08",
+          "levels": [
+            "OTHER"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Billings Mustangs"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2017-07-31",
+        "event_key": "LAD_CIN_2017_HENDRIK_CLEMENTINA",
+        "from": "Los Angeles Dodgers",
+        "to": "Cincinnati Reds",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "New York Mets"
+      ],
+      "player_slug": "hideo-nomo",
+      "season": 1998,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+      "transaction": {
+        "date": "1998-06-04",
+        "event_key": "LAD_NYM_1998_NOMO",
+        "from": "Los Angeles Dodgers",
+        "to": "New York Mets",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Seattle Mariners",
+        "Texas Rangers"
+      ],
+      "player_slug": "ismael-valdez",
+      "season": 2002,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Seattle Mariners",
+          "teams": [
+            "Seattle Mariners"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Texas Rangers",
+          "teams": [
+            "Texas Rangers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Chicago White Sox"
+      ],
+      "player_slug": "jeral-perez",
+      "season": 2024,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2024-04-05",
+          "last_appearance": "2024-07-28",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Rancho Cucamonga Quakes"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2024-08-01",
+          "last_appearance": "2024-09-08",
+          "levels": [
+            "LOW_A"
+          ],
+          "organization": "Chicago White Sox",
+          "teams": [
+            "Kannapolis Cannon Ballers"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2024-07-29",
+        "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+        "from": "Los Angeles Dodgers",
+        "to": "Chicago White Sox",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Boston Red Sox",
+        "Seattle Mariners"
+      ],
+      "player_slug": "jose-offerman",
+      "season": 2002,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Boston Red Sox",
+          "teams": [
+            "Boston Red Sox"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Seattle Mariners",
+          "teams": [
+            "Seattle Mariners"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "New York Mets",
+        "Philadelphia Phillies"
+      ],
+      "player_slug": "jose-offerman",
+      "season": 2005,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Philadelphia Phillies",
+          "teams": [
+            "Philadelphia Phillies"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Cleveland Indians",
+        "New York Mets"
+      ],
+      "player_slug": "jose-vizcaino",
+      "season": 1996,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cleveland Indians",
+          "teams": [
+            "Cleveland Indians"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Cincinnati Reds",
+        "Minnesota Twins"
+      ],
+      "player_slug": "juan-castro",
+      "season": 2006,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Cincinnati Reds"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Minnesota Twins",
+          "teams": [
+            "Minnesota Twins"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "juan-castro",
+      "season": 2008,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Cincinnati Reds"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Philadelphia Phillies"
+      ],
+      "player_slug": "juan-castro",
+      "season": 2010,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Albuquerque Isotopes",
+            "Los Angeles Dodgers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Philadelphia Phillies",
+          "teams": [
+            "Philadelphia Phillies"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "juan-guzman",
+      "season": 1998,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Toronto Blue Jays",
+          "teams": [
+            "Toronto Blue Jays"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "juan-guzman",
+      "season": 1999,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Cincinnati Reds"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "Detroit Tigers"
+      ],
+      "player_slug": "karim-garcia",
+      "season": 2000,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "Detroit Tigers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Baltimore Orioles",
+        "New York Mets"
+      ],
+      "player_slug": "karim-garcia",
+      "season": 2004,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Baltimore Orioles",
+          "teams": [
+            "Baltimore Orioles"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Mets",
+          "teams": [
+            "New York Mets"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Arizona Diamondbacks",
+        "Philadelphia Phillies"
+      ],
+      "player_slug": "omar-daal",
+      "season": 2000,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Arizona Diamondbacks",
+          "teams": [
+            "Arizona Diamondbacks"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Philadelphia Phillies",
+          "teams": [
+            "Philadelphia Phillies"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Houston Astros",
+        "Los Angeles Dodgers"
+      ],
+      "player_slug": "pedro-baez",
+      "season": 2022,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Houston Astros",
+          "teams": [
+            "Houston Astros"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "AAA",
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "ACL Dodgers",
+            "Oklahoma City Dodgers"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    },
+    {
+      "organizations": [
+        "Detroit Tigers",
+        "Los Angeles Dodgers"
+      ],
+      "player_slug": "sandy-amoros",
+      "season": 1960,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "Detroit Tigers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        }
+      ],
+      "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+      "transaction": {
+        "date": "1960-05-07",
+        "event_key": "LAD_DET_1960_AMOROS",
+        "from": "Los Angeles Dodgers",
+        "to": "Detroit Tigers",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Washington Nationals"
+      ],
+      "player_slug": "sean-linan",
+      "season": 2025,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2025-04-06",
+          "last_appearance": "2025-07-26",
+          "levels": [
+            "AAA",
+            "HIGH_A",
+            "LOW_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Great Lakes Loons",
+            "Oklahoma City Comets",
+            "Rancho Cucamonga Quakes"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2025-08-09",
+          "last_appearance": "2025-08-09",
+          "levels": [
+            "HIGH_A"
+          ],
+          "organization": "Washington Nationals",
+          "teams": [
+            "Wilmington Blue Rocks"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2025-07-31",
+        "event_key": "LAD_WSH_2025_SEAN_LINAN",
+        "from": "Los Angeles Dodgers",
+        "to": "Washington Nationals",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Los Angeles Dodgers",
+        "Detroit Tigers"
+      ],
+      "player_slug": "thayron-liranzo",
+      "season": 2024,
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2024-04-05",
+          "last_appearance": "2024-07-25",
+          "levels": [
+            "HIGH_A"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Great Lakes Loons"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2024-08-01",
+          "last_appearance": "2024-09-07",
+          "levels": [
+            "HIGH_A"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "West Michigan Whitecaps"
+          ]
+        }
+      ],
+      "state": "BRACKETED",
+      "transaction": {
+        "date": "2024-07-30",
+        "event_key": "LAD_DET_2024_THAYRON_LIRANZO",
+        "from": "Los Angeles Dodgers",
+        "to": "Detroit Tigers",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Atlanta Braves",
+        "Los Angeles Dodgers"
+      ],
+      "player_slug": "willy-aybar",
+      "season": 2006,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Atlanta Braves",
+          "teams": [
+            "Atlanta Braves"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        }
+      ],
+      "state": "TRANSACTION_RECORDED_DATES_MISSING",
+      "transaction": {
+        "date": "2006-07-28",
+        "event_key": "LAD_ATL_2006_AYBAR_BETEMIT",
+        "from": "Los Angeles Dodgers",
+        "to": "Atlanta Braves",
+        "type": "TRADE"
+      }
+    },
+    {
+      "organizations": [
+        "Cincinnati Reds",
+        "Cleveland Indians"
+      ],
+      "player_slug": "yasiel-puig",
+      "season": 2019,
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Cincinnati Reds"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Cleveland Indians",
+          "teams": [
+            "Cleveland Indians"
+          ]
+        }
+      ],
+      "state": "NO_CANONICAL_TRANSACTION",
+      "transaction": null
+    }
+  ]
+}

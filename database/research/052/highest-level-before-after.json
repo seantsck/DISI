@@ -1,0 +1,115 @@
+{
+  "all_dodgers_signings": {
+    "at_dodgers_affiliate_after": {
+      "AA": 12,
+      "AAA": 11,
+      "COMPLEX_ROOKIE": 27,
+      "HIGH_A": 18,
+      "INTERNATIONAL_ROOKIE": 69,
+      "LOW_A": 32,
+      "MLB": 37,
+      "UNKNOWN": 6
+    },
+    "at_dodgers_affiliate_before": {
+      "AA": 13,
+      "AAA": 10,
+      "COMPLEX_ROOKIE": 27,
+      "HIGH_A": 17,
+      "INTERNATIONAL_ROOKIE": 69,
+      "LOW_A": 33,
+      "MLB": 37,
+      "UNKNOWN": 6
+    },
+    "whole_career_after": {
+      "AA": 12,
+      "AAA": 14,
+      "COMPLEX_ROOKIE": 24,
+      "HIGH_A": 17,
+      "INTERNATIONAL_ROOKIE": 68,
+      "LOW_A": 30,
+      "MLB": 47
+    },
+    "whole_career_before": {
+      "AA": 12,
+      "AAA": 14,
+      "COMPLEX_ROOKIE": 24,
+      "HIGH_A": 17,
+      "INTERNATIONAL_ROOKIE": 68,
+      "LOW_A": 30,
+      "MLB": 47
+    }
+  },
+  "as_of": "2026-10-23",
+  "audited_no_mlb_cohort": {
+    "at_dodgers_affiliate_after": {
+      "AA": 4,
+      "AAA": 5,
+      "COMPLEX_ROOKIE": 8,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 11,
+      "LOW_A": 8
+    },
+    "at_dodgers_affiliate_before": {
+      "AA": 4,
+      "AAA": 5,
+      "COMPLEX_ROOKIE": 8,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 11,
+      "LOW_A": 8
+    },
+    "whole_career_after": {
+      "AA": 4,
+      "AAA": 9,
+      "COMPLEX_ROOKIE": 6,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 10,
+      "LOW_A": 7
+    },
+    "whole_career_before": {
+      "AA": 4,
+      "AAA": 9,
+      "COMPLEX_ROOKIE": 6,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 10,
+      "LOW_A": 7
+    }
+  },
+  "changed_players": [
+    {
+      "at_dodgers_affiliate": {
+        "after": "HIGH_A (2006)",
+        "before": "LOW_A (2007)"
+      },
+      "player_slug": "carlos-santana",
+      "reached_elsewhere": {
+        "after": true,
+        "before": true
+      },
+      "whole_career": {
+        "after": "MLB (2010)",
+        "before": "MLB (2010)"
+      },
+      "why": "Organizations resolved from the official team-season record now place a stint of this player with (or away from) a Dodgers affiliate."
+    },
+    {
+      "at_dodgers_affiliate": {
+        "after": "AAA (2023)",
+        "before": "AA (2023)"
+      },
+      "player_slug": "jorbit-vivas",
+      "reached_elsewhere": {
+        "after": true,
+        "before": true
+      },
+      "whole_career": {
+        "after": "MLB (2025)",
+        "before": "MLB (2025)"
+      },
+      "why": "Organizations resolved from the official team-season record now place a stint of this player with (or away from) a Dodgers affiliate."
+    }
+  ],
+  "players_whose_only_change_is_resolved_organization_seasons": 36,
+  "rule": "Highest level is two questions, both read from the same stints: the whole recorded career (any organization) and the part recorded at a Dodgers affiliate. Later play with another organization is career context, never Dodgers development. Organization resolution changes only the second.",
+  "unknown_organization_team_stints_after": 1,
+  "unknown_organization_team_stints_before": 320
+}

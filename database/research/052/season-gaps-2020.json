@@ -1,0 +1,739 @@
+{
+  "affiliated_minor_league_stints_recorded_for_2020": 0,
+  "as_of": "2026-10-23",
+  "involving_2020": 17,
+  "official_schedules": [
+    {
+      "regular_season_games": 2472,
+      "season": 2019,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=2019&gameType=R&fields=totalGames",
+      "sport_id": 1
+    },
+    {
+      "regular_season_games": 973,
+      "season": 2020,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=2020&gameType=R&fields=totalGames",
+      "sport_id": 1
+    },
+    {
+      "regular_season_games": 2512,
+      "season": 2021,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=2021&gameType=R&fields=totalGames",
+      "sport_id": 1
+    },
+    {
+      "regular_season_games": 3192,
+      "season": 2019,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=11&season=2019&gameType=R&fields=totalGames",
+      "sport_id": 11
+    },
+    {
+      "regular_season_games": 0,
+      "season": 2020,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=11&season=2020&gameType=R&fields=totalGames",
+      "sport_id": 11
+    },
+    {
+      "regular_season_games": 2057,
+      "season": 2021,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=11&season=2021&gameType=R&fields=totalGames",
+      "sport_id": 11
+    },
+    {
+      "regular_season_games": 2226,
+      "season": 2019,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=12&season=2019&gameType=R&fields=totalGames",
+      "sport_id": 12
+    },
+    {
+      "regular_season_games": 0,
+      "season": 2020,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=12&season=2020&gameType=R&fields=totalGames",
+      "sport_id": 12
+    },
+    {
+      "regular_season_games": 1918,
+      "season": 2021,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=12&season=2021&gameType=R&fields=totalGames",
+      "sport_id": 12
+    },
+    {
+      "regular_season_games": 2252,
+      "season": 2019,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=13&season=2019&gameType=R&fields=totalGames",
+      "sport_id": 13
+    },
+    {
+      "regular_season_games": 0,
+      "season": 2020,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=13&season=2020&gameType=R&fields=totalGames",
+      "sport_id": 13
+    },
+    {
+      "regular_season_games": 1900,
+      "season": 2021,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=13&season=2021&gameType=R&fields=totalGames",
+      "sport_id": 13
+    },
+    {
+      "regular_season_games": 2200,
+      "season": 2019,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=14&season=2019&gameType=R&fields=totalGames",
+      "sport_id": 14
+    },
+    {
+      "regular_season_games": 0,
+      "season": 2020,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=14&season=2020&gameType=R&fields=totalGames",
+      "sport_id": 14
+    },
+    {
+      "regular_season_games": 1943,
+      "season": 2021,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=14&season=2021&gameType=R&fields=totalGames",
+      "sport_id": 14
+    },
+    {
+      "regular_season_games": 875,
+      "season": 2019,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=15&season=2019&gameType=R&fields=totalGames",
+      "sport_id": 15
+    },
+    {
+      "regular_season_games": 0,
+      "season": 2020,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=15&season=2020&gameType=R&fields=totalGames",
+      "sport_id": 15
+    },
+    {
+      "regular_season_games": 0,
+      "season": 2021,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=15&season=2021&gameType=R&fields=totalGames",
+      "sport_id": 15
+    },
+    {
+      "regular_season_games": 2784,
+      "season": 2019,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=16&season=2019&gameType=R&fields=totalGames",
+      "sport_id": 16
+    },
+    {
+      "regular_season_games": 0,
+      "season": 2020,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=16&season=2020&gameType=R&fields=totalGames",
+      "sport_id": 16
+    },
+    {
+      "regular_season_games": 2707,
+      "season": 2021,
+      "source": "https://statsapi.mlb.com/api/v1/schedule?sportId=16&season=2021&gameType=R&fields=totalGames",
+      "sport_id": 16
+    }
+  ],
+  "only_2020_and_explained": 16,
+  "rows": [
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2023
+        }
+      ],
+      "open_after_052": [
+        2023
+      ],
+      "player_slug": "accimias-morales"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "alex-de-jesus"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2019
+        },
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [
+        2019
+      ],
+      "player_slug": "andy-pages"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 1992
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2006
+        }
+      ],
+      "open_after_052": [
+        1992,
+        2006
+      ],
+      "player_slug": "antonio-osuna"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "carlos-rincon"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "christian-suarez"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "diego-cartaya"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "eddys-leonard"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2017
+        }
+      ],
+      "open_after_052": [
+        2017
+      ],
+      "player_slug": "elian-herrera"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 1992
+        }
+      ],
+      "open_after_052": [
+        1992
+      ],
+      "player_slug": "fernando-valenzuela"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "hendrik-clementina"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2007
+        }
+      ],
+      "open_after_052": [
+        2007
+      ],
+      "player_slug": "hideo-nomo"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2003
+        }
+      ],
+      "open_after_052": [
+        2003
+      ],
+      "player_slug": "hung-chih-kuo"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2015
+        }
+      ],
+      "open_after_052": [
+        2015
+      ],
+      "player_slug": "hyun-jin-ryu"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 1992
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2006
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2007
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2008
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2009
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2010
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2011
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2012
+        }
+      ],
+      "open_after_052": [
+        1992,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012
+      ],
+      "player_slug": "ismael-valdez"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "jerming-rosario"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2025
+        }
+      ],
+      "open_after_052": [
+        2025
+      ],
+      "player_slug": "jesus-galiz"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "jorbit-vivas"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2017
+        }
+      ],
+      "open_after_052": [
+        2017
+      ],
+      "player_slug": "jose-dominguez"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2003
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2007
+        }
+      ],
+      "open_after_052": [
+        2003,
+        2007
+      ],
+      "player_slug": "jose-offerman"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2023
+        }
+      ],
+      "open_after_052": [
+        2023
+      ],
+      "player_slug": "joseilyn-gonzalez"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2005
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2006
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2008
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2009
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2010
+        }
+      ],
+      "open_after_052": [
+        2005,
+        2006,
+        2008,
+        2009,
+        2010
+      ],
+      "player_slug": "karim-garcia"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "miguel-droz"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "miguel-vargas"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "omar-estevez"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "oneil-cruz"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "rafael-tua"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2024
+        },
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2025
+        }
+      ],
+      "open_after_052": [
+        2024,
+        2025
+      ],
+      "player_slug": "roiger-mujica"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "ronny-brito"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2018
+        }
+      ],
+      "open_after_052": [
+        2018
+      ],
+      "player_slug": "rubby-de-la-rosa"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "BEFORE_STRUCTURED_MINOR_LEAGUE_RECORDS",
+          "season": 1953
+        },
+        {
+          "cause": "BEFORE_STRUCTURED_MINOR_LEAGUE_RECORDS",
+          "season": 1958
+        }
+      ],
+      "open_after_052": [
+        1953,
+        1958
+      ],
+      "player_slug": "sandy-amoros"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2008
+        }
+      ],
+      "open_after_052": [
+        2008
+      ],
+      "player_slug": "tony-abreu"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2017
+        }
+      ],
+      "open_after_052": [
+        2017
+      ],
+      "player_slug": "victor-gonzalez"
+    },
+    {
+      "explained_by_league": [],
+      "flagged_after_052": true,
+      "missing": [
+        {
+          "cause": "NO_RECORD_IN_OFFICIAL_SOURCE",
+          "season": 2007
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2011
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2013
+        },
+        {
+          "cause": "ADJACENT_TO_FOREIGN_PROFESSIONAL_PLAY",
+          "season": 2014
+        }
+      ],
+      "open_after_052": [
+        2007,
+        2011,
+        2013,
+        2014
+      ],
+      "player_slug": "willy-aybar"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "yadier-alvarez"
+    },
+    {
+      "explained_by_league": [
+        2020
+      ],
+      "flagged_after_052": false,
+      "missing": [
+        {
+          "cause": "LEAGUE_SEASON_NOT_PLAYED",
+          "season": 2020
+        }
+      ],
+      "open_after_052": [],
+      "player_slug": "yusniel-diaz"
+    }
+  ],
+  "rule": "A season with no record between a player's first and last recorded seasons is a research need unless the league did not play it: 2020 is explained for an affiliated minor leaguer whose last recorded season before it is affiliated minor-league play only and who has no major-league stint by then. Leagues that played in 2020 (the major leagues, NPB, KBO) are never suppressed.",
+  "season_gap_players_before": 36,
+  "still_open": 20
+}

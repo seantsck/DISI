@@ -1,0 +1,359 @@
+{
+  "as_of": "2026-10-23",
+  "dated_appearances": 24708,
+  "empty_responses": 4,
+  "errors": 0,
+  "log_era_stints_checked": 566,
+  "milestone_season_to_day_upgrades": 101,
+  "milestone_upgrades_by_event": {
+    "AAA_DEBUT": 20,
+    "AA_DEBUT": 21,
+    "A_DEBUT": 17,
+    "COMPLEX_DEBUT": 15,
+    "DSL_DEBUT": 10,
+    "HIGH_A_DEBUT": 18
+  },
+  "milestone_upgrades_not_applied": [
+    {
+      "event_code": "DSL_DEBUT",
+      "reason": "already exact",
+      "slug": "carlos-frias"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "reason": "already exact",
+      "slug": "carlos-frias"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "reason": "already exact",
+      "slug": "carlos-frias"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "reason": "already exact",
+      "slug": "carlos-frias"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "reason": "already exact",
+      "slug": "carlos-frias"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "reason": "already exact",
+      "slug": "carlos-frias"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2011,
+      "slug": "chin-lung-hu"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2006,
+      "slug": "hung-chih-kuo"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2023,
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2023,
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2016,
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2016,
+      "slug": "hyun-jin-ryu"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "reason": "already exact",
+      "slug": "lenix-osuna"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "reason": "already exact",
+      "slug": "lenix-osuna"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "reason": "already exact",
+      "slug": "lenix-osuna"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2007,
+      "slug": "pedro-martinez"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2012,
+      "slug": "rubby-de-la-rosa"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2013,
+      "slug": "rubby-de-la-rosa"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "reason": "not a recorded milestone: a level first appearance after the MLB debut season (048 rule)",
+      "season_year": 2016,
+      "slug": "yasiel-puig"
+    }
+  ],
+  "pipeline_notes": {
+    "EXACT_DATE_CONFLICT": 9,
+    "GAME_LOG_STARTS_LATER": 20,
+    "NO_GAME_LOG_COVERAGE": 35
+  },
+  "pipeline_window_artifacts": {
+    "count": 9,
+    "explanation": "The game log was read from 2006; for a player who debuted earlier the first appearance in that window is not the debut. The recorded MLB debut (person record) stands; these are not source conflicts and none is recorded as one.",
+    "items": [
+      "adrian-beltre: debut 1998-06-24, first appearance in the 2006+ window 2006-04-03",
+      "chan-ho-park: debut 1994-04-08, first appearance in the 2006+ window 2006-04-07",
+      "hideo-nomo: debut 1995-05-02, first appearance in the 2006+ window 2008-04-10",
+      "hung-chih-kuo: debut 2005-09-02, first appearance in the 2006+ window 2006-04-03",
+      "jose-vizcaino: debut 1989-09-10, first appearance in the 2006+ window 2006-04-07",
+      "juan-castro: debut 1995-09-02, first appearance in the 2006+ window 2006-04-04",
+      "pedro-astacio: debut 1992-07-03, first appearance in the 2006+ window 2006-07-03",
+      "pedro-martinez: debut 1992-09-24, first appearance in the 2006+ window 2006-04-06",
+      "willy-aybar: debut 2005-08-31, first appearance in the 2006+ window 2006-05-10"
+    ]
+  },
+  "players": 39,
+  "professional_debuts_already_on_record_and_matching": [
+    "carlos-frias",
+    "lenix-osuna"
+  ],
+  "professional_debuts_dated": 11,
+  "professional_debuts_not_dated": [
+    {
+      "event_code": "PROFESSIONAL_DEBUT",
+      "event_date": "2006-06-20",
+      "first_recorded_season": 2006,
+      "level": "COMPLEX_ROOKIE",
+      "note": "First verified professional appearance on 2006-06-20 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "pathway": "LATAM_AMATEUR",
+      "reason": "FIRST_OBSERVED_ONLY: first record 2006, signed 2003",
+      "retrieved_at": "2026-10-23T03:15:47.171Z",
+      "season_year": 2006,
+      "signing_year": 2003,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "event_code": "PROFESSIONAL_DEBUT",
+      "event_date": "2013-04-02",
+      "first_recorded_season": 2013,
+      "level": "MLB",
+      "note": "First verified professional appearance on 2013-04-02 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "pathway": "POSTED_PLAYER",
+      "reason": "PRIOR_PROFESSIONAL_CAREER (POSTED_PLAYER): the first affiliated game is not the first professional game",
+      "retrieved_at": "2026-10-23T03:16:16.926Z",
+      "season_year": 2013,
+      "signing_year": 2012,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "event_code": "PROFESSIONAL_DEBUT",
+      "event_date": "2013-05-26",
+      "first_recorded_season": 2013,
+      "level": "LOW_A",
+      "note": "First verified professional appearance on 2013-05-26 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "pathway": "MEXICAN_LEAGUE_TRANSFER",
+      "reason": "PRIOR_PROFESSIONAL_CAREER (MEXICAN_LEAGUE_TRANSFER): the first affiliated game is not the first professional game",
+      "retrieved_at": "2026-10-23T03:17:14.780Z",
+      "season_year": 2013,
+      "signing_year": 2012,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "event_code": "PROFESSIONAL_DEBUT",
+      "event_date": "2017-06-05",
+      "first_recorded_season": 2017,
+      "level": "INTERNATIONAL_ROOKIE",
+      "note": "First verified professional appearance on 2017-06-05 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": null,
+      "pathway": "LATAM_AMATEUR",
+      "reason": "FIRST_OBSERVED_ONLY: first record 2017, signed 2015",
+      "retrieved_at": "2026-10-23T03:19:22.297Z",
+      "season_year": 2017,
+      "signing_year": 2015,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "PROFESSIONAL_DEBUT",
+      "event_date": "2025-03-19",
+      "first_recorded_season": 2025,
+      "level": "MLB",
+      "note": "First verified professional appearance on 2025-03-19 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "pathway": "POSTED_PLAYER",
+      "reason": "PRIOR_PROFESSIONAL_CAREER (POSTED_PLAYER): the first affiliated game is not the first professional game",
+      "retrieved_at": "2026-10-23T03:19:50.008Z",
+      "season_year": 2025,
+      "signing_year": 2025,
+      "slug": "roki-sasaki",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/808963/stats?stats=gameLog&group=pitching&season=2025"
+    },
+    {
+      "event_code": "PROFESSIONAL_DEBUT",
+      "event_date": "2012-08-01",
+      "first_recorded_season": 2012,
+      "level": "COMPLEX_ROOKIE",
+      "note": "First verified professional appearance on 2012-08-01 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "pathway": "CUBAN_PRO",
+      "reason": "PRIOR_PROFESSIONAL_CAREER (CUBAN_PRO): the first affiliated game is not the first professional game",
+      "retrieved_at": "2026-10-23T03:20:45.661Z",
+      "season_year": 2012,
+      "signing_year": 2012,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "event_code": "PROFESSIONAL_DEBUT",
+      "event_date": "2016-08-04",
+      "first_recorded_season": 2016,
+      "level": "INTERNATIONAL_ROOKIE",
+      "note": "First verified professional appearance on 2016-08-04 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": null,
+      "pathway": "CUBAN_PRO",
+      "reason": "PRIOR_PROFESSIONAL_CAREER (CUBAN_PRO): the first affiliated game is not the first professional game",
+      "retrieved_at": "2026-10-23T03:20:54.790Z",
+      "season_year": 2016,
+      "signing_year": 2016,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "event_code": "PROFESSIONAL_DEBUT",
+      "event_date": "2016-04-07",
+      "first_recorded_season": 2016,
+      "level": "HIGH_A",
+      "note": "First verified professional appearance on 2016-04-07 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "pathway": "CUBAN_PRO",
+      "reason": "PRIOR_PROFESSIONAL_CAREER (CUBAN_PRO): the first affiliated game is not the first professional game",
+      "retrieved_at": "2026-10-23T03:21:05.139Z",
+      "season_year": 2016,
+      "signing_year": 2015,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    }
+  ],
+  "requests": 539,
+  "rule": "Exact dates come only from dated appearances in the official gameLog endpoint (2006 onward). A stint the log returns no games for keeps NULL dates: never a season start, a schedule date, a transaction date, July 1 or January 1. SEASON PRECISION != DAY PRECISION.",
+  "still_undated": [
+    {
+      "affiliate_team": "Leones de Yucatan",
+      "first_game_date": null,
+      "games": 0,
+      "last_game_date": null,
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": null,
+      "season": 2018,
+      "slug": "carlos-frias",
+      "source_url": null,
+      "state": "FOREIGN_PROFESSIONAL_NO_LOG"
+    },
+    {
+      "affiliate_team": "Diablos Rojos del Mexico",
+      "first_game_date": null,
+      "games": 0,
+      "last_game_date": null,
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": null,
+      "season": 2018,
+      "slug": "elian-herrera",
+      "source_url": null,
+      "state": "FOREIGN_PROFESSIONAL_NO_LOG"
+    },
+    {
+      "affiliate_team": "Toros de Tijuana",
+      "first_game_date": null,
+      "games": 0,
+      "last_game_date": null,
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": null,
+      "season": 2018,
+      "slug": "jose-dominguez",
+      "source_url": null,
+      "state": "FOREIGN_PROFESSIONAL_NO_LOG"
+    },
+    {
+      "affiliate_team": "Diablos Rojos del Mexico",
+      "first_game_date": null,
+      "games": 0,
+      "last_game_date": null,
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": null,
+      "season": 2018,
+      "slug": "lenix-osuna",
+      "source_url": null,
+      "state": "FOREIGN_PROFESSIONAL_NO_LOG"
+    },
+    {
+      "affiliate_team": "Generales de Durango",
+      "first_game_date": null,
+      "games": 0,
+      "last_game_date": null,
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": null,
+      "season": 2018,
+      "slug": "lenix-osuna",
+      "source_url": null,
+      "state": "FOREIGN_PROFESSIONAL_NO_LOG"
+    },
+    {
+      "affiliate_team": "Guerreros de Oaxaca",
+      "first_game_date": null,
+      "games": 0,
+      "last_game_date": null,
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": null,
+      "season": 2018,
+      "slug": "lenix-osuna",
+      "source_url": null,
+      "state": "FOREIGN_PROFESSIONAL_NO_LOG"
+    }
+  ],
+  "stints_by_state": {
+    "FILLED_BY_052": 528,
+    "FOREIGN_PROFESSIONAL_NO_LOG": 6,
+    "MATCHES": 32
+  },
+  "successful_responses": 539
+}
