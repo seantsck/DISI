@@ -55,18 +55,22 @@ export const CANONICAL_EXPECTATIONS = {
   // 048 (the other thirty-five verified MLB players with new rows; Cedeno and Frias were already on record from 021): +776 stints, +200 milestones,
   // +35 players, +50 season totals (each proven), +15 pending progression reviews. The 4 + 89 undated log-era stints become 534: 441 more
   // log-era team stints whose game dates have not been researched (a coverage gap queued as MISSING_FIRST_GAME_DATE, not a failure).
+  // 052 (official team-season records and game logs): +528 dated log-era stints; the 6 still undated are 2018 Mexican League stints the game
+  // log does not carry (foreign professional play, source-limited). No stint is added or removed.
   stints: 1859,
   stint_players: 212,
-  dated_stints: 746,
-  undated_log_era_stints: 534,
+  dated_stints: 1274,
+  undated_log_era_stints: 6,
   team_stints: 1739,
   season_total_stints: 120,
   unresolved_stints: 0,
   season_total_same_level: 90,
   season_total_cross_level: 29,
   season_total_sub_season: 1,
-  coded_milestones: 1073,
-  professional_debut_milestones: 166,
+  // 052: +11 dated PROFESSIONAL_DEBUT rows (amateur signings whose first recorded season is the signing season or the next); 101 level debuts move
+  // from season to day precision in place (no row added).
+  coded_milestones: 1084,
+  professional_debut_milestones: 177,
   legacy_milestones: 5,
   mlb_debut_milestones: 47,
   mlb_debut_players: 47,
@@ -88,12 +92,13 @@ export const CANONICAL_EXPECTATIONS = {
     OUT_OF_AFFILIATED_BASEBALL: 1,
   },
   // progression decisions (024): reviewed interpretation of first appearances
-  progression_decisions: 37,
-  progression_decisions_pending: 26,
+  // 052: +5 pending reviews (Herrera, Baez, Troncoso, Sasaki) for sequences the exact dates make visible inside one season; none decided.
+  progression_decisions: 42,
+  progression_decisions_pending: 31,
   progression_roles: {
     EARLY_CAMEO: 8,
     POST_ESTABLISHMENT_APPEARANCE: 3,
-    REVIEW_REQUIRED: 26,
+    REVIEW_REQUIRED: 31,
   },
   // integrity
   duplicate_stint_groups: 0,
@@ -108,6 +113,10 @@ export const CANONICAL_EXPECTATIONS = {
   decision_milestone_mismatch: 0,
   // 051: a VERIFIED_NO_MLB outcome audit is never contradicted by the development record
   no_mlb_development_contradictions: 0,
+  // 052: organizations from the official team-season record are season-bounded; no 2020 affiliated minor-league stint; no date without a game log
+  organization_evidence_violations: 0,
+  league_season_not_played_stints: 0,
+  stint_dates_without_game_log: 0,
   // whole public API surface (025). Checked from the ACLs themselves
   // (aclexplode), so privileges information_schema omits (MAINTAIN) count too.
   // 026 adds six tables (and drops the empty legacy evaluations table: 42 - 1 + 6) and five views.
@@ -264,12 +273,28 @@ export const CANONICAL_EXPECTATIONS = {
 }
 
 /**
+ * The pinned expectations as they stood through Migration 051 (051 added no migration, so this is the 050 head). Tests that verify a chain
+ * built only through 050 use this; CANONICAL_EXPECTATIONS is always the current head. Migration 052 (development taxonomy and chronology) moved
+ * the date, milestone and progression counts below; nothing else differs.
+ */
+export const EXPECTATIONS_THROUGH_051 = Object.freeze({
+  ...CANONICAL_EXPECTATIONS,
+  dated_stints: 746,
+  undated_log_era_stints: 534,
+  coded_milestones: 1073,
+  professional_debut_milestones: 166,
+  progression_decisions: 37,
+  progression_decisions_pending: 26,
+  progression_roles: { EARLY_CAMEO: 8, POST_ESTABLISHMENT_APPEARANCE: 3, REVIEW_REQUIRED: 26 },
+})
+
+/**
  * The pinned expectations as they stood through Migration 049. Tests that verify a chain built only through 049 use this; CANONICAL_EXPECTATIONS is
  * always the current head. Migration 050 (the 2015 / 2016 international benchmark) moved the population and scouting counts below; nothing else
  * differs.
  */
 export const EXPECTATIONS_THROUGH_049 = Object.freeze({
-  ...CANONICAL_EXPECTATIONS,
+  ...EXPECTATIONS_THROUGH_051,
   players_total: 268,
   league_benchmark_players: 48,
   player_evaluations: 51,
@@ -507,6 +532,27 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
       and (exists (select 1 from player_season_stints t where t.player_id = s.player_id and t.level = 'MLB')
         or exists (select 1 from development_milestones m where m.player_id = s.player_id and m.event_code = 'MLB_DEBUT'))`)
   check('integrity', 'no_mlb_development_contradictions', expectations.no_mlb_development_contradictions, noMlb.n)
+  // 052: AFFILIATE NAME != ORGANIZATION WITHOUT SEASON CONTEXT. A stint whose organization comes from the official team-season record carries that
+  // record for its own team id and its own season, and it is a Dodgers stint exactly when that record names the Dodgers (club id 119): an
+  // unknown organization is never coerced to the Dodgers, and a Dodgers affiliate is never carried to another season.
+  const [orgEvidence] = await query(`select count(*)::int as n from player_season_stints s
+    left join organizations o on o.id = s.organization_id
+    where s.detail ->> 'organizationBasis' = 'TEAM_SEASON_RECORD'
+      and (s.detail -> 'organizationEvidence' is null
+        or (s.detail -> 'organizationEvidence' ->> 'season')::int is distinct from s.season
+        or (s.detail -> 'organizationEvidence' ->> 'teamId')::bigint is distinct from s.team_id
+        or o.id is null
+        or ((s.detail -> 'organizationEvidence' ->> 'parentOrgId')::int = 119) is distinct from (o.franchise_key = 'DODGERS'))`)
+  check('integrity', 'organization_evidence_violations', expectations.organization_evidence_violations, orgEvidence.n)
+  // 052: LEAGUE SEASON NOT PLAYED != MISSING PLAYER SEASON. The research queue explains a missing 2020 for an affiliated minor leaguer because the
+  // official schedule holds no 2020 game at any affiliated minor-league level; an affiliated minor-league stint for 2020 would contradict it.
+  const [notPlayed] = await query(`select count(*)::int as n from player_season_stints
+    where stint_kind = 'TEAM_STINT' and season = 2020 and affiliated and level <> 'MLB'`)
+  check('integrity', 'league_season_not_played_stints', expectations.league_season_not_played_stints, notPlayed.n)
+  // 052: SEASON PRECISION != DAY PRECISION. A stint carries a first or last appearance date only with game-log evidence behind it.
+  const [undocumentedDates] = await query(`select count(*)::int as n from player_season_stints
+    where (first_game_date is not null or last_game_date is not null) and game_date_basis is null`)
+  check('integrity', 'stint_dates_without_game_log', expectations.stint_dates_without_game_log, undocumentedDates.n)
 
   // -- scouting / evaluation history (026) ------------------------------------
   const count = async (sql) => (await query(sql))[0].n
