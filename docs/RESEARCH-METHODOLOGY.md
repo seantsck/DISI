@@ -19,6 +19,13 @@ transaction) stays in [`INGESTION.md`](INGESTION.md); the plan is in [`ROADMAP.m
 - **`UNKNOWN DEVELOPMENT HISTORY` is not `NO DEVELOPMENT`.** A player with no season rows, no known first professional season or no known
   highest level has a gap in DISI's research. A missing season is never read as "did not play", and a record that starts years after the
   signing is the first *observed* record, not the first professional season.
+- **`AUDITED NO MLB` is not `CAREER FAILURE`, and `NO MLB OUTCOME` is not `NO DEVELOPMENT` (051).** An audited no-MLB player's documented
+  path is described in evidence language ("highest recorded affiliated level", "last observed affiliated season", "no later affiliated season is
+  currently on record"), never as a failed, stalled or washed-out prospect, and no reason is inferred from a gap or a sequence.
+- **`LAST OBSERVED SEASON` is not `CAREER END`, and `POST-CONTROL AFFILIATED PLAY` is not `DODGERS DEVELOPMENT` (051).** A season with another
+  organization is career context; the highest level recorded at a Dodgers affiliate and the whole-career highest level are two figures.
+- **`DEVELOPMENT HISTORY` is not a `PREDICTION FEATURE` (041, re-proven in 051).** Development rows are post-signing information and never reach the
+  signing-time feature matrix.
 - **`UNKNOWN TRANSACTION` is not `RELEASED`.** No exit is inferred from a player's absence from later records. An exit is a sourced event;
   without one the exit is unknown (or the player is still with the organization), and DISI does not say which.
 - **`UNKNOWN TRADE RETURN` is not `ZERO VALUE`.** A return that is not recorded or not valued is `NULL`; a zero is a recorded zero.
@@ -366,6 +373,24 @@ not write dates, transaction types, affiliate levels, trade participants, bWAR o
   Dodgers exit; organizations are not re-resolved (the 021 affiliation table is unchanged); game-log dates are not retrieved; minor-league
   years the API does not hold (the 1950s, most pre-1990 rookie leagues) stay unknown.
 
+### What 051 recorded (audited no-MLB development coverage)
+
+- **The cohort** is derived: every Dodgers tracked signing whose canonical outcome audit is `VERIFIED_NO_MLB` (46). NOT_AUDITED and verified MLB
+  players are not in it; benchmark rows are not Dodgers signings.
+- **The record was checked against the official source fact by fact** (season splits, milestone candidates, game logs, 2026-10-22): 306 of 306
+  stints, 278 of 278 dated stints and 182 of 182 dated milestones match; nothing on record disagrees and the source holds nothing DISI lacks. No
+  canonical row is written and there is no migration 051.
+- **Highest level, two figures.** The published distribution counts the whole recorded career (any organization). The Dodgers-affiliate part is
+  reported beside it (`careerSegments`, from each stint's own organization, season by season; control is never inferred from an adjacent season).
+  Seven players first reached their whole-career highest level with another organization.
+- **What stays open, by cause.** Every season-gap item names only 2020 (the cancelled season); the level gaps are Pioneer League rookie-advanced
+  seasons the taxonomy has no level for (documented, not forced); two players have no structured record and an unknown highest level; one
+  sequence (Carlos Ávila) is pending for a person. Two-organization seasons are checked against the recorded exit date (evidence only).
+- **The 048 first-professional-season rule is applied unchanged.** Four 2019 signings first observed in 2021 are `FIRST_OBSERVED_ONLY` although only
+  2020 lies between; skipping a cancelled season in that rule would be a separate reviewed decision.
+- **Verifier.** One check, `no_mlb_development_contradictions`: no VERIFIED_NO_MLB signing holds an MLB-level stint or an `MLB_DEBUT` milestone
+  (249 checks). A contradiction stops that player and is reviewed as an outcome question, never changed inside a development load.
+
 ### What 049 recorded
 
 - **The 2009 Tony Abreu trade, corrected forward** (official MLB log + Retrosheet 64131): Arizona sent Jon Garland to the Dodgers on 2009-08-31 for
@@ -457,7 +482,7 @@ npm run research:queue          open queues by category, with what each blocks
 npm run research:outcomes       the audit cohort            -- --mature --status not_audited [--year --market --limit --format csv|json]
 npm run research:costs          the cost queue              -- --missing [--mature --mlb yes|no --year --market --limit]
 npm run research:transactions   transaction / value items   -- --missing | --traded | --unresolved-attribution | --chains [--value-blocked] | --packages [--membership|--terms] | --ptbnl | --future-consideration | --cash-unknown | --value-blocked | --bucket CHAIN_OR_MEMBERSHIP|TERMS|VALUE|OTHER
-npm run research:development    development research queue  -- --missing [--mature --mlb yes|no --year --market --player --limit] | --coverage | --timing
+npm run research:development    development research queue  -- --missing [--mature --mlb yes|no --year --market --player --limit] | --coverage | --timing | --mlb-coverage | --no-mlb-coverage | --needs | --review
 npm run research:readiness      blockers for every layer, plus the development / transaction evidence gaps (reported, not gates)
 npm run research:progress       against database/research/046/baseline.json
 ```

@@ -12,7 +12,7 @@ import {
 } from '../../../lib/format.js'
 import { assetPath } from '../../../lib/research/asset-path.js'
 import { firstProSeasonStatus } from '../../../lib/research/development-research.js'
-import { historyCoverage } from '../../../lib/research/history-coverage.js'
+import { careerSegments, historyCoverage } from '../../../lib/research/history-coverage.js'
 import { decisionStateLabel, expectedValueCell, realizedValueStateLabel, snapshotFreshness } from '../../../lib/decision-display.js'
 
 const loadDossier = cache(getPlayerDossier)
@@ -157,6 +157,8 @@ export default async function PlayerPage({ params }) {
     ? historyCoverage({ signing_year: dodgersSigning.signing_year, mlb_debut_date: dodgersSigning.mlb_debut_date, pathway: dodgersSigning.pathway }, devStints)
     : null
   const firstProStatus = dodgersSigning ? firstProSeasonStatus(dodgersSigning, devSummary) : null
+  // 051: who each affiliate belonged to, season by season; a later season with another organization is never Dodgers development
+  const segments = dodgersSigning && devStints.length > 0 ? careerSegments(devStints) : null
 
   return (
     <main className="shell page-main dossier">
@@ -311,9 +313,17 @@ export default async function PlayerPage({ params }) {
               {devSummary.current_development_season ? <span className="muted"> · last recorded season {devSummary.current_development_season}</span> : null}
               {devSummary.progression_review_pending ? <span className="muted"> · progression review pending</span> : null}
             </Fact>
-            <Fact label="Highest affiliated level appeared at">
+            <Fact label="Highest affiliated level appeared at (whole recorded career)">
               {devSummary.highest_affiliated_level ? humanize(devSummary.highest_affiliated_level) : <span className="unknown">{UNKNOWN}</span>}
             </Fact>
+            {segments && devStints.length > 0 && (
+              <Fact label="Highest level recorded at a Dodgers affiliate">
+                {segments.highest_level_at_dodgers_affiliate
+                  ? <>{humanize(segments.highest_level_at_dodgers_affiliate.level)} <span className="muted">(first recorded {segments.highest_level_at_dodgers_affiliate.season})</span></>
+                  : <span className="unknown">None on the level ladder</span>}
+                {segments.highest_level_reached_elsewhere && <span className="muted"> · the higher level was recorded with another organization ({segments.other_organizations.join(', ')}); later play elsewhere is not Dodgers development</span>}
+              </Fact>
+            )}
             <Fact label="First Double-A appearance">
               {devSummary.first_aa_date ? <>{dateLabel(devSummary.first_aa_date)} <span className="muted">(exact date)</span></>
                 : devSummary.first_aa_season != null ? <>{devSummary.first_aa_season} <span className="muted">(season recorded; exact date not recorded)</span></>
@@ -338,7 +348,8 @@ export default async function PlayerPage({ params }) {
             </h3>
             <dl className="fact-grid wide">
               <Fact label="Highest level">{p.highest_level ? `${p.highest_level}${p.highest_level_season ? ` (${p.highest_level_season})` : ''}` : <span className="unknown">No affiliated games recorded</span>}</Fact>
-              <Fact label="Last affiliated season">{p.last_affiliated_season ? `${p.last_affiliated_season}${p.last_affiliated_team ? ` · ${p.last_affiliated_team}` : ''}` : <span className="unknown">{UNKNOWN}</span>}</Fact>
+              <Fact label="Last affiliated season">{p.last_affiliated_season ? `${p.last_affiliated_season}${p.last_affiliated_team ? ` · ${p.last_affiliated_team}` : ''}` : <span className="unknown">{UNKNOWN}</span>}
+                {p.last_affiliated_season && p.outcome_audit_status === 'VERIFIED_NO_MLB' && <span className="muted"> · no later affiliated season is currently on record (not a career end or a release date)</span>}</Fact>
               <Fact label="Last affiliated level">{known(p.last_affiliated_level)}</Fact>
               <Fact label="Active in affiliated baseball">{p.active_in_affiliated_ball == null ? <span className="unknown">{UNKNOWN}</span> : yesNoUnknown(p.active_in_affiliated_ball)}</Fact>
             </dl>

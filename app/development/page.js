@@ -4,7 +4,7 @@ import PlayerLink from '../components/PlayerLink'
 import { getDevelopmentData } from '../../lib/data.js'
 import { money, num, bwar, humanize, dateLabel, MISSING } from '../../lib/format.js'
 import { developmentCoverage, developmentRecords, timingFacts } from '../../lib/research/development-research.js'
-import { verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
+import { auditedNoMlbCoverage, verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
 import { NEED_GROUPS, developmentNeedSummary, developmentNeeds } from '../../lib/research/development-needs.js'
 
 export const metadata = { title: 'Development' }
@@ -49,6 +49,15 @@ const COVERAGE_CARDS = [
 ]
 
 
+// 051: the audited no-MLB cohort's coverage cards (each a count with its denominator)
+const NO_MLB_CARDS = [
+  { key: 'any_development_history', label: 'Any development history', what: 'at least one season on record, affiliated or in a foreign professional league' },
+  { key: 'highest_level_known', label: 'Known highest level', what: 'a highest affiliated level on record; absence from MLB is never turned into a level' },
+  { key: 'usable_chronology', label: 'Usable chronology', what: 'stints on record and no open chronology issue; the rest cannot support timing analysis' },
+  { key: 'later_career_with_other_organizations', label: 'Later career elsewhere', what: 'affiliated seasons with another organization are on record; they are not Dodgers development' },
+]
+const LEVEL_ROWS = ['INTERNATIONAL_ROOKIE', 'COMPLEX_ROOKIE', 'LOW_A', 'HIGH_A', 'AA', 'AAA']
+
 const DIMENSION_CARDS = [
   { key: 'SIGNING_DATE', label: 'Signing date', what: 'tracked signings with a recorded signing date' },
   { key: 'FIRST_PRO_SEASON', label: 'First professional season', what: 'amateur signings whose earliest record is the signing season or the next; a later start is only the first observed record, and an established professional’s first affiliated season is not his first professional season' },
@@ -74,6 +83,11 @@ export default async function DevelopmentPage() {
   const stintsByPlayer = new Map()
   for (const s of mlbStints ?? []) { if (!stintsByPlayer.has(s.player_id)) stintsByPlayer.set(s.player_id, []); stintsByPlayer.get(s.player_id).push(s) }
   const mlbCoverage = stintsByPlayer.size > 0 ? verifiedMlbCoverage(dataset, stintsByPlayer, developmentRecords) : null
+  // 051: the audited no-MLB cohort, from the same stint relation (read for those 46 players); absent stints leave the section out
+  const noMlbCoverage = stintsByPlayer.size > 0 && devSignings.some((s) => s.outcome_audit_status === 'VERIFIED_NO_MLB')
+    ? auditedNoMlbCoverage(dataset, stintsByPlayer, developmentRecords, developmentNeeds) : null
+  const noMlbIds = new Set((noMlbCoverage?.rows ?? []).map((r) => r.player_id))
+  const noMlbNeeds = developmentNeedSummary({ ...dataset, developmentQueue: queue.filter((q) => noMlbIds.has(q.player_id)) })
   // 048: the same queue, de-duplicated by the evidence gap each item names
   const needs = developmentNeeds(dataset)
   const needSummary = developmentNeedSummary(dataset)
@@ -141,10 +155,11 @@ export default async function DevelopmentPage() {
             {timing.signing_to_mlb_exact_by_route.established_professional.n > 0 && <> ({num(timing.signing_to_mlb_exact_by_route.established_professional.min_years, 2)} to {num(timing.signing_to_mlb_exact_by_route.established_professional.max_years, 2)} years, median {num(timing.signing_to_mlb_exact_by_route.established_professional.median_years, 2)})</>}.
             {' '}An established professional’s interval is acquisition to debut, not development from an amateur signing; the two are not compared.
           </p>
-          <h3 className="sub">Highest level reached among audited non-MLB players</h3>
+          <h3 className="sub">Highest level recorded among audited non-MLB players (whole recorded career, any organization)</h3>
           <p>
             <strong>{timing.highest_level_known.n} of {timing.highest_level_known.of}</strong> audited non-MLB players have a known highest level.
-            Players whose outcome is NOT_AUDITED are not counted here and are not treated as negative outcomes.
+            Players whose outcome is NOT_AUDITED are not counted here and are not treated as negative outcomes. This counts every recorded affiliated
+            season, including seasons with other organizations after the player left; the Dodgers-affiliate part is shown separately below.
           </p>
           {Object.keys(timing.highest_level_counts).length > 0 && (
             <div className="signal-row">{Object.entries(timing.highest_level_counts).map(([level, n]) => <span key={level}>{humanize(level)} · {n}</span>)}</div>
@@ -194,6 +209,85 @@ export default async function DevelopmentPage() {
                     <td>{r.history.state === 'NO_OPEN_GAP' ? 'No gap visible' : <strong>Partial</strong>}{r.progression_review_pending && <span className="muted"> · review pending</span>}</td>
                     <td className="muted">{r.history.gaps.length ? r.history.gaps.map((g) => GAP_LABELS[g.code] ?? humanize(g.code)).join(' · ') : MISSING}{r.history.notes.some((n) => n.code === 'PRIOR_PROFESSIONAL_CAREER') && ' · prior professional career'}</td>
                     <td>{r.dims.FIRST_PRO_SEASON === 'KNOWN' ? 'Known' : <span className="unknown">{r.first_pro_status === 'PRIOR_PROFESSIONAL_CAREER' ? 'Not established (prior professional career)' : r.first_pro_status === 'FIRST_OBSERVED_ONLY' ? 'Only the first observed season' : 'Unknown'}</span>}</td>
+                  </tr>
+                ))}</tbody>
+              </table>
+            </details>
+          </section>
+        )}
+
+        {noMlbCoverage && (
+          <section className="timeline-panel section-gap" aria-labelledby="no-mlb-heading">
+            <div className="table-head">
+              <div><span className="eyebrow">Audited no-MLB cohort</span><h2 id="no-mlb-heading">Audited no-MLB development histories</h2></div>
+              <span className="micro-note">{noMlbCoverage.players} players whose outcome audit is VERIFIED_NO_MLB · descriptive · not a success or failure rate · not a causal explanation</span>
+            </div>
+            <p className="muted">
+              An audited no-MLB outcome is not a career failure and not an absence of development. Each figure below is what the structured season and
+              game-log records document, with its denominator. A last observed season is not a career end or a release, and a missing season is unknown,
+              not a season the player did not play. Players whose outcome is NOT_AUDITED are not in this cohort.
+            </p>
+            <div className="coverage-grid">
+              {NO_MLB_CARDS.map((c) => {
+                const v = noMlbCoverage[c.key]
+                return (
+                  <div key={c.key}>
+                    <span>{c.label}</span>
+                    <strong>{v.n} of {v.of}</strong>
+                    <small>{c.what}</small>
+                  </div>
+                )
+              })}
+              <div>
+                <span>Verified first professional season</span>
+                <strong>{noMlbCoverage.first_professional_season.KNOWN ?? 0} of {noMlbCoverage.players}</strong>
+                <small>{noMlbCoverage.first_professional_season.FIRST_OBSERVED_ONLY ?? 0} have only a first observed season; {noMlbCoverage.first_professional_season.NO_AFFILIATED_RECORD ?? 0} have no affiliated record</small>
+              </div>
+              <div>
+                <span>Exact game dates</span>
+                <strong>{noMlbCoverage.exact_dates.dated} of {noMlbCoverage.exact_dates.log_era_stints}</strong>
+                <small>log-era (2006+) team stints with game-log first and last appearances; a season is never turned into a date</small>
+              </div>
+            </div>
+            <h3 className="sub">Highest recorded level: the whole recorded career and the Dodgers-affiliate part of it</h3>
+            <p className="muted">
+              Two different questions, never blended. {noMlbCoverage.highest_level_reached_elsewhere.n} of {noMlbCoverage.players} first reached their highest
+              recorded level with another organization, after leaving the Dodgers; that later play is career context, not Dodgers development. A rookie-advanced
+              (Pioneer League) season is on record for {noMlbCoverage.unplaceable_level_on_record.n} players but has no place on the level ladder, so it is never ranked.
+            </p>
+            <table className="compact-table">
+              <thead><tr><th>Level</th><th className="num">Whole recorded career</th><th className="num">At a Dodgers affiliate</th></tr></thead>
+              <tbody>{LEVEL_ROWS.map((level) => (
+                <tr key={level}>
+                  <td>{humanize(level)}</td>
+                  <td className="num">{noMlbCoverage.highest_level_whole_career[level] ?? 0}</td>
+                  <td className="num">{noMlbCoverage.highest_level_at_dodgers_affiliate[level] ?? 0}</td>
+                </tr>
+              ))}
+              <tr className="muted"><td>Unknown, or no level on the ladder</td><td className="num">{noMlbCoverage.highest_level_known.of - noMlbCoverage.highest_level_known.n}</td><td className="num">{noMlbCoverage.players - Object.values(noMlbCoverage.highest_level_at_dodgers_affiliate).reduce((a, b) => a + b, 0)}</td></tr>
+              </tbody>
+            </table>
+            <p className="muted small-note">
+              Unresolved development research for this cohort: {noMlbNeeds.needs} distinct evidence gaps across {noMlbNeeds.players} players
+              {noMlbNeeds.needs > 0 && <> ({Object.entries(noMlbNeeds.by_need).map(([k, n]) => `${humanize(k)} ${n}`).join(', ')})</>}.
+              {noMlbCoverage.season_gap_only_league_not_played.of > 0 && <> Every season-gap item here names only 2020, the cancelled minor-league season ({noMlbCoverage.season_gap_only_league_not_played.n} of {noMlbCoverage.season_gap_only_league_not_played.of}).</>}
+            </p>
+            <details>
+              <summary className="muted">The {noMlbCoverage.players} documented paths</summary>
+              <table className="compact-table">
+                <thead><tr><th>Player</th><th className="num">Signed</th><th className="num">First observed</th><th>First professional season</th><th>Highest recorded level</th><th>At a Dodgers affiliate</th><th>Last observed affiliated season</th><th>Where the record is silent</th></tr></thead>
+                <tbody>{noMlbCoverage.rows.map((r) => (
+                  <tr key={r.player_id}>
+                    <td><PlayerLink slug={r.player_slug} name={r.full_name} /></td>
+                    <td className="num">{r.signing_year}</td>
+                    <td className="num">{r.history.first_observed_season ?? MISSING}</td>
+                    <td>{r.first_pro_status === 'KNOWN' ? 'Known' : <span className="unknown">{r.first_pro_status === 'FIRST_OBSERVED_ONLY' ? 'Only the first observed season' : r.first_pro_status === 'PRIOR_PROFESSIONAL_CAREER' ? 'Not established (prior professional career)' : 'No affiliated record'}</span>}</td>
+                    <td>{r.highest_level_recorded ? humanize(r.highest_level_recorded) : <span className="unknown">Unknown</span>}</td>
+                    <td>{r.segments.highest_level_at_dodgers_affiliate ? humanize(r.segments.highest_level_at_dodgers_affiliate.level) : <span className="unknown">{MISSING}</span>}</td>
+                    <td>{r.segments.last_observed_affiliated
+                      ? <>{r.segments.last_observed_affiliated.season} <span className="muted">· {r.segments.last_observed_affiliated.organizations.map((o) => (o === 'UNKNOWN_ORGANIZATION' ? 'organization unresolved' : o)).join(' / ')}</span></>
+                      : <span className="unknown">None on record</span>}</td>
+                    <td className="muted">{r.history.gaps.length ? r.history.gaps.map((g) => GAP_LABELS[g.code] ?? humanize(g.code)).join(' · ') : MISSING}{r.progression_review_pending && ' · progression review pending'}</td>
                   </tr>
                 ))}</tbody>
               </table>

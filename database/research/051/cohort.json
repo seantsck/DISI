@@ -1,0 +1,2794 @@
+{
+  "as_of": "2026-10-05",
+  "players": [
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2013,
+        2014,
+        2015,
+        2016
+      ],
+      "exact_dates": {
+        "dated": 10,
+        "log_era_stints": 10,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "HISTORY_UNAVAILABLE",
+      "first_observed_season": 2013,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Julian Leon",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2014
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "HIGH_A",
+        "season": 2016
+      },
+      "highest_level_reached_elsewhere": true,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-09-01",
+        "organizations": [
+          "Los Angeles Angels"
+        ],
+        "season": 2019,
+        "teams": [
+          "Mobile BayBears"
+        ]
+      },
+      "mlb_id": "624645",
+      "notes": [],
+      "open_detectors": [
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "LEVEL_CLASSIFICATION"
+      ],
+      "other_organization_seasons": [
+        2017,
+        2018,
+        2019
+      ],
+      "other_organizations": [
+        "Los Angeles Angels"
+      ],
+      "player_slug": "julian-leon",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2012,
+      "unplaceable_level_seasons": [
+        2014
+      ]
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2013,
+        2014,
+        2015,
+        2016,
+        2017
+      ],
+      "exact_dates": {
+        "dated": 10,
+        "log_era_stints": 13,
+        "undated": 3,
+        "undated_foreign_pro": 3
+      },
+      "exit_control_state": "HISTORY_UNAVAILABLE",
+      "first_observed_season": 2013,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [
+        2017,
+        2018,
+        2019
+      ],
+      "full_name": "Lenix Osuna",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2014,
+            2015
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "HIGH_A",
+        "season": 2017
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "HIGH_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2017-07-02",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2017,
+        "teams": [
+          "AZL Dodgers",
+          "Great Lakes Loons",
+          "Rancho Cucamonga Quakes"
+        ]
+      },
+      "mlb_id": "624646",
+      "notes": [],
+      "open_detectors": [
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "GAME_DATES",
+        "LEVEL_CLASSIFICATION"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "lenix-osuna",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2012,
+      "unplaceable_level_seasons": [
+        2014,
+        2015
+      ]
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2013,
+        2014,
+        2015,
+        2016,
+        2017
+      ],
+      "exact_dates": {
+        "dated": 7,
+        "log_era_stints": 7,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "NO_EXIT_EVIDENCE",
+      "first_observed_season": 2013,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "William Soto",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2015,
+            2016
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "LOW_A",
+        "season": 2016
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "LOW_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2017-09-04",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2017,
+        "teams": [
+          "AZL Dodgers",
+          "Great Lakes Loons"
+        ]
+      },
+      "mlb_id": "624648",
+      "notes": [],
+      "open_detectors": [
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "LEVEL_CLASSIFICATION"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "william-soto",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2012,
+      "unplaceable_level_seasons": [
+        2015,
+        2016
+      ]
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019
+      ],
+      "exact_dates": {
+        "dated": 9,
+        "log_era_stints": 9,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2014,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Gersel Pitre",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2015,
+            2016,
+            2017,
+            2018
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "LOW_A",
+        "season": 2017
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "LOW_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-09-02",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2019,
+        "teams": [
+          "Great Lakes Loons"
+        ]
+      },
+      "mlb_id": "649957",
+      "notes": [],
+      "open_detectors": [
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "LEVEL_CLASSIFICATION"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "gersel-pitre",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2013,
+      "unplaceable_level_seasons": [
+        2015,
+        2016,
+        2017,
+        2018
+      ]
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2014,
+        2015,
+        2016,
+        2017
+      ],
+      "exact_dates": {
+        "dated": 13,
+        "log_era_stints": 13,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2014,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Hendrik Clementina",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2017
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "COMPLEX_ROOKIE",
+        "season": 2015
+      },
+      "highest_level_reached_elsewhere": true,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2023-09-17",
+        "organizations": [
+          "Atlanta Braves"
+        ],
+        "season": 2023,
+        "teams": [
+          "FCL Braves",
+          "Gwinnett Stripers",
+          "Mississippi Braves"
+        ]
+      },
+      "mlb_id": "649955",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "MULTI_ORG_SEASON_UNVERIFIED",
+        "SEASON_GAP",
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "LEVEL_CLASSIFICATION",
+        "ORGANIZATION",
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [
+        2017,
+        2018,
+        2019,
+        2021,
+        2022,
+        2023
+      ],
+      "other_organizations": [
+        "Atlanta Braves",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "hendrik-clementina",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2013,
+      "unplaceable_level_seasons": [
+        2017
+      ]
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2014,
+        2015,
+        2016
+      ],
+      "exact_dates": {
+        "dated": 4,
+        "log_era_stints": 4,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2014,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Julio Lugo (prospect)",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2014
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2016-08-08",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2016,
+        "teams": [
+          "DSL Dodgers 1",
+          "DSL Dodgers 2"
+        ]
+      },
+      "mlb_id": "649956",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "julio-lugo-prospect",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2013,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2014,
+        2015,
+        2016
+      ],
+      "exact_dates": {
+        "dated": 5,
+        "log_era_stints": 5,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2014,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Misja Harcksen",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2015,
+            2016
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "COMPLEX_ROOKIE",
+        "season": 2014
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "COMPLEX_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2016-09-07",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2016,
+        "teams": [
+          "AZL Dodgers",
+          "Ogden Raptors"
+        ]
+      },
+      "mlb_id": "649958",
+      "notes": [],
+      "open_detectors": [
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "LEVEL_CLASSIFICATION"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "misja-harcksen",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "OTHER",
+      "signing_year": 2013,
+      "unplaceable_level_seasons": [
+        2015,
+        2016
+      ]
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2014,
+        2015,
+        2016,
+        2017
+      ],
+      "exact_dates": {
+        "dated": 5,
+        "log_era_stints": 5,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2014,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Shakir Albert",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "LOW_A",
+        "season": 2017
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "LOW_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2017-09-01",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2017,
+        "teams": [
+          "AZL Dodgers",
+          "Great Lakes Loons"
+        ]
+      },
+      "mlb_id": "649954",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "shakir-albert",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2013,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2016,
+        2017,
+        2018,
+        2019
+      ],
+      "exact_dates": {
+        "dated": 4,
+        "log_era_stints": 4,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2016,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Aldo Espinoza",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "COMPLEX_ROOKIE",
+        "season": 2018
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "COMPLEX_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-08-26",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2019,
+        "teams": [
+          "AZL Dodgers Lasorda"
+        ]
+      },
+      "mlb_id": "665852",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "aldo-espinoza",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2021
+      ],
+      "exact_dates": {
+        "dated": 12,
+        "log_era_stints": 12,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2016,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Carlos Rincon",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2017
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AA",
+        "season": 2019
+      },
+      "highest_level_reached_elsewhere": true,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2022-09-28",
+        "organizations": [
+          "New York Mets"
+        ],
+        "season": 2022,
+        "teams": [
+          "Brooklyn Cyclones",
+          "Syracuse Mets"
+        ]
+      },
+      "mlb_id": "665779",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "MULTI_ORG_SEASON_UNVERIFIED",
+        "SEASON_GAP",
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "LEVEL_CLASSIFICATION",
+        "ORGANIZATION",
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [
+        2021,
+        2022
+      ],
+      "other_organizations": [
+        "New York Mets"
+      ],
+      "player_slug": "carlos-rincon",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": [
+        2017
+      ]
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2017
+      ],
+      "exact_dates": {
+        "dated": 1,
+        "log_era_stints": 1,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2017,
+      "first_professional_season": "FIRST_OBSERVED_ONLY",
+      "foreign_pro_seasons": [],
+      "full_name": "Christopher Arias",
+      "gaps": [
+        {
+          "code": "SOURCE_BEGINS_LATE",
+          "seasons": [
+            2017
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2017
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "SOURCE_BEGINS_LATE",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2017-08-24",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2017,
+        "teams": [
+          "DSL Dodgers 2"
+        ]
+      },
+      "mlb_id": "665931",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "christopher-arias",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [],
+      "exact_dates": {
+        "dated": 0,
+        "log_era_stints": 0,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": null,
+      "first_professional_season": "NO_AFFILIATED_RECORD",
+      "foreign_pro_seasons": [],
+      "full_name": "Damaso Marte Jr.",
+      "gaps": [
+        {
+          "code": "SOURCE_UNAVAILABLE",
+          "seasons": []
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": null,
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "UNKNOWN",
+      "history_start": "NO_PRE_MLB_RECORD",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": null,
+      "mlb_id": "666006",
+      "notes": [],
+      "open_detectors": [
+        "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+      ],
+      "open_needs": [
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "damaso-marte-jr",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2016,
+        2017,
+        2018,
+        2019
+      ],
+      "exact_dates": {
+        "dated": 4,
+        "log_era_stints": 4,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2016,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Luis Rodriguez (2015)",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "COMPLEX_ROOKIE",
+        "season": 2018
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "COMPLEX_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-08-26",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2019,
+        "teams": [
+          "AZL Dodgers Lasorda"
+        ]
+      },
+      "mlb_id": "665960",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "luis-rodriguez-2015",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2021,
+        2022
+      ],
+      "exact_dates": {
+        "dated": 7,
+        "log_era_stints": 7,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2016,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Omar Estévez",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AAA",
+        "season": 2021
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2022-09-28",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2022,
+        "teams": [
+          "Oklahoma City Dodgers"
+        ]
+      },
+      "mlb_id": "666784",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "SEASON_GAP"
+      ],
+      "open_needs": [
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "omar-estevez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "CUBAN_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2016,
+        2017,
+        2018
+      ],
+      "exact_dates": {
+        "dated": 10,
+        "log_era_stints": 10,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2016,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Ronny Brito",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2017,
+            2018
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "COMPLEX_ROOKIE",
+        "season": 2017
+      },
+      "highest_level_reached_elsewhere": true,
+      "highest_level_recorded": "HIGH_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2021-08-01",
+        "organizations": [
+          "Toronto Blue Jays"
+        ],
+        "season": 2021,
+        "teams": [
+          "Vancouver Canadians"
+        ]
+      },
+      "mlb_id": "665798",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "SEASON_GAP",
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "LEVEL_CLASSIFICATION",
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [
+        2019,
+        2021
+      ],
+      "other_organizations": [
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "ronny-brito",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": [
+        2017,
+        2018
+      ]
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2016,
+        2017,
+        2018,
+        2019
+      ],
+      "exact_dates": {
+        "dated": 8,
+        "log_era_stints": 8,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2016,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Starling Heredia",
+      "gaps": [
+        {
+          "code": "LEVEL_UNCLEAR",
+          "seasons": [
+            2017
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "HIGH_A",
+        "season": 2019
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "HIGH_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-09-02",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2019,
+        "teams": [
+          "Rancho Cucamonga Quakes"
+        ]
+      },
+      "mlb_id": "665752",
+      "notes": [],
+      "open_detectors": [
+        "UNKNOWN_LEVEL_CLASSIFICATION"
+      ],
+      "open_needs": [
+        "LEVEL_CLASSIFICATION"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "starling-heredia",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": [
+        2017
+      ]
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2021,
+        2022
+      ],
+      "exact_dates": {
+        "dated": 9,
+        "log_era_stints": 9,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2016,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Yadier Álvarez",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AAA",
+        "season": 2022
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2022-08-19",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2022,
+        "teams": [
+          "Oklahoma City Dodgers"
+        ]
+      },
+      "mlb_id": "665751",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "SEASON_GAP"
+      ],
+      "open_needs": [
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "yadier-alvarez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "CUBAN_AMATEUR",
+      "signing_year": 2015,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019,
+        2021,
+        2022
+      ],
+      "exact_dates": {
+        "dated": 12,
+        "log_era_stints": 12,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Alex De Jesus",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "HIGH_A",
+        "season": 2022
+      },
+      "highest_level_reached_elsewhere": true,
+      "highest_level_recorded": "AA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2025-09-04",
+        "organizations": [
+          "Toronto Blue Jays"
+        ],
+        "season": 2025,
+        "teams": [
+          "Dunedin Blue Jays",
+          "FCL Blue Jays",
+          "New Hampshire Fisher Cats"
+        ]
+      },
+      "mlb_id": "682942",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "MULTI_ORG_SEASON_UNVERIFIED",
+        "SEASON_GAP"
+      ],
+      "open_needs": [
+        "ORGANIZATION",
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "other_organizations": [
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "alex-de-jesus",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "exact_dates": {
+        "dated": 9,
+        "log_era_stints": 9,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "STILL_DODGERS_CONTROLLED",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Christian Suarez",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AA",
+        "season": 2024
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "AA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2026-09-13",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2026,
+        "teams": [
+          "Tulsa Drillers"
+        ]
+      },
+      "mlb_id": "682949",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "SEASON_GAP"
+      ],
+      "open_needs": [
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "christian-suarez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "OTHER",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "exact_dates": {
+        "dated": 11,
+        "log_era_stints": 11,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Diego Cartaya",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AAA",
+        "season": 2024
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2026-04-22",
+        "organizations": [
+          "San Francisco Giants"
+        ],
+        "season": 2026,
+        "teams": [
+          "Eugene Emeralds"
+        ]
+      },
+      "mlb_id": "682616",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "MULTI_ORG_SEASON_UNVERIFIED",
+        "SEASON_GAP"
+      ],
+      "open_needs": [
+        "ORGANIZATION",
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [
+        2025,
+        2026
+      ],
+      "other_organizations": [
+        "Minnesota Twins",
+        "San Francisco Giants"
+      ],
+      "player_slug": "diego-cartaya",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019
+      ],
+      "exact_dates": {
+        "dated": 1,
+        "log_era_stints": 1,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "NO_EXIT_EVIDENCE",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Ender Avendano",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2019
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-08-21",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2019,
+        "teams": [
+          "DSL LAD Bautista"
+        ]
+      },
+      "mlb_id": "682937",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "ender-avendano",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019
+      ],
+      "exact_dates": {
+        "dated": 1,
+        "log_era_stints": 1,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Gregory Pereira",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2019
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-08-21",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2019,
+        "teams": [
+          "DSL LAD Bautista"
+        ]
+      },
+      "mlb_id": "682946",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "gregory-pereira",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019
+      ],
+      "exact_dates": {
+        "dated": 2,
+        "log_era_stints": 2,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Jerami Rodriguez",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2019
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-08-22",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2019,
+        "teams": [
+          "DSL Dodgers Shoemaker",
+          "DSL LAD Bautista"
+        ]
+      },
+      "mlb_id": "682951",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "jerami-rodriguez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "OTHER",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "exact_dates": {
+        "dated": 11,
+        "log_era_stints": 11,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "STILL_DODGERS_CONTROLLED",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Jerming Rosario",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AAA",
+        "season": 2024
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2026-09-20",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2026,
+        "teams": [
+          "Oklahoma City Comets"
+        ]
+      },
+      "mlb_id": "682645",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "SEASON_GAP"
+      ],
+      "open_needs": [
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "jerming-rosario",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019
+      ],
+      "exact_dates": {
+        "dated": 1,
+        "log_era_stints": 1,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Luis Izturis",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2019
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2019-08-24",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2019,
+        "teams": [
+          "DSL Dodgers Shoemaker"
+        ]
+      },
+      "mlb_id": "682950",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "luis-izturis",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019,
+        2021,
+        2022
+      ],
+      "exact_dates": {
+        "dated": 4,
+        "log_era_stints": 4,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Miguel Droz",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "COMPLEX_ROOKIE",
+        "season": 2022
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "COMPLEX_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2022-08-02",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2022,
+        "teams": [
+          "ACL Dodgers"
+        ]
+      },
+      "mlb_id": "682940",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "SEASON_GAP"
+      ],
+      "open_needs": [
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "miguel-droz",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2019,
+        2021,
+        2022
+      ],
+      "exact_dates": {
+        "dated": 3,
+        "log_era_stints": 3,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2019,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Rafael Tua",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "COMPLEX_ROOKIE",
+        "season": 2022
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "COMPLEX_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2022-07-22",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2022,
+        "teams": [
+          "ACL Dodgers"
+        ]
+      },
+      "mlb_id": "682948",
+      "notes": [
+        {
+          "code": "LEAGUE_SEASON_NOT_PLAYED",
+          "seasons": [
+            2020
+          ]
+        }
+      ],
+      "open_detectors": [
+        "SEASON_GAP"
+      ],
+      "open_needs": [
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "rafael-tua",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": true,
+      "signing_route": "OTHER",
+      "signing_year": 2018,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023
+      ],
+      "exact_dates": {
+        "dated": 4,
+        "log_era_stints": 4,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "FIRST_OBSERVED_ONLY",
+      "foreign_pro_seasons": [],
+      "full_name": "Lesther Medrano",
+      "gaps": [
+        {
+          "code": "SOURCE_BEGINS_LATE",
+          "seasons": [
+            2021
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2021
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "SOURCE_BEGINS_LATE",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2023-06-27",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2023,
+        "teams": [
+          "DSL LAD Bautista",
+          "DSL LAD Mega"
+        ]
+      },
+      "mlb_id": "692327",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "lesther-medrano",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2019,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "exact_dates": {
+        "dated": 4,
+        "log_era_stints": 4,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "FIRST_OBSERVED_ONLY",
+      "foreign_pro_seasons": [],
+      "full_name": "Luis Rodriguez (2019)",
+      "gaps": [
+        {
+          "code": "SOURCE_BEGINS_LATE",
+          "seasons": [
+            2021
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "HIGH_A",
+        "season": 2024
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "HIGH_A",
+      "history_start": "SOURCE_BEGINS_LATE",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2024-08-03",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2024,
+        "teams": [
+          "Great Lakes Loons"
+        ]
+      },
+      "mlb_id": "691177",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "luis-rodriguez-2019",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2019,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "exact_dates": {
+        "dated": 10,
+        "log_era_stints": 10,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "STILL_DODGERS_CONTROLLED",
+      "first_observed_season": 2021,
+      "first_professional_season": "FIRST_OBSERVED_ONLY",
+      "foreign_pro_seasons": [],
+      "full_name": "Roque Gutierrez",
+      "gaps": [
+        {
+          "code": "SOURCE_BEGINS_LATE",
+          "seasons": [
+            2021
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AA",
+        "season": 2025
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "AA",
+      "history_start": "SOURCE_BEGINS_LATE",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2026-09-13",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2026,
+        "teams": [
+          "Tulsa Drillers"
+        ]
+      },
+      "mlb_id": "692262",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "roque-gutierrez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2019,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "exact_dates": {
+        "dated": 7,
+        "log_era_stints": 7,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "STILL_DODGERS_CONTROLLED",
+      "first_observed_season": 2021,
+      "first_professional_season": "FIRST_OBSERVED_ONLY",
+      "foreign_pro_seasons": [],
+      "full_name": "Yeiner Fernandez",
+      "gaps": [
+        {
+          "code": "SOURCE_BEGINS_LATE",
+          "seasons": [
+            2021
+          ]
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AA",
+        "season": 2024
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "AA",
+      "history_start": "SOURCE_BEGINS_LATE",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": {
+        "last_game_date": "2026-04-19",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2026,
+        "teams": [
+          "Tulsa Drillers"
+        ]
+      },
+      "mlb_id": "691558",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "yeiner-fernandez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2019,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021
+      ],
+      "exact_dates": {
+        "dated": 1,
+        "log_era_stints": 1,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Brian Diaz",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2021
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2021-10-01",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2021,
+        "teams": [
+          "DSL LAD Bautista"
+        ]
+      },
+      "mlb_id": "699070",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "brian-diaz",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "exact_dates": {
+        "dated": 9,
+        "log_era_stints": 9,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Carlos Avila",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "AAA",
+        "season": 2025
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2025-09-07",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2025,
+        "teams": [
+          "ACL Dodgers",
+          "Oklahoma City Comets",
+          "Rancho Cucamonga Quakes",
+          "Tulsa Drillers"
+        ]
+      },
+      "mlb_id": "699066",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "carlos-avila",
+      "progression_review_pending": true,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023
+      ],
+      "exact_dates": {
+        "dated": 7,
+        "log_era_stints": 7,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Elio Campos",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2021
+      },
+      "highest_level_reached_elsewhere": true,
+      "highest_level_recorded": "AAA",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2025-08-01",
+        "organizations": [
+          "Atlanta Braves"
+        ],
+        "season": 2025,
+        "teams": [
+          "Augusta GreenJackets",
+          "FCL Braves",
+          "Gwinnett Stripers"
+        ]
+      },
+      "mlb_id": "699069",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [
+        2024,
+        2025
+      ],
+      "other_organizations": [
+        "Atlanta Braves"
+      ],
+      "player_slug": "elio-campos",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "exact_dates": {
+        "dated": 8,
+        "log_era_stints": 8,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Jhonny Jimenez",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "LOW_A",
+        "season": 2025
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "LOW_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2026-08-02",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2026,
+        "teams": [
+          "Ontario Tower Buzzers"
+        ]
+      },
+      "mlb_id": "699075",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "jhonny-jimenez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "exact_dates": {
+        "dated": 7,
+        "log_era_stints": 7,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Juan Alonso",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "HIGH_A",
+        "season": 2024
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "HIGH_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2024-09-08",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2024,
+        "teams": [
+          "Great Lakes Loons",
+          "Rancho Cucamonga Quakes"
+        ]
+      },
+      "mlb_id": "699076",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "juan-alonso",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023
+      ],
+      "exact_dates": {
+        "dated": 5,
+        "log_era_stints": 5,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Luis Guerra",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "HIGH_A",
+        "season": 2023
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "HIGH_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2023-08-20",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2023,
+        "teams": [
+          "ACL Dodgers",
+          "Great Lakes Loons",
+          "Rancho Cucamonga Quakes"
+        ]
+      },
+      "mlb_id": "699065",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "luis-guerra",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023
+      ],
+      "exact_dates": {
+        "dated": 5,
+        "log_era_stints": 5,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Maximo Martinez",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "COMPLEX_ROOKIE",
+        "season": 2022
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "COMPLEX_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2025-07-22",
+        "organizations": [
+          "Chicago White Sox"
+        ],
+        "season": 2025,
+        "teams": [
+          "ACL White Sox"
+        ]
+      },
+      "mlb_id": "699059",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [
+        2024,
+        2025
+      ],
+      "other_organizations": [
+        "Chicago White Sox"
+      ],
+      "player_slug": "maximo-martinez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "exact_dates": {
+        "dated": 5,
+        "log_era_stints": 5,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Michael Vilchez",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "LOW_A",
+        "season": 2025
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "LOW_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2025-08-21",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2025,
+        "teams": [
+          "Rancho Cucamonga Quakes"
+        ]
+      },
+      "mlb_id": "699074",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "michael-vilchez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021
+      ],
+      "exact_dates": {
+        "dated": 1,
+        "log_era_stints": 1,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Miguel Bastardo",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2021
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2021-09-28",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2021,
+        "teams": [
+          "DSL Dodgers Shoemaker"
+        ]
+      },
+      "mlb_id": "699072",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "miguel-bastardo",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022
+      ],
+      "exact_dates": {
+        "dated": 2,
+        "log_era_stints": 2,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "NO_EXIT_EVIDENCE",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Missael Soto",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "INTERNATIONAL_ROOKIE",
+        "season": 2021
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "INTERNATIONAL_ROOKIE",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2022-07-08",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2022,
+        "teams": [
+          "DSL LAD Bautista"
+        ]
+      },
+      "mlb_id": "699057",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "missael-soto",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "exact_dates": {
+        "dated": 5,
+        "log_era_stints": 5,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Pedro Santillan",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "LOW_A",
+        "season": 2024
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "LOW_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2024-09-08",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2024,
+        "teams": [
+          "ACL Dodgers",
+          "Rancho Cucamonga Quakes"
+        ]
+      },
+      "mlb_id": "699063",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "pedro-santillan",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023
+      ],
+      "exact_dates": {
+        "dated": 10,
+        "log_era_stints": 10,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Rayne Doncon",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "LOW_A",
+        "season": 2022
+      },
+      "highest_level_reached_elsewhere": true,
+      "highest_level_recorded": "HIGH_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2026-07-26",
+        "organizations": [
+          "Minnesota Twins"
+        ],
+        "season": 2026,
+        "teams": [
+          "Cedar Rapids Kernels"
+        ]
+      },
+      "mlb_id": "699061",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [
+        2024,
+        2025,
+        2026
+      ],
+      "other_organizations": [
+        "Minnesota Twins"
+      ],
+      "player_slug": "rayne-doncon",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "exact_dates": {
+        "dated": 9,
+        "log_era_stints": 9,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Roger Lasso",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "LOW_A",
+        "season": 2025
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "LOW_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2025-07-24",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2025,
+        "teams": [
+          "ACL Dodgers",
+          "Rancho Cucamonga Quakes"
+        ]
+      },
+      "mlb_id": "699068",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "roger-lasso",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "UNKNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [],
+      "exact_dates": {
+        "dated": 0,
+        "log_era_stints": 0,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": null,
+      "first_professional_season": "NO_AFFILIATED_RECORD",
+      "foreign_pro_seasons": [],
+      "full_name": "Sebastian Jimenez",
+      "gaps": [
+        {
+          "code": "SOURCE_UNAVAILABLE",
+          "seasons": []
+        }
+      ],
+      "highest_level_at_dodgers_affiliate": null,
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "UNKNOWN",
+      "history_start": "NO_PRE_MLB_RECORD",
+      "history_state": "PARTIAL",
+      "last_observed_affiliated": null,
+      "mlb_id": "699067",
+      "notes": [],
+      "open_detectors": [
+        "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS"
+      ],
+      "open_needs": [
+        "SEASON_COVERAGE"
+      ],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "sebastian-jimenez",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    },
+    {
+      "chronology": "KNOWN",
+      "contradiction": false,
+      "dodgers_affiliate_seasons": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "exact_dates": {
+        "dated": 6,
+        "log_era_stints": 6,
+        "undated": 0,
+        "undated_foreign_pro": 0
+      },
+      "exit_control_state": "LEFT_DODGERS_CONTROL",
+      "first_observed_season": 2021,
+      "first_professional_season": "KNOWN",
+      "foreign_pro_seasons": [],
+      "full_name": "Wilman Diaz",
+      "gaps": [],
+      "highest_level_at_dodgers_affiliate": {
+        "level": "HIGH_A",
+        "season": 2025
+      },
+      "highest_level_reached_elsewhere": false,
+      "highest_level_recorded": "HIGH_A",
+      "history_start": "FROM_SIGNING_SEASON",
+      "history_state": "NO_OPEN_GAP",
+      "last_observed_affiliated": {
+        "last_game_date": "2025-08-03",
+        "organizations": [
+          "Los Angeles Dodgers"
+        ],
+        "season": 2025,
+        "teams": [
+          "Great Lakes Loons"
+        ]
+      },
+      "mlb_id": "694180",
+      "notes": [],
+      "open_detectors": [],
+      "open_needs": [],
+      "other_organization_seasons": [],
+      "other_organizations": [],
+      "player_slug": "wilman-diaz",
+      "progression_review_pending": false,
+      "research_result": "NO_NEW_RELIABLE_EVIDENCE",
+      "season_gap_explained_by_league": false,
+      "signing_route": "LATAM_AMATEUR",
+      "signing_year": 2021,
+      "unplaceable_level_seasons": []
+    }
+  ],
+  "rule": "Every Dodgers tracked signing whose canonical outcome audit is VERIFIED_NO_MLB at the existing analysis boundary (derived, never listed by hand)."
+}

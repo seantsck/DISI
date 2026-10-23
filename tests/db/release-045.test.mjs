@@ -161,7 +161,7 @@ test('verifier: the five 045 checks pass, each catches its own drift, and the fu
   // 045a later adds the ten product snapshot tables (77); the 045 database has 67
   const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_tables_total: 67 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 248)
+  assert.equal(full.hard.length, 249)
   await scratch(async () => {
     await chain.db.exec(`insert into disi_product_contract (relation_name, relation_kind, product_area, contract_tier, app_routes, purpose, introduced_in)
       values ('v_does_not_exist', 'VIEW', 'EXECUTIVE', 'PAGE', '{/}', 'test', '045')`)

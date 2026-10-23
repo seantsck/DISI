@@ -1,0 +1,210 @@
+{
+  "after": {
+    "any_development_history": {
+      "n": 44,
+      "of": 46
+    },
+    "contradictions": [],
+    "exact_dates": {
+      "dated": 278,
+      "log_era_stints": 281,
+      "of_players": 46
+    },
+    "exit_control_state": {
+      "HISTORY_UNAVAILABLE": 2,
+      "LEFT_DODGERS_CONTROL": 37,
+      "NO_EXIT_EVIDENCE": 3,
+      "STILL_DODGERS_CONTROLLED": 4
+    },
+    "first_professional_season": {
+      "FIRST_OBSERVED_ONLY": 5,
+      "KNOWN": 39,
+      "NO_AFFILIATED_RECORD": 2
+    },
+    "foreign_professional_seasons_recorded": {
+      "n": 1,
+      "of": 46
+    },
+    "highest_level_at_dodgers_affiliate": {
+      "AA": 4,
+      "AAA": 5,
+      "COMPLEX_ROOKIE": 8,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 11,
+      "LOW_A": 8
+    },
+    "highest_level_known": {
+      "n": 44,
+      "of": 46,
+      "unresolved": [
+        "damaso-marte-jr",
+        "sebastian-jimenez"
+      ]
+    },
+    "highest_level_reached_elsewhere": {
+      "n": 7,
+      "of": 46,
+      "players": [
+        "julian-leon",
+        "hendrik-clementina",
+        "carlos-rincon",
+        "ronny-brito",
+        "alex-de-jesus",
+        "elio-campos",
+        "rayne-doncon"
+      ]
+    },
+    "highest_level_whole_career": {
+      "AA": 4,
+      "AAA": 9,
+      "COMPLEX_ROOKIE": 6,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 10,
+      "LOW_A": 7
+    },
+    "history_start": {
+      "FROM_SIGNING_SEASON": 39,
+      "NO_PRE_MLB_RECORD": 2,
+      "SOURCE_BEGINS_LATE": 5
+    },
+    "later_career_with_other_organizations": {
+      "n": 9,
+      "of": 46
+    },
+    "no_structured_affiliated_record": {
+      "n": 2,
+      "of": 46,
+      "players": [
+        "damaso-marte-jr",
+        "sebastian-jimenez"
+      ]
+    },
+    "path_state": {
+      "NO_OPEN_GAP": 30,
+      "PARTIAL": 16,
+      "of": 46
+    },
+    "players": 46,
+    "progression_review_pending": {
+      "n": 1,
+      "of": 46
+    },
+    "season_gap_only_league_not_played": {
+      "n": 11,
+      "of": 11
+    },
+    "unplaceable_level_on_record": {
+      "n": 9,
+      "of": 46
+    },
+    "usable_chronology": {
+      "n": 27,
+      "of": 46
+    }
+  },
+  "before": {
+    "any_development_history": {
+      "n": 44,
+      "of": 46
+    },
+    "contradictions": [],
+    "exact_dates": {
+      "dated": 278,
+      "log_era_stints": 281,
+      "of_players": 46
+    },
+    "exit_control_state": {
+      "HISTORY_UNAVAILABLE": 2,
+      "LEFT_DODGERS_CONTROL": 37,
+      "NO_EXIT_EVIDENCE": 3,
+      "STILL_DODGERS_CONTROLLED": 4
+    },
+    "first_professional_season": {
+      "FIRST_OBSERVED_ONLY": 5,
+      "KNOWN": 39,
+      "NO_AFFILIATED_RECORD": 2
+    },
+    "foreign_professional_seasons_recorded": {
+      "n": 1,
+      "of": 46
+    },
+    "highest_level_at_dodgers_affiliate": {
+      "AA": 4,
+      "AAA": 5,
+      "COMPLEX_ROOKIE": 8,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 11,
+      "LOW_A": 8
+    },
+    "highest_level_known": {
+      "n": 44,
+      "of": 46,
+      "unresolved": [
+        "damaso-marte-jr",
+        "sebastian-jimenez"
+      ]
+    },
+    "highest_level_reached_elsewhere": {
+      "n": 7,
+      "of": 46,
+      "players": [
+        "julian-leon",
+        "hendrik-clementina",
+        "carlos-rincon",
+        "ronny-brito",
+        "alex-de-jesus",
+        "elio-campos",
+        "rayne-doncon"
+      ]
+    },
+    "highest_level_whole_career": {
+      "AA": 4,
+      "AAA": 9,
+      "COMPLEX_ROOKIE": 6,
+      "HIGH_A": 8,
+      "INTERNATIONAL_ROOKIE": 10,
+      "LOW_A": 7
+    },
+    "history_start": {
+      "FROM_SIGNING_SEASON": 39,
+      "NO_PRE_MLB_RECORD": 2,
+      "SOURCE_BEGINS_LATE": 5
+    },
+    "later_career_with_other_organizations": {
+      "n": 9,
+      "of": 46
+    },
+    "no_structured_affiliated_record": {
+      "n": 2,
+      "of": 46,
+      "players": [
+        "damaso-marte-jr",
+        "sebastian-jimenez"
+      ]
+    },
+    "path_state": {
+      "NO_OPEN_GAP": 30,
+      "PARTIAL": 16,
+      "of": 46
+    },
+    "players": 46,
+    "progression_review_pending": {
+      "n": 1,
+      "of": 46
+    },
+    "season_gap_only_league_not_played": {
+      "n": 11,
+      "of": 11
+    },
+    "unplaceable_level_on_record": {
+      "n": 9,
+      "of": 46
+    },
+    "usable_chronology": {
+      "n": 27,
+      "of": 46
+    }
+  },
+  "canonical_rows_written": 0,
+  "note": "051 wrote no canonical development row (no reviewed fact was found that DISI lacks), so the after state is the before state. Every figure has its denominator."
+}

@@ -1,4 +1,4 @@
-# DISI research commands (046, 047, 048, 049)
+# DISI research commands (046, 047, 048, 049, 051)
 
 Read-only commands that tell a researcher what to work on next. They connect as the public `anon` role in a read-only session, so they can
 only see what the website can see (the persisted `product_*` snapshots and the public views). They never write. Their output has no
@@ -20,6 +20,7 @@ npm run research:development  -- --timing          # descriptive signing-to-MLB 
 npm run research:development  -- --mlb-coverage    # 048: the verified MLB cohort's documented path, player by player, with denominators
 npm run research:development  -- --needs           # 048: the queue de-duplicated by the evidence gap each item names
 npm run research:development  -- --review [--player kenley-jansen]   # 048: the reviewer's packet for pending progression decisions (decides nothing)
+npm run research:development  -- --no-mlb-coverage  # 051: the audited no-MLB cohort's documented path, Dodgers-affiliate part and later career apart
 npm run research:readiness
 npm run research:progress     -- --baseline database/research/046/baseline.json
 ```
@@ -80,3 +81,11 @@ returned players' Baseball-Reference WAR is not loaded (`INCOMPLETE_WAR_NOT_LOAD
 its membership or only its terms are open (the two overlap and are never added). The summary line reports `incomplete_chains` (every `INCOMPLETE_*` chain, as the
 database names them), `transaction_chains_incomplete`, `value_blocked_chains`, the attribution-state counts and the package counts. All modes are read-only.
 The logic is `lib/research/transaction-research.js`, tested in `tests/unit/research-049.test.mjs`.
+
+## research:development --no-mlb-coverage (051)
+
+For the audited no-MLB cohort (derived: `outcome_audit_status = 'VERIFIED_NO_MLB'`), one row per player: signing year, route, first observed season,
+first professional season status (the 048 rule), highest recorded level for the whole career and at a Dodgers affiliate, last observed affiliated
+season and organization, chronology, exact-date coverage (`dated/log-era stints`), where the record is silent, and the open evidence gaps; then
+the counts, each with its denominator. Reads the stint history (`--history` is implied). No score, no ranking, no rate: `AUDITED NO MLB != CAREER
+FAILURE`, `LAST OBSERVED SEASON != CAREER END`, and a later season with another organization is never Dodgers development.

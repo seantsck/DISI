@@ -1,0 +1,76 @@
+{
+  "after": {
+    "audited_no_mlb_cohort": {
+      "by_need": {
+        "GAME_DATES": 1,
+        "LEVEL_CLASSIFICATION": 9,
+        "ORGANIZATION": 4,
+        "SEASON_COVERAGE": 13,
+        "SEQUENCE_REVIEW": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      "detector_rows": 28,
+      "detector_rows_by_issue": {
+        "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS": 2,
+        "MISSING_FIRST_GAME_DATE": 1,
+        "MISSING_LAST_GAME_DATE": 1,
+        "MULTI_ORG_SEASON_UNVERIFIED": 4,
+        "SEASON_GAP": 11,
+        "UNKNOWN_LEVEL_CLASSIFICATION": 9
+      },
+      "distinct_needs": 27,
+      "players_with_needs": 19
+    },
+    "whole_database": {
+      "by_need": {
+        "GAME_DATES": 45,
+        "LEVEL_CLASSIFICATION": 26,
+        "ORGANIZATION": 51,
+        "SEASON_COVERAGE": 46,
+        "SEQUENCE_REVIEW": 5
+      },
+      "detector_rows": 347,
+      "needs": 173,
+      "players": 85
+    }
+  },
+  "before": {
+    "audited_no_mlb_cohort": {
+      "by_need": {
+        "GAME_DATES": 1,
+        "LEVEL_CLASSIFICATION": 9,
+        "ORGANIZATION": 4,
+        "SEASON_COVERAGE": 13,
+        "SEQUENCE_REVIEW": 0,
+        "SOURCE_CONFLICT": 0
+      },
+      "detector_rows": 28,
+      "detector_rows_by_issue": {
+        "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS": 2,
+        "MISSING_FIRST_GAME_DATE": 1,
+        "MISSING_LAST_GAME_DATE": 1,
+        "MULTI_ORG_SEASON_UNVERIFIED": 4,
+        "SEASON_GAP": 11,
+        "UNKNOWN_LEVEL_CLASSIFICATION": 9
+      },
+      "distinct_needs": 27,
+      "players_with_needs": 19
+    },
+    "whole_database": {
+      "by_need": {
+        "GAME_DATES": 45,
+        "LEVEL_CLASSIFICATION": 26,
+        "ORGANIZATION": 51,
+        "SEASON_COVERAGE": 46,
+        "SEQUENCE_REVIEW": 5
+      },
+      "detector_rows": 347,
+      "needs": 173,
+      "players": 85
+    }
+  },
+  "league_not_played": {
+    "2020": "The 2020 minor-league season was cancelled; no affiliated record exists for any player."
+  },
+  "note": "Raw detector rows and the de-duplicated evidence gaps (048). One researched fact can close several detectors; a detector row is never counted as independent research. 051 wrote no row, so nothing closed."
+}

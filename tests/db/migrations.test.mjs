@@ -24,7 +24,7 @@ const one = async (sql, params) => (await rows(sql, params))[0]
 before(async () => {
   // This file pins the exact data of the frozen chain through 046 (the 021-024 development counts among them). Migration 047 is a data-only
   // research batch that legitimately moves those counts; it is verified in tests/db/research-047.test.mjs, and the complete chain including it
-  // is built and checked by tests/db/verify-live-invariants.test.mjs (the 248-check verifier).
+  // is built and checked by tests/db/verify-live-invariants.test.mjs (the 249-check verifier).
   db = (await buildChainThrough('046_outcome_cost_research_batch.sql')).db
 }, { timeout: 180000 })
 

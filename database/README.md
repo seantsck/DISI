@@ -359,13 +359,24 @@ This folder preserves the SQL lineage behind the DISI research database.
   050 can be applied again afterwards.
 - **Release.** `database/release/050-release-plan.md`. Applying 050, merging its PR and deploying need explicit owner approval.
 
+## 051 audited no-MLB development coverage (no migration)
+
+- **What it is.** A research pass, not a migration. The 46 audited no-MLB players' recorded careers were re-read from the official MLB Stats API
+  (season splits, milestone candidates, game logs) and compared fact for fact with the canonical rows: every stint, dated stint and dated
+  milestone already matches, so no row is written, no snapshot generation moves and the frozen chain still ends at 050.
+- **What it adds.** `database/research/051/` (derived cohort, comparison, coverage, needs, progression review, source manifest); the read-only
+  `auditedNoMlbCoverage` / `careerSegments` derivations in `lib/research/history-coverage.js`; `npm run research:development -- --no-mlb-coverage`;
+  the `/development` section and dossier wording; and the verifier check `no_mlb_development_contradictions` (249 checks). No pinned count moves.
+- **Documented, not changed.** The Pioneer League (rookie-advanced) has no level on the ladder (021 era map); the `SEASON_GAP` detector counts
+  2020; both are architecture decisions for a later reviewed migration (`database/research/051/architecture.md`).
+
 ## 042-045 decision layers (DISI v1.0.0)
 
 - **Support chain.** 041 outcome probability -> 042 expected organizational value -> 043 portfolio decision support -> 044 executive product. Each layer reads the support state of the one below and can only narrow it. Today: 0 supported Dodgers probability targets (one benchmark reference baseline is supported after 050; it never reaches a Dodgers player), 0 supported expected values, 0 predictive portfolio recommendations; the interface states that DISI does not publish outcome probabilities and shows the evidence needed (`v_prediction_readiness`, `v_research_roadmap`).
 - **Realized vs expected.** Realized organizational value is observed bWAR the Dodgers obtained; a historical distribution is labelled HISTORICAL_DESCRIPTIVE and is never a player's expected value; expected value needs a supported probability and a supported conditional value.
 - **Decisions.** Readiness uses only signing-time facts and population-level support; NULL expected value never enters optimization as zero; budget feasibility is INDETERMINATE when unknown costs could change the answer; retrospective analysis never claims a hindsight-optimal portfolio was knowable.
 - **Contract.** `disi_product_contract` lists exactly the relations `lib/data.js` reads; `v_disi_release_status` reports the version, data freshness, model versions and `support_chain_state`.
-- **Surface.** 78 public tables (eleven of them product snapshots; 045b added the home-page status), 155 views and eight internal functions (six staged, refresh, drift); the verifier adds 5 + 5 + 2 + 3 + 5 + 4 checks (247 in total; 050 adds the population-isolation check: 248).
+- **Surface.** 78 public tables (eleven of them product snapshots; 045b added the home-page status), 155 views and eight internal functions (six staged, refresh, drift); the verifier adds 5 + 5 + 2 + 3 + 5 + 4 checks (247 in total; 050 adds the population-isolation check: 248; 051 adds the no-MLB contradiction check: 249).
 - **Serving.** Pages read only the persisted `product_*` snapshots; a request never recomputes the analytical graph. Refresh explicitly after research data changes (`npm run refresh:product-snapshots`; `--drift` reports staleness), and the verifier reports a stale snapshot.
 - **Plan-bounded.** No public view plans the whole 041 -> 042 -> 043 stack in one statement: the heavy layers are staged functions whose stages are planned only when they run (043a). Validated on a PostgreSQL 17 limited to 1 GB with the production memory settings.
 - **Rerunnable**; designs and findings in `database/research/042/` to `045/`.

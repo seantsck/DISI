@@ -1,0 +1,1950 @@
+{
+  "as_of": "2026-10-05",
+  "organization_seasons": [
+    {
+      "organizations": [
+        {
+          "first_game_date": "2017-06-19",
+          "last_game_date": "2017-07-29",
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Ogden Raptors"
+          ]
+        },
+        {
+          "first_game_date": "2017-08-03",
+          "last_game_date": "2017-09-08",
+          "organization": "Cincinnati Reds",
+          "teams": [
+            "Billings Mustangs"
+          ]
+        }
+      ],
+      "player_slug": "hendrik-clementina",
+      "recorded_exit": {
+        "control_state": "LEFT_DODGERS_CONTROL",
+        "first_exit_date": "2017-07-31",
+        "mechanism": "TRADE"
+      },
+      "season": 2017,
+      "state": "CONSISTENT_WITH_RECORDED_EXIT"
+    },
+    {
+      "organizations": [
+        {
+          "first_game_date": "2021-05-04",
+          "last_game_date": "2021-07-18",
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Tulsa Drillers"
+          ]
+        },
+        {
+          "first_game_date": "2021-07-23",
+          "last_game_date": "2021-09-18",
+          "organization": "New York Mets",
+          "teams": [
+            "Binghamton Rumble Ponies"
+          ]
+        }
+      ],
+      "player_slug": "carlos-rincon",
+      "recorded_exit": {
+        "control_state": "LEFT_DODGERS_CONTROL",
+        "first_exit_date": "2021-07-21",
+        "mechanism": "TRADE"
+      },
+      "season": 2021,
+      "state": "CONSISTENT_WITH_RECORDED_EXIT"
+    },
+    {
+      "organizations": [
+        {
+          "first_game_date": "2022-04-12",
+          "last_game_date": "2022-07-31",
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Great Lakes Loons",
+            "Rancho Cucamonga Quakes"
+          ]
+        },
+        {
+          "first_game_date": "2022-08-08",
+          "last_game_date": "2022-09-10",
+          "organization": "Toronto Blue Jays",
+          "teams": [
+            "FCL Blue Jays",
+            "Vancouver Canadians"
+          ]
+        }
+      ],
+      "player_slug": "alex-de-jesus",
+      "recorded_exit": {
+        "control_state": "LEFT_DODGERS_CONTROL",
+        "first_exit_date": "2022-08-02",
+        "mechanism": "TRADE"
+      },
+      "season": 2022,
+      "state": "CONSISTENT_WITH_RECORDED_EXIT"
+    },
+    {
+      "organizations": [
+        {
+          "first_game_date": "2025-04-01",
+          "last_game_date": "2025-06-29",
+          "organization": "Minnesota Twins",
+          "teams": [
+            "St. Paul Saints"
+          ]
+        },
+        {
+          "first_game_date": "2025-09-01",
+          "last_game_date": "2025-09-06",
+          "organization": "San Francisco Giants",
+          "teams": [
+            "San Jose Giants"
+          ]
+        }
+      ],
+      "player_slug": "diego-cartaya",
+      "recorded_exit": {
+        "control_state": "LEFT_DODGERS_CONTROL",
+        "first_exit_date": "2025-01-09",
+        "mechanism": "TRADE"
+      },
+      "season": 2025,
+      "state": "NOT_A_DODGERS_EXIT_SEASON"
+    }
+  ],
+  "players": [
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 10,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 6,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "624645",
+      "on_record": {
+        "milestones": 8,
+        "stints": 10
+      },
+      "player_slug": "julian-leon",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2012,
+      "source": {
+        "dated_appearances": 430,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 6,
+        "stints": 10
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 10,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 10,
+        "undated": [
+          {
+            "reason": "The official minor-league game log returns no games for this foreign professional league season; the dates stay unknown.",
+            "stint": "2018|Diablos Rojos del Mexico|Mexican League|FOREIGN_PRO"
+          },
+          {
+            "reason": "The official minor-league game log returns no games for this foreign professional league season; the dates stay unknown.",
+            "stint": "2018|Guerreros de Oaxaca|Mexican League|FOREIGN_PRO"
+          },
+          {
+            "reason": "The official minor-league game log returns no games for this foreign professional league season; the dates stay unknown.",
+            "stint": "2018|Generales de Durango|Mexican League|FOREIGN_PRO"
+          }
+        ]
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 4,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "624646",
+      "on_record": {
+        "milestones": 6,
+        "stints": 15
+      },
+      "player_slug": "lenix-osuna",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2012,
+      "source": {
+        "dated_appearances": 91,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 15
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 15,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 7,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 3,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "624648",
+      "on_record": {
+        "milestones": 4,
+        "stints": 7
+      },
+      "player_slug": "william-soto",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2012,
+      "source": {
+        "dated_appearances": 41,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 7
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 7,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 9,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 4,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "649957",
+      "on_record": {
+        "milestones": 5,
+        "stints": 10
+      },
+      "player_slug": "gersel-pitre",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2013,
+      "source": {
+        "dated_appearances": 277,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 10
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 10,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 13,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 7,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "649955",
+      "on_record": {
+        "milestones": 9,
+        "stints": 14
+      },
+      "player_slug": "hendrik-clementina",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2013,
+      "source": {
+        "dated_appearances": 520,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 8,
+        "stints": 14
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 14,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 4,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "649956",
+      "on_record": {
+        "milestones": 3,
+        "stints": 5
+      },
+      "player_slug": "julio-lugo-prospect",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2013,
+      "source": {
+        "dated_appearances": 45,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 5
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 5,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 5,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "649958",
+      "on_record": {
+        "milestones": 3,
+        "stints": 7
+      },
+      "player_slug": "misja-harcksen",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2013,
+      "source": {
+        "dated_appearances": 46,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 7
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 7,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 5,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 4,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "649954",
+      "on_record": {
+        "milestones": 5,
+        "stints": 5
+      },
+      "player_slug": "shakir-albert",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2013,
+      "source": {
+        "dated_appearances": 159,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 5
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 5,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 4,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 3,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "665852",
+      "on_record": {
+        "milestones": 4,
+        "stints": 4
+      },
+      "player_slug": "aldo-espinoza",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 123,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 3,
+        "stints": 4
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 4,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 12,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 7,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "665779",
+      "on_record": {
+        "milestones": 8,
+        "stints": 14
+      },
+      "player_slug": "carlos-rincon",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 521,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 7,
+        "stints": 14
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 14,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 1,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "665931",
+      "on_record": {
+        "milestones": 3,
+        "stints": 1
+      },
+      "player_slug": "christopher-arias",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 39,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 1
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 1,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 0,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 0,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "666006",
+      "on_record": {
+        "milestones": 1,
+        "stints": 0
+      },
+      "player_slug": "damaso-marte-jr",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 0,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 1,
+        "stints": 0
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 0,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 4,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 3,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "665960",
+      "on_record": {
+        "milestones": 4,
+        "stints": 4
+      },
+      "player_slug": "luis-rodriguez-2015",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 155,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 3,
+        "stints": 4
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 4,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 7,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 6,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "666784",
+      "on_record": {
+        "milestones": 6,
+        "stints": 7
+      },
+      "player_slug": "omar-estevez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 618,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 5,
+        "stints": 7
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 7,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 10,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 5,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "665798",
+      "on_record": {
+        "milestones": 7,
+        "stints": 13
+      },
+      "player_slug": "ronny-brito",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 254,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 6,
+        "stints": 13
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 13,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 8,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 5,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "665752",
+      "on_record": {
+        "milestones": 6,
+        "stints": 10
+      },
+      "player_slug": "starling-heredia",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 278,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 5,
+        "stints": 10
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 10,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 9,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 6,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "665751",
+      "on_record": {
+        "milestones": 6,
+        "stints": 9
+      },
+      "player_slug": "yadier-alvarez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2015,
+      "source": {
+        "dated_appearances": 91,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 5,
+        "stints": 9
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 9,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 12,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 6,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682942",
+      "on_record": {
+        "milestones": 8,
+        "stints": 14
+      },
+      "player_slug": "alex-de-jesus",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 522,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 6,
+        "stints": 14
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 14,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 9,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 6,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682949",
+      "on_record": {
+        "milestones": 7,
+        "stints": 9
+      },
+      "player_slug": "christian-suarez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 243,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 5,
+        "stints": 9
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 9,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 11,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 7,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682616",
+      "on_record": {
+        "milestones": 10,
+        "stints": 12
+      },
+      "player_slug": "diego-cartaya",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 397,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 8,
+        "stints": 12
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 12,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 1,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682937",
+      "on_record": {
+        "milestones": 3,
+        "stints": 1
+      },
+      "player_slug": "ender-avendano",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 51,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 1,
+        "stints": 1
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 1,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 1,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682946",
+      "on_record": {
+        "milestones": 4,
+        "stints": 1
+      },
+      "player_slug": "gregory-pereira",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 37,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 1
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 1,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 2,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682951",
+      "on_record": {
+        "milestones": 4,
+        "stints": 3
+      },
+      "player_slug": "jerami-rodriguez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 16,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 3
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 3,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 11,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 7,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682645",
+      "on_record": {
+        "milestones": 8,
+        "stints": 11
+      },
+      "player_slug": "jerming-rosario",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 203,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 6,
+        "stints": 11
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 11,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 1,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682950",
+      "on_record": {
+        "milestones": 4,
+        "stints": 1
+      },
+      "player_slug": "luis-izturis",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 39,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 1
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 1,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 4,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 3,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682940",
+      "on_record": {
+        "milestones": 5,
+        "stints": 5
+      },
+      "player_slug": "miguel-droz",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 76,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 3,
+        "stints": 5
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 5,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 3,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 3,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "682948",
+      "on_record": {
+        "milestones": 5,
+        "stints": 3
+      },
+      "player_slug": "rafael-tua",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2018,
+      "source": {
+        "dated_appearances": 36,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 3,
+        "stints": 3
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 3,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 4,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "692327",
+      "on_record": {
+        "milestones": 4,
+        "stints": 5
+      },
+      "player_slug": "lesther-medrano",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2019,
+      "source": {
+        "dated_appearances": 34,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 5
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 5,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 4,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 4,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "691177",
+      "on_record": {
+        "milestones": 5,
+        "stints": 4
+      },
+      "player_slug": "luis-rodriguez-2019",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2019,
+      "source": {
+        "dated_appearances": 288,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 4
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 4,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 10,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 6,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "692262",
+      "on_record": {
+        "milestones": 6,
+        "stints": 11
+      },
+      "player_slug": "roque-gutierrez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2019,
+      "source": {
+        "dated_appearances": 133,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 5,
+        "stints": 11
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 11,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 7,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 5,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "691558",
+      "on_record": {
+        "milestones": 6,
+        "stints": 7
+      },
+      "player_slug": "yeiner-fernandez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2019,
+      "source": {
+        "dated_appearances": 443,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 7
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 7,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 1,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699070",
+      "on_record": {
+        "milestones": 4,
+        "stints": 1
+      },
+      "player_slug": "brian-diaz",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 18,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 1
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 1,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 9,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 6,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699066",
+      "on_record": {
+        "milestones": 8,
+        "stints": 9
+      },
+      "player_slug": "carlos-avila",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 124,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 6,
+        "stints": 9
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 9,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 7,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 5,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699069",
+      "on_record": {
+        "milestones": 8,
+        "stints": 7
+      },
+      "player_slug": "elio-campos",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 183,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 6,
+        "stints": 7
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 7,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 8,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 4,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699075",
+      "on_record": {
+        "milestones": 6,
+        "stints": 9
+      },
+      "player_slug": "jhonny-jimenez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 123,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 9
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 9,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 7,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 5,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699076",
+      "on_record": {
+        "milestones": 7,
+        "stints": 7
+      },
+      "player_slug": "juan-alonso",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 231,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 5,
+        "stints": 7
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 7,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 5,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 5,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699065",
+      "on_record": {
+        "milestones": 7,
+        "stints": 5
+      },
+      "player_slug": "luis-guerra",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 130,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 5,
+        "stints": 5
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 5,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 5,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 3,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699059",
+      "on_record": {
+        "milestones": 6,
+        "stints": 5
+      },
+      "player_slug": "maximo-martinez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 33,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 5
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 5,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 5,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 4,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699074",
+      "on_record": {
+        "milestones": 6,
+        "stints": 5
+      },
+      "player_slug": "michael-vilchez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 96,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 5
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 5,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 1,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699072",
+      "on_record": {
+        "milestones": 4,
+        "stints": 1
+      },
+      "player_slug": "miguel-bastardo",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 9,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 2,
+        "stints": 1
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 1,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 2,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 2,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699057",
+      "on_record": {
+        "milestones": 3,
+        "stints": 2
+      },
+      "player_slug": "missael-soto",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 21,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 1,
+        "stints": 2
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 2,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 5,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 4,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699063",
+      "on_record": {
+        "milestones": 6,
+        "stints": 5
+      },
+      "player_slug": "pedro-santillan",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 79,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 5
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 5,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 10,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 5,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699061",
+      "on_record": {
+        "milestones": 8,
+        "stints": 10
+      },
+      "player_slug": "rayne-doncon",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 392,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 6,
+        "stints": 10
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 10,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 9,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 4,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699068",
+      "on_record": {
+        "milestones": 6,
+        "stints": 12
+      },
+      "player_slug": "roger-lasso",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 208,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 4,
+        "stints": 12
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 12,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 0,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 0,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "699067",
+      "on_record": {
+        "milestones": 2,
+        "stints": 0
+      },
+      "player_slug": "sebastian-jimenez",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 0,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 1,
+        "stints": 0
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 0,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    },
+    {
+      "date_conflicts_reported_by_pipeline": 0,
+      "disagreements": 0,
+      "game_dates": {
+        "stints_conflicting": [],
+        "stints_fillable": [],
+        "stints_matched": 6,
+        "undated": []
+      },
+      "milestones": {
+        "conflicting": [],
+        "game_log_dated_matched": 5,
+        "new_from_game_log": [],
+        "season_to_day_upgrades": [],
+        "source_candidates_not_on_record": []
+      },
+      "mlb_id": "694180",
+      "on_record": {
+        "milestones": 7,
+        "stints": 6
+      },
+      "player_slug": "wilman-diaz",
+      "reviewed_facts_disi_lacks": 0,
+      "signing_year": 2021,
+      "source": {
+        "dated_appearances": 305,
+        "game_log_errors": 0,
+        "game_log_fetches": null,
+        "milestone_candidates": 5,
+        "stints": 6
+      },
+      "stints": {
+        "in_source_not_on_record": [],
+        "kind_differences": [],
+        "matched": 6,
+        "on_record_not_in_source": [],
+        "stat_differences": []
+      }
+    }
+  ],
+  "totals": {
+    "cohort_players": 46,
+    "dated_appearances": 8158,
+    "disagreements": 0,
+    "game_log_dated_milestones_matched": 182,
+    "game_log_errors": 0,
+    "milestone_conflicts": 0,
+    "milestone_season_to_day_upgrades": 0,
+    "milestones_new_from_game_log": 0,
+    "on_record_stints": 306,
+    "pipeline_date_conflicts": 0,
+    "reviewed_facts_disi_lacks": 0,
+    "source_milestone_candidates_not_on_record": 0,
+    "source_stints": 306,
+    "stat_differences": 0,
+    "stint_date_conflicts": 0,
+    "stint_dates_fillable": 0,
+    "stint_dates_matched": 278,
+    "stints_in_source_not_on_record": 0,
+    "stints_on_record_not_in_source": 0,
+    "undated_log_era_team_stints": 3
+  }
+}
