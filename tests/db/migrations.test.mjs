@@ -38,10 +38,10 @@ test('manifest lists every canonical SQL file, in order', () => {
 
 // Each migration replaces some views of the one before it, so rerunnability is
 // checked for the latest migration of the chain this file builds (046; 047, 048, 049 and 050 prove their own reruns in tests/db/research-047.test.mjs, research-048.test.mjs,
-// research-049.test.mjs and research-050.test.mjs).
+// research-049.test.mjs, research-050.test.mjs and research-052.test.mjs).
 test('the latest migration is rerunnable without changing data', async () => {
   const latest = '046_outcome_cost_research_batch.sql'
-  assert.equal(manifest.canonical_sql.at(-5), latest)
+  assert.equal(manifest.canonical_sql.at(-6), latest)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
       (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
