@@ -160,8 +160,10 @@ export default async function PlayerPage({ params }) {
   const firstProStatus = dodgersSigning ? firstProSeasonStatus(dodgersSigning, devSummary) : null
   // 051: who each affiliate belonged to, season by season; a later season with another organization is never Dodgers development
   const segments = dodgersSigning && devStints.length > 0 ? careerSegments(devStints) : null
-  // 052: seasons with two or more organizations, each read against the recorded transactions (a team change alone is never a transaction)
-  const orgSeasons = dodgersSigning && devStints.length > 0 ? multiOrganizationSeasons(devStints, transactions.filter((t) => t.record_kind !== 'PACKAGE_EVENT')) : []
+  // 052: seasons with two or more organizations, each read against the recorded transactions (a team change alone is never a transaction).
+  // Every v_player_transactions row counts, as in the research queue view and /development: a trade is often recorded only as its
+  // PACKAGE_EVENT row (Rincón 2021, Santana 2008), so dropping those rows would call a bracketed season unverified.
+  const orgSeasons = dodgersSigning && devStints.length > 0 ? multiOrganizationSeasons(devStints, transactions) : []
 
   return (
     <main className="shell page-main dossier">
