@@ -229,7 +229,7 @@ test('verifier: the four snapshot checks cover the eleventh snapshot; the full v
   assert.deepEqual(await failing(), [])
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 249)
+  assert.equal(full.hard.length, 252)
   await scratch(async () => {
     await chain.db.exec(`grant select on public.v_database_status to anon`)
     assert.deepEqual(await failing(), ['product_snapshot_api_violations'])

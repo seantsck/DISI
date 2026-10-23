@@ -24,7 +24,7 @@ const one = async (sql, params) => (await rows(sql, params))[0]
 before(async () => {
   // This file pins the exact data of the frozen chain through 046 (the 021-024 development counts among them). Migration 047 is a data-only
   // research batch that legitimately moves those counts; it is verified in tests/db/research-047.test.mjs, and the complete chain including it
-  // is built and checked by tests/db/verify-live-invariants.test.mjs (the 249-check verifier).
+  // is built and checked by tests/db/verify-live-invariants.test.mjs (the 252-check verifier).
   db = (await buildChainThrough('046_outcome_cost_research_batch.sql')).db
 }, { timeout: 180000 })
 
@@ -2161,7 +2161,9 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 048 (verified MLB development coverage) was released on 2026-10-21 (PR #19, da91c21) and is frozen
 // 049 (transaction-package completion) was released on 2026-10-22 (PR #21, 519fad7) and is frozen
 // 050 (international benchmark expansion and probability-support audit) was released on 2026-10-22 (PR #23, 459460d) and is frozen
-const UNRELEASED_ADDITIONS = []
+// 051 added no migration (released 2026-10-23, PR #25, 9bf42da)
+// 052 (development taxonomy and chronology resolution) is built and not yet released
+const UNRELEASED_ADDITIONS = ['052_development_taxonomy_chronology_resolution.sql']
 
 test('frozen history: migrations 001-050 (with 043a) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
