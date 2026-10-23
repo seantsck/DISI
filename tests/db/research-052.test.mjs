@@ -270,6 +270,6 @@ test('rollback restores the exact pre-052 state; reapplying 052 reproduces the s
 test('the rollback refuses a database 052 has not been applied to', async () => {
   const c = await open(pre050)
   try {
-    await assert.rejects(c.db.exec(rollback052), /rollback-052: 0 of \d+ organization stints are not in their 052 state/)
+    await assert.rejects(c.db.exec(rollback052), /rollback-052: only 0 of \d+ organization stints are in their 052 state/)
   } finally { await c.close() }
 })

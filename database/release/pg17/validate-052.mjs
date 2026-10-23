@@ -178,7 +178,7 @@ try {
   check('after rollback support and the generation equal the pre-052 state, with zero drift', md5(SB.sup) === md5(S0.sup) && md5(SB.gen) === md5(S0.gen) && (await drift(B)).length === 0)
   let again = ''
   try { await B.query(rbSql) } catch (e) { again = e.message; await B.query('rollback').catch(() => {}) }
-  check('a second rollback refuses (052 is no longer applied)', /rollback-052: 0 of \d+ organization stints are not in their 052 state/.test(again), again.slice(0, 100))
+  check('a second rollback refuses (052 is no longer applied)', /rollback-052: only 0 of \d+ organization stints are in their 052 state/.test(again), again.slice(0, 100))
   const rv = await checkInvariants(q(B), EXPECTATIONS_THROUGH_051); const frv = failedChecks(rv)
   check(`the through-051 verifier after rollback: ${rv.hard.length - frv.length}/${rv.hard.length}`, frv.length === 0, frv.map((x) => x.name).join(', '))
   await apply(B, TC, [FILE])

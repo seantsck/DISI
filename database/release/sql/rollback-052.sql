@@ -17138,31 +17138,31 @@ begin
    and coalesce(s.league_name, '') = coalesce(v.league_name, '') and s.level::text = v.level and s.stint_kind = 'TEAM_STINT'
   where s.detail -> 'organizationEvidence' = v.evidence and s.organization_name = v.organization_name;
   if n <> (select count(*) from _r052_org) then
-    raise exception 'rollback-052: % of % organization stints are not in their 052 state', n, (select count(*) from _r052_org);
+    raise exception 'rollback-052: only % of % organization stints are in their 052 state', n, (select count(*) from _r052_org);
   end if;
   select count(*) into n from _r052_dates v join public.players p on p.slug = v.slug
   join public.player_season_stints s on s.player_id = p.id and s.season = v.season and coalesce(s.affiliate_team, '') = coalesce(v.affiliate_team, '')
    and coalesce(s.league_name, '') = coalesce(v.league_name, '') and s.level::text = v.level and s.stint_kind = 'TEAM_STINT'
   where s.first_game_date = v.first_game_date and s.last_game_date = v.last_game_date and s.game_date_basis = 'GAME_LOG';
   if n <> (select count(*) from _r052_dates) then
-    raise exception 'rollback-052: % of % dated stints are not in their 052 state', n, (select count(*) from _r052_dates);
+    raise exception 'rollback-052: only % of % dated stints are in their 052 state', n, (select count(*) from _r052_dates);
   end if;
   select count(*) into n from _r052_upgrades u join public.players p on p.slug = u.slug
   join public.development_milestones m on m.player_id = p.id and m.event_code = u.event_code
   where m.date_precision = 'DAY' and m.milestone_date = u.milestone_date and m.evidence_basis = 'GAME_LOG' and m.notes = u.note;
   if n <> (select count(*) from _r052_upgrades) then
-    raise exception 'rollback-052: % of % upgraded milestones are not in their 052 state', n, (select count(*) from _r052_upgrades);
+    raise exception 'rollback-052: only % of % upgraded milestones are in their 052 state', n, (select count(*) from _r052_upgrades);
   end if;
   select count(*) into n from _r052_debuts d join public.players p on p.slug = d.slug
   join public.development_milestones m on m.player_id = p.id and m.event_code = 'PROFESSIONAL_DEBUT' and m.milestone_date = d.event_date and m.evidence_basis = 'GAME_LOG';
   if n <> (select count(*) from _r052_debuts) then
-    raise exception 'rollback-052: % of % dated professional debuts are not in their 052 state', n, (select count(*) from _r052_debuts);
+    raise exception 'rollback-052: only % of % dated professional debuts are in their 052 state', n, (select count(*) from _r052_debuts);
   end if;
   select count(*) into n from _r052_reviews r join public.players p on p.slug = r.slug
   join public.development_progression_decisions d on d.player_id = p.id and d.event_code = r.event_code
   where d.progression_role = 'REVIEW_REQUIRED' and d.review_status = 'PENDING_REVIEW' and d.notes = r.notes;
   if n <> (select count(*) from _r052_reviews) then
-    raise exception 'rollback-052: % of % sequence reviews are not in their 052 state (one may have been decided since; decide again after the rollback)', n, (select count(*) from _r052_reviews);
+    raise exception 'rollback-052: only % of % sequence reviews are in their 052 state (one may have been decided since; decide again after the rollback)', n, (select count(*) from _r052_reviews);
   end if;
 end $$;
 
