@@ -26,6 +26,18 @@ transaction) stays in [`INGESTION.md`](INGESTION.md); the plan is in [`ROADMAP.m
   organization is career context; the highest level recorded at a Dodgers affiliate and the whole-career highest level are two figures.
 - **`DEVELOPMENT HISTORY` is not a `PREDICTION FEATURE` (041, re-proven in 051).** Development rows are post-signing information and never reach the
   signing-time feature matrix.
+- **`HISTORICAL LEAGUE LABEL` is not `MODERN LEVEL` (052).** A league's classification is a fact about a season: the official record files the
+  Pioneer League under the Rookie sport for every season DISI holds, under Rookie Advanced only in 2019-2020 and under the Independent sport from
+  2021. No label is carried to another season, and no stint is placed on a level it does not fit (`ROOKIE-ADVANCED != COMPLEX ROOKIE BY ASSUMPTION`).
+- **`AFFILIATE NAME` is not `ORGANIZATION WITHOUT SEASON CONTEXT` (052).** A stint's organization is the parent the official team record names for
+  that team id in that season, never one inferred from the affiliate name, the signing organization, an adjacent season or the modern franchise.
+- **`LEAGUE SEASON NOT PLAYED` is not `MISSING PLAYER SEASON` (052).** No affiliated minor league played 2020 (the official schedule holds no game),
+  so an affiliated minor leaguer's missing 2020 is the league's. The leagues that played (the major leagues, NPB, KBO) are never suppressed, and
+  every other missing season stays unknown: `SEASON GAP != DID NOT PLAY`.
+- **`TEAM CHANGE` is not a `CANONICAL TRANSACTION` (052).** A season with two organizations is explained only by a recorded transaction bracketed by
+  the player's dated appearances; the transaction date, the last game before it and the first game after it stay three facts.
+- **`SOURCE-LIMITED` is not `RESEARCH FAILURE` (052).** A need no approved readable source can answer is classified as such and stays open; it is
+  not evidence that the fact does not exist, and it is never closed to make a count smaller.
 - **`UNKNOWN TRANSACTION` is not `RELEASED`.** No exit is inferred from a player's absence from later records. An exit is a sourced event;
   without one the exit is unknown (or the player is still with the organization), and DISI does not say which.
 - **`UNKNOWN TRADE RETURN` is not `ZERO VALUE`.** A return that is not recorded or not valued is `NULL`; a zero is a recorded zero.
@@ -373,6 +385,25 @@ not write dates, transaction types, affiliate levels, trade participants, bWAR o
   Dodgers exit; organizations are not re-resolved (the 021 affiliation table is unchanged); game-log dates are not retrieved; minor-league
   years the API does not hold (the 1950s, most pre-1990 rookie leagues) stay unknown.
 
+### What 052 recorded (development taxonomy and chronology resolution)
+
+- **Every need was classified before anything changed** (`gap-classification.json`): 76 facts the official source holds and DISI lacked, 26
+  taxonomy gaps, 39 source-limited, 5 for a person, 11 waiting on a transaction, 16 not gaps at all (the cancelled 2020 season).
+- **Organizations, from the official team record per stint and season**: 1,383 recorded organizations match, 319 unresolved stints are resolved
+  (84 to Dodgers affiliates), three New Orleans Zephyrs stints the affiliation rule had as Houston's are corrected, and one co-operative club with no
+  MLB parent stays unresolved. The record itself (team id, season, parent id and name, URL) is kept on each stint, and a verifier check proves it
+  is the stint's own season and that the Dodgers organization is assigned exactly when the record names the Dodgers.
+- **Exact dates, from the official game log**: 528 log-era stints and 101 level debuts (inside their own season). The six still undated stints are
+  2018 Mexican League play the minor-league log does not carry. A first professional game is dated for 11 amateur signings; for professional
+  signings and late first records it is not (the 048 rule).
+- **Sequences the dates expose** (a lower level's first game after a higher level's in one season) are five pending reviews for four players.
+- **Detectors**: `SEASON_GAP` no longer counts the cancelled 2020 for an affiliated minor leaguer; `MULTI_ORG_SEASON_UNVERIFIED` no longer flags a
+  season bracketed by a canonical transaction and game dates. Resolving organizations revealed more two-organization seasons; those without a
+  transaction stay open.
+- **The Pioneer League stays unplaced** (taxonomy-limited), with the per-era classification in the level-era map.
+- **Result**: needs 173 -> 110 (rows 347 -> 134, players 85 -> 66); none of the 110 is a fact the official source holds. `research:development --causes`
+  lists each with its class, cause and the evidence that would close it.
+
 ### What 051 recorded (audited no-MLB development coverage)
 
 - **The cohort** is derived: every Dodgers tracked signing whose canonical outcome audit is `VERIFIED_NO_MLB` (46). NOT_AUDITED and verified MLB
@@ -482,7 +513,7 @@ npm run research:queue          open queues by category, with what each blocks
 npm run research:outcomes       the audit cohort            -- --mature --status not_audited [--year --market --limit --format csv|json]
 npm run research:costs          the cost queue              -- --missing [--mature --mlb yes|no --year --market --limit]
 npm run research:transactions   transaction / value items   -- --missing | --traded | --unresolved-attribution | --chains [--value-blocked] | --packages [--membership|--terms] | --ptbnl | --future-consideration | --cash-unknown | --value-blocked | --bucket CHAIN_OR_MEMBERSHIP|TERMS|VALUE|OTHER
-npm run research:development    development research queue  -- --missing [--mature --mlb yes|no --year --market --player --limit] | --coverage | --timing | --mlb-coverage | --no-mlb-coverage | --needs | --review
+npm run research:development    development research queue  -- --missing [--mature --mlb yes|no --year --market --player --limit] | --coverage | --timing | --mlb-coverage | --no-mlb-coverage | --needs | --causes [--class --need] | --review
 npm run research:readiness      blockers for every layer, plus the development / transaction evidence gaps (reported, not gates)
 npm run research:progress       against database/research/046/baseline.json
 ```

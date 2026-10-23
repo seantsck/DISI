@@ -21,6 +21,7 @@ npm run research:development  -- --mlb-coverage    # 048: the verified MLB cohor
 npm run research:development  -- --needs           # 048: the queue de-duplicated by the evidence gap each item names
 npm run research:development  -- --review [--player kenley-jansen]   # 048: the reviewer's packet for pending progression decisions (decides nothing)
 npm run research:development  -- --no-mlb-coverage  # 051: the audited no-MLB cohort's documented path, Dodgers-affiliate part and later career apart
+npm run research:development  -- --causes [--class SOURCE_LIMITED] [--need ORGANIZATION]  # 052: every open need, why it is open, what would close it
 npm run research:readiness
 npm run research:progress     -- --baseline database/research/046/baseline.json
 ```
@@ -89,3 +90,14 @@ first professional season status (the 048 rule), highest recorded level for the 
 season and organization, chronology, exact-date coverage (`dated/log-era stints`), where the record is silent, and the open evidence gaps; then
 the counts, each with its denominator. Reads the stint history (`--history` is implied). No score, no ranking, no rate: `AUDITED NO MLB != CAREER
 FAILURE`, `LAST OBSERVED SEASON != CAREER END`, and a later season with another organization is never Dodgers development.
+
+## research:development --causes (052)
+
+Every open development need (the de-duplicated `--needs` rows) with exactly one class, the cause in words, and the evidence that would close it:
+`FACT_MISSING` (an approved source holds it and DISI does not), `TAXONOMY_GAP` (the ladder cannot place it), `SOURCE_LIMITED` (no approved readable
+source holds it; not a research failure), `HUMAN_REVIEW` (a person decides), `TRANSACTION_BLOCKED` (a season with two organizations and no
+canonical transaction between them), `IDENTITY_BLOCKED`, or `NOT_A_GAP`. Filter with `--class` and `--need`; `--format json` adds the counts. The
+rules are `lib/research/development-chronology.js`, the same ones the research-queue view applies. No priority score.
+
+The official league and team facts it rests on come from two read-only fetchers: `scripts/mlb/team-seasons.mjs` (a team's parent organization,
+sport and league for one season) and `scripts/mlb/league-seasons.mjs` (a level's regular-season schedule; a league's sport by season).
