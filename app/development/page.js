@@ -6,6 +6,7 @@ import { money, num, bwar, humanize, dateLabel, MISSING } from '../../lib/format
 import { developmentCoverage, developmentRecords, timingFacts } from '../../lib/research/development-research.js'
 import { auditedNoMlbCoverage, verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
 import { NEED_GROUPS, developmentNeedSummary, developmentNeeds } from '../../lib/research/development-needs.js'
+import { GAP_CLASS, gapClassCounts, needCauses } from '../../lib/research/development-chronology.js'
 
 export const metadata = { title: 'Development' }
 
@@ -14,10 +15,10 @@ export const dynamic = 'force-dynamic'
 
 const ISSUE_LABELS = {
   IDENTITY_BUT_NO_PROFESSIONAL_SEASONS: 'Resolved identity but no professional seasons recorded',
-  SEASON_GAP: 'A season is missing between the first and last recorded season',
+  SEASON_GAP: 'A season is missing between the first and last recorded season (the cancelled 2020 minor-league season is not counted)',
   UNKNOWN_LEVEL_CLASSIFICATION: 'A stint could not be classified into the canonical taxonomy',
   UNRESOLVED_ORGANIZATION: 'A stint has no organization resolved from its team/league/season',
-  MULTI_ORG_SEASON_UNVERIFIED: 'Two organizations appear in the same season; the trade date needs review',
+  MULTI_ORG_SEASON_UNVERIFIED: 'Two organizations appear in one season with no recorded transaction bracketed by game dates',
   MLB_PLAYER_MISSING_PRE_MLB_HISTORY: 'Reached MLB but no pre-MLB development record was found',
   LEVEL_CONFLICT: 'Source label and canonical classification disagree',
   MISSING_FIRST_GAME_DATE: 'A log-era stint has no verified first appearance date',
@@ -58,6 +59,17 @@ const NO_MLB_CARDS = [
 ]
 const LEVEL_ROWS = ['INTERNATIONAL_ROOKIE', 'COMPLEX_ROOKIE', 'LOW_A', 'HIGH_A', 'AA', 'AAA']
 
+// 052: why each open need is open, in words a reader does not need the taxonomy for
+const CLASS_LABELS = {
+  FACT_MISSING: 'Fact missing',
+  TAXONOMY_GAP: 'No level for it yet',
+  SOURCE_LIMITED: 'Source-limited',
+  HUMAN_REVIEW: 'A person decides',
+  TRANSACTION_BLOCKED: 'Waits on a transaction',
+  IDENTITY_BLOCKED: 'Identity first',
+  NOT_A_GAP: 'Not a gap',
+}
+
 const DIMENSION_CARDS = [
   { key: 'SIGNING_DATE', label: 'Signing date', what: 'tracked signings with a recorded signing date' },
   { key: 'FIRST_PRO_SEASON', label: 'First professional season', what: 'amateur signings whose earliest record is the signing season or the next; a later start is only the first observed record, and an established professional’s first affiliated season is not his first professional season' },
@@ -73,7 +85,7 @@ function whenCell(exact, season) {
 }
 
 export default async function DevelopmentPage() {
-  const { live, error, coverage, byClass, byMarket, byBonus, queue, debuts, devSignings, devSummary, mlbStints } = await getDevelopmentData()
+  const { live, error, coverage, byClass, byMarket, byBonus, queue, debuts, devSignings, devSummary, mlbStints, queueTransactions } = await getDevelopmentData()
   const timed = debuts.filter((r) => r.years_signing_to_mlb != null)
   // 047: completeness per dimension (each with its denominator) and descriptive timing; the EXIT dimension lives on /asset-conversion
   const dataset = { signings: devSignings, developmentSummary: devSummary, developmentQueue: queue, decisions: [], transactionQueue: [] }
@@ -91,6 +103,13 @@ export default async function DevelopmentPage() {
   // 048: the same queue, de-duplicated by the evidence gap each item names
   const needs = developmentNeeds(dataset)
   const needSummary = developmentNeedSummary(dataset)
+  // 052: each open need with its cause (stints and transactions read for the players with an open need); absent stints leave the breakdown out
+  const txByPlayer = new Map()
+  for (const t of queueTransactions ?? []) { if (!txByPlayer.has(t.player_id)) txByPlayer.set(t.player_id, []); txByPlayer.get(t.player_id).push(t) }
+  const causes = stintsByPlayer.size > 0 ? needCauses(needs, (id) => stintsByPlayer.get(id) ?? [], (id) => txByPlayer.get(id) ?? []) : null
+  const causeOf = new Map((causes ?? []).map((c) => [`${c.player_id}|${c.need}`, c]))
+  const classTotals = causes ? gapClassCounts(causes) : null
+  const shownClasses = classTotals ? Object.keys(GAP_CLASS).filter((k) => classTotals[k] > 0) : []
   return (
     <main className="shell page-main">
       <header className="page-hero">
@@ -369,23 +388,56 @@ export default async function DevelopmentPage() {
             <span className="micro-note">{needSummary.needs} evidence gaps · {needSummary.detector_rows} detector rows merged</span>
           </div>
           <p className="muted">Several detectors fire on the same missing evidence (a stint with no game dates also keeps every level debut at season precision), and researching one closes all of them. Each gap below is one piece of work; nothing is dropped, and a gap closes only when every detector it merges is quiet.</p>
-          <ul className="plain-list">
-            {NEED_GROUPS.filter((g) => needSummary.by_need[g.key]).map((g) => (
-              <li key={g.key}><strong>{needSummary.by_need[g.key]}</strong> · {g.action}</li>
-            ))}
-          </ul>
+          {causes ? (
+            <>
+              <h3 className="sub">Why each gap is open</h3>
+              <table className="compact-table">
+                <thead><tr><th>Gap</th><th className="num">Open</th>{shownClasses.map((k) => <th key={k} className="num">{CLASS_LABELS[k]}</th>)}</tr></thead>
+                <tbody>{NEED_GROUPS.filter((g) => needSummary.by_need[g.key]).map((g) => {
+                  const rows = causes.filter((c) => c.need === g.key)
+                  const counts = gapClassCounts(rows)
+                  return (
+                    <tr key={g.key}>
+                      <td>{g.action}</td>
+                      <td className="num">{rows.length}</td>
+                      {shownClasses.map((k) => <td key={k} className="num">{counts[k] || ''}</td>)}
+                    </tr>
+                  )
+                })}</tbody>
+              </table>
+              <p className="muted small-note">
+                <strong>Source-limited</strong> means no approved readable source holds the fact (seasons before structured minor-league records, foreign
+                professional leagues the official game log does not carry, a player whose record the source does not return). It is not a research failure, and it
+                is not evidence that the fact does not exist. <strong>No level for it yet</strong>: Pioneer League seasons, which the official record files under the
+                Rookie sport but which are neither an international nor a complex league; they stay on record, unranked, until a reviewed decision.
+                <strong> Waits on a transaction</strong>: a season with two organizations and no recorded transaction between them; a team change is never treated as one.
+                The cancelled 2020 minor-league season is not counted as a missing season, and a season bracketed by a recorded trade and game dates on both sides is
+                not open.
+              </p>
+            </>
+          ) : (
+            <ul className="plain-list">
+              {NEED_GROUPS.filter((g) => needSummary.by_need[g.key]).map((g) => (
+                <li key={g.key}><strong>{needSummary.by_need[g.key]}</strong> · {g.action}</li>
+              ))}
+            </ul>
+          )}
           <details>
             <summary className="muted">All {needs.length} gaps by player</summary>
             <table className="compact-table">
-              <thead><tr><th>Player</th><th>Class</th><th>Gap</th><th>Detectors merged</th></tr></thead>
-              <tbody>{needs.map((r) => (
-                <tr key={`${r.player_id}-${r.need}`}>
-                  <td>{r.player_slug ? <PlayerLink slug={r.player_slug} name={r.full_name} /> : MISSING}</td>
-                  <td>{r.signing_year ?? MISSING}</td>
-                  <td>{humanize(r.need)}</td>
-                  <td className="muted">{r.issues.map((i) => ISSUE_LABELS[i] ?? humanize(i)).join(' · ')}</td>
-                </tr>
-              ))}</tbody>
+              <thead><tr><th>Player</th><th>Class</th><th>Gap</th><th>Why open</th><th>Detectors merged</th></tr></thead>
+              <tbody>{needs.map((r) => {
+                const c = causeOf.get(`${r.player_id}|${r.need}`)
+                return (
+                  <tr key={`${r.player_id}-${r.need}`}>
+                    <td>{r.player_slug ? <PlayerLink slug={r.player_slug} name={r.full_name} /> : MISSING}</td>
+                    <td>{r.signing_year ?? MISSING}</td>
+                    <td>{humanize(r.need)}</td>
+                    <td className="wrap">{c ? <><strong>{CLASS_LABELS[c.gap_class]}</strong> <span className="muted">· {c.cause}</span></> : MISSING}</td>
+                    <td className="muted">{r.issues.map((i) => ISSUE_LABELS[i] ?? humanize(i)).join(' · ')}</td>
+                  </tr>
+                )
+              })}</tbody>
             </table>
           </details>
         </section>

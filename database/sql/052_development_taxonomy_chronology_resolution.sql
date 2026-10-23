@@ -1,0 +1,17739 @@
+-- DISI v0.37
+-- 052_development_taxonomy_chronology_resolution.sql
+-- Development taxonomy and chronology resolution. Run after 050 (051 added no migration).
+--
+-- Built from database/research/052/ (migration-values.json, derive.mjs, build.mjs) against the official MLB Stats API, read 2026-10-23.
+--
+-- What this is. A research-data migration with one detector correction. It adds no table, function, grant or policy, and it changes no outcome
+-- audit, transaction, WAR row, cost, benchmark fact, threshold, signing-time feature or prediction.
+-- HISTORICAL LEAGUE LABEL != MODERN LEVEL; AFFILIATE NAME != ORGANIZATION WITHOUT SEASON CONTEXT; LEAGUE SEASON NOT PLAYED != MISSING PLAYER
+-- SEASON; TEAM CHANGE != CANONICAL TRANSACTION; SEASON PRECISION != DAY PRECISION; SOURCE-LIMITED != RESEARCH FAILURE.
+--   * Organizations. 322 team stints take the parent organization the official team-season record names for the
+--     stint's own team id in its own season (a major-league club is its own organization); 3 of them correct an
+--     affiliation rule that carried the New Orleans Zephyrs as Houston's beyond 2004. The evidence (team id, season, parent id and name, URL) is
+--     kept on each stint; the previous value is kept in the evidence. One stint (a co-operative club with no MLB parent) stays unresolved.
+--   * Exact dates. 528 log-era team stints take their first and last appearance dates from the official gameLog; 101 level debuts move from
+--     season to day precision inside their own season; 11 amateur signings get a dated PROFESSIONAL_DEBUT (no professional-pathway signing
+--     and no late first record does). An existing date is never overwritten; a stint the log returns no games for keeps NULL dates.
+--   * Sequences. 5 pending progression reviews (4 players) for sequences the exact dates make visible inside one season; none is decided.
+--   * Taxonomy. The Pioneer League is recorded per era in the level-era map (Rookie sport through 2020, Independent from 2021). Its stints stay
+--     OTHER and unranked: no stint on record is in a Rookie Advanced season, and no existing level fits without an assumption.
+--   * Detector. v_dodgers_development_research_queue: SEASON_GAP no longer fires for 2020 when the league did not play it, and
+--     MULTI_ORG_SEASON_UNVERIFIED no longer fires for a season bracketed by a canonical transaction and game dates. Every other detector is the
+--     024 text unchanged.
+-- No persisted snapshot reads a changed row: the migration proves that every product snapshot still matches its source (drift 0), so the
+-- snapshot generation does not move and no refresh is run.
+--
+-- Rerunnable: every row is checked to be in its pre-052 or its 052 state; only pre-052 rows change.
+
+begin;
+
+-- ===========================================================================
+-- 0. REVIEWED RESEARCH DATA
+-- ===========================================================================
+
+create temporary table _m052 on commit drop as
+select $m052${
+  "as_of_date": "2026-10-23",
+  "era_map": [
+    {
+      "era": "PRE_ACADEMY_1960_1988",
+      "maps_to": "OTHER",
+      "note": "052: the official record files the Pioneer League under the Rookie sport (16) in this era. Affiliated rookie-class play, neither an international nor a complex league; no ladder level until a reviewed taxonomy decision.",
+      "source_label": "Pioneer League"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "maps_to": "OTHER",
+      "note": "052: the official record files the Pioneer League under the Rookie sport (16) in 2017-2018 and under Rookie Advanced (5442) in 2019-2020 (no 2020 season was played). Affiliated rookie-class play; no ladder level until a reviewed taxonomy decision. ROOKIE-ADVANCED != COMPLEX ROOKIE BY ASSUMPTION.",
+      "source_label": "Pioneer League"
+    },
+    {
+      "era": "MODERN_FOUR_LEVEL_2021_PLUS",
+      "maps_to": "INDEPENDENT",
+      "note": "052: from 2021 the official record files the Pioneer League under the Independent sport (23): an MLB Partner League without affiliations, never affiliated development.",
+      "source_label": "Pioneer League"
+    }
+  ],
+  "expected_before": {
+    "milestones": 1073,
+    "progression_decisions": 37,
+    "progression_decisions_pending": 26,
+    "stints": 1859,
+    "team_stints": 1739,
+    "team_stints_without_organization": 320
+  },
+  "milestone_upgrades": [
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2023-05-16",
+      "note": "Exact first appearance at AAA on 2023-05-16 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2023,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2022-04-08",
+      "note": "Exact first appearance at AA on 2022-04-08 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2022,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2018-08-10",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2018-08-10 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2018-06-02",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2018-06-02 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2021-05-04",
+      "note": "Exact first appearance at HIGH_A on 2021-05-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2021,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2010-04-08",
+      "note": "Exact first appearance at AAA on 2010-04-08 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2010,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2008-08-31",
+      "note": "Exact first appearance at AA on 2008-08-31 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2008,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2007-04-05",
+      "note": "Exact first appearance at LOW_A on 2007-04-05 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2006-05-15",
+      "note": "Exact first appearance at HIGH_A on 2006-05-15 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2006,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2007-07-12",
+      "note": "Exact first appearance at AAA on 2007-07-12 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2006-04-06",
+      "note": "Exact first appearance at AA on 2006-04-06 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2006,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2023-08-03",
+      "note": "Exact first appearance at AAA on 2023-08-03 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2023,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2023-04-06",
+      "note": "Exact first appearance at AA on 2023-04-06 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2023,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2019-08-19",
+      "note": "Exact first appearance at LOW_A on 2019-08-19 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2019-06-17",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2019-06-17 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2018-06-02",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2018-06-02 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2021-08-03",
+      "note": "Exact first appearance at HIGH_A on 2021-08-03 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2021,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2010-07-05",
+      "note": "Exact first appearance at AAA on 2010-07-05 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2010,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2010-04-08",
+      "note": "Exact first appearance at AA on 2010-04-08 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2010,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2007-04-20",
+      "note": "Exact first appearance at LOW_A on 2007-04-20 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2006-06-20",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2006-06-20 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2006,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2007-04-05",
+      "note": "Exact first appearance at HIGH_A on 2007-04-05 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2023-08-22",
+      "note": "Exact first appearance at AAA on 2023-08-22 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2023,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2023-04-06",
+      "note": "Exact first appearance at AA on 2023-04-06 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2023,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2021-05-04",
+      "note": "Exact first appearance at LOW_A on 2021-05-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2021,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2019-06-17",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2019-06-17 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2018-06-02",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2018-06-02 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2021-08-25",
+      "note": "Exact first appearance at HIGH_A on 2021-08-25 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2021,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2013-06-10",
+      "note": "Exact first appearance at AAA on 2013-06-10 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2013,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2012-08-22",
+      "note": "Exact first appearance at AA on 2012-08-22 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2012,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2012-04-06",
+      "note": "Exact first appearance at LOW_A on 2012-04-06 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2012,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2012&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2011-06-22",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2011-06-22 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2011,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2011&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2008-06-02",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2008-06-02 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2008,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2008&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2025-09-09",
+      "note": "Exact first appearance at AA on 2025-09-09 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2025,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2025&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2023-05-30",
+      "note": "Exact first appearance at LOW_A on 2023-05-30 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2023,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2022-06-06",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2022-06-06 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2022,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2024-06-25",
+      "note": "Exact first appearance at HIGH_A on 2024-06-25 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2024,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2015-08-31",
+      "note": "Exact first appearance at AAA on 2015-08-31 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2015,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2015-04-10",
+      "note": "Exact first appearance at AA on 2015-04-10 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2015,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2013-05-26",
+      "note": "Exact first appearance at LOW_A on 2013-05-26 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2013,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2015-07-10",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2015-07-10 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2015,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2014-04-04",
+      "note": "Exact first appearance at HIGH_A on 2014-04-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2014,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2014&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2019-07-21",
+      "note": "Exact first appearance at AAA on 2019-07-21 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2018-04-05",
+      "note": "Exact first appearance at AA on 2018-04-05 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2017-04-07",
+      "note": "Exact first appearance at LOW_A on 2017-04-07 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2016-06-20",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2016-06-20 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2016,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2015-05-30",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2015-05-30 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2015,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2017-07-10",
+      "note": "Exact first appearance at HIGH_A on 2017-07-10 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2009-05-30",
+      "note": "Exact first appearance at AAA on 2009-05-30 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2009,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2010-05-15",
+      "note": "Exact first appearance at AA on 2010-05-15 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2010,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2007-04-06",
+      "note": "Exact first appearance at LOW_A on 2007-04-06 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2009-04-09",
+      "note": "Exact first appearance at HIGH_A on 2009-04-09 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2009,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2022-04-06",
+      "note": "Exact first appearance at AAA on 2022-04-06 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2022,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2021-06-06",
+      "note": "Exact first appearance at AA on 2021-06-06 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2021,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2018-08-02",
+      "note": "Exact first appearance at LOW_A on 2018-08-02 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2018-06-18",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2018-06-18 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2019-07-02",
+      "note": "Exact first appearance at HIGH_A on 2019-07-02 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2021-09-22",
+      "note": "Exact first appearance at AAA on 2021-09-22 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2021,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2019-05-30",
+      "note": "Exact first appearance at AA on 2019-05-30 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2017-04-07",
+      "note": "Exact first appearance at LOW_A on 2017-04-07 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2019-06-24",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2019-06-24 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2016-06-04",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2016-06-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2016,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2019-04-04",
+      "note": "Exact first appearance at HIGH_A on 2019-04-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2014-05-26",
+      "note": "Exact first appearance at AAA on 2014-05-26 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2014,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2014&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2010-08-31",
+      "note": "Exact first appearance at AA on 2010-08-31 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2010,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2008-04-03",
+      "note": "Exact first appearance at LOW_A on 2008-04-03 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2008,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2007-06-19",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2007-06-19 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2009-04-09",
+      "note": "Exact first appearance at HIGH_A on 2009-04-09 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2009,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2019-06-13",
+      "note": "Exact first appearance at AAA on 2019-06-13 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2019-04-04",
+      "note": "Exact first appearance at AA on 2019-04-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2017-08-13",
+      "note": "Exact first appearance at LOW_A on 2017-08-13 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2017-07-28",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2017-07-28 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2017-06-05",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2017-06-05 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2018-07-01",
+      "note": "Exact first appearance at HIGH_A on 2018-07-01 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2008-04-18",
+      "note": "Exact first appearance at AAA on 2008-04-18 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2008,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2008&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2007-05-21",
+      "note": "Exact first appearance at AA on 2007-05-21 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2006-04-07",
+      "note": "Exact first appearance at HIGH_A on 2006-04-07 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2006,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2006&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2025-08-14",
+      "note": "Exact first appearance at AAA on 2025-08-14 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2025,
+      "slug": "roki-sasaki",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/808963/stats?stats=gameLog&group=pitching&season=2025&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2010-07-25",
+      "note": "Exact first appearance at AA on 2010-07-25 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2010,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2010-04-29",
+      "note": "Exact first appearance at LOW_A on 2010-04-29 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2010,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2010&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2009-06-25",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2009-06-25 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2009,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2009&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2007-07-04",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2007-07-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2007-04-05",
+      "note": "Exact first appearance at AAA on 2007-04-05 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2007,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2019-07-26",
+      "note": "Exact first appearance at AAA on 2019-07-26 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2019-05-19",
+      "note": "Exact first appearance at AA on 2019-05-19 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2015-04-15",
+      "note": "Exact first appearance at LOW_A on 2015-04-15 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2015,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2013-06-21",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2013-06-21 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2013,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2019-04-04",
+      "note": "Exact first appearance at HIGH_A on 2019-04-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2013-04-05",
+      "note": "Exact first appearance at AA on 2013-04-05 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2013,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2013&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2012-08-01",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2012-08-01 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2012,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2012-08-14",
+      "note": "Exact first appearance at HIGH_A on 2012-08-14 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2012,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2018-06-03",
+      "note": "Exact first appearance at AAA on 2018-06-03 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2018-04-05",
+      "note": "Exact first appearance at AA on 2018-04-05 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2018,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2017-05-15",
+      "note": "Exact first appearance at LOW_A on 2017-05-15 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "DSL_DEBUT",
+      "milestone_date": "2016-08-04",
+      "note": "Exact first appearance at INTERNATIONAL_ROOKIE on 2016-08-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2016,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2017-06-23",
+      "note": "Exact first appearance at HIGH_A on 2017-06-23 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AAA_DEBUT",
+      "milestone_date": "2021-05-04",
+      "note": "Exact first appearance at AAA on 2021-05-04 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2021,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "event_code": "AA_DEBUT",
+      "milestone_date": "2017-08-01",
+      "note": "Exact first appearance at AA on 2017-08-01 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2017,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "event_code": "A_DEBUT",
+      "milestone_date": "2019-08-22",
+      "note": "Exact first appearance at LOW_A on 2019-08-22 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2019,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "event_code": "COMPLEX_DEBUT",
+      "milestone_date": "2016-07-16",
+      "note": "Exact first appearance at COMPLEX_ROOKIE on 2016-07-16 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2016,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "event_code": "HIGH_A_DEBUT",
+      "milestone_date": "2016-04-07",
+      "note": "Exact first appearance at HIGH_A on 2016-04-07 from the official gameLog endpoint.",
+      "prior_evidence_basis": "SEASON_SPLITS",
+      "season_year": 2016,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    }
+  ],
+  "organizations": [
+    {
+      "affiliate_team": "San Bernardino Stampede",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:39.166Z",
+        "season": 1996,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "San Bernardino Stampede",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1996&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1996,
+      "slug": "adrian-beltre",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Savannah Sand Gnats",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:09:48.993Z",
+        "season": 1996,
+        "sport": "Single A (Full Season)",
+        "teamId": 543,
+        "teamName": "Savannah Sand Gnats",
+        "url": "https://statsapi.mlb.com/api/v1/teams/543?season=1996&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1996,
+      "slug": "adrian-beltre",
+      "team_id": 543
+    },
+    {
+      "affiliate_team": "San Antonio Missions",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:59.469Z",
+        "season": 1998,
+        "sport": "Double-A",
+        "teamId": 510,
+        "teamName": "San Antonio Missions",
+        "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1998&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1998,
+      "slug": "adrian-beltre",
+      "team_id": 510
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:33.919Z",
+        "season": 2001,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2001&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "adrian-beltre",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:02.449Z",
+        "season": 2001,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2001&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "adrian-beltre",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Round Rock Express",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 140,
+        "parentOrgName": "Texas Rangers",
+        "retrievedAt": "2026-10-23T03:02:11.738Z",
+        "season": 2011,
+        "sport": "Triple-A",
+        "teamId": 102,
+        "teamName": "Round Rock Express",
+        "url": "https://statsapi.mlb.com/api/v1/teams/102?season=2011&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Texas Rangers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2011,
+      "slug": "adrian-beltre",
+      "team_id": 102
+    },
+    {
+      "affiliate_team": "DSL Dodgers Guerrero",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:53.518Z",
+        "season": 2018,
+        "sport": "Rookie",
+        "teamId": 612,
+        "teamName": "DSL Dodgers Guerrero",
+        "url": "https://statsapi.mlb.com/api/v1/teams/612?season=2018&hydrate=league,sport"
+      },
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2018,
+      "slug": "andy-pages",
+      "team_id": 612
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:13.658Z",
+        "season": 2023,
+        "sport": "Triple-A",
+        "teamId": 238,
+        "teamName": "Oklahoma City Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2023&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2023,
+      "slug": "andy-pages",
+      "team_id": 238
+    },
+    {
+      "affiliate_team": "GCL Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:12.958Z",
+        "season": 1991,
+        "sport": "Rookie",
+        "teamId": 465,
+        "teamName": "GCL Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/465?season=1991&hydrate=league,sport"
+      },
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "antonio-osuna",
+      "team_id": 465
+    },
+    {
+      "affiliate_team": "Yakima Bears",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:00.182Z",
+        "season": 1991,
+        "sport": "Single A (Short Season)",
+        "teamId": 419,
+        "teamName": "Yakima Bears",
+        "url": "https://statsapi.mlb.com/api/v1/teams/419?season=1991&hydrate=league,sport"
+      },
+      "league_name": "Northwest League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "antonio-osuna",
+      "team_id": 419
+    },
+    {
+      "affiliate_team": "Bakersfield Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:09.928Z",
+        "season": 1993,
+        "sport": "Single A (Advanced)",
+        "teamId": 423,
+        "teamName": "Bakersfield Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1993&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1993,
+      "slug": "antonio-osuna",
+      "team_id": 423
+    },
+    {
+      "affiliate_team": "San Bernardino Spirit",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:38.421Z",
+        "season": 1995,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "San Bernardino Spirit",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1995&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1995,
+      "slug": "antonio-osuna",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "San Bernardino Stampede",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:41.422Z",
+        "season": 1999,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "San Bernardino Stampede",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1999&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1999,
+      "slug": "antonio-osuna",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "San Bernardino Stampede",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:42.170Z",
+        "season": 2000,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "San Bernardino Stampede",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2000&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "antonio-osuna",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 145,
+        "parentOrgName": "Chicago White Sox",
+        "retrievedAt": "2026-10-23T03:05:47.415Z",
+        "season": 2001,
+        "sport": "Major League Baseball",
+        "teamId": 145,
+        "teamName": "Chicago White Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2001&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Chicago White Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "antonio-osuna",
+      "team_id": 145
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 145,
+        "parentOrgName": "Chicago White Sox",
+        "retrievedAt": "2026-10-23T03:05:48.155Z",
+        "season": 2002,
+        "sport": "Major League Baseball",
+        "teamId": 145,
+        "teamName": "Chicago White Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2002&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Chicago White Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "antonio-osuna",
+      "team_id": 145
+    },
+    {
+      "affiliate_team": "GCL Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:08:24.211Z",
+        "season": 2003,
+        "sport": "Rookie",
+        "teamId": 475,
+        "teamName": "GCL Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/475?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "antonio-osuna",
+      "team_id": 475
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:54.915Z",
+        "season": 2003,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2003&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "antonio-osuna",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "Tampa Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:10:32.506Z",
+        "season": 2003,
+        "sport": "Single A (Advanced)",
+        "teamId": 587,
+        "teamName": "Tampa Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/587?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "antonio-osuna",
+      "team_id": 587
+    },
+    {
+      "affiliate_team": "Lake Elsinore Storm",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:02:14.017Z",
+        "season": 2004,
+        "sport": "Single A (Advanced)",
+        "teamId": 103,
+        "teamName": "Lake Elsinore Storm",
+        "url": "https://statsapi.mlb.com/api/v1/teams/103?season=2004&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "antonio-osuna",
+      "team_id": 103
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:53.381Z",
+        "season": 2004,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2004&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "antonio-osuna",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "New Orleans Zephyrs",
+      "correction": true,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:10:35.509Z",
+        "season": 2005,
+        "sport": "Triple A",
+        "teamId": 588,
+        "teamName": "New Orleans Zephyrs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/588?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "AFFILIATION_TABLE",
+      "previous_organization_name": "Houston Astros",
+      "season": 2005,
+      "slug": "antonio-osuna",
+      "team_id": 588
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:14.284Z",
+        "season": 2005,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2005&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "antonio-osuna",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Columbus Clippers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:07:33.950Z",
+        "season": 2017,
+        "sport": "Triple-A",
+        "teamId": 445,
+        "teamName": "Columbus Clippers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/445?season=2017&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "AFFILIATION_TABLE",
+      "previous_organization_name": "Cleveland Indians/Guardians",
+      "season": 2017,
+      "slug": "carlos-frias",
+      "team_id": 445
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:06.201Z",
+        "season": 2006,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "carlos-santana",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Akron Aeros",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:06:48.180Z",
+        "season": 2008,
+        "sport": "Double-A",
+        "teamId": 402,
+        "teamName": "Akron Aeros",
+        "url": "https://statsapi.mlb.com/api/v1/teams/402?season=2008&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "carlos-santana",
+      "team_id": 402
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:43.673Z",
+        "season": 2008,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2008&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "carlos-santana",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Kinston Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:08:30.958Z",
+        "season": 2008,
+        "sport": "Single A (Advanced)",
+        "teamId": 485,
+        "teamName": "Kinston Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/485?season=2008&hydrate=league,sport"
+      },
+      "league_name": "Carolina League",
+      "level": "HIGH_A",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "carlos-santana",
+      "team_id": 485
+    },
+    {
+      "affiliate_team": "Akron Aeros",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:06:48.932Z",
+        "season": 2009,
+        "sport": "Double-A",
+        "teamId": 402,
+        "teamName": "Akron Aeros",
+        "url": "https://statsapi.mlb.com/api/v1/teams/402?season=2009&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "carlos-santana",
+      "team_id": 402
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:56.995Z",
+        "season": 2010,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2010&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2010,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Columbus Clippers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:07:33.193Z",
+        "season": 2010,
+        "sport": "Triple-A",
+        "teamId": 445,
+        "teamName": "Columbus Clippers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/445?season=2010&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "AFFILIATION_TABLE",
+      "previous_organization_name": "Cleveland Indians/Guardians",
+      "season": 2010,
+      "slug": "carlos-santana",
+      "team_id": 445
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:57.727Z",
+        "season": 2011,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2011&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2011,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:58.461Z",
+        "season": 2012,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2012&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2012,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Lake County Captains",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:07:25.690Z",
+        "season": 2012,
+        "sport": "Class A",
+        "teamId": 437,
+        "teamName": "Lake County Captains",
+        "url": "https://statsapi.mlb.com/api/v1/teams/437?season=2012&hydrate=league,sport"
+      },
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2012,
+      "slug": "carlos-santana",
+      "team_id": 437
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:59.211Z",
+        "season": 2013,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2013&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2013,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:59.961Z",
+        "season": 2014,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2014&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2014,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:03:00.721Z",
+        "season": 2015,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2015&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2015,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:03:01.469Z",
+        "season": 2016,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2016&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2016,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:03:02.248Z",
+        "season": 2017,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2017&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2017,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:03:02.964Z",
+        "season": 2019,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2019&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2019,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:03:03.713Z",
+        "season": 2020,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2020&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2020,
+      "slug": "carlos-santana",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:03:29.239Z",
+        "season": 2021,
+        "sport": "Major League Baseball",
+        "teamId": 118,
+        "teamName": "Kansas City Royals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/118?season=2021&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2021,
+      "slug": "carlos-santana",
+      "team_id": 118
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:03:29.982Z",
+        "season": 2022,
+        "sport": "Major League Baseball",
+        "teamId": 118,
+        "teamName": "Kansas City Royals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/118?season=2022&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2022,
+      "slug": "carlos-santana",
+      "team_id": 118
+    },
+    {
+      "affiliate_team": "Chicago Cubs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 112,
+        "parentOrgName": "Chicago Cubs",
+        "retrievedAt": "2026-10-23T03:02:45.811Z",
+        "season": 2025,
+        "sport": "Major League Baseball",
+        "teamId": 112,
+        "teamName": "Chicago Cubs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/112?season=2025&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Chicago Cubs",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2025,
+      "slug": "carlos-santana",
+      "team_id": 112
+    },
+    {
+      "affiliate_team": "ACL D-backs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:11:08.517Z",
+        "season": 2026,
+        "sport": "Rookie",
+        "teamId": 1991,
+        "teamName": "ACL D-backs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/1991?season=2026&hydrate=league,sport"
+      },
+      "league_name": "Arizona Complex League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "carlos-santana",
+      "team_id": 1991
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:11:15.271Z",
+        "season": 2026,
+        "sport": "Triple-A",
+        "teamId": 2310,
+        "teamName": "Reno Aces",
+        "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2026&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "carlos-santana",
+      "team_id": 2310
+    },
+    {
+      "affiliate_team": "Oklahoma RedHawks",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 140,
+        "parentOrgName": "Texas Rangers",
+        "retrievedAt": "2026-10-23T03:06:06.168Z",
+        "season": 2002,
+        "sport": "Triple A",
+        "teamId": 238,
+        "teamName": "Oklahoma RedHawks",
+        "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2002&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Texas Rangers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "chan-ho-park",
+      "team_id": 238
+    },
+    {
+      "affiliate_team": "Frisco RoughRiders",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 140,
+        "parentOrgName": "Texas Rangers",
+        "retrievedAt": "2026-10-23T03:09:45.986Z",
+        "season": 2003,
+        "sport": "Double-A",
+        "teamId": 540,
+        "teamName": "Frisco RoughRiders",
+        "url": "https://statsapi.mlb.com/api/v1/teams/540?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Texas Rangers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "chan-ho-park",
+      "team_id": 540
+    },
+    {
+      "affiliate_team": "Oklahoma RedHawks",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 140,
+        "parentOrgName": "Texas Rangers",
+        "retrievedAt": "2026-10-23T03:06:06.905Z",
+        "season": 2003,
+        "sport": "Triple A",
+        "teamId": 238,
+        "teamName": "Oklahoma RedHawks",
+        "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Texas Rangers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "chan-ho-park",
+      "team_id": 238
+    },
+    {
+      "affiliate_team": "AZL Rangers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 140,
+        "parentOrgName": "Texas Rangers",
+        "retrievedAt": "2026-10-23T03:06:50.424Z",
+        "season": 2004,
+        "sport": "Rookie",
+        "teamId": 411,
+        "teamName": "AZL Rangers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/411?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Texas Rangers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "chan-ho-park",
+      "team_id": 411
+    },
+    {
+      "affiliate_team": "Frisco RoughRiders",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 140,
+        "parentOrgName": "Texas Rangers",
+        "retrievedAt": "2026-10-23T03:09:46.737Z",
+        "season": 2004,
+        "sport": "Double-A",
+        "teamId": 540,
+        "teamName": "Frisco RoughRiders",
+        "url": "https://statsapi.mlb.com/api/v1/teams/540?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Texas Rangers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "chan-ho-park",
+      "team_id": 540
+    },
+    {
+      "affiliate_team": "Oklahoma RedHawks",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 140,
+        "parentOrgName": "Texas Rangers",
+        "retrievedAt": "2026-10-23T03:06:07.661Z",
+        "season": 2004,
+        "sport": "Triple A",
+        "teamId": 238,
+        "teamName": "Oklahoma RedHawks",
+        "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Texas Rangers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "chan-ho-park",
+      "team_id": 238
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:54.158Z",
+        "season": 2005,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2005&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "chan-ho-park",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:54.928Z",
+        "season": 2006,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2006&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "chan-ho-park",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "New Orleans Zephyrs",
+      "correction": true,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:10:37.017Z",
+        "season": 2007,
+        "sport": "Triple A",
+        "teamId": 588,
+        "teamName": "New Orleans Zephyrs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/588?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "New York Mets",
+      "previous_basis": "AFFILIATION_TABLE",
+      "previous_organization_name": "Houston Astros",
+      "season": 2007,
+      "slug": "chan-ho-park",
+      "team_id": 588
+    },
+    {
+      "affiliate_team": "Round Rock Express",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:02:11.543Z",
+        "season": 2007,
+        "sport": "Triple A",
+        "teamId": 102,
+        "teamName": "Round Rock Express",
+        "url": "https://statsapi.mlb.com/api/v1/teams/102?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "chan-ho-park",
+      "team_id": 102
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:55.658Z",
+        "season": 2010,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2010&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2010,
+      "slug": "chan-ho-park",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "Scranton/Wilkes-Barre Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:09:30.981Z",
+        "season": 2010,
+        "sport": "Triple-A",
+        "teamId": 531,
+        "teamName": "Scranton/Wilkes-Barre Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/531?season=2010&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2010,
+      "slug": "chan-ho-park",
+      "team_id": 531
+    },
+    {
+      "affiliate_team": "Columbus Catfish",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:26.465Z",
+        "season": 2004,
+        "sport": "Single A (Full Season)",
+        "teamId": 441,
+        "teamName": "Columbus Catfish",
+        "url": "https://statsapi.mlb.com/api/v1/teams/441?season=2004&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "chin-lung-hu",
+      "team_id": 441
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:04.697Z",
+        "season": 2004,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "chin-lung-hu",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:05.458Z",
+        "season": 2005,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "chin-lung-hu",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:12.250Z",
+        "season": 2006,
+        "sport": "Double-A",
+        "teamId": 564,
+        "teamName": "Jacksonville Suns",
+        "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "chin-lung-hu",
+      "team_id": 564
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:13.001Z",
+        "season": 2007,
+        "sport": "Double-A",
+        "teamId": 564,
+        "teamName": "Jacksonville Suns",
+        "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "chin-lung-hu",
+      "team_id": 564
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:36.925Z",
+        "season": 2007,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "chin-lung-hu",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:37.674Z",
+        "season": 2008,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2008&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "chin-lung-hu",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:07:03.930Z",
+        "season": 2011,
+        "sport": "Triple-A",
+        "teamId": 422,
+        "teamName": "Buffalo Bisons",
+        "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2011&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2011,
+      "slug": "chin-lung-hu",
+      "team_id": 422
+    },
+    {
+      "affiliate_team": "GCL Mets",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:08:19.710Z",
+        "season": 2011,
+        "sport": "Rookie",
+        "teamId": 468,
+        "teamName": "GCL Mets",
+        "url": "https://statsapi.mlb.com/api/v1/teams/468?season=2011&hydrate=league,sport"
+      },
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2011,
+      "slug": "chin-lung-hu",
+      "team_id": 468
+    },
+    {
+      "affiliate_team": "DSL Dodgers Guerrero",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:53.518Z",
+        "season": 2018,
+        "sport": "Rookie",
+        "teamId": 612,
+        "teamName": "DSL Dodgers Guerrero",
+        "url": "https://statsapi.mlb.com/api/v1/teams/612?season=2018&hydrate=league,sport"
+      },
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2018,
+      "slug": "eddys-leonard",
+      "team_id": 612
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 116,
+        "parentOrgName": "Detroit Tigers",
+        "retrievedAt": "2026-10-23T03:09:01.717Z",
+        "season": 2023,
+        "sport": "Triple-A",
+        "teamId": 512,
+        "teamName": "Toledo Mud Hens",
+        "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2023&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Detroit Tigers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2023,
+      "slug": "eddys-leonard",
+      "team_id": 512
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 116,
+        "parentOrgName": "Detroit Tigers",
+        "retrievedAt": "2026-10-23T03:09:02.476Z",
+        "season": 2024,
+        "sport": "Triple-A",
+        "teamId": 512,
+        "teamName": "Toledo Mud Hens",
+        "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2024&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Detroit Tigers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2024,
+      "slug": "eddys-leonard",
+      "team_id": 512
+    },
+    {
+      "affiliate_team": "Nashville Sounds",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 158,
+        "parentOrgName": "Milwaukee Brewers",
+        "retrievedAt": "2026-10-23T03:10:02.501Z",
+        "season": 2026,
+        "sport": "Triple-A",
+        "teamId": 556,
+        "teamName": "Nashville Sounds",
+        "url": "https://statsapi.mlb.com/api/v1/teams/556?season=2026&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Milwaukee Brewers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "eddys-leonard",
+      "team_id": 556
+    },
+    {
+      "affiliate_team": "Sacramento River Cats",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:02:15.531Z",
+        "season": 2026,
+        "sport": "Triple-A",
+        "teamId": 105,
+        "teamName": "Sacramento River Cats",
+        "url": "https://statsapi.mlb.com/api/v1/teams/105?season=2026&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "eddys-leonard",
+      "team_id": 105
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:05:04.660Z",
+        "season": 2026,
+        "sport": "Major League Baseball",
+        "teamId": 137,
+        "teamName": "San Francisco Giants",
+        "url": "https://statsapi.mlb.com/api/v1/teams/137?season=2026&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "eddys-leonard",
+      "team_id": 137
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:42.927Z",
+        "season": 2007,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2007&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "elian-herrera",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:43.673Z",
+        "season": 2008,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2008&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "elian-herrera",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:44.426Z",
+        "season": 2009,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2009&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "elian-herrera",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Nashville Sounds",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 158,
+        "parentOrgName": "Milwaukee Brewers",
+        "retrievedAt": "2026-10-23T03:10:01.742Z",
+        "season": 2014,
+        "sport": "Triple-A",
+        "teamId": 556,
+        "teamName": "Nashville Sounds",
+        "url": "https://statsapi.mlb.com/api/v1/teams/556?season=2014&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Milwaukee Brewers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2014,
+      "slug": "elian-herrera",
+      "team_id": 556
+    },
+    {
+      "affiliate_team": "Colorado Springs Sky Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 158,
+        "parentOrgName": "Milwaukee Brewers",
+        "retrievedAt": "2026-10-23T03:09:54.242Z",
+        "season": 2015,
+        "sport": "Triple-A",
+        "teamId": 551,
+        "teamName": "Colorado Springs Sky Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/551?season=2015&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Milwaukee Brewers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2015,
+      "slug": "elian-herrera",
+      "team_id": 551
+    },
+    {
+      "affiliate_team": "California Angels",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 108,
+        "parentOrgName": "California Angels",
+        "retrievedAt": "2026-10-23T03:02:17.817Z",
+        "season": 1991,
+        "sport": "Major League Baseball",
+        "teamId": 108,
+        "teamName": "California Angels",
+        "url": "https://statsapi.mlb.com/api/v1/teams/108?season=1991&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Los Angeles Angels",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "fernando-valenzuela",
+      "team_id": 108
+    },
+    {
+      "affiliate_team": "Edmonton Trappers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 108,
+        "parentOrgName": "California Angels",
+        "retrievedAt": "2026-10-23T03:11:26.526Z",
+        "season": 1991,
+        "sport": "Triple A",
+        "teamId": 3708,
+        "teamName": "Edmonton Trappers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3708?season=1991&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Angels",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "fernando-valenzuela",
+      "team_id": 3708
+    },
+    {
+      "affiliate_team": "Midland Angels",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 108,
+        "parentOrgName": "California Angels",
+        "retrievedAt": "2026-10-23T03:06:05.411Z",
+        "season": 1991,
+        "sport": "Double-A",
+        "teamId": 237,
+        "teamName": "Midland Angels",
+        "url": "https://statsapi.mlb.com/api/v1/teams/237?season=1991&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Los Angeles Angels",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "fernando-valenzuela",
+      "team_id": 237
+    },
+    {
+      "affiliate_team": "Palm Springs Angels",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 108,
+        "parentOrgName": "California Angels",
+        "retrievedAt": "2026-10-23T03:02:13.360Z",
+        "season": 1991,
+        "sport": "Single A (Advanced)",
+        "teamId": 103,
+        "teamName": "Palm Springs Angels",
+        "url": "https://statsapi.mlb.com/api/v1/teams/103?season=1991&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Angels",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "fernando-valenzuela",
+      "team_id": 103
+    },
+    {
+      "affiliate_team": "Bowie Baysox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:06:55.672Z",
+        "season": 1993,
+        "sport": "Double-A",
+        "teamId": 418,
+        "teamName": "Bowie Baysox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/418?season=1993&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1993,
+      "slug": "fernando-valenzuela",
+      "team_id": 418
+    },
+    {
+      "affiliate_team": "Rochester Red Wings",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:09:39.234Z",
+        "season": 1993,
+        "sport": "Triple A",
+        "teamId": 534,
+        "teamName": "Rochester Red Wings",
+        "url": "https://statsapi.mlb.com/api/v1/teams/534?season=1993&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1993,
+      "slug": "fernando-valenzuela",
+      "team_id": 534
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:51.128Z",
+        "season": 1995,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=1995&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1995,
+      "slug": "fernando-valenzuela",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:51.876Z",
+        "season": 1996,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=1996&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1996,
+      "slug": "fernando-valenzuela",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:52.633Z",
+        "season": 1997,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=1997&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "fernando-valenzuela",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "Huntsville Stars",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 158,
+        "parentOrgName": "Milwaukee Brewers",
+        "retrievedAt": "2026-10-23T03:10:04.006Z",
+        "season": 1999,
+        "sport": "Double-A",
+        "teamId": 559,
+        "teamName": "Huntsville Stars",
+        "url": "https://statsapi.mlb.com/api/v1/teams/559?season=1999&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Milwaukee Brewers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1999,
+      "slug": "hideo-nomo",
+      "team_id": 559
+    },
+    {
+      "affiliate_team": "Iowa Cubs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 112,
+        "parentOrgName": "Chicago Cubs",
+        "retrievedAt": "2026-10-23T03:07:39.941Z",
+        "season": 1999,
+        "sport": "Triple A",
+        "teamId": 451,
+        "teamName": "Iowa Cubs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/451?season=1999&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Chicago Cubs",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1999,
+      "slug": "hideo-nomo",
+      "team_id": 451
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:34.667Z",
+        "season": 2004,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "hideo-nomo",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Columbus Clippers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:07:32.443Z",
+        "season": 2005,
+        "sport": "Triple A",
+        "teamId": 445,
+        "teamName": "Columbus Clippers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/445?season=2005&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "hideo-nomo",
+      "team_id": 445
+    },
+    {
+      "affiliate_team": "Tampa Bay Devil Rays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Devil Rays",
+        "retrievedAt": "2026-10-23T03:05:09.147Z",
+        "season": 2005,
+        "sport": "Major League Baseball",
+        "teamId": 139,
+        "teamName": "Tampa Bay Devil Rays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/139?season=2005&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "hideo-nomo",
+      "team_id": 139
+    },
+    {
+      "affiliate_team": "Charlotte Knights",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 145,
+        "parentOrgName": "Chicago White Sox",
+        "retrievedAt": "2026-10-23T03:08:38.462Z",
+        "season": 2006,
+        "sport": "Triple A",
+        "teamId": 494,
+        "teamName": "Charlotte Knights",
+        "url": "https://statsapi.mlb.com/api/v1/teams/494?season=2006&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Chicago White Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "hideo-nomo",
+      "team_id": 494
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:03:27.736Z",
+        "season": 2008,
+        "sport": "Major League Baseball",
+        "teamId": 118,
+        "teamName": "Kansas City Royals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/118?season=2008&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "hideo-nomo",
+      "team_id": 118
+    },
+    {
+      "affiliate_team": "San Bernardino Stampede",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:42.170Z",
+        "season": 2000,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "San Bernardino Stampede",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2000&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "hung-chih-kuo",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:03.204Z",
+        "season": 2002,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2002&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "hung-chih-kuo",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Columbus Catfish",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:26.465Z",
+        "season": 2004,
+        "sport": "Single A (Full Season)",
+        "teamId": 441,
+        "teamName": "Columbus Catfish",
+        "url": "https://statsapi.mlb.com/api/v1/teams/441?season=2004&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "hung-chih-kuo",
+      "team_id": 441
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:11.503Z",
+        "season": 2005,
+        "sport": "Double-A",
+        "teamId": 564,
+        "teamName": "Jacksonville Suns",
+        "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "hung-chih-kuo",
+      "team_id": 564
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:05.458Z",
+        "season": 2005,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "hung-chih-kuo",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:36.171Z",
+        "season": 2006,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "hung-chih-kuo",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:36.925Z",
+        "season": 2007,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "hung-chih-kuo",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:44.426Z",
+        "season": 2009,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2009&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "hung-chih-kuo",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:45.183Z",
+        "season": 2010,
+        "sport": "Class A Advanced",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2010&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2010,
+      "slug": "hung-chih-kuo",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:07:04.680Z",
+        "season": 2022,
+        "sport": "Triple-A",
+        "teamId": 422,
+        "teamName": "Buffalo Bisons",
+        "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2022&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2022,
+      "slug": "hyun-jin-ryu",
+      "team_id": 422
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:07:05.432Z",
+        "season": 2023,
+        "sport": "Triple-A",
+        "teamId": 422,
+        "teamName": "Buffalo Bisons",
+        "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2023&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2023,
+      "slug": "hyun-jin-ryu",
+      "team_id": 422
+    },
+    {
+      "affiliate_team": "GCL Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:12.958Z",
+        "season": 1991,
+        "sport": "Rookie",
+        "teamId": 465,
+        "teamName": "GCL Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/465?season=1991&hydrate=league,sport"
+      },
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "ismael-valdez",
+      "team_id": 465
+    },
+    {
+      "affiliate_team": "San Bernardino Stampede",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:40.703Z",
+        "season": 1998,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "San Bernardino Stampede",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1998&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1998,
+      "slug": "ismael-valdez",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Chicago Cubs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 112,
+        "parentOrgName": "Chicago Cubs",
+        "retrievedAt": "2026-10-23T03:02:44.962Z",
+        "season": 2000,
+        "sport": "Major League Baseball",
+        "teamId": 112,
+        "teamName": "Chicago Cubs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/112?season=2000&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Chicago Cubs",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "ismael-valdez",
+      "team_id": 112
+    },
+    {
+      "affiliate_team": "Daytona Cubs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 112,
+        "parentOrgName": "Chicago Cubs",
+        "retrievedAt": "2026-10-23T03:07:36.945Z",
+        "season": 2000,
+        "sport": "Single A (Advanced)",
+        "teamId": 450,
+        "teamName": "Daytona Cubs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/450?season=2000&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Chicago Cubs",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "ismael-valdez",
+      "team_id": 450
+    },
+    {
+      "affiliate_team": "Anaheim Angels",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 108,
+        "parentOrgName": "Anaheim Angels",
+        "retrievedAt": "2026-10-23T03:02:18.624Z",
+        "season": 2001,
+        "sport": "Major League Baseball",
+        "teamId": 108,
+        "teamName": "Anaheim Angels",
+        "url": "https://statsapi.mlb.com/api/v1/teams/108?season=2001&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Los Angeles Angels",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "ismael-valdez",
+      "team_id": 108
+    },
+    {
+      "affiliate_team": "Frisco RoughRiders",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 140,
+        "parentOrgName": "Texas Rangers",
+        "retrievedAt": "2026-10-23T03:09:45.986Z",
+        "season": 2003,
+        "sport": "Double-A",
+        "teamId": 540,
+        "teamName": "Frisco RoughRiders",
+        "url": "https://statsapi.mlb.com/api/v1/teams/540?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Texas Rangers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "ismael-valdez",
+      "team_id": 540
+    },
+    {
+      "affiliate_team": "Florida Marlins",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 146,
+        "parentOrgName": "Florida Marlins",
+        "retrievedAt": "2026-10-23T03:05:51.909Z",
+        "season": 2004,
+        "sport": "Major League Baseball",
+        "teamId": 146,
+        "teamName": "Florida Marlins",
+        "url": "https://statsapi.mlb.com/api/v1/teams/146?season=2004&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Miami Marlins",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "ismael-valdez",
+      "team_id": 146
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:53.381Z",
+        "season": 2004,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2004&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "ismael-valdez",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 146,
+        "parentOrgName": "Florida Marlins",
+        "retrievedAt": "2026-10-23T03:06:28.672Z",
+        "season": 2005,
+        "sport": "Triple A",
+        "teamId": 342,
+        "teamName": "Albuquerque Isotopes",
+        "url": "https://statsapi.mlb.com/api/v1/teams/342?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Miami Marlins",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "ismael-valdez",
+      "team_id": 342
+    },
+    {
+      "affiliate_team": "Florida Marlins",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 146,
+        "parentOrgName": "Florida Marlins",
+        "retrievedAt": "2026-10-23T03:05:52.667Z",
+        "season": 2005,
+        "sport": "Major League Baseball",
+        "teamId": 146,
+        "teamName": "Florida Marlins",
+        "url": "https://statsapi.mlb.com/api/v1/teams/146?season=2005&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Miami Marlins",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "ismael-valdez",
+      "team_id": 146
+    },
+    {
+      "affiliate_team": "Jupiter Hammerheads",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 146,
+        "parentOrgName": "Florida Marlins",
+        "retrievedAt": "2026-10-23T03:08:26.457Z",
+        "season": 2005,
+        "sport": "Single A (Advanced)",
+        "teamId": 479,
+        "teamName": "Jupiter Hammerheads",
+        "url": "https://statsapi.mlb.com/api/v1/teams/479?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Miami Marlins",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "ismael-valdez",
+      "team_id": 479
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:13.658Z",
+        "season": 2023,
+        "sport": "Triple-A",
+        "teamId": 238,
+        "teamName": "Oklahoma City Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2023&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2023,
+      "slug": "jorbit-vivas",
+      "team_id": 238
+    },
+    {
+      "affiliate_team": "Tampa Tarpons",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:10:33.260Z",
+        "season": 2024,
+        "sport": "Single-A",
+        "teamId": 587,
+        "teamName": "Tampa Tarpons",
+        "url": "https://statsapi.mlb.com/api/v1/teams/587?season=2024&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "LOW_A",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2024,
+      "slug": "jorbit-vivas",
+      "team_id": 587
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:57.156Z",
+        "season": 2025,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2025&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2025,
+      "slug": "jorbit-vivas",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:19.542Z",
+        "season": 2026,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2026&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "jorbit-vivas",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Durham Bulls",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Rays",
+        "retrievedAt": "2026-10-23T03:06:03.162Z",
+        "season": 2015,
+        "sport": "Triple-A",
+        "teamId": 234,
+        "teamName": "Durham Bulls",
+        "url": "https://statsapi.mlb.com/api/v1/teams/234?season=2015&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2015,
+      "slug": "jose-dominguez",
+      "team_id": 234
+    },
+    {
+      "affiliate_team": "El Paso Chihuahuas",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:11:42.282Z",
+        "season": 2016,
+        "sport": "Triple-A",
+        "teamId": 4904,
+        "teamName": "El Paso Chihuahuas",
+        "url": "https://statsapi.mlb.com/api/v1/teams/4904?season=2016&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2016,
+      "slug": "jose-dominguez",
+      "team_id": 4904
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:55.646Z",
+        "season": 2016,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2016&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2016,
+      "slug": "jose-dominguez",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "Great Falls Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:28.003Z",
+        "season": 1988,
+        "sport": "Rookie",
+        "teamId": 581,
+        "teamName": "Great Falls Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/581?season=1988&hydrate=league,sport"
+      },
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1988,
+      "slug": "jose-offerman",
+      "team_id": 581
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:57.198Z",
+        "season": 1988,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=1988&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1988,
+      "slug": "jose-offerman",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Bakersfield Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:06.931Z",
+        "season": 1989,
+        "sport": "Single A (Advanced)",
+        "teamId": 423,
+        "teamName": "Bakersfield Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1989&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1989,
+      "slug": "jose-offerman",
+      "team_id": 423
+    },
+    {
+      "affiliate_team": "San Antonio Missions",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:54.963Z",
+        "season": 1989,
+        "sport": "Double-A",
+        "teamId": 510,
+        "teamName": "San Antonio Missions",
+        "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1989&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1989,
+      "slug": "jose-offerman",
+      "team_id": 510
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:03:25.475Z",
+        "season": 1996,
+        "sport": "Major League Baseball",
+        "teamId": 118,
+        "teamName": "Kansas City Royals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/118?season=1996&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1996,
+      "slug": "jose-offerman",
+      "team_id": 118
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:03:26.228Z",
+        "season": 1997,
+        "sport": "Major League Baseball",
+        "teamId": 118,
+        "teamName": "Kansas City Royals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/118?season=1997&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "jose-offerman",
+      "team_id": 118
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:03:26.977Z",
+        "season": 1998,
+        "sport": "Major League Baseball",
+        "teamId": 118,
+        "teamName": "Kansas City Royals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/118?season=1998&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1998,
+      "slug": "jose-offerman",
+      "team_id": 118
+    },
+    {
+      "affiliate_team": "Norfolk Tides",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:10:16.002Z",
+        "season": 2005,
+        "sport": "Triple A",
+        "teamId": 568,
+        "teamName": "Norfolk Tides",
+        "url": "https://statsapi.mlb.com/api/v1/teams/568?season=2005&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "jose-offerman",
+      "team_id": 568
+    },
+    {
+      "affiliate_team": "Norfolk Tides",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:10:16.755Z",
+        "season": 2006,
+        "sport": "Triple A",
+        "teamId": 568,
+        "teamName": "Norfolk Tides",
+        "url": "https://statsapi.mlb.com/api/v1/teams/568?season=2006&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "jose-offerman",
+      "team_id": 568
+    },
+    {
+      "affiliate_team": "Bakersfield Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:06.180Z",
+        "season": 1988,
+        "sport": "Single A (Advanced)",
+        "teamId": 423,
+        "teamName": "Bakersfield Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1988&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1988,
+      "slug": "jose-vizcaino",
+      "team_id": 423
+    },
+    {
+      "affiliate_team": "Albuquerque Dukes",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:11:32.528Z",
+        "season": 1989,
+        "sport": "Triple A",
+        "teamId": 3762,
+        "teamName": "Albuquerque Dukes",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3762?season=1989&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1989,
+      "slug": "jose-vizcaino",
+      "team_id": 3762
+    },
+    {
+      "affiliate_team": "Chicago Cubs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 112,
+        "parentOrgName": "Chicago Cubs",
+        "retrievedAt": "2026-10-23T03:02:42.716Z",
+        "season": 1991,
+        "sport": "Major League Baseball",
+        "teamId": 112,
+        "teamName": "Chicago Cubs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/112?season=1991&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Chicago Cubs",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "jose-vizcaino",
+      "team_id": 112
+    },
+    {
+      "affiliate_team": "Chicago Cubs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 112,
+        "parentOrgName": "Chicago Cubs",
+        "retrievedAt": "2026-10-23T03:02:43.455Z",
+        "season": 1992,
+        "sport": "Major League Baseball",
+        "teamId": 112,
+        "teamName": "Chicago Cubs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/112?season=1992&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Chicago Cubs",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1992,
+      "slug": "jose-vizcaino",
+      "team_id": 112
+    },
+    {
+      "affiliate_team": "Chicago Cubs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 112,
+        "parentOrgName": "Chicago Cubs",
+        "retrievedAt": "2026-10-23T03:02:44.262Z",
+        "season": 1993,
+        "sport": "Major League Baseball",
+        "teamId": 112,
+        "teamName": "Chicago Cubs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/112?season=1993&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Chicago Cubs",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1993,
+      "slug": "jose-vizcaino",
+      "team_id": 112
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:53.953Z",
+        "season": 1996,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=1996&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 1996,
+      "slug": "jose-vizcaino",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:05:01.632Z",
+        "season": 1997,
+        "sport": "Major League Baseball",
+        "teamId": 137,
+        "teamName": "San Francisco Giants",
+        "url": "https://statsapi.mlb.com/api/v1/teams/137?season=1997&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "jose-vizcaino",
+      "team_id": 137
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:53.405Z",
+        "season": 2000,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2000&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "jose-vizcaino",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:05:02.390Z",
+        "season": 2006,
+        "sport": "Major League Baseball",
+        "teamId": 137,
+        "teamName": "San Francisco Giants",
+        "url": "https://statsapi.mlb.com/api/v1/teams/137?season=2006&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "jose-vizcaino",
+      "team_id": 137
+    },
+    {
+      "affiliate_team": "Bakersfield Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:09.175Z",
+        "season": 1992,
+        "sport": "Single A (Advanced)",
+        "teamId": 423,
+        "teamName": "Bakersfield Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1992&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1992,
+      "slug": "juan-castro",
+      "team_id": 423
+    },
+    {
+      "affiliate_team": "Louisville RiverBats",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 113,
+        "parentOrgName": "Cincinnati Reds",
+        "retrievedAt": "2026-10-23T03:06:51.179Z",
+        "season": 2000,
+        "sport": "Triple A",
+        "teamId": 416,
+        "teamName": "Louisville RiverBats",
+        "url": "https://statsapi.mlb.com/api/v1/teams/416?season=2000&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cincinnati Reds",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "juan-castro",
+      "team_id": 416
+    },
+    {
+      "affiliate_team": "Louisville Bats",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 113,
+        "parentOrgName": "Cincinnati Reds",
+        "retrievedAt": "2026-10-23T03:06:51.921Z",
+        "season": 2002,
+        "sport": "Triple A",
+        "teamId": 416,
+        "teamName": "Louisville Bats",
+        "url": "https://statsapi.mlb.com/api/v1/teams/416?season=2002&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cincinnati Reds",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "juan-castro",
+      "team_id": 416
+    },
+    {
+      "affiliate_team": "Louisville Bats",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 113,
+        "parentOrgName": "Cincinnati Reds",
+        "retrievedAt": "2026-10-23T03:06:52.675Z",
+        "season": 2003,
+        "sport": "Triple A",
+        "teamId": 416,
+        "teamName": "Louisville Bats",
+        "url": "https://statsapi.mlb.com/api/v1/teams/416?season=2003&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cincinnati Reds",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "juan-castro",
+      "team_id": 416
+    },
+    {
+      "affiliate_team": "Louisville Bats",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 113,
+        "parentOrgName": "Cincinnati Reds",
+        "retrievedAt": "2026-10-23T03:06:53.424Z",
+        "season": 2004,
+        "sport": "Triple A",
+        "teamId": 416,
+        "teamName": "Louisville Bats",
+        "url": "https://statsapi.mlb.com/api/v1/teams/416?season=2004&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cincinnati Reds",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "juan-castro",
+      "team_id": 416
+    },
+    {
+      "affiliate_team": "Colorado Springs Sky Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 115,
+        "parentOrgName": "Colorado Rockies",
+        "retrievedAt": "2026-10-23T03:09:53.492Z",
+        "season": 2008,
+        "sport": "Triple A",
+        "teamId": 551,
+        "teamName": "Colorado Springs Sky Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/551?season=2008&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Colorado Rockies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "juan-castro",
+      "team_id": 551
+    },
+    {
+      "affiliate_team": "Knoxville Blue Jays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:09:59.488Z",
+        "season": 1988,
+        "sport": "Double-A",
+        "teamId": 553,
+        "teamName": "Knoxville Blue Jays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/553?season=1988&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1988,
+      "slug": "juan-guzman",
+      "team_id": 553
+    },
+    {
+      "affiliate_team": "Knoxville Blue Jays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:10:00.243Z",
+        "season": 1989,
+        "sport": "Double-A",
+        "teamId": 553,
+        "teamName": "Knoxville Blue Jays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/553?season=1989&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1989,
+      "slug": "juan-guzman",
+      "team_id": 553
+    },
+    {
+      "affiliate_team": "Syracuse Chiefs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:09:54.990Z",
+        "season": 1989,
+        "sport": "Triple A",
+        "teamId": 552,
+        "teamName": "Syracuse Chiefs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1989&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1989,
+      "slug": "juan-guzman",
+      "team_id": 552
+    },
+    {
+      "affiliate_team": "Knoxville Blue Jays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:10:00.991Z",
+        "season": 1990,
+        "sport": "Double-A",
+        "teamId": 553,
+        "teamName": "Knoxville Blue Jays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/553?season=1990&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1990,
+      "slug": "juan-guzman",
+      "team_id": 553
+    },
+    {
+      "affiliate_team": "Syracuse Chiefs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:09:55.740Z",
+        "season": 1991,
+        "sport": "Triple A",
+        "teamId": 552,
+        "teamName": "Syracuse Chiefs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1991&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "juan-guzman",
+      "team_id": 552
+    },
+    {
+      "affiliate_team": "Syracuse Chiefs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:09:56.492Z",
+        "season": 1992,
+        "sport": "Triple A",
+        "teamId": 552,
+        "teamName": "Syracuse Chiefs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1992&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1992,
+      "slug": "juan-guzman",
+      "team_id": 552
+    },
+    {
+      "affiliate_team": "Syracuse Chiefs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:09:57.245Z",
+        "season": 1995,
+        "sport": "Triple A",
+        "teamId": 552,
+        "teamName": "Syracuse Chiefs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1995&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1995,
+      "slug": "juan-guzman",
+      "team_id": 552
+    },
+    {
+      "affiliate_team": "Dunedin Blue Jays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:07:11.437Z",
+        "season": 1997,
+        "sport": "Single A (Advanced)",
+        "teamId": 424,
+        "teamName": "Dunedin Blue Jays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/424?season=1997&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "juan-guzman",
+      "team_id": 424
+    },
+    {
+      "affiliate_team": "Durham Bulls",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Devil Rays",
+        "retrievedAt": "2026-10-23T03:06:00.911Z",
+        "season": 2000,
+        "sport": "Triple A",
+        "teamId": 234,
+        "teamName": "Durham Bulls",
+        "url": "https://statsapi.mlb.com/api/v1/teams/234?season=2000&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "juan-guzman",
+      "team_id": 234
+    },
+    {
+      "affiliate_team": "Orlando Rays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Devil Rays",
+        "retrievedAt": "2026-10-23T03:11:29.521Z",
+        "season": 2000,
+        "sport": "Double-A",
+        "teamId": 3733,
+        "teamName": "Orlando Rays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3733?season=2000&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "juan-guzman",
+      "team_id": 3733
+    },
+    {
+      "affiliate_team": "St. Petersburg Devil Rays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Devil Rays",
+        "retrievedAt": "2026-10-23T03:11:31.030Z",
+        "season": 2000,
+        "sport": "Single A (Advanced)",
+        "teamId": 3752,
+        "teamName": "St. Petersburg Devil Rays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3752?season=2000&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "juan-guzman",
+      "team_id": 3752
+    },
+    {
+      "affiliate_team": "Tampa Bay Devil Rays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Devil Rays",
+        "retrievedAt": "2026-10-23T03:05:08.399Z",
+        "season": 2000,
+        "sport": "Major League Baseball",
+        "teamId": 139,
+        "teamName": "Tampa Bay Devil Rays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/139?season=2000&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "juan-guzman",
+      "team_id": 139
+    },
+    {
+      "affiliate_team": "Durham Bulls",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Devil Rays",
+        "retrievedAt": "2026-10-23T03:06:01.663Z",
+        "season": 2001,
+        "sport": "Triple A",
+        "teamId": 234,
+        "teamName": "Durham Bulls",
+        "url": "https://statsapi.mlb.com/api/v1/teams/234?season=2001&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "juan-guzman",
+      "team_id": 234
+    },
+    {
+      "affiliate_team": "Orlando Rays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Devil Rays",
+        "retrievedAt": "2026-10-23T03:11:30.278Z",
+        "season": 2001,
+        "sport": "Double-A",
+        "teamId": 3733,
+        "teamName": "Orlando Rays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3733?season=2001&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "juan-guzman",
+      "team_id": 3733
+    },
+    {
+      "affiliate_team": "Bakersfield Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:09.928Z",
+        "season": 1993,
+        "sport": "Single A (Advanced)",
+        "teamId": 423,
+        "teamName": "Bakersfield Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1993&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1993,
+      "slug": "karim-garcia",
+      "team_id": 423
+    },
+    {
+      "affiliate_team": "San Antonio Missions",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:58.717Z",
+        "season": 1996,
+        "sport": "Double-A",
+        "teamId": 510,
+        "teamName": "San Antonio Missions",
+        "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1996&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1996,
+      "slug": "karim-garcia",
+      "team_id": 510
+    },
+    {
+      "affiliate_team": "Tucson Sidewinders",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:09:52.740Z",
+        "season": 1998,
+        "sport": "Triple A",
+        "teamId": 549,
+        "teamName": "Tucson Sidewinders",
+        "url": "https://statsapi.mlb.com/api/v1/teams/549?season=1998&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1998,
+      "slug": "karim-garcia",
+      "team_id": 549
+    },
+    {
+      "affiliate_team": "Rochester Red Wings",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:09:39.988Z",
+        "season": 2000,
+        "sport": "Triple A",
+        "teamId": 534,
+        "teamName": "Rochester Red Wings",
+        "url": "https://statsapi.mlb.com/api/v1/teams/534?season=2000&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "karim-garcia",
+      "team_id": 534
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 116,
+        "parentOrgName": "Detroit Tigers",
+        "retrievedAt": "2026-10-23T03:09:00.211Z",
+        "season": 2000,
+        "sport": "Triple A",
+        "teamId": 512,
+        "teamName": "Toledo Mud Hens",
+        "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2000&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Detroit Tigers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "karim-garcia",
+      "team_id": 512
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:07:01.692Z",
+        "season": 2001,
+        "sport": "Triple A",
+        "teamId": 422,
+        "teamName": "Buffalo Bisons",
+        "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2001&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "karim-garcia",
+      "team_id": 422
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:54.702Z",
+        "season": 2001,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2001&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2001,
+      "slug": "karim-garcia",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:07:02.427Z",
+        "season": 2002,
+        "sport": "Triple A",
+        "teamId": 422,
+        "teamName": "Buffalo Bisons",
+        "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2002&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "karim-garcia",
+      "team_id": 422
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:55.467Z",
+        "season": 2002,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2002&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2002,
+      "slug": "karim-garcia",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "Columbus Clippers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:07:31.691Z",
+        "season": 2002,
+        "sport": "Triple A",
+        "teamId": 445,
+        "teamName": "Columbus Clippers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/445?season=2002&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "karim-garcia",
+      "team_id": 445
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:54.159Z",
+        "season": 2002,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2002&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "karim-garcia",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:07:03.177Z",
+        "season": 2003,
+        "sport": "Triple A",
+        "teamId": 422,
+        "teamName": "Buffalo Bisons",
+        "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2003&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "karim-garcia",
+      "team_id": 422
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:02:56.216Z",
+        "season": 2003,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2003&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2003,
+      "slug": "karim-garcia",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:54.915Z",
+        "season": 2003,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2003&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "karim-garcia",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "Binghamton Mets",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:08:48.962Z",
+        "season": 2004,
+        "sport": "Double-A",
+        "teamId": 505,
+        "teamName": "Binghamton Mets",
+        "url": "https://statsapi.mlb.com/api/v1/teams/505?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "karim-garcia",
+      "team_id": 505
+    },
+    {
+      "affiliate_team": "Rochester Red Wings",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:09:40.737Z",
+        "season": 2021,
+        "sport": "Triple-A",
+        "teamId": 534,
+        "teamName": "Rochester Red Wings",
+        "url": "https://statsapi.mlb.com/api/v1/teams/534?season=2021&hydrate=league,sport"
+      },
+      "league_name": "Triple-A East",
+      "level": "AAA",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2021,
+      "slug": "keibert-ruiz",
+      "team_id": 534
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:15.787Z",
+        "season": 2021,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2021&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2021,
+      "slug": "keibert-ruiz",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:16.536Z",
+        "season": 2022,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2022&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2022,
+      "slug": "keibert-ruiz",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:17.279Z",
+        "season": 2023,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2023&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2023,
+      "slug": "keibert-ruiz",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Harrisburg Senators",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:09:51.259Z",
+        "season": 2024,
+        "sport": "Double-A",
+        "teamId": 547,
+        "teamName": "Harrisburg Senators",
+        "url": "https://statsapi.mlb.com/api/v1/teams/547?season=2024&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2024,
+      "slug": "keibert-ruiz",
+      "team_id": 547
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:18.038Z",
+        "season": 2024,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2024&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2024,
+      "slug": "keibert-ruiz",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Harrisburg Senators",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:09:51.995Z",
+        "season": 2025,
+        "sport": "Double-A",
+        "teamId": 547,
+        "teamName": "Harrisburg Senators",
+        "url": "https://statsapi.mlb.com/api/v1/teams/547?season=2025&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2025,
+      "slug": "keibert-ruiz",
+      "team_id": 547
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:18.781Z",
+        "season": 2025,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2025&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2025,
+      "slug": "keibert-ruiz",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:19.542Z",
+        "season": 2026,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2026&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "keibert-ruiz",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:44.426Z",
+        "season": 2009,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2009&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "kenley-jansen",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:45.183Z",
+        "season": 2010,
+        "sport": "Class A Advanced",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2010&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2010,
+      "slug": "kenley-jansen",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 116,
+        "parentOrgName": "Detroit Tigers",
+        "retrievedAt": "2026-10-23T03:09:03.222Z",
+        "season": 2026,
+        "sport": "Triple-A",
+        "teamId": 512,
+        "teamName": "Toledo Mud Hens",
+        "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2026&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Detroit Tigers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "kenley-jansen",
+      "team_id": 512
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:13.658Z",
+        "season": 2023,
+        "sport": "Triple-A",
+        "teamId": 238,
+        "teamName": "Oklahoma City Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2023&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2023,
+      "slug": "miguel-vargas",
+      "team_id": 238
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 145,
+        "parentOrgName": "Chicago White Sox",
+        "retrievedAt": "2026-10-23T03:05:49.656Z",
+        "season": 2024,
+        "sport": "Major League Baseball",
+        "teamId": 145,
+        "teamName": "Chicago White Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2024&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Chicago White Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2024,
+      "slug": "miguel-vargas",
+      "team_id": 145
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 145,
+        "parentOrgName": "Chicago White Sox",
+        "retrievedAt": "2026-10-23T03:05:50.411Z",
+        "season": 2025,
+        "sport": "Major League Baseball",
+        "teamId": 145,
+        "teamName": "Chicago White Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2025&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Chicago White Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2025,
+      "slug": "miguel-vargas",
+      "team_id": 145
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 145,
+        "parentOrgName": "Chicago White Sox",
+        "retrievedAt": "2026-10-23T03:05:51.154Z",
+        "season": 2026,
+        "sport": "Major League Baseball",
+        "teamId": 145,
+        "teamName": "Chicago White Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2026&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Chicago White Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2026,
+      "slug": "miguel-vargas",
+      "team_id": 145
+    },
+    {
+      "affiliate_team": "Montreal Expos",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Montreal Expos",
+        "retrievedAt": "2026-10-23T03:04:12.786Z",
+        "season": 1996,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Montreal Expos",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1996&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1996,
+      "slug": "omar-daal",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Montreal Expos",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Montreal Expos",
+        "retrievedAt": "2026-10-23T03:04:13.538Z",
+        "season": 1997,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Montreal Expos",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1997&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "omar-daal",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Ottawa Lynx",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Montreal Expos",
+        "retrievedAt": "2026-10-23T03:08:47.461Z",
+        "season": 1997,
+        "sport": "Triple A",
+        "teamId": 501,
+        "teamName": "Ottawa Lynx",
+        "url": "https://statsapi.mlb.com/api/v1/teams/501?season=1997&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "omar-daal",
+      "team_id": 501
+    },
+    {
+      "affiliate_team": "Syracuse SkyChiefs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 141,
+        "parentOrgName": "Toronto Blue Jays",
+        "retrievedAt": "2026-10-23T03:09:57.990Z",
+        "season": 1997,
+        "sport": "Triple A",
+        "teamId": 552,
+        "teamName": "Syracuse SkyChiefs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1997&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Toronto Blue Jays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "omar-daal",
+      "team_id": 552
+    },
+    {
+      "affiliate_team": "Tucson Sidewinders",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:09:52.740Z",
+        "season": 1998,
+        "sport": "Triple A",
+        "teamId": 549,
+        "teamName": "Tucson Sidewinders",
+        "url": "https://statsapi.mlb.com/api/v1/teams/549?season=1998&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1998,
+      "slug": "omar-daal",
+      "team_id": 549
+    },
+    {
+      "affiliate_team": "Bowie Baysox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:06:56.422Z",
+        "season": 2003,
+        "sport": "Double-A",
+        "teamId": 418,
+        "teamName": "Bowie Baysox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/418?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "omar-daal",
+      "team_id": 418
+    },
+    {
+      "affiliate_team": "West Virginia Power",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 134,
+        "parentOrgName": "Pittsburgh Pirates",
+        "retrievedAt": "2026-10-23T03:09:07.721Z",
+        "season": 2017,
+        "sport": "Class A",
+        "teamId": 525,
+        "teamName": "West Virginia Power",
+        "url": "https://statsapi.mlb.com/api/v1/teams/525?season=2017&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Pittsburgh Pirates",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "oneil-cruz",
+      "team_id": 525
+    },
+    {
+      "affiliate_team": "West Virginia Power",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 134,
+        "parentOrgName": "Pittsburgh Pirates",
+        "retrievedAt": "2026-10-23T03:09:08.473Z",
+        "season": 2018,
+        "sport": "Class A",
+        "teamId": 525,
+        "teamName": "West Virginia Power",
+        "url": "https://statsapi.mlb.com/api/v1/teams/525?season=2018&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Pittsburgh Pirates",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2018,
+      "slug": "oneil-cruz",
+      "team_id": 525
+    },
+    {
+      "affiliate_team": "Bakersfield Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:07.684Z",
+        "season": 1990,
+        "sport": "Single A (Advanced)",
+        "teamId": 423,
+        "teamName": "Bakersfield Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1990&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1990,
+      "slug": "pedro-astacio",
+      "team_id": 423
+    },
+    {
+      "affiliate_team": "Yakima Bears",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:59.435Z",
+        "season": 1990,
+        "sport": "Single A (Short Season)",
+        "teamId": 419,
+        "teamName": "Yakima Bears",
+        "url": "https://statsapi.mlb.com/api/v1/teams/419?season=1990&hydrate=league,sport"
+      },
+      "league_name": "Northwest League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1990,
+      "slug": "pedro-astacio",
+      "team_id": 419
+    },
+    {
+      "affiliate_team": "Colorado Rockies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 115,
+        "parentOrgName": "Colorado Rockies",
+        "retrievedAt": "2026-10-23T03:03:05.219Z",
+        "season": 1997,
+        "sport": "Major League Baseball",
+        "teamId": 115,
+        "teamName": "Colorado Rockies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/115?season=1997&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Colorado Rockies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "pedro-astacio",
+      "team_id": 115
+    },
+    {
+      "affiliate_team": "Colorado Rockies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 115,
+        "parentOrgName": "Colorado Rockies",
+        "retrievedAt": "2026-10-23T03:03:05.981Z",
+        "season": 1998,
+        "sport": "Major League Baseball",
+        "teamId": 115,
+        "teamName": "Colorado Rockies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/115?season=1998&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Colorado Rockies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1998,
+      "slug": "pedro-astacio",
+      "team_id": 115
+    },
+    {
+      "affiliate_team": "Colorado Rockies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 115,
+        "parentOrgName": "Colorado Rockies",
+        "retrievedAt": "2026-10-23T03:03:06.764Z",
+        "season": 1999,
+        "sport": "Major League Baseball",
+        "teamId": 115,
+        "teamName": "Colorado Rockies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/115?season=1999&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Colorado Rockies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1999,
+      "slug": "pedro-astacio",
+      "team_id": 115
+    },
+    {
+      "affiliate_team": "Colorado Rockies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 115,
+        "parentOrgName": "Colorado Rockies",
+        "retrievedAt": "2026-10-23T03:03:07.468Z",
+        "season": 2000,
+        "sport": "Major League Baseball",
+        "teamId": 115,
+        "teamName": "Colorado Rockies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/115?season=2000&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Colorado Rockies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "pedro-astacio",
+      "team_id": 115
+    },
+    {
+      "affiliate_team": "Colorado Rockies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 115,
+        "parentOrgName": "Colorado Rockies",
+        "retrievedAt": "2026-10-23T03:03:08.233Z",
+        "season": 2001,
+        "sport": "Major League Baseball",
+        "teamId": 115,
+        "teamName": "Colorado Rockies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/115?season=2001&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Colorado Rockies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "pedro-astacio",
+      "team_id": 115
+    },
+    {
+      "affiliate_team": "St. Lucie Mets",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:08:50.468Z",
+        "season": 2003,
+        "sport": "Single A (Advanced)",
+        "teamId": 507,
+        "teamName": "St. Lucie Mets",
+        "url": "https://statsapi.mlb.com/api/v1/teams/507?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "pedro-astacio",
+      "team_id": 507
+    },
+    {
+      "affiliate_team": "GCL Red Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:08:22.705Z",
+        "season": 2004,
+        "sport": "Rookie",
+        "teamId": 471,
+        "teamName": "GCL Red Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/471?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "pedro-astacio",
+      "team_id": 471
+    },
+    {
+      "affiliate_team": "Pawtucket Red Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:09:36.980Z",
+        "season": 2004,
+        "sport": "Triple A",
+        "teamId": 533,
+        "teamName": "Pawtucket Red Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/533?season=2004&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "pedro-astacio",
+      "team_id": 533
+    },
+    {
+      "affiliate_team": "Portland Sea Dogs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:09:49.745Z",
+        "season": 2004,
+        "sport": "Double-A",
+        "teamId": 546,
+        "teamName": "Portland Sea Dogs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/546?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "pedro-astacio",
+      "team_id": 546
+    },
+    {
+      "affiliate_team": "Portland Beavers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:06:17.418Z",
+        "season": 2005,
+        "sport": "Triple A",
+        "teamId": 248,
+        "teamName": "Portland Beavers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/248?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "pedro-astacio",
+      "team_id": 248
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 135,
+        "parentOrgName": "San Diego Padres",
+        "retrievedAt": "2026-10-23T03:04:54.158Z",
+        "season": 2005,
+        "sport": "Major League Baseball",
+        "teamId": 135,
+        "teamName": "San Diego Padres",
+        "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2005&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Diego Padres",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "pedro-astacio",
+      "team_id": 135
+    },
+    {
+      "affiliate_team": "Harrisburg Senators",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:09:50.493Z",
+        "season": 2006,
+        "sport": "Double-A",
+        "teamId": 547,
+        "teamName": "Harrisburg Senators",
+        "url": "https://statsapi.mlb.com/api/v1/teams/547?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "pedro-astacio",
+      "team_id": 547
+    },
+    {
+      "affiliate_team": "New Orleans Zephyrs",
+      "correction": true,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:10:36.272Z",
+        "season": 2006,
+        "sport": "Triple A",
+        "teamId": 588,
+        "teamName": "New Orleans Zephyrs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/588?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "AFFILIATION_TABLE",
+      "previous_organization_name": "Houston Astros",
+      "season": 2006,
+      "slug": "pedro-astacio",
+      "team_id": 588
+    },
+    {
+      "affiliate_team": "Potomac Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:07:24.939Z",
+        "season": 2006,
+        "sport": "Single A (Advanced)",
+        "teamId": 436,
+        "teamName": "Potomac Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/436?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Carolina League",
+      "level": "HIGH_A",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "pedro-astacio",
+      "team_id": 436
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Washington Nationals",
+        "retrievedAt": "2026-10-23T03:04:15.032Z",
+        "season": 2006,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Washington Nationals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2006&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "pedro-astacio",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:44.426Z",
+        "season": 2009,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2009&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "pedro-baez",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:45.183Z",
+        "season": 2010,
+        "sport": "Class A Advanced",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2010&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2010,
+      "slug": "pedro-baez",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Fayetteville Woodpeckers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:11:28.027Z",
+        "season": 2021,
+        "sport": "Low-A",
+        "teamId": 3712,
+        "teamName": "Fayetteville Woodpeckers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3712?season=2021&hydrate=league,sport"
+      },
+      "league_name": "Low-A East",
+      "level": "LOW_A",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2021,
+      "slug": "pedro-baez",
+      "team_id": 3712
+    },
+    {
+      "affiliate_team": "Sugar Land Skeeters",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:11:50.535Z",
+        "season": 2021,
+        "sport": "Triple-A",
+        "teamId": 5434,
+        "teamName": "Sugar Land Skeeters",
+        "url": "https://statsapi.mlb.com/api/v1/teams/5434?season=2021&hydrate=league,sport"
+      },
+      "league_name": "Triple-A West",
+      "level": "AAA",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2021,
+      "slug": "pedro-baez",
+      "team_id": 5434
+    },
+    {
+      "affiliate_team": "Bakersfield Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:08.430Z",
+        "season": 1991,
+        "sport": "Single A (Advanced)",
+        "teamId": 423,
+        "teamName": "Bakersfield Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1991&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "pedro-martinez",
+      "team_id": 423
+    },
+    {
+      "affiliate_team": "Montreal Expos",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Montreal Expos",
+        "retrievedAt": "2026-10-23T03:04:11.287Z",
+        "season": 1994,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Montreal Expos",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1994&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1994,
+      "slug": "pedro-martinez",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Montreal Expos",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Montreal Expos",
+        "retrievedAt": "2026-10-23T03:04:12.039Z",
+        "season": 1995,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Montreal Expos",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1995&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1995,
+      "slug": "pedro-martinez",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Montreal Expos",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Montreal Expos",
+        "retrievedAt": "2026-10-23T03:04:12.786Z",
+        "season": 1996,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Montreal Expos",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1996&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1996,
+      "slug": "pedro-martinez",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "Montreal Expos",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 120,
+        "parentOrgName": "Montreal Expos",
+        "retrievedAt": "2026-10-23T03:04:13.538Z",
+        "season": 1997,
+        "sport": "Major League Baseball",
+        "teamId": 120,
+        "teamName": "Montreal Expos",
+        "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1997&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "Washington Nationals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "pedro-martinez",
+      "team_id": 120
+    },
+    {
+      "affiliate_team": "GCL Mets",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:08:18.951Z",
+        "season": 2007,
+        "sport": "Rookie",
+        "teamId": 468,
+        "teamName": "GCL Mets",
+        "url": "https://statsapi.mlb.com/api/v1/teams/468?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "pedro-martinez",
+      "team_id": 468
+    },
+    {
+      "affiliate_team": "St. Lucie Mets",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:08:51.221Z",
+        "season": 2007,
+        "sport": "Single A (Advanced)",
+        "teamId": 507,
+        "teamName": "St. Lucie Mets",
+        "url": "https://statsapi.mlb.com/api/v1/teams/507?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "pedro-martinez",
+      "team_id": 507
+    },
+    {
+      "affiliate_team": "St. Lucie Mets",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 121,
+        "parentOrgName": "New York Mets",
+        "retrievedAt": "2026-10-23T03:08:51.970Z",
+        "season": 2008,
+        "sport": "Single A (Advanced)",
+        "teamId": 507,
+        "teamName": "St. Lucie Mets",
+        "url": "https://statsapi.mlb.com/api/v1/teams/507?season=2008&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "New York Mets",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "pedro-martinez",
+      "team_id": 507
+    },
+    {
+      "affiliate_team": "Clearwater Threshers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:10:14.499Z",
+        "season": 2009,
+        "sport": "Single A (Advanced)",
+        "teamId": 566,
+        "teamName": "Clearwater Threshers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/566?season=2009&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "pedro-martinez",
+      "team_id": 566
+    },
+    {
+      "affiliate_team": "Lehigh Valley IronPigs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:11:03.272Z",
+        "season": 2009,
+        "sport": "Triple A",
+        "teamId": 1410,
+        "teamName": "Lehigh Valley IronPigs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/1410?season=2009&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "pedro-martinez",
+      "team_id": 1410
+    },
+    {
+      "affiliate_team": "Reading Phillies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:09:06.233Z",
+        "season": 2009,
+        "sport": "Double-A",
+        "teamId": 522,
+        "teamName": "Reading Phillies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/522?season=2009&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "pedro-martinez",
+      "team_id": 522
+    },
+    {
+      "affiliate_team": "Albuquerque Dukes",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:11:31.780Z",
+        "season": 1988,
+        "sport": "Triple A",
+        "teamId": 3762,
+        "teamName": "Albuquerque Dukes",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3762?season=1988&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1988,
+      "slug": "ramon-martinez",
+      "team_id": 3762
+    },
+    {
+      "affiliate_team": "San Antonio Missions",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:54.218Z",
+        "season": 1988,
+        "sport": "Double-A",
+        "teamId": 510,
+        "teamName": "San Antonio Missions",
+        "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1988&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1988,
+      "slug": "ramon-martinez",
+      "team_id": 510
+    },
+    {
+      "affiliate_team": "Albuquerque Dukes",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:11:32.528Z",
+        "season": 1989,
+        "sport": "Triple A",
+        "teamId": 3762,
+        "teamName": "Albuquerque Dukes",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3762?season=1989&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1989,
+      "slug": "ramon-martinez",
+      "team_id": 3762
+    },
+    {
+      "affiliate_team": "San Antonio Missions",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:58.717Z",
+        "season": 1996,
+        "sport": "Double-A",
+        "teamId": 510,
+        "teamName": "San Antonio Missions",
+        "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1996&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1996,
+      "slug": "ramon-martinez",
+      "team_id": 510
+    },
+    {
+      "affiliate_team": "San Bernardino Stampede",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:39.921Z",
+        "season": 1997,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "San Bernardino Stampede",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1997&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1997,
+      "slug": "ramon-martinez",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "GCL Red Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:08:21.958Z",
+        "season": 1999,
+        "sport": "Rookie",
+        "teamId": 471,
+        "teamName": "GCL Red Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/471?season=1999&hydrate=league,sport"
+      },
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1999,
+      "slug": "ramon-martinez",
+      "team_id": 471
+    },
+    {
+      "affiliate_team": "Lowell Spinners",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:10:03.240Z",
+        "season": 1999,
+        "sport": "Single A (Short Season)",
+        "teamId": 558,
+        "teamName": "Lowell Spinners",
+        "url": "https://statsapi.mlb.com/api/v1/teams/558?season=1999&hydrate=league,sport"
+      },
+      "league_name": "New York-Penn League",
+      "level": "LOW_A",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1999,
+      "slug": "ramon-martinez",
+      "team_id": 558
+    },
+    {
+      "affiliate_team": "Pawtucket Red Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:09:35.486Z",
+        "season": 1999,
+        "sport": "Triple A",
+        "teamId": 533,
+        "teamName": "Pawtucket Red Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/533?season=1999&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1999,
+      "slug": "ramon-martinez",
+      "team_id": 533
+    },
+    {
+      "affiliate_team": "Sarasota Red Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:09:41.488Z",
+        "season": 1999,
+        "sport": "Single A (Advanced)",
+        "teamId": 535,
+        "teamName": "Sarasota Red Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/535?season=1999&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1999,
+      "slug": "ramon-martinez",
+      "team_id": 535
+    },
+    {
+      "affiliate_team": "Pawtucket Red Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:09:36.228Z",
+        "season": 2000,
+        "sport": "Triple A",
+        "teamId": 533,
+        "teamName": "Pawtucket Red Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/533?season=2000&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2000,
+      "slug": "ramon-martinez",
+      "team_id": 533
+    },
+    {
+      "affiliate_team": "DSL Phillies White",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:11:44.529Z",
+        "season": 2017,
+        "sport": "Rookie",
+        "teamId": 5085,
+        "teamName": "DSL Phillies White",
+        "url": "https://statsapi.mlb.com/api/v1/teams/5085?season=2017&hydrate=league,sport"
+      },
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "ramon-rosso",
+      "team_id": 5085
+    },
+    {
+      "affiliate_team": "GCL Phillies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:08:20.458Z",
+        "season": 2017,
+        "sport": "Rookie",
+        "teamId": 469,
+        "teamName": "GCL Phillies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/469?season=2017&hydrate=league,sport"
+      },
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "ramon-rosso",
+      "team_id": 469
+    },
+    {
+      "affiliate_team": "Williamsport Crosscutters",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:07:36.197Z",
+        "season": 2017,
+        "sport": "Class A Short Season",
+        "teamId": 449,
+        "teamName": "Williamsport Crosscutters",
+        "url": "https://statsapi.mlb.com/api/v1/teams/449?season=2017&hydrate=league,sport"
+      },
+      "league_name": "New York-Penn League",
+      "level": "LOW_A",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "ramon-rosso",
+      "team_id": 449
+    },
+    {
+      "affiliate_team": "Clearwater Threshers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:10:15.251Z",
+        "season": 2018,
+        "sport": "Class A Advanced",
+        "teamId": 566,
+        "teamName": "Clearwater Threshers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/566?season=2018&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2018,
+      "slug": "ramon-rosso",
+      "team_id": 566
+    },
+    {
+      "affiliate_team": "Lakewood BlueClaws",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:07:15.185Z",
+        "season": 2018,
+        "sport": "Class A",
+        "teamId": 427,
+        "teamName": "Lakewood BlueClaws",
+        "url": "https://statsapi.mlb.com/api/v1/teams/427?season=2018&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2018,
+      "slug": "ramon-rosso",
+      "team_id": 427
+    },
+    {
+      "affiliate_team": "Lehigh Valley IronPigs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:11:04.019Z",
+        "season": 2019,
+        "sport": "Triple-A",
+        "teamId": 1410,
+        "teamName": "Lehigh Valley IronPigs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/1410?season=2019&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2019,
+      "slug": "ramon-rosso",
+      "team_id": 1410
+    },
+    {
+      "affiliate_team": "Reading Fightin Phils",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:09:06.982Z",
+        "season": 2019,
+        "sport": "Double-A",
+        "teamId": 522,
+        "teamName": "Reading Fightin Phils",
+        "url": "https://statsapi.mlb.com/api/v1/teams/522?season=2019&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2019,
+      "slug": "ramon-rosso",
+      "team_id": 522
+    },
+    {
+      "affiliate_team": "Lehigh Valley IronPigs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 143,
+        "parentOrgName": "Philadelphia Phillies",
+        "retrievedAt": "2026-10-23T03:11:04.769Z",
+        "season": 2021,
+        "sport": "Triple-A",
+        "teamId": 1410,
+        "teamName": "Lehigh Valley IronPigs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/1410?season=2021&hydrate=league,sport"
+      },
+      "league_name": "Triple-A East",
+      "level": "AAA",
+      "organization_name": "Philadelphia Phillies",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2021,
+      "slug": "ramon-rosso",
+      "team_id": 1410
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 116,
+        "parentOrgName": "Detroit Tigers",
+        "retrievedAt": "2026-10-23T03:09:00.969Z",
+        "season": 2022,
+        "sport": "Triple-A",
+        "teamId": 512,
+        "teamName": "Toledo Mud Hens",
+        "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2022&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Detroit Tigers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2022,
+      "slug": "ramon-rosso",
+      "team_id": 512
+    },
+    {
+      "affiliate_team": "Columbus Catfish",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:27.194Z",
+        "season": 2005,
+        "sport": "Single A (Full Season)",
+        "teamId": 441,
+        "teamName": "Columbus Catfish",
+        "url": "https://statsapi.mlb.com/api/v1/teams/441?season=2005&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "ramon-troncoso",
+      "team_id": 441
+    },
+    {
+      "affiliate_team": "Columbus Catfish",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:27.941Z",
+        "season": 2006,
+        "sport": "Single A (Full Season)",
+        "teamId": 441,
+        "teamName": "Columbus Catfish",
+        "url": "https://statsapi.mlb.com/api/v1/teams/441?season=2006&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "ramon-troncoso",
+      "team_id": 441
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:06.201Z",
+        "season": 2006,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "ramon-troncoso",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:42.927Z",
+        "season": 2007,
+        "sport": "Single A (Advanced)",
+        "teamId": 401,
+        "teamName": "Inland Empire 66ers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2007&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "ramon-troncoso",
+      "team_id": 401
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:13.001Z",
+        "season": 2007,
+        "sport": "Double-A",
+        "teamId": 564,
+        "teamName": "Jacksonville Suns",
+        "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "ramon-troncoso",
+      "team_id": 564
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:37.674Z",
+        "season": 2008,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2008&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "ramon-troncoso",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Charlotte Knights",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 145,
+        "parentOrgName": "Chicago White Sox",
+        "retrievedAt": "2026-10-23T03:08:39.213Z",
+        "season": 2013,
+        "sport": "Triple-A",
+        "teamId": 494,
+        "teamName": "Charlotte Knights",
+        "url": "https://statsapi.mlb.com/api/v1/teams/494?season=2013&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Chicago White Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2013,
+      "slug": "ramon-troncoso",
+      "team_id": 494
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 145,
+        "parentOrgName": "Chicago White Sox",
+        "retrievedAt": "2026-10-23T03:05:48.908Z",
+        "season": 2013,
+        "sport": "Major League Baseball",
+        "teamId": 145,
+        "teamName": "Chicago White Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2013&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Chicago White Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2013,
+      "slug": "ramon-troncoso",
+      "team_id": 145
+    },
+    {
+      "affiliate_team": "Omaha Storm Chasers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:09:48.240Z",
+        "season": 2014,
+        "sport": "Triple-A",
+        "teamId": 541,
+        "teamName": "Omaha Storm Chasers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/541?season=2014&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2014,
+      "slug": "ramon-troncoso",
+      "team_id": 541
+    },
+    {
+      "affiliate_team": "Bakersfield Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:08.430Z",
+        "season": 1991,
+        "sport": "Single A (Advanced)",
+        "teamId": 423,
+        "teamName": "Bakersfield Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1991&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 1991,
+      "slug": "raul-mondesi",
+      "team_id": 423
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:54.159Z",
+        "season": 2002,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2002&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "raul-mondesi",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:54.915Z",
+        "season": 2003,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2003&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "raul-mondesi",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "Anaheim Angels",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 108,
+        "parentOrgName": "Anaheim Angels",
+        "retrievedAt": "2026-10-23T03:02:19.317Z",
+        "season": 2004,
+        "sport": "Major League Baseball",
+        "teamId": 108,
+        "teamName": "Anaheim Angels",
+        "url": "https://statsapi.mlb.com/api/v1/teams/108?season=2004&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Los Angeles Angels",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "raul-mondesi",
+      "team_id": 108
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 108,
+        "parentOrgName": "Anaheim Angels",
+        "retrievedAt": "2026-10-23T03:09:09.226Z",
+        "season": 2004,
+        "sport": "Single A (Advanced)",
+        "teamId": 526,
+        "teamName": "Rancho Cucamonga Quakes",
+        "url": "https://statsapi.mlb.com/api/v1/teams/526?season=2004&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Angels",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "raul-mondesi",
+      "team_id": 526
+    },
+    {
+      "affiliate_team": "Salt Lake City Stingers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 108,
+        "parentOrgName": "Anaheim Angels",
+        "retrievedAt": "2026-10-23T03:10:04.746Z",
+        "season": 2004,
+        "sport": "Triple A",
+        "teamId": 561,
+        "teamName": "Salt Lake City Stingers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/561?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Angels",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "raul-mondesi",
+      "team_id": 561
+    },
+    {
+      "affiliate_team": "Pawtucket Red Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:09:37.729Z",
+        "season": 2013,
+        "sport": "Triple-A",
+        "teamId": 533,
+        "teamName": "Pawtucket Red Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/533?season=2013&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2013,
+      "slug": "rubby-de-la-rosa",
+      "team_id": 533
+    },
+    {
+      "affiliate_team": "Pawtucket Red Sox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 111,
+        "parentOrgName": "Boston Red Sox",
+        "retrievedAt": "2026-10-23T03:09:38.485Z",
+        "season": 2014,
+        "sport": "Triple-A",
+        "teamId": 533,
+        "teamName": "Pawtucket Red Sox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/533?season=2014&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Boston Red Sox",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2014,
+      "slug": "rubby-de-la-rosa",
+      "team_id": 533
+    },
+    {
+      "affiliate_team": "ACL D-backs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:11:07.019Z",
+        "season": 2016,
+        "sport": "Rookie",
+        "teamId": 1991,
+        "teamName": "ACL D-backs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/1991?season=2016&hydrate=league,sport"
+      },
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2016,
+      "slug": "rubby-de-la-rosa",
+      "team_id": 1991
+    },
+    {
+      "affiliate_team": "Visalia Rawhide",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:09:04.718Z",
+        "season": 2016,
+        "sport": "Class A Advanced",
+        "teamId": 516,
+        "teamName": "Visalia Rawhide",
+        "url": "https://statsapi.mlb.com/api/v1/teams/516?season=2016&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2016,
+      "slug": "rubby-de-la-rosa",
+      "team_id": 516
+    },
+    {
+      "affiliate_team": "ACL D-backs",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:11:07.764Z",
+        "season": 2017,
+        "sport": "Rookie",
+        "teamId": 1991,
+        "teamName": "ACL D-backs",
+        "url": "https://statsapi.mlb.com/api/v1/teams/1991?season=2017&hydrate=league,sport"
+      },
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "rubby-de-la-rosa",
+      "team_id": 1991
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:11:13.782Z",
+        "season": 2017,
+        "sport": "Triple-A",
+        "teamId": 2310,
+        "teamName": "Reno Aces",
+        "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2017&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "rubby-de-la-rosa",
+      "team_id": 2310
+    },
+    {
+      "affiliate_team": "Visalia Rawhide",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:09:05.471Z",
+        "season": 2017,
+        "sport": "Class A Advanced",
+        "teamId": 516,
+        "teamName": "Visalia Rawhide",
+        "url": "https://statsapi.mlb.com/api/v1/teams/516?season=2017&hydrate=league,sport"
+      },
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "rubby-de-la-rosa",
+      "team_id": 516
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:11:14.524Z",
+        "season": 2019,
+        "sport": "Triple-A",
+        "teamId": 2310,
+        "teamName": "Reno Aces",
+        "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2019&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2019,
+      "slug": "rubby-de-la-rosa",
+      "team_id": 2310
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:03.948Z",
+        "season": 2003,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "tony-abreu",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Columbus Catfish",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:07:26.465Z",
+        "season": 2004,
+        "sport": "Single A (Full Season)",
+        "teamId": 441,
+        "teamName": "Columbus Catfish",
+        "url": "https://statsapi.mlb.com/api/v1/teams/441?season=2004&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "tony-abreu",
+      "team_id": 441
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:04.697Z",
+        "season": 2004,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "tony-abreu",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:11.503Z",
+        "season": 2005,
+        "sport": "Double-A",
+        "teamId": 564,
+        "teamName": "Jacksonville Suns",
+        "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "tony-abreu",
+      "team_id": 564
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:05.458Z",
+        "season": 2005,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "tony-abreu",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:12.250Z",
+        "season": 2006,
+        "sport": "Double-A",
+        "teamId": 564,
+        "teamName": "Jacksonville Suns",
+        "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "tony-abreu",
+      "team_id": 564
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:36.925Z",
+        "season": 2007,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2007&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2007,
+      "slug": "tony-abreu",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:42.215Z",
+        "season": 2009,
+        "sport": "Double-A",
+        "teamId": 498,
+        "teamName": "Chattanooga Lookouts",
+        "url": "https://statsapi.mlb.com/api/v1/teams/498?season=2009&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2009,
+      "slug": "tony-abreu",
+      "team_id": 498
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:11:12.269Z",
+        "season": 2010,
+        "sport": "Triple-A",
+        "teamId": 2310,
+        "teamName": "Reno Aces",
+        "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2010&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2010,
+      "slug": "tony-abreu",
+      "team_id": 2310
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 109,
+        "parentOrgName": "Arizona Diamondbacks",
+        "retrievedAt": "2026-10-23T03:11:13.031Z",
+        "season": 2011,
+        "sport": "Triple-A",
+        "teamId": 2310,
+        "teamName": "Reno Aces",
+        "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2011&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Arizona Diamondbacks",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2011,
+      "slug": "tony-abreu",
+      "team_id": 2310
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:03:28.487Z",
+        "season": 2012,
+        "sport": "Major League Baseball",
+        "teamId": 118,
+        "teamName": "Kansas City Royals",
+        "url": "https://statsapi.mlb.com/api/v1/teams/118?season=2012&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2012,
+      "slug": "tony-abreu",
+      "team_id": 118
+    },
+    {
+      "affiliate_team": "Omaha Storm Chasers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 118,
+        "parentOrgName": "Kansas City Royals",
+        "retrievedAt": "2026-10-23T03:09:47.497Z",
+        "season": 2012,
+        "sport": "Triple-A",
+        "teamId": 541,
+        "teamName": "Omaha Storm Chasers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/541?season=2012&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Kansas City Royals",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2012,
+      "slug": "tony-abreu",
+      "team_id": 541
+    },
+    {
+      "affiliate_team": "Fresno Grizzlies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:06:18.169Z",
+        "season": 2013,
+        "sport": "Triple-A",
+        "teamId": 259,
+        "teamName": "Fresno Grizzlies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/259?season=2013&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2013,
+      "slug": "tony-abreu",
+      "team_id": 259
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:05:03.137Z",
+        "season": 2013,
+        "sport": "Major League Baseball",
+        "teamId": 137,
+        "teamName": "San Francisco Giants",
+        "url": "https://statsapi.mlb.com/api/v1/teams/137?season=2013&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2013,
+      "slug": "tony-abreu",
+      "team_id": 137
+    },
+    {
+      "affiliate_team": "AZL Giants",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:06:49.680Z",
+        "season": 2014,
+        "sport": "Rookie",
+        "teamId": 408,
+        "teamName": "AZL Giants",
+        "url": "https://statsapi.mlb.com/api/v1/teams/408?season=2014&hydrate=league,sport"
+      },
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2014,
+      "slug": "tony-abreu",
+      "team_id": 408
+    },
+    {
+      "affiliate_team": "Fresno Grizzlies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:06:18.934Z",
+        "season": 2014,
+        "sport": "Triple-A",
+        "teamId": 259,
+        "teamName": "Fresno Grizzlies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/259?season=2014&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2014,
+      "slug": "tony-abreu",
+      "team_id": 259
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:05:03.881Z",
+        "season": 2014,
+        "sport": "Major League Baseball",
+        "teamId": 137,
+        "teamName": "San Francisco Giants",
+        "url": "https://statsapi.mlb.com/api/v1/teams/137?season=2014&hydrate=league,sport"
+      },
+      "league_name": "National League",
+      "level": "MLB",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2014,
+      "slug": "tony-abreu",
+      "team_id": 137
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:13.658Z",
+        "season": 2023,
+        "sport": "Triple-A",
+        "teamId": 238,
+        "teamName": "Oklahoma City Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2023&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2023,
+      "slug": "victor-gonzalez",
+      "team_id": 238
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 147,
+        "parentOrgName": "New York Yankees",
+        "retrievedAt": "2026-10-23T03:05:56.408Z",
+        "season": 2024,
+        "sport": "Major League Baseball",
+        "teamId": 147,
+        "teamName": "New York Yankees",
+        "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2024&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "New York Yankees",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2024,
+      "slug": "victor-gonzalez",
+      "team_id": 147
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:02.449Z",
+        "season": 2001,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2001&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "willy-aybar",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Wilmington Waves",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:11:28.774Z",
+        "season": 2001,
+        "sport": "Single A (Full Season)",
+        "teamId": 3728,
+        "teamName": "Wilmington Waves",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3728?season=2001&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2001,
+      "slug": "willy-aybar",
+      "team_id": 3728
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:03.204Z",
+        "season": 2002,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2002&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2002,
+      "slug": "willy-aybar",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:08:03.948Z",
+        "season": 2003,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Dodgers",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2003&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2003,
+      "slug": "willy-aybar",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:10:10.757Z",
+        "season": 2004,
+        "sport": "Double-A",
+        "teamId": 564,
+        "teamName": "Jacksonville Suns",
+        "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2004&hydrate=league,sport"
+      },
+      "league_name": "Southern League",
+      "level": "AA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2004,
+      "slug": "willy-aybar",
+      "team_id": 564
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:35.424Z",
+        "season": 2005,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2005&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2005,
+      "slug": "willy-aybar",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 119,
+        "parentOrgName": "Los Angeles Dodgers",
+        "retrievedAt": "2026-10-23T03:06:36.171Z",
+        "season": 2006,
+        "sport": "Triple A",
+        "teamId": 400,
+        "teamName": "Las Vegas 51s",
+        "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2006&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Los Angeles Dodgers",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "willy-aybar",
+      "team_id": 400
+    },
+    {
+      "affiliate_team": "Richmond Braves",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 144,
+        "parentOrgName": "Atlanta Braves",
+        "retrievedAt": "2026-10-23T03:07:18.185Z",
+        "season": 2006,
+        "sport": "Triple A",
+        "teamId": 431,
+        "teamName": "Richmond Braves",
+        "url": "https://statsapi.mlb.com/api/v1/teams/431?season=2006&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Atlanta Braves",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2006,
+      "slug": "willy-aybar",
+      "team_id": 431
+    },
+    {
+      "affiliate_team": "Durham Bulls",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Rays",
+        "retrievedAt": "2026-10-23T03:06:02.429Z",
+        "season": 2008,
+        "sport": "Triple A",
+        "teamId": 234,
+        "teamName": "Durham Bulls",
+        "url": "https://statsapi.mlb.com/api/v1/teams/234?season=2008&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "willy-aybar",
+      "team_id": 234
+    },
+    {
+      "affiliate_team": "Vero Beach Devil Rays",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 139,
+        "parentOrgName": "Tampa Bay Rays",
+        "retrievedAt": "2026-10-23T03:08:06.973Z",
+        "season": 2008,
+        "sport": "Single A (Advanced)",
+        "teamId": 457,
+        "teamName": "Vero Beach Devil Rays",
+        "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2008&hydrate=league,sport"
+      },
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "organization_name": "Tampa Bay Rays",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2008,
+      "slug": "willy-aybar",
+      "team_id": 457
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 114,
+        "parentOrgName": "Cleveland Indians",
+        "retrievedAt": "2026-10-23T03:03:02.964Z",
+        "season": 2019,
+        "sport": "Major League Baseball",
+        "teamId": 114,
+        "teamName": "Cleveland Indians",
+        "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2019&hydrate=league,sport"
+      },
+      "league_name": "American League",
+      "level": "MLB",
+      "organization_name": "Cleveland Guardians",
+      "previous_basis": "MLB_CLUB_NAME",
+      "previous_organization_name": "Cleveland Indians",
+      "season": 2019,
+      "slug": "yasiel-puig",
+      "team_id": 114
+    },
+    {
+      "affiliate_team": "DSL Astros Orange",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:11:43.030Z",
+        "season": 2016,
+        "sport": "Rookie",
+        "teamId": 5005,
+        "teamName": "DSL Astros Orange",
+        "url": "https://statsapi.mlb.com/api/v1/teams/5005?season=2016&hydrate=league,sport"
+      },
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2016,
+      "slug": "yordan-alvarez",
+      "team_id": 5005
+    },
+    {
+      "affiliate_team": "Buies Creek Astros",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:11:27.290Z",
+        "season": 2017,
+        "sport": "Class A Advanced",
+        "teamId": 3712,
+        "teamName": "Buies Creek Astros",
+        "url": "https://statsapi.mlb.com/api/v1/teams/3712?season=2017&hydrate=league,sport"
+      },
+      "league_name": "Carolina League",
+      "level": "HIGH_A",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "yordan-alvarez",
+      "team_id": 3712
+    },
+    {
+      "affiliate_team": "Quad Cities River Bandits",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:10:13.747Z",
+        "season": 2017,
+        "sport": "Class A",
+        "teamId": 565,
+        "teamName": "Quad Cities River Bandits",
+        "url": "https://statsapi.mlb.com/api/v1/teams/565?season=2017&hydrate=league,sport"
+      },
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2017,
+      "slug": "yordan-alvarez",
+      "team_id": 565
+    },
+    {
+      "affiliate_team": "Corpus Christi Hooks",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:08:27.213Z",
+        "season": 2018,
+        "sport": "Double-A",
+        "teamId": 482,
+        "teamName": "Corpus Christi Hooks",
+        "url": "https://statsapi.mlb.com/api/v1/teams/482?season=2018&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2018,
+      "slug": "yordan-alvarez",
+      "team_id": 482
+    },
+    {
+      "affiliate_team": "Fresno Grizzlies",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:06:19.666Z",
+        "season": 2018,
+        "sport": "Triple-A",
+        "teamId": 259,
+        "teamName": "Fresno Grizzlies",
+        "url": "https://statsapi.mlb.com/api/v1/teams/259?season=2018&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2018,
+      "slug": "yordan-alvarez",
+      "team_id": 259
+    },
+    {
+      "affiliate_team": "Round Rock Express",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:02:12.521Z",
+        "season": 2019,
+        "sport": "Triple-A",
+        "teamId": 102,
+        "teamName": "Round Rock Express",
+        "url": "https://statsapi.mlb.com/api/v1/teams/102?season=2019&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2019,
+      "slug": "yordan-alvarez",
+      "team_id": 102
+    },
+    {
+      "affiliate_team": "Sugar Land Space Cowboys",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:11:51.280Z",
+        "season": 2023,
+        "sport": "Triple-A",
+        "teamId": 5434,
+        "teamName": "Sugar Land Space Cowboys",
+        "url": "https://statsapi.mlb.com/api/v1/teams/5434?season=2023&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2023,
+      "slug": "yordan-alvarez",
+      "team_id": 5434
+    },
+    {
+      "affiliate_team": "Corpus Christi Hooks",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 117,
+        "parentOrgName": "Houston Astros",
+        "retrievedAt": "2026-10-23T03:08:27.955Z",
+        "season": 2025,
+        "sport": "Double-A",
+        "teamId": 482,
+        "teamName": "Corpus Christi Hooks",
+        "url": "https://statsapi.mlb.com/api/v1/teams/482?season=2025&hydrate=league,sport"
+      },
+      "league_name": "Texas League",
+      "level": "AA",
+      "organization_name": "Houston Astros",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2025,
+      "slug": "yordan-alvarez",
+      "team_id": 482
+    },
+    {
+      "affiliate_team": "Bowie Baysox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:06:57.176Z",
+        "season": 2018,
+        "sport": "Double-A",
+        "teamId": 418,
+        "teamName": "Bowie Baysox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/418?season=2018&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2018,
+      "slug": "yusniel-diaz",
+      "team_id": 418
+    },
+    {
+      "affiliate_team": "Aberdeen IronBirds",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:08:33.959Z",
+        "season": 2019,
+        "sport": "Class A Short Season",
+        "teamId": 488,
+        "teamName": "Aberdeen IronBirds",
+        "url": "https://statsapi.mlb.com/api/v1/teams/488?season=2019&hydrate=league,sport"
+      },
+      "league_name": "New York-Penn League",
+      "level": "LOW_A",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2019,
+      "slug": "yusniel-diaz",
+      "team_id": 488
+    },
+    {
+      "affiliate_team": "Bowie Baysox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:06:57.925Z",
+        "season": 2019,
+        "sport": "Double-A",
+        "teamId": 418,
+        "teamName": "Bowie Baysox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/418?season=2019&hydrate=league,sport"
+      },
+      "league_name": "Eastern League",
+      "level": "AA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2019,
+      "slug": "yusniel-diaz",
+      "team_id": 418
+    },
+    {
+      "affiliate_team": "Frederick Keys",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:08:37.709Z",
+        "season": 2019,
+        "sport": "Class A Advanced",
+        "teamId": 493,
+        "teamName": "Frederick Keys",
+        "url": "https://statsapi.mlb.com/api/v1/teams/493?season=2019&hydrate=league,sport"
+      },
+      "league_name": "Carolina League",
+      "level": "HIGH_A",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2019,
+      "slug": "yusniel-diaz",
+      "team_id": 493
+    },
+    {
+      "affiliate_team": "Bowie Baysox",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:06:58.689Z",
+        "season": 2021,
+        "sport": "Double-A",
+        "teamId": 418,
+        "teamName": "Bowie Baysox",
+        "url": "https://statsapi.mlb.com/api/v1/teams/418?season=2021&hydrate=league,sport"
+      },
+      "league_name": "Double-A Northeast",
+      "level": "AA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2021,
+      "slug": "yusniel-diaz",
+      "team_id": 418
+    },
+    {
+      "affiliate_team": "Norfolk Tides",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:10:17.499Z",
+        "season": 2021,
+        "sport": "Triple-A",
+        "teamId": 568,
+        "teamName": "Norfolk Tides",
+        "url": "https://statsapi.mlb.com/api/v1/teams/568?season=2021&hydrate=league,sport"
+      },
+      "league_name": "Triple-A East",
+      "level": "AAA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2021,
+      "slug": "yusniel-diaz",
+      "team_id": 568
+    },
+    {
+      "affiliate_team": "Aberdeen IronBirds",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:08:34.707Z",
+        "season": 2022,
+        "sport": "High-A",
+        "teamId": 488,
+        "teamName": "Aberdeen IronBirds",
+        "url": "https://statsapi.mlb.com/api/v1/teams/488?season=2022&hydrate=league,sport"
+      },
+      "league_name": "South Atlantic League",
+      "level": "HIGH_A",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2022,
+      "slug": "yusniel-diaz",
+      "team_id": 488
+    },
+    {
+      "affiliate_team": "FCL Orioles",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:10:37.771Z",
+        "season": 2022,
+        "sport": "Rookie",
+        "teamId": 599,
+        "teamName": "FCL Orioles",
+        "url": "https://statsapi.mlb.com/api/v1/teams/599?season=2022&hydrate=league,sport"
+      },
+      "league_name": "Florida Complex League",
+      "level": "COMPLEX_ROOKIE",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2022,
+      "slug": "yusniel-diaz",
+      "team_id": 599
+    },
+    {
+      "affiliate_team": "Norfolk Tides",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 110,
+        "parentOrgName": "Baltimore Orioles",
+        "retrievedAt": "2026-10-23T03:10:18.251Z",
+        "season": 2022,
+        "sport": "Triple-A",
+        "teamId": 568,
+        "teamName": "Norfolk Tides",
+        "url": "https://statsapi.mlb.com/api/v1/teams/568?season=2022&hydrate=league,sport"
+      },
+      "league_name": "International League",
+      "level": "AAA",
+      "organization_name": "Baltimore Orioles",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2022,
+      "slug": "yusniel-diaz",
+      "team_id": 568
+    },
+    {
+      "affiliate_team": "Sacramento River Cats",
+      "correction": false,
+      "evidence": {
+        "parentOrgId": 137,
+        "parentOrgName": "San Francisco Giants",
+        "retrievedAt": "2026-10-23T03:02:14.776Z",
+        "season": 2024,
+        "sport": "Triple-A",
+        "teamId": 105,
+        "teamName": "Sacramento River Cats",
+        "url": "https://statsapi.mlb.com/api/v1/teams/105?season=2024&hydrate=league,sport"
+      },
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "organization_name": "San Francisco Giants",
+      "previous_basis": "UNKNOWN_TEAM",
+      "previous_organization_name": null,
+      "season": 2024,
+      "slug": "yusniel-diaz",
+      "team_id": 105
+    }
+  ],
+  "professional_debuts": [
+    {
+      "event_date": "2018-06-02",
+      "note": "First verified professional appearance on 2018-06-02 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": null,
+      "season_year": 2018,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2018-06-02",
+      "note": "First verified professional appearance on 2018-06-02 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": null,
+      "season_year": 2018,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2018-06-02",
+      "note": "First verified professional appearance on 2018-06-02 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2018,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2008-06-02",
+      "note": "First verified professional appearance on 2008-06-02 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2008,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2008&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2022-06-06",
+      "note": "First verified professional appearance on 2022-06-06 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2022,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2015-05-30",
+      "note": "First verified professional appearance on 2015-05-30 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2015,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2018-06-18",
+      "note": "First verified professional appearance on 2018-06-18 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2018,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2016-06-04",
+      "note": "First verified professional appearance on 2016-06-04 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2016,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2007-06-19",
+      "note": "First verified professional appearance on 2007-06-19 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2007,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2007-07-04",
+      "note": "First verified professional appearance on 2007-07-04 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2007,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2007&leagueListId=milb_all"
+    },
+    {
+      "event_date": "2013-06-21",
+      "note": "First verified professional appearance on 2013-06-21 from the official gameLog endpoint (stint basis: REVIEWED_STINT).",
+      "organization_name": "Los Angeles Dodgers",
+      "season_year": 2013,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    }
+  ],
+  "progression_reviews": [
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "A_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first High-A appearance 2007-04-05, first Low-A appearance 2007-04-20. Inside one season the lower level's first appearance comes after the higher one's. Whether the higher-level games were an early cameo or the lower-level games a reassignment is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides.",
+      "slug": "elian-herrera"
+    },
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "HIGH_A_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first High-A appearance 2007-04-05, first Low-A appearance 2007-04-20. Inside one season the lower level's first appearance comes after the higher one's. Whether the higher-level games were an early cameo or the lower-level games a reassignment is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides.",
+      "slug": "elian-herrera"
+    },
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "AAA_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first MLB appearance 2014-05-05, first Triple-A appearance 2014-05-26. Inside one season the lower level's first appearance comes after the higher one's. Whether the later minor-league games were a rehabilitation assignment, an option or development is not decided; the level is not accepted as a developmental arrival until a reviewer decides.",
+      "slug": "pedro-baez"
+    },
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "AAA_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first MLB appearance 2008-04-01, first Triple-A appearance 2008-04-18. Inside one season the lower level's first appearance comes after the higher one's. Whether the later minor-league games were a rehabilitation assignment, an option or development is not decided; the level is not accepted as a developmental arrival until a reviewer decides.",
+      "slug": "ramon-troncoso"
+    },
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "AAA_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first MLB appearance 2025-03-19, first Triple-A appearance 2025-08-14. Inside one season the lower level's first appearance comes after the higher one's. Whether the later minor-league games were a rehabilitation assignment, an option or development is not decided; the level is not accepted as a developmental arrival until a reviewer decides.",
+      "slug": "roki-sasaki"
+    }
+  ],
+  "season_only_note": "Season of first appearance is known; the exact date is not recorded here.",
+  "sources": [
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:46.216Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/110359/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:47.736Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/110359/stats?stats=gameLog&group=pitching&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:07.803Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:07.947Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:09.250Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:10.207Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:11.708Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:13.193Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:33.794Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:34.427Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2011&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:35.164Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:36.085Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2013&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:36.803Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2014&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:37.459Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:38.200Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:13.989Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:15.497Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:17.733Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:19.983Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:16.256Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2007"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:18.487Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:20.740Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:59.688Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/119827/stats?stats=gameLog&group=pitching&season=2006&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:00.412Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/119827/stats?stats=gameLog&group=pitching&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:59.934Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/119948/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:00.867Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/119948/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:01.515Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/119948/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:44.702Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120107/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:43.964Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120107/stats?stats=gameLog&group=pitching&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:46.158Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120107/stats?stats=gameLog&group=pitching&season=2009&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:22.145Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:23.641Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:26.638Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:28.713Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:29.647Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:30.407Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=pitching&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:34.172Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/123595/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:01.933Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/123743/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:27.828Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:28.151Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:28.921Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:29.653Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:30.394Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:31.141Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:32.645Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:33.398Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:34.176Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:34.902Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:35.666Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:36.392Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:37.150Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:01.166Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:04.153Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:07.157Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:08.660Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:11.662Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:13.924Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:10.170Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=pitching&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:12.426Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=pitching&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:15.417Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=pitching&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:39.524Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:41.019Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:42.549Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:43.277Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:44.255Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:44.770Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:50.297Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:50.878Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:51.664Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:52.429Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:53.725Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:54.673Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:56.712Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:59.725Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:01.235Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:02.729Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:04.219Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:06.460Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:07.977Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:09.469Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:10.968Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:13.219Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:15.483Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:16.961Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:18.464Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:19.969Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:55.221Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:58.217Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:04.972Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:12.475Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:14.743Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:20.727Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:32.204Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:32.644Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:33.595Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:34.161Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:35.662Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:37.154Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:38.658Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:47.171Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:47.891Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:48.562Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:49.479Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:50.138Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:51.694Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2011&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:52.162Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:53.661Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:55.157Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:56.658Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:58.294Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:04.519Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:05.137Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:05.755Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:06.501Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:07.140Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:08.015Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:08.671Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:09.399Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:10.906Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:11.666Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:12.425Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:13.184Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:13.922Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:14.682Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:15.417Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:16.154Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:16.919Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:17.666Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:18.418Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:19.177Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:19.932Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:20.643Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:30.606Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:31.993Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:34.991Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:36.491Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:39.985Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:42.676Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:43.991Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:47.040Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:29.840Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2006&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:31.362Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:34.279Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:44.745Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:46.299Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2014&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:48.520Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2016&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:49.260Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:14.282Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:14.743Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:15.845Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:16.858Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:17.753Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:19.402Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2011&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:20.000Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:21.501Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:22.998Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:24.513Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:49.492Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:50.199Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:50.871Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:51.691Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:52.384Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2011&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:53.104Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:53.925Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2013&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:55.225Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:56.103Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2014&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:58.231Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:01.232Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:02.757Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:05.749Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:08.766Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:54.544Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:10.232Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:10.985Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:12.474Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:45.705Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:46.925Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:50.391Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:53.388Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:55.174Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:42.507Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:43.207Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2009&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:43.965Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2010&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:44.713Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2011&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:46.271Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2012&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:49.258Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:51.437Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:53.683Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:58.991Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:54.653Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:55.989Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:58.991Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:01.248Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:03.495Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:05.751Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:07.245Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:09.492Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:12.637Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:52.309Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2007&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:53.023Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2008&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:53.788Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2009&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:55.260Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2010&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:59.742Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2012"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:01.995Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:04.252Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:07.998Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:10.995Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:16.926Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:18.412Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:20.414Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:22.913Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:24.414Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:27.417Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:29.657Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:21.414Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:25.910Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:28.913Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:31.172Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:32.658Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:45.661Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:46.265Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:47.189Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2013&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:47.782Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:48.525Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:50.022Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:51.536Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:52.278Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:53.785Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:29.059Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:31.278Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:34.993Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:25.256Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:26.003Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2014&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:26.846Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:27.580Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2016&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:28.280Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:29.830Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:30.505Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:32.755Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:34.285Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2022&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:35.772Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:37.257Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2024"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:38.780Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2025&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:16.374Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:17.700Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:20.699Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:23.694Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:26.708Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:29.704Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:14.780Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:15.485Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2014&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:16.999Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:25.190Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2018"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:27.458Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2019"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:28.938Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:31.204Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:31.974Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:38.882Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:39.686Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:40.446Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:41.324Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:41.996Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:42.977Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:43.735Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:44.723Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:45.466Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:46.245Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:47.735Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:49.186Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:23.897Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:25.994Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:22.297Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:23.027Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:24.566Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:25.228Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:28.985Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2022&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:35.997Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:36.734Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:37.499Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:38.113Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:38.716Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:39.565Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:40.230Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:41.738Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:42.486Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:43.249Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:44.739Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:05.139Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:05.936Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:06.564Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:07.515Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:08.061Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:08.779Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:10.313Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:11.020Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:54.790Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:55.513Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:56.553Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:56.766Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:58.254Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2020"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:59.038Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:20:59.787Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:00.543Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:02.056Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:02.745Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:21:04.249Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:27.621Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:28.413Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:29.080Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:29.713Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:30.495Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:31.230Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:32.740Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:34.243Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:18:34.957Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:35.211Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:35.919Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:36.579Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:37.270Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:38.025Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:38.732Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:39.429Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:16:40.906Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:40.187Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:40.998Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:41.840Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:42.430Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:43.262Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:43.992Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:44.745Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2025&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:15:45.399Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:38.033Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:38.643Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:39.406Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:40.203Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:40.892Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:42.414Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:14:43.116Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:02.701Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:03.560Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:04.216Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:04.980Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2025&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:17:05.681Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:50.008Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/808963/stats?stats=gameLog&group=pitching&season=2025"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:50.746Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/808963/stats?stats=gameLog&group=pitching&season=2025&leagueListId=milb_all"
+    },
+    {
+      "kind": "GAME_LOG",
+      "retrieved_at": "2026-10-23T03:19:51.490Z",
+      "url": "https://statsapi.mlb.com/api/v1/people/808963/stats?stats=gameLog&group=pitching&season=2026"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:11.543Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/102?season=2007&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:11.738Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/102?season=2011&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:12.521Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/102?season=2019&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:13.360Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/103?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:14.017Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/103?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:14.776Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/105?season=2024&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:15.531Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/105?season=2026&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:17.817Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/108?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:18.624Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/108?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:19.317Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/108?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:42.716Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/112?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:43.455Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/112?season=1992&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:44.262Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/112?season=1993&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:44.962Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/112?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:45.811Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/112?season=2025&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:53.953Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=1996&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:54.702Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:55.467Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2002&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:56.216Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:56.995Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2010&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:57.727Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2011&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:58.461Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2012&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:59.211Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2013&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:02:59.961Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2014&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:00.721Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2015&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:01.469Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2016&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:02.248Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:02.964Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2019&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:03.713Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/114?season=2020&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:05.219Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/115?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:05.981Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/115?season=1998&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:06.764Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/115?season=1999&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:07.468Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/115?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:08.233Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/115?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:25.475Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/118?season=1996&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:26.228Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/118?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:26.977Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/118?season=1998&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:27.736Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/118?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:28.487Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/118?season=2012&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:29.239Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/118?season=2021&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:03:29.982Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/118?season=2022&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:11.287Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1994&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:12.039Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1995&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:12.786Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1996&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:13.538Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:14.284Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:15.032Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:15.787Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2021&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:16.536Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2022&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:17.279Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2023&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:18.038Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2024&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:18.781Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2025&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:19.542Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/120?season=2026&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:51.128Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/135?season=1995&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:51.876Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/135?season=1996&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:52.633Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/135?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:53.381Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:54.158Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:54.928Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:04:55.646Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/135?season=2016&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:01.632Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/137?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:02.390Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/137?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:03.137Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/137?season=2013&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:03.881Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/137?season=2014&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:04.660Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/137?season=2026&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:08.399Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/139?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:09.147Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/139?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:03.272Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/1410?season=2009&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:04.019Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/1410?season=2019&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:04.769Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/1410?season=2021&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:47.415Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:48.155Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2002&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:48.908Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2013&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:49.656Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2024&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:50.411Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2025&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:51.154Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/145?season=2026&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:51.909Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/146?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:52.667Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/146?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:53.405Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:54.159Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2002&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:54.915Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:55.658Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2010&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:56.408Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2024&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:05:57.156Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/147?season=2025&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:07.019Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/1991?season=2016&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:07.764Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/1991?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:08.517Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/1991?season=2026&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:12.269Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2010&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:13.031Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2011&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:13.782Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:14.524Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2019&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:15.271Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/2310?season=2026&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:00.911Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/234?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:01.663Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/234?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:02.429Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/234?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:03.162Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/234?season=2015&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:05.411Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/237?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:06.168Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2002&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:06.905Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:07.661Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:13.658Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/238?season=2023&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:17.418Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/248?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:18.169Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/259?season=2013&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:18.934Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/259?season=2014&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:19.666Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/259?season=2018&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:28.672Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/342?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:26.526Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3708?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:27.290Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3712?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:28.027Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3712?season=2021&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:28.774Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3728?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:29.521Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3733?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:30.278Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3733?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:31.030Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3752?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:31.780Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3762?season=1988&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:32.528Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/3762?season=1989&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:33.919Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:34.667Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:35.424Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:36.171Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:36.925Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2007&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:37.674Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/400?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:38.421Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1995&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:39.166Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1996&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:39.921Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:40.703Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1998&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:41.422Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=1999&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:42.170Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:42.927Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2007&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:43.673Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:44.426Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2009&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:45.183Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/401?season=2010&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:48.180Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/402?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:48.932Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/402?season=2009&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:49.680Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/408?season=2014&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:50.424Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/411?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:51.179Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/416?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:51.921Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/416?season=2002&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:52.675Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/416?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:53.424Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/416?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:55.672Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/418?season=1993&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:56.422Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/418?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:57.176Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/418?season=2018&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:57.925Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/418?season=2019&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:58.689Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/418?season=2021&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:06:59.435Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/419?season=1990&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:00.182Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/419?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:01.692Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:02.427Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2002&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:03.177Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:03.930Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2011&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:04.680Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2022&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:05.432Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/422?season=2023&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:06.180Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1988&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:06.931Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1989&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:07.684Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1990&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:08.430Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:09.175Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1992&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:09.928Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/423?season=1993&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:11.437Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/424?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:15.185Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/427?season=2018&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:18.185Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/431?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:24.939Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/436?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:25.690Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/437?season=2012&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:26.465Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/441?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:27.194Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/441?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:27.941Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/441?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:31.691Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/445?season=2002&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:32.443Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/445?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:33.193Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/445?season=2010&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:33.950Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/445?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:36.197Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/449?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:36.945Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/450?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:39.941Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/451?season=1999&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:07:57.198Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/457?season=1988&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:02.449Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2001&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:03.204Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2002&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:03.948Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:04.697Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:05.458Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:06.201Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:06.973Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/457?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:12.958Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/465?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:18.951Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/468?season=2007&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:19.710Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/468?season=2011&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:20.458Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/469?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:21.958Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/471?season=1999&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:22.705Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/471?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:24.211Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/475?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:26.457Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/479?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:27.213Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/482?season=2018&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:27.955Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/482?season=2025&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:30.958Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/485?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:33.959Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/488?season=2019&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:34.707Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/488?season=2022&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:42.282Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/4904?season=2016&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:37.709Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/493?season=2019&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:38.462Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/494?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:39.213Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/494?season=2013&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:42.215Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/498?season=2009&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:43.030Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/5005?season=2016&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:47.461Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/501?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:48.962Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/505?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:50.468Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/507?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:51.221Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/507?season=2007&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:51.970Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/507?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:44.529Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/5085?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:54.218Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1988&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:54.963Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1989&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:58.717Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1996&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:08:59.469Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/510?season=1998&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:00.211Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:00.969Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2022&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:01.717Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2023&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:02.476Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2024&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:03.222Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/512?season=2026&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:04.718Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/516?season=2016&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:05.471Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/516?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:06.233Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/522?season=2009&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:06.982Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/522?season=2019&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:07.721Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/525?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:08.473Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/525?season=2018&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:09.226Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/526?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:30.981Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/531?season=2010&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:35.486Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/533?season=1999&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:36.228Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/533?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:36.980Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/533?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:37.729Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/533?season=2013&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:38.485Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/533?season=2014&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:39.234Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/534?season=1993&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:39.988Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/534?season=2000&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:40.737Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/534?season=2021&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:41.488Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/535?season=1999&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:45.986Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/540?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:46.737Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/540?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:47.497Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/541?season=2012&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:48.240Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/541?season=2014&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:50.535Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/5434?season=2021&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:11:51.280Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/5434?season=2023&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:48.993Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/543?season=1996&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:49.745Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/546?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:50.493Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/547?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:51.259Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/547?season=2024&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:51.995Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/547?season=2025&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:52.740Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/549?season=1998&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:53.492Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/551?season=2008&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:54.242Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/551?season=2015&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:54.990Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1989&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:55.740Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1991&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:56.492Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1992&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:57.245Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1995&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:57.990Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/552?season=1997&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:09:59.488Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/553?season=1988&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:00.243Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/553?season=1989&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:00.991Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/553?season=1990&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:01.742Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/556?season=2014&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:02.501Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/556?season=2026&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:03.240Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/558?season=1999&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:04.006Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/559?season=1999&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:04.746Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/561?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:10.757Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2004&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:11.503Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:12.250Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:13.001Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/564?season=2007&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:13.747Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/565?season=2017&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:14.499Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/566?season=2009&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:15.251Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/566?season=2018&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:16.002Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/568?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:16.755Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/568?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:17.499Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/568?season=2021&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:18.251Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/568?season=2022&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:28.003Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/581?season=1988&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:32.506Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/587?season=2003&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:33.260Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/587?season=2024&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:35.509Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/588?season=2005&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:36.272Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/588?season=2006&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:37.017Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/588?season=2007&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:37.771Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/599?season=2022&hydrate=league,sport"
+    },
+    {
+      "kind": "TEAM_SEASON",
+      "retrieved_at": "2026-10-23T03:10:53.518Z",
+      "url": "https://statsapi.mlb.com/api/v1/teams/612?season=2018&hydrate=league,sport"
+    }
+  ],
+  "stint_dates": [
+    {
+      "affiliate_team": "Seattle Mariners",
+      "first_game_date": "2006-04-03",
+      "last_game_date": "2006-10-01",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:27.828Z",
+      "season": 2006,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Seattle Mariners",
+      "first_game_date": "2007-04-02",
+      "last_game_date": "2007-09-30",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:28.151Z",
+      "season": 2007,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Seattle Mariners",
+      "first_game_date": "2008-03-31",
+      "last_game_date": "2008-09-14",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:28.921Z",
+      "season": 2008,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Seattle Mariners",
+      "first_game_date": "2009-04-06",
+      "last_game_date": "2009-10-04",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:29.653Z",
+      "season": 2009,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Boston Red Sox",
+      "first_game_date": "2010-04-04",
+      "last_game_date": "2010-09-30",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:30.394Z",
+      "season": 2010,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Round Rock Express",
+      "first_game_date": "2011-08-29",
+      "last_game_date": "2011-08-30",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:14:31.141Z",
+      "season": 2011,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Texas Rangers",
+      "first_game_date": "2011-04-01",
+      "last_game_date": "2011-09-28",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:31.141Z",
+      "season": 2011,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Texas Rangers",
+      "first_game_date": "2012-04-06",
+      "last_game_date": "2012-10-03",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:32.645Z",
+      "season": 2012,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Texas Rangers",
+      "first_game_date": "2013-03-31",
+      "last_game_date": "2013-09-30",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:33.398Z",
+      "season": 2013,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Texas Rangers",
+      "first_game_date": "2014-03-31",
+      "last_game_date": "2014-09-28",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:34.176Z",
+      "season": 2014,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Texas Rangers",
+      "first_game_date": "2015-04-06",
+      "last_game_date": "2015-10-04",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:34.902Z",
+      "season": 2015,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Texas Rangers",
+      "first_game_date": "2016-04-04",
+      "last_game_date": "2016-10-02",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:35.666Z",
+      "season": 2016,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Texas Rangers",
+      "first_game_date": "2017-05-29",
+      "last_game_date": "2017-10-01",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:36.392Z",
+      "season": 2017,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Texas Rangers",
+      "first_game_date": "2018-03-29",
+      "last_game_date": "2018-09-30",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:37.150Z",
+      "season": 2018,
+      "slug": "adrian-beltre",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/134181/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2018-08-10",
+      "last_game_date": "2018-08-27",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:14:38.033Z",
+      "season": 2018,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "DSL Dodgers Guerrero",
+      "first_game_date": "2018-06-02",
+      "last_game_date": "2018-08-07",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:14:38.033Z",
+      "season": 2018,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2021-05-04",
+      "last_game_date": "2021-09-19",
+      "league_name": "High-A Central",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:14:38.643Z",
+      "season": 2021,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2022-04-08",
+      "last_game_date": "2022-09-18",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:14:39.406Z",
+      "season": 2022,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2023-05-16",
+      "last_game_date": "2023-05-16",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:14:40.203Z",
+      "season": 2023,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2023-04-06",
+      "last_game_date": "2023-05-14",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:14:40.203Z",
+      "season": 2023,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2024-04-16",
+      "last_game_date": "2024-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:40.892Z",
+      "season": 2024,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Oklahoma City Baseball Club",
+      "first_game_date": "2024-03-29",
+      "last_game_date": "2024-08-30",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:14:40.892Z",
+      "season": 2024,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2025-03-18",
+      "last_game_date": "2025-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:42.414Z",
+      "season": 2025,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2026-03-26",
+      "last_game_date": "2026-09-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:14:43.116Z",
+      "season": 2026,
+      "slug": "andy-pages",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/681624/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Tigres de Quintana Roo",
+      "first_game_date": "2007-03-23",
+      "last_game_date": "2007-06-14",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:14:43.964Z",
+      "season": 2007,
+      "slug": "antonio-osuna",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120107/stats?stats=gameLog&group=pitching&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tigres de Quintana Roo",
+      "first_game_date": "2008-03-21",
+      "last_game_date": "2008-05-15",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:14:44.702Z",
+      "season": 2008,
+      "slug": "antonio-osuna",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120107/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Sultanes de Monterrey",
+      "first_game_date": "2009-03-24",
+      "last_game_date": "2009-05-12",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:14:46.158Z",
+      "season": 2009,
+      "slug": "antonio-osuna",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120107/stats?stats=gameLog&group=pitching&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2006-07-28",
+      "last_game_date": "2006-09-07",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:15:04.519Z",
+      "season": 2006,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "first_game_date": "2006-05-15",
+      "last_game_date": "2006-07-24",
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:04.519Z",
+      "season": 2006,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2007-04-05",
+      "last_game_date": "2007-09-03",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:15:05.137Z",
+      "season": 2007,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Akron Aeros",
+      "first_game_date": "2008-08-31",
+      "last_game_date": "2008-09-01",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:15:05.755Z",
+      "season": 2008,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2008-04-03",
+      "last_game_date": "2008-07-24",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:05.755Z",
+      "season": 2008,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Kinston Indians",
+      "first_game_date": "2008-07-28",
+      "last_game_date": "2008-08-30",
+      "league_name": "Carolina League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:05.755Z",
+      "season": 2008,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Akron Aeros",
+      "first_game_date": "2009-04-08",
+      "last_game_date": "2009-09-07",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:15:06.501Z",
+      "season": 2009,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2010-06-11",
+      "last_game_date": "2010-08-02",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:07.140Z",
+      "season": 2010,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Columbus Clippers",
+      "first_game_date": "2010-04-08",
+      "last_game_date": "2010-06-10",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:07.140Z",
+      "season": 2010,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2011-04-01",
+      "last_game_date": "2011-09-28",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:08.671Z",
+      "season": 2011,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2012-04-05",
+      "last_game_date": "2012-10-02",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:09.399Z",
+      "season": 2012,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Lake County Captains",
+      "first_game_date": "2012-06-04",
+      "last_game_date": "2012-06-04",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:15:09.399Z",
+      "season": 2012,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2013-04-02",
+      "last_game_date": "2013-09-29",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:10.906Z",
+      "season": 2013,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2014-03-31",
+      "last_game_date": "2014-09-28",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:11.666Z",
+      "season": 2014,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2015-04-06",
+      "last_game_date": "2015-10-04",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:12.425Z",
+      "season": 2015,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2016-04-05",
+      "last_game_date": "2016-10-02",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:13.184Z",
+      "season": 2016,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2017-04-03",
+      "last_game_date": "2017-10-01",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:13.922Z",
+      "season": 2017,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Philadelphia Phillies",
+      "first_game_date": "2018-03-29",
+      "last_game_date": "2018-09-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:14.682Z",
+      "season": 2018,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2019-03-28",
+      "last_game_date": "2019-09-29",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:15.417Z",
+      "season": 2019,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2020-07-24",
+      "last_game_date": "2020-09-27",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:16.154Z",
+      "season": 2020,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2020"
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "first_game_date": "2021-04-01",
+      "last_game_date": "2021-10-03",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:16.919Z",
+      "season": 2021,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "first_game_date": "2022-04-07",
+      "last_game_date": "2022-06-26",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:17.666Z",
+      "season": 2022,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Seattle Mariners",
+      "first_game_date": "2022-06-28",
+      "last_game_date": "2022-10-05",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:17.666Z",
+      "season": 2022,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Milwaukee Brewers",
+      "first_game_date": "2023-07-29",
+      "last_game_date": "2023-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:18.418Z",
+      "season": 2023,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Pittsburgh Pirates",
+      "first_game_date": "2023-03-30",
+      "last_game_date": "2023-07-26",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:18.418Z",
+      "season": 2023,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Minnesota Twins",
+      "first_game_date": "2024-03-28",
+      "last_game_date": "2024-09-29",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:19.177Z",
+      "season": 2024,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Chicago Cubs",
+      "first_game_date": "2025-09-01",
+      "last_game_date": "2025-09-23",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:19.932Z",
+      "season": 2025,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Cleveland Guardians",
+      "first_game_date": "2025-03-27",
+      "last_game_date": "2025-08-25",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:19.932Z",
+      "season": 2025,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "ACL D-backs",
+      "first_game_date": "2026-06-05",
+      "last_game_date": "2026-06-22",
+      "league_name": "Arizona Complex League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:15:20.643Z",
+      "season": 2026,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Arizona Diamondbacks",
+      "first_game_date": "2026-03-26",
+      "last_game_date": "2026-04-05",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:20.643Z",
+      "season": 2026,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "FCL Braves",
+      "first_game_date": "2026-07-02",
+      "last_game_date": "2026-07-04",
+      "league_name": "Florida Complex League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:15:20.643Z",
+      "season": 2026,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Gwinnett Stripers",
+      "first_game_date": "2026-07-07",
+      "last_game_date": "2026-08-15",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:20.643Z",
+      "season": 2026,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "first_game_date": "2026-05-02",
+      "last_game_date": "2026-06-13",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:20.643Z",
+      "season": 2026,
+      "slug": "carlos-santana",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467793/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "first_game_date": "2006-04-07",
+      "last_game_date": "2006-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:22.145Z",
+      "season": 2006,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "New Orleans Zephyrs",
+      "first_game_date": "2007-04-08",
+      "last_game_date": "2007-06-02",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:23.641Z",
+      "season": 2007,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "New York Mets",
+      "first_game_date": "2007-04-30",
+      "last_game_date": "2007-04-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:23.641Z",
+      "season": 2007,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Round Rock Express",
+      "first_game_date": "2007-06-16",
+      "last_game_date": "2007-08-31",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:23.641Z",
+      "season": 2007,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2008-04-07",
+      "last_game_date": "2008-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:26.638Z",
+      "season": 2008,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Philadelphia Phillies",
+      "first_game_date": "2009-04-07",
+      "last_game_date": "2009-09-16",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:28.713Z",
+      "season": 2009,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "first_game_date": "2010-04-04",
+      "last_game_date": "2010-07-29",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:29.647Z",
+      "season": 2010,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Pittsburgh Pirates",
+      "first_game_date": "2010-08-06",
+      "last_game_date": "2010-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:29.647Z",
+      "season": 2010,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Scranton/Wilkes-Barre Yankees",
+      "first_game_date": "2010-05-14",
+      "last_game_date": "2010-05-14",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:30.407Z",
+      "season": 2010,
+      "slug": "chan-ho-park",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/120221/stats?stats=gameLog&group=pitching&season=2010"
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "first_game_date": "2006-04-06",
+      "last_game_date": "2006-09-04",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:15:32.204Z",
+      "season": 2006,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "first_game_date": "2007-04-05",
+      "last_game_date": "2007-07-06",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:15:32.644Z",
+      "season": 2007,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "first_game_date": "2007-07-12",
+      "last_game_date": "2007-08-30",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:32.644Z",
+      "season": 2007,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2007-09-01",
+      "last_game_date": "2007-09-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:32.644Z",
+      "season": 2007,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "first_game_date": "2008-06-11",
+      "last_game_date": "2008-08-30",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:34.161Z",
+      "season": 2008,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2008-03-31",
+      "last_game_date": "2008-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:34.161Z",
+      "season": 2008,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2009-04-09",
+      "last_game_date": "2009-09-07",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:35.662Z",
+      "season": 2009,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2009-09-22",
+      "last_game_date": "2009-10-04",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:35.662Z",
+      "season": 2009,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2010-04-08",
+      "last_game_date": "2010-09-04",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:37.154Z",
+      "season": 2010,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2010-06-17",
+      "last_game_date": "2010-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:37.154Z",
+      "season": 2010,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "first_game_date": "2011-05-20",
+      "last_game_date": "2011-06-10",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:38.658Z",
+      "season": 2011,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "GCL Mets",
+      "first_game_date": "2011-08-07",
+      "last_game_date": "2011-08-26",
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:15:38.658Z",
+      "season": 2011,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "New York Mets",
+      "first_game_date": "2011-04-01",
+      "last_game_date": "2011-05-16",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:38.658Z",
+      "season": 2011,
+      "slug": "chin-lung-hu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/464341/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "DSL Dodgers Guerrero",
+      "first_game_date": "2018-06-02",
+      "last_game_date": "2018-08-24",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:15:40.187Z",
+      "season": 2018,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers Lasorda",
+      "first_game_date": "2019-06-17",
+      "last_game_date": "2019-08-26",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:15:40.998Z",
+      "season": 2019,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2019-08-19",
+      "last_game_date": "2019-08-19",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:15:40.998Z",
+      "season": 2019,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2021-08-03",
+      "last_game_date": "2021-09-19",
+      "league_name": "High-A Central",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:41.840Z",
+      "season": 2021,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2021-05-06",
+      "last_game_date": "2021-08-01",
+      "league_name": "Low-A West",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:15:41.840Z",
+      "season": 2021,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2022-04-08",
+      "last_game_date": "2022-09-10",
+      "league_name": "Midwest League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:42.430Z",
+      "season": 2022,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "first_game_date": "2023-08-03",
+      "last_game_date": "2023-09-24",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:43.262Z",
+      "season": 2023,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2023-04-06",
+      "last_game_date": "2023-07-27",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:15:43.262Z",
+      "season": 2023,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Lakeland Flying Tigers",
+      "first_game_date": "2024-05-21",
+      "last_game_date": "2024-07-21",
+      "league_name": "Florida State League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:15:43.992Z",
+      "season": 2024,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "first_game_date": "2024-03-29",
+      "last_game_date": "2024-09-22",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:43.992Z",
+      "season": 2024,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "West Michigan Whitecaps",
+      "first_game_date": "2024-07-23",
+      "last_game_date": "2024-07-31",
+      "league_name": "Midwest League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:43.992Z",
+      "season": 2024,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Gwinnett Stripers",
+      "first_game_date": "2025-04-04",
+      "last_game_date": "2025-09-21",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:44.745Z",
+      "season": 2025,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2025&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Nashville Sounds",
+      "first_game_date": "2026-03-28",
+      "last_game_date": "2026-07-12",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:45.399Z",
+      "season": 2026,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Sacramento River Cats",
+      "first_game_date": "2026-07-24",
+      "last_game_date": "2026-09-20",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:45.399Z",
+      "season": 2026,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "first_game_date": "2026-08-04",
+      "last_game_date": "2026-08-08",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:45.399Z",
+      "season": 2026,
+      "slug": "eddys-leonard",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678760/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "GCL Dodgers",
+      "first_game_date": "2006-06-20",
+      "last_game_date": "2006-08-19",
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:15:47.171Z",
+      "season": 2006,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2007-04-20",
+      "last_game_date": "2007-05-04",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:15:47.891Z",
+      "season": 2007,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2007-04-05",
+      "last_game_date": "2007-04-17",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:47.891Z",
+      "season": 2007,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2007-06-19",
+      "last_game_date": "2007-09-06",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:15:47.891Z",
+      "season": 2007,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2008-08-18",
+      "last_game_date": "2008-08-30",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:48.562Z",
+      "season": 2008,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2008-06-17",
+      "last_game_date": "2008-08-16",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:15:48.562Z",
+      "season": 2008,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2009-04-09",
+      "last_game_date": "2009-05-05",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:15:49.479Z",
+      "season": 2009,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2009-05-14",
+      "last_game_date": "2009-09-07",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:15:49.479Z",
+      "season": 2009,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2010-07-05",
+      "last_game_date": "2010-08-03",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:50.138Z",
+      "season": 2010,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2010-04-08",
+      "last_game_date": "2010-09-06",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:15:50.138Z",
+      "season": 2010,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2011-04-08",
+      "last_game_date": "2011-09-04",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:15:51.694Z",
+      "season": 2011,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2011&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2012-04-08",
+      "last_game_date": "2012-09-03",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:52.162Z",
+      "season": 2012,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2012-05-15",
+      "last_game_date": "2012-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:52.162Z",
+      "season": 2012,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2013-04-04",
+      "last_game_date": "2013-09-02",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:53.661Z",
+      "season": 2013,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2013-05-08",
+      "last_game_date": "2013-07-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:53.661Z",
+      "season": 2013,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Milwaukee Brewers",
+      "first_game_date": "2014-04-18",
+      "last_game_date": "2014-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:55.157Z",
+      "season": 2014,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Nashville Sounds",
+      "first_game_date": "2014-04-04",
+      "last_game_date": "2014-07-11",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:55.157Z",
+      "season": 2014,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Colorado Springs Sky Sox",
+      "first_game_date": "2015-04-09",
+      "last_game_date": "2015-07-28",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:56.658Z",
+      "season": 2015,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Milwaukee Brewers",
+      "first_game_date": "2015-04-21",
+      "last_game_date": "2015-09-19",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:15:56.658Z",
+      "season": 2015,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2016-04-07",
+      "last_game_date": "2016-05-11",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:58.294Z",
+      "season": 2016,
+      "slug": "elian-herrera",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/467070/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Charlotte Knights",
+      "first_game_date": "2006-04-17",
+      "last_game_date": "2006-04-17",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:15:59.688Z",
+      "season": 2006,
+      "slug": "hideo-nomo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/119827/stats?stats=gameLog&group=pitching&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "first_game_date": "2008-04-10",
+      "last_game_date": "2008-04-18",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:00.412Z",
+      "season": 2008,
+      "slug": "hideo-nomo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/119827/stats?stats=gameLog&group=pitching&season=2008"
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "first_game_date": "2006-05-01",
+      "last_game_date": "2006-08-27",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:01.166Z",
+      "season": 2006,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2006-04-03",
+      "last_game_date": "2006-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:01.166Z",
+      "season": 2006,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "first_game_date": "2007-04-29",
+      "last_game_date": "2007-05-28",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:04.153Z",
+      "season": 2007,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2007-05-15",
+      "last_game_date": "2007-06-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:04.153Z",
+      "season": 2007,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2008-04-02",
+      "last_game_date": "2008-09-14",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:07.157Z",
+      "season": 2008,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2009-06-30",
+      "last_game_date": "2009-07-06",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:16:10.170Z",
+      "season": 2009,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=pitching&season=2009"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2009-07-09",
+      "last_game_date": "2009-07-11",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:08.660Z",
+      "season": 2009,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2009-07-18",
+      "last_game_date": "2009-07-24",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:16:10.170Z",
+      "season": 2009,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=pitching&season=2009"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2009-04-06",
+      "last_game_date": "2009-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:08.660Z",
+      "season": 2009,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2010-04-15",
+      "last_game_date": "2010-04-18",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:16:12.426Z",
+      "season": 2010,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=pitching&season=2010"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2010-04-22",
+      "last_game_date": "2010-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:11.662Z",
+      "season": 2010,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2011-06-15",
+      "last_game_date": "2011-06-16",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:13.924Z",
+      "season": 2011,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2011-03-31",
+      "last_game_date": "2011-09-24",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:13.924Z",
+      "season": 2011,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2011-04-25",
+      "last_game_date": "2011-06-11",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:16:15.417Z",
+      "season": 2011,
+      "slug": "hung-chih-kuo",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/425539/stats?stats=gameLog&group=pitching&season=2011"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2013-04-02",
+      "last_game_date": "2013-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:16.926Z",
+      "season": 2013,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2014-03-23",
+      "last_game_date": "2014-09-12",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:18.412Z",
+      "season": 2014,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2016-07-07",
+      "last_game_date": "2016-07-07",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:20.414Z",
+      "season": 2016,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2016-05-25",
+      "last_game_date": "2016-06-28",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:20.414Z",
+      "season": 2016,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2016-05-15",
+      "last_game_date": "2016-07-01",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:16:21.414Z",
+      "season": 2016,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2016"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2017-04-07",
+      "last_game_date": "2017-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:22.913Z",
+      "season": 2017,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2018-04-02",
+      "last_game_date": "2018-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:24.414Z",
+      "season": 2018,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2018-08-07",
+      "last_game_date": "2018-08-07",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:24.414Z",
+      "season": 2018,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2018-08-02",
+      "last_game_date": "2018-08-02",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:16:25.910Z",
+      "season": 2018,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2018"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2019-03-28",
+      "last_game_date": "2019-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:27.417Z",
+      "season": 2019,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "Toronto Blue Jays",
+      "first_game_date": "2020-07-24",
+      "last_game_date": "2020-09-24",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:28.913Z",
+      "season": 2020,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "affiliate_team": "Toronto Blue Jays",
+      "first_game_date": "2021-04-01",
+      "last_game_date": "2021-10-03",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:29.657Z",
+      "season": 2021,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "first_game_date": "2022-05-07",
+      "last_game_date": "2022-05-07",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:31.172Z",
+      "season": 2022,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "affiliate_team": "Toronto Blue Jays",
+      "first_game_date": "2022-04-10",
+      "last_game_date": "2022-06-01",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:31.172Z",
+      "season": 2022,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "affiliate_team": "Buffalo Bisons",
+      "first_game_date": "2023-07-15",
+      "last_game_date": "2023-07-21",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:32.658Z",
+      "season": 2023,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "affiliate_team": "Dunedin Blue Jays",
+      "first_game_date": "2023-07-09",
+      "last_game_date": "2023-07-09",
+      "league_name": "Florida State League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:16:32.658Z",
+      "season": 2023,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "affiliate_team": "FCL Blue Jays",
+      "first_game_date": "2023-07-04",
+      "last_game_date": "2023-07-04",
+      "league_name": "Florida Complex League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:16:32.658Z",
+      "season": 2023,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "affiliate_team": "Toronto Blue Jays",
+      "first_game_date": "2023-08-01",
+      "last_game_date": "2023-09-30",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:32.658Z",
+      "season": 2023,
+      "slug": "hyun-jin-ryu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/547943/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "affiliate_team": "Tigres de Quintana Roo",
+      "first_game_date": "2013-05-18",
+      "last_game_date": "2013-06-27",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:16:34.172Z",
+      "season": 2013,
+      "slug": "ismael-valdez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/123595/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "DSL Dodgers Robinson",
+      "first_game_date": "2018-06-02",
+      "last_game_date": "2018-08-25",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:16:35.211Z",
+      "season": 2018,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers Lasorda",
+      "first_game_date": "2019-06-17",
+      "last_game_date": "2019-08-06",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:16:35.919Z",
+      "season": 2019,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2021-08-25",
+      "last_game_date": "2021-09-19",
+      "league_name": "High-A Central",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:16:36.579Z",
+      "season": 2021,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2021-05-04",
+      "last_game_date": "2021-08-22",
+      "league_name": "Low-A West",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:16:36.579Z",
+      "season": 2021,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2022-04-08",
+      "last_game_date": "2022-09-10",
+      "league_name": "Midwest League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:16:37.270Z",
+      "season": 2022,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2023-08-22",
+      "last_game_date": "2023-09-24",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:38.025Z",
+      "season": 2023,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2023-04-06",
+      "last_game_date": "2023-08-20",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:16:38.025Z",
+      "season": 2023,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Hudson Valley Renegades",
+      "first_game_date": "2024-05-21",
+      "last_game_date": "2024-05-26",
+      "league_name": "South Atlantic League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:16:38.732Z",
+      "season": 2024,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Scranton/Wilkes-Barre RailRiders",
+      "first_game_date": "2024-04-23",
+      "last_game_date": "2024-09-22",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:38.732Z",
+      "season": 2024,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tampa Tarpons",
+      "first_game_date": "2024-05-14",
+      "last_game_date": "2024-05-19",
+      "league_name": "Florida State League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:16:38.732Z",
+      "season": 2024,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "first_game_date": "2025-05-02",
+      "last_game_date": "2025-07-25",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:39.429Z",
+      "season": 2025,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Scranton/Wilkes-Barre RailRiders",
+      "first_game_date": "2025-03-28",
+      "last_game_date": "2025-09-21",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:39.429Z",
+      "season": 2025,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "first_game_date": "2026-03-28",
+      "last_game_date": "2026-09-26",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:40.906Z",
+      "season": 2026,
+      "slug": "jorbit-vivas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "DSL Dodgers",
+      "first_game_date": "2008-06-02",
+      "last_game_date": "2008-08-23",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:16:42.507Z",
+      "season": 2008,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "DSL Dodgers",
+      "first_game_date": "2009-06-01",
+      "last_game_date": "2009-08-14",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:16:43.207Z",
+      "season": 2009,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "DSL Dodgers",
+      "first_game_date": "2010-08-02",
+      "last_game_date": "2010-08-18",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:16:43.965Z",
+      "season": 2010,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2010&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2011-06-22",
+      "last_game_date": "2011-08-28",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:16:44.713Z",
+      "season": 2011,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2011&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2011-07-25",
+      "last_game_date": "2011-08-05",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:16:44.713Z",
+      "season": 2011,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2011&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2012-08-22",
+      "last_game_date": "2012-09-03",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:16:45.705Z",
+      "season": 2012,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2012-04-06",
+      "last_game_date": "2012-08-16",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:16:45.705Z",
+      "season": 2012,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2013-06-10",
+      "last_game_date": "2013-06-27",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:46.925Z",
+      "season": 2013,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2013-05-01",
+      "last_game_date": "2013-06-07",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:16:46.925Z",
+      "season": 2013,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2013-06-30",
+      "last_game_date": "2013-07-22",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:46.925Z",
+      "season": 2013,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2014-04-12",
+      "last_game_date": "2014-07-25",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:50.391Z",
+      "season": 2014,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2014-03-23",
+      "last_game_date": "2014-05-02",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:50.391Z",
+      "season": 2014,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2014-09-01",
+      "last_game_date": "2014-09-03",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:16:51.437Z",
+      "season": 2014,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2014"
+    },
+    {
+      "affiliate_team": "Durham Bulls",
+      "first_game_date": "2015-04-09",
+      "last_game_date": "2015-09-07",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:53.683Z",
+      "season": 2015,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2015"
+    },
+    {
+      "affiliate_team": "Tampa Bay Rays",
+      "first_game_date": "2015-04-15",
+      "last_game_date": "2015-04-24",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:53.388Z",
+      "season": 2015,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "El Paso Chihuahuas",
+      "first_game_date": "2016-04-10",
+      "last_game_date": "2016-06-26",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:55.174Z",
+      "season": 2016,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "San Diego Padres",
+      "first_game_date": "2016-07-03",
+      "last_game_date": "2016-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:16:55.174Z",
+      "season": 2016,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Algodoneros Union Laguna",
+      "first_game_date": "2019-04-16",
+      "last_game_date": "2019-08-25",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:16:58.991Z",
+      "season": 2019,
+      "slug": "jose-dominguez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523848/stats?stats=gameLog&group=pitching&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Norfolk Tides",
+      "first_game_date": "2006-05-15",
+      "last_game_date": "2006-09-04",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:16:59.934Z",
+      "season": 2006,
+      "slug": "jose-offerman",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/119948/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rojos del Aguila de Veracruz",
+      "first_game_date": "2008-03-19",
+      "last_game_date": "2008-07-27",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:00.867Z",
+      "season": 2008,
+      "slug": "jose-offerman",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/119948/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rojos del Aguila de Veracruz",
+      "first_game_date": "2009-03-25",
+      "last_game_date": "2009-04-19",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:01.515Z",
+      "season": 2009,
+      "slug": "jose-offerman",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/119948/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "first_game_date": "2006-04-07",
+      "last_game_date": "2006-08-13",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:01.933Z",
+      "season": 2006,
+      "slug": "jose-vizcaino",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/123743/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "St. Louis Cardinals",
+      "first_game_date": "2006-08-23",
+      "last_game_date": "2006-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:01.933Z",
+      "season": 2006,
+      "slug": "jose-vizcaino",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/123743/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "DSL LAD Bautista",
+      "first_game_date": "2022-06-06",
+      "last_game_date": "2022-08-18",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:17:02.701Z",
+      "season": 2022,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2022&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2023-05-30",
+      "last_game_date": "2023-09-09",
+      "league_name": "California League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:17:03.560Z",
+      "season": 2023,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2024-06-25",
+      "last_game_date": "2024-09-08",
+      "league_name": "Midwest League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:04.216Z",
+      "season": 2024,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2024-04-05",
+      "last_game_date": "2024-06-23",
+      "league_name": "California League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:17:04.216Z",
+      "season": 2024,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2025-04-04",
+      "last_game_date": "2025-09-07",
+      "league_name": "Midwest League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:04.980Z",
+      "season": 2025,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2025&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2025-09-09",
+      "last_game_date": "2025-09-14",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:04.980Z",
+      "season": 2025,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2025&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2026-09-11",
+      "last_game_date": "2026-09-22",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:05.681Z",
+      "season": 2026,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2026-04-02",
+      "last_game_date": "2026-09-09",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:05.681Z",
+      "season": 2026,
+      "slug": "josue-de-paula",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/800543/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Cincinnati Reds",
+      "first_game_date": "2006-06-18",
+      "last_game_date": "2006-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:07.803Z",
+      "season": 2006,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Minnesota Twins",
+      "first_game_date": "2006-04-04",
+      "last_game_date": "2006-06-13",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:07.803Z",
+      "season": 2006,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Cincinnati Reds",
+      "first_game_date": "2007-04-05",
+      "last_game_date": "2007-07-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:07.947Z",
+      "season": 2007,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Baltimore Orioles",
+      "first_game_date": "2008-04-28",
+      "last_game_date": "2008-09-24",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:09.250Z",
+      "season": 2008,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Cincinnati Reds",
+      "first_game_date": "2008-04-04",
+      "last_game_date": "2008-04-17",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:09.250Z",
+      "season": 2008,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Colorado Springs Sky Sox",
+      "first_game_date": "2008-05-05",
+      "last_game_date": "2008-07-14",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:09.250Z",
+      "season": 2008,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2009-04-09",
+      "last_game_date": "2009-04-12",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:10.207Z",
+      "season": 2009,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2009-04-13",
+      "last_game_date": "2009-10-04",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:10.207Z",
+      "season": 2009,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2010-08-06",
+      "last_game_date": "2010-08-10",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:11.708Z",
+      "season": 2010,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2010-08-15",
+      "last_game_date": "2010-08-15",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:11.708Z",
+      "season": 2010,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Philadelphia Phillies",
+      "first_game_date": "2010-04-12",
+      "last_game_date": "2010-07-16",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:11.708Z",
+      "season": 2010,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2011-04-09",
+      "last_game_date": "2011-06-11",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:13.193Z",
+      "season": 2011,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2011-05-15",
+      "last_game_date": "2011-06-04",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:13.193Z",
+      "season": 2011,
+      "slug": "juan-castro",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/112128/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2013-05-26",
+      "last_game_date": "2013-08-28",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:17:14.780Z",
+      "season": 2013,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2014-04-04",
+      "last_game_date": "2014-08-29",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:15.485Z",
+      "season": 2014,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2014&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2015-07-10",
+      "last_game_date": "2015-07-16",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:17:16.999Z",
+      "season": 2015,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2015-08-31",
+      "last_game_date": "2015-09-05",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:16.374Z",
+      "season": 2015,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2015-07-21",
+      "last_game_date": "2015-07-21",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:16.999Z",
+      "season": 2015,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2015-04-10",
+      "last_game_date": "2015-08-25",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:16.374Z",
+      "season": 2015,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2016-05-27",
+      "last_game_date": "2016-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:17.700Z",
+      "season": 2016,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2016-04-11",
+      "last_game_date": "2016-07-31",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:17.700Z",
+      "season": 2016,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2017-04-27",
+      "last_game_date": "2017-05-20",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:20.699Z",
+      "season": 2017,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2017-04-10",
+      "last_game_date": "2017-06-10",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:20.699Z",
+      "season": 2017,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2018-07-30",
+      "last_game_date": "2018-08-04",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:17:25.190Z",
+      "season": 2018,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2018"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2018-09-15",
+      "last_game_date": "2018-09-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:23.694Z",
+      "season": 2018,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2018-08-31",
+      "last_game_date": "2018-09-03",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:23.694Z",
+      "season": 2018,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2018-08-10",
+      "last_game_date": "2018-08-27",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:25.190Z",
+      "season": 2018,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2018"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2019-04-01",
+      "last_game_date": "2019-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:26.708Z",
+      "season": 2019,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2019-08-29",
+      "last_game_date": "2019-08-29",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:27.458Z",
+      "season": 2019,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2019"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2020-07-26",
+      "last_game_date": "2020-09-23",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:28.938Z",
+      "season": 2020,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2021-04-04",
+      "last_game_date": "2021-10-02",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:29.704Z",
+      "season": 2021,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2022-04-10",
+      "last_game_date": "2022-10-04",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:31.204Z",
+      "season": 2022,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2023-03-30",
+      "last_game_date": "2023-09-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:31.974Z",
+      "season": 2023,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2023-06-25",
+      "last_game_date": "2023-06-25",
+      "league_name": "California League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:17:31.974Z",
+      "season": 2023,
+      "slug": "julio-urias",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/628711/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "affiliate_team": "Sultanes de Monterrey",
+      "first_game_date": "2007-04-05",
+      "last_game_date": "2007-07-29",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:33.794Z",
+      "season": 2007,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Sultanes de Monterrey",
+      "first_game_date": "2011-03-19",
+      "last_game_date": "2011-05-31",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:34.427Z",
+      "season": 2011,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2011&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Sultanes de Monterrey",
+      "first_game_date": "2012-03-17",
+      "last_game_date": "2012-07-28",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:35.164Z",
+      "season": 2012,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Sultanes de Monterrey",
+      "first_game_date": "2013-03-23",
+      "last_game_date": "2013-05-18",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:36.085Z",
+      "season": 2013,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2013&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tigres de Quintana Roo",
+      "first_game_date": "2013-05-22",
+      "last_game_date": "2013-08-03",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:36.085Z",
+      "season": 2013,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2013&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tigres de Quintana Roo",
+      "first_game_date": "2014-04-01",
+      "last_game_date": "2014-08-13",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:36.803Z",
+      "season": 2014,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2014&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Olmecas de Tabasco",
+      "first_game_date": "2015-06-07",
+      "last_game_date": "2015-08-14",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:37.459Z",
+      "season": 2015,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tigres de Quintana Roo",
+      "first_game_date": "2015-04-08",
+      "last_game_date": "2015-05-20",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:37.459Z",
+      "season": 2015,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Diablos Rojos del Mexico",
+      "first_game_date": "2016-07-15",
+      "last_game_date": "2016-08-12",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:38.200Z",
+      "season": 2016,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Saraperos de Saltillo",
+      "first_game_date": "2016-04-02",
+      "last_game_date": "2016-06-25",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:17:38.200Z",
+      "season": 2016,
+      "slug": "karim-garcia",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/114588/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "DSL Dodgers",
+      "first_game_date": "2015-05-30",
+      "last_game_date": "2015-08-19",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:17:38.882Z",
+      "season": 2015,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2016-06-20",
+      "last_game_date": "2016-07-01",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:17:39.686Z",
+      "season": 2016,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2016-07-02",
+      "last_game_date": "2016-09-07",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:17:39.686Z",
+      "season": 2016,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2017-04-07",
+      "last_game_date": "2017-07-08",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:17:40.446Z",
+      "season": 2017,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2017-07-10",
+      "last_game_date": "2017-09-03",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:40.446Z",
+      "season": 2017,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2018-04-05",
+      "last_game_date": "2018-09-02",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:41.324Z",
+      "season": 2018,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2019-07-21",
+      "last_game_date": "2019-08-03",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:41.996Z",
+      "season": 2019,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2019-04-04",
+      "last_game_date": "2019-07-19",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:41.996Z",
+      "season": 2019,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2020-08-16",
+      "last_game_date": "2020-08-19",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:42.977Z",
+      "season": 2020,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2020"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2021-05-04",
+      "last_game_date": "2021-05-16",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:43.735Z",
+      "season": 2021,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2021-05-10",
+      "last_game_date": "2021-07-27",
+      "league_name": "Triple-A West",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:43.735Z",
+      "season": 2021,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Rochester Red Wings",
+      "first_game_date": "2021-08-03",
+      "last_game_date": "2021-08-28",
+      "league_name": "Triple-A East",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:43.735Z",
+      "season": 2021,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "first_game_date": "2021-08-30",
+      "last_game_date": "2021-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:43.735Z",
+      "season": 2021,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "first_game_date": "2022-04-07",
+      "last_game_date": "2022-09-08",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:44.723Z",
+      "season": 2022,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "first_game_date": "2023-03-30",
+      "last_game_date": "2023-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:45.466Z",
+      "season": 2023,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Harrisburg Senators",
+      "first_game_date": "2024-04-23",
+      "last_game_date": "2024-04-24",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:46.245Z",
+      "season": 2024,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "first_game_date": "2024-03-28",
+      "last_game_date": "2024-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:46.245Z",
+      "season": 2024,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Harrisburg Senators",
+      "first_game_date": "2025-09-02",
+      "last_game_date": "2025-09-04",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:47.735Z",
+      "season": 2025,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "first_game_date": "2025-03-27",
+      "last_game_date": "2025-07-05",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:47.735Z",
+      "season": 2025,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "first_game_date": "2026-03-26",
+      "last_game_date": "2026-09-26",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:49.186Z",
+      "season": 2026,
+      "slug": "keibert-ruiz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "GCL Dodgers",
+      "first_game_date": "2006-06-20",
+      "last_game_date": "2006-08-19",
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:17:50.297Z",
+      "season": 2006,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2007-04-06",
+      "last_game_date": "2007-05-27",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:17:50.878Z",
+      "season": 2007,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2007-06-19",
+      "last_game_date": "2007-09-06",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:17:50.878Z",
+      "season": 2007,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2008-04-03",
+      "last_game_date": "2008-09-01",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:17:51.664Z",
+      "season": 2008,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2009-05-30",
+      "last_game_date": "2009-06-29",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:17:52.429Z",
+      "season": 2009,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2009-04-09",
+      "last_game_date": "2009-09-06",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:52.429Z",
+      "season": 2009,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2010-05-15",
+      "last_game_date": "2010-07-20",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:53.725Z",
+      "season": 2010,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2010-04-09",
+      "last_game_date": "2010-05-10",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:55.221Z",
+      "season": 2010,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2010"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2010-07-24",
+      "last_game_date": "2010-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:53.725Z",
+      "season": 2010,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2011-05-04",
+      "last_game_date": "2011-06-16",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:17:56.712Z",
+      "season": 2011,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2011-04-02",
+      "last_game_date": "2011-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:56.712Z",
+      "season": 2011,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2011-08-21",
+      "last_game_date": "2011-08-23",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:17:58.217Z",
+      "season": 2011,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2011"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2012-04-05",
+      "last_game_date": "2012-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:17:59.725Z",
+      "season": 2012,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2013-04-02",
+      "last_game_date": "2013-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:01.235Z",
+      "season": 2013,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2014-03-22",
+      "last_game_date": "2014-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:02.729Z",
+      "season": 2014,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2015-05-15",
+      "last_game_date": "2015-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:04.219Z",
+      "season": 2015,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2015-05-01",
+      "last_game_date": "2015-05-13",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:04.972Z",
+      "season": 2015,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2015"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2016-04-05",
+      "last_game_date": "2016-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:06.460Z",
+      "season": 2016,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2017-04-05",
+      "last_game_date": "2017-09-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:07.977Z",
+      "season": 2017,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2018-03-30",
+      "last_game_date": "2018-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:09.469Z",
+      "season": 2018,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2019-03-29",
+      "last_game_date": "2019-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:10.968Z",
+      "season": 2019,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2020-07-26",
+      "last_game_date": "2020-09-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:12.475Z",
+      "season": 2020,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2021-04-03",
+      "last_game_date": "2021-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:13.219Z",
+      "season": 2021,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Atlanta Braves",
+      "first_game_date": "2022-04-08",
+      "last_game_date": "2022-10-04",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:14.743Z",
+      "season": 2022,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "affiliate_team": "Boston Red Sox",
+      "first_game_date": "2023-04-01",
+      "last_game_date": "2023-09-12",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:15.483Z",
+      "season": 2023,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Boston Red Sox",
+      "first_game_date": "2024-03-28",
+      "last_game_date": "2024-09-22",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:16.961Z",
+      "season": 2024,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Los Angeles Angels",
+      "first_game_date": "2025-03-29",
+      "last_game_date": "2025-09-26",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:18.464Z",
+      "season": 2025,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Detroit Tigers",
+      "first_game_date": "2026-03-27",
+      "last_game_date": "2026-09-25",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:19.969Z",
+      "season": 2026,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "first_game_date": "2026-06-10",
+      "last_game_date": "2026-06-10",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:20.727Z",
+      "season": 2026,
+      "slug": "kenley-jansen",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/445276/stats?stats=gameLog&group=pitching&season=2026"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2018-06-18",
+      "last_game_date": "2018-06-29",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:18:27.621Z",
+      "season": 2018,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2018-08-02",
+      "last_game_date": "2018-09-03",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:18:27.621Z",
+      "season": 2018,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2018-07-02",
+      "last_game_date": "2018-07-31",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:18:27.621Z",
+      "season": 2018,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2019-04-04",
+      "last_game_date": "2019-07-01",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:18:28.413Z",
+      "season": 2019,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2019-07-02",
+      "last_game_date": "2019-09-02",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:28.413Z",
+      "season": 2019,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2021-05-04",
+      "last_game_date": "2021-06-15",
+      "league_name": "High-A Central",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:29.080Z",
+      "season": 2021,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2021-06-06",
+      "last_game_date": "2021-09-19",
+      "league_name": "Double-A Central",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:29.080Z",
+      "season": 2021,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2022-08-03",
+      "last_game_date": "2022-10-05",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:29.713Z",
+      "season": 2022,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2022-04-06",
+      "last_game_date": "2022-08-30",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:29.713Z",
+      "season": 2022,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2023-03-30",
+      "last_game_date": "2023-07-08",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:31.230Z",
+      "season": 2023,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2023-07-14",
+      "last_game_date": "2023-09-24",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:31.230Z",
+      "season": 2023,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "first_game_date": "2024-07-30",
+      "last_game_date": "2024-09-29",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:32.740Z",
+      "season": 2024,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2024-05-18",
+      "last_game_date": "2024-07-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:32.740Z",
+      "season": 2024,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Oklahoma City Baseball Club",
+      "first_game_date": "2024-03-29",
+      "last_game_date": "2024-06-15",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:32.740Z",
+      "season": 2024,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "first_game_date": "2025-03-27",
+      "last_game_date": "2025-09-28",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:34.243Z",
+      "season": 2025,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "first_game_date": "2026-03-26",
+      "last_game_date": "2026-09-26",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:34.957Z",
+      "season": 2026,
+      "slug": "miguel-vargas",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "DSL Dodgers 1",
+      "first_game_date": "2016-06-04",
+      "last_game_date": "2016-08-26",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:18:35.997Z",
+      "season": 2016,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2017-04-07",
+      "last_game_date": "2017-07-27",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:18:36.734Z",
+      "season": 2017,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "West Virginia Power",
+      "first_game_date": "2017-08-05",
+      "last_game_date": "2017-09-03",
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:18:36.734Z",
+      "season": 2017,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "West Virginia Power",
+      "first_game_date": "2018-04-05",
+      "last_game_date": "2018-08-13",
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:18:37.499Z",
+      "season": 2018,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Altoona Curve",
+      "first_game_date": "2019-05-30",
+      "last_game_date": "2019-09-02",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:38.113Z",
+      "season": 2019,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Bradenton Marauders",
+      "first_game_date": "2019-04-04",
+      "last_game_date": "2019-07-28",
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:38.113Z",
+      "season": 2019,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "GCL Pirates",
+      "first_game_date": "2019-06-24",
+      "last_game_date": "2019-06-28",
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:18:38.113Z",
+      "season": 2019,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Altoona Curve",
+      "first_game_date": "2021-05-04",
+      "last_game_date": "2021-09-18",
+      "league_name": "Double-A Northeast",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:38.716Z",
+      "season": 2021,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Indianapolis Indians",
+      "first_game_date": "2021-09-22",
+      "last_game_date": "2021-09-30",
+      "league_name": "Triple-A East",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:38.716Z",
+      "season": 2021,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Pittsburgh Pirates",
+      "first_game_date": "2021-10-02",
+      "last_game_date": "2021-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:38.716Z",
+      "season": 2021,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Indianapolis Indians",
+      "first_game_date": "2022-04-05",
+      "last_game_date": "2022-06-19",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:40.230Z",
+      "season": 2022,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Pittsburgh Pirates",
+      "first_game_date": "2022-06-20",
+      "last_game_date": "2022-10-05",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:40.230Z",
+      "season": 2022,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Pittsburgh Pirates",
+      "first_game_date": "2023-03-30",
+      "last_game_date": "2023-04-09",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:41.738Z",
+      "season": 2023,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Pittsburgh Pirates",
+      "first_game_date": "2024-03-28",
+      "last_game_date": "2024-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:42.486Z",
+      "season": 2024,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Altoona Curve",
+      "first_game_date": "2025-08-23",
+      "last_game_date": "2025-08-24",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:43.249Z",
+      "season": 2025,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Pittsburgh Pirates",
+      "first_game_date": "2025-03-27",
+      "last_game_date": "2025-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:43.249Z",
+      "season": 2025,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Altoona Curve",
+      "first_game_date": "2026-08-11",
+      "last_game_date": "2026-08-15",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:44.739Z",
+      "season": 2026,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Indianapolis Indians",
+      "first_game_date": "2026-08-07",
+      "last_game_date": "2026-08-09",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:44.739Z",
+      "season": 2026,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Pittsburgh Pirates",
+      "first_game_date": "2026-03-26",
+      "last_game_date": "2026-09-26",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:44.739Z",
+      "season": 2026,
+      "slug": "oneil-cruz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665833/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "Harrisburg Senators",
+      "first_game_date": "2006-06-28",
+      "last_game_date": "2006-06-28",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:46.216Z",
+      "season": 2006,
+      "slug": "pedro-astacio",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/110359/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "New Orleans Zephyrs",
+      "first_game_date": "2006-05-31",
+      "last_game_date": "2006-06-10",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:46.216Z",
+      "season": 2006,
+      "slug": "pedro-astacio",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/110359/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Potomac Nationals",
+      "first_game_date": "2006-05-26",
+      "last_game_date": "2006-05-26",
+      "league_name": "Carolina League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:47.736Z",
+      "season": 2006,
+      "slug": "pedro-astacio",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/110359/stats?stats=gameLog&group=pitching&season=2006"
+    },
+    {
+      "affiliate_team": "Washington Nationals",
+      "first_game_date": "2006-07-03",
+      "last_game_date": "2006-09-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:46.216Z",
+      "season": 2006,
+      "slug": "pedro-astacio",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/110359/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "GCL Dodgers",
+      "first_game_date": "2007-06-19",
+      "last_game_date": "2007-08-27",
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:18:49.492Z",
+      "season": 2007,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2008-04-03",
+      "last_game_date": "2008-06-14",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:18:50.199Z",
+      "season": 2008,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2008-06-17",
+      "last_game_date": "2008-09-04",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:18:50.199Z",
+      "season": 2008,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2009-04-09",
+      "last_game_date": "2009-07-19",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:50.871Z",
+      "season": 2009,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2010-06-21",
+      "last_game_date": "2010-06-22",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:18:51.691Z",
+      "season": 2010,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2010-08-31",
+      "last_game_date": "2010-09-06",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:51.691Z",
+      "season": 2010,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2010-04-08",
+      "last_game_date": "2010-08-30",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:51.691Z",
+      "season": 2010,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2011-04-07",
+      "last_game_date": "2011-05-10",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:52.384Z",
+      "season": 2011,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2011&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2012-04-05",
+      "last_game_date": "2012-07-09",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:53.104Z",
+      "season": 2012,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2012-07-12",
+      "last_game_date": "2012-09-03",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:53.104Z",
+      "season": 2012,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2013-07-12",
+      "last_game_date": "2013-08-31",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:53.925Z",
+      "season": 2013,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2013&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2013-04-05",
+      "last_game_date": "2013-07-08",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:18:54.544Z",
+      "season": 2013,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2014-05-26",
+      "last_game_date": "2014-08-02",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:55.225Z",
+      "season": 2014,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2014-04-03",
+      "last_game_date": "2014-05-22",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:18:55.225Z",
+      "season": 2014,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2014-05-05",
+      "last_game_date": "2014-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:55.225Z",
+      "season": 2014,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2015-04-07",
+      "last_game_date": "2015-10-04",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:18:58.231Z",
+      "season": 2015,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2015-06-19",
+      "last_game_date": "2015-06-23",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:18:58.231Z",
+      "season": 2015,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2016-04-05",
+      "last_game_date": "2016-10-02",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:01.232Z",
+      "season": 2016,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2017-04-14",
+      "last_game_date": "2017-09-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:02.757Z",
+      "season": 2017,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2017-04-07",
+      "last_game_date": "2017-04-12",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:02.757Z",
+      "season": 2017,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2018-03-31",
+      "last_game_date": "2018-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:05.749Z",
+      "season": 2018,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2018-07-17",
+      "last_game_date": "2018-07-20",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:05.749Z",
+      "season": 2018,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2018-07-23",
+      "last_game_date": "2018-07-23",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:19:05.749Z",
+      "season": 2018,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2019-03-29",
+      "last_game_date": "2019-09-26",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:08.766Z",
+      "season": 2019,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2020-07-23",
+      "last_game_date": "2020-09-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:10.232Z",
+      "season": 2020,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "affiliate_team": "Fayetteville Woodpeckers",
+      "first_game_date": "2021-07-15",
+      "last_game_date": "2021-07-18",
+      "league_name": "Low-A East",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:19:10.985Z",
+      "season": 2021,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2021"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2021-08-10",
+      "last_game_date": "2021-08-21",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:10.985Z",
+      "season": 2021,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2021"
+    },
+    {
+      "affiliate_team": "Sugar Land Skeeters",
+      "first_game_date": "2021-07-23",
+      "last_game_date": "2021-09-27",
+      "league_name": "Triple-A West",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:10.985Z",
+      "season": 2021,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2021"
+    },
+    {
+      "affiliate_team": "ACL Dodgers",
+      "first_game_date": "2022-07-05",
+      "last_game_date": "2022-07-22",
+      "league_name": "Arizona Complex League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:19:12.474Z",
+      "season": 2022,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2022-04-08",
+      "last_game_date": "2022-04-19",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:12.474Z",
+      "season": 2022,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2022-07-27",
+      "last_game_date": "2022-08-19",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:12.474Z",
+      "season": 2022,
+      "slug": "pedro-baez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/520980/stats?stats=gameLog&group=pitching&season=2022"
+    },
+    {
+      "affiliate_team": "New York Mets",
+      "first_game_date": "2006-04-06",
+      "last_game_date": "2006-09-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:13.989Z",
+      "season": 2006,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "GCL Mets",
+      "first_game_date": "2007-08-14",
+      "last_game_date": "2007-08-14",
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:19:16.256Z",
+      "season": 2007,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2007"
+    },
+    {
+      "affiliate_team": "New York Mets",
+      "first_game_date": "2007-09-03",
+      "last_game_date": "2007-09-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:15.497Z",
+      "season": 2007,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "St. Lucie Mets",
+      "first_game_date": "2007-08-08",
+      "last_game_date": "2007-08-27",
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:19:16.256Z",
+      "season": 2007,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2007"
+    },
+    {
+      "affiliate_team": "New York Mets",
+      "first_game_date": "2008-04-01",
+      "last_game_date": "2008-09-25",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:17.733Z",
+      "season": 2008,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "St. Lucie Mets",
+      "first_game_date": "2008-05-28",
+      "last_game_date": "2008-05-28",
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:19:18.487Z",
+      "season": 2008,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2008"
+    },
+    {
+      "affiliate_team": "Clearwater Threshers",
+      "first_game_date": "2009-07-26",
+      "last_game_date": "2009-07-26",
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:19:20.740Z",
+      "season": 2009,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2009"
+    },
+    {
+      "affiliate_team": "Lehigh Valley IronPigs",
+      "first_game_date": "2009-07-31",
+      "last_game_date": "2009-07-31",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:20.740Z",
+      "season": 2009,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2009"
+    },
+    {
+      "affiliate_team": "Philadelphia Phillies",
+      "first_game_date": "2009-08-12",
+      "last_game_date": "2009-09-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:19.983Z",
+      "season": 2009,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Reading Phillies",
+      "first_game_date": "2009-08-05",
+      "last_game_date": "2009-08-05",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:19:20.740Z",
+      "season": 2009,
+      "slug": "pedro-martinez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/118377/stats?stats=gameLog&group=pitching&season=2009"
+    },
+    {
+      "affiliate_team": "DSL Phillies White",
+      "first_game_date": "2017-06-05",
+      "last_game_date": "2017-07-22",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:19:22.297Z",
+      "season": 2017,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "GCL Phillies",
+      "first_game_date": "2017-07-28",
+      "last_game_date": "2017-08-04",
+      "league_name": "Gulf Coast League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:19:22.297Z",
+      "season": 2017,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Williamsport Crosscutters",
+      "first_game_date": "2017-08-13",
+      "last_game_date": "2017-09-02",
+      "league_name": "New York-Penn League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:19:22.297Z",
+      "season": 2017,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Clearwater Threshers",
+      "first_game_date": "2018-07-01",
+      "last_game_date": "2018-09-02",
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:19:23.027Z",
+      "season": 2018,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Lakewood BlueClaws",
+      "first_game_date": "2018-04-05",
+      "last_game_date": "2018-06-25",
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:19:23.027Z",
+      "season": 2018,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Lehigh Valley IronPigs",
+      "first_game_date": "2019-06-13",
+      "last_game_date": "2019-08-30",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:23.897Z",
+      "season": 2019,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Reading Fightin Phils",
+      "first_game_date": "2019-04-04",
+      "last_game_date": "2019-06-06",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:19:23.897Z",
+      "season": 2019,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Philadelphia Phillies",
+      "first_game_date": "2020-07-24",
+      "last_game_date": "2020-09-21",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:25.228Z",
+      "season": 2020,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "affiliate_team": "Lehigh Valley IronPigs",
+      "first_game_date": "2021-05-04",
+      "last_game_date": "2021-10-02",
+      "league_name": "Triple-A East",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:25.994Z",
+      "season": 2021,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Philadelphia Phillies",
+      "first_game_date": "2021-04-20",
+      "last_game_date": "2021-09-26",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:25.994Z",
+      "season": 2021,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Toledo Mud Hens",
+      "first_game_date": "2022-05-22",
+      "last_game_date": "2022-05-22",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:28.985Z",
+      "season": 2022,
+      "slug": "ramon-rosso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/665759/stats?stats=gameLog&group=pitching&season=2022&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Columbus Catfish",
+      "first_game_date": "2006-05-30",
+      "last_game_date": "2006-08-16",
+      "league_name": "South Atlantic League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:19:29.840Z",
+      "season": 2006,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Vero Beach Dodgers",
+      "first_game_date": "2006-04-07",
+      "last_game_date": "2006-09-03",
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:19:29.840Z",
+      "season": 2006,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2007-04-06",
+      "last_game_date": "2007-05-18",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:19:31.362Z",
+      "season": 2007,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "first_game_date": "2007-05-21",
+      "last_game_date": "2007-09-03",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:19:30.606Z",
+      "season": 2007,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "first_game_date": "2008-04-18",
+      "last_game_date": "2008-06-16",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:31.993Z",
+      "season": 2008,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2008-04-01",
+      "last_game_date": "2008-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:31.993Z",
+      "season": 2008,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2009-04-10",
+      "last_game_date": "2009-10-04",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:34.991Z",
+      "season": 2009,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2010-07-06",
+      "last_game_date": "2010-08-28",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:36.491Z",
+      "season": 2010,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2010-04-07",
+      "last_game_date": "2010-10-02",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:36.491Z",
+      "season": 2010,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2011-04-08",
+      "last_game_date": "2011-09-02",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:39.985Z",
+      "season": 2011,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2011-04-16",
+      "last_game_date": "2011-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:39.985Z",
+      "season": 2011,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2012-04-07",
+      "last_game_date": "2012-09-01",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:42.676Z",
+      "season": 2012,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Charlotte Knights",
+      "first_game_date": "2013-04-07",
+      "last_game_date": "2013-06-04",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:44.745Z",
+      "season": 2013,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2013"
+    },
+    {
+      "affiliate_team": "Chicago White Sox",
+      "first_game_date": "2013-06-07",
+      "last_game_date": "2013-09-29",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:43.991Z",
+      "season": 2013,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Omaha Storm Chasers",
+      "first_game_date": "2014-04-04",
+      "last_game_date": "2014-07-09",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:46.299Z",
+      "season": 2014,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2014&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2015-04-25",
+      "last_game_date": "2015-09-01",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:47.040Z",
+      "season": 2015,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2015-04-23",
+      "last_game_date": "2015-05-20",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:19:47.040Z",
+      "season": 2015,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Leones de Yucatan",
+      "first_game_date": "2016-04-01",
+      "last_game_date": "2016-05-14",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:19:48.520Z",
+      "season": 2016,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Olmecas de Tabasco",
+      "first_game_date": "2016-05-29",
+      "last_game_date": "2016-08-12",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:19:48.520Z",
+      "season": 2016,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Olmecas de Tabasco",
+      "first_game_date": "2017-04-02",
+      "last_game_date": "2017-04-04",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:19:49.260Z",
+      "season": 2017,
+      "slug": "ramon-troncoso",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/470462/stats?stats=gameLog&group=pitching&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2025-03-19",
+      "last_game_date": "2025-09-26",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:50.008Z",
+      "season": 2025,
+      "slug": "roki-sasaki",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/808963/stats?stats=gameLog&group=pitching&season=2025"
+    },
+    {
+      "affiliate_team": "Oklahoma City Comets",
+      "first_game_date": "2025-08-14",
+      "last_game_date": "2025-09-21",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:19:50.008Z",
+      "season": 2025,
+      "slug": "roki-sasaki",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/808963/stats?stats=gameLog&group=pitching&season=2025"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2026-03-30",
+      "last_game_date": "2026-09-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:51.490Z",
+      "season": 2026,
+      "slug": "roki-sasaki",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/808963/stats?stats=gameLog&group=pitching&season=2026"
+    },
+    {
+      "affiliate_team": "DSL Dodgers",
+      "first_game_date": "2007-07-04",
+      "last_game_date": "2007-08-24",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:19:52.309Z",
+      "season": 2007,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2007&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "DSL Dodgers",
+      "first_game_date": "2008-06-05",
+      "last_game_date": "2008-08-22",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:19:53.023Z",
+      "season": 2008,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2008&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2009-06-25",
+      "last_game_date": "2009-07-21",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:19:53.788Z",
+      "season": 2009,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2009&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2010-07-25",
+      "last_game_date": "2010-09-04",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:19:54.653Z",
+      "season": 2010,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2010&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2010-04-29",
+      "last_game_date": "2010-07-16",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:19:55.260Z",
+      "season": 2010,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2010&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2011-04-13",
+      "last_game_date": "2011-05-21",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:19:55.989Z",
+      "season": 2011,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2011-05-24",
+      "last_game_date": "2011-07-31",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:55.989Z",
+      "season": 2011,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2011"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2012-08-13",
+      "last_game_date": "2012-08-13",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:19:59.742Z",
+      "season": 2012,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2012"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2012-08-27",
+      "last_game_date": "2012-08-31",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:19:59.742Z",
+      "season": 2012,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2012"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2012-08-22",
+      "last_game_date": "2012-08-22",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:19:58.991Z",
+      "season": 2012,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2012-07-29",
+      "last_game_date": "2012-08-18",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:19:59.742Z",
+      "season": 2012,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2012"
+    },
+    {
+      "affiliate_team": "Boston Red Sox",
+      "first_game_date": "2013-08-06",
+      "last_game_date": "2013-09-29",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:01.248Z",
+      "season": 2013,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Pawtucket Red Sox",
+      "first_game_date": "2013-04-08",
+      "last_game_date": "2013-08-29",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:01.995Z",
+      "season": 2013,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2013"
+    },
+    {
+      "affiliate_team": "Boston Red Sox",
+      "first_game_date": "2014-05-31",
+      "last_game_date": "2014-09-27",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:03.495Z",
+      "season": 2014,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Pawtucket Red Sox",
+      "first_game_date": "2014-04-05",
+      "last_game_date": "2014-07-06",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:04.252Z",
+      "season": 2014,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2014"
+    },
+    {
+      "affiliate_team": "Arizona Diamondbacks",
+      "first_game_date": "2015-04-07",
+      "last_game_date": "2015-10-02",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:05.751Z",
+      "season": 2015,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "ACL D-backs",
+      "first_game_date": "2016-08-07",
+      "last_game_date": "2016-08-07",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:20:07.998Z",
+      "season": 2016,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2016"
+    },
+    {
+      "affiliate_team": "Arizona Diamondbacks",
+      "first_game_date": "2016-04-07",
+      "last_game_date": "2016-09-14",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:07.245Z",
+      "season": 2016,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Visalia Rawhide",
+      "first_game_date": "2016-09-01",
+      "last_game_date": "2016-09-05",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:07.998Z",
+      "season": 2016,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2016"
+    },
+    {
+      "affiliate_team": "ACL D-backs",
+      "first_game_date": "2017-07-15",
+      "last_game_date": "2017-07-15",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:20:10.995Z",
+      "season": 2017,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2017"
+    },
+    {
+      "affiliate_team": "Arizona Diamondbacks",
+      "first_game_date": "2017-06-23",
+      "last_game_date": "2017-08-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:09.492Z",
+      "season": 2017,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "first_game_date": "2017-05-11",
+      "last_game_date": "2017-08-12",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:09.492Z",
+      "season": 2017,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Visalia Rawhide",
+      "first_game_date": "2017-05-01",
+      "last_game_date": "2017-05-07",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:10.995Z",
+      "season": 2017,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=pitching&season=2017"
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "first_game_date": "2019-04-05",
+      "last_game_date": "2019-06-14",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:12.637Z",
+      "season": 2019,
+      "slug": "rubby-de-la-rosa",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/523989/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Jacksonville Suns",
+      "first_game_date": "2006-04-06",
+      "last_game_date": "2006-09-04",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:20:14.282Z",
+      "season": 2006,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2006&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "first_game_date": "2007-04-05",
+      "last_game_date": "2007-09-03",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:14.743Z",
+      "season": 2007,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2007-05-22",
+      "last_game_date": "2007-09-23",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:14.743Z",
+      "season": 2007,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2007"
+    },
+    {
+      "affiliate_team": "Albuquerque Isotopes",
+      "first_game_date": "2009-06-11",
+      "last_game_date": "2009-09-07",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:16.858Z",
+      "season": 2009,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2009-05-05",
+      "last_game_date": "2009-06-25",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:20:16.858Z",
+      "season": 2009,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2009-08-07",
+      "last_game_date": "2009-08-23",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:16.858Z",
+      "season": 2009,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Arizona Diamondbacks",
+      "first_game_date": "2010-04-06",
+      "last_game_date": "2010-10-03",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:17.753Z",
+      "season": 2010,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "first_game_date": "2010-06-11",
+      "last_game_date": "2010-08-31",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:17.753Z",
+      "season": 2010,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Reno Aces",
+      "first_game_date": "2011-04-09",
+      "last_game_date": "2011-09-04",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:19.402Z",
+      "season": 2011,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2011&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Kansas City Royals",
+      "first_game_date": "2012-08-06",
+      "last_game_date": "2012-10-02",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:20.000Z",
+      "season": 2012,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Omaha Storm Chasers",
+      "first_game_date": "2012-04-05",
+      "last_game_date": "2012-08-04",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:20.000Z",
+      "season": 2012,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2012"
+    },
+    {
+      "affiliate_team": "Fresno Grizzlies",
+      "first_game_date": "2013-05-03",
+      "last_game_date": "2013-08-30",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:21.501Z",
+      "season": 2013,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "first_game_date": "2013-06-08",
+      "last_game_date": "2013-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:21.501Z",
+      "season": 2013,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "AZL Giants",
+      "first_game_date": "2014-06-20",
+      "last_game_date": "2014-06-20",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:20:22.998Z",
+      "season": 2014,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Fresno Grizzlies",
+      "first_game_date": "2014-04-03",
+      "last_game_date": "2014-08-22",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:22.998Z",
+      "season": 2014,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "San Francisco Giants",
+      "first_game_date": "2014-07-25",
+      "last_game_date": "2014-07-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:22.998Z",
+      "season": 2014,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Rojos del Aguila de Veracruz",
+      "first_game_date": "2015-04-28",
+      "last_game_date": "2015-06-17",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:20:24.513Z",
+      "season": 2015,
+      "slug": "tony-abreu",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/473234/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2013-06-21",
+      "last_game_date": "2013-08-27",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:20:25.256Z",
+      "season": 2013,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2013&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2014-06-19",
+      "last_game_date": "2014-09-04",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:20:26.003Z",
+      "season": 2014,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2014&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2015-08-16",
+      "last_game_date": "2015-08-16",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:20:26.846Z",
+      "season": 2015,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2015-04-15",
+      "last_game_date": "2015-09-06",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:20:26.846Z",
+      "season": 2015,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2015-06-21",
+      "last_game_date": "2015-06-26",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:20:26.846Z",
+      "season": 2015,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2016-04-13",
+      "last_game_date": "2016-09-05",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:20:27.580Z",
+      "season": 2016,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Great Lakes Loons",
+      "first_game_date": "2018-06-11",
+      "last_game_date": "2018-07-08",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:20:28.280Z",
+      "season": 2018,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Ogden Raptors",
+      "first_game_date": "2018-08-20",
+      "last_game_date": "2018-09-06",
+      "league_name": "Pioneer League",
+      "level": "OTHER",
+      "retrieved_at": "2026-10-23T03:20:28.280Z",
+      "season": 2018,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2019-07-26",
+      "last_game_date": "2019-09-01",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:29.059Z",
+      "season": 2019,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2019-04-04",
+      "last_game_date": "2019-05-11",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:29.830Z",
+      "season": 2019,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2019-05-19",
+      "last_game_date": "2019-07-22",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:20:29.059Z",
+      "season": 2019,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2020-07-31",
+      "last_game_date": "2020-09-27",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:30.505Z",
+      "season": 2020,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2020"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2021-04-02",
+      "last_game_date": "2021-08-22",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:31.278Z",
+      "season": 2021,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2021-08-29",
+      "last_game_date": "2021-10-01",
+      "league_name": "Triple-A West",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:31.278Z",
+      "season": 2021,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2021-07-16",
+      "last_game_date": "2021-08-17",
+      "league_name": "Low-A West",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:20:32.755Z",
+      "season": 2021,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2021"
+    },
+    {
+      "affiliate_team": "ACL Dodgers",
+      "first_game_date": "2022-08-16",
+      "last_game_date": "2022-08-16",
+      "league_name": "Arizona Complex League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:20:34.285Z",
+      "season": 2022,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2022&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2022-08-20",
+      "last_game_date": "2022-09-26",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:34.285Z",
+      "season": 2022,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2022&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2023-04-25",
+      "last_game_date": "2023-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:34.993Z",
+      "season": 2023,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2023-04-02",
+      "last_game_date": "2023-09-22",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:35.772Z",
+      "season": 2023,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2023"
+    },
+    {
+      "affiliate_team": "New York Yankees",
+      "first_game_date": "2024-03-29",
+      "last_game_date": "2024-06-20",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:37.257Z",
+      "season": 2024,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2024"
+    },
+    {
+      "affiliate_team": "Scranton/Wilkes-Barre RailRiders",
+      "first_game_date": "2024-06-30",
+      "last_game_date": "2024-09-12",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:37.257Z",
+      "season": 2024,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2024"
+    },
+    {
+      "affiliate_team": "Inland Empire 66ers",
+      "first_game_date": "2025-06-24",
+      "last_game_date": "2025-06-28",
+      "league_name": "California League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:20:38.780Z",
+      "season": 2025,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2025&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Salt Lake Bees",
+      "first_game_date": "2025-03-29",
+      "last_game_date": "2025-09-21",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:38.780Z",
+      "season": 2025,
+      "slug": "victor-gonzalez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624647/stats?stats=gameLog&group=pitching&season=2025&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Atlanta Braves",
+      "first_game_date": "2006-07-30",
+      "last_game_date": "2006-09-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:39.524Z",
+      "season": 2006,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Las Vegas 51s",
+      "first_game_date": "2006-04-06",
+      "last_game_date": "2006-07-17",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:39.524Z",
+      "season": 2006,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2006-05-10",
+      "last_game_date": "2006-07-26",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:39.524Z",
+      "season": 2006,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Richmond Braves",
+      "first_game_date": "2006-08-27",
+      "last_game_date": "2006-08-30",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:39.524Z",
+      "season": 2006,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2006"
+    },
+    {
+      "affiliate_team": "Durham Bulls",
+      "first_game_date": "2008-05-23",
+      "last_game_date": "2008-05-28",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:41.019Z",
+      "season": 2008,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Tampa Bay Rays",
+      "first_game_date": "2008-03-31",
+      "last_game_date": "2008-09-28",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:41.019Z",
+      "season": 2008,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Vero Beach Devil Rays",
+      "first_game_date": "2008-05-18",
+      "last_game_date": "2008-05-21",
+      "league_name": "Florida State League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:41.019Z",
+      "season": 2008,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2008"
+    },
+    {
+      "affiliate_team": "Tampa Bay Rays",
+      "first_game_date": "2009-04-09",
+      "last_game_date": "2009-10-04",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:42.549Z",
+      "season": 2009,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2009"
+    },
+    {
+      "affiliate_team": "Tampa Bay Rays",
+      "first_game_date": "2010-04-09",
+      "last_game_date": "2010-10-03",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:43.277Z",
+      "season": 2010,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2010"
+    },
+    {
+      "affiliate_team": "Delfines de Ciudad del Carmen",
+      "first_game_date": "2012-03-17",
+      "last_game_date": "2012-03-24",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:20:44.255Z",
+      "season": 2012,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Leones de Yucatan",
+      "first_game_date": "2015-04-04",
+      "last_game_date": "2015-06-04",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:20:44.770Z",
+      "season": 2015,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Vaqueros de la Laguna",
+      "first_game_date": "2015-06-12",
+      "last_game_date": "2015-07-10",
+      "league_name": "Mexican League",
+      "level": "FOREIGN_PRO",
+      "retrieved_at": "2026-10-23T03:20:44.770Z",
+      "season": 2015,
+      "slug": "willy-aybar",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/430632/stats?stats=gameLog&group=hitting&season=2015&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2012-08-01",
+      "last_game_date": "2012-08-09",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:20:45.661Z",
+      "season": 2012,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2012-08-14",
+      "last_game_date": "2012-08-31",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:45.661Z",
+      "season": 2012,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2012&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Chattanooga Lookouts",
+      "first_game_date": "2013-04-05",
+      "last_game_date": "2013-05-31",
+      "league_name": "Southern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:20:46.265Z",
+      "season": 2013,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2013-06-03",
+      "last_game_date": "2013-09-29",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:46.265Z",
+      "season": 2013,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2013"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2014-03-22",
+      "last_game_date": "2014-09-28",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:47.782Z",
+      "season": 2014,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2014"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2015-04-06",
+      "last_game_date": "2015-10-04",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:48.525Z",
+      "season": 2015,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2015-05-07",
+      "last_game_date": "2015-06-05",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:48.525Z",
+      "season": 2015,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2015"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2016-04-04",
+      "last_game_date": "2016-10-02",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:50.022Z",
+      "season": 2016,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2016-08-07",
+      "last_game_date": "2016-08-30",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:50.022Z",
+      "season": 2016,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2016-06-13",
+      "last_game_date": "2016-06-18",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:50.022Z",
+      "season": 2016,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2016"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2017-04-03",
+      "last_game_date": "2017-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:51.536Z",
+      "season": 2017,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2017"
+    },
+    {
+      "affiliate_team": "Los Angeles Dodgers",
+      "first_game_date": "2018-03-29",
+      "last_game_date": "2018-10-01",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:52.278Z",
+      "season": 2018,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Oklahoma City Dodgers",
+      "first_game_date": "2018-07-24",
+      "last_game_date": "2018-07-26",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:52.278Z",
+      "season": 2018,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2018-05-08",
+      "last_game_date": "2018-05-08",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:52.278Z",
+      "season": 2018,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2018"
+    },
+    {
+      "affiliate_team": "Cincinnati Reds",
+      "first_game_date": "2019-03-28",
+      "last_game_date": "2019-07-30",
+      "league_name": "National League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:53.785Z",
+      "season": 2019,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "Cleveland Indians",
+      "first_game_date": "2019-08-01",
+      "last_game_date": "2019-09-27",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:53.785Z",
+      "season": 2019,
+      "slug": "yasiel-puig",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/624577/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "DSL Astros Orange",
+      "first_game_date": "2016-08-04",
+      "last_game_date": "2016-08-26",
+      "league_name": "Dominican Summer League",
+      "level": "INTERNATIONAL_ROOKIE",
+      "retrieved_at": "2026-10-23T03:20:54.790Z",
+      "season": 2016,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Buies Creek Astros",
+      "first_game_date": "2017-06-23",
+      "last_game_date": "2017-09-04",
+      "league_name": "Carolina League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:20:55.513Z",
+      "season": 2017,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Quad Cities River Bandits",
+      "first_game_date": "2017-05-15",
+      "last_game_date": "2017-06-18",
+      "league_name": "Midwest League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:20:55.513Z",
+      "season": 2017,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Corpus Christi Hooks",
+      "first_game_date": "2018-04-05",
+      "last_game_date": "2018-07-05",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:20:56.553Z",
+      "season": 2018,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Fresno Grizzlies",
+      "first_game_date": "2018-06-03",
+      "last_game_date": "2018-09-03",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:56.553Z",
+      "season": 2018,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2019-06-09",
+      "last_game_date": "2019-09-29",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:56.766Z",
+      "season": 2019,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "Round Rock Express",
+      "first_game_date": "2019-04-05",
+      "last_game_date": "2019-06-07",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:20:56.766Z",
+      "season": 2019,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2019"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2020-08-14",
+      "last_game_date": "2020-08-15",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:58.254Z",
+      "season": 2020,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2020"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2021-04-01",
+      "last_game_date": "2021-10-03",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:59.038Z",
+      "season": 2021,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2021"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2022-04-07",
+      "last_game_date": "2022-10-05",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:20:59.787Z",
+      "season": 2022,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2023-03-30",
+      "last_game_date": "2023-10-01",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:21:00.543Z",
+      "season": 2023,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Sugar Land Space Cowboys",
+      "first_game_date": "2023-07-19",
+      "last_game_date": "2023-07-22",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:21:00.543Z",
+      "season": 2023,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2023"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2024-03-28",
+      "last_game_date": "2024-09-22",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:21:02.056Z",
+      "season": 2024,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2024"
+    },
+    {
+      "affiliate_team": "Corpus Christi Hooks",
+      "first_game_date": "2025-08-19",
+      "last_game_date": "2025-08-24",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:21:02.745Z",
+      "season": 2025,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2025-03-27",
+      "last_game_date": "2025-09-15",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:21:02.745Z",
+      "season": 2025,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2025"
+    },
+    {
+      "affiliate_team": "Houston Astros",
+      "first_game_date": "2026-03-26",
+      "last_game_date": "2026-09-27",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:21:04.249Z",
+      "season": 2026,
+      "slug": "yordan-alvarez",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/670541/stats?stats=gameLog&group=hitting&season=2026"
+    },
+    {
+      "affiliate_team": "AZL Dodgers",
+      "first_game_date": "2016-07-16",
+      "last_game_date": "2016-07-19",
+      "league_name": "Arizona League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:21:05.139Z",
+      "season": 2016,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2016-04-07",
+      "last_game_date": "2016-09-05",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:21:05.139Z",
+      "season": 2016,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2016&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Rancho Cucamonga Quakes",
+      "first_game_date": "2017-04-07",
+      "last_game_date": "2017-07-31",
+      "league_name": "California League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:21:05.936Z",
+      "season": 2017,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2017-08-01",
+      "last_game_date": "2017-09-04",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:21:05.936Z",
+      "season": 2017,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2017&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Bowie Baysox",
+      "first_game_date": "2018-07-20",
+      "last_game_date": "2018-09-02",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:21:06.564Z",
+      "season": 2018,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2018-04-19",
+      "last_game_date": "2018-07-13",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:21:06.564Z",
+      "season": 2018,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2018&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Aberdeen IronBirds",
+      "first_game_date": "2019-08-22",
+      "last_game_date": "2019-08-24",
+      "league_name": "New York-Penn League",
+      "level": "LOW_A",
+      "retrieved_at": "2026-10-23T03:21:07.515Z",
+      "season": 2019,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Bowie Baysox",
+      "first_game_date": "2019-04-04",
+      "last_game_date": "2019-09-02",
+      "league_name": "Eastern League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:21:07.515Z",
+      "season": 2019,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Frederick Keys",
+      "first_game_date": "2019-05-29",
+      "last_game_date": "2019-06-03",
+      "league_name": "Carolina League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:21:07.515Z",
+      "season": 2019,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2019&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Bowie Baysox",
+      "first_game_date": "2021-06-15",
+      "last_game_date": "2021-08-08",
+      "league_name": "Double-A Northeast",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:21:08.061Z",
+      "season": 2021,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Norfolk Tides",
+      "first_game_date": "2021-05-04",
+      "last_game_date": "2021-10-03",
+      "league_name": "Triple-A East",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:21:08.061Z",
+      "season": 2021,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2021&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Aberdeen IronBirds",
+      "first_game_date": "2022-06-21",
+      "last_game_date": "2022-06-26",
+      "league_name": "South Atlantic League",
+      "level": "HIGH_A",
+      "retrieved_at": "2026-10-23T03:21:08.779Z",
+      "season": 2022,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Baltimore Orioles",
+      "first_game_date": "2022-08-02",
+      "last_game_date": "2022-08-02",
+      "league_name": "American League",
+      "level": "MLB",
+      "retrieved_at": "2026-10-23T03:21:08.779Z",
+      "season": 2022,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "FCL Orioles",
+      "first_game_date": "2022-06-17",
+      "last_game_date": "2022-06-18",
+      "league_name": "Florida Complex League",
+      "level": "COMPLEX_ROOKIE",
+      "retrieved_at": "2026-10-23T03:21:08.779Z",
+      "season": 2022,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Norfolk Tides",
+      "first_game_date": "2022-04-05",
+      "last_game_date": "2022-09-27",
+      "league_name": "International League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:21:08.779Z",
+      "season": 2022,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2022"
+    },
+    {
+      "affiliate_team": "Tulsa Drillers",
+      "first_game_date": "2023-04-06",
+      "last_game_date": "2023-09-16",
+      "league_name": "Texas League",
+      "level": "AA",
+      "retrieved_at": "2026-10-23T03:21:10.313Z",
+      "season": 2023,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2023&leagueListId=milb_all"
+    },
+    {
+      "affiliate_team": "Sacramento River Cats",
+      "first_game_date": "2024-03-31",
+      "last_game_date": "2024-05-10",
+      "league_name": "Pacific Coast League",
+      "level": "AAA",
+      "retrieved_at": "2026-10-23T03:21:11.020Z",
+      "season": 2024,
+      "slug": "yusniel-diaz",
+      "source_url": "https://statsapi.mlb.com/api/v1/people/666783/stats?stats=gameLog&group=hitting&season=2024&leagueListId=milb_all"
+    }
+  ]
+}$m052$::jsonb as j;
+
+create temporary table _m052_org on commit drop as
+select x ->> 'slug' as slug, (x ->> 'season')::int as season, x ->> 'affiliate_team' as affiliate_team, x ->> 'league_name' as league_name,
+       x ->> 'level' as level, (x ->> 'team_id')::bigint as team_id, x ->> 'organization_name' as organization_name,
+       x ->> 'previous_organization_name' as previous_organization_name, x ->> 'previous_basis' as previous_basis, (x ->> 'correction')::boolean as correction,
+       x -> 'evidence' as evidence
+from _m052, jsonb_array_elements(j -> 'organizations') x;
+
+create temporary table _m052_dates on commit drop as
+select x ->> 'slug' as slug, (x ->> 'season')::int as season, x ->> 'affiliate_team' as affiliate_team, x ->> 'league_name' as league_name,
+       x ->> 'level' as level, (x ->> 'first_game_date')::date as first_game_date, (x ->> 'last_game_date')::date as last_game_date, x ->> 'source_url' as source_url
+from _m052, jsonb_array_elements(j -> 'stint_dates') x;
+
+create temporary table _m052_upgrades on commit drop as
+select x ->> 'slug' as slug, x ->> 'event_code' as event_code, (x ->> 'season_year')::int as season_year, (x ->> 'milestone_date')::date as milestone_date,
+       x ->> 'prior_evidence_basis' as prior_evidence_basis, x ->> 'note' as note
+from _m052, jsonb_array_elements(j -> 'milestone_upgrades') x;
+
+create temporary table _m052_debuts on commit drop as
+select x ->> 'slug' as slug, (x ->> 'event_date')::date as event_date, (x ->> 'season_year')::int as season_year, x ->> 'organization_name' as organization_name,
+       x ->> 'note' as note, x ->> 'source_url' as source_url
+from _m052, jsonb_array_elements(j -> 'professional_debuts') x;
+
+create temporary table _m052_reviews on commit drop as
+select x ->> 'slug' as slug, x ->> 'event_code' as event_code, x ->> 'decision_basis' as decision_basis, x ->> 'confidence' as confidence,
+       x ->> 'notes' as notes, (x ->> 'as_of_date')::date as as_of_date
+from _m052, jsonb_array_elements(j -> 'progression_reviews') x;
+
+-- the stints the reviewed values address, by their natural key (the 021 unique index)
+create temporary table _m052_stints on commit drop as
+select s.id, s.player_id, k.kind
+from (
+  select slug, season, affiliate_team, league_name, level, 'ORG' as kind from _m052_org
+  union all
+  select slug, season, affiliate_team, league_name, level, 'DATES' from _m052_dates
+) k
+join public.players p on p.slug = k.slug
+join public.player_season_stints s
+  on s.player_id = p.id and s.season = k.season and coalesce(s.affiliate_team, '') = coalesce(k.affiliate_team, '')
+ and coalesce(s.league_name, '') = coalesce(k.league_name, '') and s.level::text = k.level and s.stint_kind = 'TEAM_STINT';
+
+create temporary table _m052_before on commit drop as
+select
+  (select count(*) from public.player_season_stints) as stints,
+  (select count(*) from public.development_milestones) as milestones,
+  (select count(*) from public.development_progression_decisions) as decisions,
+  (select count(*) from public.development_level_era_map) as era_rows,
+  (select count(*) from public.sources) as sources,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.player_season_stints t where t.id not in (select id from _m052_stints)) as other_stints,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.player_season_stints t where t.id in (select id from _m052_stints)) as touched_md5,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.development_milestones t) as milestones_md5,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.development_progression_decisions t
+    where not exists (select 1 from _m052_reviews r join public.players p on p.slug = r.slug where p.id = t.player_id and r.event_code = t.event_code)) as decisions_md5,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.outcome_audits t) as outcome_audits,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.transaction_events t) as transaction_events,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.transaction_event_assets t) as transaction_assets,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.player_metric_observations t) as metric_observations,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.signings t) as signings,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.player_evaluations t) as evaluations,
+  (select md5(string_agg(t::text, '|' order by t::text)) from public.player_development_status t) as development_status;
+
+-- ===========================================================================
+-- 1. PRECONDITIONS: the canonical state 052 was written for
+-- ===========================================================================
+
+do $$
+declare
+  n int;
+  e jsonb := (select j -> 'expected_before' from _m052);
+begin
+  if to_regprocedure('public.disi_refresh_product_snapshots()') is null or to_regclass('public.development_progression_decisions') is null then
+    raise exception '052: Migrations 024 and 045a have not been applied';
+  end if;
+  if not exists (select 1 from public.signings sg join public.players p on p.id = sg.player_id where p.slug = 'yasiel-puig')
+     or (select count(*) from public.players) <> 322 then
+    raise exception '052: Migration 050 has not been applied (322 players expected)';
+  end if;
+  -- every reviewed value addresses exactly one team stint
+  if (select count(*) from _m052_stints where kind = 'ORG') <> (select count(*) from _m052_org) then
+    raise exception '052: % organization values do not match exactly one team stint', abs((select count(*) from _m052_stints where kind = 'ORG') - (select count(*) from _m052_org));
+  end if;
+  if (select count(*) from _m052_stints where kind = 'DATES') <> (select count(*) from _m052_dates) then
+    raise exception '052: % date values do not match exactly one team stint', abs((select count(*) from _m052_stints where kind = 'DATES') - (select count(*) from _m052_dates));
+  end if;
+  -- every named organization exists exactly once
+  select count(*) into n from (select distinct organization_name from _m052_org union select distinct organization_name from _m052_debuts) x
+  where x.organization_name is not null and (select count(*) from public.organizations o where o.name = x.organization_name) <> 1;
+  if n > 0 then
+    raise exception '052: % organization names are not exactly one organization', n;
+  end if;
+  -- each organization stint is in its pre-052 state or exactly its 052 state
+  select count(*) into n
+  from _m052_org v
+  join public.players p on p.slug = v.slug
+  join public.player_season_stints s on s.player_id = p.id and s.season = v.season and coalesce(s.affiliate_team, '') = coalesce(v.affiliate_team, '')
+   and coalesce(s.league_name, '') = coalesce(v.league_name, '') and s.level::text = v.level and s.stint_kind = 'TEAM_STINT'
+  left join public.organizations prev on prev.name = v.previous_organization_name
+  where s.team_id is distinct from v.team_id
+     or not (
+       -- pre-052: unresolved (no organization id), or the reviewed correction target
+       (s.detail -> 'organizationEvidence' is null
+        and s.organization_name is not distinct from v.previous_organization_name
+        and s.detail ->> 'organizationBasis' is not distinct from v.previous_basis
+        and ((v.correction and s.organization_id = prev.id) or (not v.correction and s.organization_id is null))
+        and not coalesce(s.source_urls, '[]'::jsonb) @> to_jsonb(array[v.evidence ->> 'url']))
+       -- 052 state
+       or (s.detail -> 'organizationEvidence' = v.evidence and s.organization_name = v.organization_name
+           and s.organization_id = (select o.id from public.organizations o where o.name = v.organization_name)));
+  if n > 0 then
+    raise exception '052: % organization stints are in neither their pre-052 nor their 052 state', n;
+  end if;
+  -- each date stint is undated (pre-052) or carries exactly the reviewed dates (052)
+  select count(*) into n
+  from _m052_dates v
+  join public.players p on p.slug = v.slug
+  join public.player_season_stints s on s.player_id = p.id and s.season = v.season and coalesce(s.affiliate_team, '') = coalesce(v.affiliate_team, '')
+   and coalesce(s.league_name, '') = coalesce(v.league_name, '') and s.level::text = v.level and s.stint_kind = 'TEAM_STINT'
+  where not ((s.first_game_date is null and s.last_game_date is null and s.game_date_basis is null
+              and not coalesce(s.source_urls, '[]'::jsonb) @> to_jsonb(array[v.source_url]))
+          or (s.first_game_date = v.first_game_date and s.last_game_date = v.last_game_date and s.game_date_basis = 'GAME_LOG'));
+  if n > 0 then
+    raise exception '052: % date stints are in neither their pre-052 nor their 052 state', n;
+  end if;
+  -- each upgraded milestone is the one season-precision row of its event, untouched since it was written, or exactly its 052 state
+  select count(*) into n
+  from _m052_upgrades u
+  where (select count(*) from public.development_milestones m join public.players p on p.id = m.player_id
+         where p.slug = u.slug and m.event_code = u.event_code) <> 1
+     or not exists (
+       select 1 from public.development_milestones m join public.players p on p.id = m.player_id
+       where p.slug = u.slug and m.event_code = u.event_code and m.season_year = u.season_year
+         and ((m.date_precision = 'SEASON' and m.milestone_date is null and m.age_at_milestone is null and m.prior_evidence_basis is null
+               and m.evidence_basis = u.prior_evidence_basis and m.notes = (select j ->> 'season_only_note' from _m052))
+           or (m.date_precision = 'DAY' and m.milestone_date = u.milestone_date and m.evidence_basis = 'GAME_LOG'
+               and m.prior_evidence_basis = u.prior_evidence_basis and m.notes = u.note)));
+  if n > 0 then
+    raise exception '052: % milestone upgrades are in neither their pre-052 nor their 052 state', n;
+  end if;
+  -- a professional debut is added only where none is recorded (or exactly the 052 row is)
+  select count(*) into n
+  from _m052_debuts d
+  join public.players p on p.slug = d.slug
+  where exists (select 1 from public.development_milestones m where m.player_id = p.id and m.event_code = 'PROFESSIONAL_DEBUT'
+                and not (m.milestone_date = d.event_date and m.evidence_basis = 'GAME_LOG' and m.date_precision = 'DAY'));
+  if n > 0 then
+    raise exception '052: % players already hold a different PROFESSIONAL_DEBUT', n;
+  end if;
+  -- a sequence review is added only where no decision covers the event (or exactly the 052 pending review does)
+  select count(*) into n
+  from _m052_reviews r
+  join public.players p on p.slug = r.slug
+  where (select count(*) from public.development_milestones m where m.player_id = p.id and m.event_code = r.event_code) <> 1
+     or exists (select 1 from public.development_progression_decisions d where d.player_id = p.id and d.event_code = r.event_code
+                and not (d.progression_role = 'REVIEW_REQUIRED' and d.review_status = 'PENDING_REVIEW' and d.notes = r.notes));
+  if n > 0 then
+    raise exception '052: % sequence reviews address an event that is already decided or not recorded once', n;
+  end if;
+  -- no affiliated minor-league stint is recorded for a season the league did not play (the 2020 rule depends on it)
+  select count(*) into n from public.player_season_stints
+  where stint_kind = 'TEAM_STINT' and season = 2020 and affiliated and level <> 'MLB';
+  if n > 0 then
+    raise exception '052: % affiliated minor-league stints are recorded for 2020, which the league did not play', n;
+  end if;
+end $$;
+
+-- ===========================================================================
+-- 2. ORGANIZATIONS (the official team-season record, per stint team id and season)
+-- ===========================================================================
+-- A major-league club is its own organization; an affiliate's organization is the parent the record names for that team in that season.
+-- organization_name stays the DISI organization's name (one franchise, historical names: the season's own parent name is in the evidence).
+
+update public.player_season_stints s
+set organization_id = o.id,
+    organization_name = o.name,
+    detail = coalesce(s.detail, '{}'::jsonb)
+      || jsonb_build_object('organizationBasis', 'TEAM_SEASON_RECORD',
+                            'organizationEvidence', v.evidence,
+                            'organizationPrevious', jsonb_build_object('name', v.previous_organization_name, 'basis', v.previous_basis)),
+    source_urls = coalesce(s.source_urls, '[]'::jsonb) || to_jsonb(array[v.evidence ->> 'url'])
+from _m052_org v
+join public.players p on p.slug = v.slug
+join public.organizations o on o.name = v.organization_name
+where s.player_id = p.id and s.season = v.season and coalesce(s.affiliate_team, '') = coalesce(v.affiliate_team, '')
+  and coalesce(s.league_name, '') = coalesce(v.league_name, '') and s.level::text = v.level and s.stint_kind = 'TEAM_STINT'
+  and s.detail -> 'organizationEvidence' is null;
+
+-- ===========================================================================
+-- 3. SOURCES (the official records the rows below cite)
+-- ===========================================================================
+
+insert into public.sources (source_name, source_type, title, url, accessed_at, notes, source_tier)
+select
+  'MLB Stats API',
+  case x ->> 'kind' when 'GAME_LOG' then 'MLB_GAME_LOG' else 'MLB_TEAM_SEASON_RECORD' end,
+  case x ->> 'kind' when 'GAME_LOG' then 'MLB Stats API: gameLog appearance endpoint' else 'MLB Stats API: team record for one season (parent organization, sport, league)' end,
+  x ->> 'url',
+  (x ->> 'retrieved_at')::timestamptz,
+  'Referenced by migration 052 (development taxonomy and chronology).',
+  public.disi_infer_source_tier(x ->> 'url', null)
+from _m052, jsonb_array_elements(j -> 'sources') x
+on conflict (url) do nothing;
+
+-- ===========================================================================
+-- 4. STINT FIRST / LAST APPEARANCE DATES (official gameLog; NULL dates only)
+-- ===========================================================================
+
+update public.player_season_stints s
+set first_game_date = v.first_game_date,
+    last_game_date = v.last_game_date,
+    game_date_basis = 'GAME_LOG',
+    source_urls = case when v.source_url is null then s.source_urls else coalesce(s.source_urls, '[]'::jsonb) || to_jsonb(array[v.source_url]) end
+from _m052_dates v
+join public.players p on p.slug = v.slug
+where s.player_id = p.id and s.season = v.season and coalesce(s.affiliate_team, '') = coalesce(v.affiliate_team, '')
+  and coalesce(s.league_name, '') = coalesce(v.league_name, '') and s.level::text = v.level and s.stint_kind = 'TEAM_STINT'
+  and s.first_game_date is null and s.last_game_date is null and s.game_date_basis is null;
+
+-- ===========================================================================
+-- 5. MILESTONES: SEASON -> DAY inside the milestone's own season; dated first professional games
+-- ===========================================================================
+
+update public.development_milestones m
+set milestone_date = u.milestone_date,
+    date_precision = 'DAY'::public.date_precision,
+    evidence_basis = 'GAME_LOG',
+    prior_evidence_basis = m.evidence_basis,
+    age_at_milestone = public.disi_age_decimal(p.birth_date, u.milestone_date),
+    notes = u.note
+from _m052_upgrades u
+join public.players p on p.slug = u.slug
+where m.player_id = p.id and m.event_code = u.event_code and m.season_year = u.season_year
+  and m.date_precision = 'SEASON' and m.milestone_date is null;
+
+insert into public.development_milestones (
+  player_id, milestone, milestone_date, age_at_milestone, organization_id, affiliate, notes, source_id, confidence,
+  event_code, date_precision, season_year, evidence_basis, as_of_date
+)
+select
+  p.id,
+  coalesce(ec.uses_milestone_type, 'OTHER'::public.milestone_type),
+  d.event_date,
+  public.disi_age_decimal(p.birth_date, d.event_date),
+  o.id,
+  d.organization_name,
+  d.note,
+  src.id,
+  'HIGH'::public.confidence_level,
+  'PROFESSIONAL_DEBUT',
+  'DAY'::public.date_precision,
+  d.season_year,
+  'GAME_LOG',
+  (select (j ->> 'as_of_date')::date from _m052)
+from _m052_debuts d
+join public.players p on p.slug = d.slug
+left join public.development_event_codes ec on ec.event_code = 'PROFESSIONAL_DEBUT'
+left join public.organizations o on o.name = d.organization_name
+left join public.sources src on src.url = d.source_url
+where not exists (select 1 from public.development_milestones m where m.player_id = p.id and m.event_code = 'PROFESSIONAL_DEBUT');
+
+-- Sequences the exact dates make visible: inside one season a lower level's first appearance after a higher one's. Recorded as PENDING_REVIEW,
+-- exactly as 048 recorded the season-precision ones; 052 decides none (PENDING REVIEW != NEGATIVE DEVELOPMENT EVENT).
+insert into public.development_progression_decisions (player_id, event_code, milestone_id, progression_role, developmental_arrival_date, developmental_arrival_precision,
+  developmental_arrival_season, decision_basis, review_status, confidence, notes, reviewed_at, as_of_date)
+select p.id, r.event_code, m.id, 'REVIEW_REQUIRED', null, null, null, r.decision_basis, 'PENDING_REVIEW', r.confidence::public.confidence_level, r.notes, now(), r.as_of_date
+from _m052_reviews r
+join public.players p on p.slug = r.slug
+join public.development_milestones m on m.player_id = p.id and m.event_code = r.event_code
+on conflict (player_id, event_code) do nothing;
+
+-- ===========================================================================
+-- 6. LEVEL-ERA MAP: the Pioneer League per era (official sport by season)
+-- ===========================================================================
+
+insert into public.development_level_era_map (era, source_label, maps_to, note)
+select (x ->> 'era')::public.development_era, x ->> 'source_label', (x ->> 'maps_to')::public.development_level, x ->> 'note'
+from _m052, jsonb_array_elements(j -> 'era_map') x
+on conflict (era, source_label, maps_to) do update set note = excluded.note;
+
+-- ===========================================================================
+-- 7. RESEARCH QUEUE: the 024 view with the SEASON_GAP and MULTI_ORG_SEASON_UNVERIFIED corrections
+-- ===========================================================================
+
+create or replace view public.v_dodgers_development_research_queue
+with (security_invoker = true)
+as
+with team_stints as (
+  -- 023: a season-total row repeats its component team stints, so it never
+  -- counts as development history, a missing date or an unresolved organization.
+  select * from public.player_season_stints where stint_kind = 'TEAM_STINT'
+),
+-- 024: developmental inversions - two REACHED levels whose arrivals run backward
+-- (rookie levels share one tier). Reviewed decisions change arrivals, so a
+-- covered inversion no longer appears here.
+progression as (
+  select * from public.v_player_development_progression
+),
+inverted as (
+  select distinct lo.player_id
+  from progression lo
+  join progression hi on hi.player_id = lo.player_id and hi.progression_tier > lo.progression_tier
+  where lo.development_state = 'REACHED' and hi.development_state = 'REACHED'
+    and case when lo.developmental_arrival_date is not null and hi.developmental_arrival_date is not null
+             then lo.developmental_arrival_date > hi.developmental_arrival_date
+             else lo.developmental_arrival_season > hi.developmental_arrival_season end
+),
+base as (
+  select
+    p.id as player_id,
+    p.slug as player_slug,
+    p.full_name,
+    p.mlb_id,
+    sg.signing_year,
+    (select max(s.as_of_date) from team_stints s where s.player_id = p.id) as last_research_date,
+    (select count(distinct s.season)::int from team_stints s where s.player_id = p.id) as stint_count,
+    exists (select 1 from team_stints s where s.player_id = p.id) as has_stints,
+    exists (
+      select 1 from team_stints s
+      where s.player_id = p.id and s.level_classification in ('UNRECOGNIZED_SPORT','UNKNOWN_ROOKIE_LEAGUE')
+    ) as has_unknown_level,
+    exists (
+      select 1 from team_stints s
+      where s.player_id = p.id and s.organization_id is null
+        and s.level <> 'FOREIGN_PRO' -- foreign clubs are organization-unmapped by design
+    ) as has_unresolved_organization,
+    exists (
+      select 1 from team_stints s1
+      join team_stints s2
+        on s2.player_id = s1.player_id and s2.season = s1.season
+       and s2.id > s1.id
+      where s1.player_id = p.id
+        and s1.organization_id is not null and s2.organization_id is not null
+        and s1.organization_id <> s2.organization_id
+    ) as has_multi_org_season,
+    exists (
+      select 1 from public.development_milestones m
+      where m.player_id = p.id and m.event_code = 'MLB_DEBUT'
+    ) as has_mlb_milestone,
+    not exists (
+      select 1 from team_stints s
+      where s.player_id = p.id and s.level <> 'MLB'
+    ) as no_pre_mlb_history,
+    -- 022 date-coverage facts
+    exists (
+      select 1 from team_stints s
+      where s.player_id = p.id and s.season >= 2006 and s.first_game_date is null
+    ) as has_undated_log_era_stint,
+    exists (
+      select 1 from team_stints s
+      where s.player_id = p.id and s.season >= 2006 and s.last_game_date is null
+    ) as has_stint_missing_last_date,
+    exists (
+      select 1 from team_stints s
+      where s.player_id = p.id and s.season >= 2006 and s.first_game_date is not null
+    ) as has_any_dated_stint,
+    exists (
+      select 1 from team_stints s
+      where s.player_id = p.id and s.level_classification in ('UNKNOWN_ROOKIE_LEAGUE','UNRECOGNIZED_SPORT')
+        and s.season >= 2006 and s.first_game_date is null
+    ) as has_unknown_level_undated,
+    exists (
+      select 1 from public.development_milestones m
+      where m.player_id = p.id and m.date_precision = 'SEASON'
+        and m.event_code in ('DSL_DEBUT','COMPLEX_DEBUT','A_DEBUT','HIGH_A_DEBUT','AA_DEBUT','AAA_DEBUT')
+    ) as has_season_only_debut_milestone,
+    exists (
+      select 1 from public.development_milestones m
+      where m.player_id = p.id and m.date_precision = 'DAY'
+        and m.event_code in ('A_DEBUT','HIGH_A_DEBUT','AA_DEBUT','AAA_DEBUT')
+    ) as has_exact_level_debut_milestone,
+    exists (
+      select 1 from public.research_source_conflicts c
+      where c.player_id = p.id and c.conflict_type = 'EXACT_DATE_CONFLICT' and c.status = 'UNRESOLVED'
+    ) as has_exact_date_conflict,
+    exists (
+      select 1 from team_stints s
+      where s.player_id = p.id and s.level <> 'MLB' and s.affiliated
+    ) as has_pre_mlb_history,
+    -- 024 progression facts
+    p.id in (select player_id from inverted) as has_non_monotonic_progression,
+    -- Heuristic candidate only (never changes analytics): an undecided High-A/AA/AAA
+    -- first appearance with no first appearance at the level below on or before
+    -- it, and at most 2 team-stint games at the level.
+    exists (
+      select 1 from public.development_milestones m
+      join (values ('HIGH_A_DEBUT', 'A_DEBUT', 'HIGH_A'), ('AA_DEBUT', 'HIGH_A_DEBUT', 'AA'), ('AAA_DEBUT', 'AA_DEBUT', 'AAA'))
+        as k(event_code, below_event, level) on k.event_code = m.event_code
+      where m.player_id = p.id
+        and not exists (select 1 from public.development_progression_decisions d
+                        where d.player_id = m.player_id and d.event_code = m.event_code)
+        and not exists (
+          select 1 from public.development_milestones b
+          where b.player_id = m.player_id and b.event_code = k.below_event
+            and case when b.milestone_date is not null and m.milestone_date is not null
+                     then b.milestone_date <= m.milestone_date
+                     else coalesce(b.season_year, extract(year from b.milestone_date)::int)
+                          <= coalesce(m.season_year, extract(year from m.milestone_date)::int) end)
+        and (select coalesce(sum(coalesce(s.g, s.pg)), 0) from team_stints s
+             where s.player_id = m.player_id and s.level::text = k.level) <= 2
+    ) as has_level_skip_cameo_candidate,
+    -- 052: a season with no record between the first and last recorded seasons, unless the league did not play it. The official schedule holds no
+    -- 2020 regular-season game at any affiliated minor-league level, so 2020 is explained for an affiliated minor leaguer: his last recorded
+    -- season before it is affiliated minor-league play only and he has no major-league stint by then (the 2020 major-league season was played).
+    -- LEAGUE SEASON NOT PLAYED != MISSING PLAYER SEASON; every other missing season stays a research need (SEASON GAP != DID NOT PLAY).
+    exists (
+      select 1
+      from generate_series((select min(s.season) from team_stints s where s.player_id = p.id) + 1,
+                           (select max(s.season) from team_stints s where s.player_id = p.id) - 1) as y(season)
+      where not exists (select 1 from team_stints s where s.player_id = p.id and s.season = y.season)
+        and not (y.season = 2020
+                 and not exists (select 1 from team_stints s where s.player_id = p.id and s.level = 'MLB' and s.season <= y.season)
+                 and not exists (
+                   select 1 from team_stints s
+                   where s.player_id = p.id
+                     and s.season = (select max(b.season) from team_stints b where b.player_id = p.id and b.season < y.season)
+                     and not (s.affiliated and s.level <> 'MLB')))
+    ) as has_open_season_gap,
+    -- 052: a season with two or more organizations stays a research need unless exactly two organizations appear, every stint of the season is
+    -- game-dated, and one canonical transaction of this player moves him from the first to the second inside that season with his last
+    -- appearance for the first on or before the transaction date and his first for the second on or after it. A team change is never a
+    -- transaction (TEAM CHANGE != CANONICAL TRANSACTION); the transaction date and the two appearance dates stay three facts.
+    exists (
+      select 1
+      from (
+        select s.season from team_stints s
+        where s.player_id = p.id and s.organization_id is not null
+        group by s.season
+        having count(distinct s.organization_id) >= 2
+      ) ms
+      where not (
+        (select count(distinct s.organization_id) from team_stints s where s.player_id = p.id and s.season = ms.season and s.organization_id is not null) = 2
+        and not exists (
+          select 1 from team_stints s
+          where s.player_id = p.id and s.season = ms.season and s.organization_id is not null
+            and (s.first_game_date is null or s.last_game_date is null))
+        and exists (
+          select 1
+          from public.transaction_event_assets a
+          join public.transaction_events e on e.id = a.event_id
+          where a.player_id = p.id
+            and extract(year from e.transaction_date)::int = ms.season
+            and e.from_organization_id is not null and e.to_organization_id is not null
+            and e.from_organization_id <> e.to_organization_id
+            and (select max(s.last_game_date) from team_stints s
+                 where s.player_id = p.id and s.season = ms.season and s.organization_id = e.from_organization_id) <= e.transaction_date
+            and (select min(s.first_game_date) from team_stints s
+                 where s.player_id = p.id and s.season = ms.season and s.organization_id = e.to_organization_id) >= e.transaction_date))
+    ) as has_unverified_multi_org_season
+  from public.players p
+  left join public.signings sg on sg.player_id = p.id
+  join public.organizations o on o.id = sg.organization_id
+  where o.franchise_key = 'DODGERS'
+)
+select
+  player_id, player_slug, full_name, mlb_id, signing_year,
+  issue, priority, detail
+from base,
+lateral (
+  select * from (values
+    ('IDENTITY_BUT_NO_PROFESSIONAL_SEASONS', 3,
+      'Resolved identity (MLB id); the season-splits query ran and returned no structured season rows'),
+    ('SEASON_GAP', 2,
+      'A season between the first and last recorded seasons has no record and is not a league season that was not played'),
+    ('UNKNOWN_LEVEL_CLASSIFICATION', 2,
+      'A stint could not be classified into the canonical level taxonomy'),
+    ('UNRESOLVED_ORGANIZATION', 2,
+      'A stint has no organization resolved from its team/league/season'),
+    ('MULTI_ORG_SEASON_UNVERIFIED', 1,
+      'Two or more organizations appear in one season and no canonical transaction bracketed by game dates explains the move'),
+    ('MLB_PLAYER_MISSING_PRE_MLB_HISTORY', 1,
+      'Reached MLB but no pre-MLB development record was found'),
+    ('LEVEL_CONFLICT', 1,
+      'Source-level label and canonical classification disagree; review the stint'),
+    ('MISSING_FIRST_GAME_DATE', 3,
+      'A log-era stint (2006+) has no verified first appearance date yet; a coverage gap, not a failure'),
+    ('MISSING_LAST_GAME_DATE', 3,
+      'A log-era stint (2006+) has no verified last appearance date yet; a coverage gap, not a failure'),
+    ('SEASON_ONLY_MILESTONE', 2,
+      'A level debut stays season-precision; game-log evidence did not cover its first season'),
+    ('GAME_LOG_UNAVAILABLE', 3,
+      'Log-era stints exist but none carry game-verified dates; the gameLog queries returned nothing for this player'),
+    ('EXACT_DATE_CONFLICT', 1,
+      'Game-log evidence disagrees with an existing exact date; the stored value was kept and the conflict recorded'),
+    ('MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES', 2,
+      'Reached MLB with pre-MLB stints, but no level-debut milestone carries an exact date yet'),
+    ('UNKNOWN_LEVEL_GAME_LOG', 2,
+      'A stint with an unclassified level has no dated appearances; game dates cannot be attributed to it'),
+    ('NON_MONOTONIC_PROGRESSION', 1,
+      'Developmental arrivals run backward (a lower level after a higher one) and no reviewed progression decision covers it'),
+    ('LEVEL_SKIP_CAMEO_CANDIDATE', 2,
+      'Heuristic only: a 1-2 game High-A/AA/AAA first appearance skipping the level below, with no reviewed decision; analytics are unchanged until reviewed')
+  ) as v(issue, priority, detail)
+) issues
+where (issue = 'IDENTITY_BUT_NO_PROFESSIONAL_SEASONS' and mlb_id is not null and not has_stints)
+   or (issue = 'SEASON_GAP' and has_stints and stint_count >= 2 and has_open_season_gap)
+   or (issue = 'UNKNOWN_LEVEL_CLASSIFICATION' and has_unknown_level)
+   or (issue = 'UNRESOLVED_ORGANIZATION' and has_unresolved_organization)
+   or (issue = 'MULTI_ORG_SEASON_UNVERIFIED' and has_unverified_multi_org_season)
+   or (issue = 'MLB_PLAYER_MISSING_PRE_MLB_HISTORY' and has_mlb_milestone and no_pre_mlb_history)
+   or (issue = 'MISSING_FIRST_GAME_DATE' and has_undated_log_era_stint)
+   or (issue = 'MISSING_LAST_GAME_DATE' and has_stint_missing_last_date)
+   or (issue = 'SEASON_ONLY_MILESTONE' and has_season_only_debut_milestone)
+   or (issue = 'GAME_LOG_UNAVAILABLE' and has_stints and has_undated_log_era_stint and not has_any_dated_stint)
+   or (issue = 'EXACT_DATE_CONFLICT' and has_exact_date_conflict)
+   or (issue = 'MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES' and has_mlb_milestone and has_pre_mlb_history
+       and not has_exact_level_debut_milestone)
+   or (issue = 'UNKNOWN_LEVEL_GAME_LOG' and has_unknown_level_undated)
+   or (issue = 'NON_MONOTONIC_PROGRESSION' and has_non_monotonic_progression)
+   or (issue = 'LEVEL_SKIP_CAMEO_CANDIDATE' and has_level_skip_cameo_candidate);
+
+-- ===========================================================================
+-- 8. POSTCONDITIONS
+-- ===========================================================================
+
+do $$
+declare
+  b record;
+  n int;
+  e jsonb := (select j -> 'expected_before' from _m052);
+begin
+  select * into b from _m052_before;
+  select count(*) into n from _m052_org v join public.players p on p.slug = v.slug
+  join public.player_season_stints s on s.player_id = p.id and s.season = v.season and coalesce(s.affiliate_team, '') = coalesce(v.affiliate_team, '')
+   and coalesce(s.league_name, '') = coalesce(v.league_name, '') and s.level::text = v.level and s.stint_kind = 'TEAM_STINT'
+  where s.organization_id is distinct from (select o.id from public.organizations o where o.name = v.organization_name)
+     or s.detail ->> 'organizationBasis' <> 'TEAM_SEASON_RECORD'
+     or (s.detail -> 'organizationEvidence' ->> 'season')::int <> s.season
+     or (s.detail -> 'organizationEvidence' ->> 'teamId')::bigint <> s.team_id;
+  if n > 0 then
+    raise exception '052 postcondition: % organization stints do not carry their reviewed organization and season-bounded evidence', n;
+  end if;
+  select count(*) into n from public.player_season_stints
+  where stint_kind = 'TEAM_STINT' and organization_id is null and level <> 'FOREIGN_PRO';
+  if n <> (e ->> 'team_stints_without_organization')::int - (select count(*) from _m052_org where not correction) then
+    raise exception '052 postcondition: % team stints remain without an organization', n;
+  end if;
+  select count(*) into n from _m052_dates v join public.players p on p.slug = v.slug
+  join public.player_season_stints s on s.player_id = p.id and s.season = v.season and coalesce(s.affiliate_team, '') = coalesce(v.affiliate_team, '')
+   and coalesce(s.league_name, '') = coalesce(v.league_name, '') and s.level::text = v.level and s.stint_kind = 'TEAM_STINT'
+  where s.first_game_date is distinct from v.first_game_date or s.last_game_date is distinct from v.last_game_date or s.game_date_basis is distinct from 'GAME_LOG';
+  if n > 0 then
+    raise exception '052 postcondition: % stints do not carry their reviewed game dates', n;
+  end if;
+  select count(*) into n from public.player_season_stints where first_game_date is not null and game_date_basis is null;
+  if n > 0 then
+    raise exception '052 postcondition: % stints carry a date without game-log evidence', n;
+  end if;
+  select count(*) into n from _m052_upgrades u join public.players p on p.slug = u.slug
+  join public.development_milestones m on m.player_id = p.id and m.event_code = u.event_code
+  where m.date_precision <> 'DAY' or m.milestone_date is distinct from u.milestone_date or extract(year from m.milestone_date)::int <> m.season_year;
+  if n > 0 then
+    raise exception '052 postcondition: % milestone upgrades are not exact inside their own season', n;
+  end if;
+  if (select count(*) from public.player_season_stints) <> b.stints then
+    raise exception '052 postcondition: the stint count moved; 052 adds and removes no stint';
+  end if;
+  if (select count(*) from public.development_milestones) <> (e ->> 'milestones')::int + (select count(*) from _m052_debuts) then
+    raise exception '052 postcondition: % milestones, expected %', (select count(*) from public.development_milestones), (e ->> 'milestones')::int + (select count(*) from _m052_debuts);
+  end if;
+  if (select md5(string_agg(t::text, '|' order by t::text)) from public.player_season_stints t where t.id not in (select id from _m052_stints)) <> b.other_stints then
+    raise exception '052 postcondition: a stint outside the reviewed values changed';
+  end if;
+  if (select md5(string_agg(t::text, '|' order by t::text)) from public.development_progression_decisions t
+      where not exists (select 1 from _m052_reviews r join public.players p on p.slug = r.slug where p.id = t.player_id and r.event_code = t.event_code)) <> b.decisions_md5 then
+    raise exception '052 postcondition: an existing progression decision changed; 052 decides no sequence';
+  end if;
+  select count(*) into n from _m052_reviews r join public.players p on p.slug = r.slug
+  where not exists (select 1 from public.development_progression_decisions d where d.player_id = p.id and d.event_code = r.event_code
+                    and d.progression_role = 'REVIEW_REQUIRED' and d.review_status = 'PENDING_REVIEW' and d.developmental_arrival_season is null);
+  if n > 0 then
+    raise exception '052 postcondition: % sequence reviews are not pending', n;
+  end if;
+  if (select count(*) from public.development_progression_decisions) <> (e ->> 'progression_decisions')::int + (select count(*) from _m052_reviews) then
+    raise exception '052 postcondition: % progression decisions, expected %', (select count(*) from public.development_progression_decisions), (e ->> 'progression_decisions')::int + (select count(*) from _m052_reviews);
+  end if;
+  -- 052 is development research only: no outcome, transaction, WAR, cost, evaluation or status row moved
+  if (select md5(string_agg(t::text, '|' order by t::text)) from public.outcome_audits t) <> b.outcome_audits
+     or (select md5(string_agg(t::text, '|' order by t::text)) from public.transaction_events t) <> b.transaction_events
+     or (select md5(string_agg(t::text, '|' order by t::text)) from public.transaction_event_assets t) <> b.transaction_assets
+     or (select md5(string_agg(t::text, '|' order by t::text)) from public.player_metric_observations t) <> b.metric_observations
+     or (select md5(string_agg(t::text, '|' order by t::text)) from public.signings t) <> b.signings
+     or (select md5(string_agg(t::text, '|' order by t::text)) from public.player_evaluations t) <> b.evaluations
+     or (select md5(string_agg(t::text, '|' order by t::text)) from public.player_development_status t) <> b.development_status then
+    raise exception '052 postcondition: an outcome, transaction, WAR, cost, evaluation or development-status row changed';
+  end if;
+  -- a VERIFIED_NO_MLB signing still holds no MLB-level stint and no MLB_DEBUT (051)
+  select count(distinct s.player_id) into n from public.v_signing_records s
+  where s.outcome_audit_status = 'VERIFIED_NO_MLB'
+    and (exists (select 1 from public.player_season_stints t where t.player_id = s.player_id and t.level = 'MLB')
+      or exists (select 1 from public.development_milestones m where m.player_id = s.player_id and m.event_code = 'MLB_DEBUT'));
+  if n > 0 then
+    raise exception '052 postcondition: % audited no-MLB signings now hold an MLB development fact', n;
+  end if;
+end $$;
+
+-- ===========================================================================
+-- 9. SNAPSHOTS: no persisted snapshot reads what 052 changes
+-- ===========================================================================
+-- Proven, not assumed: every product snapshot still equals a fresh evaluation of its analytical source. The snapshot generation does not
+-- move, because no snapshot source changed.
+
+do $$
+declare
+  n int;
+begin
+  select coalesce(sum(missing_rows + extra_rows), 0) into n from public.disi_product_snapshot_drift();
+  if n > 0 then
+    raise exception '052 postcondition: % product snapshot rows no longer match their source', n;
+  end if;
+end $$;
+
+commit;

@@ -14,8 +14,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
-import { buildCanonicalChain, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+import { buildChainThrough, manifest } from './canonical-chain.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_051 } from '../../scripts/db/lib/invariants.mjs'
 import { DATASET_QUERIES, HISTORY_QUERIES, assembleDataset } from '../../lib/research/dataset.js'
 import { developmentRecords } from '../../lib/research/development-research.js'
 import { developmentNeeds } from '../../lib/research/development-needs.js'
@@ -57,13 +57,15 @@ const leakageState = async (c) => ({
 })
 
 before(async () => {
-  chain = await buildCanonicalChain()
+  // the 051 head is the 050 chain (051 added no migration); 052 later dates and resolves part of this cohort's record
+  chain = await buildChainThrough('050_international_benchmark_support_expansion.sql')
   dump = await chain.db.dumpDataDir('none')
 })
 after(async () => { await chain?.close() })
 
-test('no 051 migration: the canonical chain ends at 050 (051 found no reviewed fact to write)', () => {
-  assert.equal(manifest.canonical_sql.at(-1), '050_international_benchmark_support_expansion.sql')
+test('no 051 migration: the canonical chain goes from 050 to 052 (051 found no reviewed fact to write)', () => {
+  const i = manifest.canonical_sql.indexOf('050_international_benchmark_support_expansion.sql')
+  assert.ok(manifest.canonical_sql[i + 1] === undefined || manifest.canonical_sql[i + 1].startsWith('052'))
   assert.ok(!fs.readdirSync(path.join(root, 'database/sql')).some((f) => f.startsWith('051')))
   assert.equal(records.totals.reviewed_facts_disi_lacks, 0)
 })
@@ -107,10 +109,10 @@ test('a later stint with another organization is not Dodgers development (Clemen
   assert.equal(h.highest_level_recorded, 'AAA')
 })
 
-test('verifier: 249/249 on the canonical chain, including the 051 check', async () => {
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+test('verifier: 252/252 at the 051 head (the 050 chain), including the 051 check', async () => {
+  const full = await checkInvariants(q, EXPECTATIONS_THROUGH_051)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 249)
+  assert.equal(full.hard.length, 252)
   assert.ok(full.hard.some((h) => h.name === 'no_mlb_development_contradictions' && h.pass))
 })
 
@@ -128,7 +130,7 @@ test('the 051 check catches a VERIFIED_NO_MLB audit contradicted by an MLB stint
     await c.db.exec(`insert into public.development_milestones (player_id, milestone, event_code, date_precision, season_year, evidence_basis, confidence, as_of_date)
       select id, 'MLB_DEBUT', 'MLB_DEBUT', 'SEASON', 2026, 'SEASON_SPLITS', 'HIGH', date '2026-10-22' from public.players where slug = 'jerming-rosario'`)
     assert.equal(await n(), 2)
-    const full = await checkInvariants(c.query, CANONICAL_EXPECTATIONS)
+    const full = await checkInvariants(c.query, EXPECTATIONS_THROUGH_051)
     assert.ok(failedChecks(full).some((f) => f.name === 'no_mlb_development_contradictions'))
   } finally { await c.close() }
 })

@@ -149,6 +149,23 @@ Use `transaction_events` + `transaction_event_assets` for every trade so the who
 4. **Stop on an outcome contradiction** (an MLB-level stint or debut for a VERIFIED_NO_MLB player): report it as its own reviewed outcome question;
    the verifier check `no_mlb_development_contradictions` fails until it is resolved.
 
+### Resolving organizations, dates and detector causes (052)
+
+1. **Classify every open need before changing anything** (`gap-classification.json`): a fact the official source holds, a taxonomy gap, a
+   source-limited need, a decision for a person, a transaction-blocked season, an identity question, or not a gap. Only the first is written.
+2. **Organizations: ask the official team record for the stint's own team id and season** (`scripts/mlb/team-seasons.mjs`; a major-league club
+   is its own organization). Never take the organization from the affiliate name, the signing club, an adjacent season or the modern franchise;
+   keep the record on the stint (`detail.organizationEvidence`) and the franchise row in `organization_id`. A team the record files under no MLB
+   parent (a co-operative club, a foreign league) stays unresolved.
+3. **Dates: the official game log only** (`player-game-logs.mjs`, `development-exact-dates.mjs`): fill NULL dates, never overwrite one; upgrade a level
+   debut only inside its own season; date a first professional game only for an amateur signing whose first recorded season is the signing season
+   or the next. A window artifact (a debut before the fetched seasons) is not a conflict.
+4. **League seasons are facts too** (`scripts/mlb/league-seasons.mjs`): a level's regular-season schedule (2020 holds no minor-league game) and a
+   league's sport per season (the Pioneer League's classification changes by season). Record a classification per era; never carry one forward.
+5. **A sequence the dates expose is a pending review**, never a decision; **a team change is never a transaction**.
+6. **Build the migration from the reviewed values** (`database/research/052/build.mjs`), keyed by slug and natural stint key so the same bytes come
+   from production and from a replay, with every row guarded in its pre- or post-state and an exact rollback.
+
 ### Completing transaction chains and packages (049)
 
 1. **Order of truth.** Transaction, then package membership, then returned-player identity, then the value of the return, then attribution to a

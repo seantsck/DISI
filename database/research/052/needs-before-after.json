@@ -1,0 +1,1036 @@
+{
+  "after": {
+    "affected_players": 66,
+    "by_need": {
+      "GAME_DATES": 29,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 20,
+      "SEASON_COVERAGE": 30,
+      "SEQUENCE_REVIEW": 5,
+      "SOURCE_CONFLICT": 0
+    },
+    "detector_rows": 134,
+    "detector_rows_by_issue": {
+      "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS": 8,
+      "LEVEL_SKIP_CAMEO_CANDIDATE": 5,
+      "MISSING_FIRST_GAME_DATE": 4,
+      "MISSING_LAST_GAME_DATE": 4,
+      "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES": 20,
+      "MLB_PLAYER_MISSING_PRE_MLB_HISTORY": 3,
+      "MULTI_ORG_SEASON_UNVERIFIED": 20,
+      "SEASON_GAP": 20,
+      "SEASON_ONLY_MILESTONE": 23,
+      "UNKNOWN_LEVEL_CLASSIFICATION": 26,
+      "UNRESOLVED_ORGANIZATION": 1
+    },
+    "distinct_needs": 110,
+    "players_by_need": {
+      "GAME_DATES": 29,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 20,
+      "SEASON_COVERAGE": 30,
+      "SEQUENCE_REVIEW": 5,
+      "SOURCE_CONFLICT": 0
+    }
+  },
+  "as_of": "2026-10-23",
+  "before": {
+    "affected_players": 85,
+    "by_need": {
+      "GAME_DATES": 45,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 51,
+      "SEASON_COVERAGE": 46,
+      "SEQUENCE_REVIEW": 5,
+      "SOURCE_CONFLICT": 0
+    },
+    "detector_rows": 347,
+    "detector_rows_by_issue": {
+      "GAME_LOG_UNAVAILABLE": 37,
+      "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS": 8,
+      "LEVEL_SKIP_CAMEO_CANDIDATE": 5,
+      "MISSING_FIRST_GAME_DATE": 39,
+      "MISSING_LAST_GAME_DATE": 39,
+      "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES": 43,
+      "MLB_PLAYER_MISSING_PRE_MLB_HISTORY": 3,
+      "MULTI_ORG_SEASON_UNVERIFIED": 22,
+      "SEASON_GAP": 36,
+      "SEASON_ONLY_MILESTONE": 41,
+      "UNKNOWN_LEVEL_CLASSIFICATION": 26,
+      "UNKNOWN_LEVEL_GAME_LOG": 8,
+      "UNRESOLVED_ORGANIZATION": 40
+    },
+    "distinct_needs": 173,
+    "players_by_need": {
+      "GAME_DATES": 45,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 51,
+      "SEASON_COVERAGE": 46,
+      "SEQUENCE_REVIEW": 5,
+      "SOURCE_CONFLICT": 0
+    }
+  },
+  "by_category": {
+    "GAME_DATES": {
+      "added": 0,
+      "after": 29,
+      "before": 45,
+      "remaining_by_class": {
+        "SOURCE_LIMITED": 29
+      },
+      "resolved": 16
+    },
+    "LEVEL_CLASSIFICATION": {
+      "added": 0,
+      "after": 26,
+      "before": 26,
+      "remaining_by_class": {
+        "TAXONOMY_GAP": 26
+      },
+      "resolved": 0
+    },
+    "ORGANIZATION": {
+      "added": 0,
+      "after": 20,
+      "before": 51,
+      "remaining_by_class": {
+        "SOURCE_LIMITED": 2,
+        "TRANSACTION_BLOCKED": 18
+      },
+      "resolved": 31
+    },
+    "SEASON_COVERAGE": {
+      "added": 0,
+      "after": 30,
+      "before": 46,
+      "remaining_by_class": {
+        "SOURCE_LIMITED": 30
+      },
+      "resolved": 16
+    },
+    "SEQUENCE_REVIEW": {
+      "added": 0,
+      "after": 5,
+      "before": 5,
+      "remaining_by_class": {
+        "HUMAN_REVIEW": 5
+      },
+      "resolved": 0
+    },
+    "SOURCE_CONFLICT": {
+      "added": 0,
+      "after": 0,
+      "before": 0,
+      "remaining_by_class": {},
+      "resolved": 0
+    }
+  },
+  "detector_rows_added": [
+    "eddys-leonard|MULTI_ORG_SEASON_UNVERIFIED",
+    "fernando-valenzuela|MULTI_ORG_SEASON_UNVERIFIED",
+    "jose-vizcaino|MULTI_ORG_SEASON_UNVERIFIED",
+    "pedro-astacio|MULTI_ORG_SEASON_UNVERIFIED",
+    "raul-mondesi|MULTI_ORG_SEASON_UNVERIFIED",
+    "yasiel-puig|MULTI_ORG_SEASON_UNVERIFIED"
+  ],
+  "detector_rows_removed": [
+    "adrian-beltre|GAME_LOG_UNAVAILABLE",
+    "adrian-beltre|MISSING_FIRST_GAME_DATE",
+    "adrian-beltre|MISSING_LAST_GAME_DATE",
+    "adrian-beltre|UNRESOLVED_ORGANIZATION",
+    "aldrin-batista|MULTI_ORG_SEASON_UNVERIFIED",
+    "alex-de-jesus|MULTI_ORG_SEASON_UNVERIFIED",
+    "alex-de-jesus|SEASON_GAP",
+    "andy-pages|GAME_LOG_UNAVAILABLE",
+    "andy-pages|MISSING_FIRST_GAME_DATE",
+    "andy-pages|MISSING_LAST_GAME_DATE",
+    "andy-pages|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "andy-pages|SEASON_ONLY_MILESTONE",
+    "andy-pages|UNRESOLVED_ORGANIZATION",
+    "antonio-osuna|GAME_LOG_UNAVAILABLE",
+    "antonio-osuna|MISSING_FIRST_GAME_DATE",
+    "antonio-osuna|MISSING_LAST_GAME_DATE",
+    "antonio-osuna|UNRESOLVED_ORGANIZATION",
+    "carlos-frias|UNRESOLVED_ORGANIZATION",
+    "carlos-rincon|MULTI_ORG_SEASON_UNVERIFIED",
+    "carlos-rincon|SEASON_GAP",
+    "carlos-santana|GAME_LOG_UNAVAILABLE",
+    "carlos-santana|MISSING_FIRST_GAME_DATE",
+    "carlos-santana|MISSING_LAST_GAME_DATE",
+    "carlos-santana|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "carlos-santana|UNKNOWN_LEVEL_GAME_LOG",
+    "carlos-santana|UNRESOLVED_ORGANIZATION",
+    "chan-ho-park|GAME_LOG_UNAVAILABLE",
+    "chan-ho-park|MISSING_FIRST_GAME_DATE",
+    "chan-ho-park|MISSING_LAST_GAME_DATE",
+    "chan-ho-park|UNRESOLVED_ORGANIZATION",
+    "chin-lung-hu|GAME_LOG_UNAVAILABLE",
+    "chin-lung-hu|MISSING_FIRST_GAME_DATE",
+    "chin-lung-hu|MISSING_LAST_GAME_DATE",
+    "chin-lung-hu|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "chin-lung-hu|UNRESOLVED_ORGANIZATION",
+    "christian-suarez|SEASON_GAP",
+    "diego-cartaya|SEASON_GAP",
+    "eddys-leonard|GAME_LOG_UNAVAILABLE",
+    "eddys-leonard|MISSING_FIRST_GAME_DATE",
+    "eddys-leonard|MISSING_LAST_GAME_DATE",
+    "eddys-leonard|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "eddys-leonard|SEASON_GAP",
+    "eddys-leonard|SEASON_ONLY_MILESTONE",
+    "eddys-leonard|UNRESOLVED_ORGANIZATION",
+    "elian-herrera|GAME_LOG_UNAVAILABLE",
+    "elian-herrera|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "elian-herrera|SEASON_ONLY_MILESTONE",
+    "elian-herrera|UNKNOWN_LEVEL_GAME_LOG",
+    "elian-herrera|UNRESOLVED_ORGANIZATION",
+    "fernando-valenzuela|UNRESOLVED_ORGANIZATION",
+    "hendrik-clementina|MULTI_ORG_SEASON_UNVERIFIED",
+    "hendrik-clementina|SEASON_GAP",
+    "hideo-nomo|GAME_LOG_UNAVAILABLE",
+    "hideo-nomo|MISSING_FIRST_GAME_DATE",
+    "hideo-nomo|MISSING_LAST_GAME_DATE",
+    "hung-chih-kuo|GAME_LOG_UNAVAILABLE",
+    "hung-chih-kuo|MISSING_FIRST_GAME_DATE",
+    "hung-chih-kuo|MISSING_LAST_GAME_DATE",
+    "hung-chih-kuo|UNRESOLVED_ORGANIZATION",
+    "hyun-jin-ryu|GAME_LOG_UNAVAILABLE",
+    "hyun-jin-ryu|MISSING_FIRST_GAME_DATE",
+    "hyun-jin-ryu|MISSING_LAST_GAME_DATE",
+    "hyun-jin-ryu|UNRESOLVED_ORGANIZATION",
+    "ismael-valdez|GAME_LOG_UNAVAILABLE",
+    "ismael-valdez|MISSING_FIRST_GAME_DATE",
+    "ismael-valdez|MISSING_LAST_GAME_DATE",
+    "ismael-valdez|UNRESOLVED_ORGANIZATION",
+    "jeral-perez|MULTI_ORG_SEASON_UNVERIFIED",
+    "jerming-rosario|SEASON_GAP",
+    "jorbit-vivas|GAME_LOG_UNAVAILABLE",
+    "jorbit-vivas|MISSING_FIRST_GAME_DATE",
+    "jorbit-vivas|MISSING_LAST_GAME_DATE",
+    "jorbit-vivas|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "jorbit-vivas|SEASON_GAP",
+    "jorbit-vivas|SEASON_ONLY_MILESTONE",
+    "jorbit-vivas|UNRESOLVED_ORGANIZATION",
+    "jose-dominguez|GAME_LOG_UNAVAILABLE",
+    "jose-dominguez|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "jose-dominguez|SEASON_ONLY_MILESTONE",
+    "jose-dominguez|UNKNOWN_LEVEL_GAME_LOG",
+    "jose-dominguez|UNRESOLVED_ORGANIZATION",
+    "jose-offerman|GAME_LOG_UNAVAILABLE",
+    "jose-offerman|MISSING_FIRST_GAME_DATE",
+    "jose-offerman|MISSING_LAST_GAME_DATE",
+    "jose-offerman|UNRESOLVED_ORGANIZATION",
+    "jose-vizcaino|GAME_LOG_UNAVAILABLE",
+    "jose-vizcaino|MISSING_FIRST_GAME_DATE",
+    "jose-vizcaino|MISSING_LAST_GAME_DATE",
+    "jose-vizcaino|UNRESOLVED_ORGANIZATION",
+    "josue-de-paula|GAME_LOG_UNAVAILABLE",
+    "josue-de-paula|MISSING_FIRST_GAME_DATE",
+    "josue-de-paula|MISSING_LAST_GAME_DATE",
+    "josue-de-paula|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "josue-de-paula|SEASON_ONLY_MILESTONE",
+    "juan-castro|GAME_LOG_UNAVAILABLE",
+    "juan-castro|MISSING_FIRST_GAME_DATE",
+    "juan-castro|MISSING_LAST_GAME_DATE",
+    "juan-castro|UNRESOLVED_ORGANIZATION",
+    "juan-guzman|UNRESOLVED_ORGANIZATION",
+    "julio-urias|GAME_LOG_UNAVAILABLE",
+    "julio-urias|MISSING_FIRST_GAME_DATE",
+    "julio-urias|MISSING_LAST_GAME_DATE",
+    "julio-urias|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "julio-urias|SEASON_ONLY_MILESTONE",
+    "karim-garcia|GAME_LOG_UNAVAILABLE",
+    "karim-garcia|MISSING_FIRST_GAME_DATE",
+    "karim-garcia|MISSING_LAST_GAME_DATE",
+    "karim-garcia|UNRESOLVED_ORGANIZATION",
+    "keibert-ruiz|GAME_LOG_UNAVAILABLE",
+    "keibert-ruiz|MISSING_FIRST_GAME_DATE",
+    "keibert-ruiz|MISSING_LAST_GAME_DATE",
+    "keibert-ruiz|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "keibert-ruiz|SEASON_ONLY_MILESTONE",
+    "keibert-ruiz|UNKNOWN_LEVEL_GAME_LOG",
+    "keibert-ruiz|UNRESOLVED_ORGANIZATION",
+    "kenley-jansen|GAME_LOG_UNAVAILABLE",
+    "kenley-jansen|MISSING_FIRST_GAME_DATE",
+    "kenley-jansen|MISSING_LAST_GAME_DATE",
+    "kenley-jansen|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "kenley-jansen|UNKNOWN_LEVEL_GAME_LOG",
+    "kenley-jansen|UNRESOLVED_ORGANIZATION",
+    "miguel-droz|SEASON_GAP",
+    "miguel-vargas|GAME_LOG_UNAVAILABLE",
+    "miguel-vargas|MISSING_FIRST_GAME_DATE",
+    "miguel-vargas|MISSING_LAST_GAME_DATE",
+    "miguel-vargas|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "miguel-vargas|SEASON_GAP",
+    "miguel-vargas|SEASON_ONLY_MILESTONE",
+    "miguel-vargas|UNKNOWN_LEVEL_GAME_LOG",
+    "miguel-vargas|UNRESOLVED_ORGANIZATION",
+    "omar-daal|UNRESOLVED_ORGANIZATION",
+    "omar-estevez|SEASON_GAP",
+    "oneil-cruz|GAME_LOG_UNAVAILABLE",
+    "oneil-cruz|MISSING_FIRST_GAME_DATE",
+    "oneil-cruz|MISSING_LAST_GAME_DATE",
+    "oneil-cruz|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "oneil-cruz|SEASON_GAP",
+    "oneil-cruz|SEASON_ONLY_MILESTONE",
+    "oneil-cruz|UNRESOLVED_ORGANIZATION",
+    "pedro-astacio|GAME_LOG_UNAVAILABLE",
+    "pedro-astacio|MISSING_FIRST_GAME_DATE",
+    "pedro-astacio|MISSING_LAST_GAME_DATE",
+    "pedro-astacio|UNRESOLVED_ORGANIZATION",
+    "pedro-baez|GAME_LOG_UNAVAILABLE",
+    "pedro-baez|MISSING_FIRST_GAME_DATE",
+    "pedro-baez|MISSING_LAST_GAME_DATE",
+    "pedro-baez|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "pedro-baez|SEASON_ONLY_MILESTONE",
+    "pedro-baez|UNKNOWN_LEVEL_GAME_LOG",
+    "pedro-baez|UNRESOLVED_ORGANIZATION",
+    "pedro-martinez|GAME_LOG_UNAVAILABLE",
+    "pedro-martinez|MISSING_FIRST_GAME_DATE",
+    "pedro-martinez|MISSING_LAST_GAME_DATE",
+    "pedro-martinez|UNRESOLVED_ORGANIZATION",
+    "rafael-tua|SEASON_GAP",
+    "ramon-martinez|UNRESOLVED_ORGANIZATION",
+    "ramon-rosso|GAME_LOG_UNAVAILABLE",
+    "ramon-rosso|MISSING_FIRST_GAME_DATE",
+    "ramon-rosso|MISSING_LAST_GAME_DATE",
+    "ramon-rosso|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "ramon-rosso|SEASON_ONLY_MILESTONE",
+    "ramon-rosso|UNRESOLVED_ORGANIZATION",
+    "ramon-troncoso|GAME_LOG_UNAVAILABLE",
+    "ramon-troncoso|MISSING_FIRST_GAME_DATE",
+    "ramon-troncoso|MISSING_LAST_GAME_DATE",
+    "ramon-troncoso|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "ramon-troncoso|UNRESOLVED_ORGANIZATION",
+    "raul-mondesi|UNRESOLVED_ORGANIZATION",
+    "roki-sasaki|GAME_LOG_UNAVAILABLE",
+    "roki-sasaki|MISSING_FIRST_GAME_DATE",
+    "roki-sasaki|MISSING_LAST_GAME_DATE",
+    "roki-sasaki|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "roki-sasaki|SEASON_ONLY_MILESTONE",
+    "ronny-brito|SEASON_GAP",
+    "rubby-de-la-rosa|GAME_LOG_UNAVAILABLE",
+    "rubby-de-la-rosa|MISSING_FIRST_GAME_DATE",
+    "rubby-de-la-rosa|MISSING_LAST_GAME_DATE",
+    "rubby-de-la-rosa|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "rubby-de-la-rosa|SEASON_ONLY_MILESTONE",
+    "rubby-de-la-rosa|UNRESOLVED_ORGANIZATION",
+    "sean-linan|MULTI_ORG_SEASON_UNVERIFIED",
+    "thayron-liranzo|MULTI_ORG_SEASON_UNVERIFIED",
+    "tony-abreu|GAME_LOG_UNAVAILABLE",
+    "tony-abreu|MISSING_FIRST_GAME_DATE",
+    "tony-abreu|MISSING_LAST_GAME_DATE",
+    "tony-abreu|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "tony-abreu|UNRESOLVED_ORGANIZATION",
+    "victor-gonzalez|GAME_LOG_UNAVAILABLE",
+    "victor-gonzalez|MISSING_FIRST_GAME_DATE",
+    "victor-gonzalez|MISSING_LAST_GAME_DATE",
+    "victor-gonzalez|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "victor-gonzalez|SEASON_ONLY_MILESTONE",
+    "victor-gonzalez|UNKNOWN_LEVEL_GAME_LOG",
+    "victor-gonzalez|UNRESOLVED_ORGANIZATION",
+    "willy-aybar|GAME_LOG_UNAVAILABLE",
+    "willy-aybar|MISSING_FIRST_GAME_DATE",
+    "willy-aybar|MISSING_LAST_GAME_DATE",
+    "willy-aybar|MULTI_ORG_SEASON_UNVERIFIED",
+    "willy-aybar|UNRESOLVED_ORGANIZATION",
+    "yadier-alvarez|SEASON_GAP",
+    "yasiel-puig|GAME_LOG_UNAVAILABLE",
+    "yasiel-puig|MISSING_FIRST_GAME_DATE",
+    "yasiel-puig|MISSING_LAST_GAME_DATE",
+    "yasiel-puig|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "yasiel-puig|SEASON_ONLY_MILESTONE",
+    "yasiel-puig|UNRESOLVED_ORGANIZATION",
+    "yordan-alvarez|GAME_LOG_UNAVAILABLE",
+    "yordan-alvarez|MISSING_FIRST_GAME_DATE",
+    "yordan-alvarez|MISSING_LAST_GAME_DATE",
+    "yordan-alvarez|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "yordan-alvarez|SEASON_ONLY_MILESTONE",
+    "yordan-alvarez|UNRESOLVED_ORGANIZATION",
+    "yusniel-diaz|GAME_LOG_UNAVAILABLE",
+    "yusniel-diaz|MISSING_FIRST_GAME_DATE",
+    "yusniel-diaz|MISSING_LAST_GAME_DATE",
+    "yusniel-diaz|MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+    "yusniel-diaz|SEASON_GAP",
+    "yusniel-diaz|SEASON_ONLY_MILESTONE",
+    "yusniel-diaz|UNRESOLVED_ORGANIZATION"
+  ],
+  "development_after": {
+    "dodgers_players_with_development_history": 212,
+    "dodgers_players_without_structured_history": 8,
+    "log_era_team_stints": 1280,
+    "log_era_team_stints_dated": 1274,
+    "milestones": 1084,
+    "milestones_by_precision": {
+      "DAY": 981,
+      "SEASON": 103
+    },
+    "progression_decisions": 42,
+    "progression_decisions_by_role": {
+      "EARLY_CAMEO": 8,
+      "POST_ESTABLISHMENT_APPEARANCE": 3,
+      "REVIEW_REQUIRED": 31
+    },
+    "season_totals": 120,
+    "stints": 1859,
+    "team_stints": 1739,
+    "team_stints_without_organization": 1,
+    "unclassified_level_team_stints": 41
+  },
+  "development_before": {
+    "dodgers_players_with_development_history": 212,
+    "dodgers_players_without_structured_history": 8,
+    "log_era_team_stints": 1280,
+    "log_era_team_stints_dated": 746,
+    "milestones": 1073,
+    "milestones_by_precision": {
+      "DAY": 869,
+      "SEASON": 204
+    },
+    "progression_decisions": 37,
+    "progression_decisions_by_role": {
+      "EARLY_CAMEO": 8,
+      "POST_ESTABLISHMENT_APPEARANCE": 3,
+      "REVIEW_REQUIRED": 26
+    },
+    "season_totals": 120,
+    "stints": 1859,
+    "team_stints": 1739,
+    "team_stints_without_organization": 320,
+    "unclassified_level_team_stints": 41
+  },
+  "new_needs": [],
+  "resolved_needs": [
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "hendrik-clementina",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "carlos-rincon",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "omar-estevez",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "oneil-cruz",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "ronny-brito",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "yadier-alvarez",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "yusniel-diaz",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "eddys-leonard",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "jorbit-vivas",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "miguel-vargas",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "alex-de-jesus",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "christian-suarez",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "diego-cartaya",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "jerming-rosario",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "miguel-droz",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "SEASON_GAP"
+      ],
+      "need": "SEASON_COVERAGE",
+      "player_slug": "rafael-tua",
+      "reason": "Every missing season is a league season that was not played (2020)."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "ramon-martinez",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "pedro-martinez",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "antonio-osuna",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "adrian-beltre",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "hung-chih-kuo",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED",
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "willy-aybar",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "ramon-troncoso",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "tony-abreu",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "chin-lung-hu",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "elian-herrera",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "kenley-jansen",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "carlos-frias",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "jose-dominguez",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "rubby-de-la-rosa",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "hyun-jin-ryu",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "victor-gonzalez",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "hendrik-clementina",
+      "reason": "Every multi-organization season is bracketed by a canonical transaction and game dates."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "keibert-ruiz",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "carlos-rincon",
+      "reason": "Every multi-organization season is bracketed by a canonical transaction and game dates."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "oneil-cruz",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "ramon-rosso",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "yusniel-diaz",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "yordan-alvarez",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "andy-pages",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "jorbit-vivas",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "UNRESOLVED_ORGANIZATION"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "miguel-vargas",
+      "reason": "The official team-season record names the parent organization of every unresolved stint."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "alex-de-jesus",
+      "reason": "Every multi-organization season is bracketed by a canonical transaction and game dates."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "thayron-liranzo",
+      "reason": "Every multi-organization season is bracketed by a canonical transaction and game dates."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "aldrin-batista",
+      "reason": "Every multi-organization season is bracketed by a canonical transaction and game dates."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "jeral-perez",
+      "reason": "Every multi-organization season is bracketed by a canonical transaction and game dates."
+    },
+    {
+      "class_before": "NOT_A_GAP",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "sean-linan",
+      "reason": "Every multi-organization season is bracketed by a canonical transaction and game dates."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "pedro-baez",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "rubby-de-la-rosa",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "julio-urias",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "victor-gonzalez",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "yasiel-puig",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "keibert-ruiz",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "oneil-cruz",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "ramon-rosso",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "yusniel-diaz",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "yordan-alvarez",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "andy-pages",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "eddys-leonard",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "jorbit-vivas",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "miguel-vargas",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "josue-de-paula",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    },
+    {
+      "class_before": "FACT_MISSING",
+      "issues": [
+        "GAME_LOG_UNAVAILABLE",
+        "MISSING_FIRST_GAME_DATE",
+        "MISSING_LAST_GAME_DATE",
+        "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES",
+        "SEASON_ONLY_MILESTONE"
+      ],
+      "need": "GAME_DATES",
+      "player_slug": "roki-sasaki",
+      "reason": "The official game log dates stints or level debuts this player lacks."
+    }
+  ]
+}

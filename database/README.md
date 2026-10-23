@@ -62,6 +62,8 @@ This folder preserves the SQL lineage behind the DISI research database.
 51. `047_development_transaction_research_batch.sql` — reviewed development-history and transaction-chain research batch (data only: no table, view, function, grant or policy): five Retrosheet-sourced downstream exits, ten verified MLB players' whole development careers (255 stints, 41 milestones), fourteen proven season totals, two pending progression reviews, and the retraction of two superseded exit-bound observations. Built from `database/research/047/`.
 52. `048_verified_mlb_development_coverage.sql` — verified MLB development coverage (data only: no table, view, function, grant or policy): the whole documented careers of the 35 verified MLB players not in the 047 cohort that had no development rows (776 stints, 200 first-appearance milestones), fifty proven season totals, and fifteen pending progression reviews for six players, which a person (not DISI) decides. The two players Migration 021 had already researched are untouched. Built from `database/research/048/`.
 53. `049_transaction_package_completion.sql` — transaction-package completion (data only: no table, view, function, grant or policy): the 2009 Tony Abreu trade corrected forward to Jon Garland for a player to be named later (agreement 2009-08-31, delivery 2009-10-09 kept), Garland's free agency, the 1967 Dodgers-Twins trade that ended Bob Miller's Dodgers career with the 1968 expansion-draft exits of Mudcat Grant and Zoilo Versalles, and four MLB ids for assets recorded by name only; no WAR is loaded, so the returns read `RETURN_WAR_UNKNOWN` (`NULL`, never zero).
+54. `050_international_benchmark_support_expansion.sql` — international benchmark expansion and probability-support audit (see the 050 section below). 051 added no migration.
+55. `052_development_taxonomy_chronology_resolution.sql` — development taxonomy and chronology resolution (data plus one view definition: no table, enum, function, grant or policy): every team stint's organization from the official team record for its own team id and season (319 resolved, 3 corrected), exact first / last appearance dates for 528 log-era stints and 101 level debuts from the official game log, 11 dated first professional games, 5 pending reviews for within-season sequences the dates expose, the Pioneer League per era in the level-era map, and two research-queue conditions corrected (the cancelled 2020 minor-league season; seasons bracketed by a canonical transaction). Built from `database/research/052/`; exact rollback `database/release/sql/rollback-052.sql`.
 
 ## 017 research-database layer
 
@@ -370,13 +372,28 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Documented, not changed.** The Pioneer League (rookie-advanced) has no level on the ladder (021 era map); the `SEASON_GAP` detector counts
   2020; both are architecture decisions for a later reviewed migration (`database/research/051/architecture.md`).
 
+## 052 development taxonomy and chronology resolution
+
+- **What it writes.** Organizations from the official team-season record (the record kept on each stint as `detail.organizationEvidence`), game-log
+  dates (NULL dates only), level-debut upgrades inside their own season, 11 first professional games for amateur signings, 5 pending reviews, three
+  Pioneer League era-map rows, and the cited sources. No stint is added or removed; no outcome, transaction, WAR, cost, benchmark or feature row moves.
+- **The detector correction.** `v_dodgers_development_research_queue` is the 024 view with two conditions changed: `SEASON_GAP` does not count 2020
+  for an affiliated minor leaguer (no affiliated minor league played it), and `MULTI_ORG_SEASON_UNVERIFIED` does not flag a season bracketed by a
+  canonical transaction and game dates. Grants, `security_invoker` and every other detector are unchanged; the rollback restores the 024 text.
+- **Snapshots.** No snapshot reads a changed row: the migration proves drift 0 and runs no refresh, so the generation does not move.
+- **Verifier.** Three checks (252): `organization_evidence_violations`, `league_season_not_played_stints`, `stint_dates_without_game_log`;
+  `EXPECTATIONS_THROUGH_051` keeps the pre-052 pins.
+- **Left open on purpose.** The Pioneer League has no ladder level (the official record files every season DISI holds under the Rookie sport);
+  team changes without a canonical transaction; seasons before structured records or game logs; foreign professional dates
+  (`database/research/052/architecture.md`).
+
 ## 042-045 decision layers (DISI v1.0.0)
 
 - **Support chain.** 041 outcome probability -> 042 expected organizational value -> 043 portfolio decision support -> 044 executive product. Each layer reads the support state of the one below and can only narrow it. Today: 0 supported Dodgers probability targets (one benchmark reference baseline is supported after 050; it never reaches a Dodgers player), 0 supported expected values, 0 predictive portfolio recommendations; the interface states that DISI does not publish outcome probabilities and shows the evidence needed (`v_prediction_readiness`, `v_research_roadmap`).
 - **Realized vs expected.** Realized organizational value is observed bWAR the Dodgers obtained; a historical distribution is labelled HISTORICAL_DESCRIPTIVE and is never a player's expected value; expected value needs a supported probability and a supported conditional value.
 - **Decisions.** Readiness uses only signing-time facts and population-level support; NULL expected value never enters optimization as zero; budget feasibility is INDETERMINATE when unknown costs could change the answer; retrospective analysis never claims a hindsight-optimal portfolio was knowable.
 - **Contract.** `disi_product_contract` lists exactly the relations `lib/data.js` reads; `v_disi_release_status` reports the version, data freshness, model versions and `support_chain_state`.
-- **Surface.** 78 public tables (eleven of them product snapshots; 045b added the home-page status), 155 views and eight internal functions (six staged, refresh, drift); the verifier adds 5 + 5 + 2 + 3 + 5 + 4 checks (247 in total; 050 adds the population-isolation check: 248; 051 adds the no-MLB contradiction check: 249).
+- **Surface.** 78 public tables (eleven of them product snapshots; 045b added the home-page status), 155 views and eight internal functions (six staged, refresh, drift); the verifier adds 5 + 5 + 2 + 3 + 5 + 4 checks (247 in total; 050 adds the population-isolation check: 248; 051 adds the no-MLB contradiction check: 249; 052 adds the organization-evidence, 2020 and dated-evidence checks: 252).
 - **Serving.** Pages read only the persisted `product_*` snapshots; a request never recomputes the analytical graph. Refresh explicitly after research data changes (`npm run refresh:product-snapshots`; `--drift` reports staleness), and the verifier reports a stale snapshot.
 - **Plan-bounded.** No public view plans the whole 041 -> 042 -> 043 stack in one statement: the heavy layers are staged functions whose stages are planned only when they run (043a). Validated on a PostgreSQL 17 limited to 1 GB with the production memory settings.
 - **Rerunnable**; designs and findings in `database/research/042/` to `045/`.

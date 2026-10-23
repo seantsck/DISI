@@ -175,11 +175,11 @@ test('idempotent: a rerun adds no report and no generation and changes no table'
   assert.equal((await one(`select count(*)::int as n from public.signing_financial_reports r join public.sources so on so.id = r.source_id where so.url = any($1)`, [evidence.sources.map((s) => s.url)])).n, evidence.signing_reports.length)
 })
 
-test('the verifier passes on 001-046 (249 hard checks) and each snapshot check is clean', async () => {
+test('the verifier passes on 001-046 (252 hard checks) and each snapshot check is clean', async () => {
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 249)
+  assert.equal(full.hard.length, 252)
 })
 
 test('guards: 046 refuses a database where its facts no longer apply, and changes nothing when it refuses', async () => {

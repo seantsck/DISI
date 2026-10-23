@@ -3,16 +3,22 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 050 is released and frozen; 051 is built and awaiting its release gate)
+## Where DISI stands (after 051 is released; 052 is built and awaiting its release gate)
 
 - **v1.0.0** is in production through Migration 050 (international benchmark expansion and probability-support audit, released 2026-10-22,
-  PR #23 merged as `459460d`; production-verified 248/248, generation 8, drift 0; frozen in PR #24, merged). Canonical `main` before 051 is
-  `f3cfbb0a8143bf2de47cbabaaf906b8b41aa592b`. The product reads eleven persisted snapshots; the analytical layer is internal.
+  PR #23 merged as `459460d`; production-verified 248/248, generation 8, drift 0; frozen in PR #24, merged). 051 is released (PR #25 merged as
+  `9bf42da`; no migration, so production stays at 050, generation 8, with the 249-check verifier). Canonical `main` before 052 is
+  `9bf42da0f3da29c7520a91d522b6aea9535a10eb`. The product reads eleven persisted snapshots; the analytical layer is internal.
 - International benchmark (050, released): the MLB Pipeline international Top 30 lists of the 2015 and 2016 classes join the 2013 / 2014 trackers.
   Benchmark signings **48 -> 102**, identity-resolved **43 -> 99**, MLB reachers **11 -> 34**. `REACH_MLB_WITHIN_7_SEASONS` meets its support
   minimum **in the benchmark sample only** (90 labelled, 19 positive, 71 negative): a reference baseline for those ranked prospects, never a Dodgers
   probability. `BENCHMARK SUPPORT != DODGERS SUPPORT`.
-- Audited no-MLB development coverage (051, built, no migration): the 46 audited no-MLB players' recorded careers were checked fact by fact against
+- Development taxonomy and chronology (052, built, not applied): every team stint checked against the official team record for its own team id
+  and season (319 organizations resolved, 3 corrected, 1 co-op club with no MLB parent), 528 log-era stints and 101 level debuts dated from the
+  official game log, 2020 no longer counted as a missing minor-league season (the official schedule holds no game), a season bracketed by a canonical
+  transaction and game dates no longer flagged. Development needs **173 -> 110** (detector rows 347 -> 134, players 85 -> 66), none of them a fact
+  the official source holds: 61 source-limited, 26 taxonomy-limited (the Pioneer League), 18 transaction-blocked, 5 for a person. 252 checks.
+- Audited no-MLB development coverage (051, released, no migration): the 46 audited no-MLB players' recorded careers were checked fact by fact against
   the official season splits and game logs. **Every** stint (306), dated stint (278) and dated milestone (182) matches; the source holds nothing
   DISI lacks, so no canonical row is written. 051 reports the cohort's documented paths with the Dodgers-affiliate part and later play elsewhere
   apart, and adds one verifier check (249).
@@ -32,6 +38,22 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Nothing is published that is not supported: **0** supported Dodgers probability targets, **0** supported expected values, **0** recommendations.
   After 050, one **benchmark reference baseline** is supported (reach within 7 seasons, in the rank-selected Top-prospect sample); it is shown on
   Prediction readiness and the League Benchmark page as a reference result and never produces a Dodgers probability.
+
+## What 052 was for
+
+051 left the development queue explained but large. 052 asked, for each of its 173 needs, whether a fact is missing, the taxonomy cannot place it,
+no approved source holds it, a person must decide, or the detector misreads a known condition, under `HISTORICAL LEAGUE LABEL != MODERN LEVEL`,
+`AFFILIATE NAME != ORGANIZATION WITHOUT SEASON CONTEXT`, `LEAGUE SEASON NOT PLAYED != MISSING PLAYER SEASON` and `SOURCE-LIMITED != RESEARCH FAILURE`.
+
+1. **Facts the official record holds, recorded.** Organizations from the official team record per stint and season (a hand list of affiliates had
+   missed 320 stints and mis-assigned three), and exact dates from the official game log (528 stints, 101 level debuts, 11 first professional games
+   for amateur signings). Exact dates exposed five within-season sequences; they are pending reviews, never decided.
+2. **Two detector conditions corrected.** 2020 is the league's, not the player's, for an affiliated minor leaguer; a season bracketed by a canonical
+   transaction and game dates is not open. Every other detector is the 024 text.
+3. **The Pioneer League stays unplaced, with the reason on record.** The official record files every season DISI holds under the Rookie sport;
+   "Rookie Advanced" belongs to 2019-2020 only. A new level would contradict the record and touch every ladder; it waits for a reviewed decision.
+4. **What remains is classified.** `npm run research:development -- --causes` and `/development` say, for each open need, why it is open and what
+   evidence would close it. No outcome, transaction, WAR, cost, feature, probability or snapshot moved.
 
 ## What 051 was for
 

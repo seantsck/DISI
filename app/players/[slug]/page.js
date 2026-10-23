@@ -13,6 +13,7 @@ import {
 import { assetPath } from '../../../lib/research/asset-path.js'
 import { firstProSeasonStatus } from '../../../lib/research/development-research.js'
 import { careerSegments, historyCoverage } from '../../../lib/research/history-coverage.js'
+import { multiOrganizationSeasons } from '../../../lib/research/development-chronology.js'
 import { decisionStateLabel, expectedValueCell, realizedValueStateLabel, snapshotFreshness } from '../../../lib/decision-display.js'
 
 const loadDossier = cache(getPlayerDossier)
@@ -159,6 +160,8 @@ export default async function PlayerPage({ params }) {
   const firstProStatus = dodgersSigning ? firstProSeasonStatus(dodgersSigning, devSummary) : null
   // 051: who each affiliate belonged to, season by season; a later season with another organization is never Dodgers development
   const segments = dodgersSigning && devStints.length > 0 ? careerSegments(devStints) : null
+  // 052: seasons with two or more organizations, each read against the recorded transactions (a team change alone is never a transaction)
+  const orgSeasons = dodgersSigning && devStints.length > 0 ? multiOrganizationSeasons(devStints, transactions.filter((t) => t.record_kind !== 'PACKAGE_EVENT')) : []
 
   return (
     <main className="shell page-main dossier">
@@ -340,6 +343,34 @@ export default async function PlayerPage({ params }) {
                 : <span className="unknown">Not calculable — needs both the signing date and an exact MLB debut date</span>}
             </Fact>
           </dl>
+        )}
+        {orgSeasons.length > 0 && (
+          <div className="section-gap">
+            <h3 className="sub">Seasons with more than one organization</h3>
+            <ul className="plain-list">
+              {orgSeasons.map((m) => (
+                <li key={m.season}>
+                  <strong>{m.season}</strong>{' · '}
+                  {m.segments.map((g, i) => (
+                    <span key={g.organization}>
+                      {i > 0 && (m.state === 'BRACKETED' && m.transaction ? <span className="muted"> → recorded {humanize(m.transaction.type ?? 'transaction').toLowerCase()} {dateLabel(m.transaction.date)} → </span> : <span className="muted"> · </span>)}
+                      {g.organization} <span className="muted">({g.teams.join(', ')}{g.dated ? `; ${dateLabel(g.first_appearance)} – ${dateLabel(g.last_appearance)}` : ''})</span>
+                    </span>
+                  ))}
+                  {m.state !== 'BRACKETED' && (
+                    <span className="muted">
+                      {' · '}{m.state === 'NO_CANONICAL_TRANSACTION' || m.state === 'MORE_THAN_TWO_ORGANIZATIONS'
+                        ? 'no recorded transaction between these organizations; when the move happened is not established'
+                        : m.state === 'TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS'
+                          ? `a transaction is recorded (${dateLabel(m.transaction?.date)}); the season predates dated game logs, so the appearances stay season-level`
+                          : `a transaction is recorded (${dateLabel(m.transaction?.date)}); the game dates do not yet place the appearances around it`}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <p className="muted small-note">The transaction date, the last game before it and the first game after it are separate facts. Each organization is the parent the official record names for that team in that season.</p>
+          </div>
         )}
         {hasProgress ? (
           <>

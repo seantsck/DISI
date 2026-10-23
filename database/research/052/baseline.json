@@ -1,0 +1,88 @@
+{
+  "as_of": "2026-10-23",
+  "canonical_main": "9bf42da0f3da29c7520a91d522b6aea9535a10eb",
+  "database_status_snapshot": {
+    "dodgers_players": 220,
+    "generation_id": "8",
+    "league_benchmark_players": 102,
+    "outcome_audit_queue": 127,
+    "outcome_audits_completed": 93,
+    "signings_with_bwar": 47,
+    "signings_with_known_cost": 56,
+    "signings_with_unknown_market": 29,
+    "total_players": 322,
+    "tracked_signings": 220,
+    "verified_mlb_outcomes": 47,
+    "verified_no_mlb_outcomes": 46
+  },
+  "development": {
+    "dodgers_players_with_development_history": 212,
+    "dodgers_players_without_structured_history": 8,
+    "log_era_team_stints": 1280,
+    "log_era_team_stints_dated": 746,
+    "milestones": 1073,
+    "milestones_by_precision": {
+      "DAY": 869,
+      "SEASON": 204
+    },
+    "progression_decisions": 37,
+    "progression_decisions_by_role": {
+      "EARLY_CAMEO": 8,
+      "POST_ESTABLISHMENT_APPEARANCE": 3,
+      "REVIEW_REQUIRED": 26
+    },
+    "season_totals": 120,
+    "stints": 1859,
+    "team_stints": 1739,
+    "team_stints_without_organization": 320,
+    "unclassified_level_team_stints": 41
+  },
+  "needs": {
+    "affected_players": 85,
+    "by_need": {
+      "GAME_DATES": 45,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 51,
+      "SEASON_COVERAGE": 46,
+      "SEQUENCE_REVIEW": 5,
+      "SOURCE_CONFLICT": 0
+    },
+    "detector_rows": 347,
+    "detector_rows_by_issue": {
+      "GAME_LOG_UNAVAILABLE": 37,
+      "IDENTITY_BUT_NO_PROFESSIONAL_SEASONS": 8,
+      "LEVEL_SKIP_CAMEO_CANDIDATE": 5,
+      "MISSING_FIRST_GAME_DATE": 39,
+      "MISSING_LAST_GAME_DATE": 39,
+      "MLB_PLAYER_MISSING_PRE_MLB_EXACT_DATES": 43,
+      "MLB_PLAYER_MISSING_PRE_MLB_HISTORY": 3,
+      "MULTI_ORG_SEASON_UNVERIFIED": 22,
+      "SEASON_GAP": 36,
+      "SEASON_ONLY_MILESTONE": 41,
+      "UNKNOWN_LEVEL_CLASSIFICATION": 26,
+      "UNKNOWN_LEVEL_GAME_LOG": 8,
+      "UNRESOLVED_ORGANIZATION": 40
+    },
+    "distinct_needs": 173,
+    "players_by_need": {
+      "GAME_DATES": 45,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 51,
+      "SEASON_COVERAGE": 46,
+      "SEQUENCE_REVIEW": 5,
+      "SOURCE_CONFLICT": 0
+    }
+  },
+  "read": "production, read only as the anon role, after 050 (snapshot generation 8); 051 wrote no row",
+  "system": {
+    "audited": 93,
+    "dodgers_signings": 220,
+    "not_audited": 127,
+    "research_tasks": 349,
+    "snapshot_generation": 8,
+    "transaction_queue": 59,
+    "value_queue": 91,
+    "verified_mlb": 47,
+    "verified_no_mlb": 46
+  }
+}

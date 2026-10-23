@@ -283,7 +283,12 @@ export function dodgersAffiliationRules() {
     { teamName: 'Daytona Tortugas', seasons: [2015, 2100], organization: 'Cincinnati Reds' },
     { teamName: 'Daytona Cubs', seasons: [2010, 2014], organization: 'Chicago Cubs' },
     { teamName: 'Salt Lake Bees', seasons: [2011, 2100], organization: 'Los Angeles Angels' },
-    { teamName: 'New Orleans Zephyrs', seasons: [1999, 2016], organization: 'Houston Astros' },
+    // 052: one rule per parent, from the official team-season records (team 588). The single 1999-2016 Astros rule put the 2005-2007
+    // stints with the wrong organization.
+    { teamName: 'New Orleans Zephyrs', seasons: [1997, 2004], organization: 'Houston Astros' },
+    { teamName: 'New Orleans Zephyrs', seasons: [2005, 2006], organization: 'Washington Nationals' },
+    { teamName: 'New Orleans Zephyrs', seasons: [2007, 2008], organization: 'New York Mets' },
+    { teamName: 'New Orleans Zephyrs', seasons: [2009, 2016], organization: 'Miami Marlins' },
     // Vancouver has been Toronto's affiliate since 2011 (short-season A through
     // 2019, High-A from 2021); the club was never Oakland's in this period.
     { teamName: 'Vancouver Canadians', seasons: [2011, 2100], organization: 'Toronto Blue Jays' },

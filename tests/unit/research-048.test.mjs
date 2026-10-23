@@ -346,7 +346,8 @@ test('a sequence with no inversion yields no competing readings, and a reviewed 
 // ---- dataset / CLI plumbing ---------------------------------------------------------------------------------------------------
 
 test('the history relations are read-only public views and a table the API roles can already read; the base dataset is unchanged', () => {
-  assert.deepEqual(Object.keys(HISTORY_QUERIES), ['stints', 'milestones', 'progression', 'progressionDecisions'])
+  // 052 adds the stint keys, the transactions and the organizations a chronology check reads (tables the API roles can already read)
+  assert.deepEqual(Object.keys(HISTORY_QUERIES), ['stints', 'milestones', 'progression', 'progressionDecisions', 'stintKeys', 'transactions', 'organizations'])
   for (const sql of Object.values(HISTORY_QUERIES)) {
     assert.match(sql, /^\s*select /i)
     assert.doesNotMatch(sql, /\b(insert|update|delete|drop|alter|grant|truncate)\b/i)

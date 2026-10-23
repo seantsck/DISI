@@ -8,11 +8,15 @@
 //   npm run research:development -- --needs          # 048: the queue de-duplicated by the evidence gap each item names
 //   npm run research:development -- --review [--player slug]   # 048: the reviewer's packet for pending progression decisions (decides nothing)
 //   npm run research:development -- --no-mlb-coverage   # 051: the audited no-MLB cohort's documented path, Dodgers-affiliate and later career apart
+//   npm run research:development -- --causes [--class SOURCE_LIMITED] [--need ORGANIZATION]   # 052: every open need with its class (fact missing,
+//                                                     taxonomy gap, source-limited, human review, transaction- or identity-blocked), its cause
+//                                                     and the evidence that would close it. No priority score.
 
 import { developmentCoverage, developmentQueue, developmentRecords, timingFacts } from '../../lib/research/development-research.js'
 import { auditedNoMlbCoverage, verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
 import { developmentNeedSummary, developmentNeeds } from '../../lib/research/development-needs.js'
 import { progressionReviewPacket, renderReviewPacket } from '../../lib/research/progression-review.js'
+import { gapClassCounts, needCauses } from '../../lib/research/development-chronology.js'
 import { stableJson } from '../../lib/research/format.js'
 import { parseArgs, emit, run, int } from './lib/cli.mjs'
 import { loadDataset } from './lib/source.mjs'
@@ -29,7 +33,7 @@ function stintsByPlayer(data) {
 
 run(async () => {
   const args = parseArgs(process.argv.slice(2))
-  const wantsHistory = args['mlb-coverage'] === true || args['no-mlb-coverage'] === true || args.review === true
+  const wantsHistory = args['mlb-coverage'] === true || args['no-mlb-coverage'] === true || args.review === true || args.causes === true
   if (wantsHistory) args.history = true
   const { data } = await loadDataset(args)
   if (args.coverage === true || args.timing === true) {
@@ -80,6 +84,27 @@ run(async () => {
       summary: developmentNeedSummary(data),
       rows: needs.map((n) => ({ ...n, issues: n.issues.join(' ') })),
       columns: ['need', 'signing_year', 'full_name', 'priority', 'issues'],
+    })
+    return
+  }
+  if (args.causes === true) {
+    if (!(data.stints ?? []).length) throw new Error('No stint history in this dataset: load it from the database, or save one with --history --save.')
+    const group = (rows) => {
+      const m = new Map()
+      for (const r of rows) m.set(r.player_id, [...(m.get(r.player_id) ?? []), r])
+      return m
+    }
+    const st = stintsByPlayer(data)
+    const tx = group(data.transactions ?? [])
+    const ms = group(data.milestones ?? [])
+    const all = needCauses(developmentNeeds(data), (id) => st.get(id) ?? [], (id) => tx.get(id) ?? [], (id) => ms.get(id) ?? [])
+    const rows = all.filter((r) => (args.class && args.class !== true ? r.gap_class === String(args.class) : true) && (args.need && args.need !== true ? r.need === String(args.need) : true))
+    if (args.format === 'json') { console.log(stableJson({ counts: gapClassCounts(all), rows })); return }
+    emit(args, {
+      title: `Development research needs by cause as of ${data.asOf} (what each gap is, why it is open and what would close it; no priority score)`,
+      summary: { needs: all.length, by_class: gapClassCounts(all) },
+      rows: rows.map((r) => ({ need: r.need, class: r.gap_class, player: r.full_name ?? r.player_slug, signed: r.signing_year, cause: r.cause, closes_with: r.closes_with })),
+      columns: ['need', 'class', 'player', 'signed', 'cause', 'closes_with'],
     })
     return
   }

@@ -1,0 +1,930 @@
+{
+  "as_of": "2026-10-23",
+  "by_era": {
+    "CLASSIC_AFFILIATED_1989_2016": 30,
+    "DSL_AZL_2017_2020": 10,
+    "PRE_ACADEMY_1960_1988": 1
+  },
+  "by_league": {
+    "Pioneer League": 41
+  },
+  "by_official_sport": {
+    "16:Rookie": 41
+  },
+  "by_source_level": {
+    "ROK": 41
+  },
+  "by_team": {
+    "Billings Mustangs": 1,
+    "Great Falls Dodgers": 6,
+    "Ogden Raptors": 34
+  },
+  "decision": "TAXONOMY_LIMITED: no level is created and no stint is reclassified. The era map gains the season-aware Pioneer League rows (Rookie sport through 2020, Independent from 2021) so the classification is recorded per era, and the stints stay OTHER, unranked and counted.",
+  "finding": "Every stint the ladder cannot place is a Pioneer League season (1988-2018). The official record files every one of those seasons under the Rookie sport (16), the same sport as the Dominican Summer and complex leagues; it files the league under Rookie Advanced (5442) only in 2019 and 2020 and under the Independent sport (23) from 2021. No stint on record falls in a Rookie Advanced season, and the Pioneer League is neither an international nor a complex league, so no canonical level fits without an assumption.",
+  "official_pioneer_league_sport_by_season": [
+    {
+      "season": 1988,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=1988",
+      "sport_id": 16
+    },
+    {
+      "season": 1990,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=1990",
+      "sport_id": 16
+    },
+    {
+      "season": 1991,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=1991",
+      "sport_id": 16
+    },
+    {
+      "season": 1992,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=1992",
+      "sport_id": 16
+    },
+    {
+      "season": 2000,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2000",
+      "sport_id": 16
+    },
+    {
+      "season": 2003,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2003",
+      "sport_id": 16
+    },
+    {
+      "season": 2005,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2005",
+      "sport_id": 16
+    },
+    {
+      "season": 2006,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2006",
+      "sport_id": 16
+    },
+    {
+      "season": 2007,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2007",
+      "sport_id": 16
+    },
+    {
+      "season": 2008,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2008",
+      "sport_id": 16
+    },
+    {
+      "season": 2009,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2009",
+      "sport_id": 16
+    },
+    {
+      "season": 2010,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2010",
+      "sport_id": 16
+    },
+    {
+      "season": 2011,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2011",
+      "sport_id": 16
+    },
+    {
+      "season": 2012,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2012",
+      "sport_id": 16
+    },
+    {
+      "season": 2014,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2014",
+      "sport_id": 16
+    },
+    {
+      "season": 2015,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2015",
+      "sport_id": 16
+    },
+    {
+      "season": 2016,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2016",
+      "sport_id": 16
+    },
+    {
+      "season": 2017,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2017",
+      "sport_id": 16
+    },
+    {
+      "season": 2018,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2018",
+      "sport_id": 16
+    },
+    {
+      "season": 2019,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2019",
+      "sport_id": 5442
+    },
+    {
+      "season": 2020,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2020",
+      "sport_id": 5442
+    },
+    {
+      "season": 2021,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2021",
+      "sport_id": 23
+    },
+    {
+      "season": 2022,
+      "source": "https://statsapi.mlb.com/api/v1/league/128?season=2022",
+      "sport_id": 23
+    }
+  ],
+  "official_sports": {
+    "16": "Rookie (ROK)",
+    "23": "Independent Leagues (IND)",
+    "5442": "Rookie Advanced (ROA)"
+  },
+  "players": 26,
+  "rows": [
+    {
+      "era": "PRE_ACADEMY_1960_1988",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": null,
+      "player_slug": "jose-offerman",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 1988,
+      "source_level": "ROK",
+      "team": "Great Falls Dodgers"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "pedro-martinez",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 1990,
+      "source_level": "ROK",
+      "team": "Great Falls Dodgers"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "raul-mondesi",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 1990,
+      "source_level": "ROK",
+      "team": "Great Falls Dodgers"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "juan-castro",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 1991,
+      "source_level": "ROK",
+      "team": "Great Falls Dodgers"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "roger-cedeno",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 1992,
+      "source_level": "ROK",
+      "team": "Great Falls Dodgers"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "willy-aybar",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2000,
+      "source_level": "ROK",
+      "team": "Great Falls Dodgers"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "chin-lung-hu",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2003,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "kenley-jansen",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2005,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "ramon-troncoso",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2005,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "carlos-santana",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2006,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "elian-herrera",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2007,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "kenley-jansen",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2007,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "elian-herrera",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2008,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "pedro-baez",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2008,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "carlos-frias",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2009,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "carlos-frias",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2010,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "jose-dominguez",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2011,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "carlos-frias",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2012,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "jose-dominguez",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2014,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "julian-leon",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2014,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "lenix-osuna",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2014,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "victor-gonzalez",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2014,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "gersel-pitre",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2015,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "lenix-osuna",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2015,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "misja-harcksen",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2015,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "victor-gonzalez",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2015,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "william-soto",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2015,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "gersel-pitre",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2016,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "keibert-ruiz",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2016,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "misja-harcksen",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2016,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "CLASSIC_AFFILIATED_1989_2016",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "william-soto",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2016,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Cincinnati Reds",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Cincinnati Reds",
+      "player_slug": "hendrik-clementina",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2017,
+      "source_level": "ROK",
+      "team": "Billings Mustangs"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "carlos-rincon",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2017,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "gersel-pitre",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2017,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "hendrik-clementina",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2017,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "ronny-brito",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2017,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "starling-heredia",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2017,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "gersel-pitre",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2018,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "miguel-vargas",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2018,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "ronny-brito",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2018,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    },
+    {
+      "era": "DSL_AZL_2017_2020",
+      "league": "Pioneer League",
+      "level": "OTHER",
+      "level_classification": "UNKNOWN_ROOKIE_LEAGUE",
+      "official_league_sport_id": 16,
+      "official_team_season": {
+        "league": "Pioneer League",
+        "parent_organization": "Los Angeles Dodgers",
+        "sport": "Rookie",
+        "sport_id": 16
+      },
+      "organization": "Los Angeles Dodgers",
+      "player_slug": "victor-gonzalez",
+      "research_issue": "UNKNOWN_LEVEL_CLASSIFICATION",
+      "season": 2018,
+      "source_level": "ROK",
+      "team": "Ogden Raptors"
+    }
+  ],
+  "season_total_rows": 30,
+  "team_stints": 41
+}

@@ -289,7 +289,7 @@ test('team-less season rows are classified only when proven equal to their compo
     where p.slug = any($1) and s.stint_kind = 'SEASON_TOTAL' order by 1, 2`, [COHORT])
   assert.equal(totals.length, 14)
   for (const r of totals) assert.ok(['SAME_LEVEL', 'CROSS_LEVEL'].includes(r.season_total_basis), `${r.slug} ${r.season}`)
-  // the verifier's own sum check agrees (season_total_sum_mismatch is part of the 249)
+  // the verifier's own sum check agrees (season_total_sum_mismatch is part of the 252)
   assert.equal((await one(`select count(*)::int as n from public.player_season_stints t where t.stint_kind = 'SEASON_TOTAL' and (select count(*) from public.player_season_stints c
     where c.player_id = t.player_id and c.season = t.season and c.source_level = t.source_level and c.stint_kind = 'TEAM_STINT') < 2`)).n, 0)
 })
@@ -310,11 +310,11 @@ test('idempotent: a rerun adds nothing, runs no second refresh and changes no ta
   assert.deepEqual(await tableHashes(), before)
 })
 
-test('the verifier passes on 001-047 (249 hard checks) and each snapshot check is clean', async () => {
+test('the verifier passes on 001-047 (252 hard checks) and each snapshot check is clean', async () => {
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 249)
+  assert.equal(full.hard.length, 252)
 })
 
 test('guards: 047 refuses a database where its facts no longer apply, and changes nothing when it refuses', async () => {

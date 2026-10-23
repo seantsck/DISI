@@ -1,0 +1,3904 @@
+{
+  "as_of": "2026-10-23",
+  "automatic_interpretive_decisions": 0,
+  "new_pending_reviews_from_exact_dates": [
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "A_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first High-A appearance 2007-04-05, first Low-A appearance 2007-04-20. Inside one season the lower level's first appearance comes after the higher one's. Whether the higher-level games were an early cameo or the lower-level games a reassignment is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides.",
+      "slug": "elian-herrera"
+    },
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "HIGH_A_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first High-A appearance 2007-04-05, first Low-A appearance 2007-04-20. Inside one season the lower level's first appearance comes after the higher one's. Whether the higher-level games were an early cameo or the lower-level games a reassignment is not decided; none of these levels is accepted as a developmental arrival until a reviewer decides.",
+      "slug": "elian-herrera"
+    },
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "AAA_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first MLB appearance 2014-05-05, first Triple-A appearance 2014-05-26. Inside one season the lower level's first appearance comes after the higher one's. Whether the later minor-league games were a rehabilitation assignment, an option or development is not decided; the level is not accepted as a developmental arrival until a reviewer decides.",
+      "slug": "pedro-baez"
+    },
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "AAA_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first MLB appearance 2008-04-01, first Triple-A appearance 2008-04-18. Inside one season the lower level's first appearance comes after the higher one's. Whether the later minor-league games were a rehabilitation assignment, an option or development is not decided; the level is not accepted as a developmental arrival until a reviewer decides.",
+      "slug": "ramon-troncoso"
+    },
+    {
+      "as_of_date": "2026-10-23",
+      "confidence": "LOW",
+      "decision_basis": "GAME_LOG_REVIEW",
+      "event_code": "AAA_DEBUT",
+      "notes": "Unresolved sequence made visible by exact game-log dates (official gameLog, read 2026-10-23): first MLB appearance 2025-03-19, first Triple-A appearance 2025-08-14. Inside one season the lower level's first appearance comes after the higher one's. Whether the later minor-league games were a rehabilitation assignment, an option or development is not decided; the level is not accepted as a developmental arrival until a reviewer decides.",
+      "slug": "roki-sasaki"
+    }
+  ],
+  "pending_decisions_before": 26,
+  "players": [
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2026-09-11",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2026
+        },
+        {
+          "date": "2026-05-02",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2026
+        },
+        {
+          "date": "2022-06-06",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2022
+        }
+      ],
+      "level_skip_cameo_candidate": true,
+      "mlb_debut": null,
+      "non_monotonic_without_decision": false,
+      "pending_events": [],
+      "player_slug": "agustin-acosta",
+      "stints": [
+        {
+          "first": "2022-06-06",
+          "games": 46,
+          "last": "2022-08-23",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "DSL LAD Bautista"
+        },
+        {
+          "first": "2023-06-05",
+          "games": 3,
+          "last": "2023-06-08",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "DSL LAD Mega"
+        },
+        {
+          "first": "2024-06-04",
+          "games": 43,
+          "last": "2024-08-20",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "DSL LAD Mega"
+        },
+        {
+          "first": "2025-06-02",
+          "games": 38,
+          "last": "2025-08-19",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "DSL LAD Mega"
+        },
+        {
+          "first": "2026-05-02",
+          "games": 21,
+          "last": "2026-07-23",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2026,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2026-09-11",
+          "games": 1,
+          "last": "2026-09-11",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2026,
+          "team": "Tulsa Drillers"
+        }
+      ],
+      "transactions": []
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2025-09-05",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2025
+        },
+        {
+          "date": "2024-08-16",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2024
+        },
+        {
+          "date": "2025-07-09",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2025
+        },
+        {
+          "date": "2023-06-09",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2023
+        },
+        {
+          "date": "2021-07-13",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2021
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": null,
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "AAA_DEBUT",
+        "AA_DEBUT",
+        "A_DEBUT"
+      ],
+      "player_slug": "carlos-avila",
+      "stints": [
+        {
+          "first": "2021-07-13",
+          "games": 21,
+          "last": "2021-10-01",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2021,
+          "team": "DSL Dodgers Shoemaker"
+        },
+        {
+          "first": "2022-06-06",
+          "games": 35,
+          "last": "2022-08-22",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "DSL LAD Bautista"
+        },
+        {
+          "first": "2023-06-09",
+          "games": 4,
+          "last": "2023-08-22",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2024-05-07",
+          "games": 30,
+          "last": "2024-07-23",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2024-08-16",
+          "games": 6,
+          "last": "2024-09-15",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2025-05-06",
+          "games": 19,
+          "last": "2025-07-07",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2025-07-09",
+          "games": 5,
+          "last": "2025-07-24",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2025-06-14",
+          "games": 1,
+          "last": "2025-06-14",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2025-09-05",
+          "games": 3,
+          "last": "2025-09-07",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Oklahoma City Comets"
+        }
+      ],
+      "transactions": [
+        "2026-03-31 RELEASE LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2014-04-30",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2014
+        },
+        {
+          "date": "2013-07-31",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2013
+        },
+        {
+          "date": "2013-04-07",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2013
+        },
+        {
+          "date": "2008-06-23",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2008
+        },
+        {
+          "date": "2007-06-05",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        },
+        {
+          "date": "2011-07-08",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2011
+        },
+        {
+          "date": "2014-08-04",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2014
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2014-08-04",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "A_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "player_slug": "carlos-frias",
+      "stints": [
+        {
+          "first": "2007-06-05",
+          "games": 13,
+          "last": "2007-08-20",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "DSL Dodgers"
+        },
+        {
+          "first": "2008-06-23",
+          "games": 11,
+          "last": "2008-08-23",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": "2009-06-23",
+          "games": 14,
+          "last": "2009-08-29",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "AZL Dodgers"
+        },
+        {
+          "first": "2009-09-03",
+          "games": 2,
+          "last": "2009-09-08",
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2010-06-22",
+          "games": 13,
+          "last": "2010-09-04",
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2011-07-08",
+          "games": 12,
+          "last": "2011-08-30",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2012-05-27",
+          "games": 3,
+          "last": "2012-06-03",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2012,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2012-06-20",
+          "games": 15,
+          "last": "2012-09-03",
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2012,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2013-04-07",
+          "games": 12,
+          "last": "2013-06-10",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2013-06-15",
+          "games": 8,
+          "last": "2013-07-24",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2013-07-31",
+          "games": 8,
+          "last": "2013-08-26",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2014-04-03",
+          "games": 5,
+          "last": "2014-04-24",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2014,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2014-04-30",
+          "games": 16,
+          "last": "2014-07-25",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2014,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2014-08-04",
+          "games": 15,
+          "last": "2014-09-27",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2014,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2015-07-26",
+          "games": 2,
+          "last": "2015-07-31",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2015-04-10",
+          "games": 8,
+          "last": "2015-09-06",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2015-04-26",
+          "games": 17,
+          "last": "2015-09-30",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2016-05-12",
+          "games": 2,
+          "last": "2016-05-17",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2016-05-22",
+          "games": 8,
+          "last": "2016-07-03",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2016-07-07",
+          "games": 1,
+          "last": "2016-07-07",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2017-04-07",
+          "games": 30,
+          "last": "2017-09-03",
+          "level": "AAA",
+          "organization": "Cleveland Guardians",
+          "season": 2017,
+          "team": "Columbus Clippers"
+        }
+      ],
+      "transactions": [
+        "2017-01-30 TRADE LAD -> CLE"
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2010-04-08",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2010
+        },
+        {
+          "date": "2008-08-31",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2008
+        },
+        {
+          "date": "2007-04-05",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        },
+        {
+          "date": null,
+          "event": "COMPLEX_DEBUT",
+          "precision": "SEASON",
+          "season": 2005
+        },
+        {
+          "date": "2006-05-15",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2006
+        },
+        {
+          "date": "2010-06-11",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2010
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2010-06-11",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "A_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "player_slug": "carlos-santana",
+      "stints": [
+        {
+          "first": null,
+          "games": 32,
+          "last": null,
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": "2006-05-15",
+          "games": 54,
+          "last": "2006-07-24",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "Vero Beach Dodgers"
+        },
+        {
+          "first": "2006-07-28",
+          "games": 37,
+          "last": "2006-09-07",
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2007-04-05",
+          "games": 86,
+          "last": "2007-09-03",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2008-04-03",
+          "games": 99,
+          "last": "2008-07-24",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2008-07-28",
+          "games": 29,
+          "last": "2008-08-30",
+          "level": "HIGH_A",
+          "organization": "Cleveland Guardians",
+          "season": 2008,
+          "team": "Kinston Indians"
+        },
+        {
+          "first": "2008-08-31",
+          "games": 2,
+          "last": "2008-09-01",
+          "level": "AA",
+          "organization": "Cleveland Guardians",
+          "season": 2008,
+          "team": "Akron Aeros"
+        },
+        {
+          "first": "2009-04-08",
+          "games": 130,
+          "last": "2009-09-07",
+          "level": "AA",
+          "organization": "Cleveland Guardians",
+          "season": 2009,
+          "team": "Akron Aeros"
+        },
+        {
+          "first": "2010-04-08",
+          "games": 57,
+          "last": "2010-06-10",
+          "level": "AAA",
+          "organization": "Cleveland Guardians",
+          "season": 2010,
+          "team": "Columbus Clippers"
+        },
+        {
+          "first": "2010-06-11",
+          "games": 46,
+          "last": "2010-08-02",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2010,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2011-04-01",
+          "games": 155,
+          "last": "2011-09-28",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2011,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2012-06-04",
+          "games": 1,
+          "last": "2012-06-04",
+          "level": "LOW_A",
+          "organization": "Cleveland Guardians",
+          "season": 2012,
+          "team": "Lake County Captains"
+        },
+        {
+          "first": "2012-04-05",
+          "games": 143,
+          "last": "2012-10-02",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2012,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2013-04-02",
+          "games": 154,
+          "last": "2013-09-29",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2013,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2014-03-31",
+          "games": 152,
+          "last": "2014-09-28",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2014,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2015-04-06",
+          "games": 154,
+          "last": "2015-10-04",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2015,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2016-04-05",
+          "games": 158,
+          "last": "2016-10-02",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2016,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2017-04-03",
+          "games": 154,
+          "last": "2017-10-01",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2017,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2018-03-29",
+          "games": 161,
+          "last": "2018-09-30",
+          "level": "MLB",
+          "organization": "Philadelphia Phillies",
+          "season": 2018,
+          "team": "Philadelphia Phillies"
+        },
+        {
+          "first": "2019-03-28",
+          "games": 158,
+          "last": "2019-09-29",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2019,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2020-07-24",
+          "games": 60,
+          "last": "2020-09-27",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2020,
+          "team": "Cleveland Indians"
+        },
+        {
+          "first": "2021-04-01",
+          "games": 158,
+          "last": "2021-10-03",
+          "level": "MLB",
+          "organization": "Kansas City Royals",
+          "season": 2021,
+          "team": "Kansas City Royals"
+        },
+        {
+          "first": "2022-04-07",
+          "games": 52,
+          "last": "2022-06-26",
+          "level": "MLB",
+          "organization": "Kansas City Royals",
+          "season": 2022,
+          "team": "Kansas City Royals"
+        },
+        {
+          "first": "2022-06-28",
+          "games": 79,
+          "last": "2022-10-05",
+          "level": "MLB",
+          "organization": "Seattle Mariners",
+          "season": 2022,
+          "team": "Seattle Mariners"
+        },
+        {
+          "first": "2023-07-29",
+          "games": 52,
+          "last": "2023-10-01",
+          "level": "MLB",
+          "organization": "Milwaukee Brewers",
+          "season": 2023,
+          "team": "Milwaukee Brewers"
+        },
+        {
+          "first": "2023-03-30",
+          "games": 94,
+          "last": "2023-07-26",
+          "level": "MLB",
+          "organization": "Pittsburgh Pirates",
+          "season": 2023,
+          "team": "Pittsburgh Pirates"
+        },
+        {
+          "first": "2024-03-28",
+          "games": 150,
+          "last": "2024-09-29",
+          "level": "MLB",
+          "organization": "Minnesota Twins",
+          "season": 2024,
+          "team": "Minnesota Twins"
+        },
+        {
+          "first": "2025-09-01",
+          "games": 8,
+          "last": "2025-09-23",
+          "level": "MLB",
+          "organization": "Chicago Cubs",
+          "season": 2025,
+          "team": "Chicago Cubs"
+        },
+        {
+          "first": "2025-03-27",
+          "games": 116,
+          "last": "2025-08-25",
+          "level": "MLB",
+          "organization": "Cleveland Guardians",
+          "season": 2025,
+          "team": "Cleveland Guardians"
+        },
+        {
+          "first": "2026-06-05",
+          "games": 5,
+          "last": "2026-06-22",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Arizona Diamondbacks",
+          "season": 2026,
+          "team": "ACL D-backs"
+        },
+        {
+          "first": "2026-07-02",
+          "games": 2,
+          "last": "2026-07-04",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Atlanta Braves",
+          "season": 2026,
+          "team": "FCL Braves"
+        },
+        {
+          "first": "2026-07-07",
+          "games": 27,
+          "last": "2026-08-15",
+          "level": "AAA",
+          "organization": "Atlanta Braves",
+          "season": 2026,
+          "team": "Gwinnett Stripers"
+        },
+        {
+          "first": "2026-05-02",
+          "games": 10,
+          "last": "2026-06-13",
+          "level": "AAA",
+          "organization": "Arizona Diamondbacks",
+          "season": 2026,
+          "team": "Reno Aces"
+        },
+        {
+          "first": "2026-03-26",
+          "games": 8,
+          "last": "2026-04-05",
+          "level": "MLB",
+          "organization": "Arizona Diamondbacks",
+          "season": 2026,
+          "team": "Arizona Diamondbacks"
+        }
+      ],
+      "transactions": [
+        "2008-07-26 TRADE LAD -> CLE"
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2024-05-17",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2024
+        },
+        {
+          "date": "2024-05-22",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2024
+        },
+        {
+          "date": "2023-04-08",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2023
+        },
+        {
+          "date": "2022-06-18",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2022
+        },
+        {
+          "date": "2021-07-15",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2021
+        },
+        {
+          "date": "2024-04-09",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2024
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": null,
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "AAA_DEBUT",
+        "AA_DEBUT"
+      ],
+      "player_slug": "christian-romero",
+      "stints": [
+        {
+          "first": "2021-07-15",
+          "games": 10,
+          "last": "2021-09-13",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2021,
+          "team": "DSL Dodgers Shoemaker"
+        },
+        {
+          "first": "2022-06-18",
+          "games": 10,
+          "last": "2022-08-20",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2023-04-08",
+          "games": 20,
+          "last": "2023-09-05",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2024-04-09",
+          "games": 15,
+          "last": "2024-09-06",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2024-05-22",
+          "games": 6,
+          "last": "2024-08-02",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2024-05-17",
+          "games": 4,
+          "last": "2024-07-05",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "Oklahoma City Baseball Club"
+        },
+        {
+          "first": "2025-04-08",
+          "games": 16,
+          "last": "2025-07-23",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2025-07-31",
+          "games": 9,
+          "last": "2025-09-20",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Oklahoma City Comets"
+        },
+        {
+          "first": "2026-03-29",
+          "games": 30,
+          "last": "2026-09-18",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2026,
+          "team": "Oklahoma City Comets"
+        }
+      ],
+      "transactions": []
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2025-05-18",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2025
+        },
+        {
+          "date": "2025-04-05",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2025
+        },
+        {
+          "date": "2024-06-03",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2024
+        },
+        {
+          "date": "2022-06-07",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2022
+        }
+      ],
+      "level_skip_cameo_candidate": true,
+      "mlb_debut": null,
+      "non_monotonic_without_decision": false,
+      "pending_events": [],
+      "player_slug": "domingo-geronimo",
+      "stints": [
+        {
+          "first": "2022-06-07",
+          "games": 16,
+          "last": "2022-08-18",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "DSL LAD Mega"
+        },
+        {
+          "first": "2023-06-05",
+          "games": 19,
+          "last": "2023-08-21",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "DSL LAD Bautista"
+        },
+        {
+          "first": "2024-06-03",
+          "games": 15,
+          "last": "2024-07-25",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2025-05-03",
+          "games": 3,
+          "last": "2025-05-13",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2025-04-05",
+          "games": 26,
+          "last": "2025-09-05",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2025-05-18",
+          "games": 1,
+          "last": "2025-05-18",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2026-04-02",
+          "games": 11,
+          "last": "2026-05-15",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2026,
+          "team": "Ontario Tower Buzzers"
+        }
+      ],
+      "transactions": [
+        "2026-05-21 RELEASE LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2010-07-05",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2010
+        },
+        {
+          "date": "2010-04-08",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2010
+        },
+        {
+          "date": "2007-04-20",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        },
+        {
+          "date": "2006-06-20",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2006
+        },
+        {
+          "date": "2007-04-05",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        },
+        {
+          "date": "2012-05-15",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2012
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2012-05-15",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "A_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "player_slug": "elian-herrera",
+      "stints": [
+        {
+          "first": "2006-06-20",
+          "games": 36,
+          "last": "2006-08-19",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": "2007-04-20",
+          "games": 9,
+          "last": "2007-05-04",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2007-04-05",
+          "games": 11,
+          "last": "2007-04-17",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2007-06-19",
+          "games": 50,
+          "last": "2007-09-06",
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2008-08-18",
+          "games": 4,
+          "last": "2008-08-30",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2008-06-17",
+          "games": 33,
+          "last": "2008-08-16",
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2009-04-09",
+          "games": 13,
+          "last": "2009-05-05",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2009-05-14",
+          "games": 99,
+          "last": "2009-09-07",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2010-04-08",
+          "games": 97,
+          "last": "2010-09-06",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2010-07-05",
+          "games": 25,
+          "last": "2010-08-03",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2011-04-08",
+          "games": 116,
+          "last": "2011-09-04",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2012-04-08",
+          "games": 64,
+          "last": "2012-09-03",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2012,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2012-05-15",
+          "games": 67,
+          "last": "2012-10-03",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2012,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2013-04-04",
+          "games": 108,
+          "last": "2013-09-02",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2013-05-08",
+          "games": 4,
+          "last": "2013-07-28",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2014-04-04",
+          "games": 33,
+          "last": "2014-07-11",
+          "level": "AAA",
+          "organization": "Milwaukee Brewers",
+          "season": 2014,
+          "team": "Nashville Sounds"
+        },
+        {
+          "first": "2014-04-18",
+          "games": 69,
+          "last": "2014-09-28",
+          "level": "MLB",
+          "organization": "Milwaukee Brewers",
+          "season": 2014,
+          "team": "Milwaukee Brewers"
+        },
+        {
+          "first": "2015-04-09",
+          "games": 56,
+          "last": "2015-07-28",
+          "level": "AAA",
+          "organization": "Milwaukee Brewers",
+          "season": 2015,
+          "team": "Colorado Springs Sky Sox"
+        },
+        {
+          "first": "2015-04-21",
+          "games": 83,
+          "last": "2015-09-19",
+          "level": "MLB",
+          "organization": "Milwaukee Brewers",
+          "season": 2015,
+          "team": "Milwaukee Brewers"
+        },
+        {
+          "first": "2016-04-07",
+          "games": 28,
+          "last": "2016-05-11",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Oklahoma City Dodgers"
+        }
+      ],
+      "transactions": [
+        "2013-11-04 WAIVER LAD -> ",
+        "2016-05-14 RELEASE LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": null,
+          "event": "HIGH_A_DEBUT",
+          "precision": "SEASON",
+          "season": 1995
+        },
+        {
+          "date": "1995-05-02",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 1995
+        }
+      ],
+      "level_skip_cameo_candidate": true,
+      "mlb_debut": "1995-05-02",
+      "non_monotonic_without_decision": false,
+      "pending_events": [],
+      "player_slug": "hideo-nomo",
+      "stints": [
+        {
+          "first": null,
+          "games": 1,
+          "last": null,
+          "level": "HIGH_A",
+          "organization": null,
+          "season": 1995,
+          "team": "Bakersfield Blaze"
+        },
+        {
+          "first": null,
+          "games": 28,
+          "last": null,
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 1995,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": null,
+          "games": 33,
+          "last": null,
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 1996,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": null,
+          "games": 33,
+          "last": null,
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 1997,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": null,
+          "games": 12,
+          "last": null,
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 1998,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": null,
+          "games": 17,
+          "last": null,
+          "level": "MLB",
+          "organization": "New York Mets",
+          "season": 1998,
+          "team": "New York Mets"
+        },
+        {
+          "first": null,
+          "games": 1,
+          "last": null,
+          "level": "AA",
+          "organization": "Milwaukee Brewers",
+          "season": 1999,
+          "team": "Huntsville Stars"
+        },
+        {
+          "first": null,
+          "games": 3,
+          "last": null,
+          "level": "AAA",
+          "organization": "Chicago Cubs",
+          "season": 1999,
+          "team": "Iowa Cubs"
+        },
+        {
+          "first": null,
+          "games": 29,
+          "last": null,
+          "level": "MLB",
+          "organization": "Milwaukee Brewers",
+          "season": 1999,
+          "team": "Milwaukee Brewers"
+        },
+        {
+          "first": null,
+          "games": 32,
+          "last": null,
+          "level": "MLB",
+          "organization": "Detroit Tigers",
+          "season": 2000,
+          "team": "Detroit Tigers"
+        },
+        {
+          "first": null,
+          "games": 33,
+          "last": null,
+          "level": "MLB",
+          "organization": "Boston Red Sox",
+          "season": 2001,
+          "team": "Boston Red Sox"
+        },
+        {
+          "first": null,
+          "games": 34,
+          "last": null,
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2002,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": null,
+          "games": 33,
+          "last": null,
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2003,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": null,
+          "games": 4,
+          "last": null,
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2004,
+          "team": "Las Vegas 51s"
+        },
+        {
+          "first": null,
+          "games": 18,
+          "last": null,
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2004,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": null,
+          "games": 7,
+          "last": null,
+          "level": "AAA",
+          "organization": "New York Yankees",
+          "season": 2005,
+          "team": "Columbus Clippers"
+        },
+        {
+          "first": null,
+          "games": 19,
+          "last": null,
+          "level": "MLB",
+          "organization": "Tampa Bay Rays",
+          "season": 2005,
+          "team": "Tampa Bay Devil Rays"
+        },
+        {
+          "first": "2006-04-17",
+          "games": 1,
+          "last": "2006-04-17",
+          "level": "AAA",
+          "organization": "Chicago White Sox",
+          "season": 2006,
+          "team": "Charlotte Knights"
+        },
+        {
+          "first": "2008-04-10",
+          "games": 3,
+          "last": "2008-04-18",
+          "level": "MLB",
+          "organization": "Kansas City Royals",
+          "season": 2008,
+          "team": "Kansas City Royals"
+        }
+      ],
+      "transactions": [
+        "1998-06-04 TRADE LAD -> NYM"
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": null,
+          "event": "AA_DEBUT",
+          "precision": "SEASON",
+          "season": 2005
+        },
+        {
+          "date": null,
+          "event": "A_DEBUT",
+          "precision": "SEASON",
+          "season": 2004
+        },
+        {
+          "date": null,
+          "event": "COMPLEX_DEBUT",
+          "precision": "SEASON",
+          "season": 2001
+        },
+        {
+          "date": null,
+          "event": "HIGH_A_DEBUT",
+          "precision": "SEASON",
+          "season": 2000
+        },
+        {
+          "date": "2005-09-02",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2005
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2005-09-02",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "A_DEBUT",
+        "COMPLEX_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "player_slug": "hung-chih-kuo",
+      "stints": [
+        {
+          "first": null,
+          "games": 1,
+          "last": null,
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2000,
+          "team": "San Bernardino Stampede"
+        },
+        {
+          "first": null,
+          "games": 7,
+          "last": null,
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2001,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": null,
+          "games": 3,
+          "last": null,
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2002,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": null,
+          "games": 4,
+          "last": null,
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2002,
+          "team": "Vero Beach Dodgers"
+        },
+        {
+          "first": null,
+          "games": 3,
+          "last": null,
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2004,
+          "team": "Columbus Catfish"
+        },
+        {
+          "first": null,
+          "games": 11,
+          "last": null,
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "Vero Beach Dodgers"
+        },
+        {
+          "first": null,
+          "games": 17,
+          "last": null,
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "Jacksonville Suns"
+        },
+        {
+          "first": null,
+          "games": 9,
+          "last": null,
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2006-05-01",
+          "games": 24,
+          "last": "2006-08-27",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "Las Vegas 51s"
+        },
+        {
+          "first": "2006-04-03",
+          "games": 28,
+          "last": "2006-09-29",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2007-04-29",
+          "games": 7,
+          "last": "2007-05-28",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Las Vegas 51s"
+        },
+        {
+          "first": "2007-05-15",
+          "games": 8,
+          "last": "2007-06-29",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2008-04-02",
+          "games": 42,
+          "last": "2008-09-14",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2009-06-30",
+          "games": 3,
+          "last": "2009-07-06",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "AZL Dodgers"
+        },
+        {
+          "first": "2009-07-18",
+          "games": 4,
+          "last": "2009-07-24",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2009-07-09",
+          "games": 2,
+          "last": "2009-07-11",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2009-04-06",
+          "games": 35,
+          "last": "2009-10-03",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2010-04-15",
+          "games": 2,
+          "last": "2010-04-18",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2010-04-22",
+          "games": 56,
+          "last": "2010-10-03",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2011-04-25",
+          "games": 5,
+          "last": "2011-06-11",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2011-06-15",
+          "games": 2,
+          "last": "2011-06-16",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2011-03-31",
+          "games": 40,
+          "last": "2011-09-24",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Los Angeles Dodgers"
+        }
+      ],
+      "transactions": [
+        "2011-12-12 FREE_AGENCY LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2015-08-31",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2015
+        },
+        {
+          "date": "2015-04-10",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2015
+        },
+        {
+          "date": "2013-05-26",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2013
+        },
+        {
+          "date": "2015-07-10",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2015
+        },
+        {
+          "date": "2014-04-04",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2014
+        },
+        {
+          "date": "2016-05-27",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2016
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2016-05-27",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "A_DEBUT",
+        "COMPLEX_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "player_slug": "julio-urias",
+      "stints": [
+        {
+          "first": "2013-05-26",
+          "games": 18,
+          "last": "2013-08-28",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2014-04-04",
+          "games": 25,
+          "last": "2014-08-29",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2014,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2015-07-10",
+          "games": 2,
+          "last": "2015-07-16",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "AZL Dodgers"
+        },
+        {
+          "first": "2015-07-21",
+          "games": 1,
+          "last": "2015-07-21",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2015-04-10",
+          "games": 13,
+          "last": "2015-08-25",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2015-08-31",
+          "games": 2,
+          "last": "2015-09-05",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2016-04-11",
+          "games": 11,
+          "last": "2016-07-31",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2016-05-27",
+          "games": 18,
+          "last": "2016-09-29",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2017-04-10",
+          "games": 6,
+          "last": "2017-06-10",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2017,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2017-04-27",
+          "games": 5,
+          "last": "2017-05-20",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2017,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2018-07-30",
+          "games": 2,
+          "last": "2018-08-04",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "AZL Dodgers"
+        },
+        {
+          "first": "2018-08-10",
+          "games": 4,
+          "last": "2018-08-27",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2018-08-31",
+          "games": 2,
+          "last": "2018-09-03",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2018-09-15",
+          "games": 3,
+          "last": "2018-09-30",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2019-08-29",
+          "games": 1,
+          "last": "2019-08-29",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2019,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2019-04-01",
+          "games": 37,
+          "last": "2019-09-29",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2019,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2020-07-26",
+          "games": 11,
+          "last": "2020-09-23",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2020,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2021-04-04",
+          "games": 32,
+          "last": "2021-10-02",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2021,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2022-04-10",
+          "games": 31,
+          "last": "2022-10-04",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2023-06-25",
+          "games": 1,
+          "last": "2023-06-25",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2023-03-30",
+          "games": 21,
+          "last": "2023-09-01",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "Los Angeles Dodgers"
+        }
+      ],
+      "transactions": [
+        "2023-11-02 FREE_AGENCY LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2009-05-30",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2009
+        },
+        {
+          "date": "2010-05-15",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2010
+        },
+        {
+          "date": "2007-04-06",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        },
+        {
+          "date": null,
+          "event": "COMPLEX_DEBUT",
+          "precision": "SEASON",
+          "season": 2005
+        },
+        {
+          "date": "2009-04-09",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2009
+        },
+        {
+          "date": "2010-07-24",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2010
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2010-07-24",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "AAA_DEBUT",
+        "AA_DEBUT"
+      ],
+      "player_slug": "kenley-jansen",
+      "stints": [
+        {
+          "first": null,
+          "games": 34,
+          "last": null,
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": null,
+          "games": 3,
+          "last": null,
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2006-06-20",
+          "games": 35,
+          "last": "2006-08-19",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": "2007-04-06",
+          "games": 20,
+          "last": "2007-05-27",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2007-06-19",
+          "games": 53,
+          "last": "2007-09-06",
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2008-04-03",
+          "games": 79,
+          "last": "2008-09-01",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2009-04-09",
+          "games": 38,
+          "last": "2009-09-06",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2009-05-30",
+          "games": 8,
+          "last": "2009-06-29",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2010-04-09",
+          "games": 11,
+          "last": "2010-05-10",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2010-05-15",
+          "games": 22,
+          "last": "2010-07-20",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2010-07-24",
+          "games": 26,
+          "last": "2010-10-03",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2011-08-21",
+          "games": 2,
+          "last": "2011-08-23",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2011-05-04",
+          "games": 5,
+          "last": "2011-06-16",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2011-04-02",
+          "games": 51,
+          "last": "2011-09-28",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2012-04-05",
+          "games": 65,
+          "last": "2012-10-03",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2012,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2013-04-02",
+          "games": 75,
+          "last": "2013-09-29",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2014-03-22",
+          "games": 68,
+          "last": "2014-09-28",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2014,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2015-05-01",
+          "games": 6,
+          "last": "2015-05-13",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2015-05-15",
+          "games": 54,
+          "last": "2015-10-03",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2016-04-05",
+          "games": 72,
+          "last": "2016-10-01",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2017-04-05",
+          "games": 65,
+          "last": "2017-09-30",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2017,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2018-03-30",
+          "games": 69,
+          "last": "2018-10-01",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2019-03-29",
+          "games": 62,
+          "last": "2019-09-28",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2019,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2020-07-26",
+          "games": 27,
+          "last": "2020-09-27",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2020,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2021-04-03",
+          "games": 69,
+          "last": "2021-10-01",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2021,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2022-04-08",
+          "games": 65,
+          "last": "2022-10-04",
+          "level": "MLB",
+          "organization": "Atlanta Braves",
+          "season": 2022,
+          "team": "Atlanta Braves"
+        },
+        {
+          "first": "2023-04-01",
+          "games": 51,
+          "last": "2023-09-12",
+          "level": "MLB",
+          "organization": "Boston Red Sox",
+          "season": 2023,
+          "team": "Boston Red Sox"
+        },
+        {
+          "first": "2024-03-28",
+          "games": 54,
+          "last": "2024-09-22",
+          "level": "MLB",
+          "organization": "Boston Red Sox",
+          "season": 2024,
+          "team": "Boston Red Sox"
+        },
+        {
+          "first": "2025-03-29",
+          "games": 62,
+          "last": "2025-09-26",
+          "level": "MLB",
+          "organization": "Los Angeles Angels",
+          "season": 2025,
+          "team": "Los Angeles Angels"
+        },
+        {
+          "first": "2026-06-10",
+          "games": 1,
+          "last": "2026-06-10",
+          "level": "AAA",
+          "organization": "Detroit Tigers",
+          "season": 2026,
+          "team": "Toledo Mud Hens"
+        },
+        {
+          "first": "2026-03-27",
+          "games": 50,
+          "last": "2026-09-25",
+          "level": "MLB",
+          "organization": "Detroit Tigers",
+          "season": 2026,
+          "team": "Detroit Tigers"
+        }
+      ],
+      "transactions": [
+        "2021-11-03 FREE_AGENCY LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2025-04-25",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2025
+        },
+        {
+          "date": "2024-05-09",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2024
+        },
+        {
+          "date": "2022-06-14",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2022
+        },
+        {
+          "date": "2024-09-01",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2024
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": null,
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "A_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "player_slug": "nicolas-cruz",
+      "stints": [
+        {
+          "first": "2022-08-10",
+          "games": 1,
+          "last": "2022-08-10",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "DSL LAD Bautista"
+        },
+        {
+          "first": "2022-06-14",
+          "games": 14,
+          "last": "2022-08-20",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "DSL LAD Mega"
+        },
+        {
+          "first": "2023-06-17",
+          "games": 11,
+          "last": "2023-08-12",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "DSL LAD Mega"
+        },
+        {
+          "first": "2024-05-09",
+          "games": 12,
+          "last": "2024-07-25",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2024-09-01",
+          "games": 3,
+          "last": "2024-09-08",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2025-04-25",
+          "games": 23,
+          "last": "2025-07-19",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2025-04-20",
+          "games": 14,
+          "last": "2025-09-06",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2026-04-07",
+          "games": 37,
+          "last": "2026-09-04",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2026,
+          "team": "Great Lakes Loons"
+        }
+      ],
+      "transactions": []
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2021-09-22",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2021
+        },
+        {
+          "date": "2019-05-30",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2019
+        },
+        {
+          "date": "2017-04-07",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2017
+        },
+        {
+          "date": "2019-06-24",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2019
+        },
+        {
+          "date": "2016-06-04",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2016
+        },
+        {
+          "date": "2019-04-04",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2019
+        },
+        {
+          "date": "2021-10-02",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2021
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2021-10-02",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "A_DEBUT",
+        "COMPLEX_DEBUT"
+      ],
+      "player_slug": "oneil-cruz",
+      "stints": [
+        {
+          "first": "2016-06-04",
+          "games": 55,
+          "last": "2016-08-26",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "DSL Dodgers 1"
+        },
+        {
+          "first": "2017-04-07",
+          "games": 89,
+          "last": "2017-07-27",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2017,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2017-08-05",
+          "games": 16,
+          "last": "2017-09-03",
+          "level": "LOW_A",
+          "organization": "Pittsburgh Pirates",
+          "season": 2017,
+          "team": "West Virginia Power"
+        },
+        {
+          "first": "2018-04-05",
+          "games": 103,
+          "last": "2018-08-13",
+          "level": "LOW_A",
+          "organization": "Pittsburgh Pirates",
+          "season": 2018,
+          "team": "West Virginia Power"
+        },
+        {
+          "first": "2019-06-24",
+          "games": 3,
+          "last": "2019-06-28",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Pittsburgh Pirates",
+          "season": 2019,
+          "team": "GCL Pirates"
+        },
+        {
+          "first": "2019-04-04",
+          "games": 35,
+          "last": "2019-07-28",
+          "level": "HIGH_A",
+          "organization": "Pittsburgh Pirates",
+          "season": 2019,
+          "team": "Bradenton Marauders"
+        },
+        {
+          "first": "2019-05-30",
+          "games": 35,
+          "last": "2019-09-02",
+          "level": "AA",
+          "organization": "Pittsburgh Pirates",
+          "season": 2019,
+          "team": "Altoona Curve"
+        },
+        {
+          "first": "2021-05-04",
+          "games": 62,
+          "last": "2021-09-18",
+          "level": "AA",
+          "organization": "Pittsburgh Pirates",
+          "season": 2021,
+          "team": "Altoona Curve"
+        },
+        {
+          "first": "2021-09-22",
+          "games": 6,
+          "last": "2021-09-30",
+          "level": "AAA",
+          "organization": "Pittsburgh Pirates",
+          "season": 2021,
+          "team": "Indianapolis Indians"
+        },
+        {
+          "first": "2021-10-02",
+          "games": 2,
+          "last": "2021-10-03",
+          "level": "MLB",
+          "organization": "Pittsburgh Pirates",
+          "season": 2021,
+          "team": "Pittsburgh Pirates"
+        },
+        {
+          "first": "2022-04-05",
+          "games": 55,
+          "last": "2022-06-19",
+          "level": "AAA",
+          "organization": "Pittsburgh Pirates",
+          "season": 2022,
+          "team": "Indianapolis Indians"
+        },
+        {
+          "first": "2022-06-20",
+          "games": 87,
+          "last": "2022-10-05",
+          "level": "MLB",
+          "organization": "Pittsburgh Pirates",
+          "season": 2022,
+          "team": "Pittsburgh Pirates"
+        },
+        {
+          "first": "2023-03-30",
+          "games": 9,
+          "last": "2023-04-09",
+          "level": "MLB",
+          "organization": "Pittsburgh Pirates",
+          "season": 2023,
+          "team": "Pittsburgh Pirates"
+        },
+        {
+          "first": "2024-03-28",
+          "games": 146,
+          "last": "2024-09-29",
+          "level": "MLB",
+          "organization": "Pittsburgh Pirates",
+          "season": 2024,
+          "team": "Pittsburgh Pirates"
+        },
+        {
+          "first": "2025-08-23",
+          "games": 2,
+          "last": "2025-08-24",
+          "level": "AA",
+          "organization": "Pittsburgh Pirates",
+          "season": 2025,
+          "team": "Altoona Curve"
+        },
+        {
+          "first": "2025-03-27",
+          "games": 135,
+          "last": "2025-09-28",
+          "level": "MLB",
+          "organization": "Pittsburgh Pirates",
+          "season": 2025,
+          "team": "Pittsburgh Pirates"
+        },
+        {
+          "first": "2026-08-11",
+          "games": 4,
+          "last": "2026-08-15",
+          "level": "AA",
+          "organization": "Pittsburgh Pirates",
+          "season": 2026,
+          "team": "Altoona Curve"
+        },
+        {
+          "first": "2026-08-07",
+          "games": 2,
+          "last": "2026-08-09",
+          "level": "AAA",
+          "organization": "Pittsburgh Pirates",
+          "season": 2026,
+          "team": "Indianapolis Indians"
+        },
+        {
+          "first": "2026-03-26",
+          "games": 97,
+          "last": "2026-09-26",
+          "level": "MLB",
+          "organization": "Pittsburgh Pirates",
+          "season": 2026,
+          "team": "Pittsburgh Pirates"
+        }
+      ],
+      "transactions": [
+        "2017-07-31 TRADE LAD -> PIT"
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2014-05-26",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2014
+        },
+        {
+          "date": "2010-08-31",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2010
+        },
+        {
+          "date": "2008-04-03",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2008
+        },
+        {
+          "date": "2007-06-19",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        },
+        {
+          "date": "2009-04-09",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2009
+        },
+        {
+          "date": "2014-05-05",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2014
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2014-05-05",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "AAA_DEBUT"
+      ],
+      "player_slug": "pedro-baez",
+      "stints": [
+        {
+          "first": "2007-06-19",
+          "games": 53,
+          "last": "2007-08-27",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": "2008-04-03",
+          "games": 59,
+          "last": "2008-06-14",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Great Lakes Loons"
+        },
+        {
+          "first": "2008-06-17",
+          "games": 61,
+          "last": "2008-09-04",
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2009-04-09",
+          "games": 79,
+          "last": "2009-07-19",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2010-06-21",
+          "games": 2,
+          "last": "2010-06-22",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "AZL Dodgers"
+        },
+        {
+          "first": "2010-04-08",
+          "games": 75,
+          "last": "2010-08-30",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2010-08-31",
+          "games": 7,
+          "last": "2010-09-06",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2011-04-07",
+          "games": 32,
+          "last": "2011-05-10",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2012-07-12",
+          "games": 50,
+          "last": "2012-09-03",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2012,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2012-04-05",
+          "games": 78,
+          "last": "2012-07-09",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2012,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2013-04-05",
+          "games": 32,
+          "last": "2013-07-08",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2013-07-12",
+          "games": 17,
+          "last": "2013-08-31",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2013,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2014-04-03",
+          "games": 17,
+          "last": "2014-05-22",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2014,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2014-05-26",
+          "games": 23,
+          "last": "2014-08-02",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2014,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2014-05-05",
+          "games": 20,
+          "last": "2014-09-28",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2014,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2015-06-19",
+          "games": 3,
+          "last": "2015-06-23",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2015-04-07",
+          "games": 52,
+          "last": "2015-10-04",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2016-04-05",
+          "games": 73,
+          "last": "2016-10-02",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2017-04-07",
+          "games": 3,
+          "last": "2017-04-12",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2017,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2017-04-14",
+          "games": 66,
+          "last": "2017-09-30",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2017,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2018-07-23",
+          "games": 1,
+          "last": "2018-07-23",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2018-07-17",
+          "games": 2,
+          "last": "2018-07-20",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2018-03-31",
+          "games": 55,
+          "last": "2018-10-01",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2019-03-29",
+          "games": 71,
+          "last": "2019-09-26",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2019,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2020-07-23",
+          "games": 18,
+          "last": "2020-09-27",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2020,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2021-07-15",
+          "games": 2,
+          "last": "2021-07-18",
+          "level": "LOW_A",
+          "organization": "Houston Astros",
+          "season": 2021,
+          "team": "Fayetteville Woodpeckers"
+        },
+        {
+          "first": "2021-07-23",
+          "games": 9,
+          "last": "2021-09-27",
+          "level": "AAA",
+          "organization": "Houston Astros",
+          "season": 2021,
+          "team": "Sugar Land Skeeters"
+        },
+        {
+          "first": "2021-08-10",
+          "games": 4,
+          "last": "2021-08-21",
+          "level": "MLB",
+          "organization": "Houston Astros",
+          "season": 2021,
+          "team": "Houston Astros"
+        },
+        {
+          "first": "2022-07-05",
+          "games": 5,
+          "last": "2022-07-22",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2022-07-27",
+          "games": 7,
+          "last": "2022-08-19",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "Oklahoma City Dodgers"
+        },
+        {
+          "first": "2022-04-08",
+          "games": 3,
+          "last": "2022-04-19",
+          "level": "MLB",
+          "organization": "Houston Astros",
+          "season": 2022,
+          "team": "Houston Astros"
+        }
+      ],
+      "transactions": [
+        "2020-10-28 FREE_AGENCY LAD -> ",
+        "2022-08-20 RELEASE LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2008-04-18",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2008
+        },
+        {
+          "date": "2007-05-21",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        },
+        {
+          "date": null,
+          "event": "A_DEBUT",
+          "precision": "SEASON",
+          "season": 2005
+        },
+        {
+          "date": "2006-04-07",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2006
+        },
+        {
+          "date": "2008-04-01",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2008
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2008-04-01",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "AAA_DEBUT"
+      ],
+      "player_slug": "ramon-troncoso",
+      "stints": [
+        {
+          "first": null,
+          "games": 13,
+          "last": null,
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "Columbus Catfish"
+        },
+        {
+          "first": null,
+          "games": 29,
+          "last": null,
+          "level": "OTHER",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "Ogden Raptors"
+        },
+        {
+          "first": "2006-05-30",
+          "games": 23,
+          "last": "2006-08-16",
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "Columbus Catfish"
+        },
+        {
+          "first": "2006-04-07",
+          "games": 18,
+          "last": "2006-09-03",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "Vero Beach Dodgers"
+        },
+        {
+          "first": "2007-04-06",
+          "games": 16,
+          "last": "2007-05-18",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Inland Empire 66ers"
+        },
+        {
+          "first": "2007-05-21",
+          "games": 35,
+          "last": "2007-09-03",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Jacksonville Suns"
+        },
+        {
+          "first": "2008-04-18",
+          "games": 22,
+          "last": "2008-06-16",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Las Vegas 51s"
+        },
+        {
+          "first": "2008-04-01",
+          "games": 32,
+          "last": "2008-09-28",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2008,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2009-04-10",
+          "games": 73,
+          "last": "2009-10-04",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2010-07-06",
+          "games": 15,
+          "last": "2010-08-28",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2010-04-07",
+          "games": 52,
+          "last": "2010-10-02",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2010,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2011-04-08",
+          "games": 35,
+          "last": "2011-09-02",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2011-04-16",
+          "games": 18,
+          "last": "2011-09-28",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2011,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2012-04-07",
+          "games": 45,
+          "last": "2012-09-01",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2012,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2013-04-07",
+          "games": 21,
+          "last": "2013-06-04",
+          "level": "AAA",
+          "organization": "Chicago White Sox",
+          "season": 2013,
+          "team": "Charlotte Knights"
+        },
+        {
+          "first": "2013-06-07",
+          "games": 29,
+          "last": "2013-09-29",
+          "level": "MLB",
+          "organization": "Chicago White Sox",
+          "season": 2013,
+          "team": "Chicago White Sox"
+        },
+        {
+          "first": "2014-04-04",
+          "games": 24,
+          "last": "2014-07-09",
+          "level": "AAA",
+          "organization": "Kansas City Royals",
+          "season": 2014,
+          "team": "Omaha Storm Chasers"
+        },
+        {
+          "first": "2015-04-23",
+          "games": 2,
+          "last": "2015-05-20",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2015-04-25",
+          "games": 29,
+          "last": "2015-09-01",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2015,
+          "team": "Oklahoma City Dodgers"
+        }
+      ],
+      "transactions": [
+        "2012-11-02 FREE_AGENCY LAD -> ",
+        "2015-11-06 FREE_AGENCY LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2026-07-11",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2026
+        },
+        {
+          "date": "2026-05-12",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2026
+        },
+        {
+          "date": "2024-06-04",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2024
+        }
+      ],
+      "level_skip_cameo_candidate": true,
+      "mlb_debut": null,
+      "non_monotonic_without_decision": false,
+      "pending_events": [],
+      "player_slug": "reyli-mariano",
+      "stints": [
+        {
+          "first": "2024-06-04",
+          "games": 45,
+          "last": "2024-08-20",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2024,
+          "team": "DSL LAD Mega"
+        },
+        {
+          "first": "2025-06-02",
+          "games": 42,
+          "last": "2025-08-19",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "DSL LAD Mega"
+        },
+        {
+          "first": "2026-05-12",
+          "games": 39,
+          "last": "2026-07-23",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2026,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2026-07-11",
+          "games": 2,
+          "last": "2026-07-12",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2026,
+          "team": "Tulsa Drillers"
+        }
+      ],
+      "transactions": []
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2025-08-14",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2025
+        },
+        {
+          "date": "2025-03-19",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2025
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2025-03-19",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "AAA_DEBUT"
+      ],
+      "player_slug": "roki-sasaki",
+      "stints": [
+        {
+          "first": "2025-08-14",
+          "games": 7,
+          "last": "2025-09-21",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Oklahoma City Comets"
+        },
+        {
+          "first": "2025-03-19",
+          "games": 10,
+          "last": "2025-09-26",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2025,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2026-03-30",
+          "games": 26,
+          "last": "2026-09-27",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2026,
+          "team": "Los Angeles Dodgers"
+        }
+      ],
+      "transactions": []
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2007-04-05",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        },
+        {
+          "date": null,
+          "event": "AA_DEBUT",
+          "precision": "SEASON",
+          "season": 2005
+        },
+        {
+          "date": null,
+          "event": "A_DEBUT",
+          "precision": "SEASON",
+          "season": 2004
+        },
+        {
+          "date": null,
+          "event": "COMPLEX_DEBUT",
+          "precision": "SEASON",
+          "season": 2003
+        },
+        {
+          "date": null,
+          "event": "HIGH_A_DEBUT",
+          "precision": "SEASON",
+          "season": 2003
+        },
+        {
+          "date": "2007-05-22",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2007
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2007-05-22",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "A_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "player_slug": "tony-abreu",
+      "stints": [
+        {
+          "first": null,
+          "games": 45,
+          "last": null,
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2003,
+          "team": "GCL Dodgers"
+        },
+        {
+          "first": null,
+          "games": 3,
+          "last": null,
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2003,
+          "team": "Vero Beach Dodgers"
+        },
+        {
+          "first": null,
+          "games": 104,
+          "last": null,
+          "level": "LOW_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2004,
+          "team": "Columbus Catfish"
+        },
+        {
+          "first": null,
+          "games": 11,
+          "last": null,
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2004,
+          "team": "Vero Beach Dodgers"
+        },
+        {
+          "first": null,
+          "games": 96,
+          "last": null,
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "Vero Beach Dodgers"
+        },
+        {
+          "first": null,
+          "games": 24,
+          "last": null,
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2005,
+          "team": "Jacksonville Suns"
+        },
+        {
+          "first": "2006-04-06",
+          "games": 118,
+          "last": "2006-09-04",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2006,
+          "team": "Jacksonville Suns"
+        },
+        {
+          "first": "2007-04-05",
+          "games": 54,
+          "last": "2007-09-03",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Las Vegas 51s"
+        },
+        {
+          "first": "2007-05-22",
+          "games": 59,
+          "last": "2007-09-23",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2007,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2009-05-05",
+          "games": 23,
+          "last": "2009-06-25",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Chattanooga Lookouts"
+        },
+        {
+          "first": "2009-06-11",
+          "games": 54,
+          "last": "2009-09-07",
+          "level": "AAA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Albuquerque Isotopes"
+        },
+        {
+          "first": "2009-08-07",
+          "games": 6,
+          "last": "2009-08-23",
+          "level": "MLB",
+          "organization": "Los Angeles Dodgers",
+          "season": 2009,
+          "team": "Los Angeles Dodgers"
+        },
+        {
+          "first": "2010-06-11",
+          "games": 24,
+          "last": "2010-08-31",
+          "level": "AAA",
+          "organization": "Arizona Diamondbacks",
+          "season": 2010,
+          "team": "Reno Aces"
+        },
+        {
+          "first": "2010-04-06",
+          "games": 81,
+          "last": "2010-10-03",
+          "level": "MLB",
+          "organization": "Arizona Diamondbacks",
+          "season": 2010,
+          "team": "Arizona Diamondbacks"
+        },
+        {
+          "first": "2011-04-09",
+          "games": 120,
+          "last": "2011-09-04",
+          "level": "AAA",
+          "organization": "Arizona Diamondbacks",
+          "season": 2011,
+          "team": "Reno Aces"
+        },
+        {
+          "first": "2012-04-05",
+          "games": 103,
+          "last": "2012-08-04",
+          "level": "AAA",
+          "organization": "Kansas City Royals",
+          "season": 2012,
+          "team": "Omaha Storm Chasers"
+        },
+        {
+          "first": "2012-08-06",
+          "games": 22,
+          "last": "2012-10-02",
+          "level": "MLB",
+          "organization": "Kansas City Royals",
+          "season": 2012,
+          "team": "Kansas City Royals"
+        },
+        {
+          "first": "2013-05-03",
+          "games": 22,
+          "last": "2013-08-30",
+          "level": "AAA",
+          "organization": "San Francisco Giants",
+          "season": 2013,
+          "team": "Fresno Grizzlies"
+        },
+        {
+          "first": "2013-06-08",
+          "games": 53,
+          "last": "2013-09-29",
+          "level": "MLB",
+          "organization": "San Francisco Giants",
+          "season": 2013,
+          "team": "San Francisco Giants"
+        },
+        {
+          "first": "2014-06-20",
+          "games": 1,
+          "last": "2014-06-20",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "San Francisco Giants",
+          "season": 2014,
+          "team": "AZL Giants"
+        },
+        {
+          "first": "2014-04-03",
+          "games": 80,
+          "last": "2014-08-22",
+          "level": "AAA",
+          "organization": "San Francisco Giants",
+          "season": 2014,
+          "team": "Fresno Grizzlies"
+        },
+        {
+          "first": "2014-07-25",
+          "games": 3,
+          "last": "2014-07-28",
+          "level": "MLB",
+          "organization": "San Francisco Giants",
+          "season": 2014,
+          "team": "San Francisco Giants"
+        }
+      ],
+      "transactions": [
+        "2009-08-31 TRADE LAD -> ARI"
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2023-09-17",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2023
+        },
+        {
+          "date": "2023-06-16",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2023
+        },
+        {
+          "date": "2022-07-02",
+          "event": "DSL_DEBUT",
+          "precision": "DAY",
+          "season": 2022
+        }
+      ],
+      "level_skip_cameo_candidate": true,
+      "mlb_debut": null,
+      "non_monotonic_without_decision": false,
+      "pending_events": [],
+      "player_slug": "umar-male",
+      "stints": [
+        {
+          "first": "2022-07-02",
+          "games": 18,
+          "last": "2022-08-22",
+          "level": "INTERNATIONAL_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2022,
+          "team": "DSL LAD Bautista"
+        },
+        {
+          "first": "2023-06-16",
+          "games": 6,
+          "last": "2023-08-01",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "ACL Dodgers"
+        },
+        {
+          "first": "2023-09-17",
+          "games": 1,
+          "last": "2023-09-17",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "Tulsa Drillers"
+        }
+      ],
+      "transactions": [
+        "2024-03-11 RELEASE LAD -> "
+      ]
+    },
+    {
+      "decision": "A PERSON DECIDES. DISI records no interpretation: an early cameo, a post-establishment appearance and a regression are alternatives, never inferred.",
+      "level_debuts": [
+        {
+          "date": "2021-05-04",
+          "event": "AAA_DEBUT",
+          "precision": "DAY",
+          "season": 2021
+        },
+        {
+          "date": "2017-08-01",
+          "event": "AA_DEBUT",
+          "precision": "DAY",
+          "season": 2017
+        },
+        {
+          "date": "2019-08-22",
+          "event": "A_DEBUT",
+          "precision": "DAY",
+          "season": 2019
+        },
+        {
+          "date": "2016-07-16",
+          "event": "COMPLEX_DEBUT",
+          "precision": "DAY",
+          "season": 2016
+        },
+        {
+          "date": "2016-04-07",
+          "event": "HIGH_A_DEBUT",
+          "precision": "DAY",
+          "season": 2016
+        },
+        {
+          "date": "2022-08-02",
+          "event": "MLB_DEBUT",
+          "precision": "DAY",
+          "season": 2022
+        }
+      ],
+      "level_skip_cameo_candidate": false,
+      "mlb_debut": "2022-08-02",
+      "non_monotonic_without_decision": false,
+      "pending_events": [
+        "AA_DEBUT",
+        "A_DEBUT",
+        "HIGH_A_DEBUT"
+      ],
+      "player_slug": "yusniel-diaz",
+      "stints": [
+        {
+          "first": "2016-07-16",
+          "games": 3,
+          "last": "2016-07-19",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "AZL Dodgers"
+        },
+        {
+          "first": "2016-04-07",
+          "games": 82,
+          "last": "2016-09-05",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2016,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2017-04-07",
+          "games": 83,
+          "last": "2017-07-31",
+          "level": "HIGH_A",
+          "organization": "Los Angeles Dodgers",
+          "season": 2017,
+          "team": "Rancho Cucamonga Quakes"
+        },
+        {
+          "first": "2017-08-01",
+          "games": 31,
+          "last": "2017-09-04",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2017,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2018-07-20",
+          "games": 38,
+          "last": "2018-09-02",
+          "level": "AA",
+          "organization": "Baltimore Orioles",
+          "season": 2018,
+          "team": "Bowie Baysox"
+        },
+        {
+          "first": "2018-04-19",
+          "games": 59,
+          "last": "2018-07-13",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2018,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2019-08-22",
+          "games": 3,
+          "last": "2019-08-24",
+          "level": "LOW_A",
+          "organization": "Baltimore Orioles",
+          "season": 2019,
+          "team": "Aberdeen IronBirds"
+        },
+        {
+          "first": "2019-05-29",
+          "games": 6,
+          "last": "2019-06-03",
+          "level": "HIGH_A",
+          "organization": "Baltimore Orioles",
+          "season": 2019,
+          "team": "Frederick Keys"
+        },
+        {
+          "first": "2019-04-04",
+          "games": 76,
+          "last": "2019-09-02",
+          "level": "AA",
+          "organization": "Baltimore Orioles",
+          "season": 2019,
+          "team": "Bowie Baysox"
+        },
+        {
+          "first": "2021-06-15",
+          "games": 11,
+          "last": "2021-08-08",
+          "level": "AA",
+          "organization": "Baltimore Orioles",
+          "season": 2021,
+          "team": "Bowie Baysox"
+        },
+        {
+          "first": "2021-05-04",
+          "games": 54,
+          "last": "2021-10-03",
+          "level": "AAA",
+          "organization": "Baltimore Orioles",
+          "season": 2021,
+          "team": "Norfolk Tides"
+        },
+        {
+          "first": "2022-06-17",
+          "games": 2,
+          "last": "2022-06-18",
+          "level": "COMPLEX_ROOKIE",
+          "organization": "Baltimore Orioles",
+          "season": 2022,
+          "team": "FCL Orioles"
+        },
+        {
+          "first": "2022-06-21",
+          "games": 5,
+          "last": "2022-06-26",
+          "level": "HIGH_A",
+          "organization": "Baltimore Orioles",
+          "season": 2022,
+          "team": "Aberdeen IronBirds"
+        },
+        {
+          "first": "2022-04-05",
+          "games": 70,
+          "last": "2022-09-27",
+          "level": "AAA",
+          "organization": "Baltimore Orioles",
+          "season": 2022,
+          "team": "Norfolk Tides"
+        },
+        {
+          "first": "2022-08-02",
+          "games": 1,
+          "last": "2022-08-02",
+          "level": "MLB",
+          "organization": "Baltimore Orioles",
+          "season": 2022,
+          "team": "Baltimore Orioles"
+        },
+        {
+          "first": "2023-04-06",
+          "games": 94,
+          "last": "2023-09-16",
+          "level": "AA",
+          "organization": "Los Angeles Dodgers",
+          "season": 2023,
+          "team": "Tulsa Drillers"
+        },
+        {
+          "first": "2024-03-31",
+          "games": 20,
+          "last": "2024-05-10",
+          "level": "AAA",
+          "organization": "San Francisco Giants",
+          "season": 2024,
+          "team": "Sacramento River Cats"
+        }
+      ],
+      "transactions": [
+        "2018-07-18 TRADE LAD -> BAL",
+        "2023-11-06 FREE_AGENCY LAD -> "
+      ]
+    }
+  ],
+  "resolved_by_objective_evidence": 0,
+  "rule": "Every pending progression decision and every heuristic candidate, with the facts a reviewer needs. 052 decides none: PENDING REVIEW != NEGATIVE DEVELOPMENT EVENT; POST-ESTABLISHMENT LOWER-LEVEL APPEARANCE != DEVELOPMENTAL REGRESSION."
+}
