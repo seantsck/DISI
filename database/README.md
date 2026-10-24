@@ -65,6 +65,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 54. `050_international_benchmark_support_expansion.sql` — international benchmark expansion and probability-support audit (see the 050 section below). 051 added no migration.
 55. `052_development_taxonomy_chronology_resolution.sql` — development taxonomy and chronology resolution (data plus one view definition: no table, enum, function, grant or policy): every team stint's organization from the official team record for its own team id and season (319 resolved, 3 corrected), exact first / last appearance dates for 528 log-era stints and 101 level debuts from the official game log, 11 dated first professional games, 5 pending reviews for within-season sequences the dates expose, the Pioneer League per era in the level-era map, and two research-queue conditions corrected (the cancelled 2020 minor-league season; seasons bracketed by a canonical transaction). Built from `database/research/052/`; exact rollback `database/release/sql/rollback-052.sql`.
 56. `053_transaction_chronology_resolution.sql` — transaction and chronology resolution (data plus one view definition: no table, enum, function, grant or policy): ten Dodgers transactions the official MLB transaction log or Retrosheet states (Baez 2022, Park 2008, Vizcaino 1997 and 2000 with Leyritz's exit, Daal 2001-02, Castro 2010), and the research queue's multi-organization condition read in the player's direction with the Dodgers end of a move (see the 053 section below).
+57. `054_full_career_transaction_history.sql` — full-career transaction history (one table, one view, one contract row; no function, grant beyond SELECT, or ledger change): `player_career_transactions` holds a player's sourced moves between clubs other than the Dodgers, `v_player_career_transactions` streams both layers labelled, and the research queue reads career history for a move between two other clubs (see the 054 section below).
 
 ## 017 research-database layer
 
@@ -387,6 +388,21 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Left open on purpose.** The Pioneer League has no ladder level (the official record files every season DISI holds under the Rookie sport);
   team changes without a canonical transaction; seasons before structured records or game logs; foreign professional dates
   (`database/research/052/architecture.md`).
+
+## 054 full-career transaction history
+
+- **Why a new layer.** `transaction_events` is the Dodgers asset ledger: every event is recorded from the Dodgers' side and the control-interval,
+  exit, package, lineage, realization and research-queue views read it so. A move between two other clubs written there would read as a Dodgers exit.
+- **`player_career_transactions`.** One sourced movement fact per row, in the player's direction (`TRADE`, `WAIVER_CLAIM`, `PURCHASE` name both
+  clubs; `RELEASE` has no destination; `FREE_AGENT_SIGNING` no origin; a CHECK fixes the shape), with its source and source row. Organizations are
+  `organizations` ids and never a Dodgers organization. RLS, a read policy, SELECT-only grants. No package, return, value or attribution column.
+- **`v_player_career_transactions`.** The player's stream: ledger rows in his direction labelled `DODGERS_LEDGER`, career rows `CAREER_HISTORY`.
+  In the product contract (48 relations); the dossier and `/development` read it for chronology only.
+- **The detector.** `MULTI_ORG_SEASON_UNVERIFIED` also closes a two-club dated season on one career explanation: a direct move inside the bracket, or
+  an exit from the first club and a later entry to the second, both inside it. The rollback restores the 053 text byte for byte.
+- **Snapshots.** The executive snapshot counts the product contract: one refresh, one new generation.
+- **Verifier.** Three checks (258): `career_transaction_dodgers_ledger_overlap_violations`, `career_transaction_shape_violations`,
+  `career_transaction_asset_leakage_violations`; `EXPECTATIONS_THROUGH_053` keeps 155 views and 78 tables.
 
 ## 053 transaction and chronology resolution
 

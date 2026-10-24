@@ -22,6 +22,7 @@ import { developmentNeedSummary, developmentNeeds } from '../../lib/research/dev
 import { progressionReviewPacket, renderReviewPacket } from '../../lib/research/progression-review.js'
 import { gapClassCounts, isBracketedSeason, multiOrganizationClass, multiOrganizationSeasons, needCauses } from '../../lib/research/development-chronology.js'
 import { stableJson } from '../../lib/research/format.js'
+import { chronologyTransactions } from '../../lib/research/dataset.js'
 import { parseArgs, emit, run, int } from './lib/cli.mjs'
 import { loadDataset } from './lib/source.mjs'
 
@@ -99,7 +100,7 @@ run(async () => {
       return m
     }
     const st = stintsByPlayer(data)
-    const tx = group(data.transactions ?? [])
+    const tx = group(chronologyTransactions(data))
     const ms = group(data.milestones ?? [])
     const all = needCauses(developmentNeeds(data), (id) => st.get(id) ?? [], (id) => tx.get(id) ?? [], (id) => ms.get(id) ?? [])
     const rows = all.filter((r) => (args.class && args.class !== true ? r.gap_class === String(args.class) : true) && (args.need && args.need !== true ? r.need === String(args.need) : true))
@@ -115,7 +116,7 @@ run(async () => {
   if (args.chronology === true) {
     if (!(data.stints ?? []).length) throw new Error('No stint history in this dataset: load it from the database, or save one with --history --save.')
     const tx = new Map()
-    for (const t of data.transactions ?? []) tx.set(t.player_id, [...(tx.get(t.player_id) ?? []), t])
+    for (const t of chronologyTransactions(data)) tx.set(t.player_id, [...(tx.get(t.player_id) ?? []), t])
     const scope = args.scope && args.scope !== true ? String(args.scope) : null
     const player = args.player && args.player !== true ? String(args.player) : null
     const all = []

@@ -415,8 +415,11 @@ export default async function DevelopmentPage() {
                 Rookie sport but which are neither an international nor a complex league; they stay on record, unranked, until a reviewed decision.
                 <strong> Waits on a transaction</strong>: a season with two organizations and no recorded transaction between them; a team change is never treated as one.
                 {transactionScope.total > 0 && <> {transactionScope.later === transactionScope.total ? `All ${transactionScope.total}` : `${transactionScope.later} of the ${transactionScope.total}`} wait
-                on a move between two other clubs after the player left the Dodgers: DISI records Dodgers transactions only, so those stay open even where the other
-                club&rsquo;s transaction is on the official record.</>}
+                on a move between two other clubs after the player left the Dodgers with no recorded career move.</>}
+                A move between two other clubs is read from <strong>career history</strong>, kept apart from the <strong>Dodgers ledger</strong>: the ledger
+                holds Dodgers asset transactions (exits, acquisitions, packages, returns) and is the only layer organizational value reads; career history holds
+                the player&rsquo;s moves between other clubs (a trade, or a release and a later signing, two facts) and explains chronology only. A recorded
+                move in a season before dated game logs leaves that season source-limited.
                 The cancelled 2020 minor-league season is not counted as a missing season, and a season is not open when a recorded transaction falls between the
                 two clubs&rsquo; game dates: a trade, or the Dodgers end of the move (a release before the other club&rsquo;s first game, a signing after its last).
                 A release is never read as a trade, and the other club&rsquo;s signing is not implied.

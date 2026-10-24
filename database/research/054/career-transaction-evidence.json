@@ -1,0 +1,920 @@
+{
+  "as_of": "2026-10-24",
+  "events": [
+    {
+      "date": "2022-06-27",
+      "evidence": {
+        "date": "2022-06-27",
+        "description": "Seattle Mariners traded RHP Wyatt Mills and RHP William Fleming to Kansas City Royals for 1B Carlos Santana and cash.",
+        "from_team": "Kansas City Royals",
+        "mlb_log_id": 633466,
+        "to_team": "Seattle Mariners",
+        "type_code": "TR"
+      },
+      "from": "KC",
+      "historical_label": "Traded",
+      "key": "CAREER_20220627_TRADE_KC_SEA_CARLOS_SANTANA",
+      "player_slug": "carlos-santana",
+      "season": 2022,
+      "source_reference": "MLB transaction 633466",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=467793",
+      "to": "SEA",
+      "type": "TRADE"
+    },
+    {
+      "date": "2023-07-27",
+      "evidence": {
+        "date": "2023-07-27",
+        "description": "Pittsburgh Pirates traded 1B Carlos Santana to Milwaukee Brewers for SS Jhonny Severino.",
+        "from_team": "Pittsburgh Pirates",
+        "mlb_log_id": 715038,
+        "to_team": "Milwaukee Brewers",
+        "type_code": "TR"
+      },
+      "from": "PIT",
+      "historical_label": "Traded",
+      "key": "CAREER_20230727_TRADE_PIT_MIL_CARLOS_SANTANA",
+      "player_slug": "carlos-santana",
+      "season": 2023,
+      "source_reference": "MLB transaction 715038",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=467793",
+      "to": "MIL",
+      "type": "TRADE"
+    },
+    {
+      "date": "2025-08-28",
+      "evidence": {
+        "date": "2025-08-28",
+        "description": "Cleveland Guardians released 1B Carlos Santana.",
+        "from_team": null,
+        "mlb_log_id": 866773,
+        "to_team": "Cleveland Guardians",
+        "type_code": "REL"
+      },
+      "from": "CLE",
+      "historical_label": "Released",
+      "key": "CAREER_20250828_RELEASE_CLE_NONE_CARLOS_SANTANA",
+      "player_slug": "carlos-santana",
+      "season": 2025,
+      "source_reference": "MLB transaction 866773",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=467793",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2025-09-01",
+      "evidence": {
+        "date": "2025-09-01",
+        "description": "Chicago Cubs signed free agent 1B Carlos Santana.",
+        "from_team": null,
+        "mlb_log_id": 867250,
+        "to_team": "Chicago Cubs",
+        "type_code": "SFA"
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20250901_FREE_AGENT_SIGNING_NONE_CHC_CARLOS_SANTANA",
+      "player_slug": "carlos-santana",
+      "season": 2025,
+      "source_reference": "MLB transaction 867250",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=467793",
+      "to": "CHC",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2026-06-26",
+      "evidence": {
+        "date": "2026-06-26",
+        "description": "Arizona Diamondbacks released 1B Carlos Santana.",
+        "from_team": null,
+        "mlb_log_id": 922945,
+        "to_team": "Arizona Diamondbacks",
+        "type_code": "REL"
+      },
+      "from": "ARI",
+      "historical_label": "Released",
+      "key": "CAREER_20260626_RELEASE_ARI_NONE_CARLOS_SANTANA",
+      "player_slug": "carlos-santana",
+      "season": 2026,
+      "source_reference": "MLB transaction 922945",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=467793",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2026-06-28",
+      "evidence": {
+        "date": "2026-06-28",
+        "description": "Atlanta Braves signed free agent 1B Carlos Santana to a minor league contract.",
+        "from_team": null,
+        "mlb_log_id": 924086,
+        "to_team": "Atlanta Braves",
+        "type_code": "SFA"
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20260628_FREE_AGENT_SIGNING_NONE_ATL_CARLOS_SANTANA",
+      "player_slug": "carlos-santana",
+      "season": 2026,
+      "source_reference": "MLB transaction 924086",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=467793",
+      "to": "ATL",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2005-07-30",
+      "evidence": {
+        "retrosheet_row": "\"20050730\",,,,,63729,\"parkc002\",\"T \",\"TEX\",\"AL\",\"SDN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 63729
+      },
+      "from": "TEX",
+      "historical_label": "Traded",
+      "key": "CAREER_20050730_TRADE_TEX_SD_CHAN_HO_PARK",
+      "player_slug": "chan-ho-park",
+      "season": 2005,
+      "source_reference": "Retrosheet transaction 63729",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "SD",
+      "type": "TRADE"
+    },
+    {
+      "date": "2007-06-03",
+      "evidence": {
+        "retrosheet_row": "\"20070603\",,,,,39970,\"parkc002\",\"R \",\"NYN\",\"NL\",\"\",\"\",,,,",
+        "retrosheet_transaction_id": 39970
+      },
+      "from": "NYM",
+      "historical_label": "Released",
+      "key": "CAREER_20070603_RELEASE_NYM_NONE_CHAN_HO_PARK",
+      "player_slug": "chan-ho-park",
+      "season": 2007,
+      "source_reference": "Retrosheet transaction 39970",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2007-06-12",
+      "evidence": {
+        "retrosheet_row": "\"20070612\",,,,,39971,\"parkc002\",\"F \",\"\",\"\",\"HOU\",\"NL\",,,,",
+        "retrosheet_transaction_id": 39971
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20070612_FREE_AGENT_SIGNING_NONE_HOU_CHAN_HO_PARK",
+      "player_slug": "chan-ho-park",
+      "season": 2007,
+      "source_reference": "Retrosheet transaction 39971",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "HOU",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2010-08-04",
+      "evidence": {
+        "date": "2010-08-04",
+        "description": "Pittsburgh Pirates claimed RHP Chan Ho Park off waivers from New York Yankees.",
+        "from_team": "New York Yankees",
+        "mlb_log_id": 65586,
+        "to_team": "Pittsburgh Pirates",
+        "type_code": "CLW"
+      },
+      "from": "NYY",
+      "historical_label": "Claimed off waivers",
+      "key": "CAREER_20100804_WAIVER_CLAIM_NYY_PIT_CHAN_HO_PARK",
+      "player_slug": "chan-ho-park",
+      "season": 2010,
+      "source_reference": "MLB transaction 65586",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=120221",
+      "to": "PIT",
+      "type": "WAIVER_CLAIM"
+    },
+    {
+      "date": "1963-05-08",
+      "evidence": {
+        "retrosheet_row": "\"19630508\",,,,,60348,\"fernc102\",\"T \",\"DET\",\"AL\",\"MLN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 60348
+      },
+      "from": "DET",
+      "historical_label": "Traded",
+      "key": "CAREER_19630508_TRADE_DET_ATL_CHICO_FERNANDEZ",
+      "player_slug": "chico-fernandez",
+      "season": 1963,
+      "source_reference": "Retrosheet transaction 60348",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "ATL",
+      "type": "TRADE"
+    },
+    {
+      "date": "1963-05-08",
+      "evidence": {
+        "retrosheet_row": "\"19630508\",,,,,60349,\"fernc102\",\"T \",\"MLN\",\"NL\",\"NYN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 60349
+      },
+      "from": "ATL",
+      "historical_label": "Traded",
+      "key": "CAREER_19630508_TRADE_ATL_NYM_CHICO_FERNANDEZ",
+      "player_slug": "chico-fernandez",
+      "season": 1963,
+      "source_reference": "Retrosheet transaction 60349",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "NYM",
+      "type": "TRADE"
+    },
+    {
+      "date": "2025-07-23",
+      "evidence": {
+        "date": "2025-07-23",
+        "description": "St. Paul Saints released C Diego Cartaya.",
+        "from_team": null,
+        "mlb_log_id": 857600,
+        "to_team": "St. Paul Saints",
+        "type_code": "REL"
+      },
+      "from": "MIN",
+      "historical_label": "Released",
+      "key": "CAREER_20250723_RELEASE_MIN_NONE_DIEGO_CARTAYA",
+      "player_slug": "diego-cartaya",
+      "season": 2025,
+      "source_reference": "MLB transaction 857600",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=682616",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2025-07-29",
+      "evidence": {
+        "date": "2025-07-29",
+        "description": "San Francisco Giants signed free agent C Diego Cartaya.",
+        "from_team": null,
+        "mlb_log_id": 859876,
+        "to_team": "San Francisco Giants",
+        "type_code": "SFA"
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20250729_FREE_AGENT_SIGNING_NONE_SFG_DIEGO_CARTAYA",
+      "player_slug": "diego-cartaya",
+      "season": 2025,
+      "source_reference": "MLB transaction 859876",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=682616",
+      "to": "SFG",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2026-07-16",
+      "evidence": {
+        "date": "2026-07-16",
+        "description": "Nashville Sounds released SS Eddys Leonard.",
+        "from_team": null,
+        "mlb_log_id": 928037,
+        "to_team": "Nashville Sounds",
+        "type_code": "REL"
+      },
+      "from": "MIL",
+      "historical_label": "Released",
+      "key": "CAREER_20260716_RELEASE_MIL_NONE_EDDYS_LEONARD",
+      "player_slug": "eddys-leonard",
+      "season": 2026,
+      "source_reference": "MLB transaction 928037",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=678760",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2026-07-24",
+      "evidence": {
+        "date": "2026-07-24",
+        "description": "San Francisco Giants signed free agent SS Eddys Leonard to a minor league contract.",
+        "from_team": null,
+        "mlb_log_id": 931087,
+        "to_team": "San Francisco Giants",
+        "type_code": "SFA"
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20260724_FREE_AGENT_SIGNING_NONE_SFG_EDDYS_LEONARD",
+      "player_slug": "eddys-leonard",
+      "season": 2026,
+      "source_reference": "MLB transaction 931087",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=678760",
+      "to": "SFG",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "1997-06-13",
+      "evidence": {
+        "retrosheet_row": "\"19970613\",,,,,62878,\"valef001\",\"T \",\"SDN\",\"NL\",\"SLN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 62878
+      },
+      "from": "SD",
+      "historical_label": "Traded",
+      "key": "CAREER_19970613_TRADE_SD_STL_FERNANDO_VALENZUELA",
+      "player_slug": "fernando-valenzuela",
+      "season": 1997,
+      "source_reference": "Retrosheet transaction 62878",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "STL",
+      "type": "TRADE"
+    },
+    {
+      "date": "2002-08-19",
+      "evidence": {
+        "retrosheet_row": "\"20020819\",,,,,63457,\"valdi001\",\"T \",\"TEX\",\"AL\",\"SEA\",\"AL\",,,,",
+        "retrosheet_transaction_id": 63457
+      },
+      "from": "TEX",
+      "historical_label": "Traded",
+      "key": "CAREER_20020819_TRADE_TEX_SEA_ISMAEL_VALDEZ",
+      "player_slug": "ismael-valdez",
+      "season": 2002,
+      "source_reference": "Retrosheet transaction 63457",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "SEA",
+      "type": "TRADE"
+    },
+    {
+      "date": "2004-07-31",
+      "evidence": {
+        "retrosheet_row": "\"20040731\",,,,,63647,\"valdi001\",\"T \",\"SDN\",\"NL\",\"FLO\",\"NL\",,,,",
+        "retrosheet_transaction_id": 63647
+      },
+      "from": "SD",
+      "historical_label": "Traded",
+      "key": "CAREER_20040731_TRADE_SD_MIA_ISMAEL_VALDEZ",
+      "player_slug": "ismael-valdez",
+      "season": 2004,
+      "source_reference": "Retrosheet transaction 63647",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "MIA",
+      "type": "TRADE"
+    },
+    {
+      "date": "2002-08-08",
+      "evidence": {
+        "retrosheet_row": "\"20020808\",,,,,38673,\"offej001\",\"C \",\"BOS\",\"AL\",\"SEA\",\"AL\",,,,",
+        "retrosheet_transaction_id": 38673
+      },
+      "from": "BOS",
+      "historical_label": "Conditional deal",
+      "key": "CAREER_20020808_TRADE_BOS_SEA_JOSE_OFFERMAN",
+      "player_slug": "jose-offerman",
+      "season": 2002,
+      "source_reference": "Retrosheet transaction 38673",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "SEA",
+      "type": "TRADE"
+    },
+    {
+      "date": "2005-05-20",
+      "evidence": {
+        "retrosheet_row": "\"20050520\",,,,,38680,\"offej001\",\"R \",\"PHI\",\"NL\",\"\",\"\",,,,",
+        "retrosheet_transaction_id": 38680
+      },
+      "from": "PHI",
+      "historical_label": "Released",
+      "key": "CAREER_20050520_RELEASE_PHI_NONE_JOSE_OFFERMAN",
+      "player_slug": "jose-offerman",
+      "season": 2005,
+      "source_reference": "Retrosheet transaction 38680",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2005-06-08",
+      "evidence": {
+        "retrosheet_row": "\"20050608\",,,,,38681,\"offej001\",\"F \",\"\",\"\",\"NYN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 38681
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20050608_FREE_AGENT_SIGNING_NONE_NYM_JOSE_OFFERMAN",
+      "player_slug": "jose-offerman",
+      "season": 2005,
+      "source_reference": "Retrosheet transaction 38681",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "NYM",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "1996-07-29",
+      "evidence": {
+        "retrosheet_row": "\"19960729\",,,,,62798,\"vizcj001\",\"T \",\"NYN\",\"NL\",\"CLE\",\"AL\",,,,",
+        "retrosheet_transaction_id": 62798
+      },
+      "from": "NYM",
+      "historical_label": "Traded",
+      "key": "CAREER_19960729_TRADE_NYM_CLE_JOSE_VIZCAINO",
+      "player_slug": "jose-vizcaino",
+      "season": 1996,
+      "source_reference": "Retrosheet transaction 62798",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "CLE",
+      "type": "TRADE"
+    },
+    {
+      "date": "2006-08-18",
+      "evidence": {
+        "retrosheet_row": "\"20060818\",,,,,54695,\"vizcj001\",\"R \",\"SFN\",\"NL\",\"\",\"\",,,,",
+        "retrosheet_transaction_id": 54695
+      },
+      "from": "SFG",
+      "historical_label": "Released",
+      "key": "CAREER_20060818_RELEASE_SFG_NONE_JOSE_VIZCAINO",
+      "player_slug": "jose-vizcaino",
+      "season": 2006,
+      "source_reference": "Retrosheet transaction 54695",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2006-08-23",
+      "evidence": {
+        "retrosheet_row": "\"20060823\",,,,,54696,\"vizcj001\",\"F \",\"\",\"\",\"SLN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 54696
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20060823_FREE_AGENT_SIGNING_NONE_STL_JOSE_VIZCAINO",
+      "player_slug": "jose-vizcaino",
+      "season": 2006,
+      "source_reference": "Retrosheet transaction 54696",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "STL",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2006-06-15",
+      "evidence": {
+        "retrosheet_row": "\"20060615\",,,,,63818,\"castj004\",\"T \",\"MIN\",\"AL\",\"CIN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 63818
+      },
+      "from": "MIN",
+      "historical_label": "Traded",
+      "key": "CAREER_20060615_TRADE_MIN_CIN_JUAN_CASTRO",
+      "player_slug": "juan-castro",
+      "season": 2006,
+      "source_reference": "Retrosheet transaction 63818",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "CIN",
+      "type": "TRADE"
+    },
+    {
+      "date": "2008-05-02",
+      "evidence": {
+        "retrosheet_row": "\"20080502\",,,,,8701,\"castj004\",\"R \",\"CIN\",\"NL\",\"\",\"\",,,,",
+        "retrosheet_transaction_id": 8701
+      },
+      "from": "CIN",
+      "historical_label": "Released",
+      "key": "CAREER_20080502_RELEASE_CIN_NONE_JUAN_CASTRO",
+      "player_slug": "juan-castro",
+      "season": 2008,
+      "source_reference": "Retrosheet transaction 8701",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2008-05-04",
+      "evidence": {
+        "retrosheet_row": "\"20080504\",,,,,8702,\"castj004\",\"F \",\"\",\"\",\"COL\",\"NL\",,,,",
+        "retrosheet_transaction_id": 8702
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20080504_FREE_AGENT_SIGNING_NONE_COL_JUAN_CASTRO",
+      "player_slug": "juan-castro",
+      "season": 2008,
+      "source_reference": "Retrosheet transaction 8702",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "COL",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2008-07-19",
+      "evidence": {
+        "retrosheet_row": "\"20080719\",,,,,64012,\"castj004\",\"T \",\"COL\",\"NL\",\"BAL\",\"AL\",,,,",
+        "retrosheet_transaction_id": 64012
+      },
+      "from": "COL",
+      "historical_label": "Traded",
+      "key": "CAREER_20080719_TRADE_COL_BAL_JUAN_CASTRO",
+      "player_slug": "juan-castro",
+      "season": 2008,
+      "source_reference": "Retrosheet transaction 64012",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "BAL",
+      "type": "TRADE"
+    },
+    {
+      "date": "1998-07-31",
+      "evidence": {
+        "retrosheet_row": "\"19980731\",,,,,63020,\"guzmj003\",\"T \",\"TOR\",\"AL\",\"BAL\",\"AL\",,,,",
+        "retrosheet_transaction_id": 63020
+      },
+      "from": "TOR",
+      "historical_label": "Traded",
+      "key": "CAREER_19980731_TRADE_TOR_BAL_JUAN_GUZMAN",
+      "player_slug": "juan-guzman",
+      "season": 1998,
+      "source_reference": "Retrosheet transaction 63020",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "BAL",
+      "type": "TRADE"
+    },
+    {
+      "date": "1999-07-31",
+      "evidence": {
+        "retrosheet_row": "\"19990731\",,,,,63120,\"guzmj003\",\"T \",\"BAL\",\"AL\",\"CIN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 63120
+      },
+      "from": "BAL",
+      "historical_label": "Traded",
+      "key": "CAREER_19990731_TRADE_BAL_CIN_JUAN_GUZMAN",
+      "player_slug": "juan-guzman",
+      "season": 1999,
+      "source_reference": "Retrosheet transaction 63120",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "CIN",
+      "type": "TRADE"
+    },
+    {
+      "date": "2000-06-12",
+      "evidence": {
+        "retrosheet_row": "\"20000612\",,,,,18076,\"garck002\",\"C \",\"DET\",\"AL\",\"BAL\",\"AL\",,,,",
+        "retrosheet_transaction_id": 18076
+      },
+      "from": "DET",
+      "historical_label": "Conditional deal",
+      "key": "CAREER_20000612_TRADE_DET_BAL_KARIM_GARCIA",
+      "player_slug": "karim-garcia",
+      "season": 2000,
+      "source_reference": "Retrosheet transaction 18076",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "BAL",
+      "type": "TRADE"
+    },
+    {
+      "date": "2002-07-02",
+      "evidence": {
+        "retrosheet_row": "\"20020702\",,,,,18081,\"garck002\",\"R \",\"NYA\",\"AL\",\"\",\"\",,,,",
+        "retrosheet_transaction_id": 18081
+      },
+      "from": "NYY",
+      "historical_label": "Released",
+      "key": "CAREER_20020702_RELEASE_NYY_NONE_KARIM_GARCIA",
+      "player_slug": "karim-garcia",
+      "season": 2002,
+      "source_reference": "Retrosheet transaction 18081",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2002-07-12",
+      "evidence": {
+        "retrosheet_row": "\"20020712\",,,,,18082,\"garck002\",\"F \",\"\",\"\",\"CLE\",\"AL\",,,,",
+        "retrosheet_transaction_id": 18082
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20020712_FREE_AGENT_SIGNING_NONE_CLE_KARIM_GARCIA",
+      "player_slug": "karim-garcia",
+      "season": 2002,
+      "source_reference": "Retrosheet transaction 18082",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "CLE",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2003-06-25",
+      "evidence": {
+        "retrosheet_row": "\"20030625\",,,,,18083,\"garck002\",\"P \",\"CLE\",\"AL\",\"NYA\",\"AL\",,,,",
+        "retrosheet_transaction_id": 18083
+      },
+      "from": "CLE",
+      "historical_label": "Purchased",
+      "key": "CAREER_20030625_PURCHASE_CLE_NYY_KARIM_GARCIA",
+      "player_slug": "karim-garcia",
+      "season": 2003,
+      "source_reference": "Retrosheet transaction 18083",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "NYY",
+      "type": "PURCHASE"
+    },
+    {
+      "date": "2004-07-19",
+      "evidence": {
+        "retrosheet_row": "\"20040719\",,,,,63633,\"garck002\",\"T \",\"NYN\",\"NL\",\"BAL\",\"AL\",,,,",
+        "retrosheet_transaction_id": 63633
+      },
+      "from": "NYM",
+      "historical_label": "Traded",
+      "key": "CAREER_20040719_TRADE_NYM_BAL_KARIM_GARCIA",
+      "player_slug": "karim-garcia",
+      "season": 2004,
+      "source_reference": "Retrosheet transaction 63633",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "BAL",
+      "type": "TRADE"
+    },
+    {
+      "date": "1997-07-25",
+      "evidence": {
+        "retrosheet_row": "\"19970725\",,,,,11937,\"daalo001\",\"W \",\"MON\",\"NL\",\"TOR\",\"AL\",,,,",
+        "retrosheet_transaction_id": 11937
+      },
+      "from": "WSH",
+      "historical_label": "Claimed off waivers",
+      "key": "CAREER_19970725_WAIVER_CLAIM_WSH_TOR_OMAR_DAAL",
+      "player_slug": "omar-daal",
+      "season": 1997,
+      "source_reference": "Retrosheet transaction 11937",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "TOR",
+      "type": "WAIVER_CLAIM"
+    },
+    {
+      "date": "2000-07-26",
+      "evidence": {
+        "retrosheet_row": "\"20000726\",,,,,63220,\"daalo001\",\"T \",\"ARI\",\"NL\",\"PHI\",\"NL\",,,,",
+        "retrosheet_transaction_id": 63220
+      },
+      "from": "ARI",
+      "historical_label": "Traded",
+      "key": "CAREER_20000726_TRADE_ARI_PHI_OMAR_DAAL",
+      "player_slug": "omar-daal",
+      "season": 2000,
+      "source_reference": "Retrosheet transaction 63220",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "PHI",
+      "type": "TRADE"
+    },
+    {
+      "date": "2001-07-31",
+      "evidence": {
+        "retrosheet_row": "\"20010731\",,,,,63347,\"astap001\",\"T \",\"COL\",\"NL\",\"HOU\",\"NL\",,,,",
+        "retrosheet_transaction_id": 63347
+      },
+      "from": "COL",
+      "historical_label": "Traded",
+      "key": "CAREER_20010731_TRADE_COL_HOU_PEDRO_ASTACIO",
+      "player_slug": "pedro-astacio",
+      "season": 2001,
+      "source_reference": "Retrosheet transaction 63347",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "HOU",
+      "type": "TRADE"
+    },
+    {
+      "date": "2005-06-17",
+      "evidence": {
+        "retrosheet_row": "\"20050617\",,,,,1645,\"astap001\",\"R \",\"TEX\",\"AL\",\"\",\"\",,,,",
+        "retrosheet_transaction_id": 1645
+      },
+      "from": "TEX",
+      "historical_label": "Released",
+      "key": "CAREER_20050617_RELEASE_TEX_NONE_PEDRO_ASTACIO",
+      "player_slug": "pedro-astacio",
+      "season": 2005,
+      "source_reference": "Retrosheet transaction 1645",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2005-06-30",
+      "evidence": {
+        "retrosheet_row": "\"20050630\",,,,,1646,\"astap001\",\"F \",\"\",\"\",\"SDN\",\"NL\",,,,",
+        "retrosheet_transaction_id": 1646
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20050630_FREE_AGENT_SIGNING_NONE_SD_PEDRO_ASTACIO",
+      "player_slug": "pedro-astacio",
+      "season": 2005,
+      "source_reference": "Retrosheet transaction 1646",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "SD",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2002-07-01",
+      "evidence": {
+        "retrosheet_row": "\"20020701\",,,,,63429,\"mondr002\",\"T \",\"TOR\",\"AL\",\"NYA\",\"AL\",,,,",
+        "retrosheet_transaction_id": 63429
+      },
+      "from": "TOR",
+      "historical_label": "Traded",
+      "key": "CAREER_20020701_TRADE_TOR_NYY_RAUL_MONDESI",
+      "player_slug": "raul-mondesi",
+      "season": 2002,
+      "source_reference": "Retrosheet transaction 63429",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "NYY",
+      "type": "TRADE"
+    },
+    {
+      "date": "2003-07-29",
+      "evidence": {
+        "retrosheet_row": "\"20030729\",,,,,63535,\"mondr002\",\"T \",\"NYA\",\"AL\",\"ARI\",\"NL\",,,,",
+        "retrosheet_transaction_id": 63535
+      },
+      "from": "NYY",
+      "historical_label": "Traded",
+      "key": "CAREER_20030729_TRADE_NYY_ARI_RAUL_MONDESI",
+      "player_slug": "raul-mondesi",
+      "season": 2003,
+      "source_reference": "Retrosheet transaction 63535",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "ARI",
+      "type": "TRADE"
+    },
+    {
+      "date": "2004-05-21",
+      "evidence": {
+        "retrosheet_row": "\"20040521\",,,,,35993,\"mondr002\",\"R \",\"PIT\",\"NL\",\"\",\"\",,,,",
+        "retrosheet_transaction_id": 35993
+      },
+      "from": "PIT",
+      "historical_label": "Released",
+      "key": "CAREER_20040521_RELEASE_PIT_NONE_RAUL_MONDESI",
+      "player_slug": "raul-mondesi",
+      "season": 2004,
+      "source_reference": "Retrosheet transaction 35993",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": null,
+      "type": "RELEASE"
+    },
+    {
+      "date": "2004-05-30",
+      "evidence": {
+        "retrosheet_row": "\"20040530\",,,,,35994,\"mondr002\",\"F \",\"\",\"\",\"ANA\",\"AL\",,,,",
+        "retrosheet_transaction_id": 35994
+      },
+      "from": null,
+      "historical_label": "Signed as a free agent",
+      "key": "CAREER_20040530_FREE_AGENT_SIGNING_NONE_LAA_RAUL_MONDESI",
+      "player_slug": "raul-mondesi",
+      "season": 2004,
+      "source_reference": "Retrosheet transaction 35994",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "LAA",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "date": "2019-07-31",
+      "evidence": {
+        "date": "2019-07-31",
+        "description": "Cincinnati Reds Traded CF Taylor Trammell to San Diego Padres; San Diego Padres Traded RF Franmil Reyes, LHP Logan Allen and 3B Victor Nova to Cleveland Indians; Cincinnati Reds Traded LHP Scott Moss and RF Yasiel Puig to Cleveland Indians and Cleveland Indians Traded RHP Trevor Bauer to Cincinnati Reds.",
+        "from_team": "Cincinnati Reds",
+        "mlb_log_id": 420891,
+        "to_team": "Cleveland Guardians",
+        "type_code": "TR"
+      },
+      "from": "CIN",
+      "historical_label": "Traded",
+      "key": "CAREER_20190731_TRADE_CIN_CLE_YASIEL_PUIG",
+      "player_slug": "yasiel-puig",
+      "season": 2019,
+      "source_reference": "MLB transaction 420891",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=624577",
+      "to": "CLE",
+      "type": "TRADE"
+    }
+  ],
+  "maps": {
+    "mlb_clubs": {
+      "108": "LAA",
+      "109": "ARI",
+      "110": "BAL",
+      "111": "BOS",
+      "112": "CHC",
+      "113": "CIN",
+      "114": "CLE",
+      "115": "COL",
+      "116": "DET",
+      "117": "HOU",
+      "118": "KC",
+      "119": "LAD",
+      "120": "WSH",
+      "121": "NYM",
+      "133": "OAK",
+      "134": "PIT",
+      "135": "SD",
+      "136": "SEA",
+      "137": "SFG",
+      "138": "STL",
+      "139": "TB",
+      "140": "TEX",
+      "141": "TOR",
+      "142": "MIN",
+      "143": "PHI",
+      "144": "ATL",
+      "145": "CWS",
+      "146": "MIA",
+      "147": "NYY",
+      "158": "MIL"
+    },
+    "mlb_log_types": {
+      "CLW": [
+        "WAIVER_CLAIM",
+        "Claimed off waivers"
+      ],
+      "REL": [
+        "RELEASE",
+        "Released"
+      ],
+      "SFA": [
+        "FREE_AGENT_SIGNING",
+        "Signed as a free agent"
+      ],
+      "TR": [
+        "TRADE",
+        "Traded"
+      ]
+    },
+    "retrosheet_franchises": {
+      "ANA": "LAA",
+      "ARI": "ARI",
+      "ATL": "ATL",
+      "BAL": "BAL",
+      "BOS": "BOS",
+      "BRO": "BRO",
+      "CAL": "LAA",
+      "CHA": "CWS",
+      "CHN": "CHC",
+      "CIN": "CIN",
+      "CLE": "CLE",
+      "COL": "COL",
+      "DET": "DET",
+      "FLO": "MIA",
+      "HOU": "HOU",
+      "KCA": "KC",
+      "LAN": "LAD",
+      "MIL": "MIL",
+      "MIN": "MIN",
+      "MLN": "ATL",
+      "MON": "WSH",
+      "NYA": "NYY",
+      "NYN": "NYM",
+      "OAK": "OAK",
+      "PHI": "PHI",
+      "PIT": "PIT",
+      "SDN": "SD",
+      "SEA": "SEA",
+      "SFN": "SFG",
+      "SLN": "STL",
+      "TBA": "TB",
+      "TEX": "TEX",
+      "TOR": "TOR",
+      "WAS": "WSH"
+    },
+    "retrosheet_types": {
+      "C": [
+        "TRADE",
+        "Conditional deal"
+      ],
+      "F": [
+        "FREE_AGENT_SIGNING",
+        "Signed as a free agent"
+      ],
+      "P": [
+        "PURCHASE",
+        "Purchased"
+      ],
+      "R": [
+        "RELEASE",
+        "Released"
+      ],
+      "T": [
+        "TRADE",
+        "Traded"
+      ],
+      "W": [
+        "WAIVER_CLAIM",
+        "Claimed off waivers"
+      ]
+    }
+  },
+  "sources": {
+    "mlb_log": {
+      "endpoint": "https://statsapi.mlb.com/api/v1/transactions?playerId={mlbId}",
+      "errors": 0,
+      "players": 22
+    },
+    "retrosheet": {
+      "note": "The same file 049 and 053 read (identical sha256).",
+      "sha256_tran_txt": "8b117abe4505dd427893c7fbc5af94f89d83cb58d93b96c99136bab1d7d31c06",
+      "url": "https://www.retrosheet.org/transactions/tranDB.zip"
+    },
+    "team_seasons": {
+      "endpoint": "https://statsapi.mlb.com/api/v1/teams/{teamId}?season={season}&hydrate=league,sport",
+      "errors": 0,
+      "requests": 32
+    }
+  }
+}

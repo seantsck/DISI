@@ -172,7 +172,7 @@ test('verifier: the seven pathway checks pass, each catches its own drift, and t
   assert.equal(PATHWAY_CHECK_NAMES.length, 7)
   const full = await checkInvariants(q, EXPECT037)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 255, '201 through 037 plus the six 038 checks, which pass trivially without their views')
+  assert.equal(full.hard.length, 258, '201 through 037 plus the six 038 checks, which pass trivially without their views')
   const p = 'v_player_development_pathway'
   assert.ok((await drift(p, { pathway_class: `case when r.pathway_class = 'STILL_DEVELOPING' then 'EARLY_EXIT' else r.pathway_class end` })).includes('pathway_class_rule_violations'))
   assert.ok((await drift(p, { pathway_status: `case when r.pathway_status = 'REACHED_MLB' then 'ACTIVE_AFFILIATED' else r.pathway_status end` })).includes('pathway_status_violations'))

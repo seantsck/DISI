@@ -1,0 +1,538 @@
+{
+  "added": [],
+  "after": {
+    "by_need": {
+      "GAME_DATES": 29,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 14,
+      "SEASON_COVERAGE": 30,
+      "SEQUENCE_REVIEW": 5
+    },
+    "detector_rows": 128,
+    "gap_classes": {
+      "FACT_MISSING": 0,
+      "HUMAN_REVIEW": 6,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 0,
+      "SOURCE_LIMITED": 72,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 0
+    },
+    "needs": 104,
+    "players": 62
+  },
+  "as_of": "2026-10-24",
+  "before": {
+    "by_need": {
+      "GAME_DATES": 29,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 18,
+      "SEASON_COVERAGE": 30,
+      "SEQUENCE_REVIEW": 5
+    },
+    "detector_rows": 132,
+    "gap_classes": {
+      "FACT_MISSING": 0,
+      "HUMAN_REVIEW": 5,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 0,
+      "SOURCE_LIMITED": 61,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 16
+    },
+    "needs": 108,
+    "players": 65
+  },
+  "chronology": {
+    "after": {
+      "APPEARANCE_RANGES_OVERLAP": 1,
+      "BRACKETED": 14,
+      "BRACKETED_AT_DODGERS_BOUNDARY": 3,
+      "BRACKETED_BY_CAREER_HISTORY": 11,
+      "NO_CANONICAL_TRANSACTION": 2,
+      "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 26
+    },
+    "before": {
+      "APPEARANCE_RANGES_OVERLAP": 1,
+      "BRACKETED": 14,
+      "BRACKETED_AT_DODGERS_BOUNDARY": 3,
+      "NO_CANONICAL_TRANSACTION": 34,
+      "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 5
+    }
+  },
+  "dodgers_ledger": {
+    "after": {
+      "transaction_queue": 58,
+      "value_queue": 93
+    },
+    "before": {
+      "transaction_queue": 58,
+      "value_queue": 93
+    }
+  },
+  "needs": [
+    {
+      "after": "CLOSED",
+      "after_cause": null,
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "carlos-santana",
+      "seasons": [
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20220627_TRADE_KC_SEA_CARLOS_SANTANA"
+          ],
+          "season": 2022
+        },
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20230727_TRADE_PIT_MIL_CARLOS_SANTANA"
+          ],
+          "season": 2023
+        },
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20250828_RELEASE_CLE_NONE_CARLOS_SANTANA",
+            "CAREER_20250901_FREE_AGENT_SIGNING_NONE_CHC_CARLOS_SANTANA"
+          ],
+          "season": 2025
+        },
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20260626_RELEASE_ARI_NONE_CARLOS_SANTANA",
+            "CAREER_20260628_FREE_AGENT_SIGNING_NONE_ATL_CARLOS_SANTANA"
+          ],
+          "season": 2026
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 2005 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "chan-ho-park",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20050730_TRADE_TEX_SD_CHAN_HO_PARK"
+          ],
+          "season": 2005
+        },
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20070603_RELEASE_NYM_NONE_CHAN_HO_PARK",
+            "CAREER_20070612_FREE_AGENT_SIGNING_NONE_HOU_CHAN_HO_PARK"
+          ],
+          "season": 2007
+        },
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20100804_WAIVER_CLAIM_NYY_PIT_CHAN_HO_PARK"
+          ],
+          "season": 2010
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 1963 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "chico-fernandez",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_19630508_TRADE_DET_ATL_CHICO_FERNANDEZ",
+            "CAREER_19630508_TRADE_ATL_NYM_CHICO_FERNANDEZ"
+          ],
+          "season": 1963
+        }
+      ]
+    },
+    {
+      "after": "CLOSED",
+      "after_cause": null,
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "diego-cartaya",
+      "seasons": [
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20250723_RELEASE_MIN_NONE_DIEGO_CARTAYA",
+            "CAREER_20250729_FREE_AGENT_SIGNING_NONE_SFG_DIEGO_CARTAYA"
+          ],
+          "season": 2025
+        }
+      ]
+    },
+    {
+      "after": "CLOSED",
+      "after_cause": null,
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "eddys-leonard",
+      "seasons": [
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20260716_RELEASE_MIL_NONE_EDDYS_LEONARD",
+            "CAREER_20260724_FREE_AGENT_SIGNING_NONE_SFG_EDDYS_LEONARD"
+          ],
+          "season": 2026
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "fernando-valenzuela",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_19970613_TRADE_SD_STL_FERNANDO_VALENZUELA"
+          ],
+          "season": 1997
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2002 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2004 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "ismael-valdez",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "events": [],
+          "season": 2000
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20020819_TRADE_TEX_SEA_ISMAEL_VALDEZ"
+          ],
+          "season": 2002
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20040731_TRADE_SD_MIA_ISMAEL_VALDEZ"
+          ],
+          "season": 2004
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2005 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "jose-offerman",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20020808_TRADE_BOS_SEA_JOSE_OFFERMAN"
+          ],
+          "season": 2002
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20050520_RELEASE_PHI_NONE_JOSE_OFFERMAN",
+            "CAREER_20050608_FREE_AGENT_SIGNING_NONE_NYM_JOSE_OFFERMAN"
+          ],
+          "season": 2005
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 1996 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "jose-vizcaino",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_19960729_TRADE_NYM_CLE_JOSE_VIZCAINO"
+          ],
+          "season": 1996
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "events": [],
+          "season": 2000
+        },
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20060818_RELEASE_SFG_NONE_JOSE_VIZCAINO",
+            "CAREER_20060823_FREE_AGENT_SIGNING_NONE_STL_JOSE_VIZCAINO"
+          ],
+          "season": 2006
+        }
+      ]
+    },
+    {
+      "after": "HUMAN_REVIEW",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 2008 (APPEARANCE_RANGES_OVERLAP, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "juan-castro",
+      "seasons": [
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20060615_TRADE_MIN_CIN_JUAN_CASTRO"
+          ],
+          "season": 2006
+        },
+        {
+          "after": "APPEARANCE_RANGES_OVERLAP",
+          "before": "APPEARANCE_RANGES_OVERLAP",
+          "events": [
+            "CAREER_20080502_RELEASE_CIN_NONE_JUAN_CASTRO",
+            "CAREER_20080504_FREE_AGENT_SIGNING_NONE_COL_JUAN_CASTRO",
+            "CAREER_20080719_TRADE_COL_BAL_JUAN_CASTRO"
+          ],
+          "season": 2008
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 1998 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 1999 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "juan-guzman",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_19980731_TRADE_TOR_BAL_JUAN_GUZMAN"
+          ],
+          "season": 1998
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_19990731_TRADE_BAL_CIN_JUAN_GUZMAN"
+          ],
+          "season": 1999
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2002 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2003 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2004 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "karim-garcia",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20000612_TRADE_DET_BAL_KARIM_GARCIA"
+          ],
+          "season": 2000
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20020702_RELEASE_NYY_NONE_KARIM_GARCIA",
+            "CAREER_20020712_FREE_AGENT_SIGNING_NONE_CLE_KARIM_GARCIA"
+          ],
+          "season": 2002
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20030625_PURCHASE_CLE_NYY_KARIM_GARCIA"
+          ],
+          "season": 2003
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20040719_TRADE_NYM_BAL_KARIM_GARCIA"
+          ],
+          "season": 2004
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "omar-daal",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_19970725_WAIVER_CLAIM_WSH_TOR_OMAR_DAAL"
+          ],
+          "season": 1997
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20000726_TRADE_ARI_PHI_OMAR_DAAL"
+          ],
+          "season": 2000
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2001 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2005 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "pedro-astacio",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "events": [],
+          "season": 1997
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20010731_TRADE_COL_HOU_PEDRO_ASTACIO"
+          ],
+          "season": 2001
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20050617_RELEASE_TEX_NONE_PEDRO_ASTACIO",
+            "CAREER_20050630_FREE_AGENT_SIGNING_NONE_SD_PEDRO_ASTACIO"
+          ],
+          "season": 2005
+        }
+      ]
+    },
+    {
+      "after": "SOURCE_LIMITED",
+      "after_cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2003 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history), 2004 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS, later organization history).",
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "raul-mondesi",
+      "seasons": [
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20020701_TRADE_TOR_NYY_RAUL_MONDESI"
+          ],
+          "season": 2002
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20030729_TRADE_NYY_ARI_RAUL_MONDESI"
+          ],
+          "season": 2003
+        },
+        {
+          "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20040521_RELEASE_PIT_NONE_RAUL_MONDESI",
+            "CAREER_20040530_FREE_AGENT_SIGNING_NONE_LAA_RAUL_MONDESI"
+          ],
+          "season": 2004
+        }
+      ]
+    },
+    {
+      "after": "CLOSED",
+      "after_cause": null,
+      "before": "TRANSACTION_BLOCKED",
+      "player_slug": "yasiel-puig",
+      "seasons": [
+        {
+          "after": "BRACKETED_BY_CAREER_HISTORY",
+          "before": "NO_CANONICAL_TRANSACTION",
+          "events": [
+            "CAREER_20190731_TRADE_CIN_CLE_YASIEL_PUIG"
+          ],
+          "season": 2019
+        }
+      ]
+    }
+  ],
+  "resolved": [
+    {
+      "before": "TRANSACTION_BLOCKED",
+      "need": "ORGANIZATION",
+      "player_slug": "carlos-santana"
+    },
+    {
+      "before": "TRANSACTION_BLOCKED",
+      "need": "ORGANIZATION",
+      "player_slug": "yasiel-puig"
+    },
+    {
+      "before": "TRANSACTION_BLOCKED",
+      "need": "ORGANIZATION",
+      "player_slug": "eddys-leonard"
+    },
+    {
+      "before": "TRANSACTION_BLOCKED",
+      "need": "ORGANIZATION",
+      "player_slug": "diego-cartaya"
+    }
+  ],
+  "rule_only": {
+    "gap_classes": {
+      "FACT_MISSING": 0,
+      "HUMAN_REVIEW": 6,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 0,
+      "SOURCE_LIMITED": 61,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 15
+    },
+    "reclassified": [
+      {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2006 (NO_CANONICAL_TRANSACTION, later organization history), 2008 (APPEARANCE_RANGES_OVERLAP, later organization history).",
+        "gap_class": "HUMAN_REVIEW",
+        "player_slug": "juan-castro"
+      }
+    ]
+  }
+}

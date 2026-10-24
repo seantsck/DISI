@@ -201,6 +201,8 @@ test('product contract: the snapshot replaces the view; exactly the relations th
   const files = ['lib/data.js', ...fs.readdirSync(path.join(root, 'app'), { recursive: true }).filter((f) => String(f).endsWith('.js')).map((f) => path.join('app', String(f)))]
   const reads = new Set()
   for (const f of files) for (const m of fs.readFileSync(path.join(root, f), 'utf8').matchAll(/\.from\('([a-z_0-9]+)'\)/g)) reads.add(m[1])
+  // 054 adds the player's transaction stream (v_player_career_transactions) to the contract; this chain predates it
+  reads.delete('v_player_career_transactions')
   const contract = (await q(`select relation_name from disi_product_contract order by 1`)).map((r) => r.relation_name)
   assert.deepEqual(contract, [...reads].sort())
   assert.equal(contract.length, 47)
@@ -229,7 +231,7 @@ test('verifier: the four snapshot checks cover the eleventh snapshot; the full v
   assert.deepEqual(await failing(), [])
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 255)
+  assert.equal(full.hard.length, 258)
   await scratch(async () => {
     await chain.db.exec(`grant select on public.v_database_status to anon`)
     assert.deepEqual(await failing(), ['product_snapshot_api_violations'])

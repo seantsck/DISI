@@ -35,6 +35,14 @@ const DATE_PRECISION_NOTE = {
   UNKNOWN: 'date not known',
 }
 
+/** One career-history move in words: who moved him, and how (054). A release names no destination and a signing no origin. */
+function careerEventLabel(e) {
+  const when = dateLabel(e.date)
+  if (e.type === 'RELEASE') return `released by the ${e.from} (${when})`
+  if (e.type === 'FREE_AGENT_SIGNING') return `signed by the ${e.to} as a free agent (${when})`
+  return `${humanize(e.type ?? 'transaction').toLowerCase()}, ${e.from} to ${e.to} (${when})`
+}
+
 /**
  * What a season with two organizations says about the move between them (052, 053). A bracketed season shows the recorded transaction between the
  * two appearance ranges; at the Dodgers boundary only the Dodgers end is a DISI transaction (a release is never a trade, and the other club's
@@ -44,6 +52,10 @@ function orgSeasonNote(m) {
   const date = dateLabel(m.transaction?.date)
   switch (m.state) {
     case 'BRACKETED': return null
+    case 'BRACKETED_BY_CAREER_HISTORY':
+      return `career history: ${(m.career_events ?? []).map(careerEventLabel).join('; then ')}. A move between two other clubs, recorded from the official record; it is not part of the Dodgers asset history`
+    case 'APPEARANCE_RANGES_OVERLAP':
+      return `the dated appearances with these clubs overlap, so they cannot be put in one order${(m.career_events ?? []).length ? ` (career history: ${m.career_events.map(careerEventLabel).join('; ')})` : ''}; a person reviews the season`
     case 'BRACKETED_AT_DODGERS_BOUNDARY':
       return m.transaction?.type === 'FREE_AGENT_SIGNING'
         ? `the Dodgers signing (${date}) is recorded between the two clubs' games; how he left the other club is that club's transaction and is not recorded here`
@@ -52,9 +64,12 @@ function orgSeasonNote(m) {
     case 'MORE_THAN_TWO_ORGANIZATIONS':
       return m.dodgers_involved
         ? 'no recorded transaction between these organizations; when the move happened is not established'
-        : 'a move between two other clubs; DISI records Dodgers transactions only, so when and how it happened is not established here'
+        : 'a move between two other clubs with no recorded career move (Dodgers ledger or career history); when and how it happened is not established'
     case 'MULTIPLE_POSSIBLE_TRANSACTIONS': return 'more than one recorded transaction falls between the appearances; which one moved him is for review'
-    case 'TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS': return `a transaction is recorded (${date}); the season predates dated game logs, so the appearances stay season-level`
+    case 'TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS':
+      return m.transaction?.layer === 'CAREER_HISTORY'
+        ? `career history: ${(m.career_events ?? []).map(careerEventLabel).join('; ')}; the season predates dated game logs, so the appearances stay season-level`
+        : `a transaction is recorded (${date}); the season predates dated game logs, so the appearances stay season-level`
     default: return `a transaction is recorded (${date}); the game dates do not yet place the appearances around it`
   }
 }
@@ -158,7 +173,7 @@ function milestoneWhen(m) {
 
 export default async function PlayerPage({ params }) {
   const { slug } = await params
-  const { live, error, player, signings, timeline, transactions, sources, network, networkAvailable, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable, realizedValue, readiness, expectedValue, comparables, decisionAvailable, freshness } = await loadDossier(slug)
+  const { live, error, player, signings, timeline, transactions, careerTransactions, sources, network, networkAvailable, metrics, memberships, devStints, devMilestones, devSummary, scouting, scoutingAvailable, realizedValue, readiness, expectedValue, comparables, decisionAvailable, freshness } = await loadDossier(slug)
 
   if (!live) {
     return (
@@ -187,7 +202,8 @@ export default async function PlayerPage({ params }) {
   // 052: seasons with two or more organizations, each read against the recorded transactions (a team change alone is never a transaction).
   // Every v_player_transactions row counts, as in the research queue view and /development: a trade is often recorded only as its
   // PACKAGE_EVENT row (Rincón 2021, Santana 2008), so dropping those rows would call a bracketed season unverified.
-  const orgSeasons = dodgersSigning && devStints.length > 0 ? multiOrganizationSeasons(devStints, transactions) : []
+  // 054: chronology reads the player's transaction stream (Dodgers ledger and career history, labelled); before 054 the Dodgers-ledger rows
+  const orgSeasons = dodgersSigning && devStints.length > 0 ? multiOrganizationSeasons(devStints, careerTransactions ?? transactions) : []
 
   return (
     <main className="shell page-main dossier">
@@ -379,7 +395,9 @@ export default async function PlayerPage({ params }) {
                   <strong>{m.season}</strong>{' · '}
                   {m.segments.map((g, i) => (
                     <span key={g.organization}>
-                      {i > 0 && (isBracketedSeason(m) && m.transaction ? <span className="muted"> → recorded {humanize(m.transaction.type ?? 'transaction').toLowerCase()} {dateLabel(m.transaction.date)} → </span> : <span className="muted"> · </span>)}
+                      {i > 0 && (isBracketedSeason(m) && m.transaction
+                        ? <span className="muted"> → recorded {m.transaction.layer === 'CAREER_HISTORY' ? 'career ' : ''}{m.state === 'BRACKETED_BY_CAREER_HISTORY' && (m.career_events ?? []).length > 1 ? 'release and signing' : humanize(m.transaction.type ?? 'transaction').toLowerCase()} {dateLabel(m.transaction.date)} → </span>
+                        : <span className="muted"> · </span>)}
                       {g.organization} <span className="muted">({g.teams.join(', ')}{g.dated ? `; ${dateLabel(g.first_appearance)} – ${dateLabel(g.last_appearance)}` : ''})</span>
                     </span>
                   ))}
@@ -387,7 +405,7 @@ export default async function PlayerPage({ params }) {
                 </li>
               ))}
             </ul>
-            <p className="muted small-note">The transaction date, the last game before it and the first game after it are separate facts. Each organization is the parent the official record names for that team in that season.</p>
+            <p className="muted small-note">The transaction date, the last game before it and the first game after it are separate facts. Each organization is the parent the official record names for that team in that season. Career history (moves between two other clubs) explains the chronology only; the Dodgers asset history above is the Dodgers ledger alone.</p>
           </div>
         )}
         {hasProgress ? (

@@ -1,0 +1,1317 @@
+{
+  "all_later_organization_history": true,
+  "as_of": "2026-10-24",
+  "needs": [
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2022 (NO_CANONICAL_TRANSACTION, later organization history), 2023 (NO_CANONICAL_TRANSACTION, later organization history), 2025 (NO_CANONICAL_TRANSACTION, later organization history), 2026 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Carlos Santana",
+      "need": "ORGANIZATION",
+      "player_slug": "carlos-santana",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2022,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2022-04-07",
+              "last_appearance": "2022-06-26",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Kansas City Royals",
+              "teams": [
+                "Kansas City Royals"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2022-06-28",
+              "last_appearance": "2022-10-05",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Seattle Mariners",
+              "teams": [
+                "Seattle Mariners"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2023,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2023-03-30",
+              "last_appearance": "2023-07-26",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Pittsburgh Pirates",
+              "teams": [
+                "Pittsburgh Pirates"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2023-07-29",
+              "last_appearance": "2023-10-01",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Milwaukee Brewers",
+              "teams": [
+                "Milwaukee Brewers"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2025,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2025-03-27",
+              "last_appearance": "2025-08-25",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Cleveland Guardians"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2025-09-01",
+              "last_appearance": "2025-09-23",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Chicago Cubs",
+              "teams": [
+                "Chicago Cubs"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2026,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2026-03-26",
+              "last_appearance": "2026-06-22",
+              "levels": [
+                "AAA",
+                "COMPLEX_ROOKIE",
+                "MLB"
+              ],
+              "organization": "Arizona Diamondbacks",
+              "teams": [
+                "ACL D-backs",
+                "Arizona Diamondbacks",
+                "Reno Aces"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2026-07-02",
+              "last_appearance": "2026-08-15",
+              "levels": [
+                "AAA",
+                "COMPLEX_ROOKIE"
+              ],
+              "organization": "Atlanta Braves",
+              "teams": [
+                "FCL Braves",
+                "Gwinnett Stripers"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2005 (NO_CANONICAL_TRANSACTION, later organization history), 2007 (NO_CANONICAL_TRANSACTION, later organization history), 2010 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Chan Ho Park",
+      "need": "ORGANIZATION",
+      "player_slug": "chan-ho-park",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2005,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "San Diego Padres",
+              "teams": [
+                "San Diego Padres"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Texas Rangers",
+              "teams": [
+                "Texas Rangers"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2007,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2007-04-08",
+              "last_appearance": "2007-06-02",
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "New Orleans Zephyrs",
+                "New York Mets"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2007-06-16",
+              "last_appearance": "2007-08-31",
+              "levels": [
+                "AAA"
+              ],
+              "organization": "Houston Astros",
+              "teams": [
+                "Round Rock Express"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2010,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2010-04-04",
+              "last_appearance": "2010-07-29",
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees",
+                "Scranton/Wilkes-Barre Yankees"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2010-08-06",
+              "last_appearance": "2010-10-01",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Pittsburgh Pirates",
+              "teams": [
+                "Pittsburgh Pirates"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1963 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Chico Fernández",
+      "need": "ORGANIZATION",
+      "player_slug": "chico-fernandez",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 1963,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Detroit Tigers",
+              "teams": [
+                "Detroit Tigers"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "New York Mets"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2025 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Diego Cartaya",
+      "need": "ORGANIZATION",
+      "player_slug": "diego-cartaya",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2025,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2025-04-01",
+              "last_appearance": "2025-06-29",
+              "levels": [
+                "AAA"
+              ],
+              "organization": "Minnesota Twins",
+              "teams": [
+                "St. Paul Saints"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2025-09-01",
+              "last_appearance": "2025-09-06",
+              "levels": [
+                "LOW_A"
+              ],
+              "organization": "San Francisco Giants",
+              "teams": [
+                "San Jose Giants"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Eddys Leonard",
+      "need": "ORGANIZATION",
+      "player_slug": "eddys-leonard",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2026,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2026-03-28",
+              "last_appearance": "2026-07-12",
+              "levels": [
+                "AAA"
+              ],
+              "organization": "Milwaukee Brewers",
+              "teams": [
+                "Nashville Sounds"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2026-07-24",
+              "last_appearance": "2026-09-20",
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "San Francisco Giants",
+              "teams": [
+                "Sacramento River Cats",
+                "San Francisco Giants"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Fernando Valenzuela",
+      "need": "ORGANIZATION",
+      "player_slug": "fernando-valenzuela",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 1997,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "San Diego Padres",
+              "teams": [
+                "San Diego Padres"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "St. Louis Cardinals",
+              "teams": [
+                "St. Louis Cardinals"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2002 (NO_CANONICAL_TRANSACTION, later organization history), 2004 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Ismael Valdez",
+      "need": "ORGANIZATION",
+      "player_slug": "ismael-valdez",
+      "seasons": [
+        {
+          "dodgers_involved": true,
+          "season": 2000,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "HIGH_A",
+                "MLB"
+              ],
+              "organization": "Chicago Cubs",
+              "teams": [
+                "Chicago Cubs",
+                "Daytona Cubs"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "Los Angeles Dodgers"
+              ]
+            }
+          ],
+          "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2002,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Seattle Mariners",
+              "teams": [
+                "Seattle Mariners"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Texas Rangers",
+              "teams": [
+                "Texas Rangers"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2004,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Miami Marlins",
+              "teams": [
+                "Florida Marlins"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "San Diego Padres",
+              "teams": [
+                "San Diego Padres"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION, later organization history), 2005 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "José Offerman",
+      "need": "ORGANIZATION",
+      "player_slug": "jose-offerman",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2002,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Boston Red Sox",
+              "teams": [
+                "Boston Red Sox"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Seattle Mariners",
+              "teams": [
+                "Seattle Mariners"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2005,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "New York Mets",
+                "Norfolk Tides"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Philadelphia Phillies",
+              "teams": [
+                "Philadelphia Phillies"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1996 (NO_CANONICAL_TRANSACTION, later organization history), 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2006 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "José Vizcaíno",
+      "need": "ORGANIZATION",
+      "player_slug": "jose-vizcaino",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 1996,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Cleveland Indians"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "New York Mets"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": true,
+          "season": 2000,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "Los Angeles Dodgers"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees"
+              ]
+            }
+          ],
+          "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2006,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2006-04-07",
+              "last_appearance": "2006-08-13",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "San Francisco Giants",
+              "teams": [
+                "San Francisco Giants"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2006-08-23",
+              "last_appearance": "2006-10-01",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "St. Louis Cardinals",
+              "teams": [
+                "St. Louis Cardinals"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2006 (NO_CANONICAL_TRANSACTION, later organization history), 2008 (APPEARANCE_RANGES_OVERLAP, later organization history).",
+      "full_name": "Juan Castro",
+      "need": "ORGANIZATION",
+      "player_slug": "juan-castro",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2006,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2006-04-04",
+              "last_appearance": "2006-06-13",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Minnesota Twins",
+              "teams": [
+                "Minnesota Twins"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2006-06-18",
+              "last_appearance": "2006-10-01",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cincinnati Reds",
+              "teams": [
+                "Cincinnati Reds"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2008,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2008-04-04",
+              "last_appearance": "2008-04-17",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cincinnati Reds",
+              "teams": [
+                "Cincinnati Reds"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2008-04-28",
+              "last_appearance": "2008-09-24",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2008-05-05",
+              "last_appearance": "2008-07-14",
+              "levels": [
+                "AAA"
+              ],
+              "organization": "Colorado Rockies",
+              "teams": [
+                "Colorado Springs Sky Sox"
+              ]
+            }
+          ],
+          "state": "APPEARANCE_RANGES_OVERLAP"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1998 (NO_CANONICAL_TRANSACTION, later organization history), 1999 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Juan Guzmán",
+      "need": "ORGANIZATION",
+      "player_slug": "juan-guzman",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 1998,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Toronto Blue Jays",
+              "teams": [
+                "Toronto Blue Jays"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 1999,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cincinnati Reds",
+              "teams": [
+                "Cincinnati Reds"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (NO_CANONICAL_TRANSACTION, later organization history), 2002 (NO_CANONICAL_TRANSACTION, later organization history), 2003 (NO_CANONICAL_TRANSACTION, later organization history), 2004 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Karim García",
+      "need": "ORGANIZATION",
+      "player_slug": "karim-garcia",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2000,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles",
+                "Rochester Red Wings"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Detroit Tigers",
+              "teams": [
+                "Detroit Tigers",
+                "Toledo Mud Hens"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2002,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Buffalo Bisons",
+                "Cleveland Indians"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "Columbus Clippers",
+                "New York Yankees"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2003,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Buffalo Bisons",
+                "Cleveland Indians"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2004,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AA",
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "Binghamton Mets",
+                "New York Mets"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION, later organization history), 2000 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Omar Daal",
+      "need": "ORGANIZATION",
+      "player_slug": "omar-daal",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 1997,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Toronto Blue Jays",
+              "teams": [
+                "Syracuse SkyChiefs",
+                "Toronto Blue Jays"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Washington Nationals",
+              "teams": [
+                "Montreal Expos",
+                "Ottawa Lynx"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2000,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Arizona Diamondbacks",
+              "teams": [
+                "Arizona Diamondbacks"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Philadelphia Phillies",
+              "teams": [
+                "Philadelphia Phillies"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2001 (NO_CANONICAL_TRANSACTION, later organization history), 2005 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Pedro Astacio",
+      "need": "ORGANIZATION",
+      "player_slug": "pedro-astacio",
+      "seasons": [
+        {
+          "dodgers_involved": true,
+          "season": 1997,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Colorado Rockies",
+              "teams": [
+                "Colorado Rockies"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "Los Angeles Dodgers"
+              ]
+            }
+          ],
+          "state": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2001,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Colorado Rockies",
+              "teams": [
+                "Colorado Rockies"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Houston Astros",
+              "teams": [
+                "Houston Astros"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2005,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "San Diego Padres",
+              "teams": [
+                "Portland Beavers",
+                "San Diego Padres"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Texas Rangers",
+              "teams": [
+                "Texas Rangers"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION, later organization history), 2003 (NO_CANONICAL_TRANSACTION, later organization history), 2004 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Raúl Mondesí",
+      "need": "ORGANIZATION",
+      "player_slug": "raul-mondesi",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2002,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Toronto Blue Jays",
+              "teams": [
+                "Toronto Blue Jays"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2003,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Arizona Diamondbacks",
+              "teams": [
+                "Arizona Diamondbacks"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "dodgers_involved": false,
+          "season": 2004,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "HIGH_A",
+                "MLB"
+              ],
+              "organization": "Los Angeles Angels",
+              "teams": [
+                "Anaheim Angels",
+                "Rancho Cucamonga Quakes",
+                "Salt Lake City Stingers"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Pittsburgh Pirates",
+              "teams": [
+                "Pittsburgh Pirates"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    },
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2019 (NO_CANONICAL_TRANSACTION, later organization history).",
+      "full_name": "Yasiel Puig",
+      "need": "ORGANIZATION",
+      "player_slug": "yasiel-puig",
+      "seasons": [
+        {
+          "dodgers_involved": false,
+          "season": 2019,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2019-03-28",
+              "last_appearance": "2019-07-30",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cincinnati Reds",
+              "teams": [
+                "Cincinnati Reds"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2019-08-01",
+              "last_appearance": "2019-09-27",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Cleveland Indians"
+              ]
+            }
+          ],
+          "state": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "transaction_scope": "LATER_ORGANIZATION_HISTORY"
+    }
+  ],
+  "rule": "Every development need classified TRANSACTION_BLOCKED after 053, with every open season of it. Each was checked: no open season of these needs involves the Dodgers."
+}
