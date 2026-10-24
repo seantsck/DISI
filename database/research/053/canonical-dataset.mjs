@@ -10,7 +10,7 @@ import fs from 'node:fs'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildCanonicalChain } from '../../../tests/db/canonical-chain.mjs'
-import { DATASET_QUERIES, HISTORY_QUERIES } from '../../../lib/research/dataset.js'
+import { CAREER_QUERIES, CAREER_RELATION, DATASET_QUERIES, HISTORY_QUERIES } from '../../../lib/research/dataset.js'
 import { stableJson } from '../../../lib/research/format.js'
 
 const args = process.argv.slice(2)
@@ -24,7 +24,8 @@ const TEXT_OIDS = new Set([20, 1700])
 /** @type {Record<string, any[]>} */
 const raw = {}
 await db.exec('begin read only; set local role anon;')
-for (const [k, sql] of Object.entries({ ...DATASET_QUERIES, ...HISTORY_QUERIES })) {
+const hasCareer = (await db.query('select to_regclass($1) is not null as ok', [`public.${CAREER_RELATION}`])).rows[0].ok
+for (const [k, sql] of Object.entries({ ...DATASET_QUERIES, ...HISTORY_QUERIES, ...(hasCareer ? CAREER_QUERIES : {}) })) {
   const res = await db.query(sql)
   const dates = new Set(res.fields.filter((f) => f.dataTypeID === DATE_OID).map((f) => f.name))
   const texts = new Set(res.fields.filter((f) => TEXT_OIDS.has(f.dataTypeID)).map((f) => f.name))
