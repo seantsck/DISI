@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildChainThrough, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS, EXPECTATIONS_THROUGH_051 } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_052, EXPECTATIONS_THROUGH_051 } from '../../scripts/db/lib/invariants.mjs'
 import { DATASET_QUERIES, HISTORY_QUERIES, assembleDataset } from '../../lib/research/dataset.js'
 import { multiOrganizationSeasons, seasonGaps } from '../../lib/research/development-chronology.js'
 
@@ -94,16 +94,16 @@ test('052 follows 050 in the manifest (051 added no migration), and its rollback
   assert.match(rollback052, /^-- DISI rollback-052\.sql/)
 })
 
-test('verifier: 252/252 at the 051 boundary before 052 and at the head after it; the old pins fail exactly where 052 moved them', async () => {
+test('verifier: 255/255 at the 051 boundary before 052 and at the 052 boundary after it; the old pins fail exactly where 052 moved them', async () => {
   const c = await open(pre050)
   try {
     const pre = await checkInvariants(c.query, EXPECTATIONS_THROUGH_051)
     assert.deepEqual(failedChecks(pre).map((f) => f.name), [])
-    assert.equal(pre.hard.length, 252)
+    assert.equal(pre.hard.length, 255)
   } finally { await c.close() }
-  const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
+  const full = await checkInvariants(q, EXPECTATIONS_THROUGH_052)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 252)
+  assert.equal(full.hard.length, 255)
   const old = await checkInvariants(q, EXPECTATIONS_THROUGH_051)
   assert.deepEqual(failedChecks(old).map((f) => f.name).sort(), ['coded_milestones', 'dated_stints', 'professional_debut_milestones', 'progression_decisions',
     'progression_decisions_pending', 'progression_roles', 'undated_log_era_stints'])
@@ -138,7 +138,7 @@ test('organizations: every 052 assignment carries the official record for its ow
 test('the organization check catches a stint coerced to the Dodgers and evidence carried to another season', async () => {
   const c = await open(post052)
   try {
-    const n = async () => failedChecks(await checkInvariants(c.query, CANONICAL_EXPECTATIONS)).map((f) => f.name)
+    const n = async () => failedChecks(await checkInvariants(c.query, EXPECTATIONS_THROUGH_052)).map((f) => f.name)
     await c.db.exec(`update public.player_season_stints set organization_id = (select id from public.organizations where name = 'Los Angeles Dodgers'),
       organization_name = 'Los Angeles Dodgers' where id = (select id from public.player_season_stints where detail -> 'organizationEvidence' ->> 'parentOrgId' = '145' limit 1)`)
     assert.ok((await n()).includes('organization_evidence_violations'))
@@ -148,7 +148,7 @@ test('the organization check catches a stint coerced to the Dodgers and evidence
     await d.db.exec(`update public.player_season_stints set season = season + 1
       where id = (select id from public.player_season_stints s where s.detail ->> 'organizationBasis' = 'TEAM_SEASON_RECORD' and s.level = 'AA'
         and not exists (select 1 from public.player_season_stints t where t.player_id = s.player_id and t.season = s.season + 1) limit 1)`)
-    assert.ok(failedChecks(await checkInvariants(d.query, CANONICAL_EXPECTATIONS)).some((f) => f.name === 'organization_evidence_violations'))
+    assert.ok(failedChecks(await checkInvariants(d.query, EXPECTATIONS_THROUGH_052)).some((f) => f.name === 'organization_evidence_violations'))
   } finally { await d.close() }
 })
 
@@ -164,7 +164,7 @@ test('dates: only game-log dates, never over an existing one; the 2018 Mexican L
   try {
     await c.db.exec(`update public.player_season_stints set first_game_date = date '2018-04-01', last_game_date = date '2018-09-01'
       where id = (select id from public.player_season_stints where league_name = 'Mexican League' and season = 2018 and first_game_date is null limit 1)`)
-    assert.ok(failedChecks(await checkInvariants(c.query, CANONICAL_EXPECTATIONS)).some((f) => f.name === 'stint_dates_without_game_log'))
+    assert.ok(failedChecks(await checkInvariants(c.query, EXPECTATIONS_THROUGH_052)).some((f) => f.name === 'stint_dates_without_game_log'))
   } finally { await c.close() }
 })
 
@@ -178,7 +178,7 @@ test('2020: the queue no longer counts the cancelled season for an affiliated mi
   try {
     await c.db.exec(`insert into public.player_season_stints (player_id, season, organization_name, affiliate_team, team_id, league_name, source_level, level, level_classification, era, affiliated, g, as_of_date, retrieved_at)
       select id, 2020, 'Los Angeles Dodgers', 'Test Affiliate', 1, 'Test League', 'A', 'LOW_A', 'SPORT_ID_14', 'DSL_AZL_2017_2020', true, 10, date '2026-10-23', now() from public.players where slug = 'diego-cartaya'`)
-    assert.ok(failedChecks(await checkInvariants(c.query, CANONICAL_EXPECTATIONS)).some((f) => f.name === 'league_season_not_played_stints'))
+    assert.ok(failedChecks(await checkInvariants(c.query, EXPECTATIONS_THROUGH_052)).some((f) => f.name === 'league_season_not_played_stints'))
   } finally { await c.close() }
 })
 
@@ -263,7 +263,7 @@ test('rollback restores the exact pre-052 state; reapplying 052 reproduces the s
     assert.deepEqual(await tables(c), preTables)
     await c.db.exec(sql052)
     assert.deepEqual(await content(c), first)
-    assert.deepEqual(failedChecks(await checkInvariants(c.query, CANONICAL_EXPECTATIONS)).map((f) => f.name), [])
+    assert.deepEqual(failedChecks(await checkInvariants(c.query, EXPECTATIONS_THROUGH_052)).map((f) => f.name), [])
   } finally { await c.close() }
 })
 

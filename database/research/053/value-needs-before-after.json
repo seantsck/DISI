@@ -1,0 +1,40 @@
+{
+  "added": [
+    {
+      "asset_name": null,
+      "detail": "The downstream chain is INCOMPLETE_WAR_NOT_LOADED: incomplete data, not a known attribution boundary",
+      "event_key": null,
+      "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+      "player_slug": "jose-vizcaino"
+    },
+    {
+      "asset_name": null,
+      "detail": "Traded in a shared outgoing package; the package returned  Dodgers bWAR and no individual share is assigned",
+      "event_key": null,
+      "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+      "player_slug": "jose-vizcaino"
+    }
+  ],
+  "after": {
+    "by_issue": {
+      "ACQUISITION_COST_INCOMPLETE": 28,
+      "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE": 8,
+      "LINEAGE_BOUNDARY_NOTED": 22,
+      "OUTCOME_INCOMPLETE": 8,
+      "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED": 27
+    },
+    "items": 93
+  },
+  "as_of": "2026-10-24",
+  "before": {
+    "by_issue": {
+      "ACQUISITION_COST_INCOMPLETE": 28,
+      "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE": 7,
+      "LINEAGE_BOUNDARY_NOTED": 22,
+      "OUTCOME_INCOMPLETE": 8,
+      "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED": 26
+    },
+    "items": 91
+  },
+  "resolved": []
+}

@@ -36,6 +36,16 @@ transaction) stays in [`INGESTION.md`](INGESTION.md); the plan is in [`ROADMAP.m
   every other missing season stays unknown: `SEASON GAP != DID NOT PLAY`.
 - **`TEAM CHANGE` is not a `CANONICAL TRANSACTION` (052).** A season with two organizations is explained only by a recorded transaction bracketed by
   the player's dated appearances; the transaction date, the last game before it and the first game after it stay three facts.
+- **`ORGANIZATION CHANGE` is not a `TRANSACTION` (053).** DISI's transaction ledger records Dodgers transactions only, from the Dodgers' side (the
+  from-organization is always the Dodgers, the asset side says which way the player moved). A move between two other clubs is later organization
+  history: it is never recorded in the ledger, where it would read as a Dodgers exit, and a season it explains stays open with that reason.
+- **`KNOWN DESTINATION` is not `KNOWN TRANSACTION MECHANISM` (053).** A release, a free agency, a waiver claim, a free-agent signing and a trade are
+  different mechanisms, and a team change says nothing about which one moved the player. A Dodgers release between his last Dodgers game and his
+  first for another club brackets the Dodgers end of the move only (`BRACKETED_AT_DODGERS_BOUNDARY`); the other club's signing is that club's
+  transaction and is never implied (`RELEASE != TRADE`, `FREE-AGENT SIGNING != TRADE RETURN`, `CONTRACT PURCHASE != TRADE`).
+- **`PACKAGE ANNOUNCEMENT` is not `COMPLETE PACKAGE`, and `PTBNL COMPLETION DATE` is not `ORIGINAL TRADE DATE` (049, 053).** A trade is recorded with
+  every asset its source names under one transaction; one known asset is never a complete package. A later-named player completes the agreement and
+  keeps the agreement's date.
 - **`SOURCE-LIMITED` is not `RESEARCH FAILURE` (052).** A need no approved readable source can answer is classified as such and stays open; it is
   not evidence that the fact does not exist, and it is never closed to make a count smaller.
 - **`UNKNOWN TRANSACTION` is not `RELEASED`.** No exit is inferred from a player's absence from later records. An exit is a sourced event;

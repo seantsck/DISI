@@ -13,7 +13,7 @@ import {
 import { assetPath } from '../../../lib/research/asset-path.js'
 import { firstProSeasonStatus } from '../../../lib/research/development-research.js'
 import { careerSegments, historyCoverage } from '../../../lib/research/history-coverage.js'
-import { multiOrganizationSeasons } from '../../../lib/research/development-chronology.js'
+import { isBracketedSeason, multiOrganizationSeasons } from '../../../lib/research/development-chronology.js'
 import { decisionStateLabel, expectedValueCell, realizedValueStateLabel, snapshotFreshness } from '../../../lib/decision-display.js'
 
 const loadDossier = cache(getPlayerDossier)
@@ -33,6 +33,30 @@ const DATE_PRECISION_NOTE = {
   YEAR: 'year only',
   SEASON: 'season only',
   UNKNOWN: 'date not known',
+}
+
+/**
+ * What a season with two organizations says about the move between them (052, 053). A bracketed season shows the recorded transaction between the
+ * two appearance ranges; at the Dodgers boundary only the Dodgers end is a DISI transaction (a release is never a trade, and the other club's
+ * signing is that club's transaction); a move between two other clubs is not in DISI's Dodgers transaction ledger at all.
+ */
+function orgSeasonNote(m) {
+  const date = dateLabel(m.transaction?.date)
+  switch (m.state) {
+    case 'BRACKETED': return null
+    case 'BRACKETED_AT_DODGERS_BOUNDARY':
+      return m.transaction?.type === 'FREE_AGENT_SIGNING'
+        ? `the Dodgers signing (${date}) is recorded between the two clubs' games; how he left the other club is that club's transaction and is not recorded here`
+        : `the Dodgers ${humanize(m.transaction?.type ?? 'exit').toLowerCase()} (${date}) is recorded between the two clubs' games; how the other club acquired him is that club's transaction and is not recorded here`
+    case 'NO_CANONICAL_TRANSACTION':
+    case 'MORE_THAN_TWO_ORGANIZATIONS':
+      return m.dodgers_involved
+        ? 'no recorded transaction between these organizations; when the move happened is not established'
+        : 'a move between two other clubs; DISI records Dodgers transactions only, so when and how it happened is not established here'
+    case 'MULTIPLE_POSSIBLE_TRANSACTIONS': return 'more than one recorded transaction falls between the appearances; which one moved him is for review'
+    case 'TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS': return `a transaction is recorded (${date}); the season predates dated game logs, so the appearances stay season-level`
+    default: return `a transaction is recorded (${date}); the game dates do not yet place the appearances around it`
+  }
 }
 
 /** Value or the word "Unknown"; never fabricates a biography field. */
@@ -355,19 +379,11 @@ export default async function PlayerPage({ params }) {
                   <strong>{m.season}</strong>{' · '}
                   {m.segments.map((g, i) => (
                     <span key={g.organization}>
-                      {i > 0 && (m.state === 'BRACKETED' && m.transaction ? <span className="muted"> → recorded {humanize(m.transaction.type ?? 'transaction').toLowerCase()} {dateLabel(m.transaction.date)} → </span> : <span className="muted"> · </span>)}
+                      {i > 0 && (isBracketedSeason(m) && m.transaction ? <span className="muted"> → recorded {humanize(m.transaction.type ?? 'transaction').toLowerCase()} {dateLabel(m.transaction.date)} → </span> : <span className="muted"> · </span>)}
                       {g.organization} <span className="muted">({g.teams.join(', ')}{g.dated ? `; ${dateLabel(g.first_appearance)} – ${dateLabel(g.last_appearance)}` : ''})</span>
                     </span>
                   ))}
-                  {m.state !== 'BRACKETED' && (
-                    <span className="muted">
-                      {' · '}{m.state === 'NO_CANONICAL_TRANSACTION' || m.state === 'MORE_THAN_TWO_ORGANIZATIONS'
-                        ? 'no recorded transaction between these organizations; when the move happened is not established'
-                        : m.state === 'TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS'
-                          ? `a transaction is recorded (${dateLabel(m.transaction?.date)}); the season predates dated game logs, so the appearances stay season-level`
-                          : `a transaction is recorded (${dateLabel(m.transaction?.date)}); the game dates do not yet place the appearances around it`}
-                    </span>
-                  )}
+                  {orgSeasonNote(m) && <span className="muted">{' · '}{orgSeasonNote(m)}</span>}
                 </li>
               ))}
             </ul>

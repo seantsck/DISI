@@ -1,0 +1,92 @@
+{
+  "added": [
+    {
+      "asset_name": "Cash",
+      "detail": "Cash moved on 2000-06-20 with no sourced amount",
+      "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+      "issue": "CASH_AMOUNT_UNKNOWN",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Juan Castro",
+      "detail": "The identity has Dodgers team-season rows after a recorded exit and no recorded acquisition event; the later stint is outside every interval and is not credited to any trade return",
+      "event_key": "LAD_FREE_AGENCY_2010_JUAN_CASTRO",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "player_slug": null
+    }
+  ],
+  "after": {
+    "by_issue": {
+      "CASH_AMOUNT_UNKNOWN": 17,
+      "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION": 5,
+      "DOWNSTREAM_WAR_NOT_LOADED": 6,
+      "EXIT_NOT_RESEARCHED_DOWNSTREAM": 5,
+      "EXIT_STATUS_UNVERIFIED": 16,
+      "EXIT_TRANSACTION_MISSING": 2,
+      "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+      "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+      "PTBNL_UNRESOLVED": 2,
+      "RETURN_ASSET_EXIT_MISSING": 1
+    },
+    "items": 58
+  },
+  "as_of": "2026-10-24",
+  "before": {
+    "by_issue": {
+      "CASH_AMOUNT_UNKNOWN": 16,
+      "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION": 7,
+      "DOWNSTREAM_WAR_NOT_LOADED": 6,
+      "EXIT_NOT_RESEARCHED_DOWNSTREAM": 5,
+      "EXIT_STATUS_UNVERIFIED": 16,
+      "EXIT_TRANSACTION_MISSING": 2,
+      "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+      "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+      "PTBNL_UNRESOLVED": 2,
+      "RETURN_ASSET_EXIT_MISSING": 1
+    },
+    "items": 59
+  },
+  "buckets": {
+    "after": {
+      "CHAIN_OR_MEMBERSHIP": 42,
+      "OTHER": 50,
+      "TERMS": 18,
+      "VALUE": 41
+    },
+    "before": {
+      "CHAIN_OR_MEMBERSHIP": 43,
+      "OTHER": 50,
+      "TERMS": 17,
+      "VALUE": 40
+    }
+  },
+  "resolved": [
+    {
+      "asset_name": "José Vizcaíno",
+      "by": [
+        "LAD_FREE_AGENT_SIGNING_1997_JOSE_VIZCAINO"
+      ],
+      "event_key": "LAD_CHC_1990_VIZCAINO",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Chan Ho Park",
+      "by": [
+        "LAD_FREE_AGENT_SIGNING_2008_CHAN_HO_PARK"
+      ],
+      "event_key": "LAD_FA_2001_PARK",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Omar Daal",
+      "by": [
+        "PHI_LAD_2001_DAAL_REACQ"
+      ],
+      "event_key": "LAD_MON_1995_DAAL",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "player_slug": null
+    }
+  ]
+}

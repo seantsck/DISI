@@ -74,8 +74,10 @@ test('a multi-organization season is bracketed only by a canonical transaction w
 test('a team change is never a transaction; missing dates and contradicting dates stay open', () => {
   const dated = [minor(2023, 'COMPLEX_ROOKIE', { first_game_date: '2023-06-05', last_game_date: '2023-07-29' }), cws({ first_game_date: '2023-08-09', last_game_date: '2023-09-06' })]
   assert.equal(multiOrganizationSeasons(dated, [])[0].state, 'NO_CANONICAL_TRANSACTION')
-  // a release is not a move to the second organization
-  assert.equal(multiOrganizationSeasons(dated, [{ ...trade('2023-08-04'), to_organization: null, transaction_type: 'RELEASE' }])[0].state, 'NO_CANONICAL_TRANSACTION')
+  // a release is not a move to the second organization: 053 reads it as the Dodgers end of the move only, never as a trade into the other club
+  const released = multiOrganizationSeasons(dated, [{ ...trade('2023-08-04'), to_organization: null, transaction_type: 'RELEASE' }])[0]
+  assert.equal(released.state, 'BRACKETED_AT_DODGERS_BOUNDARY')
+  assert.equal(released.transaction.type, 'RELEASE')
   assert.equal(multiOrganizationSeasons(dated, [trade('2023-07-01')])[0].state, 'DATES_DO_NOT_BRACKET_TRANSACTION')
   const undated = [minor(2023, 'COMPLEX_ROOKIE'), cws({})]
   assert.equal(multiOrganizationSeasons(undated, [trade('2023-08-04')])[0].state, 'TRANSACTION_RECORDED_DATES_MISSING')

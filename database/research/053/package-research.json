@@ -1,0 +1,270 @@
+{
+  "after": {
+    "open": [
+      {
+        "event_key": "LAD_CLE_2017_CARLOS_FRIAS",
+        "issues": "PTBNL_UNRESOLVED",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+        "issues": "PTBNL_UNRESOLVED",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+        "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+        "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED POOL_SPACE_AMOUNT_UNKNOWN",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "LAD_STL_2019_TONY_CINGRANI",
+        "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED CASH_AMOUNT_UNKNOWN",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "CHC_LAD_2000_VALDEZ_REACQ",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_ATL_2006_AYBAR_BETEMIT",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_ATL_2024_ELIO_CAMPOS",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_BOS_2020_JETER_DOWNS",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_CLE_2008_SANTANA_BLAKE",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_CWS_2001_GARY_MAJEWSKI",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_DET_2023_EDDYS_LEONARD",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_NYM_1998_GREG_MCMICHAEL",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_TB_2006_DIONER_NAVARRO",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_TEX_2021_BILLY_MCKINNEY",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_TOR_2019_RONNY_BRITO",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      }
+    ],
+    "packages_with_only_open_terms": 16,
+    "packages_with_open_issues": 21,
+    "packages_with_open_issues_by_issue": {
+      "CASH_AMOUNT_UNKNOWN": 17,
+      "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+      "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+      "PTBNL_UNRESOLVED": 2
+    },
+    "packages_with_open_membership": 5,
+    "packages_with_open_terms": 18,
+    "unresolved_attribution_signings": 27
+  },
+  "as_of": "2026-10-24",
+  "before": {
+    "open": [
+      {
+        "event_key": "LAD_CLE_2017_CARLOS_FRIAS",
+        "issues": "PTBNL_UNRESOLVED",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+        "issues": "PTBNL_UNRESOLVED",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+        "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+        "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED POOL_SPACE_AMOUNT_UNKNOWN",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "LAD_STL_2019_TONY_CINGRANI",
+        "issues": "FUTURE_CONSIDERATIONS_UNRESOLVED CASH_AMOUNT_UNKNOWN",
+        "package_state": "MEMBERSHIP_OPEN"
+      },
+      {
+        "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "CHC_LAD_2000_VALDEZ_REACQ",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_ATL_2006_AYBAR_BETEMIT",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_ATL_2024_ELIO_CAMPOS",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_BOS_2020_JETER_DOWNS",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_CLE_2008_SANTANA_BLAKE",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_CWS_2001_GARY_MAJEWSKI",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_DET_2023_EDDYS_LEONARD",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_NYM_1998_GREG_MCMICHAEL",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_TB_2006_DIONER_NAVARRO",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_TEX_2021_BILLY_MCKINNEY",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      },
+      {
+        "event_key": "LAD_TOR_2019_RONNY_BRITO",
+        "issues": "CASH_AMOUNT_UNKNOWN",
+        "package_state": "TERMS_OPEN"
+      }
+    ],
+    "packages_with_only_open_terms": 15,
+    "packages_with_open_issues": 20,
+    "packages_with_open_issues_by_issue": {
+      "CASH_AMOUNT_UNKNOWN": 16,
+      "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+      "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+      "PTBNL_UNRESOLVED": 2
+    },
+    "packages_with_open_membership": 5,
+    "packages_with_open_terms": 17,
+    "unresolved_attribution_signings": 26
+  },
+  "new_packages": [
+    {
+      "agreement": "2000-06-20",
+      "completeness": "Every row of the Retrosheet transaction is recorded; Retrosheet records the whole exchange under one transaction id.",
+      "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+      "later_completion": null,
+      "membership": [
+        "OUTGOING PLAYER Jose Vizcaino",
+        "OUTGOING CASH Cash",
+        "INCOMING PLAYER Jim Leyritz"
+      ],
+      "terms": [
+        {
+          "amount": null,
+          "type": "CASH",
+          "why": "Retrosheet records cash moving and no amount: unknown, never zero."
+        }
+      ]
+    },
+    {
+      "agreement": "2001-11-09",
+      "completeness": "Every row of the Retrosheet transaction is recorded; Retrosheet records the whole exchange under one transaction id.",
+      "event_key": "PHI_LAD_2001_DAAL_REACQ",
+      "later_completion": null,
+      "membership": [
+        "INCOMING PLAYER Omar Daal",
+        "OUTGOING PLAYER Eric Junge",
+        "OUTGOING PLAYER Jesus Cordero"
+      ],
+      "terms": []
+    }
+  ]
+}

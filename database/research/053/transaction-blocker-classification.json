@@ -1,0 +1,353 @@
+{
+  "as_of": "2026-10-24",
+  "classes": [
+    "MISSING_EVENT",
+    "EVENT_PRESENT_DATE_INSUFFICIENT",
+    "EVENT_PRESENT_TYPE_INSUFFICIENT",
+    "EVENT_PRESENT_DESTINATION_INSUFFICIENT",
+    "PACKAGE_MEMBERSHIP_OPEN",
+    "PTBNL_OPEN",
+    "TERMS_OPEN",
+    "SOURCE_LIMITED",
+    "NOT_A_TRANSACTION_GAP"
+  ],
+  "counts": {
+    "EVENT_PRESENT_DATE_INSUFFICIENT": 2,
+    "EVENT_PRESENT_DESTINATION_INSUFFICIENT": 0,
+    "EVENT_PRESENT_TYPE_INSUFFICIENT": 0,
+    "MISSING_EVENT": 36,
+    "NOT_A_TRANSACTION_GAP": 1,
+    "PACKAGE_MEMBERSHIP_OPEN": 0,
+    "PTBNL_OPEN": 0,
+    "SOURCE_LIMITED": 0,
+    "TERMS_OPEN": 0
+  },
+  "counts_by_scope": {
+    "DODGERS_TRANSACTION|EVENT_PRESENT_DATE_INSUFFICIENT": 2,
+    "DODGERS_TRANSACTION|MISSING_EVENT": 3,
+    "DODGERS_TRANSACTION|NOT_A_TRANSACTION_GAP": 1,
+    "LATER_ORGANIZATION_HISTORY|MISSING_EVENT": 33
+  },
+  "rule": "Classified before any write. A season at the Dodgers boundary whose Dodgers transaction an approved source states is MISSING_EVENT; one whose existing Dodgers transaction already brackets it is NOT_A_TRANSACTION_GAP (the 052 rule could not read a release or a signing); a move between two other clubs is MISSING_EVENT when the official log or Retrosheet states it and SOURCE_LIMITED otherwise. A move between two other clubs is never recorded in the Dodgers ledger.",
+  "seasons": [
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "carlos-santana",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2022,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "carlos-santana",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2023,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "carlos-santana",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2025,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "carlos-santana",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2026,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "chan-ho-park",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2005,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "chan-ho-park",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2007,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "chan-ho-park",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2010,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "chico-fernandez",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 1963,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "diego-cartaya",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2025,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "eddys-leonard",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2026,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "NOT_A_TRANSACTION_GAP",
+      "player_slug": "edgar-leon",
+      "scope": "DODGERS_TRANSACTION",
+      "season": 2026,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "fernando-valenzuela",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 1997,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "EVENT_PRESENT_DATE_INSUFFICIENT",
+      "player_slug": "ismael-valdez",
+      "scope": "DODGERS_TRANSACTION",
+      "season": 2000,
+      "state_052": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "ismael-valdez",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2002,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "ismael-valdez",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2004,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "jose-offerman",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2002,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "jose-offerman",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2005,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "jose-vizcaino",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 1996,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [
+        "LAD_NYY_2000_JOSE_VIZCAINO"
+      ],
+      "class": "MISSING_EVENT",
+      "player_slug": "jose-vizcaino",
+      "scope": "DODGERS_TRANSACTION",
+      "season": 2000,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "jose-vizcaino",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2006,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "juan-castro",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2006,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "juan-castro",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2008,
+      "state_052": "MORE_THAN_TWO_ORGANIZATIONS"
+    },
+    {
+      "canonical_write": [
+        "LAD_FREE_AGENT_SIGNING_2010_JUAN_CASTRO",
+        "LAD_FREE_AGENCY_2010_JUAN_CASTRO"
+      ],
+      "class": "MISSING_EVENT",
+      "player_slug": "juan-castro",
+      "scope": "DODGERS_TRANSACTION",
+      "season": 2010,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "juan-guzman",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 1998,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "juan-guzman",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 1999,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "karim-garcia",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2000,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "karim-garcia",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2002,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "karim-garcia",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2003,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "karim-garcia",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2004,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "omar-daal",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 1997,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "omar-daal",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2000,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "EVENT_PRESENT_DATE_INSUFFICIENT",
+      "player_slug": "pedro-astacio",
+      "scope": "DODGERS_TRANSACTION",
+      "season": 1997,
+      "state_052": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "pedro-astacio",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2001,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "pedro-astacio",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2005,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [
+        "LAD_FREE_AGENT_SIGNING_2022_PEDRO_BAEZ"
+      ],
+      "class": "MISSING_EVENT",
+      "player_slug": "pedro-baez",
+      "scope": "DODGERS_TRANSACTION",
+      "season": 2022,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "raul-mondesi",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2002,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "raul-mondesi",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2003,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "raul-mondesi",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2004,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    },
+    {
+      "canonical_write": [],
+      "class": "MISSING_EVENT",
+      "player_slug": "yasiel-puig",
+      "scope": "LATER_ORGANIZATION_HISTORY",
+      "season": 2019,
+      "state_052": "NO_CANONICAL_TRANSACTION"
+    }
+  ]
+}

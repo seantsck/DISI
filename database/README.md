@@ -64,6 +64,7 @@ This folder preserves the SQL lineage behind the DISI research database.
 53. `049_transaction_package_completion.sql` — transaction-package completion (data only: no table, view, function, grant or policy): the 2009 Tony Abreu trade corrected forward to Jon Garland for a player to be named later (agreement 2009-08-31, delivery 2009-10-09 kept), Garland's free agency, the 1967 Dodgers-Twins trade that ended Bob Miller's Dodgers career with the 1968 expansion-draft exits of Mudcat Grant and Zoilo Versalles, and four MLB ids for assets recorded by name only; no WAR is loaded, so the returns read `RETURN_WAR_UNKNOWN` (`NULL`, never zero).
 54. `050_international_benchmark_support_expansion.sql` — international benchmark expansion and probability-support audit (see the 050 section below). 051 added no migration.
 55. `052_development_taxonomy_chronology_resolution.sql` — development taxonomy and chronology resolution (data plus one view definition: no table, enum, function, grant or policy): every team stint's organization from the official team record for its own team id and season (319 resolved, 3 corrected), exact first / last appearance dates for 528 log-era stints and 101 level debuts from the official game log, 11 dated first professional games, 5 pending reviews for within-season sequences the dates expose, the Pioneer League per era in the level-era map, and two research-queue conditions corrected (the cancelled 2020 minor-league season; seasons bracketed by a canonical transaction). Built from `database/research/052/`; exact rollback `database/release/sql/rollback-052.sql`.
+56. `053_transaction_chronology_resolution.sql` — transaction and chronology resolution (data plus one view definition: no table, enum, function, grant or policy): ten Dodgers transactions the official MLB transaction log or Retrosheet states (Baez 2022, Park 2008, Vizcaino 1997 and 2000 with Leyritz's exit, Daal 2001-02, Castro 2010), and the research queue's multi-organization condition read in the player's direction with the Dodgers end of a move (see the 053 section below).
 
 ## 017 research-database layer
 
@@ -386,6 +387,23 @@ This folder preserves the SQL lineage behind the DISI research database.
 - **Left open on purpose.** The Pioneer League has no ladder level (the official record files every season DISI holds under the Rookie sport);
   team changes without a canonical transaction; seasons before structured records or game logs; foreign professional dates
   (`database/research/052/architecture.md`).
+
+## 053 transaction and chronology resolution
+
+- **What it writes.** Ten Dodgers transactions (14 assets) the official log or Retrosheet states, each identity matched by exact birth date. No
+  source, resolution or control observation is added; no stint, milestone, decision, outcome, WAR, cost, benchmark or feature row moves.
+- **The ledger is the Dodgers' side.** Every event's from-organization is a Dodgers organization and the asset side carries the player's direction;
+  a move between two other clubs is later organization history and never enters the ledger (the asset views would read it as a Dodgers exit).
+- **The detector correction.** `v_dodgers_development_research_queue` is the 052 view with the `MULTI_ORG_SEASON_UNVERIFIED` condition read in the
+  player's direction and closing a season on one bracketing Dodgers transaction with one known end (a release, a free agency, a free-agent signing:
+  the Dodgers end of the move). Two bracketing transactions stay open. The rollback restores the 052 text byte for byte.
+- **Value.** Jim Leyritz (returned for Vizcaino in 2000) is RETURN_WAR_UNKNOWN with a NULL bWAR, accepted by the identity check only as a pinned id;
+  the trade's cash amount is unknown.
+- **Snapshots.** The decision snapshot reads the changed chain (Vizcaino): one refresh, one new generation, zero drift.
+- **Verifier.** Three checks (255): `transaction_ledger_side_violations`, `transaction_mechanism_shape_violations`,
+  `control_interval_overlap_violations`; `EXPECTATIONS_THROUGH_052` keeps the pre-053 pin list.
+- **Left open on purpose.** Moves between two other clubs; Castro's 2000 exit and later re-signings (they need a sealed observation no rollback can
+  remove); the Nomo, Mota and Navarro re-acquisitions outside the workset; every amount (`database/research/053/architecture.md`).
 
 ## 042-045 decision layers (DISI v1.0.0)
 

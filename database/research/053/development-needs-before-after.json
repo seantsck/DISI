@@ -1,0 +1,497 @@
+{
+  "added": [],
+  "after": {
+    "by_need": {
+      "GAME_DATES": 29,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 18,
+      "SEASON_COVERAGE": 30,
+      "SEQUENCE_REVIEW": 5
+    },
+    "detector_rows": 132,
+    "gap_classes": {
+      "FACT_MISSING": 0,
+      "HUMAN_REVIEW": 5,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 0,
+      "SOURCE_LIMITED": 61,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 16
+    },
+    "needs": 108,
+    "players": 65
+  },
+  "as_of": "2026-10-24",
+  "before": {
+    "by_need": {
+      "GAME_DATES": 29,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 20,
+      "SEASON_COVERAGE": 30,
+      "SEQUENCE_REVIEW": 5
+    },
+    "detector_rows": 134,
+    "gap_classes": {
+      "FACT_MISSING": 0,
+      "HUMAN_REVIEW": 5,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 0,
+      "SOURCE_LIMITED": 61,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 18
+    },
+    "needs": 110,
+    "players": 66
+  },
+  "reclassified": [],
+  "resolved": [
+    {
+      "before": "TRANSACTION_BLOCKED",
+      "need": "ORGANIZATION",
+      "player_slug": "pedro-baez"
+    },
+    {
+      "before": "TRANSACTION_BLOCKED",
+      "need": "ORGANIZATION",
+      "player_slug": "edgar-leon"
+    }
+  ],
+  "transaction_blocked": [
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2022 (NO_CANONICAL_TRANSACTION, later organization history), 2023 (NO_CANONICAL_TRANSACTION, later organization history), 2025 (NO_CANONICAL_TRANSACTION, later organization history), 2026 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2022 (NO_CANONICAL_TRANSACTION), 2023 (NO_CANONICAL_TRANSACTION), 2025 (NO_CANONICAL_TRANSACTION), 2026 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2022
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2023
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2025
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2026
+        }
+      ],
+      "player_slug": "carlos-santana"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2005 (NO_CANONICAL_TRANSACTION, later organization history), 2007 (NO_CANONICAL_TRANSACTION, later organization history), 2010 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2005 (NO_CANONICAL_TRANSACTION), 2007 (NO_CANONICAL_TRANSACTION), 2010 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2005
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2007
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2010
+        }
+      ],
+      "player_slug": "chan-ho-park"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1963 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1963 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 1963
+        }
+      ],
+      "player_slug": "chico-fernandez"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2025 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2025 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2025
+        }
+      ],
+      "player_slug": "diego-cartaya"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2026
+        }
+      ],
+      "player_slug": "eddys-leonard"
+    },
+    {
+      "after": {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction.",
+        "gap_class": "CLOSED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "NOT_A_TRANSACTION_GAP",
+          "season": 2026
+        }
+      ],
+      "player_slug": "edgar-leon"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 1997
+        }
+      ],
+      "player_slug": "fernando-valenzuela"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2002 (NO_CANONICAL_TRANSACTION, later organization history), 2004 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2002 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "EVENT_PRESENT_DATE_INSUFFICIENT",
+          "season": 2000
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2002
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2004
+        }
+      ],
+      "player_slug": "ismael-valdez"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION, later organization history), 2005 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION), 2005 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2002
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2005
+        }
+      ],
+      "player_slug": "jose-offerman"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1996 (NO_CANONICAL_TRANSACTION, later organization history), 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2006 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1996 (NO_CANONICAL_TRANSACTION), 2000 (NO_CANONICAL_TRANSACTION), 2006 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 1996
+        },
+        {
+          "canonical_write": [
+            "LAD_NYY_2000_JOSE_VIZCAINO"
+          ],
+          "class": "MISSING_EVENT",
+          "season": 2000
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2006
+        }
+      ],
+      "player_slug": "jose-vizcaino"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2006 (NO_CANONICAL_TRANSACTION, later organization history), 2008 (MORE_THAN_TWO_ORGANIZATIONS, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2006 (NO_CANONICAL_TRANSACTION), 2008 (MORE_THAN_TWO_ORGANIZATIONS), 2010 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2006
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2008
+        },
+        {
+          "canonical_write": [
+            "LAD_FREE_AGENT_SIGNING_2010_JUAN_CASTRO",
+            "LAD_FREE_AGENCY_2010_JUAN_CASTRO"
+          ],
+          "class": "MISSING_EVENT",
+          "season": 2010
+        }
+      ],
+      "player_slug": "juan-castro"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1998 (NO_CANONICAL_TRANSACTION, later organization history), 1999 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1998 (NO_CANONICAL_TRANSACTION), 1999 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 1998
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 1999
+        }
+      ],
+      "player_slug": "juan-guzman"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (NO_CANONICAL_TRANSACTION, later organization history), 2002 (NO_CANONICAL_TRANSACTION, later organization history), 2003 (NO_CANONICAL_TRANSACTION, later organization history), 2004 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (NO_CANONICAL_TRANSACTION), 2002 (NO_CANONICAL_TRANSACTION), 2003 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2000
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2002
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2003
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2004
+        }
+      ],
+      "player_slug": "karim-garcia"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION, later organization history), 2000 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION), 2000 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 1997
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2000
+        }
+      ],
+      "player_slug": "omar-daal"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2001 (NO_CANONICAL_TRANSACTION, later organization history), 2005 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2001 (NO_CANONICAL_TRANSACTION), 2005 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "EVENT_PRESENT_DATE_INSUFFICIENT",
+          "season": 1997
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2001
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2005
+        }
+      ],
+      "player_slug": "pedro-astacio"
+    },
+    {
+      "after": {
+        "cause": "Every multi-organization season is bracketed by a canonical transaction.",
+        "gap_class": "CLOSED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2022 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [
+            "LAD_FREE_AGENT_SIGNING_2022_PEDRO_BAEZ"
+          ],
+          "class": "MISSING_EVENT",
+          "season": 2022
+        }
+      ],
+      "player_slug": "pedro-baez"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION, later organization history), 2003 (NO_CANONICAL_TRANSACTION, later organization history), 2004 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION), 2003 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2002
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2003
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2004
+        }
+      ],
+      "player_slug": "raul-mondesi"
+    },
+    {
+      "after": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2019 (NO_CANONICAL_TRANSACTION, later organization history).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "before": {
+        "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2019 (NO_CANONICAL_TRANSACTION).",
+        "gap_class": "TRANSACTION_BLOCKED"
+      },
+      "evidence": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "season": 2019
+        }
+      ],
+      "player_slug": "yasiel-puig"
+    }
+  ]
+}

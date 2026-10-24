@@ -414,7 +414,7 @@ test('the verifier passes on 001-048 (252 hard checks), each snapshot check is c
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 252)
+  assert.equal(full.hard.length, 255)
   // a pinned count that differs by one is caught (the other pins are exercised by the verifier's own drift test)
   const bad = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, progression_decisions_pending: CANONICAL_EXPECTATIONS.progression_decisions_pending - 1 })
   assert.deepEqual(failedChecks(bad).map((c) => c.name), ['progression_decisions_pending'])

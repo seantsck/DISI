@@ -22,6 +22,7 @@ npm run research:development  -- --needs           # 048: the queue de-duplicate
 npm run research:development  -- --review [--player kenley-jansen]   # 048: the reviewer's packet for pending progression decisions (decides nothing)
 npm run research:development  -- --no-mlb-coverage  # 051: the audited no-MLB cohort's documented path, Dodgers-affiliate part and later career apart
 npm run research:development  -- --causes [--class SOURCE_LIMITED] [--need ORGANIZATION]  # 052: every open need, why it is open, what would close it
+npm run research:development  -- --chronology [--open] [--scope LATER_ORGANIZATION_HISTORY] [--player slug]  # 053: every two-organization season, its bracket and scope
 npm run research:readiness
 npm run research:progress     -- --baseline database/research/046/baseline.json
 ```
@@ -98,6 +99,16 @@ Every open development need (the de-duplicated `--needs` rows) with exactly one 
 source holds it; not a research failure), `HUMAN_REVIEW` (a person decides), `TRANSACTION_BLOCKED` (a season with two organizations and no
 canonical transaction between them), `IDENTITY_BLOCKED`, or `NOT_A_GAP`. Filter with `--class` and `--need`; `--format json` adds the counts. The
 rules are `lib/research/development-chronology.js`, the same ones the research-queue view applies. No priority score.
+
+## research:development --chronology (053)
+
+Every season with two or more organizations: the last game for the first organization and the first for the second, the canonical transaction
+read in the player's direction (`playerMove`: the ledger records every transaction from the Dodgers' side, the asset side says which way the player
+went), and the state: `BRACKETED` (a transaction between the two clubs), `BRACKETED_AT_DODGERS_BOUNDARY` (the Dodgers end of the move: a release,
+a free agency or a free-agent signing between the two clubs' games; the other club's transaction is never implied), `MULTIPLE_POSSIBLE_TRANSACTIONS`,
+`NO_CANONICAL_TRANSACTION`, or a dates state. `scope` says whether the Dodgers are one of the organizations; a move between two other clubs is
+`LATER_ORGANIZATION_HISTORY`, which DISI's Dodgers ledger does not record. `--open` drops the bracketed seasons. The official log rows behind a
+season come from `scripts/mlb/player-transactions.mjs`.
 
 The official league and team facts it rests on come from two read-only fetchers: `scripts/mlb/team-seasons.mjs` (a team's parent organization,
 sport and league for one season) and `scripts/mlb/league-seasons.mjs` (a level's regular-season schedule; a league's sport by season).

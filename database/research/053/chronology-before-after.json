@@ -1,0 +1,191 @@
+{
+  "after": {
+    "BRACKETED": 14,
+    "BRACKETED_AT_DODGERS_BOUNDARY": 3,
+    "MORE_THAN_TWO_ORGANIZATIONS": 1,
+    "NO_CANONICAL_TRANSACTION": 34,
+    "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 5
+  },
+  "as_of": "2026-10-24",
+  "before": {
+    "BRACKETED": 14,
+    "MORE_THAN_TWO_ORGANIZATIONS": 1,
+    "NO_CANONICAL_TRANSACTION": 38,
+    "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 4
+  },
+  "changed": [
+    {
+      "after": "BRACKETED_AT_DODGERS_BOUNDARY",
+      "before": "NO_CANONICAL_TRANSACTION",
+      "rule_only": "BRACKETED_AT_DODGERS_BOUNDARY",
+      "season": "edgar-leon|2026",
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2026-05-02",
+          "last_appearance": "2026-05-18",
+          "levels": [
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "ACL Dodgers"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2026-07-28",
+          "last_appearance": "2026-08-17",
+          "levels": [
+            "INTERNATIONAL_ROOKIE"
+          ],
+          "organization": "Detroit Tigers",
+          "teams": [
+            "DSL Tigers 1",
+            "DSL Tigers 2"
+          ]
+        }
+      ],
+      "transaction": {
+        "date": "2026-05-21",
+        "event_key": "LAD_RELEASE_2026_EDGAR_LEON",
+        "from": "Los Angeles Dodgers",
+        "to": "Detroit Tigers",
+        "type": "RELEASE"
+      },
+      "why": "Detector correction: the Dodgers end of the move is an existing canonical transaction inside the bracket."
+    },
+    {
+      "after": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS",
+      "before": "NO_CANONICAL_TRANSACTION",
+      "rule_only": "NO_CANONICAL_TRANSACTION",
+      "season": "jose-vizcaino|2000",
+      "segments": [
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Los Angeles Dodgers"
+          ]
+        },
+        {
+          "dated": false,
+          "first_appearance": null,
+          "last_appearance": null,
+          "levels": [
+            "MLB"
+          ],
+          "organization": "New York Yankees",
+          "teams": [
+            "New York Yankees"
+          ]
+        }
+      ],
+      "transaction": {
+        "date": "2000-06-20",
+        "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+        "from": "Los Angeles Dodgers",
+        "to": "New York Yankees",
+        "type": "TRADE"
+      },
+      "why": "Data: Migration 053 records the Dodgers transaction an approved source states."
+    },
+    {
+      "after": "BRACKETED_AT_DODGERS_BOUNDARY",
+      "before": "NO_CANONICAL_TRANSACTION",
+      "rule_only": "NO_CANONICAL_TRANSACTION",
+      "season": "juan-castro|2010",
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2010-04-12",
+          "last_appearance": "2010-07-16",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Philadelphia Phillies",
+          "teams": [
+            "Philadelphia Phillies"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2010-08-06",
+          "last_appearance": "2010-08-15",
+          "levels": [
+            "AAA",
+            "MLB"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "Albuquerque Isotopes",
+            "Los Angeles Dodgers"
+          ]
+        }
+      ],
+      "transaction": {
+        "date": "2010-08-03",
+        "event_key": "LAD_FREE_AGENT_SIGNING_2010_JUAN_CASTRO",
+        "from": "Philadelphia Phillies",
+        "to": "Los Angeles Dodgers",
+        "type": "FREE_AGENT_SIGNING"
+      },
+      "why": "Data: Migration 053 records the Dodgers transaction an approved source states."
+    },
+    {
+      "after": "BRACKETED_AT_DODGERS_BOUNDARY",
+      "before": "NO_CANONICAL_TRANSACTION",
+      "rule_only": "NO_CANONICAL_TRANSACTION",
+      "season": "pedro-baez|2022",
+      "segments": [
+        {
+          "dated": true,
+          "first_appearance": "2022-04-08",
+          "last_appearance": "2022-04-19",
+          "levels": [
+            "MLB"
+          ],
+          "organization": "Houston Astros",
+          "teams": [
+            "Houston Astros"
+          ]
+        },
+        {
+          "dated": true,
+          "first_appearance": "2022-07-05",
+          "last_appearance": "2022-08-19",
+          "levels": [
+            "AAA",
+            "COMPLEX_ROOKIE"
+          ],
+          "organization": "Los Angeles Dodgers",
+          "teams": [
+            "ACL Dodgers",
+            "Oklahoma City Dodgers"
+          ]
+        }
+      ],
+      "transaction": {
+        "date": "2022-05-19",
+        "event_key": "LAD_FREE_AGENT_SIGNING_2022_PEDRO_BAEZ",
+        "from": "Houston Astros",
+        "to": "Los Angeles Dodgers",
+        "type": "FREE_AGENT_SIGNING"
+      },
+      "why": "Data: Migration 053 records the Dodgers transaction an approved source states."
+    }
+  ],
+  "rule": "Before: the 052 rule over the canonical state before 053. Rule only: the 053 rule over the same data (the detector correction alone). After: the 053 rule over the canonical state after 053.",
+  "rule_only": {
+    "BRACKETED": 14,
+    "BRACKETED_AT_DODGERS_BOUNDARY": 1,
+    "MORE_THAN_TWO_ORGANIZATIONS": 1,
+    "NO_CANONICAL_TRANSACTION": 37,
+    "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 4
+  }
+}

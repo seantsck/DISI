@@ -1,0 +1,318 @@
+{
+  "A_primary": [
+    {
+      "player_slug": "carlos-santana",
+      "seasons": [
+        2022,
+        2023,
+        2025,
+        2026
+      ]
+    },
+    {
+      "player_slug": "chan-ho-park",
+      "seasons": [
+        2005,
+        2007,
+        2010
+      ]
+    },
+    {
+      "player_slug": "chico-fernandez",
+      "seasons": [
+        1963
+      ]
+    },
+    {
+      "player_slug": "diego-cartaya",
+      "seasons": [
+        2025
+      ]
+    },
+    {
+      "player_slug": "eddys-leonard",
+      "seasons": [
+        2026
+      ]
+    },
+    {
+      "player_slug": "edgar-leon",
+      "seasons": [
+        2026
+      ]
+    },
+    {
+      "player_slug": "fernando-valenzuela",
+      "seasons": [
+        1997
+      ]
+    },
+    {
+      "player_slug": "ismael-valdez",
+      "seasons": [
+        2000,
+        2002,
+        2004
+      ]
+    },
+    {
+      "player_slug": "jose-offerman",
+      "seasons": [
+        2002,
+        2005
+      ]
+    },
+    {
+      "player_slug": "jose-vizcaino",
+      "seasons": [
+        1996,
+        2000,
+        2006
+      ]
+    },
+    {
+      "player_slug": "juan-castro",
+      "seasons": [
+        2006,
+        2008,
+        2010
+      ]
+    },
+    {
+      "player_slug": "juan-guzman",
+      "seasons": [
+        1998,
+        1999
+      ]
+    },
+    {
+      "player_slug": "karim-garcia",
+      "seasons": [
+        2000,
+        2002,
+        2003,
+        2004
+      ]
+    },
+    {
+      "player_slug": "omar-daal",
+      "seasons": [
+        1997,
+        2000
+      ]
+    },
+    {
+      "player_slug": "pedro-astacio",
+      "seasons": [
+        1997,
+        2001,
+        2005
+      ]
+    },
+    {
+      "player_slug": "pedro-baez",
+      "seasons": [
+        2022
+      ]
+    },
+    {
+      "player_slug": "raul-mondesi",
+      "seasons": [
+        2002,
+        2003,
+        2004
+      ]
+    },
+    {
+      "player_slug": "yasiel-puig",
+      "seasons": [
+        2019
+      ]
+    }
+  ],
+  "B_transaction_items": [
+    {
+      "asset_name": "Cash",
+      "event_key": "CHC_LAD_2000_VALDEZ_REACQ",
+      "issue": "CASH_AMOUNT_UNKNOWN",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Cash",
+      "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+      "issue": "CASH_AMOUNT_UNKNOWN",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Cash",
+      "event_key": "LAD_CLE_2008_SANTANA_BLAKE",
+      "issue": "CASH_AMOUNT_UNKNOWN",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Cash",
+      "event_key": "LAD_DET_2023_EDDYS_LEONARD",
+      "issue": "CASH_AMOUNT_UNKNOWN",
+      "player_slug": null
+    },
+    {
+      "asset_name": "José Vizcaíno",
+      "event_key": "LAD_CHC_1990_VIZCAINO",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Chan Ho Park",
+      "event_key": "LAD_FA_2001_PARK",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Juan Castro",
+      "event_key": "LAD_FREE_AGENCY_2009_JUAN_CASTRO",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "player_slug": null
+    },
+    {
+      "asset_name": "Omar Daal",
+      "event_key": "LAD_MON_1995_DAAL",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "player_slug": null
+    }
+  ],
+  "B_value_items": [
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "carlos-santana"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "chico-fernandez"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "fernando-valenzuela"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "ismael-valdez"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "jose-offerman"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "jose-vizcaino"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "juan-castro"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "karim-garcia"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "omar-daal"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "pedro-astacio"
+    },
+    {
+      "event_key": null,
+      "issue": "ACQUISITION_COST_INCOMPLETE",
+      "player_slug": "pedro-baez"
+    },
+    {
+      "event_key": null,
+      "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+      "player_slug": "chico-fernandez"
+    },
+    {
+      "event_key": null,
+      "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+      "player_slug": "jose-offerman"
+    },
+    {
+      "event_key": null,
+      "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+      "player_slug": "raul-mondesi"
+    },
+    {
+      "event_key": "LAD_CHC_1999_VALDEZ",
+      "issue": "LINEAGE_BOUNDARY_NOTED",
+      "player_slug": null
+    },
+    {
+      "event_key": "LAD_CHC_1999_VALDEZ",
+      "issue": "LINEAGE_BOUNDARY_NOTED",
+      "player_slug": null
+    },
+    {
+      "event_key": "LAD_CHC_1999_VALDEZ",
+      "issue": "LINEAGE_BOUNDARY_NOTED",
+      "player_slug": null
+    },
+    {
+      "event_key": null,
+      "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+      "player_slug": "carlos-santana"
+    },
+    {
+      "event_key": null,
+      "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+      "player_slug": "ismael-valdez"
+    },
+    {
+      "event_key": null,
+      "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+      "player_slug": "raul-mondesi"
+    },
+    {
+      "event_key": null,
+      "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+      "player_slug": "yasiel-puig"
+    }
+  ],
+  "C_note": "No primary blocker depends on a package's membership or terms: every open season is either at the Dodgers boundary (a signing or an exit) or a move between two other clubs. The overlapping cash-amount items stay as they are.",
+  "C_packages": [],
+  "D_downstream": [
+    "LAD_NYY_2000_JOSE_VIZCAINO",
+    "LAD_FREE_AGENCY_2000_JIM_LEYRITZ"
+  ],
+  "as_of": "2026-10-24",
+  "not_in_workset": [
+    {
+      "asset_name": "Guillermo Mota",
+      "event_key": "LAD_MIA_2004_GUILLERMO_MOTA",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "why": "Same pattern, but not a player in the primary workset; a later batch can record it from the same sources."
+    },
+    {
+      "asset_name": "Hideo Nomo",
+      "event_key": "LAD_NYM_1998_NOMO",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "why": "Same pattern, but not a player in the primary workset; a later batch can record it from the same sources."
+    },
+    {
+      "asset_name": "Dioner Navarro",
+      "event_key": "LAD_TB_2006_DIONER_NAVARRO",
+      "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+      "why": "Same pattern, but not a player in the primary workset; a later batch can record it from the same sources."
+    }
+  ],
+  "rule": "A: every development need classified TRANSACTION_BLOCKED after 052. B: every canonical transaction or value research item of the same player or one of his events. C: a package only where a primary blocker needs its membership or terms. D: the adjacent hop of a returned asset an A or B write records."
+}
