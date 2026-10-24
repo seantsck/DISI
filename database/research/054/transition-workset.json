@@ -1,0 +1,911 @@
+{
+  "as_of": "2026-10-24",
+  "by_mechanism": {
+    "PURCHASE": 1,
+    "RELEASE_THEN_SIGNING": 10,
+    "SEVERAL": 1,
+    "TRADE": 19,
+    "WAIVER_CLAIM": 2
+  },
+  "count": 33,
+  "dated": 12,
+  "transitions": [
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2022-06-27",
+          "from": "KC",
+          "key": "CAREER_20220627_TRADE_KC_SEA_CARLOS_SANTANA",
+          "source": "MLB transaction 633466",
+          "to": "SEA",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": "2022-06-28",
+      "last_appearance_first_club": "2022-06-26",
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Kansas City Royals",
+        "Seattle Mariners"
+      ],
+      "player_slug": "carlos-santana",
+      "safe_to_record": true,
+      "season": 2022
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2023-07-27",
+          "from": "PIT",
+          "key": "CAREER_20230727_TRADE_PIT_MIL_CARLOS_SANTANA",
+          "source": "MLB transaction 715038",
+          "to": "MIL",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": "2023-07-29",
+      "last_appearance_first_club": "2023-07-26",
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Pittsburgh Pirates",
+        "Milwaukee Brewers"
+      ],
+      "player_slug": "carlos-santana",
+      "safe_to_record": true,
+      "season": 2023
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2025-08-28",
+          "from": "CLE",
+          "key": "CAREER_20250828_RELEASE_CLE_NONE_CARLOS_SANTANA",
+          "source": "MLB transaction 866773",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2025-09-01",
+          "from": null,
+          "key": "CAREER_20250901_FREE_AGENT_SIGNING_NONE_CHC_CARLOS_SANTANA",
+          "source": "MLB transaction 867250",
+          "to": "CHC",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": "2025-09-01",
+      "last_appearance_first_club": "2025-08-25",
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "Cleveland Guardians",
+        "Chicago Cubs"
+      ],
+      "player_slug": "carlos-santana",
+      "safe_to_record": true,
+      "season": 2025
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2026-06-26",
+          "from": "ARI",
+          "key": "CAREER_20260626_RELEASE_ARI_NONE_CARLOS_SANTANA",
+          "source": "MLB transaction 922945",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2026-06-28",
+          "from": null,
+          "key": "CAREER_20260628_FREE_AGENT_SIGNING_NONE_ATL_CARLOS_SANTANA",
+          "source": "MLB transaction 924086",
+          "to": "ATL",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": "2026-07-02",
+      "last_appearance_first_club": "2026-06-22",
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "Arizona Diamondbacks",
+        "Atlanta Braves"
+      ],
+      "player_slug": "carlos-santana",
+      "safe_to_record": true,
+      "season": 2026
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2005-07-30",
+          "from": "TEX",
+          "key": "CAREER_20050730_TRADE_TEX_SD_CHAN_HO_PARK",
+          "source": "Retrosheet transaction 63729",
+          "to": "SD",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "San Diego Padres",
+        "Texas Rangers"
+      ],
+      "player_slug": "chan-ho-park",
+      "safe_to_record": true,
+      "season": 2005
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2007-06-03",
+          "from": "NYM",
+          "key": "CAREER_20070603_RELEASE_NYM_NONE_CHAN_HO_PARK",
+          "source": "Retrosheet transaction 39970",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2007-06-12",
+          "from": null,
+          "key": "CAREER_20070612_FREE_AGENT_SIGNING_NONE_HOU_CHAN_HO_PARK",
+          "source": "Retrosheet transaction 39971",
+          "to": "HOU",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": "2007-06-16",
+      "last_appearance_first_club": "2007-06-02",
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "New York Mets",
+        "Houston Astros"
+      ],
+      "player_slug": "chan-ho-park",
+      "safe_to_record": true,
+      "season": 2007
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2010-08-04",
+          "from": "NYY",
+          "key": "CAREER_20100804_WAIVER_CLAIM_NYY_PIT_CHAN_HO_PARK",
+          "source": "MLB transaction 65586",
+          "to": "PIT",
+          "type": "WAIVER_CLAIM"
+        }
+      ],
+      "first_appearance_second_club": "2010-08-06",
+      "last_appearance_first_club": "2010-07-29",
+      "mechanism": "WAIVER_CLAIM",
+      "names_both_clubs": true,
+      "organizations": [
+        "New York Yankees",
+        "Pittsburgh Pirates"
+      ],
+      "player_slug": "chan-ho-park",
+      "safe_to_record": true,
+      "season": 2010
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "1963-05-08",
+          "from": "DET",
+          "key": "CAREER_19630508_TRADE_DET_ATL_CHICO_FERNANDEZ",
+          "source": "Retrosheet transaction 60348",
+          "to": "ATL",
+          "type": "TRADE"
+        },
+        {
+          "date": "1963-05-08",
+          "from": "ATL",
+          "key": "CAREER_19630508_TRADE_ATL_NYM_CHICO_FERNANDEZ",
+          "source": "Retrosheet transaction 60349",
+          "to": "NYM",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Detroit Tigers",
+        "New York Mets"
+      ],
+      "player_slug": "chico-fernandez",
+      "safe_to_record": true,
+      "season": 1963
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2025-07-23",
+          "from": "MIN",
+          "key": "CAREER_20250723_RELEASE_MIN_NONE_DIEGO_CARTAYA",
+          "source": "MLB transaction 857600",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2025-07-29",
+          "from": null,
+          "key": "CAREER_20250729_FREE_AGENT_SIGNING_NONE_SFG_DIEGO_CARTAYA",
+          "source": "MLB transaction 859876",
+          "to": "SFG",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": "2025-09-01",
+      "last_appearance_first_club": "2025-06-29",
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "Minnesota Twins",
+        "San Francisco Giants"
+      ],
+      "player_slug": "diego-cartaya",
+      "safe_to_record": true,
+      "season": 2025
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2026-07-16",
+          "from": "MIL",
+          "key": "CAREER_20260716_RELEASE_MIL_NONE_EDDYS_LEONARD",
+          "source": "MLB transaction 928037",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2026-07-24",
+          "from": null,
+          "key": "CAREER_20260724_FREE_AGENT_SIGNING_NONE_SFG_EDDYS_LEONARD",
+          "source": "MLB transaction 931087",
+          "to": "SFG",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": "2026-07-24",
+      "last_appearance_first_club": "2026-07-12",
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "Milwaukee Brewers",
+        "San Francisco Giants"
+      ],
+      "player_slug": "eddys-leonard",
+      "safe_to_record": true,
+      "season": 2026
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "1997-06-13",
+          "from": "SD",
+          "key": "CAREER_19970613_TRADE_SD_STL_FERNANDO_VALENZUELA",
+          "source": "Retrosheet transaction 62878",
+          "to": "STL",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "San Diego Padres",
+        "St. Louis Cardinals"
+      ],
+      "player_slug": "fernando-valenzuela",
+      "safe_to_record": true,
+      "season": 1997
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2002-08-19",
+          "from": "TEX",
+          "key": "CAREER_20020819_TRADE_TEX_SEA_ISMAEL_VALDEZ",
+          "source": "Retrosheet transaction 63457",
+          "to": "SEA",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Seattle Mariners",
+        "Texas Rangers"
+      ],
+      "player_slug": "ismael-valdez",
+      "safe_to_record": true,
+      "season": 2002
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2004-07-31",
+          "from": "SD",
+          "key": "CAREER_20040731_TRADE_SD_MIA_ISMAEL_VALDEZ",
+          "source": "Retrosheet transaction 63647",
+          "to": "MIA",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Miami Marlins",
+        "San Diego Padres"
+      ],
+      "player_slug": "ismael-valdez",
+      "safe_to_record": true,
+      "season": 2004
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2002-08-08",
+          "from": "BOS",
+          "key": "CAREER_20020808_TRADE_BOS_SEA_JOSE_OFFERMAN",
+          "source": "Retrosheet transaction 38673",
+          "to": "SEA",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Boston Red Sox",
+        "Seattle Mariners"
+      ],
+      "player_slug": "jose-offerman",
+      "safe_to_record": true,
+      "season": 2002
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2005-05-20",
+          "from": "PHI",
+          "key": "CAREER_20050520_RELEASE_PHI_NONE_JOSE_OFFERMAN",
+          "source": "Retrosheet transaction 38680",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2005-06-08",
+          "from": null,
+          "key": "CAREER_20050608_FREE_AGENT_SIGNING_NONE_NYM_JOSE_OFFERMAN",
+          "source": "Retrosheet transaction 38681",
+          "to": "NYM",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "New York Mets",
+        "Philadelphia Phillies"
+      ],
+      "player_slug": "jose-offerman",
+      "safe_to_record": true,
+      "season": 2005
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "1996-07-29",
+          "from": "NYM",
+          "key": "CAREER_19960729_TRADE_NYM_CLE_JOSE_VIZCAINO",
+          "source": "Retrosheet transaction 62798",
+          "to": "CLE",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Cleveland Guardians",
+        "New York Mets"
+      ],
+      "player_slug": "jose-vizcaino",
+      "safe_to_record": true,
+      "season": 1996
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2006-08-18",
+          "from": "SFG",
+          "key": "CAREER_20060818_RELEASE_SFG_NONE_JOSE_VIZCAINO",
+          "source": "Retrosheet transaction 54695",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2006-08-23",
+          "from": null,
+          "key": "CAREER_20060823_FREE_AGENT_SIGNING_NONE_STL_JOSE_VIZCAINO",
+          "source": "Retrosheet transaction 54696",
+          "to": "STL",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": "2006-08-23",
+      "last_appearance_first_club": "2006-08-13",
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "San Francisco Giants",
+        "St. Louis Cardinals"
+      ],
+      "player_slug": "jose-vizcaino",
+      "safe_to_record": true,
+      "season": 2006
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2006-06-15",
+          "from": "MIN",
+          "key": "CAREER_20060615_TRADE_MIN_CIN_JUAN_CASTRO",
+          "source": "Retrosheet transaction 63818",
+          "to": "CIN",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": "2006-06-18",
+      "last_appearance_first_club": "2006-06-13",
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Minnesota Twins",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "juan-castro",
+      "safe_to_record": true,
+      "season": 2006
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2008-05-02",
+          "from": "CIN",
+          "key": "CAREER_20080502_RELEASE_CIN_NONE_JUAN_CASTRO",
+          "source": "Retrosheet transaction 8701",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2008-05-04",
+          "from": null,
+          "key": "CAREER_20080504_FREE_AGENT_SIGNING_NONE_COL_JUAN_CASTRO",
+          "source": "Retrosheet transaction 8702",
+          "to": "COL",
+          "type": "FREE_AGENT_SIGNING"
+        },
+        {
+          "date": "2008-07-19",
+          "from": "COL",
+          "key": "CAREER_20080719_TRADE_COL_BAL_JUAN_CASTRO",
+          "source": "Retrosheet transaction 64012",
+          "to": "BAL",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": "2008-05-05",
+      "last_appearance_first_club": "2008-04-17",
+      "mechanism": "SEVERAL",
+      "names_both_clubs": true,
+      "organizations": [
+        "Cincinnati Reds",
+        "Baltimore Orioles",
+        "Colorado Rockies"
+      ],
+      "player_slug": "juan-castro",
+      "safe_to_record": true,
+      "season": 2008
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "1998-07-31",
+          "from": "TOR",
+          "key": "CAREER_19980731_TRADE_TOR_BAL_JUAN_GUZMAN",
+          "source": "Retrosheet transaction 63020",
+          "to": "BAL",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Baltimore Orioles",
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "juan-guzman",
+      "safe_to_record": true,
+      "season": 1998
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "1999-07-31",
+          "from": "BAL",
+          "key": "CAREER_19990731_TRADE_BAL_CIN_JUAN_GUZMAN",
+          "source": "Retrosheet transaction 63120",
+          "to": "CIN",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Baltimore Orioles",
+        "Cincinnati Reds"
+      ],
+      "player_slug": "juan-guzman",
+      "safe_to_record": true,
+      "season": 1999
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2000-06-12",
+          "from": "DET",
+          "key": "CAREER_20000612_TRADE_DET_BAL_KARIM_GARCIA",
+          "source": "Retrosheet transaction 18076",
+          "to": "BAL",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Baltimore Orioles",
+        "Detroit Tigers"
+      ],
+      "player_slug": "karim-garcia",
+      "safe_to_record": true,
+      "season": 2000
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2002-07-02",
+          "from": "NYY",
+          "key": "CAREER_20020702_RELEASE_NYY_NONE_KARIM_GARCIA",
+          "source": "Retrosheet transaction 18081",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2002-07-12",
+          "from": null,
+          "key": "CAREER_20020712_FREE_AGENT_SIGNING_NONE_CLE_KARIM_GARCIA",
+          "source": "Retrosheet transaction 18082",
+          "to": "CLE",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "Cleveland Guardians",
+        "New York Yankees"
+      ],
+      "player_slug": "karim-garcia",
+      "safe_to_record": true,
+      "season": 2002
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2003-06-25",
+          "from": "CLE",
+          "key": "CAREER_20030625_PURCHASE_CLE_NYY_KARIM_GARCIA",
+          "source": "Retrosheet transaction 18083",
+          "to": "NYY",
+          "type": "PURCHASE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "PURCHASE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Cleveland Guardians",
+        "New York Yankees"
+      ],
+      "player_slug": "karim-garcia",
+      "safe_to_record": true,
+      "season": 2003
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2004-07-19",
+          "from": "NYM",
+          "key": "CAREER_20040719_TRADE_NYM_BAL_KARIM_GARCIA",
+          "source": "Retrosheet transaction 63633",
+          "to": "BAL",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Baltimore Orioles",
+        "New York Mets"
+      ],
+      "player_slug": "karim-garcia",
+      "safe_to_record": true,
+      "season": 2004
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "1997-07-25",
+          "from": "WSH",
+          "key": "CAREER_19970725_WAIVER_CLAIM_WSH_TOR_OMAR_DAAL",
+          "source": "Retrosheet transaction 11937",
+          "to": "TOR",
+          "type": "WAIVER_CLAIM"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "WAIVER_CLAIM",
+      "names_both_clubs": true,
+      "organizations": [
+        "Toronto Blue Jays",
+        "Washington Nationals"
+      ],
+      "player_slug": "omar-daal",
+      "safe_to_record": true,
+      "season": 1997
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2000-07-26",
+          "from": "ARI",
+          "key": "CAREER_20000726_TRADE_ARI_PHI_OMAR_DAAL",
+          "source": "Retrosheet transaction 63220",
+          "to": "PHI",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Arizona Diamondbacks",
+        "Philadelphia Phillies"
+      ],
+      "player_slug": "omar-daal",
+      "safe_to_record": true,
+      "season": 2000
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2001-07-31",
+          "from": "COL",
+          "key": "CAREER_20010731_TRADE_COL_HOU_PEDRO_ASTACIO",
+          "source": "Retrosheet transaction 63347",
+          "to": "HOU",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Colorado Rockies",
+        "Houston Astros"
+      ],
+      "player_slug": "pedro-astacio",
+      "safe_to_record": true,
+      "season": 2001
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2005-06-17",
+          "from": "TEX",
+          "key": "CAREER_20050617_RELEASE_TEX_NONE_PEDRO_ASTACIO",
+          "source": "Retrosheet transaction 1645",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2005-06-30",
+          "from": null,
+          "key": "CAREER_20050630_FREE_AGENT_SIGNING_NONE_SD_PEDRO_ASTACIO",
+          "source": "Retrosheet transaction 1646",
+          "to": "SD",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "San Diego Padres",
+        "Texas Rangers"
+      ],
+      "player_slug": "pedro-astacio",
+      "safe_to_record": true,
+      "season": 2005
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2002-07-01",
+          "from": "TOR",
+          "key": "CAREER_20020701_TRADE_TOR_NYY_RAUL_MONDESI",
+          "source": "Retrosheet transaction 63429",
+          "to": "NYY",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "New York Yankees",
+        "Toronto Blue Jays"
+      ],
+      "player_slug": "raul-mondesi",
+      "safe_to_record": true,
+      "season": 2002
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2003-07-29",
+          "from": "NYY",
+          "key": "CAREER_20030729_TRADE_NYY_ARI_RAUL_MONDESI",
+          "source": "Retrosheet transaction 63535",
+          "to": "ARI",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Arizona Diamondbacks",
+        "New York Yankees"
+      ],
+      "player_slug": "raul-mondesi",
+      "safe_to_record": true,
+      "season": 2003
+    },
+    {
+      "dated": false,
+      "events": [
+        {
+          "date": "2004-05-21",
+          "from": "PIT",
+          "key": "CAREER_20040521_RELEASE_PIT_NONE_RAUL_MONDESI",
+          "source": "Retrosheet transaction 35993",
+          "to": null,
+          "type": "RELEASE"
+        },
+        {
+          "date": "2004-05-30",
+          "from": null,
+          "key": "CAREER_20040530_FREE_AGENT_SIGNING_NONE_LAA_RAUL_MONDESI",
+          "source": "Retrosheet transaction 35994",
+          "to": "LAA",
+          "type": "FREE_AGENT_SIGNING"
+        }
+      ],
+      "first_appearance_second_club": null,
+      "last_appearance_first_club": null,
+      "mechanism": "RELEASE_THEN_SIGNING",
+      "names_both_clubs": true,
+      "organizations": [
+        "Los Angeles Angels",
+        "Pittsburgh Pirates"
+      ],
+      "player_slug": "raul-mondesi",
+      "safe_to_record": true,
+      "season": 2004
+    },
+    {
+      "dated": true,
+      "events": [
+        {
+          "date": "2019-07-31",
+          "from": "CIN",
+          "key": "CAREER_20190731_TRADE_CIN_CLE_YASIEL_PUIG",
+          "source": "MLB transaction 420891",
+          "to": "CLE",
+          "type": "TRADE"
+        }
+      ],
+      "first_appearance_second_club": "2019-08-01",
+      "last_appearance_first_club": "2019-07-30",
+      "mechanism": "TRADE",
+      "names_both_clubs": true,
+      "organizations": [
+        "Cincinnati Reds",
+        "Cleveland Guardians"
+      ],
+      "player_slug": "yasiel-puig",
+      "safe_to_record": true,
+      "season": 2019
+    }
+  ]
+}

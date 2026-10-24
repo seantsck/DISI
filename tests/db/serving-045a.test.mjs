@@ -210,6 +210,8 @@ test('product contract: exactly the relations the application reads, every one e
   const reads = new Set()
   for (const f of files) for (const m of fs.readFileSync(path.join(root, f), 'utf8').matchAll(/\.from\('([a-z_0-9]+)'\)/g)) reads.add(m[1])
   // 045b later points the home page at product_database_status; at 045a the same read was v_database_status
+  // 054 adds the player's transaction stream (v_player_career_transactions) to the contract; this chain predates it
+  reads.delete('v_player_career_transactions')
   if (reads.delete('product_database_status')) reads.add('v_database_status')
   const contract = (await q(`select relation_name from disi_product_contract order by 1`)).map((r) => r.relation_name)
   assert.deepEqual(contract, [...reads].sort())
@@ -229,7 +231,7 @@ test('verifier: the four snapshot checks pass, each catches its own drift, and t
   // 045b later adds the home-page status table (78); the 045a database has 77
   const full = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, public_tables_total: 77 })
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 255)
+  assert.equal(full.hard.length, 258)
   await scratch(async () => {
     await chain.db.exec(`grant select on public.v_executive_overview to anon`)
     assert.deepEqual(await failing(), ['product_snapshot_api_violations'])

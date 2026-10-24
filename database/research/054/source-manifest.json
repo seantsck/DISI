@@ -1,0 +1,48 @@
+{
+  "as_of": "2026-10-24",
+  "not_used": [
+    {
+      "source": "Search-engine results",
+      "why": "discovery only; never evidence"
+    },
+    {
+      "source": "Appearance dates",
+      "why": "a first game for another club is never read as a transaction"
+    }
+  ],
+  "read": [
+    {
+      "endpoint": "https://statsapi.mlb.com/api/v1/transactions?playerId={mlbId}",
+      "errors": 0,
+      "players": 22,
+      "source": "MLB Stats API transaction log"
+    },
+    {
+      "endpoint": "https://statsapi.mlb.com/api/v1/teams/{teamId}?season={season}&hydrate=league,sport",
+      "errors": 0,
+      "requests": 32,
+      "source": "MLB Stats API team-season records",
+      "used_for": "the parent organization of each team a log row names, that season"
+    },
+    {
+      "sha256_tran_txt": "8b117abe4505dd427893c7fbc5af94f89d83cb58d93b96c99136bab1d7d31c06",
+      "source": "Retrosheet transaction database",
+      "url": "https://www.retrosheet.org/transactions/tranDB.zip"
+    },
+    {
+      "source": "Chadwick Bureau Register",
+      "url": "https://github.com/chadwickbureau/register",
+      "used_for": "MLB to Retrosheet id"
+    }
+  ],
+  "sources_added": [
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=120221",
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=467793"
+  ],
+  "sources_reused": [
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=624577",
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=678760",
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=682616",
+    "https://www.retrosheet.org/transactions/tranDB.zip"
+  ]
+}

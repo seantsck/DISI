@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildChainThrough, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS, EXPECTATIONS_THROUGH_052 } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_053 as CANONICAL_EXPECTATIONS, EXPECTATIONS_THROUGH_052 } from '../../scripts/db/lib/invariants.mjs'
 import { ALL_SNAPSHOT_TABLES } from '../../database/research/045b/snapshots.mjs'
 import { DATASET_QUERIES, HISTORY_QUERIES, assembleDataset } from '../../lib/research/dataset.js'
 import { developmentNeedSummary } from '../../lib/research/development-needs.js'
@@ -125,21 +125,21 @@ after(async () => { await chain?.close() })
 test('053 follows 052 in the manifest, and its rollback exists', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '052_development_taxonomy_chronology_resolution.sql')
-  assert.equal(i, manifest.canonical_sql.length - 1)
+  assert.equal(manifest.canonical_sql[i + 1], '054_full_career_transaction_history.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   assert.match(rollback053, /^-- DISI rollback-053\.sql/)
 })
 
-test('verifier: 255/255 at the 052 boundary before 053 and at the head after it; without the Leyritz pin the head fails exactly the identity check', async () => {
+test('verifier: 258/258 at the 052 boundary before 053 and at the 053 boundary after it; without the Leyritz pin the head fails exactly the identity check', async () => {
   const c = await open(pre053)
   try {
     const pre = await checkInvariants(c.query, EXPECTATIONS_THROUGH_052)
     assert.deepEqual(failedChecks(pre).map((f) => f.name), [])
-    assert.equal(pre.hard.length, 255)
+    assert.equal(pre.hard.length, 258)
   } finally { await c.close() }
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 255)
+  assert.equal(full.hard.length, 258)
   // KNOWN TRANSACTION != KNOWN RETURN VALUE: Leyritz is accepted only by name on the pinned list, never by relaxing the rule
   const old = await checkInvariants(q, EXPECTATIONS_THROUGH_052)
   assert.deepEqual(failedChecks(old).map((f) => f.name), ['transaction_asset_identity_consistency_violations'])

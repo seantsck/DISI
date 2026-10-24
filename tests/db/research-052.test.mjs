@@ -94,16 +94,16 @@ test('052 follows 050 in the manifest (051 added no migration), and its rollback
   assert.match(rollback052, /^-- DISI rollback-052\.sql/)
 })
 
-test('verifier: 255/255 at the 051 boundary before 052 and at the 052 boundary after it; the old pins fail exactly where 052 moved them', async () => {
+test('verifier: 258/258 at the 051 boundary before 052 and at the 052 boundary after it; the old pins fail exactly where 052 moved them', async () => {
   const c = await open(pre050)
   try {
     const pre = await checkInvariants(c.query, EXPECTATIONS_THROUGH_051)
     assert.deepEqual(failedChecks(pre).map((f) => f.name), [])
-    assert.equal(pre.hard.length, 255)
+    assert.equal(pre.hard.length, 258)
   } finally { await c.close() }
   const full = await checkInvariants(q, EXPECTATIONS_THROUGH_052)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 255)
+  assert.equal(full.hard.length, 258)
   const old = await checkInvariants(q, EXPECTATIONS_THROUGH_051)
   assert.deepEqual(failedChecks(old).map((f) => f.name).sort(), ['coded_milestones', 'dated_stints', 'professional_debut_milestones', 'progression_decisions',
     'progression_decisions_pending', 'progression_roles', 'undated_log_era_stints'])

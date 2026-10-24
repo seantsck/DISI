@@ -597,12 +597,12 @@ test('observation guard: sealed facts, asset observations only on PLAYER assets,
   })
 })
 
-test('verifier: the 14 transaction checks (11 from 033, 3 from 053) pass on the canonical state and the data-level ones catch their own drift; the full verifier passes', async () => {
+test('verifier: the 17 transaction checks (11 from 033, 3 from 053, 3 from 054) pass on the canonical state and the data-level ones catch their own drift; the full verifier passes', async () => {
   assert.deepEqual(await failing(), [])
   const full = await checkInvariants(q, EXPECT033)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 255, '160 through 033 plus the eighteen 034, eight 035, eight 036, seven 037, six 038, five 039, five 040 and seven 041 checks, which pass trivially without their tables')
-  assert.equal(TRANSACTION_CHECK_NAMES.length, 14)
+  assert.equal(full.hard.length, 258, '160 through 033 plus the eighteen 034, eight 035, eight 036, seven 037, six 038, five 039, five 040 and seven 041 checks, which pass trivially without their tables')
+  assert.equal(TRANSACTION_CHECK_NAMES.length, 17)
   const drifts = {
     transaction_asset_shape_violations: `alter table transaction_event_assets drop constraint transaction_event_assets_mlb_id_check;
       update transaction_event_assets set mlb_id = 'x' where asset_name = 'Cash' and mlb_id is null;`,
