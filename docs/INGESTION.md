@@ -149,6 +149,17 @@ Use `transaction_events` + `transaction_event_assets` for every trade so the who
 4. **Stop on an outcome contradiction** (an MLB-level stint or debut for a VERIFIED_NO_MLB player): report it as its own reviewed outcome question;
    the verifier check `no_mlb_development_contradictions` fails until it is resolved.
 
+### Recording career history between other clubs (054)
+
+1. **Start from the open transitions** (`transition-workset.json`): every season of a transaction-blocked need, its two clubs, the last game for the
+   first and the first for the second. Check each for Dodgers involvement: a Dodgers move belongs in the Dodgers ledger, never here.
+2. **Read the official transaction log by player** (`scripts/mlb/player-transactions.mjs`) and resolve each team it names through its official parent
+   that season (`scripts/mlb/team-seasons.mjs`); read Retrosheet for the seasons the log does not reach, through the reviewed franchise map.
+3. **Record only the rows that state the transition**, one row per fact, with the source row it came from (`MLB transaction <id>`,
+   `Retrosheet transaction <id>`): a trade, a waiver claim or a purchase names both clubs; a release and a later signing are two rows.
+4. **Never infer a move** from an appearance, a disappearance or a stint; never copy a Dodgers transaction into career history.
+5. **Build the migration from the reviewed values** (`database/research/054/build.mjs`); career history is chronology evidence only.
+
 ### Resolving transaction-blocked chronology (053)
 
 1. **Classify every open season before writing** (`transaction-blocker-classification.json`): a Dodgers transaction a source states and DISI lacks,

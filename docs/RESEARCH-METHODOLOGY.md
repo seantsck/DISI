@@ -43,6 +43,11 @@ transaction) stays in [`INGESTION.md`](INGESTION.md); the plan is in [`ROADMAP.m
   different mechanisms, and a team change says nothing about which one moved the player. A Dodgers release between his last Dodgers game and his
   first for another club brackets the Dodgers end of the move only (`BRACKETED_AT_DODGERS_BOUNDARY`); the other club's signing is that club's
   transaction and is never implied (`RELEASE != TRADE`, `FREE-AGENT SIGNING != TRADE RETURN`, `CONTRACT PURCHASE != TRADE`).
+- **`DODGERS ASSET LEDGER` is not `FULL CAREER HISTORY` (054).** The transaction ledger records Dodgers asset transactions, the only facts
+  organizational value is measured from. A player's moves between other clubs are career history (`player_career_transactions`): one sourced
+  movement fact per row, in his direction, never a Dodgers organization, never a package, a return or a value. Both layers explain a season's
+  chronology; only the ledger opens or closes Dodgers control. A release and a later signing are two facts, never one synthetic trade
+  (`THIRD-PARTY RELEASE != DODGERS RELEASE`, `THIRD-PARTY SIGNING != DODGERS ACQUISITION`), and one known move is not a complete career.
 - **`PACKAGE ANNOUNCEMENT` is not `COMPLETE PACKAGE`, and `PTBNL COMPLETION DATE` is not `ORIGINAL TRADE DATE` (049, 053).** A trade is recorded with
   every asset its source names under one transaction; one known asset is never a complete package. A later-named player completes the agreement and
   keeps the agreement's date.

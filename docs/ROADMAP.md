@@ -3,13 +3,20 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 053 is released, production-verified and frozen)
+## Where DISI stands (after 053 is released and frozen; 054 is built and awaiting its release gate)
 
 - **v1.0.0** is in production through Migration 053 (transaction and chronology resolution, released 2026-10-24, PR #29 merged as `0d959ed`;
   production-verified **255/255**, generation **9**, drift **0**; frozen). 052 was released 2026-10-23 (PR #26 merged as `89742f2`; frozen in
   PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is released with no migration (PR #25 merged as
   `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical `main` after 053 is
-  `0d959ed34c8e9997fad86eef577db7e872aa2460`. The product reads eleven persisted snapshots; the analytical layer is internal.
+  `0d959ed34c8e9997fad86eef577db7e872aa2460`; 053 is frozen (PR #30), so canonical `main` before 054 is `764f165ca048f66ab2cdab58d52affa36285587c`.
+  The product reads eleven persisted snapshots; the analytical layer is internal.
+- Full-career transaction history (054, built, not applied): `DODGERS ASSET LEDGER != FULL CAREER HISTORY`. The transaction ledger stays the
+  Dodgers asset ledger; a player's moves between two other clubs get their own table (`player_career_transactions`, 46 reviewed rows from the
+  official log and Retrosheet) and a labelled stream (`v_player_career_transactions`). Career history explains development chronology only.
+  Transaction-blocked needs **16 -> 0**; development needs **108 -> 104** (detector rows 132 -> 128; players 65 -> 62): 4 close, 11 become
+  source-limited (the recorded moves predate dated game logs), 1 goes to a person. The ledger, queues (58, 93), WAR, costs, outcomes and prediction
+  do not move. 258 checks; one snapshot refresh (the contract gains one relation).
 - Transaction and chronology resolution (053, released and production-verified): the development research queue reads a canonical transaction in the player's
   own direction and recognizes the Dodgers end of a move (a release before the other club's first game, a free-agent signing after its last); ten
   Dodgers transactions the official log or Retrosheet states are recorded (Baez, Park, Vizcaino and Leyritz, Daal, Castro). Development needs
@@ -47,6 +54,20 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Nothing is published that is not supported: **0** supported Dodgers probability targets, **0** supported expected values, **0** recommendations.
   After 050, one **benchmark reference baseline** is supported (reach within 7 seasons, in the rank-selected Top-prospect sample); it is shown on
   Prediction readiness and the League Benchmark page as a reference result and never produces a Dodgers probability.
+
+## What 054 is for
+
+053 proved that the transaction ledger is a Dodgers asset ledger: every exit, acquisition, package, return, control interval and value reads it.
+The 16 needs it left waited on moves between two other clubs, which cannot go there without reading as Dodgers exits. 054 gives those moves their
+own home, under `CAREER TRANSACTION != DODGERS ASSET TRANSACTION`, `CAREER MOVE != ASSET PACKAGE` and `ONE KNOWN MOVE != COMPLETE CAREER`.
+
+1. **A separate layer.** One sourced movement fact per row, in the player's direction; a trade names both clubs, a release no destination, a signing
+   no origin; never a Dodgers organization. No package, return, value or attribution.
+2. **Two facts stay two.** A release and a later signing are two rows; the layer never synthesizes a trade between the clubs.
+3. **Chronology only.** The research queue reads career history for a move between two other clubs; no asset, package, control or value view does,
+   and a verifier check fails if one ever does.
+4. **What remains is explained.** Most of the moves fall in seasons before dated game logs: the transaction is known, the appearances are not, so the
+   season is source-limited. Castro's 2008 dated appearances overlap; a person reviews them.
 
 ## What 053 is for
 

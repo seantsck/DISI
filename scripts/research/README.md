@@ -107,7 +107,10 @@ read in the player's direction (`playerMove`: the ledger records every transacti
 went), and the state: `BRACKETED` (a transaction between the two clubs), `BRACKETED_AT_DODGERS_BOUNDARY` (the Dodgers end of the move: a release,
 a free agency or a free-agent signing between the two clubs' games; the other club's transaction is never implied), `MULTIPLE_POSSIBLE_TRANSACTIONS`,
 `NO_CANONICAL_TRANSACTION`, or a dates state. `scope` says whether the Dodgers are one of the organizations; a move between two other clubs is
-`LATER_ORGANIZATION_HISTORY`, which DISI's Dodgers ledger does not record. `--open` drops the bracketed seasons. The official log rows behind a
+`LATER_ORGANIZATION_HISTORY`, which DISI's Dodgers ledger does not record. `--open` drops the bracketed seasons. From 054 the command reads the
+player's transaction stream (`v_player_career_transactions`, where the database has it): a move between two other clubs recorded in career history
+is `BRACKETED_BY_CAREER_HISTORY` when it falls between the two clubs' games (a direct move, or a release and a later signing), and overlapping dated
+appearance ranges are `APPEARANCE_RANGES_OVERLAP`. The official log rows behind a
 season come from `scripts/mlb/player-transactions.mjs`.
 
 The official league and team facts it rests on come from two read-only fetchers: `scripts/mlb/team-seasons.mjs` (a team's parent organization,
