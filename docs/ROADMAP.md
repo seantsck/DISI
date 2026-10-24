@@ -36,12 +36,14 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Acquisition cost is known for **56** signings (046), a lower bound of $121.7M.
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
-  (179 of 220 signings). No path is complete: 44 of 47 are partial. After 052, 134 detector rows are 110 distinct development needs across 66 players.
-- Transactions (049, released; 053 adds 10 events and 14 assets, released): **213** events, **396** assets, **7** resolutions; the transaction queue keeps **59** items and the value queue **91**. `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
-  value of what came back unavailable, so the seven incomplete chains read as **five** whose transaction history is open and **two** whose history
-  is recorded and whose returned players' Baseball-Reference WAR is not loaded. Open packages: **20** (membership open **5**, only terms open **15**).
-  Nothing was valued and no unknown became zero. Abreu's return is recorded with its WAR unknown, so the home page's realized organizational value
-  reads 297.60 bWAR (signings with resolved value 87).
+  (179 of 220 signings). No path is complete: 44 of 47 are partial. After 053, 132 detector rows are 108 distinct development needs across 65 players (16 transaction-blocked).
+- Transactions (after 053): **223** events, **410** assets, **7** resolutions; the transaction queue holds **58** items and the value queue **93**.
+  Packages with an open issue: **21** (membership open **5**, terms open **18**). `KNOWN TRANSACTION != KNOWN RETURN VALUE`. 049 recorded two chains
+  whose history was open to their end with the value of what came back unavailable, so the seven incomplete chains it left read as **five** whose
+  transaction history is open and **two** whose history is recorded and whose returned players' Baseball-Reference WAR is not loaded; Abreu's return
+  is recorded with its WAR unknown, so the home page's realized organizational value reads 297.60 bWAR (signings with resolved value 87). 053 added
+  ten Dodgers transactions (14 assets); its Vizcaino trade adds one terms-open package (cash of unstated amount) and a returned player whose WAR is
+  not loaded (Leyritz). Nothing was valued and no unknown became zero.
 - Nothing is published that is not supported: **0** supported Dodgers probability targets, **0** supported expected values, **0** recommendations.
   After 050, one **benchmark reference baseline** is supported (reach within 7 seasons, in the rank-selected Top-prospect sample); it is shown on
   Prediction readiness and the League Benchmark page as a reference result and never produces a Dodgers probability.
