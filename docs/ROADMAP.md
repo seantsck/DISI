@@ -3,13 +3,19 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 052 is released and production-verified)
+## Where DISI stands (after 052 is released and frozen; 053 is built and awaiting its release gate)
 
 - **v1.0.0** is in production through Migration 052 (development taxonomy and chronology resolution, released 2026-10-23, PR #26 merged as
   `89742f2`; production-verified **252/252**, generation **8**, drift **0**; frozen). The dossier transaction-boundary hotfix is released
   (PR #27 merged as `e36d2b8`; app only, no SQL or data change). 051 is released with no migration (PR #25 merged as `9bf42da`). 050 was
-  released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical `main` after 052 is
-  `e36d2b8f86a0d23362d5e30d9b47dd5b00142125`. The product reads eleven persisted snapshots; the analytical layer is internal.
+  released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). 052 is frozen (PR #28). Canonical `main` before 053 is
+  `2f664f9bacfb00573a351f1b02859b520787c5df`. The product reads eleven persisted snapshots; the analytical layer is internal.
+- Transaction and chronology resolution (053, built, not applied): the development research queue reads a canonical transaction in the player's
+  own direction and recognizes the Dodgers end of a move (a release before the other club's first game, a free-agent signing after its last); ten
+  Dodgers transactions the official log or Retrosheet states are recorded (Baez, Park, Vizcaino and Leyritz, Daal, Castro). Development needs
+  **110 -> 108** (transaction-blocked 18 -> 16; detector rows 134 -> 132; players 66 -> 65). **Every remaining transaction-blocked need waits on a
+  move between two other clubs**: later organization history, which DISI's Dodgers ledger does not record. Transaction queue 59 -> 58, value queue
+  91 -> 93 (the Vizcaino trade's unknown return value and shared package). 255 checks; one snapshot refresh.
 - International benchmark (050, released): the MLB Pipeline international Top 30 lists of the 2015 and 2016 classes join the 2013 / 2014 trackers.
   Benchmark signings **48 -> 102**, identity-resolved **43 -> 99**, MLB reachers **11 -> 34**. `REACH_MLB_WITHIN_7_SEASONS` meets its support
   minimum **in the benchmark sample only** (90 labelled, 19 positive, 71 negative): a reference baseline for those ranked prospects, never a Dodgers
@@ -31,7 +37,7 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
   (179 of 220 signings). No path is complete: 44 of 47 are partial. After 052, 134 detector rows are 110 distinct development needs across 66 players.
-- Transactions (049, released): **213** events, **396** assets, **7** resolutions; the transaction queue keeps **59** items and the value queue **91**. `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
+- Transactions (049, released; 053 adds 10 events and 14 assets, built): **213** events, **396** assets, **7** resolutions; the transaction queue keeps **59** items and the value queue **91**. `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
   value of what came back unavailable, so the seven incomplete chains read as **five** whose transaction history is open and **two** whose history
   is recorded and whose returned players' Baseball-Reference WAR is not loaded. Open packages: **20** (membership open **5**, only terms open **15**).
   Nothing was valued and no unknown became zero. Abreu's return is recorded with its WAR unknown, so the home page's realized organizational value
@@ -39,6 +45,23 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Nothing is published that is not supported: **0** supported Dodgers probability targets, **0** supported expected values, **0** recommendations.
   After 050, one **benchmark reference baseline** is supported (reach within 7 seasons, in the rank-selected Top-prospect sample); it is shown on
   Prediction readiness and the League Benchmark page as a reference result and never produces a Dodgers probability.
+
+## What 053 is for
+
+052 classified the development queue; 18 needs waited on a transaction. 053 asked, for each of their 39 open seasons, whether an approved source
+states the move, whether it is a Dodgers transaction, and whether the rule could read the one already on record, under `TEAM CHANGE != CANONICAL
+TRANSACTION`, `ORGANIZATION CHANGE != TRANSACTION TYPE`, `KNOWN DESTINATION != KNOWN TRANSACTION MECHANISM` and `KNOWN EXIT DATE != KNOWN RETURN`.
+
+1. **The rule read the ledger, not the player.** Every canonical transaction is recorded from the Dodgers' side, so an acquisition read backwards,
+   and a release or a signing (no counterparty) could never bracket a season. The detector now reads the player's direction and the Dodgers end of
+   a move; a release is never a trade and the other club's signing is never implied.
+2. **Dodgers transactions the sources state, recorded.** Ten, each identity matched by exact birth date; where the official log and Retrosheet
+   disagree on a date, both are kept and the official log is used. Castro's 2000 exit and his later re-signings are stated and not recorded:
+   their return needs a sealed observation no rollback can remove.
+3. **Later organization history stays open.** A move between two other clubs is not a Dodgers transaction; recording it in the Dodgers ledger would
+   read as a Dodgers exit in the asset views. Every remaining transaction-blocked need is one of these.
+4. **No unknown became a zero.** Leyritz's Dodgers bWAR is not loaded (RETURN_WAR_UNKNOWN); the Vizcaino trade's cash amount is unknown. No stint,
+   milestone, decision, audit, cost, WAR row, feature or probability moved.
 
 ## What 052 was for
 

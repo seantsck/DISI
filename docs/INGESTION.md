@@ -149,6 +149,24 @@ Use `transaction_events` + `transaction_event_assets` for every trade so the who
 4. **Stop on an outcome contradiction** (an MLB-level stint or debut for a VERIFIED_NO_MLB player): report it as its own reviewed outcome question;
    the verifier check `no_mlb_development_contradictions` fails until it is resolved.
 
+### Resolving transaction-blocked chronology (053)
+
+1. **Classify every open season before writing** (`transaction-blocker-classification.json`): a Dodgers transaction a source states and DISI lacks,
+   one already recorded that the rule could not read, a date or a package question, a source limit, or a move between two other clubs.
+2. **Read the official transaction log by player** (`scripts/mlb/player-transactions.mjs`: the log and the person record) and the Retrosheet
+   transaction database for seasons the log does not reach. Match every identity across the Chadwick Register, the official person record and
+   BIOFILE by an exact birth date; a minor leaguer Retrosheet names only by name must match the Register by name and birth date.
+3. **Record Dodgers transactions only, from the Dodgers' side**: `from_organization` the Dodgers, `to_organization` the counterparty or NULL, the
+   player's direction in `asset_side`. A move between two other clubs is later organization history and stays out of the ledger.
+4. **Keep the mechanism**: a release, a free agency, a waiver claim, a free-agent signing, a contract purchase and a trade are different facts.
+   A team change names none of them. A re-acquisition needs the exit that ends the interval it opens; a returned player needs his own Dodgers exit
+   (the adjacent hop) or his interval claims control continues.
+5. **Keep conflicts**: where the official log and Retrosheet give different dates, record the official log's and name the other in the description.
+6. **Do not write a sealed row in a batch that must roll back exactly** (`dodgers_control_observations`, `transaction_asset_resolutions`); state the
+   finding in the evidence and leave it for a reviewed batch.
+7. **Build the migration from the reviewed values** (`database/research/053/build.mjs`): the view is the previous migration's text with only the
+   reviewed condition replaced, and the rollback restores that text byte for byte.
+
 ### Resolving organizations, dates and detector causes (052)
 
 1. **Classify every open need before changing anything** (`gap-classification.json`): a fact the official source holds, a taxonomy gap, a

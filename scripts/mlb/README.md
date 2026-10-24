@@ -72,6 +72,10 @@ node scripts/mlb/development-sql-values.mjs --seasons research-output/021/player
 node scripts/mlb/outcome-sql-values.mjs --outcomes a.json,b.json --bwar bref-war.json \
   --identity identity-decisions.json --audit-date 2026-10-05 --out values.sql
 
+# Transactions (053): each player's official transaction log and person record (name, birth date, debut). A team change is never
+# read as a transaction, and a player the log is silent about is never read as released.
+node scripts/mlb/player-transactions.mjs --input players.json --out research-output/053
+
 # Optional: export a DISI queue view as input (read-only, publishable key).
 node --env-file=.env.local scripts/mlb/export-queue.mjs --view v_dodgers_mature_outcome_queue --out players.json
 ```
