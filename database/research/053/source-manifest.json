@@ -1,0 +1,62 @@
+{
+  "as_of": "2026-10-24",
+  "not_used": [
+    {
+      "source": "Search-engine results",
+      "why": "discovery only; never evidence"
+    },
+    {
+      "source": "Baseball-Reference WAR files",
+      "why": "not read: 049 recorded HTTP 403 for war_daily_bat.txt and war_daily_pitch.txt; no WAR is loaded by 053"
+    },
+    {
+      "source": "The BAI project cache of the Retrosheet file",
+      "why": "not touched; the file was read fresh from Retrosheet (identical sha256 to 049)"
+    }
+  ],
+  "read": [
+    {
+      "cited_by_rows": true,
+      "endpoint": "https://statsapi.mlb.com/api/v1/transactions?playerId={mlbId}",
+      "errors": 0,
+      "players": 22,
+      "source": "MLB Stats API transaction log"
+    },
+    {
+      "cited_by_rows": false,
+      "endpoint": "https://statsapi.mlb.com/api/v1/people/{mlbId}",
+      "players": 22,
+      "source": "MLB Stats API person record",
+      "used_for": "identity (birth date, debut)"
+    },
+    {
+      "source": "MLB Stats API career statistics",
+      "url": "https://statsapi.mlb.com/api/v1/people/453845/stats?stats=career&group=hitting,pitching&gameType=R",
+      "used_for": "that Kenny Lutz has no major-league record (documented; not written)"
+    },
+    {
+      "cited_by_rows": true,
+      "sha256_tran_txt": "8b117abe4505dd427893c7fbc5af94f89d83cb58d93b96c99136bab1d7d31c06",
+      "source": "Retrosheet transaction database",
+      "url": "https://www.retrosheet.org/transactions/tranDB.zip"
+    },
+    {
+      "sha256": "4812e71402b36a357831dd69f0431cd3da48abc352751fe330b6efe6668604ef",
+      "source": "Retrosheet BIOFILE",
+      "url": "https://www.retrosheet.org/BIOFILE.TXT",
+      "used_for": "identity (birth date); no major-league record for a minor leaguer"
+    },
+    {
+      "files": 16,
+      "source": "Chadwick Bureau Register",
+      "url": "https://github.com/chadwickbureau/register",
+      "used_for": "MLB, Retrosheet and Baseball-Reference id crosswalk"
+    }
+  ],
+  "rows_cite": [
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=112128",
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=520980",
+    "https://www.retrosheet.org/transactions/tranDB.zip"
+  ],
+  "sources_added": []
+}

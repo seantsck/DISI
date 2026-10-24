@@ -12,10 +12,12 @@ export const TRANSACTION_CHECK_NAMES = [
   'transaction_bref_register_semantics_violations', 'transaction_placeholder_resolution_violations', 'transaction_legacy_reconciliation_violations',
   'transaction_multi_team_counterparty_violations', 'transaction_exit_summary_partition_violations', 'transaction_observation_violations',
   'transaction_return_state_violations', 'transaction_guard_violations',
+  // 053
+  'transaction_ledger_side_violations', 'transaction_mechanism_shape_violations', 'control_interval_overlap_violations',
 ]
 
 /** name -> SQL returning one row { n } = number of violations. */
-export const transactionQueries = (loaded, warUnavailableMlbIds = []) => {
+export const transactionQueries = (loaded, warUnavailableMlbIds = [], { controlIntervals = false } = {}) => {
   // 049: KNOWN TRANSACTION != KNOWN RETURN VALUE. A returned player of a tracked-signing trade needs loaded Baseball-Reference WAR or an observed
   // zero, UNLESS his id is on the pinned list of players whose WAR is knowingly unavailable AND the model represents him as RETURN_WAR_UNKNOWN with a
   // NULL (never zero) Dodgers bWAR. Nothing else is relaxed: any other returned player without WAR is still a violation.
@@ -174,6 +176,29 @@ export const transactionQueries = (loaded, warUnavailableMlbIds = []) => {
       + (select 2 - count(*) from pg_proc p where p.pronamespace = 'public'::regnamespace and p.proname in ('disi_asset_resolution_guard', 'disi_control_observation_guard'))
       + (select count(*) from pg_class c where c.relnamespace = 'public'::regnamespace and c.relname in ('transaction_asset_resolutions', 'dodgers_control_observations') and not c.relrowsecurity)
       )::int as n`,
+
+    // 053: TEAM CHANGE != CANONICAL TRANSACTION. DISI's ledger records Dodgers transactions only, from the Dodgers' side: every event's
+    // from_organization is a Dodgers organization. A move between two other clubs recorded here would read as a Dodgers exit in the asset views.
+    transaction_ledger_side_violations: `select count(*)::int as n from public.transaction_events e
+      left join public.organizations o on o.id = e.from_organization_id
+      where o.franchise_key is distinct from 'DODGERS'`,
+
+    // 053: RELEASE != TRADE; FREE-AGENT SIGNING != TRADE RETURN. A release or a free agency lets players go to no counterparty and returns
+    // nothing; a free-agent signing brings players in from no counterparty and sends nothing. A mechanism never carries another's shape.
+    transaction_mechanism_shape_violations: `select count(*)::int as n from public.transaction_events e
+      join public.transaction_event_assets a on a.event_id = e.id
+      where (e.transaction_type in ('RELEASE', 'FREE_AGENCY') and (e.to_organization_id is not null or a.asset_side <> 'OUTGOING' or a.asset_type <> 'PLAYER'
+                                                                 or a.counterparty_organization_id is not null))
+         or (e.transaction_type = 'FREE_AGENT_SIGNING' and (e.to_organization_id is not null or a.asset_side <> 'INCOMING' or a.asset_type <> 'PLAYER'
+                                                            or a.counterparty_organization_id is not null))`,
+
+    // 053: a player is under Dodgers control at most once at a time. A re-acquisition starts after the exit that ended the previous interval;
+    // two intervals of one identity never overlap (an acquisition recorded without the exit before it would).
+    // (the intervals view arrives in 034; on an earlier chain the check is trivially 0)
+    control_interval_overlap_violations: controlIntervals ? `select count(*)::int as n from public.v_player_control_intervals a
+      join public.v_player_control_intervals b on b.interval_key > a.interval_key
+        and ((a.player_id is not null and b.player_id = a.player_id) or (a.player_id is null and a.mlb_id is not null and b.mlb_id = a.mlb_id))
+      where a.interval_start < coalesce(b.interval_end, date '9999-12-31') and b.interval_start < coalesce(a.interval_end, date '9999-12-31')` : 'select 0::int as n',
   }
 }
 

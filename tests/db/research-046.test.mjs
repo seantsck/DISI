@@ -179,7 +179,7 @@ test('the verifier passes on 001-046 (252 hard checks) and each snapshot check i
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 252)
+  assert.equal(full.hard.length, 255)
 })
 
 test('guards: 046 refuses a database where its facts no longer apply, and changes nothing when it refuses', async () => {

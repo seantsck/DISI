@@ -1,0 +1,296 @@
+{
+  "events": [
+    {
+      "assets": [
+        {
+          "bref_id": "vizcajo01",
+          "bref_register_id": "",
+          "counterparty": "",
+          "mlb_id": "123743",
+          "name": "Jose Vizcaino",
+          "player_slug": "jose-vizcaino",
+          "role_note": "DISI tracked international signing. Re-signed by the Dodgers after his 1997 free agency from San Francisco.",
+          "side": "INCOMING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "1997-12-08",
+      "description": "Jose Vizcaino signed with the Dodgers as a free agent (Retrosheet transaction 54684, 1997-12-08).",
+      "from": "LAD",
+      "historical_label": "Signed as a free agent",
+      "key": "LAD_FREE_AGENT_SIGNING_1997_JOSE_VIZCAINO",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "vizcajo01",
+          "bref_register_id": "",
+          "counterparty": "NYY",
+          "mlb_id": "123743",
+          "name": "Jose Vizcaino",
+          "player_slug": "jose-vizcaino",
+          "role_note": "DISI tracked international signing.",
+          "side": "OUTGOING",
+          "type": "PLAYER"
+        },
+        {
+          "bref_id": "",
+          "bref_register_id": "",
+          "counterparty": "NYY",
+          "mlb_id": "",
+          "name": "Cash",
+          "player_slug": "",
+          "role_note": "Cash sent with Vizcaino; the amount is not stated in Retrosheet (unknown, never zero).",
+          "side": "OUTGOING",
+          "type": "CASH"
+        },
+        {
+          "bref_id": "leyriji01",
+          "bref_register_id": "",
+          "counterparty": "NYY",
+          "mlb_id": "117747",
+          "name": "Jim Leyritz",
+          "player_slug": "",
+          "role_note": "Acquired from the Yankees for Jose Vizcaino and cash.",
+          "side": "INCOMING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2000-06-20",
+      "description": "Traded Jose Vizcaino and cash to the New York Yankees. Received Jim Leyritz. Retrosheet transaction 63209 (2000-06-20); the cash amount is not stated.",
+      "from": "LAD",
+      "historical_label": "",
+      "key": "LAD_NYY_2000_JOSE_VIZCAINO",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "NYY",
+      "type": "TRADE"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "leyriji01",
+          "bref_register_id": "",
+          "counterparty": "",
+          "mlb_id": "117747",
+          "name": "Jim Leyritz",
+          "player_slug": "",
+          "role_note": "Acquired in the 2000 Jose Vizcaino trade.",
+          "side": "OUTGOING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2000-11-01",
+      "description": "Jim Leyritz was granted free agency by the Dodgers (Retrosheet transaction 30076, 2000-11-01).",
+      "from": "LAD",
+      "historical_label": "Granted free agency",
+      "key": "LAD_FREE_AGENCY_2000_JIM_LEYRITZ",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "",
+      "type": "FREE_AGENCY"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "daalom01",
+          "bref_register_id": "",
+          "counterparty": "PHI",
+          "mlb_id": "112984",
+          "name": "Omar Daal",
+          "player_slug": "omar-daal",
+          "role_note": "DISI tracked international signing. Re-acquired from the Phillies.",
+          "side": "INCOMING",
+          "type": "PLAYER"
+        },
+        {
+          "bref_id": "jungeer01",
+          "bref_register_id": "",
+          "counterparty": "PHI",
+          "mlb_id": "407784",
+          "name": "Eric Junge",
+          "player_slug": "",
+          "role_note": "",
+          "side": "OUTGOING",
+          "type": "PLAYER"
+        },
+        {
+          "bref_id": "",
+          "bref_register_id": "corder001jes",
+          "counterparty": "PHI",
+          "mlb_id": "407782",
+          "name": "Jesus Cordero",
+          "player_slug": "",
+          "role_note": "Never appeared in the major leagues (official person record: no debut).",
+          "side": "OUTGOING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2001-11-09",
+      "description": "Traded Eric Junge and Jesus Cordero to the Philadelphia Phillies. Received Omar Daal. Retrosheet transaction 63360 (2001-11-09).",
+      "from": "LAD",
+      "historical_label": "",
+      "key": "PHI_LAD_2001_DAAL_REACQ",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "PHI",
+      "type": "TRADE"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "daalom01",
+          "bref_register_id": "",
+          "counterparty": "",
+          "mlb_id": "112984",
+          "name": "Omar Daal",
+          "player_slug": "omar-daal",
+          "role_note": "DISI tracked international signing.",
+          "side": "OUTGOING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2002-10-28",
+      "description": "Omar Daal was granted free agency by the Dodgers (Retrosheet transaction 11939, 2002-10-28).",
+      "from": "LAD",
+      "historical_label": "Granted free agency",
+      "key": "LAD_FREE_AGENCY_2002_OMAR_DAAL",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "",
+      "type": "FREE_AGENCY"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "parkch01",
+          "bref_register_id": "",
+          "counterparty": "",
+          "mlb_id": "120221",
+          "name": "Chan Ho Park",
+          "player_slug": "chan-ho-park",
+          "role_note": "DISI tracked international signing. Re-signed by the Dodgers after his 2001 free agency.",
+          "side": "INCOMING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2008-01-20",
+      "description": "Chan Ho Park signed with the Dodgers as a free agent (Retrosheet transaction 39973, 2008-01-20).",
+      "from": "LAD",
+      "historical_label": "Signed as a free agent",
+      "key": "LAD_FREE_AGENT_SIGNING_2008_CHAN_HO_PARK",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "parkch01",
+          "bref_register_id": "",
+          "counterparty": "",
+          "mlb_id": "120221",
+          "name": "Chan Ho Park",
+          "player_slug": "chan-ho-park",
+          "role_note": "DISI tracked international signing.",
+          "side": "OUTGOING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2008-11-01",
+      "description": "Chan Ho Park was granted free agency by the Dodgers (Retrosheet transaction 39974, 2008-11-01).",
+      "from": "LAD",
+      "historical_label": "Granted free agency",
+      "key": "LAD_FREE_AGENCY_2008_CHAN_HO_PARK",
+      "source_url": "https://www.retrosheet.org/transactions/tranDB.zip",
+      "to": "",
+      "type": "FREE_AGENCY"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "castrju01",
+          "bref_register_id": "",
+          "counterparty": "",
+          "mlb_id": "112128",
+          "name": "Juan Castro",
+          "player_slug": "juan-castro",
+          "role_note": "DISI tracked international signing. Re-signed by the Dodgers.",
+          "side": "INCOMING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2010-08-03",
+      "description": "Los Angeles Dodgers signed free agent SS Juan Castro to a minor league contract. (MLB transaction log, 2010-08-03; Retrosheet transaction 8708 dates the signing 2010-07-27). The Philadelphia Phillies had released him on 2010-07-17; that release is Philadelphia's transaction and is not recorded here.",
+      "from": "LAD",
+      "historical_label": "Signed as a free agent (minor league contract)",
+      "key": "LAD_FREE_AGENT_SIGNING_2010_JUAN_CASTRO",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=112128",
+      "to": "",
+      "type": "FREE_AGENT_SIGNING"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "castrju01",
+          "bref_register_id": "",
+          "counterparty": "",
+          "mlb_id": "112128",
+          "name": "Juan Castro",
+          "player_slug": "juan-castro",
+          "role_note": "DISI tracked international signing.",
+          "side": "OUTGOING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2010-10-05",
+      "description": "SS Juan Castro elected free agency. (MLB transaction log, 2010-10-05; Retrosheet transaction 8709).",
+      "from": "LAD",
+      "historical_label": "Elected free agency",
+      "key": "LAD_FREE_AGENCY_2010_JUAN_CASTRO",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=112128",
+      "to": "",
+      "type": "FREE_AGENCY"
+    },
+    {
+      "assets": [
+        {
+          "bref_id": "baezpe01",
+          "bref_register_id": "",
+          "counterparty": "",
+          "mlb_id": "520980",
+          "name": "Pedro Báez",
+          "player_slug": "pedro-baez",
+          "role_note": "DISI tracked international signing. Re-signed by the Dodgers after his 2020 free agency.",
+          "side": "INCOMING",
+          "type": "PLAYER"
+        }
+      ],
+      "date": "2022-05-19",
+      "description": "Los Angeles Dodgers signed free agent RHP Pedro Baez to a minor league contract. (MLB transaction log, 2022-05-19). The Houston Astros had released him on 2022-04-27; that release is Houston's transaction and is not recorded here.",
+      "from": "LAD",
+      "historical_label": "Signed as a free agent (minor league contract)",
+      "key": "LAD_FREE_AGENT_SIGNING_2022_PEDRO_BAEZ",
+      "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=520980",
+      "to": "",
+      "type": "FREE_AGENT_SIGNING"
+    }
+  ],
+  "existing_events": [
+    "LAD_CHC_1990_VIZCAINO",
+    "LAD_FA_2001_PARK",
+    "LAD_FREE_AGENCY_2009_JUAN_CASTRO",
+    "LAD_FREE_AGENCY_2020_PEDRO_BAEZ",
+    "LAD_MON_1995_DAAL",
+    "LAD_RELEASE_2022_PEDRO_BAEZ"
+  ],
+  "existing_source_urls": [
+    "https://github.com/chadwickbureau/register",
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=112128",
+    "https://statsapi.mlb.com/api/v1/transactions?playerId=520980",
+    "https://www.retrosheet.org/transactions/tranDB.zip"
+  ],
+  "retrieved_at": "2026-10-24T00:00:00Z",
+  "war_unavailable_mlb_ids": [
+    "117747"
+  ]
+}

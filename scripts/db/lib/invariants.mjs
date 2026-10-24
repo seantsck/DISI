@@ -221,7 +221,8 @@ export const CANONICAL_EXPECTATIONS = {
   // 049: KNOWN TRANSACTION != KNOWN RETURN VALUE. The only returned player of a tracked-signing trade whose Baseball-Reference WAR is knowingly not
   // loaded (the files answer 403): Jon Garland, acquired 2009-08-31 for Tony Abreu. The identity check accepts him ONLY while the model shows him as
   // RETURN_WAR_UNKNOWN with a NULL Dodgers bWAR; any other returned player without WAR is still a violation.
-  transaction_war_unavailable_mlb_ids: ['279782'],
+  // 053 adds Jim Leyritz (MLB 117747), acquired 2000-06-20 for Jose Vizcaino and cash; his Dodgers bWAR is not loaded either.
+  transaction_war_unavailable_mlb_ids: ['279782', '117747'],
   // transaction and asset-chain completion (033)
   transaction_event_shape_violations: 0,
   transaction_asset_shape_violations: 0,
@@ -234,6 +235,10 @@ export const CANONICAL_EXPECTATIONS = {
   transaction_observation_violations: 0,
   transaction_return_state_violations: 0,
   transaction_guard_violations: 0,
+  // 053: the ledger is the Dodgers' side only; a mechanism keeps its own shape; a player's control intervals never overlap
+  transaction_ledger_side_violations: 0,
+  transaction_mechanism_shape_violations: 0,
+  control_interval_overlap_violations: 0,
   // downstream organizational value chains (034)
   ...Object.fromEntries(DOWNSTREAM_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(BENCHMARK_CHECK_NAMES.map((name) => [name, 0])),
@@ -273,12 +278,22 @@ export const CANONICAL_EXPECTATIONS = {
 }
 
 /**
+ * The pinned expectations as they stood through Migration 052. Tests that verify a chain built only through 052 use this; CANONICAL_EXPECTATIONS
+ * is always the current head. Migration 053 (transaction and chronology resolution) pinned one more returned player whose WAR is not loaded;
+ * nothing else differs (its three checks hold at 0 on the 052 state too).
+ */
+export const EXPECTATIONS_THROUGH_052 = Object.freeze({
+  ...CANONICAL_EXPECTATIONS,
+  transaction_war_unavailable_mlb_ids: ['279782'],
+})
+
+/**
  * The pinned expectations as they stood through Migration 051 (051 added no migration, so this is the 050 head). Tests that verify a chain
  * built only through 050 use this; CANONICAL_EXPECTATIONS is always the current head. Migration 052 (development taxonomy and chronology) moved
  * the date, milestone and progression counts below; nothing else differs.
  */
 export const EXPECTATIONS_THROUGH_051 = Object.freeze({
-  ...CANONICAL_EXPECTATIONS,
+  ...EXPECTATIONS_THROUGH_052,
   dated_stints: 746,
   undated_log_era_stints: 534,
   coded_milestones: 1073,
@@ -665,7 +680,8 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
 
   // -- transaction and asset-chain completion (033) -------------------------------
   const hasTransactionLayer = Boolean((await query(`select to_regclass('public.transaction_asset_resolutions') is not null as ok`))[0].ok)
-  for (const [name, sql] of Object.entries(transactionQueries(hasTransactionLayer, expectations.transaction_war_unavailable_mlb_ids ?? []))) {
+  const hasControlIntervals = Boolean((await query(`select to_regclass('public.v_player_control_intervals') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(transactionQueries(hasTransactionLayer, expectations.transaction_war_unavailable_mlb_ids ?? [], { controlIntervals: hasControlIntervals }))) {
     check('transactions', name, expectations[name], await count(sql))
   }
 

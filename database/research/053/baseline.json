@@ -1,0 +1,2806 @@
+{
+  "as_of": "2026-10-24",
+  "development": {
+    "by_need": {
+      "GAME_DATES": 29,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 20,
+      "SEASON_COVERAGE": 30,
+      "SEQUENCE_REVIEW": 5
+    },
+    "detector_rows": 134,
+    "gap_classes": {
+      "FACT_MISSING": 0,
+      "HUMAN_REVIEW": 5,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 0,
+      "SOURCE_LIMITED": 61,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 18
+    },
+    "needs": 110,
+    "players": 66,
+    "transaction_blocked": 18
+  },
+  "multi_organization_seasons": {
+    "BRACKETED": 14,
+    "BRACKETED_AT_DODGERS_BOUNDARY": 1,
+    "MORE_THAN_TWO_ORGANIZATIONS": 1,
+    "NO_CANONICAL_TRANSACTION": 37,
+    "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 4
+  },
+  "packages": {
+    "packages_with_only_open_terms": 15,
+    "packages_with_open_issues": 20,
+    "packages_with_open_issues_by_issue": {
+      "CASH_AMOUNT_UNKNOWN": 16,
+      "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+      "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+      "PTBNL_UNRESOLVED": 2
+    },
+    "packages_with_open_membership": 5,
+    "packages_with_open_terms": 17,
+    "unresolved_attribution_signings": 26
+  },
+  "primary": [
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2022 (NO_CANONICAL_TRANSACTION), 2023 (NO_CANONICAL_TRANSACTION), 2025 (NO_CANONICAL_TRANSACTION), 2026 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Carlos Santana",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "carlos-santana",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [
+            {
+              "date": "2022-06-27",
+              "description": "Seattle Mariners traded RHP Wyatt Mills and RHP William Fleming to Kansas City Royals for 1B Carlos Santana and cash.",
+              "mlb_log_id": 633466,
+              "type_code": "TR"
+            },
+            {
+              "date": "2022-11-06",
+              "description": "1B Carlos Santana elected free agency.",
+              "mlb_log_id": 658241,
+              "type_code": "DFA"
+            },
+            {
+              "date": "2022-11-29",
+              "description": "Pittsburgh Pirates signed free agent 1B Carlos Santana.",
+              "mlb_log_id": 661906,
+              "type_code": "SFA"
+            }
+          ],
+          "organizations": [
+            "Kansas City Royals",
+            "Seattle Mariners"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2022,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2022-04-07",
+              "last_appearance": "2022-06-26",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Kansas City Royals",
+              "teams": [
+                "Kansas City Royals"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2022-06-28",
+              "last_appearance": "2022-10-05",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Seattle Mariners",
+              "teams": [
+                "Seattle Mariners"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [
+            {
+              "date": "2023-07-27",
+              "description": "Pittsburgh Pirates traded 1B Carlos Santana to Milwaukee Brewers for SS Jhonny Severino.",
+              "mlb_log_id": 715038,
+              "type_code": "TR"
+            },
+            {
+              "date": "2023-11-02",
+              "description": "1B Carlos Santana elected free agency.",
+              "mlb_log_id": 730192,
+              "type_code": "DFA"
+            }
+          ],
+          "organizations": [
+            "Pittsburgh Pirates",
+            "Milwaukee Brewers"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2023,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2023-03-30",
+              "last_appearance": "2023-07-26",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Pittsburgh Pirates",
+              "teams": [
+                "Pittsburgh Pirates"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2023-07-29",
+              "last_appearance": "2023-10-01",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Milwaukee Brewers",
+              "teams": [
+                "Milwaukee Brewers"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [
+            {
+              "date": "2025-08-28",
+              "description": "Cleveland Guardians released 1B Carlos Santana.",
+              "mlb_log_id": 866773,
+              "type_code": "REL"
+            },
+            {
+              "date": "2025-09-01",
+              "description": "Chicago Cubs signed free agent 1B Carlos Santana.",
+              "mlb_log_id": 867250,
+              "type_code": "SFA"
+            },
+            {
+              "date": "2025-11-02",
+              "description": "1B Carlos Santana elected free agency.",
+              "mlb_log_id": 874316,
+              "type_code": "DFA"
+            }
+          ],
+          "organizations": [
+            "Cleveland Guardians",
+            "Chicago Cubs"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2025,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2025-03-27",
+              "last_appearance": "2025-08-25",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Cleveland Guardians"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2025-09-01",
+              "last_appearance": "2025-09-23",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Chicago Cubs",
+              "teams": [
+                "Chicago Cubs"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [
+            {
+              "date": "2026-02-10",
+              "description": "Arizona Diamondbacks signed free agent 1B Carlos Santana.",
+              "mlb_log_id": 885805,
+              "type_code": "SFA"
+            },
+            {
+              "date": "2026-06-26",
+              "description": "Arizona Diamondbacks released 1B Carlos Santana.",
+              "mlb_log_id": 922945,
+              "type_code": "REL"
+            },
+            {
+              "date": "2026-06-28",
+              "description": "Atlanta Braves signed free agent 1B Carlos Santana to a minor league contract.",
+              "mlb_log_id": 924086,
+              "type_code": "SFA"
+            },
+            {
+              "date": "2026-08-17",
+              "description": "Gwinnett Stripers released 1B Carlos Santana.",
+              "mlb_log_id": 937874,
+              "type_code": "REL"
+            }
+          ],
+          "organizations": [
+            "Arizona Diamondbacks",
+            "Atlanta Braves"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2026,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2026-03-26",
+              "last_appearance": "2026-06-22",
+              "levels": [
+                "AAA",
+                "COMPLEX_ROOKIE",
+                "MLB"
+              ],
+              "organization": "Arizona Diamondbacks",
+              "teams": [
+                "ACL D-backs",
+                "Arizona Diamondbacks",
+                "Reno Aces"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2026-07-02",
+              "last_appearance": "2026-08-15",
+              "levels": [
+                "AAA",
+                "COMPLEX_ROOKIE"
+              ],
+              "organization": "Atlanta Braves",
+              "teams": [
+                "FCL Braves",
+                "Gwinnett Stripers"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 2004
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2005 (NO_CANONICAL_TRANSACTION), 2007 (NO_CANONICAL_TRANSACTION), 2010 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Chan Ho Park",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "chan-ho-park",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "San Diego Padres",
+            "Texas Rangers"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2005-07-30",
+              "from": "TEX",
+              "retrosheet_transaction_id": 63729,
+              "to": "SDN",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2005,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "San Diego Padres",
+              "teams": [
+                "San Diego Padres"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Texas Rangers",
+              "teams": [
+                "Texas Rangers"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "New York Mets",
+            "Houston Astros"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2007-02-13",
+              "from": null,
+              "retrosheet_transaction_id": 39969,
+              "to": "NYN",
+              "type": "F"
+            },
+            {
+              "date": "2007-06-03",
+              "from": "NYN",
+              "retrosheet_transaction_id": 39970,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2007-06-12",
+              "from": null,
+              "retrosheet_transaction_id": 39971,
+              "to": "HOU",
+              "type": "F"
+            },
+            {
+              "date": "2007-10-29",
+              "from": "HOU",
+              "retrosheet_transaction_id": 39972,
+              "to": null,
+              "type": "Fg"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2007,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2007-04-08",
+              "last_appearance": "2007-06-02",
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "New Orleans Zephyrs",
+                "New York Mets"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2007-06-16",
+              "last_appearance": "2007-08-31",
+              "levels": [
+                "AAA"
+              ],
+              "organization": "Houston Astros",
+              "teams": [
+                "Round Rock Express"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [
+            {
+              "date": "2010-02-28",
+              "description": "New York Yankees signed free agent RHP Chan Ho Park.",
+              "mlb_log_id": 32557,
+              "type_code": "SFA"
+            },
+            {
+              "date": "2010-08-04",
+              "description": "Pittsburgh Pirates claimed RHP Chan Ho Park off waivers from New York Yankees.",
+              "mlb_log_id": 65586,
+              "type_code": "CLW"
+            },
+            {
+              "date": "2010-11-07",
+              "description": "RHP Chan Ho Park elected free agency.",
+              "mlb_log_id": 73389,
+              "type_code": "DFA"
+            }
+          ],
+          "organizations": [
+            "New York Yankees",
+            "Pittsburgh Pirates"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2010-02-28",
+              "from": null,
+              "retrosheet_transaction_id": 39977,
+              "to": "NYA",
+              "type": "F"
+            },
+            {
+              "date": "2010-08-04",
+              "from": "NYA",
+              "retrosheet_transaction_id": 39978,
+              "to": "PIT",
+              "type": "W"
+            },
+            {
+              "date": "2010-11-01",
+              "from": "PIT",
+              "retrosheet_transaction_id": 64653,
+              "to": null,
+              "type": "Fg"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2010,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2010-04-04",
+              "last_appearance": "2010-07-29",
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees",
+                "Scranton/Wilkes-Barre Yankees"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2010-08-06",
+              "last_appearance": "2010-10-01",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Pittsburgh Pirates",
+              "teams": [
+                "Pittsburgh Pirates"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1994
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 1963 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Chico Fernández",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "chico-fernandez",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Detroit Tigers",
+            "New York Mets"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "1963-05-08",
+              "from": "DET",
+              "retrosheet_transaction_id": 60348,
+              "to": "MLN",
+              "type": "T"
+            },
+            {
+              "date": "1963-05-08",
+              "from": "MLN",
+              "retrosheet_transaction_id": 60349,
+              "to": "NYN",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 1963,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Detroit Tigers",
+              "teams": [
+                "Detroit Tigers"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "New York Mets"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1951
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2025 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Diego Cartaya",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "diego-cartaya",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [
+            {
+              "date": "2025-01-09",
+              "event_key": "LAD_MIN_2025_DIEGO_CARTAYA",
+              "move": {
+                "from": "LAD",
+                "to": "MIN"
+              },
+              "player_side": "OUTGOING",
+              "type": "TRADE"
+            }
+          ],
+          "official_log": [
+            {
+              "date": "2025-01-09",
+              "description": "Los Angeles Dodgers traded C Diego Cartaya to Minnesota Twins for RHP Jose Vasquez.",
+              "mlb_log_id": 809749,
+              "type_code": "TR"
+            },
+            {
+              "date": "2025-07-23",
+              "description": "St. Paul Saints released C Diego Cartaya.",
+              "mlb_log_id": 857600,
+              "type_code": "REL"
+            },
+            {
+              "date": "2025-07-29",
+              "description": "San Francisco Giants signed free agent C Diego Cartaya.",
+              "mlb_log_id": 859876,
+              "type_code": "SFA"
+            }
+          ],
+          "organizations": [
+            "Minnesota Twins",
+            "San Francisco Giants"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2025,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2025-04-01",
+              "last_appearance": "2025-06-29",
+              "levels": [
+                "AAA"
+              ],
+              "organization": "Minnesota Twins",
+              "teams": [
+                "St. Paul Saints"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2025-09-01",
+              "last_appearance": "2025-09-06",
+              "levels": [
+                "LOW_A"
+              ],
+              "organization": "San Francisco Giants",
+              "teams": [
+                "San Jose Giants"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 2018
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Eddys Leonard",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "eddys-leonard",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [
+            {
+              "date": "2026-07-16",
+              "description": "Nashville Sounds released SS Eddys Leonard.",
+              "mlb_log_id": 928037,
+              "type_code": "REL"
+            },
+            {
+              "date": "2026-07-24",
+              "description": "San Francisco Giants signed free agent SS Eddys Leonard to a minor league contract.",
+              "mlb_log_id": 931087,
+              "type_code": "SFA"
+            }
+          ],
+          "organizations": [
+            "Milwaukee Brewers",
+            "San Francisco Giants"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2026,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2026-03-28",
+              "last_appearance": "2026-07-12",
+              "levels": [
+                "AAA"
+              ],
+              "organization": "Milwaukee Brewers",
+              "teams": [
+                "Nashville Sounds"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2026-07-24",
+              "last_appearance": "2026-09-20",
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "San Francisco Giants",
+              "teams": [
+                "Sacramento River Cats",
+                "San Francisco Giants"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 2017
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2026 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Edgar Leon",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "edgar-leon",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "NOT_A_TRANSACTION_GAP",
+          "known_transactions": [
+            {
+              "date": "2026-05-21",
+              "event_key": "LAD_RELEASE_2026_EDGAR_LEON",
+              "move": {
+                "from": "LAD",
+                "to": null
+              },
+              "player_side": "OUTGOING",
+              "type": "RELEASE"
+            }
+          ],
+          "official_log": [
+            {
+              "date": "2026-05-21",
+              "description": "ACL Dodgers released RHP Edgar Leon.",
+              "mlb_log_id": 910869,
+              "type_code": "REL"
+            },
+            {
+              "date": "2026-07-25",
+              "description": "Detroit Tigers signed free agent RHP Edgar Leon to a minor league contract.",
+              "mlb_log_id": 931478,
+              "type_code": "SFA"
+            }
+          ],
+          "organizations": [
+            "Los Angeles Dodgers",
+            "Detroit Tigers"
+          ],
+          "reason": "A move at the Dodgers boundary.",
+          "retrosheet": [],
+          "scope": "DODGERS_TRANSACTION",
+          "season": 2026,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2026-05-02",
+              "last_appearance": "2026-05-18",
+              "levels": [
+                "COMPLEX_ROOKIE"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "ACL Dodgers"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2026-07-28",
+              "last_appearance": "2026-08-17",
+              "levels": [
+                "INTERNATIONAL_ROOKIE"
+              ],
+              "organization": "Detroit Tigers",
+              "teams": [
+                "DSL Tigers 1",
+                "DSL Tigers 2"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 2022
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Fernando Valenzuela",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "fernando-valenzuela",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "San Diego Padres",
+            "St. Louis Cardinals"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "1997-01-07",
+              "from": null,
+              "retrosheet_transaction_id": 53946,
+              "to": "SDN",
+              "type": "F"
+            },
+            {
+              "date": "1997-07-15",
+              "from": "SLN",
+              "retrosheet_transaction_id": 53947,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "1997-06-13",
+              "from": "SDN",
+              "retrosheet_transaction_id": 62878,
+              "to": "SLN",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 1997,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "San Diego Padres",
+              "teams": [
+                "San Diego Padres"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "St. Louis Cardinals",
+              "teams": [
+                "St. Louis Cardinals"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1979
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2002 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Ismael Valdez",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "ismael-valdez",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "EVENT_PRESENT_DATE_INSUFFICIENT",
+          "known_transactions": [
+            {
+              "date": "2000-07-26",
+              "event_key": "CHC_LAD_2000_VALDEZ_REACQ",
+              "move": {
+                "from": "CHC",
+                "to": "LAD"
+              },
+              "player_side": "INCOMING",
+              "type": "TRADE"
+            },
+            {
+              "date": "2000-10-30",
+              "event_key": "LAD_FA_2000_VALDEZ",
+              "move": {
+                "from": "LAD",
+                "to": null
+              },
+              "player_side": "OUTGOING",
+              "type": "FREE_AGENCY"
+            }
+          ],
+          "official_log": [],
+          "organizations": [
+            "Chicago Cubs",
+            "Los Angeles Dodgers"
+          ],
+          "reason": "The Dodgers transaction is recorded; the stints predate the official game log, so no appearance date can bracket it (source-limited).",
+          "retrosheet": [
+            {
+              "date": "2000-10-30",
+              "from": "LAN",
+              "retrosheet_transaction_id": 53809,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "2000-07-26",
+              "from": "CHN",
+              "retrosheet_transaction_id": 63222,
+              "to": "LAN",
+              "type": "T"
+            }
+          ],
+          "scope": "DODGERS_TRANSACTION",
+          "season": 2000,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "HIGH_A",
+                "MLB"
+              ],
+              "organization": "Chicago Cubs",
+              "teams": [
+                "Chicago Cubs",
+                "Daytona Cubs"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "Los Angeles Dodgers"
+              ]
+            }
+          ],
+          "state_052": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Seattle Mariners",
+            "Texas Rangers"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2002-01-28",
+              "from": null,
+              "retrosheet_transaction_id": 53812,
+              "to": "TEX",
+              "type": "F"
+            },
+            {
+              "date": "2002-10-29",
+              "from": "SEA",
+              "retrosheet_transaction_id": 53813,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "2002-08-19",
+              "from": "TEX",
+              "retrosheet_transaction_id": 63457,
+              "to": "SEA",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2002,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Seattle Mariners",
+              "teams": [
+                "Seattle Mariners"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Texas Rangers",
+              "teams": [
+                "Texas Rangers"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Miami Marlins",
+            "San Diego Padres"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2004-10-29",
+              "from": "FLO",
+              "retrosheet_transaction_id": 53817,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "2004-07-31",
+              "from": "SDN",
+              "retrosheet_transaction_id": 63647,
+              "to": "FLO",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2004,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Miami Marlins",
+              "teams": [
+                "Florida Marlins"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "San Diego Padres",
+              "teams": [
+                "San Diego Padres"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1991
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION), 2005 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "José Offerman",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "jose-offerman",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Boston Red Sox",
+            "Seattle Mariners"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2002-08-08",
+              "from": "BOS",
+              "retrosheet_transaction_id": 38673,
+              "to": "SEA",
+              "type": "C"
+            },
+            {
+              "date": "2002-10-30",
+              "from": "SEA",
+              "retrosheet_transaction_id": 38674,
+              "to": null,
+              "type": "Fg"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2002,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Boston Red Sox",
+              "teams": [
+                "Boston Red Sox"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Seattle Mariners",
+              "teams": [
+                "Seattle Mariners"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "New York Mets",
+            "Philadelphia Phillies"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2005-01-19",
+              "from": null,
+              "retrosheet_transaction_id": 38679,
+              "to": "PHI",
+              "type": "F"
+            },
+            {
+              "date": "2005-05-20",
+              "from": "PHI",
+              "retrosheet_transaction_id": 38680,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2005-06-08",
+              "from": null,
+              "retrosheet_transaction_id": 38681,
+              "to": "NYN",
+              "type": "F"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2005,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "New York Mets",
+                "Norfolk Tides"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Philadelphia Phillies",
+              "teams": [
+                "Philadelphia Phillies"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1986
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 1996 (NO_CANONICAL_TRANSACTION), 2000 (NO_CANONICAL_TRANSACTION), 2006 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "José Vizcaíno",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "jose-vizcaino",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Cleveland Guardians",
+            "New York Mets"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "1996-07-29",
+              "from": "NYN",
+              "retrosheet_transaction_id": 62798,
+              "to": "CLE",
+              "type": "T"
+            },
+            {
+              "date": "1996-11-13",
+              "from": "CLE",
+              "retrosheet_transaction_id": 62828,
+              "to": "SFN",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 1996,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Cleveland Indians"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "New York Mets"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [
+            "LAD_NYY_2000_JOSE_VIZCAINO"
+          ],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Los Angeles Dodgers",
+            "New York Yankees"
+          ],
+          "reason": "A move at the Dodgers boundary.",
+          "retrosheet": [
+            {
+              "date": "2000-11-01",
+              "from": "NYA",
+              "retrosheet_transaction_id": 54685,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "2000-11-20",
+              "from": null,
+              "retrosheet_transaction_id": 54686,
+              "to": "HOU",
+              "type": "F"
+            },
+            {
+              "date": "2000-06-20",
+              "from": "LAN",
+              "retrosheet_transaction_id": 63209,
+              "to": "NYA",
+              "type": "T"
+            }
+          ],
+          "scope": "DODGERS_TRANSACTION",
+          "season": 2000,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "Los Angeles Dodgers"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "San Francisco Giants",
+            "St. Louis Cardinals"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2006-01-03",
+              "from": null,
+              "retrosheet_transaction_id": 54694,
+              "to": "SFN",
+              "type": "F"
+            },
+            {
+              "date": "2006-08-18",
+              "from": "SFN",
+              "retrosheet_transaction_id": 54695,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2006-08-23",
+              "from": null,
+              "retrosheet_transaction_id": 54696,
+              "to": "SLN",
+              "type": "F"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2006,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2006-04-07",
+              "last_appearance": "2006-08-13",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "San Francisco Giants",
+              "teams": [
+                "San Francisco Giants"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2006-08-23",
+              "last_appearance": "2006-10-01",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "St. Louis Cardinals",
+              "teams": [
+                "St. Louis Cardinals"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1986
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2006 (NO_CANONICAL_TRANSACTION), 2008 (MORE_THAN_TWO_ORGANIZATIONS), 2010 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Juan Castro",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "juan-castro",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Minnesota Twins",
+            "Cincinnati Reds"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2006-06-15",
+              "from": "MIN",
+              "retrosheet_transaction_id": 63818,
+              "to": "CIN",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2006,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2006-04-04",
+              "last_appearance": "2006-06-13",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Minnesota Twins",
+              "teams": [
+                "Minnesota Twins"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2006-06-18",
+              "last_appearance": "2006-10-01",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cincinnati Reds",
+              "teams": [
+                "Cincinnati Reds"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Cincinnati Reds",
+            "Baltimore Orioles",
+            "Colorado Rockies"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2008-05-02",
+              "from": "CIN",
+              "retrosheet_transaction_id": 8701,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2008-05-04",
+              "from": null,
+              "retrosheet_transaction_id": 8702,
+              "to": "COL",
+              "type": "F"
+            },
+            {
+              "date": "2008-11-05",
+              "from": "BAL",
+              "retrosheet_transaction_id": 8703,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "2008-07-19",
+              "from": "COL",
+              "retrosheet_transaction_id": 64012,
+              "to": "BAL",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2008,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2008-04-04",
+              "last_appearance": "2008-04-17",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cincinnati Reds",
+              "teams": [
+                "Cincinnati Reds"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2008-04-28",
+              "last_appearance": "2008-09-24",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2008-05-05",
+              "last_appearance": "2008-07-14",
+              "levels": [
+                "AAA"
+              ],
+              "organization": "Colorado Rockies",
+              "teams": [
+                "Colorado Springs Sky Sox"
+              ]
+            }
+          ],
+          "state_052": "MORE_THAN_TWO_ORGANIZATIONS"
+        },
+        {
+          "canonical_write": [
+            "LAD_FREE_AGENT_SIGNING_2010_JUAN_CASTRO",
+            "LAD_FREE_AGENCY_2010_JUAN_CASTRO"
+          ],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [
+            {
+              "date": "2010-07-17",
+              "description": "Philadelphia Phillies released SS Juan Castro.",
+              "mlb_log_id": 62921,
+              "type_code": "REL"
+            },
+            {
+              "date": "2010-08-03",
+              "description": "Los Angeles Dodgers signed free agent SS Juan Castro to a minor league contract.",
+              "mlb_log_id": 65619,
+              "type_code": "SFA"
+            },
+            {
+              "date": "2010-10-05",
+              "description": "SS Juan Castro elected free agency.",
+              "mlb_log_id": 71172,
+              "type_code": "DFA"
+            },
+            {
+              "date": "2010-12-27",
+              "description": "Los Angeles Dodgers signed free agent SS Juan Castro to a minor league contract and invited him to spring training.",
+              "mlb_log_id": 76212,
+              "type_code": "SFA"
+            }
+          ],
+          "organizations": [
+            "Philadelphia Phillies",
+            "Los Angeles Dodgers"
+          ],
+          "reason": "A move at the Dodgers boundary.",
+          "retrosheet": [
+            {
+              "date": "2010-07-17",
+              "from": "PHI",
+              "retrosheet_transaction_id": 8707,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2010-07-27",
+              "from": null,
+              "retrosheet_transaction_id": 8708,
+              "to": "LAN",
+              "type": "F"
+            },
+            {
+              "date": "2010-10-05",
+              "from": "LAN",
+              "retrosheet_transaction_id": 8709,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "2010-12-14",
+              "from": null,
+              "retrosheet_transaction_id": 8710,
+              "to": "LAN",
+              "type": "F"
+            }
+          ],
+          "scope": "DODGERS_TRANSACTION",
+          "season": 2010,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2010-04-12",
+              "last_appearance": "2010-07-16",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Philadelphia Phillies",
+              "teams": [
+                "Philadelphia Phillies"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2010-08-06",
+              "last_appearance": "2010-08-15",
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "Albuquerque Isotopes",
+                "Los Angeles Dodgers"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1991
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 1998 (NO_CANONICAL_TRANSACTION), 1999 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Juan Guzmán",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "juan-guzman",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Baltimore Orioles",
+            "Toronto Blue Jays"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "1998-07-31",
+              "from": "TOR",
+              "retrosheet_transaction_id": 63020,
+              "to": "BAL",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 1998,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Toronto Blue Jays",
+              "teams": [
+                "Toronto Blue Jays"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Baltimore Orioles",
+            "Cincinnati Reds"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "1999-10-29",
+              "from": "CIN",
+              "retrosheet_transaction_id": 20788,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "1999-07-31",
+              "from": "BAL",
+              "retrosheet_transaction_id": 63120,
+              "to": "CIN",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 1999,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cincinnati Reds",
+              "teams": [
+                "Cincinnati Reds"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1985
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2000 (NO_CANONICAL_TRANSACTION), 2002 (NO_CANONICAL_TRANSACTION), 2003 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Karim García",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "karim-garcia",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Baltimore Orioles",
+            "Detroit Tigers"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2000-06-12",
+              "from": "DET",
+              "retrosheet_transaction_id": 18076,
+              "to": "BAL",
+              "type": "C"
+            },
+            {
+              "date": "2000-10-17",
+              "from": "BAL",
+              "retrosheet_transaction_id": 18077,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2000-12-22",
+              "from": null,
+              "retrosheet_transaction_id": 18078,
+              "to": "CLE",
+              "type": "F"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2000,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles",
+                "Rochester Red Wings"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Detroit Tigers",
+              "teams": [
+                "Detroit Tigers",
+                "Toledo Mud Hens"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Cleveland Guardians",
+            "New York Yankees"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2002-03-27",
+              "from": "CLE",
+              "retrosheet_transaction_id": 18079,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2002-04-02",
+              "from": null,
+              "retrosheet_transaction_id": 18080,
+              "to": "NYA",
+              "type": "F"
+            },
+            {
+              "date": "2002-07-02",
+              "from": "NYA",
+              "retrosheet_transaction_id": 18081,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2002-07-12",
+              "from": null,
+              "retrosheet_transaction_id": 18082,
+              "to": "CLE",
+              "type": "F"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2002,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Buffalo Bisons",
+                "Cleveland Indians"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "Columbus Clippers",
+                "New York Yankees"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Cleveland Guardians",
+            "New York Yankees"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2003-06-25",
+              "from": "CLE",
+              "retrosheet_transaction_id": 18083,
+              "to": "NYA",
+              "type": "P"
+            },
+            {
+              "date": "2003-12-21",
+              "from": "NYA",
+              "retrosheet_transaction_id": 18084,
+              "to": null,
+              "type": "Fg"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2003,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Buffalo Bisons",
+                "Cleveland Indians"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Baltimore Orioles",
+            "New York Mets"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2004-01-26",
+              "from": null,
+              "retrosheet_transaction_id": 18085,
+              "to": "NYN",
+              "type": "F"
+            },
+            {
+              "date": "2004-08-30",
+              "from": "BAL",
+              "retrosheet_transaction_id": 18086,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2004-07-19",
+              "from": "NYN",
+              "retrosheet_transaction_id": 63633,
+              "to": "BAL",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2004,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Baltimore Orioles",
+              "teams": [
+                "Baltimore Orioles"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AA",
+                "MLB"
+              ],
+              "organization": "New York Mets",
+              "teams": [
+                "Binghamton Mets",
+                "New York Mets"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1992
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (NO_CANONICAL_TRANSACTION), 2000 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Omar Daal",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "omar-daal",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Toronto Blue Jays",
+            "Washington Nationals"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "1997-07-25",
+              "from": "MON",
+              "retrosheet_transaction_id": 11937,
+              "to": "TOR",
+              "type": "W"
+            },
+            {
+              "date": "1997-11-18",
+              "from": "TOR",
+              "retrosheet_transaction_id": 11938,
+              "to": "ARI",
+              "type": "X"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 1997,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Toronto Blue Jays",
+              "teams": [
+                "Syracuse SkyChiefs",
+                "Toronto Blue Jays"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "Washington Nationals",
+              "teams": [
+                "Montreal Expos",
+                "Ottawa Lynx"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Arizona Diamondbacks",
+            "Philadelphia Phillies"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2000-07-26",
+              "from": "ARI",
+              "retrosheet_transaction_id": 63220,
+              "to": "PHI",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2000,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Arizona Diamondbacks",
+              "teams": [
+                "Arizona Diamondbacks"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Philadelphia Phillies",
+              "teams": [
+                "Philadelphia Phillies"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1990
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 1997 (TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS), 2001 (NO_CANONICAL_TRANSACTION), 2005 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Pedro Astacio",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "pedro-astacio",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "EVENT_PRESENT_DATE_INSUFFICIENT",
+          "known_transactions": [
+            {
+              "date": "1997-08-19",
+              "event_key": "LAD_COL_1997_ASTACIO",
+              "move": {
+                "from": "LAD",
+                "to": "COL"
+              },
+              "player_side": "OUTGOING",
+              "type": "TRADE"
+            }
+          ],
+          "official_log": [],
+          "organizations": [
+            "Colorado Rockies",
+            "Los Angeles Dodgers"
+          ],
+          "reason": "The Dodgers transaction is recorded; the stints predate the official game log, so no appearance date can bracket it (source-limited).",
+          "retrosheet": [
+            {
+              "date": "1997-08-19",
+              "from": "LAN",
+              "retrosheet_transaction_id": 62913,
+              "to": "COL",
+              "type": "T"
+            }
+          ],
+          "scope": "DODGERS_TRANSACTION",
+          "season": 1997,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Colorado Rockies",
+              "teams": [
+                "Colorado Rockies"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "Los Angeles Dodgers"
+              ]
+            }
+          ],
+          "state_052": "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Colorado Rockies",
+            "Houston Astros"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2001-11-08",
+              "from": "HOU",
+              "retrosheet_transaction_id": 1639,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "2001-07-31",
+              "from": "COL",
+              "retrosheet_transaction_id": 63347,
+              "to": "HOU",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2001,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Colorado Rockies",
+              "teams": [
+                "Colorado Rockies"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Houston Astros",
+              "teams": [
+                "Houston Astros"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "San Diego Padres",
+            "Texas Rangers"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2005-02-23",
+              "from": null,
+              "retrosheet_transaction_id": 1644,
+              "to": "TEX",
+              "type": "F"
+            },
+            {
+              "date": "2005-06-17",
+              "from": "TEX",
+              "retrosheet_transaction_id": 1645,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2005-06-30",
+              "from": null,
+              "retrosheet_transaction_id": 1646,
+              "to": "SDN",
+              "type": "F"
+            },
+            {
+              "date": "2005-10-28",
+              "from": "SDN",
+              "retrosheet_transaction_id": 1647,
+              "to": null,
+              "type": "Fg"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2005,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "MLB"
+              ],
+              "organization": "San Diego Padres",
+              "teams": [
+                "Portland Beavers",
+                "San Diego Padres"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Texas Rangers",
+              "teams": [
+                "Texas Rangers"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1987
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2022 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Pedro Báez",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "pedro-baez",
+      "seasons": [
+        {
+          "canonical_write": [
+            "LAD_FREE_AGENT_SIGNING_2022_PEDRO_BAEZ"
+          ],
+          "class": "MISSING_EVENT",
+          "known_transactions": [
+            {
+              "date": "2022-08-20",
+              "event_key": "LAD_RELEASE_2022_PEDRO_BAEZ",
+              "move": {
+                "from": "LAD",
+                "to": null
+              },
+              "player_side": "OUTGOING",
+              "type": "RELEASE"
+            }
+          ],
+          "official_log": [
+            {
+              "date": "2022-04-27",
+              "description": "Houston Astros released RHP Pedro Baez.",
+              "mlb_log_id": 617735,
+              "type_code": "REL"
+            },
+            {
+              "date": "2022-05-19",
+              "description": "Los Angeles Dodgers signed free agent RHP Pedro Baez to a minor league contract.",
+              "mlb_log_id": 622856,
+              "type_code": "SFA"
+            },
+            {
+              "date": "2022-08-20",
+              "description": "Oklahoma City Dodgers released RHP Pedro Baez.",
+              "mlb_log_id": 647666,
+              "type_code": "REL"
+            }
+          ],
+          "organizations": [
+            "Houston Astros",
+            "Los Angeles Dodgers"
+          ],
+          "reason": "A move at the Dodgers boundary.",
+          "retrosheet": [],
+          "scope": "DODGERS_TRANSACTION",
+          "season": 2022,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2022-04-08",
+              "last_appearance": "2022-04-19",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Houston Astros",
+              "teams": [
+                "Houston Astros"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2022-07-05",
+              "last_appearance": "2022-08-19",
+              "levels": [
+                "AAA",
+                "COMPLEX_ROOKIE"
+              ],
+              "organization": "Los Angeles Dodgers",
+              "teams": [
+                "ACL Dodgers",
+                "Oklahoma City Dodgers"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 2007
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2002 (NO_CANONICAL_TRANSACTION), 2003 (NO_CANONICAL_TRANSACTION), 2004 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Raúl Mondesí",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "raul-mondesi",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "New York Yankees",
+            "Toronto Blue Jays"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2002-07-01",
+              "from": "TOR",
+              "retrosheet_transaction_id": 63429,
+              "to": "NYA",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2002,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Toronto Blue Jays",
+              "teams": [
+                "Toronto Blue Jays"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Arizona Diamondbacks",
+            "New York Yankees"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2003-10-26",
+              "from": "ARI",
+              "retrosheet_transaction_id": 35991,
+              "to": null,
+              "type": "Fg"
+            },
+            {
+              "date": "2003-07-29",
+              "from": "NYA",
+              "retrosheet_transaction_id": 63535,
+              "to": "ARI",
+              "type": "T"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2003,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Arizona Diamondbacks",
+              "teams": [
+                "Arizona Diamondbacks"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "New York Yankees",
+              "teams": [
+                "New York Yankees"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        },
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [],
+          "organizations": [
+            "Los Angeles Angels",
+            "Pittsburgh Pirates"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2004-02-24",
+              "from": null,
+              "retrosheet_transaction_id": 35992,
+              "to": "PIT",
+              "type": "F"
+            },
+            {
+              "date": "2004-05-21",
+              "from": "PIT",
+              "retrosheet_transaction_id": 35993,
+              "to": null,
+              "type": "R"
+            },
+            {
+              "date": "2004-05-30",
+              "from": null,
+              "retrosheet_transaction_id": 35994,
+              "to": "ANA",
+              "type": "F"
+            },
+            {
+              "date": "2004-08-04",
+              "from": "ANA",
+              "retrosheet_transaction_id": 35995,
+              "to": null,
+              "type": "R"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2004,
+          "segments": [
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "AAA",
+                "HIGH_A",
+                "MLB"
+              ],
+              "organization": "Los Angeles Angels",
+              "teams": [
+                "Anaheim Angels",
+                "Rancho Cucamonga Quakes",
+                "Salt Lake City Stingers"
+              ]
+            },
+            {
+              "dated": false,
+              "first_appearance": null,
+              "last_appearance": null,
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Pittsburgh Pirates",
+              "teams": [
+                "Pittsburgh Pirates"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 1988
+    },
+    {
+      "cause_052": "Multi-organization seasons not bracketed by a canonical transaction: 2019 (NO_CANONICAL_TRANSACTION).",
+      "full_name": "Yasiel Puig",
+      "gap_class_052": "TRANSACTION_BLOCKED",
+      "issues": [
+        "MULTI_ORG_SEASON_UNVERIFIED"
+      ],
+      "need": "ORGANIZATION",
+      "player_slug": "yasiel-puig",
+      "seasons": [
+        {
+          "canonical_write": [],
+          "class": "MISSING_EVENT",
+          "known_transactions": [],
+          "official_log": [
+            {
+              "date": "2019-07-31",
+              "description": "Cincinnati Reds Traded CF Taylor Trammell to San Diego Padres; San Diego Padres Traded RF Franmil Reyes, LHP Logan Allen and 3B Victor Nova to Cleveland Indians; Cincinnati Reds Traded LHP Scott Moss and RF Yasiel Puig to Cleveland Indians and Cleveland Indians Traded RHP Trevor Bauer to Cincinnati Reds.",
+              "mlb_log_id": 420891,
+              "type_code": "TR"
+            },
+            {
+              "date": "2019-10-31",
+              "description": "RF Yasiel Puig elected free agency.",
+              "mlb_log_id": 431813,
+              "type_code": "DFA"
+            }
+          ],
+          "organizations": [
+            "Cincinnati Reds",
+            "Cleveland Guardians"
+          ],
+          "reason": "A move between two clubs other than the Dodgers. DISI's transaction ledger records Dodgers transactions only; recording another club's trade or signing there would read as a Dodgers exit in the asset views.",
+          "retrosheet": [
+            {
+              "date": "2019-07-31",
+              "from": "CIN",
+              "retrosheet_transaction_id": 86291,
+              "to": "CLE",
+              "type": "T"
+            },
+            {
+              "date": "2019-10-31",
+              "from": "CLE",
+              "retrosheet_transaction_id": 82900,
+              "to": null,
+              "type": "Fg"
+            }
+          ],
+          "scope": "LATER_ORGANIZATION_HISTORY",
+          "season": 2019,
+          "segments": [
+            {
+              "dated": true,
+              "first_appearance": "2019-03-28",
+              "last_appearance": "2019-07-30",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cincinnati Reds",
+              "teams": [
+                "Cincinnati Reds"
+              ]
+            },
+            {
+              "dated": true,
+              "first_appearance": "2019-08-01",
+              "last_appearance": "2019-09-27",
+              "levels": [
+                "MLB"
+              ],
+              "organization": "Cleveland Guardians",
+              "teams": [
+                "Cleveland Indians"
+              ]
+            }
+          ],
+          "state_052": "NO_CANONICAL_TRANSACTION"
+        }
+      ],
+      "signing_year": 2012
+    }
+  ],
+  "read": "Production, read-only as the public anon role, at canonical main 2f664f9 (generation 8).",
+  "research_items_by_bucket": {
+    "CHAIN_OR_MEMBERSHIP": 43,
+    "OTHER": 50,
+    "TERMS": 17,
+    "VALUE": 40
+  },
+  "transaction_queue": {
+    "by_issue": {
+      "CASH_AMOUNT_UNKNOWN": 16,
+      "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION": 7,
+      "DOWNSTREAM_WAR_NOT_LOADED": 6,
+      "EXIT_NOT_RESEARCHED_DOWNSTREAM": 5,
+      "EXIT_STATUS_UNVERIFIED": 16,
+      "EXIT_TRANSACTION_MISSING": 2,
+      "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+      "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+      "PTBNL_UNRESOLVED": 2,
+      "RETURN_ASSET_EXIT_MISSING": 1
+    },
+    "events": 30,
+    "items": 59,
+    "players": 18
+  },
+  "transactions": {
+    "events": 141,
+    "transaction_rows": 145
+  },
+  "value_queue": {
+    "by_issue": {
+      "ACQUISITION_COST_INCOMPLETE": 28,
+      "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE": 7,
+      "LINEAGE_BOUNDARY_NOTED": 22,
+      "OUTCOME_INCOMPLETE": 8,
+      "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED": 26
+    },
+    "items": 91
+  }
+}
