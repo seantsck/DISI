@@ -11,12 +11,16 @@
 //   npm run research:development -- --causes [--class SOURCE_LIMITED] [--need ORGANIZATION]   # 052: every open need with its class (fact missing,
 //                                                     taxonomy gap, source-limited, human review, transaction- or identity-blocked), its cause
 //                                                     and the evidence that would close it. No priority score.
+//   npm run research:development -- --chronology [--open] [--scope DODGERS_TRANSACTION|LATER_ORGANIZATION_HISTORY] [--player slug]
+//                                                   # 053: every season with two organizations: the last game for the first, the canonical
+//                                                     transaction read in the player's direction, the first game for the second, and the state.
+//                                                     A move between two other clubs is later organization history, never a Dodgers transaction.
 
 import { developmentCoverage, developmentQueue, developmentRecords, timingFacts } from '../../lib/research/development-research.js'
 import { auditedNoMlbCoverage, verifiedMlbCoverage } from '../../lib/research/history-coverage.js'
 import { developmentNeedSummary, developmentNeeds } from '../../lib/research/development-needs.js'
 import { progressionReviewPacket, renderReviewPacket } from '../../lib/research/progression-review.js'
-import { gapClassCounts, needCauses } from '../../lib/research/development-chronology.js'
+import { gapClassCounts, isBracketedSeason, multiOrganizationClass, multiOrganizationSeasons, needCauses } from '../../lib/research/development-chronology.js'
 import { stableJson } from '../../lib/research/format.js'
 import { parseArgs, emit, run, int } from './lib/cli.mjs'
 import { loadDataset } from './lib/source.mjs'
@@ -33,7 +37,7 @@ function stintsByPlayer(data) {
 
 run(async () => {
   const args = parseArgs(process.argv.slice(2))
-  const wantsHistory = args['mlb-coverage'] === true || args['no-mlb-coverage'] === true || args.review === true || args.causes === true
+  const wantsHistory = args['mlb-coverage'] === true || args['no-mlb-coverage'] === true || args.review === true || args.causes === true || args.chronology === true
   if (wantsHistory) args.history = true
   const { data } = await loadDataset(args)
   if (args.coverage === true || args.timing === true) {
@@ -105,6 +109,33 @@ run(async () => {
       summary: { needs: all.length, by_class: gapClassCounts(all) },
       rows: rows.map((r) => ({ need: r.need, class: r.gap_class, player: r.full_name ?? r.player_slug, signed: r.signing_year, cause: r.cause, closes_with: r.closes_with })),
       columns: ['need', 'class', 'player', 'signed', 'cause', 'closes_with'],
+    })
+    return
+  }
+  if (args.chronology === true) {
+    if (!(data.stints ?? []).length) throw new Error('No stint history in this dataset: load it from the database, or save one with --history --save.')
+    const tx = new Map()
+    for (const t of data.transactions ?? []) tx.set(t.player_id, [...(tx.get(t.player_id) ?? []), t])
+    const scope = args.scope && args.scope !== true ? String(args.scope) : null
+    const player = args.player && args.player !== true ? String(args.player) : null
+    const all = []
+    for (const [id, st] of stintsByPlayer(data)) {
+      for (const m of multiOrganizationSeasons(st, tx.get(id) ?? [])) {
+        all.push({ player: st[0].player_slug, season: m.season, state: m.state, class: multiOrganizationClass(m.state),
+          scope: m.dodgers_involved ? 'DODGERS_TRANSACTION' : 'LATER_ORGANIZATION_HISTORY', bracketed: isBracketedSeason(m),
+          bracket: m.segments.map((g) => `${g.organization} ${g.first_appearance ?? '?'}..${g.last_appearance ?? '?'}`).join(' | '),
+          transaction: m.transaction ? `${m.transaction.type} ${m.transaction.date} ${m.transaction.event_key ?? ''}`.trim() : '' })
+      }
+    }
+    all.sort((a, b) => a.player.localeCompare(b.player) || a.season - b.season)
+    const rows = all.filter((r) => (args.open === true ? !r.bracketed : true) && (!scope || r.scope === scope) && (!player || r.player === player))
+    const count = (k) => all.reduce((m, r) => ({ ...m, [r[k]]: (m[r[k]] ?? 0) + 1 }), {})
+    if (args.format === 'json') { console.log(stableJson({ seasons: all.length, by_state: count('state'), by_scope: count('scope'), rows })); return }
+    emit(args, {
+      title: `Seasons with two or more organizations as of ${data.asOf} (TEAM CHANGE != CANONICAL TRANSACTION; the transaction date and the two appearance dates stay three facts)`,
+      summary: { seasons: all.length, open: all.filter((r) => !r.bracketed).length, by_state: count('state'), by_scope: count('scope') },
+      rows,
+      columns: ['player', 'season', 'state', 'class', 'scope', 'bracket', 'transaction'],
     })
     return
   }

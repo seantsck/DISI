@@ -110,6 +110,9 @@ export default async function DevelopmentPage() {
   const causeOf = new Map((causes ?? []).map((c) => [`${c.player_id}|${c.need}`, c]))
   const classTotals = causes ? gapClassCounts(causes) : null
   const shownClasses = classTotals ? Object.keys(GAP_CLASS).filter((k) => classTotals[k] > 0) : []
+  // 053: transaction-blocked gaps whose open seasons are all moves between two other clubs (later organization history)
+  const blocked = (causes ?? []).filter((c) => c.gap_class === 'TRANSACTION_BLOCKED')
+  const transactionScope = { total: blocked.length, later: blocked.filter((c) => c.transaction_scope === 'LATER_ORGANIZATION_HISTORY').length }
   return (
     <main className="shell page-main">
       <header className="page-hero">
@@ -411,8 +414,12 @@ export default async function DevelopmentPage() {
                 is not evidence that the fact does not exist. <strong>No level for it yet</strong>: Pioneer League seasons, which the official record files under the
                 Rookie sport but which are neither an international nor a complex league; they stay on record, unranked, until a reviewed decision.
                 <strong> Waits on a transaction</strong>: a season with two organizations and no recorded transaction between them; a team change is never treated as one.
-                The cancelled 2020 minor-league season is not counted as a missing season, and a season bracketed by a recorded trade and game dates on both sides is
-                not open.
+                {transactionScope.total > 0 && <> {transactionScope.later === transactionScope.total ? `All ${transactionScope.total}` : `${transactionScope.later} of the ${transactionScope.total}`} wait
+                on a move between two other clubs after the player left the Dodgers: DISI records Dodgers transactions only, so those stay open even where the other
+                club&rsquo;s transaction is on the official record.</>}
+                The cancelled 2020 minor-league season is not counted as a missing season, and a season is not open when a recorded transaction falls between the
+                two clubs&rsquo; game dates: a trade, or the Dodgers end of the move (a release before the other club&rsquo;s first game, a signing after its last).
+                A release is never read as a trade, and the other club&rsquo;s signing is not implied.
               </p>
             </>
           ) : (
