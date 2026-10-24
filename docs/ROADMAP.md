@@ -3,17 +3,18 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 051 is released; 052 is built and awaiting its release gate)
+## Where DISI stands (after 052 is released and production-verified)
 
-- **v1.0.0** is in production through Migration 050 (international benchmark expansion and probability-support audit, released 2026-10-22,
-  PR #23 merged as `459460d`; production-verified 248/248, generation 8, drift 0; frozen in PR #24, merged). 051 is released (PR #25 merged as
-  `9bf42da`; no migration, so production stays at 050, generation 8, with the 249-check verifier). Canonical `main` before 052 is
-  `9bf42da0f3da29c7520a91d522b6aea9535a10eb`. The product reads eleven persisted snapshots; the analytical layer is internal.
+- **v1.0.0** is in production through Migration 052 (development taxonomy and chronology resolution, released 2026-10-23, PR #26 merged as
+  `89742f2`; production-verified **252/252**, generation **8**, drift **0**; frozen). The dossier transaction-boundary hotfix is released
+  (PR #27 merged as `e36d2b8`; app only, no SQL or data change). 051 is released with no migration (PR #25 merged as `9bf42da`). 050 was
+  released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical `main` after 052 is
+  `e36d2b8f86a0d23362d5e30d9b47dd5b00142125`. The product reads eleven persisted snapshots; the analytical layer is internal.
 - International benchmark (050, released): the MLB Pipeline international Top 30 lists of the 2015 and 2016 classes join the 2013 / 2014 trackers.
   Benchmark signings **48 -> 102**, identity-resolved **43 -> 99**, MLB reachers **11 -> 34**. `REACH_MLB_WITHIN_7_SEASONS` meets its support
   minimum **in the benchmark sample only** (90 labelled, 19 positive, 71 negative): a reference baseline for those ranked prospects, never a Dodgers
   probability. `BENCHMARK SUPPORT != DODGERS SUPPORT`.
-- Development taxonomy and chronology (052, built, not applied): every team stint checked against the official team record for its own team id
+- Development taxonomy and chronology (052, released and production-verified): every team stint checked against the official team record for its own team id
   and season (319 organizations resolved, 3 corrected, 1 co-op club with no MLB parent), 528 log-era stints and 101 level debuts dated from the
   official game log, 2020 no longer counted as a missing minor-league season (the official schedule holds no game), a season bracketed by a canonical
   transaction and game dates no longer flagged. Development needs **173 -> 110** (detector rows 347 -> 134, players 85 -> 66), none of them a fact
@@ -29,7 +30,7 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Acquisition cost is known for **56** signings (046), a lower bound of $121.7M.
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
-  (179 of 220 signings). No path is complete: 44 of 47 are partial. 347 detector rows are 173 distinct pieces of development work.
+  (179 of 220 signings). No path is complete: 44 of 47 are partial. After 052, 134 detector rows are 110 distinct development needs across 66 players.
 - Transactions (049, released): **213** events, **396** assets, **7** resolutions; the transaction queue keeps **59** items and the value queue **91**. `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
   value of what came back unavailable, so the seven incomplete chains read as **five** whose transaction history is open and **two** whose history
   is recorded and whose returned players' Baseball-Reference WAR is not loaded. Open packages: **20** (membership open **5**, only terms open **15**).
