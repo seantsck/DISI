@@ -3,14 +3,14 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 052 is released and frozen; 053 is built and awaiting its release gate)
+## Where DISI stands (after 053 is released, production-verified and frozen)
 
-- **v1.0.0** is in production through Migration 052 (development taxonomy and chronology resolution, released 2026-10-23, PR #26 merged as
-  `89742f2`; production-verified **252/252**, generation **8**, drift **0**; frozen). The dossier transaction-boundary hotfix is released
-  (PR #27 merged as `e36d2b8`; app only, no SQL or data change). 051 is released with no migration (PR #25 merged as `9bf42da`). 050 was
-  released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). 052 is frozen (PR #28). Canonical `main` before 053 is
-  `2f664f9bacfb00573a351f1b02859b520787c5df`. The product reads eleven persisted snapshots; the analytical layer is internal.
-- Transaction and chronology resolution (053, built, not applied): the development research queue reads a canonical transaction in the player's
+- **v1.0.0** is in production through Migration 053 (transaction and chronology resolution, released 2026-10-24, PR #29 merged as `0d959ed`;
+  production-verified **255/255**, generation **9**, drift **0**; frozen). 052 was released 2026-10-23 (PR #26 merged as `89742f2`; frozen in
+  PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is released with no migration (PR #25 merged as
+  `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical `main` after 053 is
+  `0d959ed34c8e9997fad86eef577db7e872aa2460`. The product reads eleven persisted snapshots; the analytical layer is internal.
+- Transaction and chronology resolution (053, released and production-verified): the development research queue reads a canonical transaction in the player's
   own direction and recognizes the Dodgers end of a move (a release before the other club's first game, a free-agent signing after its last); ten
   Dodgers transactions the official log or Retrosheet states are recorded (Baez, Park, Vizcaino and Leyritz, Daal, Castro). Development needs
   **110 -> 108** (transaction-blocked 18 -> 16; detector rows 134 -> 132; players 66 -> 65). **Every remaining transaction-blocked need waits on a
@@ -37,7 +37,7 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
   (179 of 220 signings). No path is complete: 44 of 47 are partial. After 052, 134 detector rows are 110 distinct development needs across 66 players.
-- Transactions (049, released; 053 adds 10 events and 14 assets, built): **213** events, **396** assets, **7** resolutions; the transaction queue keeps **59** items and the value queue **91**. `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
+- Transactions (049, released; 053 adds 10 events and 14 assets, released): **213** events, **396** assets, **7** resolutions; the transaction queue keeps **59** items and the value queue **91**. `KNOWN TRANSACTION != KNOWN RETURN VALUE`. Two chains whose history was open are now recorded to their end with the
   value of what came back unavailable, so the seven incomplete chains read as **five** whose transaction history is open and **two** whose history
   is recorded and whose returned players' Baseball-Reference WAR is not loaded. Open packages: **20** (membership open **5**, only terms open **15**).
   Nothing was valued and no unknown became zero. Abreu's return is recorded with its WAR unknown, so the home page's realized organizational value
