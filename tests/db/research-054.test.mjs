@@ -123,7 +123,7 @@ after(async () => { await chain?.close() })
 test('054 follows 053 in the manifest, and its rollback exists', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '053_transaction_chronology_resolution.sql')
-  assert.equal(i, manifest.canonical_sql.length - 1)
+  assert.equal(manifest.canonical_sql[i + 1], '054a_development_queue_performance.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   assert.match(rollback054, /^-- DISI rollback-054\.sql/)
 })
