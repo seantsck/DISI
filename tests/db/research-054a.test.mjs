@@ -87,13 +87,14 @@ before(async () => {
 }, { timeout: 900000 })
 after(async () => { await chain?.close() })
 
-test('054a follows 054 in the manifest as the last file, is not frozen, and the build reproduces the migration and the rollback', () => {
+test('054a follows 054 in the manifest as the last file, is frozen at its released hash, and the build reproduces the migration and the rollback', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '054_full_career_transaction_history.sql')
   assert.equal(i, manifest.canonical_sql.length - 1)
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
-  assert.ok(!(FILE in frozen))
+  assert.equal(frozen[FILE], crypto.createHash('sha1').update(sql054a.replace(/\r\n/g, '\n')).digest('hex'))
+  assert.equal(frozen[FILE], '05acf920403c65f53fa595a6d85daced4046206a')
   assert.match(sql054a, /^-- DISI v0\.39\.1\n-- 054a_development_queue_performance\.sql\n/)
   assert.match(rollback054a, /^-- DISI rollback-054a\.sql/)
   assert.ok(!sql054a.includes('\r') && !rollback054a.includes('\r'))

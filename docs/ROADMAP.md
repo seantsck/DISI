@@ -3,15 +3,22 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 054 is released, production-verified and frozen)
+## Where DISI stands (after 054a is released, production-verified and frozen)
 
-- **v1.0.0** is in production through Migration 054 (full-career transaction history, applied once and committed 2026-10-25, PR #31 merged as
-  `b73811c`; production deployment `dpl_5tNTTo98JdEqt1SCQFhwvKVX3jN7`; production-verified **258/258**, generation **10**, drift **0**; smoke
-  passed on all 15 release routes; frozen). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
+- **v1.0.0** is in production through Migration 054a (development research-queue performance, applied once and committed 2026-10-25, PR #33
+  merged as `8741e95`; production deployment `dpl_Ho74B7pi41766uQGngNcAYuT9Bqa`; production-verified **258/258**, generation **10**, drift **0**;
+  frozen). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
   2026-10-23 (PR #26 merged as `89742f2`; frozen in PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is
   released with no migration (PR #25 merged as `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical
-  `main` after 054 is `b73811cc4c74497c09c5d0f881e3db65f46b4c6c`. Catalog: **79** tables, **156** views, **37** functions; **3223** sources.
+  `main` after 054a is `8741e95205a3474af42d39642cda0d3094363af3`. Catalog: **79** tables, **156** views, **37** functions; **3223** sources.
   The product reads eleven persisted snapshots; the analytical layer is internal.
+- Development research-queue performance (054a, released and production-verified): a query-shape correction only. The 054 queue view
+  materialized its `team_stints` CTE, which on the hosted database (work_mem 2 MB) spilled to disk and was rescanned per player: as anon about
+  1.3 s and about 5.4 GB of temp reads per read, and one `/development` request hit the 3 s anon timeout (57014). 054a marks the CTE
+  `NOT MATERIALIZED`: about 55 ms, no temp I/O, the same 128 rows (whole-row hash `a263c500...`). Nothing else moves: every table, snapshot,
+  grant and function is identical; 258 checks; generation stays 10, no refresh. Production gate: four concurrent anon sessions through the
+  transaction pooler, 0 errors and every read under 1 s (one later run timed out during a brief instance slowdown with the same plan and buffers;
+  three re-runs after a quiet period passed, 45/45 reads, max 794 ms). `QUERY SHAPE != QUERY RESULT`.
 - Full-career transaction history (054, released and production-verified): `DODGERS ASSET LEDGER != FULL CAREER HISTORY`. The transaction ledger
   stays the Dodgers asset ledger; a player's moves between two other clubs get their own table (`player_career_transactions`, **46** reviewed rows
   from the official log and Retrosheet) and a labelled stream (`v_player_career_transactions`). Career history explains development chronology only.
