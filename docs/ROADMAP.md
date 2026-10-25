@@ -3,20 +3,24 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 053 is released and frozen; 054 is built and awaiting its release gate)
+## Where DISI stands (after 054 is released, production-verified and frozen)
 
-- **v1.0.0** is in production through Migration 053 (transaction and chronology resolution, released 2026-10-24, PR #29 merged as `0d959ed`;
-  production-verified **255/255**, generation **9**, drift **0**; frozen). 052 was released 2026-10-23 (PR #26 merged as `89742f2`; frozen in
-  PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is released with no migration (PR #25 merged as
-  `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical `main` after 053 is
-  `0d959ed34c8e9997fad86eef577db7e872aa2460`; 053 is frozen (PR #30), so canonical `main` before 054 is `764f165ca048f66ab2cdab58d52affa36285587c`.
+- **v1.0.0** is in production through Migration 054 (full-career transaction history, applied once and committed 2026-10-25, PR #31 merged as
+  `b73811c`; production deployment `dpl_5tNTTo98JdEqt1SCQFhwvKVX3jN7`; production-verified **258/258**, generation **10**, drift **0**; smoke
+  passed on all 15 release routes; frozen). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
+  2026-10-23 (PR #26 merged as `89742f2`; frozen in PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is
+  released with no migration (PR #25 merged as `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical
+  `main` after 054 is `b73811cc4c74497c09c5d0f881e3db65f46b4c6c`. Catalog: **79** tables, **156** views, **37** functions; **3223** sources.
   The product reads eleven persisted snapshots; the analytical layer is internal.
-- Full-career transaction history (054, built, not applied): `DODGERS ASSET LEDGER != FULL CAREER HISTORY`. The transaction ledger stays the
-  Dodgers asset ledger; a player's moves between two other clubs get their own table (`player_career_transactions`, 46 reviewed rows from the
-  official log and Retrosheet) and a labelled stream (`v_player_career_transactions`). Career history explains development chronology only.
+- Full-career transaction history (054, released and production-verified): `DODGERS ASSET LEDGER != FULL CAREER HISTORY`. The transaction ledger
+  stays the Dodgers asset ledger; a player's moves between two other clubs get their own table (`player_career_transactions`, **46** reviewed rows
+  from the official log and Retrosheet) and a labelled stream (`v_player_career_transactions`). Career history explains development chronology only.
   Transaction-blocked needs **16 -> 0**; development needs **108 -> 104** (detector rows 132 -> 128; players 65 -> 62): 4 close, 11 become
   source-limited (the recorded moves predate dated game logs), 1 goes to a person. The ledger, queues (58, 93), WAR, costs, outcomes and prediction
-  do not move. 258 checks; one snapshot refresh (the contract gains one relation).
+  do not move. 258 checks; one snapshot refresh (the contract gains one relation, 47 -> 48).
+  Release note (not a defect): `/development` keeps the legend's definition of "Waits on a transaction", but no current development gap is
+  classified that way (transaction-blocked is 0). The table column, the summary sentence and all 16 former per-gap labels are gone. The legend was
+  left unchanged on purpose: removing it would be an application-code change, outside the bookkeeping-only freeze.
 - Transaction and chronology resolution (053, released and production-verified): the development research queue reads a canonical transaction in the player's
   own direction and recognizes the Dodgers end of a move (a release before the other club's first game, a free-agent signing after its last); ten
   Dodgers transactions the official log or Retrosheet states are recorded (Baez, Park, Vizcaino and Leyritz, Daal, Castro). Development needs
@@ -43,8 +47,8 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Acquisition cost is known for **56** signings (046), a lower bound of $121.7M.
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
-  (179 of 220 signings). No path is complete: 44 of 47 are partial. After 053, 132 detector rows are 108 distinct development needs across 65 players (16 transaction-blocked).
-- Transactions (after 053): **223** events, **410** assets, **7** resolutions; the transaction queue holds **58** items and the value queue **93**.
+  (179 of 220 signings). No path is complete: 44 of 47 are partial. After 054, 128 detector rows are 104 distinct development needs across 62 players (0 transaction-blocked).
+- Transactions (after 053; 054 leaves the ledger unchanged): **223** events, **410** assets, **7** resolutions; the transaction queue holds **58** items and the value queue **93**.
   Packages with an open issue: **21** (membership open **5**, terms open **18**). `KNOWN TRANSACTION != KNOWN RETURN VALUE`. 049 recorded two chains
   whose history was open to their end with the value of what came back unavailable, so the seven incomplete chains it left read as **five** whose
   transaction history is open and **two** whose history is recorded and whose returned players' Baseball-Reference WAR is not loaded; Abreu's return
