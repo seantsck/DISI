@@ -1,0 +1,217 @@
+{
+  "as_of": "2026-10-24",
+  "counts": {
+    "CHAIN": 1,
+    "DIRECT": 21,
+    "RELEASE_THEN_SIGNING": 10,
+    "SEVERAL": 1
+  },
+  "events_by_type": {
+    "FREE_AGENT_SIGNING": 11,
+    "PURCHASE": 1,
+    "RELEASE": 11,
+    "TRADE": 21,
+    "WAIVER_CLAIM": 2
+  },
+  "rule": "One class per transition, before any write. DIRECT: one source row names both clubs (a trade, a waiver claim, a purchase). RELEASE_THEN_SIGNING: the player left the first club and later signed with the second: two facts, two rows. CHAIN: he moved through a third club the same day. SEVERAL: three organizations in one season.",
+  "transitions": [
+    {
+      "class": "DIRECT",
+      "dated": true,
+      "player_slug": "carlos-santana",
+      "season": 2022
+    },
+    {
+      "class": "DIRECT",
+      "dated": true,
+      "player_slug": "carlos-santana",
+      "season": 2023
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": true,
+      "player_slug": "carlos-santana",
+      "season": 2025
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": true,
+      "player_slug": "carlos-santana",
+      "season": 2026
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "chan-ho-park",
+      "season": 2005
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": true,
+      "player_slug": "chan-ho-park",
+      "season": 2007
+    },
+    {
+      "class": "DIRECT",
+      "dated": true,
+      "player_slug": "chan-ho-park",
+      "season": 2010
+    },
+    {
+      "class": "CHAIN",
+      "dated": false,
+      "player_slug": "chico-fernandez",
+      "season": 1963
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": true,
+      "player_slug": "diego-cartaya",
+      "season": 2025
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": true,
+      "player_slug": "eddys-leonard",
+      "season": 2026
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "fernando-valenzuela",
+      "season": 1997
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "ismael-valdez",
+      "season": 2002
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "ismael-valdez",
+      "season": 2004
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "jose-offerman",
+      "season": 2002
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": false,
+      "player_slug": "jose-offerman",
+      "season": 2005
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "jose-vizcaino",
+      "season": 1996
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": true,
+      "player_slug": "jose-vizcaino",
+      "season": 2006
+    },
+    {
+      "class": "DIRECT",
+      "dated": true,
+      "player_slug": "juan-castro",
+      "season": 2006
+    },
+    {
+      "class": "SEVERAL",
+      "dated": true,
+      "player_slug": "juan-castro",
+      "season": 2008
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "juan-guzman",
+      "season": 1998
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "juan-guzman",
+      "season": 1999
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "karim-garcia",
+      "season": 2000
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": false,
+      "player_slug": "karim-garcia",
+      "season": 2002
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "karim-garcia",
+      "season": 2003
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "karim-garcia",
+      "season": 2004
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "omar-daal",
+      "season": 1997
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "omar-daal",
+      "season": 2000
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "pedro-astacio",
+      "season": 2001
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": false,
+      "player_slug": "pedro-astacio",
+      "season": 2005
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "raul-mondesi",
+      "season": 2002
+    },
+    {
+      "class": "DIRECT",
+      "dated": false,
+      "player_slug": "raul-mondesi",
+      "season": 2003
+    },
+    {
+      "class": "RELEASE_THEN_SIGNING",
+      "dated": false,
+      "player_slug": "raul-mondesi",
+      "season": 2004
+    },
+    {
+      "class": "DIRECT",
+      "dated": true,
+      "player_slug": "yasiel-puig",
+      "season": 2019
+    }
+  ]
+}

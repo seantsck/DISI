@@ -109,10 +109,10 @@ test('a later stint with another organization is not Dodgers development (Clemen
   assert.equal(h.highest_level_recorded, 'AAA')
 })
 
-test('verifier: 255/255 at the 051 head (the 050 chain), including the 051 check', async () => {
+test('verifier: 258/258 at the 051 head (the 050 chain), including the 051 check', async () => {
   const full = await checkInvariants(q, EXPECTATIONS_THROUGH_051)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 255)
+  assert.equal(full.hard.length, 258)
   assert.ok(full.hard.some((h) => h.name === 'no_mlb_development_contradictions' && h.pass))
 })
 

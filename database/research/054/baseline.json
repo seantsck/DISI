@@ -1,0 +1,57 @@
+{
+  "as_of": "2026-10-24",
+  "development": {
+    "by_need": {
+      "GAME_DATES": 29,
+      "LEVEL_CLASSIFICATION": 26,
+      "ORGANIZATION": 18,
+      "SEASON_COVERAGE": 30,
+      "SEQUENCE_REVIEW": 5
+    },
+    "detector_rows": 132,
+    "gap_classes_053": {
+      "FACT_MISSING": 0,
+      "HUMAN_REVIEW": 5,
+      "IDENTITY_BLOCKED": 0,
+      "NOT_A_GAP": 0,
+      "SOURCE_LIMITED": 61,
+      "TAXONOMY_GAP": 26,
+      "TRANSACTION_BLOCKED": 16
+    },
+    "needs": 108,
+    "players": 65,
+    "transaction_blocked": 16
+  },
+  "dodgers_ledger": {
+    "packages": {
+      "packages_with_only_open_terms": 16,
+      "packages_with_open_issues": 21,
+      "packages_with_open_issues_by_issue": {
+        "CASH_AMOUNT_UNKNOWN": 17,
+        "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+        "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+        "PTBNL_UNRESOLVED": 2
+      },
+      "packages_with_open_membership": 5,
+      "packages_with_open_terms": 18,
+      "unresolved_attribution_signings": 27
+    },
+    "transaction_queue": 58,
+    "value_queue": 93
+  },
+  "multi_organization_seasons": {
+    "APPEARANCE_RANGES_OVERLAP": 1,
+    "BRACKETED": 14,
+    "BRACKETED_AT_DODGERS_BOUNDARY": 3,
+    "NO_CANONICAL_TRANSACTION": 34,
+    "TRANSACTION_RECORDED_DATES_BEFORE_GAME_LOGS": 5
+  },
+  "read": "Production, read-only as the public anon role, at canonical main 764f165 (generation 9).",
+  "rule_only_reclassification": [
+    {
+      "cause": "Multi-organization seasons not bracketed by a canonical transaction: 2006 (NO_CANONICAL_TRANSACTION, later organization history), 2008 (APPEARANCE_RANGES_OVERLAP, later organization history).",
+      "gap_class": "HUMAN_REVIEW",
+      "player_slug": "juan-castro"
+    }
+  ]
+}

@@ -14,10 +14,12 @@ export const TRANSACTION_CHECK_NAMES = [
   'transaction_return_state_violations', 'transaction_guard_violations',
   // 053
   'transaction_ledger_side_violations', 'transaction_mechanism_shape_violations', 'control_interval_overlap_violations',
+  // 054
+  'career_transaction_dodgers_ledger_overlap_violations', 'career_transaction_shape_violations', 'career_transaction_asset_leakage_violations',
 ]
 
 /** name -> SQL returning one row { n } = number of violations. */
-export const transactionQueries = (loaded, warUnavailableMlbIds = [], { controlIntervals = false } = {}) => {
+export const transactionQueries = (loaded, warUnavailableMlbIds = [], { controlIntervals = false, careerHistory = false } = {}) => {
   // 049: KNOWN TRANSACTION != KNOWN RETURN VALUE. A returned player of a tracked-signing trade needs loaded Baseball-Reference WAR or an observed
   // zero, UNLESS his id is on the pinned list of players whose WAR is knowingly unavailable AND the model represents him as RETURN_WAR_UNKNOWN with a
   // NULL (never zero) Dodgers bWAR. Nothing else is relaxed: any other returned player without WAR is still a violation.
@@ -199,6 +201,42 @@ export const transactionQueries = (loaded, warUnavailableMlbIds = [], { controlI
       join public.v_player_control_intervals b on b.interval_key > a.interval_key
         and ((a.player_id is not null and b.player_id = a.player_id) or (a.player_id is null and a.mlb_id is not null and b.mlb_id = a.mlb_id))
       where a.interval_start < coalesce(b.interval_end, date '9999-12-31') and b.interval_start < coalesce(a.interval_end, date '9999-12-31')` : 'select 0::int as n',
+
+    // 054: DODGERS ASSET TRANSACTION != GENERAL CAREER TRANSACTION. A career-history row never has a Dodgers organization at either end (a Dodgers
+    // transaction belongs in the Dodgers asset ledger), and never repeats a Dodgers-ledger movement of the same player on the same date.
+    // (The career-history table arrives in 054; on an earlier chain these checks are trivially 0.)
+    career_transaction_dodgers_ledger_overlap_violations: careerHistory ? `select (
+        (select count(*) from public.player_career_transactions c
+          left join public.organizations fo on fo.id = c.from_organization_id left join public.organizations too on too.id = c.to_organization_id
+          where fo.franchise_key = 'DODGERS' or too.franchise_key = 'DODGERS')
+      + (select count(*) from public.player_career_transactions c
+          join public.transaction_event_assets a on a.player_id = c.player_id and a.asset_type = 'PLAYER'
+          join public.transaction_events e on e.id = a.event_id and e.transaction_date = c.transaction_date)
+      )::int as n` : 'select 0::int as n',
+
+    // 054: the mechanism fixes the shape (a move names both clubs, a release has no destination, a signing no origin), every row cites a source
+    // and names its source row; one movement fact is one row
+    career_transaction_shape_violations: careerHistory ? `select (
+        (select count(*) from public.player_career_transactions c
+          where c.transaction_type not in ('TRADE', 'WAIVER_CLAIM', 'PURCHASE', 'RELEASE', 'FREE_AGENT_SIGNING')
+             or (c.transaction_type in ('TRADE', 'WAIVER_CLAIM', 'PURCHASE') and (c.from_organization_id is null or c.to_organization_id is null or c.from_organization_id = c.to_organization_id))
+             or (c.transaction_type = 'RELEASE' and (c.from_organization_id is null or c.to_organization_id is not null))
+             or (c.transaction_type = 'FREE_AGENT_SIGNING' and (c.from_organization_id is not null or c.to_organization_id is null))
+             or c.source_id is null or c.source_reference !~ '^(MLB transaction|Retrosheet transaction) [0-9]+$')
+      + (select count(*) from (select player_id, transaction_date, transaction_type, from_organization_id, to_organization_id from public.player_career_transactions
+          group by 1, 2, 3, 4, 5 having count(*) > 1) d)
+      )::int as n` : 'select 0::int as n',
+
+    // 054: CAREER MOVE != ASSET PACKAGE. Career history reaches no asset, package, control-interval or value view: only the player's transaction
+    // stream and the development research queue read it, and the stream labels every career row CAREER_HISTORY
+    career_transaction_asset_leakage_violations: careerHistory ? `select (
+        (select count(*) from (select distinct v.relname from pg_depend d join pg_rewrite r on r.oid = d.objid join pg_class v on v.oid = r.ev_class
+          where d.refobjid = 'public.player_career_transactions'::regclass and v.relname <> 'player_career_transactions') x
+          where x.relname not in ('v_player_career_transactions', 'v_dodgers_development_research_queue'))
+      + (select count(*) from (select distinct v.relname from pg_depend d join pg_rewrite r on r.oid = d.objid join pg_class v on v.oid = r.ev_class
+          where d.refobjid = 'public.v_player_career_transactions'::regclass and v.relname <> 'v_player_career_transactions') x)
+      + abs((select count(*) from public.v_player_career_transactions where layer = 'CAREER_HISTORY') - (select count(*) from public.player_career_transactions))
+      )::int as n` : 'select 0::int as n',
   }
 }
 

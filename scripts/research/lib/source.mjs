@@ -8,7 +8,7 @@
 // can see: the product snapshots and public views. They never write.
 
 import fs from 'node:fs'
-import { DATASET_QUERIES, HISTORY_QUERIES, assembleDataset } from '../../../lib/research/dataset.js'
+import { CAREER_QUERIES, CAREER_RELATION, DATASET_QUERIES, HISTORY_QUERIES, assembleDataset } from '../../../lib/research/dataset.js'
 import { stableJson } from '../../../lib/research/format.js'
 
 export async function loadDataset(args) {
@@ -38,6 +38,10 @@ export async function loadDataset(args) {
     await client.query("set local statement_timeout = '15s'")
     const queries = args.history === true ? { ...DATASET_QUERIES, ...HISTORY_QUERIES } : DATASET_QUERIES
     for (const [key, sql] of Object.entries(queries)) raw[key] = (await client.query(sql)).rows
+    // 054: the career-history stream, where the database has it
+    if (args.history === true && (await client.query('select to_regclass($1) is not null as ok', [`public.${CAREER_RELATION}`])).rows[0].ok) {
+      for (const [key, sql] of Object.entries(CAREER_QUERIES)) raw[key] = (await client.query(sql)).rows
+    }
     await client.query('rollback')
   } catch (e) {
     await client.query('rollback').catch(() => {})

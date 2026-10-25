@@ -167,7 +167,7 @@ test('verifier: the staged checks pass, each catches its own drift, and the full
   assert.equal(STAGED_FUNCTION_CHECK_NAMES.length, 2)
   const full = await checkInvariants(q, EXPECT043A)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 255)
+  assert.equal(full.hard.length, 258)
   await scratch(async () => {
     await chain.db.exec(`grant execute on function public.disi_portfolio_candidate_readiness() to public`)
     assert.deepEqual(await failing(), ['staged_function_violations'])

@@ -378,7 +378,7 @@ test('the verifier passes on 001-049 (252 hard checks); the identity check accep
   for (const [name, sql] of Object.entries(productSnapshotQueries(true, true))) assert.equal((await one(sql)).n, 0, name)
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 255)
+  assert.equal(full.hard.length, 258)
   assert.deepEqual(CANONICAL_EXPECTATIONS.transaction_war_unavailable_mlb_ids, [IDS.garland])
   // without the pin the same data is a violation: the relaxation is explicit, narrow and reviewed
   const unpinned = await checkInvariants(q, { ...CANONICAL_EXPECTATIONS, transaction_war_unavailable_mlb_ids: [] })

@@ -127,11 +127,11 @@ export const CANONICAL_EXPECTATIONS = {
   // 039 adds two tables and four views; 040 adds five views; 041 adds two tables and six views.
   // 042 adds one table and five views; 043 adds one table and five views; 043a redefines four views (no new relation);
   // 044 adds two views; 045 adds one table and three views; 045a adds ten product snapshot tables; 045b adds the home-page status snapshot table.
-  public_views_total: 155,
+  public_views_total: 156,
   public_views_non_security_invoker: 0,
   public_views_anon_beyond_select: 0,
   public_views_authenticated_beyond_select: 0,
-  public_tables_total: 78,
+  public_tables_total: 79,
   public_tables_without_rls: 0,
   public_tables_api_beyond_select: 0,
   public_api_write_policies: 0,
@@ -239,6 +239,10 @@ export const CANONICAL_EXPECTATIONS = {
   transaction_ledger_side_violations: 0,
   transaction_mechanism_shape_violations: 0,
   control_interval_overlap_violations: 0,
+  // 054: career history is never a Dodgers transaction, keeps its mechanism's shape, and reaches no asset or value view
+  career_transaction_dodgers_ledger_overlap_violations: 0,
+  career_transaction_shape_violations: 0,
+  career_transaction_asset_leakage_violations: 0,
   // downstream organizational value chains (034)
   ...Object.fromEntries(DOWNSTREAM_CHECK_NAMES.map((name) => [name, 0])),
   ...Object.fromEntries(BENCHMARK_CHECK_NAMES.map((name) => [name, 0])),
@@ -278,12 +282,23 @@ export const CANONICAL_EXPECTATIONS = {
 }
 
 /**
- * The pinned expectations as they stood through Migration 052. Tests that verify a chain built only through 052 use this; CANONICAL_EXPECTATIONS
- * is always the current head. Migration 053 (transaction and chronology resolution) pinned one more returned player whose WAR is not loaded;
- * nothing else differs (its three checks hold at 0 on the 052 state too).
+ * The pinned expectations as they stood through Migration 053. Tests that verify a chain built only through 053 use this; CANONICAL_EXPECTATIONS
+ * is always the current head. Migration 054 (full-career transaction history) added one table and one view; its three checks are trivially 0
+ * before it.
+ */
+export const EXPECTATIONS_THROUGH_053 = Object.freeze({
+  ...CANONICAL_EXPECTATIONS,
+  public_views_total: 155,
+  public_tables_total: 78,
+})
+
+/**
+ * The pinned expectations as they stood through Migration 052. Tests that verify a chain built only through 052 use this. Migration 053
+ * (transaction and chronology resolution) pinned one more returned player whose WAR is not loaded; nothing else differs (its three checks hold
+ * at 0 on the 052 state too).
  */
 export const EXPECTATIONS_THROUGH_052 = Object.freeze({
-  ...CANONICAL_EXPECTATIONS,
+  ...EXPECTATIONS_THROUGH_053,
   transaction_war_unavailable_mlb_ids: ['279782'],
 })
 
@@ -681,7 +696,8 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   // -- transaction and asset-chain completion (033) -------------------------------
   const hasTransactionLayer = Boolean((await query(`select to_regclass('public.transaction_asset_resolutions') is not null as ok`))[0].ok)
   const hasControlIntervals = Boolean((await query(`select to_regclass('public.v_player_control_intervals') is not null as ok`))[0].ok)
-  for (const [name, sql] of Object.entries(transactionQueries(hasTransactionLayer, expectations.transaction_war_unavailable_mlb_ids ?? [], { controlIntervals: hasControlIntervals }))) {
+  const hasCareerHistory = Boolean((await query(`select to_regclass('public.v_player_career_transactions') is not null as ok`))[0].ok)
+  for (const [name, sql] of Object.entries(transactionQueries(hasTransactionLayer, expectations.transaction_war_unavailable_mlb_ids ?? [], { controlIntervals: hasControlIntervals, careerHistory: hasCareerHistory }))) {
     check('transactions', name, expectations[name], await count(sql))
   }
 
