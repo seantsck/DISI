@@ -2165,12 +2165,12 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 052 (development taxonomy and chronology resolution) was released to production on 2026-10-23 (PR #26, 89742f2) and is frozen;
 // PR #27 (e36d2b8) was the app-only dossier transaction hotfix and changed no SQL or data
 // 053 (transaction and chronology resolution) was released to production on 2026-10-24 (PR #29, 0d959ed) and is frozen
-// 054 (full-career transaction history) is built and not yet released
-const UNRELEASED_ADDITIONS = ['054_full_career_transaction_history.sql']
+// 054 (full-career transaction history) was released to production on 2026-10-25 (PR #31, b73811c) and is frozen
+const UNRELEASED_ADDITIONS = []
 
-test('frozen history: migrations 001-053 (with 043a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
+test('frozen history: migrations 001-054 (with 043a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
-  assert.equal(files.length, 56)
+  assert.equal(files.length, 57)
   assert.deepEqual(manifest.canonical_sql.slice(files.length), UNRELEASED_ADDITIONS)
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {

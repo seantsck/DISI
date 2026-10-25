@@ -56,6 +56,7 @@
     "049_transaction_package_completion.sql": "afb6947d86ff45126dd2aa0bd640309a684c43fc",
     "050_international_benchmark_support_expansion.sql": "6314a9932254631c6fa5fdc69b4ba2e9bfc90bcc",
     "052_development_taxonomy_chronology_resolution.sql": "c33b74594dd2f2f431ed15692cbacd1d92dea289",
-    "053_transaction_chronology_resolution.sql": "3bea99d217161ca352fa5561db685a97331ce18a"
+    "053_transaction_chronology_resolution.sql": "3bea99d217161ca352fa5561db685a97331ce18a",
+    "054_full_career_transaction_history.sql": "92ccc4972a741c7460a503adebc10e61c603bb6c"
   }
 }
