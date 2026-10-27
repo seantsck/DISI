@@ -1,0 +1,750 @@
+{
+ "cohorts": [
+  {
+   "class_year": 2017,
+   "club_capture": {
+    "bytes": 919005,
+    "captured_at": "2018-08-31T00:44:36Z",
+    "cdx_digest": "CVHZ6R5NCMCZNUMERFRYF6EGAZEATAWS",
+    "last_updated": "2018-08-29T22:08:30.711Z",
+    "list_path": "prospect_players.int",
+    "original_url": "http://m.mlb.com/gen/players/prospects/2017/playerProspects.json",
+    "sha256": "72653db233b420299f86db4b5a7452a3075238a767b44c429d3a2f0c829555cf",
+    "url": "https://web.archive.org/web/20180831004436id_/http://m.mlb.com/gen/players/prospects/2017/playerProspects.json"
+   },
+   "corroborating_captures": [],
+   "list_basis": "PRE_SIGNING_LIST",
+   "list_capture": {
+    "bytes": 890362,
+    "captured_at": "2017-05-26T02:58:27Z",
+    "cdx_digest": "P2LLK4QRSSZBH2HG3PHLEMNNQE35S34P",
+    "last_updated": "2017-05-25T15:51:32.028Z",
+    "list_path": "prospect_players.int",
+    "original_url": "http://www.mlb.com/gen/players/prospects/2017/playerProspects.json",
+    "sha256": "2397266cea7586e7be24706b11a49c91af27c458627c0c222f7ce3ec6f02e9cb",
+    "url": "https://web.archive.org/web/20170526025827id_/http://www.mlb.com:80/gen/players/prospects/2017/playerProspects.json"
+   },
+   "list_size": 30,
+   "members": [
+    {
+     "list_club": "TB",
+     "pipeline_slug": "samuel_franco_wander",
+     "published_first_name": "Wander",
+     "published_last_name": "Samuel Franco",
+     "published_name": "Wander Samuel Franco",
+     "published_position": "SS",
+     "rank": 1
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "flores_daniel",
+     "published_first_name": "Daniel",
+     "published_last_name": "Flores",
+     "published_name": "Daniel Flores",
+     "published_position": "C",
+     "rank": 2
+    },
+    {
+     "list_club": "TB",
+     "pipeline_slug": "marte_jelfry",
+     "published_first_name": "Jelfry",
+     "published_last_name": "Marte",
+     "published_name": "Jelfry Marte",
+     "published_position": "SS",
+     "rank": 3
+    },
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "pereira_everson",
+     "published_first_name": "Everson",
+     "published_last_name": "Pereira",
+     "published_name": "Everson Pereira",
+     "published_position": "OF",
+     "rank": 4
+    },
+    {
+     "list_club": "TOR",
+     "pipeline_slug": "pardinho_eric",
+     "published_first_name": "Eric",
+     "published_last_name": "Pardinho",
+     "published_name": "Eric Pardinho",
+     "published_position": "RHP",
+     "rank": 5
+    },
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "salinas_raimfer",
+     "published_first_name": "Raimfer",
+     "published_last_name": "Salinas",
+     "published_name": "Raimfer Salinas",
+     "published_position": "OF",
+     "rank": 6
+    },
+    {
+     "list_club": "PHI",
+     "pipeline_slug": "garcia_luis",
+     "published_first_name": "Luis",
+     "published_last_name": "Garcia",
+     "published_name": "Luis Garcia",
+     "published_position": "SS",
+     "rank": 7
+    },
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "cabello_antonio",
+     "published_first_name": "Antonio",
+     "published_last_name": "Cabello",
+     "published_name": "Antonio Cabello",
+     "published_position": "C",
+     "rank": 8
+    },
+    {
+     "list_club": "SEA",
+     "pipeline_slug": "rodriguez_julio",
+     "published_first_name": "Julio",
+     "published_last_name": "Rodriguez",
+     "published_name": "Julio Rodriguez",
+     "published_position": "OF",
+     "rank": 9
+    },
+    {
+     "list_club": "NYM",
+     "pipeline_slug": "mauricio_ronny",
+     "published_first_name": "Ronny",
+     "published_last_name": "Mauricio",
+     "published_name": "Ronny Mauricio",
+     "published_position": "SS",
+     "rank": 10
+    },
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "rojas_ronny",
+     "published_first_name": "Ronny",
+     "published_last_name": "Rojas",
+     "published_name": "Ronny Rojas",
+     "published_position": "SS",
+     "rank": 11
+    },
+    {
+     "list_club": "MIA",
+     "pipeline_slug": "marinez_ynmanol",
+     "published_first_name": "Ynmanol",
+     "published_last_name": "Marinez",
+     "published_name": "Ynmanol Marinez",
+     "published_position": "SS",
+     "rank": 12
+    },
+    {
+     "list_club": "BOS",
+     "pipeline_slug": "diaz_danny",
+     "published_first_name": "Danny",
+     "published_last_name": "Diaz",
+     "published_name": "Danny Diaz",
+     "published_position": "SS",
+     "rank": 13
+    },
+    {
+     "list_club": "MIL",
+     "pipeline_slug": "ernesto_larry",
+     "published_first_name": "Larry",
+     "published_last_name": "Ernesto",
+     "published_name": "Larry Ernesto",
+     "published_position": "OF",
+     "rank": 14
+    },
+    {
+     "list_club": "ARI",
+     "pipeline_slug": "robinson_kristian",
+     "published_first_name": "Kristian",
+     "published_last_name": "Robinson",
+     "published_name": "Kristian Robinson",
+     "published_position": "OF",
+     "rank": 15
+    },
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "chirinos_roberto",
+     "published_first_name": "Roberto",
+     "published_last_name": "Chirinos",
+     "published_name": "Roberto Chirinos",
+     "published_position": "SS",
+     "rank": 16
+    },
+    {
+     "list_club": "TOR",
+     "pipeline_slug": "hiraldo_miguel",
+     "published_first_name": "Miguel",
+     "published_last_name": "Hiraldo",
+     "published_name": "Miguel Hiraldo",
+     "published_position": "SS",
+     "rank": 17
+    },
+    {
+     "list_club": "NYM",
+     "pipeline_slug": "hernandez_adrian",
+     "published_first_name": "Adrian",
+     "published_last_name": "Hernandez",
+     "published_name": "Adrian Hernandez",
+     "published_position": "OF",
+     "rank": 18
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "rodriguez_keyber",
+     "published_first_name": "Keyber",
+     "published_last_name": "Rodriguez",
+     "published_name": "Keyber Rodriguez",
+     "published_position": "SS",
+     "rank": 19
+    },
+    {
+     "list_club": "BOS",
+     "pipeline_slug": "flores_antoni",
+     "published_first_name": "Antoni",
+     "published_last_name": "Flores",
+     "published_name": "Antoni Flores",
+     "published_position": "SS",
+     "rank": 20
+    },
+    {
+     "list_club": "CLE",
+     "pipeline_slug": "valera_george",
+     "published_first_name": "George",
+     "published_last_name": "Valera",
+     "published_name": "George Valera",
+     "published_position": "OF",
+     "rank": 21
+    },
+    {
+     "list_club": "CLE",
+     "pipeline_slug": "bracho_aaron",
+     "published_first_name": "Aaron",
+     "published_last_name": "Bracho",
+     "published_name": "Aaron Bracho",
+     "published_position": "SS",
+     "rank": 22
+    },
+    {
+     "list_club": "DET",
+     "pipeline_slug": "gonzalez_alvaro",
+     "published_first_name": "Alvaro",
+     "published_last_name": "Gonzalez",
+     "published_name": "Alvaro Gonzalez",
+     "published_position": "SS",
+     "rank": 23
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "basabe_osleivis",
+     "published_first_name": "Osleivis",
+     "published_last_name": "Basabe",
+     "published_name": "Osleivis Basabe",
+     "published_position": "SS",
+     "rank": 24
+    },
+    {
+     "list_club": "ARI",
+     "pipeline_slug": "patino_wildred",
+     "published_first_name": "Wildred",
+     "published_last_name": "Patino",
+     "published_name": "Wildred Patino",
+     "published_position": "OF",
+     "rank": 25
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "querecuto_juan",
+     "published_first_name": "Juan",
+     "published_last_name": "Querecuto",
+     "published_name": "Juan Querecuto",
+     "published_position": "SS",
+     "rank": 26
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "mendoza_damian",
+     "published_first_name": "Damian",
+     "published_last_name": "Mendoza",
+     "published_name": "Damian Mendoza",
+     "published_position": "RHP",
+     "rank": 27
+    },
+    {
+     "list_club": "MIL",
+     "pipeline_slug": "rodriguez_carlos",
+     "published_first_name": "Carlos",
+     "published_last_name": "Rodriguez",
+     "published_name": "Carlos Rodriguez",
+     "published_position": "OF",
+     "rank": 28
+    },
+    {
+     "list_club": "TB",
+     "pipeline_slug": "candelario_stir",
+     "published_first_name": "Stir",
+     "published_last_name": "Candelario",
+     "published_name": "Stir Candelario",
+     "published_position": "OF",
+     "rank": 29
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "verdugo_luis",
+     "published_first_name": "Luis",
+     "published_last_name": "Verdugo",
+     "published_name": "Luis Verdugo",
+     "published_position": "SS",
+     "rank": 30
+    }
+   ],
+   "note": "Published before the 2017-18 international signing period opened on 2 July 2017 (feed last_updated 2017-05-25); no club is named. Clubs are read from the final revision of the same list (last_updated 2018-08-29), which names the club each listed player signed with; the official MLB transaction log decides the signing club and date.",
+   "population_key": "MLB-2017-PIPELINE-TOP30",
+   "signing_window": [
+    "2017-06-01",
+    "2018-06-30"
+   ]
+  },
+  {
+   "class_year": 2018,
+   "club_capture": {
+    "bytes": 684240,
+    "captured_at": "2019-04-30T16:16:34Z",
+    "cdx_digest": "JDXZOFRLIP3QKLRMFMB72IUNMYUNSKSE",
+    "last_updated": "2019-04-17T22:52:13.103Z",
+    "list_path": "prospect_players.int",
+    "original_url": "http://m.mlb.com/gen/players/prospects/2018/playerProspects.json",
+    "sha256": "971d7df012aec8b23d3d282b8d5571833eb34c55f1cdfd3805ea7c4209e355b5",
+    "url": "https://web.archive.org/web/20190430161634id_/http://m.mlb.com/gen/players/prospects/2018/playerProspects.json"
+   },
+   "corroborating_captures": [
+    {
+     "bytes": 711143,
+     "captured_at": "2018-06-16T08:12:17Z",
+     "cdx_digest": "T7DZMYFTDZIKFQZ3PVU5P2ZGXAHD5SNB",
+     "last_updated": "2018-06-16T01:10:26.158Z",
+     "list_path": "prospect_players.int",
+     "original_url": "http://www.mlb.com/gen/players/prospects/2018/playerProspects.json",
+     "sha256": "2897828dff39c92214bc2e86b27d1f37715d1e37d110f292dbf9f3db72bc07ef",
+     "url": "https://web.archive.org/web/20180616081217id_/http://www.mlb.com:80/gen/players/prospects/2018/playerProspects.json"
+    }
+   ],
+   "list_basis": "PRE_SIGNING_LIST",
+   "list_capture": {
+    "bytes": 662728,
+    "captured_at": "2018-05-24T10:05:39Z",
+    "cdx_digest": "JBLKCXBZGH7AST7AEEGD57UQREIZPKQB",
+    "last_updated": "2018-05-23T22:57:46.165Z",
+    "list_path": "prospect_players.int",
+    "original_url": "http://www.mlb.com/gen/players/prospects/2018/playerProspects.json",
+    "sha256": "029bfce6fc503637416dff5b3675adc78d32b60a978c744167dcc866fcf4ef89",
+    "url": "https://web.archive.org/web/20180524100539id_/http://www.mlb.com/gen/players/prospects/2018/playerProspects.json"
+   },
+   "list_size": 30,
+   "members": [
+    {
+     "list_club": "LAD",
+     "pipeline_slug": "cartaya_diego",
+     "published_first_name": "Diego",
+     "published_last_name": "Cartaya",
+     "published_name": "Diego Cartaya",
+     "published_position": "C",
+     "rank": 1
+    },
+    {
+     "list_club": "SFG",
+     "pipeline_slug": "luciano_marco",
+     "published_first_name": "Marco",
+     "published_last_name": "Luciano",
+     "published_name": "Marco Luciano",
+     "published_position": "OF",
+     "rank": 2
+    },
+    {
+     "list_club": "MIN",
+     "pipeline_slug": "urbina_misael",
+     "published_first_name": "Misael",
+     "published_last_name": "Urbina",
+     "published_name": "Misael Urbina",
+     "published_position": "OF",
+     "rank": 3
+    },
+    {
+     "list_club": "TOR",
+     "pipeline_slug": "martinez_orelvis",
+     "published_first_name": "Orelvis",
+     "published_last_name": "Martinez",
+     "published_name": "Orelvis Martinez",
+     "published_position": "SS",
+     "rank": 4
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "gallardo_richard",
+     "published_first_name": "Richard",
+     "published_last_name": "Gallardo",
+     "published_name": "Richard Gallardo",
+     "published_position": "P",
+     "rank": 5
+    },
+    {
+     "list_club": "CLE",
+     "pipeline_slug": "rodriguez_gabriel",
+     "published_first_name": "Gabriel",
+     "published_last_name": "Rodriguez",
+     "published_name": "Gabriel Rodriguez",
+     "published_position": "SS",
+     "rank": 6
+    },
+    {
+     "list_club": "SEA",
+     "pipeline_slug": "marte_noelvi",
+     "published_first_name": "Noelvi",
+     "published_last_name": "Marte",
+     "published_name": "Noelvi Marte",
+     "published_position": "SS",
+     "rank": 7
+    },
+    {
+     "list_club": "PHI",
+     "pipeline_slug": "castillo_starlyn",
+     "published_first_name": "Starlyn",
+     "published_last_name": "Castillo",
+     "published_name": "Starlyn Castillo",
+     "published_position": "P",
+     "rank": 8
+    },
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "rodriguez_osiel",
+     "published_first_name": "Osiel",
+     "published_last_name": "Rodriguez",
+     "published_name": "Osiel Rodriguez",
+     "published_position": "P",
+     "rank": 9
+    },
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "alcantara_kevin",
+     "published_first_name": "Kevin",
+     "published_last_name": "Alcantara",
+     "published_name": "Kevin Alcantara",
+     "published_position": "OF",
+     "rank": 10
+    },
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "gomez_antonio",
+     "published_first_name": "Antonio",
+     "published_last_name": "Gomez",
+     "published_name": "Antonio Gomez",
+     "published_position": "C",
+     "rank": 11
+    },
+    {
+     "list_club": "CLE",
+     "pipeline_slug": "sanquintin_junior",
+     "published_first_name": "Junior",
+     "published_last_name": "Sanquintin",
+     "published_name": "Junior Sanquintin",
+     "published_position": "SS",
+     "rank": 12
+    },
+    {
+     "list_club": "NYM",
+     "pipeline_slug": "alvares_francisco",
+     "published_first_name": "Francisco",
+     "published_last_name": "Alvarez",
+     "published_name": "Francisco Alvarez",
+     "published_position": "C",
+     "rank": 13
+    },
+    {
+     "list_club": "TB",
+     "pipeline_slug": "gaston_sandy",
+     "published_first_name": "Sandy",
+     "published_last_name": "Gaston",
+     "published_name": "Sandy Gaston",
+     "published_position": "P",
+     "rank": 14
+    },
+    {
+     "list_club": "DET",
+     "pipeline_slug": "de_la_cruz_jose",
+     "published_first_name": "Jose",
+     "published_last_name": "De La Cruz",
+     "published_name": "Jose De La Cruz",
+     "published_position": "OF",
+     "rank": 15
+    },
+    {
+     "list_club": "ARI",
+     "pipeline_slug": "guzman_alvin",
+     "published_first_name": "Alvin",
+     "published_last_name": "Guzman",
+     "published_name": "Alvin Guzman",
+     "published_position": "OF",
+     "rank": 16
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "lopez_jose",
+     "published_first_name": "Jose",
+     "published_last_name": "Lopez",
+     "published_name": "Jose Lopez",
+     "published_position": "OF",
+     "rank": 17
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "fernandez_eduarqi",
+     "published_first_name": "Eduarqi",
+     "published_last_name": "Fernandez",
+     "published_name": "Eduarqi Fernandez",
+     "published_position": "OF",
+     "rank": 18
+    },
+    {
+     "list_club": "DET",
+     "pipeline_slug": "reyes_adinso",
+     "published_first_name": "Adinso",
+     "published_last_name": "Reyes",
+     "published_name": "Adinso Reyes",
+     "published_position": "SS",
+     "rank": 19
+    },
+    {
+     "list_club": "MIL",
+     "pipeline_slug": "garcia_eduardo",
+     "published_first_name": "Eduardo",
+     "published_last_name": "Garcia",
+     "published_name": "Eduardo Garcia",
+     "published_position": "SS",
+     "rank": 20
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "rodriguez_jose",
+     "published_first_name": "Jose",
+     "published_last_name": "Rodriguez",
+     "published_name": "Jose Rodriguez",
+     "published_position": "C",
+     "rank": 21
+    },
+    {
+     "list_club": "TB",
+     "pipeline_slug": "pie_alejandro",
+     "published_first_name": "Alejandro",
+     "published_last_name": "Pie",
+     "published_name": "Alejandro Pie",
+     "published_position": "SS",
+     "rank": 22
+    },
+    {
+     "list_club": "BOS",
+     "pipeline_slug": "lopez_eduardo",
+     "published_first_name": "Eduardo",
+     "published_last_name": "Lopez",
+     "published_name": "Eduardo Lopez",
+     "published_position": "OF",
+     "rank": 23
+    },
+    {
+     "list_club": "LAA",
+     "pipeline_slug": "ramirez_alexander",
+     "published_first_name": "Alexander",
+     "published_last_name": "Ramirez",
+     "published_name": "Alexander Ramirez",
+     "published_position": "OF",
+     "rank": 24
+    },
+    {
+     "list_club": "NYM",
+     "pipeline_slug": "valdez_freddy",
+     "published_first_name": "Freddy",
+     "published_last_name": "Valdez",
+     "published_name": "Freddy Valdez",
+     "published_position": "OF",
+     "rank": 25
+    },
+    {
+     "list_club": "MIL",
+     "pipeline_slug": "jaraba_branlyn",
+     "published_first_name": "Branlyn",
+     "published_last_name": "Jaraba",
+     "published_name": "Branlyn Jaraba",
+     "published_position": "SS",
+     "rank": 26
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "matos_luis",
+     "published_first_name": "Luis",
+     "published_last_name": "Matos",
+     "published_name": "Luis Matos",
+     "published_position": "OF",
+     "rank": 27
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "machado_joel",
+     "published_first_name": "Joel",
+     "published_last_name": "Machado",
+     "published_name": "Joel Machado",
+     "published_position": "LHP",
+     "rank": 28
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "larrondo_denny",
+     "published_first_name": "Denny",
+     "published_last_name": "Larrondo",
+     "published_name": "Denny Larrondo",
+     "published_position": "RHP",
+     "rank": 29
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "rosario_jerming",
+     "published_first_name": "Jerming",
+     "published_last_name": "Rosario",
+     "published_name": "Jerming Rosario",
+     "published_position": "RHP",
+     "rank": 30
+    }
+   ],
+   "note": "Published before the 2018-19 international signing period opened on 2 July 2018 (feed last_updated 2018-05-23; a second pre-signing capture, last_updated 2018-06-16, carries the identical list). No club is named. Clubs are read from the final revision of the same list (last_updated 2019-04-17); intermediate revisions named different clubs for some players, so the official MLB transaction log decides the signing club and date.",
+   "population_key": "MLB-2018-PIPELINE-TOP30",
+   "signing_window": [
+    "2018-06-01",
+    "2019-06-30"
+   ]
+  }
+ ],
+ "generated_by": "database/research/055/derive-research.mjs",
+ "later_revisions": [
+  {
+   "added_in_revision": [
+    {
+     "club": "LAA",
+     "name": "Shohei Ohtani",
+     "position": "RHP/OF",
+     "rank": 1
+    },
+    {
+     "club": "TEX",
+     "name": "Julio Pablo Martinez",
+     "position": "OF",
+     "rank": 3
+    },
+    {
+     "club": "SEA",
+     "name": "Juan Querecuto",
+     "position": "SS",
+     "rank": 27
+    }
+   ],
+   "class_year": 2017,
+   "cohort_capture": "https://web.archive.org/web/20170526025827id_/http://www.mlb.com:80/gen/players/prospects/2017/playerProspects.json",
+   "dropped_in_revision": [
+    {
+     "name": "Daniel Flores",
+     "position": "C",
+     "rank": 2
+    },
+    {
+     "name": "Juan Querecuto",
+     "position": "SS",
+     "rank": 26
+    },
+    {
+     "name": "Luis Verdugo",
+     "position": "SS",
+     "rank": 30
+    }
+   ],
+   "members_without_revision_club": [
+    "Daniel Flores",
+    "Juan Querecuto",
+    "Luis Verdugo"
+   ],
+   "revision_capture": "https://web.archive.org/web/20180831004436id_/http://m.mlb.com/gen/players/prospects/2017/playerProspects.json",
+   "revision_last_updated": "2018-08-29T22:08:30.711Z",
+   "revision_sha256": "72653db233b420299f86db4b5a7452a3075238a767b44c429d3a2f0c829555cf"
+  },
+  {
+   "added_in_revision": [
+    {
+     "club": "MIA",
+     "name": "Victor Victor Mesa",
+     "position": "OF",
+     "rank": 1
+    },
+    {
+     "club": null,
+     "name": "Yeinier Cano",
+     "position": "RHP",
+     "rank": 2
+    },
+    {
+     "club": null,
+     "name": "Yolbert Sanchez",
+     "position": "SS",
+     "rank": 5
+    },
+    {
+     "club": "NYY",
+     "name": "Alexander Vargas",
+     "position": "SS",
+     "rank": 11
+    },
+    {
+     "club": "MIL",
+     "name": "Eduarqui Fernandez",
+     "position": "OF",
+     "rank": 22
+    }
+   ],
+   "class_year": 2018,
+   "cohort_capture": "https://web.archive.org/web/20180524100539id_/http://www.mlb.com/gen/players/prospects/2018/playerProspects.json",
+   "dropped_in_revision": [
+    {
+     "name": "Eduarqi Fernandez",
+     "position": "OF",
+     "rank": 18
+    },
+    {
+     "name": "Luis Matos",
+     "position": "OF",
+     "rank": 27
+    },
+    {
+     "name": "Joel Machado",
+     "position": "LHP",
+     "rank": 28
+    },
+    {
+     "name": "Denny Larrondo",
+     "position": "RHP",
+     "rank": 29
+    },
+    {
+     "name": "Jerming Rosario",
+     "position": "RHP",
+     "rank": 30
+    }
+   ],
+   "members_without_revision_club": [
+    "Eduarqi Fernandez",
+    "Luis Matos",
+    "Joel Machado",
+    "Denny Larrondo",
+    "Jerming Rosario"
+   ],
+   "revision_capture": "https://web.archive.org/web/20190430161634id_/http://m.mlb.com/gen/players/prospects/2018/playerProspects.json",
+   "revision_last_updated": "2019-04-17T22:52:13.103Z",
+   "revision_sha256": "971d7df012aec8b23d3d282b8d5571833eb34c55f1cdfd3805ea7c4209e355b5"
+  }
+ ],
+ "retrieved_at": "2026-10-25",
+ "source_family": "MLB Pipeline (MLB.com) international Top 30 prospect list: the official data feed /gen/players/prospects/<year>/playerProspects.json, list \"int\", read through archived captures (www.mlb.com answers 403 to direct reads)"
+}

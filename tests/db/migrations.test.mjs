@@ -37,11 +37,11 @@ test('manifest lists every canonical SQL file, in order', () => {
 })
 
 // Each migration replaces some views of the one before it, so rerunnability is
-// checked for the latest migration of the chain this file builds (046; 047, 048, 049, 050, 052, 053, 054 and 054a prove their own reruns in tests/db/research-047.test.mjs, research-048.test.mjs,
-// research-049.test.mjs, research-050.test.mjs, research-052.test.mjs, research-053.test.mjs, research-054.test.mjs and research-054a.test.mjs).
+// checked for the latest migration of the chain this file builds (046; 047, 048, 049, 050, 052, 053, 054, 054a and 055 prove their own reruns in tests/db/research-047.test.mjs,
+// research-048.test.mjs, research-049.test.mjs, research-050.test.mjs, research-052.test.mjs, research-053.test.mjs, research-054.test.mjs, research-054a.test.mjs and research-055.test.mjs).
 test('the latest migration is rerunnable without changing data', async () => {
   const latest = '046_outcome_cost_research_batch.sql'
-  assert.equal(manifest.canonical_sql.at(-9), latest)
+  assert.equal(manifest.canonical_sql.at(-10), latest)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
       (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
@@ -2166,8 +2166,9 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // PR #27 (e36d2b8) was the app-only dossier transaction hotfix and changed no SQL or data
 // 053 (transaction and chronology resolution) was released to production on 2026-10-24 (PR #29, 0d959ed) and is frozen
 // 054 (full-career transaction history) was released to production on 2026-10-25 (PR #31, b73811c) and is frozen (PR #32, 7adf17c)
-// 054a (development research-queue performance) was released to production on 2026-10-25 (PR #33, 8741e95) and is frozen
-const UNRELEASED_ADDITIONS = []
+// 054a (development research-queue performance) was released to production on 2026-10-25 (PR #33, 8741e95) and is frozen (PR #34, ba74872)
+// 055 (the 2017 / 2018 international benchmark) is built and not yet released
+const UNRELEASED_ADDITIONS = ['055_international_benchmark_2017_2018.sql']
 
 test('frozen history: migrations 001-054a (with 043a and 054a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))

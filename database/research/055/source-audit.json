@@ -1,0 +1,255 @@
+{
+ "generated_by": "database/research/055/report.mjs",
+ "audit_through_date": "2026-10-05",
+ "classes": [
+  {
+   "class_year": 2017,
+   "population_key": "MLB-2017-PIPELINE-TOP30",
+   "official_source": {
+    "endpoint": "http://www.mlb.com/gen/players/prospects/2017/playerProspects.json",
+    "capture": "https://web.archive.org/web/20170526025827id_/http://www.mlb.com:80/gen/players/prospects/2017/playerProspects.json",
+    "captured_at": "2017-05-26T02:58:27Z",
+    "last_updated": "2017-05-25T15:51:32.028Z",
+    "sha256": "2397266cea7586e7be24706b11a49c91af27c458627c0c222f7ce3ec6f02e9cb",
+    "internet_archive_digest": "P2LLK4QRSSZBH2HG3PHLEMNNQE35S34P",
+    "list_path": "prospect_players.int",
+    "basis": "PRE_SIGNING_LIST",
+    "club_revision": {
+     "capture": "https://web.archive.org/web/20180831004436id_/http://m.mlb.com/gen/players/prospects/2017/playerProspects.json",
+     "last_updated": "2018-08-29T22:08:30.711Z",
+     "sha256": "72653db233b420299f86db4b5a7452a3075238a767b44c429d3a2f0c829555cf"
+    },
+    "corroborating_captures": []
+   },
+   "ranked_source_players": 30,
+   "identities_resolved_automatically": 29,
+   "identities_unresolved": 1,
+   "sent_to_human_review": [
+    {
+     "rank": 25,
+     "name": "Wildred Patino",
+     "decision": "IDENTITY_INSUFFICIENT_EVIDENCE",
+     "reason": "No official signing transaction in the class window names a player matching the published name",
+     "candidates": []
+    }
+   ],
+   "dodgers_overlaps": [],
+   "verified_not_added": [
+    {
+     "rank": 2,
+     "name": "Daniel Flores",
+     "mlb_id": "677567",
+     "decision": "DECEASED_BEFORE_OUTCOME_HORIZON",
+     "reason": "Identity and signing verified (BOS, 2017-07-02), but the official MLB person record states his death on 2017-11-08, before his 7-season reach window could run. NO MLB DEBUT != NEGATIVE OUTCOME: not reaching MLB here is not a prospect outcome, so no benchmark signing, audit or label is created (a FALSE label would be a false negative). Recorded in the population composition and queued, never counted as a non-reacher."
+    }
+   ],
+   "benchmark_signings_added": 28,
+   "reach_mlb_within_7_seasons": {
+    "mature": true,
+    "horizon_end_season": 2024,
+    "positive": 5,
+    "negative": 23,
+    "unknown_or_censored": 0,
+    "not_labelled_because_not_added": 2
+   },
+   "ten_season_targets": {
+    "mature": false,
+    "horizon_end_season": 2027,
+    "labelled": 0,
+    "censored": 28,
+    "note": "The 10-season horizon (signing year + 10) has not elapsed; every 10-season label is CENSORED under the unchanged 041 rule."
+   },
+   "official_sources_written": 58,
+   "official_transaction_evidence": 28,
+   "reached_mlb_at_boundary": [
+    {
+     "name": "Wander Franco",
+     "debut": "2021-06-22"
+    },
+    {
+     "name": "Everson Pereira",
+     "debut": "2023-08-22"
+    },
+    {
+     "name": "Julio Rodríguez",
+     "debut": "2022-04-08"
+    },
+    {
+     "name": "Ronny Mauricio",
+     "debut": "2023-09-01"
+    },
+    {
+     "name": "George Valera",
+     "debut": "2025-09-01"
+    },
+    {
+     "name": "Osleivis Basabe",
+     "debut": "2023-08-13"
+    }
+   ]
+  },
+  {
+   "class_year": 2018,
+   "population_key": "MLB-2018-PIPELINE-TOP30",
+   "official_source": {
+    "endpoint": "http://www.mlb.com/gen/players/prospects/2018/playerProspects.json",
+    "capture": "https://web.archive.org/web/20180524100539id_/http://www.mlb.com/gen/players/prospects/2018/playerProspects.json",
+    "captured_at": "2018-05-24T10:05:39Z",
+    "last_updated": "2018-05-23T22:57:46.165Z",
+    "sha256": "029bfce6fc503637416dff5b3675adc78d32b60a978c744167dcc866fcf4ef89",
+    "internet_archive_digest": "JBLKCXBZGH7AST7AEEGD57UQREIZPKQB",
+    "list_path": "prospect_players.int",
+    "basis": "PRE_SIGNING_LIST",
+    "club_revision": {
+     "capture": "https://web.archive.org/web/20190430161634id_/http://m.mlb.com/gen/players/prospects/2018/playerProspects.json",
+     "last_updated": "2019-04-17T22:52:13.103Z",
+     "sha256": "971d7df012aec8b23d3d282b8d5571833eb34c55f1cdfd3805ea7c4209e355b5"
+    },
+    "corroborating_captures": [
+     {
+      "capture": "https://web.archive.org/web/20180616081217id_/http://www.mlb.com:80/gen/players/prospects/2018/playerProspects.json",
+      "last_updated": "2018-06-16T01:10:26.158Z",
+      "sha256": "2897828dff39c92214bc2e86b27d1f37715d1e37d110f292dbf9f3db72bc07ef"
+     }
+    ]
+   },
+   "ranked_source_players": 30,
+   "identities_resolved_automatically": 27,
+   "identities_unresolved": 3,
+   "sent_to_human_review": [
+    {
+     "rank": 11,
+     "name": "Antonio Gomez",
+     "decision": "IDENTITY_INSUFFICIENT_EVIDENCE",
+     "reason": "A name-matching signing exists in the window but the birth year or position family does not fit the published entry",
+     "candidates": [
+      {
+       "mlb_id": 682625,
+       "name": "Antonio Gomez",
+       "club": "NYY",
+       "signed": "2018-07-02",
+       "match": "EXACT"
+      }
+     ]
+    },
+    {
+     "rank": 16,
+     "name": "Alvin Guzman",
+     "decision": "IDENTITY_INSUFFICIENT_EVIDENCE",
+     "reason": "A name-matching signing exists in the window but the birth year or position family does not fit the published entry",
+     "candidates": [
+      {
+       "mlb_id": 682630,
+       "name": "Alvin Guzman",
+       "club": "ARI",
+       "signed": "2018-07-02",
+       "match": "EXACT"
+      }
+     ]
+    },
+    {
+     "rank": 18,
+     "name": "Eduarqi Fernandez",
+     "decision": "IDENTITY_INSUFFICIENT_EVIDENCE",
+     "reason": "Only a spelling variant matches and the list names no club to corroborate it",
+     "candidates": [
+      {
+       "mlb_id": 682631,
+       "name": "Eduarqui Fernandez",
+       "club": "MIL",
+       "signed": "2018-07-02",
+       "match": "VARIANT"
+      }
+     ]
+    }
+   ],
+   "dodgers_overlaps": [
+    {
+     "rank": 1,
+     "name": "Diego Cartaya",
+     "mlb_id": "682616",
+     "slug": "diego-cartaya",
+     "stored_dodgers_international_rank": 1,
+     "observed_rank_in_this_edition": 1,
+     "written": false
+    },
+    {
+     "rank": 30,
+     "name": "Jerming Rosario",
+     "mlb_id": "682645",
+     "slug": "jerming-rosario",
+     "stored_dodgers_international_rank": null,
+     "observed_rank_in_this_edition": 30,
+     "written": false
+    }
+   ],
+   "verified_not_added": [
+    {
+     "rank": 9,
+     "name": "Osiel Rodriguez",
+     "mlb_id": "682640",
+     "decision": "ROUTE_NOT_ESTABLISHED",
+     "reason": "A Cuban signee whose prior professional play (and so his signing route) no readable source states. The signing is verified, but it is not added: an unknown route is never guessed amateur or professional."
+    },
+    {
+     "rank": 14,
+     "name": "Sandy Gaston",
+     "mlb_id": "682624",
+     "decision": "ROUTE_NOT_ESTABLISHED",
+     "reason": "A Cuban signee whose prior professional play (and so his signing route) no readable source states. The signing is verified, but it is not added: an unknown route is never guessed amateur or professional."
+    },
+    {
+     "rank": 29,
+     "name": "Denny Larrondo",
+     "mlb_id": "682644",
+     "decision": "ROUTE_NOT_ESTABLISHED",
+     "reason": "A Cuban signee whose prior professional play (and so his signing route) no readable source states. The signing is verified, but it is not added: an unknown route is never guessed amateur or professional."
+    }
+   ],
+   "benchmark_signings_added": 22,
+   "reach_mlb_within_7_seasons": {
+    "mature": true,
+    "horizon_end_season": 2025,
+    "positive": 6,
+    "negative": 16,
+    "unknown_or_censored": 0,
+    "not_labelled_because_not_added": 8
+   },
+   "ten_season_targets": {
+    "mature": false,
+    "horizon_end_season": 2028,
+    "labelled": 0,
+    "censored": 22,
+    "note": "The 10-season horizon (signing year + 10) has not elapsed; every 10-season label is CENSORED under the unchanged 041 rule."
+   },
+   "official_sources_written": 47,
+   "official_transaction_evidence": 22,
+   "reached_mlb_at_boundary": [
+    {
+     "name": "Marco Luciano",
+     "debut": "2023-07-26"
+    },
+    {
+     "name": "Orelvis Martinez",
+     "debut": "2024-06-21"
+    },
+    {
+     "name": "Noelvi Marte",
+     "debut": "2023-08-19"
+    },
+    {
+     "name": "Kevin Alcántara",
+     "debut": "2024-09-25"
+    },
+    {
+     "name": "Francisco Alvarez",
+     "debut": "2022-09-30"
+    },
+    {
+     "name": "Luis Matos",
+     "debut": "2023-06-14"
+    }
+   ]
+  }
+ ]
+}
