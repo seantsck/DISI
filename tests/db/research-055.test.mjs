@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildChainThrough, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS, EXPECTATIONS_THROUGH_054A } from '../../scripts/db/lib/invariants.mjs'
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_055 as CANONICAL_EXPECTATIONS, EXPECTATIONS_THROUGH_054A } from '../../scripts/db/lib/invariants.mjs'
 import { measure } from '../../database/research/055/measure.mjs'
 import { assemble, assembleRollback, research } from '../../database/research/055/build.mjs'
 
@@ -72,10 +72,10 @@ before(async () => {
 
 after(async () => { await chain?.close() })
 
-test('055 follows 054a in the manifest as the last file and is frozen at its released hash', () => {
+test('055 follows 054a in the manifest (056 follows it) and is frozen at its released hash', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '054a_development_queue_performance.sql')
-  assert.equal(i, manifest.canonical_sql.length - 1)
+  assert.equal(manifest.canonical_sql[i + 1], '056_international_benchmark_2019.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
   assert.equal(frozen[FILE], crypto.createHash('sha1').update(sql055.replace(/\r\n/g, '\n')).digest('hex'))

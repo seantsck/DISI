@@ -1,0 +1,1443 @@
+{
+ "entries": [
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2003-02-07",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-02-07",
+     "club": "NYY",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Jasson Domínguez",
+     "person_id": 691176
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "NYY",
+   "mlb_id": "691176",
+   "mlb_name": "Jasson Domínguez",
+   "mlb_primary_position": "RF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "dominguez_jasson",
+   "published_first_name": "Jasson",
+   "published_last_name": "Dominguez",
+   "published_name": "Jasson Dominguez",
+   "published_position": "OF",
+   "rank": 1,
+   "register_bbref_id": "dominja01",
+   "register_birth_date": "2003-02-07",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (NYY): \"New York Yankees signed free agent CF Jasson Dominguez to a minor league contract.\"",
+    "the list names NYY",
+    "name identical to the MLB person record (Jasson Domínguez)",
+    "birth date 2003-02-07 (born Dominican Republic)",
+    "register birth date 2003-02-07 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (RF)"
+   ],
+   "signing": {
+    "club": "NYY",
+    "date": "2019-07-02",
+    "description": "New York Yankees signed free agent CF Jasson Dominguez to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "candidates_considered": [
+    {
+     "birth_date": "2002-09-11",
+     "club": "OAK",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Robert Puason",
+     "person_id": 691188
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "OAK",
+   "pipeline_slug": "puason_robert",
+   "published_first_name": "Robert",
+   "published_last_name": "Puason",
+   "published_name": "Robert Puason",
+   "published_position": "SS",
+   "rank": 2,
+   "reason": "A name-matching signing exists in the window but the birth year or position family does not fit the published entry",
+   "result": "INSUFFICIENT_EVIDENCE",
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2002-09-29",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-09-29",
+     "club": "TEX",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Bayron Lora",
+     "person_id": 691178
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "TEX",
+   "mlb_id": "691178",
+   "mlb_name": "Bayron Lora",
+   "mlb_primary_position": "RF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "lora_bayron",
+   "published_first_name": "Bayron",
+   "published_last_name": "Lora",
+   "published_name": "Bayron Lora",
+   "published_position": "OF",
+   "rank": 3,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-09-29",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (TEX): \"Texas Rangers signed free agent OF Bayron Lora to a minor league contract.\"",
+    "the list names TEX",
+    "name identical to the MLB person record (Bayron Lora)",
+    "birth date 2002-09-29 (born Dominican Republic)",
+    "register birth date 2002-09-29 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (RF)"
+   ],
+   "signing": {
+    "club": "TEX",
+    "date": "2019-07-02",
+    "description": "Texas Rangers signed free agent OF Bayron Lora to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2002-09-16",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-09-16",
+     "club": "LAD",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Luis Rodriguez",
+     "person_id": 691177
+    },
+    {
+     "birth_date": "2002-09-25",
+     "club": "HOU",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Luis Encarnacion",
+     "person_id": 691476
+    },
+    {
+     "birth_date": "2002-12-03",
+     "club": "NYM",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Luis R. Rodriguez",
+     "person_id": 691712
+    },
+    {
+     "birth_date": "1988-01-18",
+     "club": "ARI",
+     "date": "2019-12-18",
+     "match": "EXACT",
+     "name": "Luis Jimenez",
+     "person_id": 499864
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "LAD",
+   "mlb_id": "691177",
+   "mlb_name": "Luis Rodriguez",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "rodriguez_luis",
+   "published_first_name": "Luis",
+   "published_last_name": "Rodriguez",
+   "published_name": "Luis Rodriguez",
+   "published_position": "OF",
+   "rank": 4,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-09-16",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (LAD): \"Los Angeles Dodgers signed free agent OF Luis Rodriguez to a minor league contract.\"",
+    "the list names LAD",
+    "name identical to the MLB person record (Luis Rodriguez)",
+    "birth date 2002-09-16 (born Venezuela)",
+    "register birth date 2002-09-16 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "LAD",
+    "date": "2019-07-02",
+    "description": "Los Angeles Dodgers signed free agent OF Luis Rodriguez to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2003-02-20",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-02-20",
+     "club": "KC",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Erick Peña",
+     "person_id": 691179
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "KC",
+   "mlb_id": "691179",
+   "mlb_name": "Erick Peña",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "pena_erick",
+   "published_first_name": "Erick",
+   "published_last_name": "Pena",
+   "published_name": "Erick Pena",
+   "published_position": "OF",
+   "rank": 5,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-02-20",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (KC): \"Kansas City Royals signed free agent CF Erick Pena to a minor league contract.\"",
+    "the list names KC",
+    "name identical to the MLB person record (Erick Peña)",
+    "birth date 2003-02-20 (born Dominican Republic)",
+    "register birth date 2003-02-20 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "KC",
+    "date": "2019-07-02",
+    "description": "Kansas City Royals signed free agent CF Erick Pena to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2002-11-13",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-11-13",
+     "club": "CHC",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Ronnier Quintero",
+     "person_id": 691180
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "CHC",
+   "mlb_id": "691180",
+   "mlb_name": "Ronnier Quintero",
+   "mlb_primary_position": "C",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "quintero_ronnier",
+   "published_first_name": "Ronnier",
+   "published_last_name": "Quintero",
+   "published_name": "Ronnier Quintero",
+   "published_position": "C",
+   "rank": 6,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-11-13",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (CHC): \"Chicago Cubs signed free agent C Ronnier Quintero to a minor league contract.\"",
+    "the list names CHC",
+    "name identical to the MLB person record (Ronnier Quintero)",
+    "birth date 2002-11-13 (born Venezuela)",
+    "register birth date 2002-11-13 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (C)"
+   ],
+   "signing": {
+    "club": "CHC",
+    "date": "2019-07-02",
+    "description": "Chicago Cubs signed free agent C Ronnier Quintero to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "candidates_considered": [],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": null,
+   "pipeline_slug": "cappe_yiddi",
+   "published_first_name": "Yiddi",
+   "published_last_name": "Cappe",
+   "published_name": "Yiddi Cappe",
+   "published_position": "SS",
+   "rank": 7,
+   "reason": "No official signing transaction in the class window names a player matching the published name",
+   "result": "INSUFFICIENT_EVIDENCE",
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "candidates_considered": [
+    {
+     "birth_date": "2003-02-28",
+     "club": "MIN",
+     "date": "2019-07-02",
+     "match": "VARIANT",
+     "name": "Emmanuel Rodriguez",
+     "person_id": 691181
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": null,
+   "pipeline_slug": "rodriguez_enmanuel",
+   "published_first_name": "Enmanuel",
+   "published_last_name": "Rodriguez",
+   "published_name": "Enmanuel Rodriguez",
+   "published_position": "OF",
+   "rank": 8,
+   "reason": "Only a spelling variant matches and the list names no club to corroborate it",
+   "result": "INSUFFICIENT_EVIDENCE",
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2002-09-12",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-09-12",
+     "club": "LAA",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Arol Vera",
+     "person_id": 691186
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "LAA",
+   "mlb_id": "691186",
+   "mlb_name": "Arol Vera",
+   "mlb_primary_position": "2B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "vera_arol",
+   "published_first_name": "Arol",
+   "published_last_name": "Vera",
+   "published_name": "Arol Vera",
+   "published_position": "SS",
+   "rank": 9,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-09-12",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (LAA): \"Los Angeles Angels signed free agent SS Arol Vera to a minor league contract.\"",
+    "the list names LAA",
+    "name identical to the MLB person record (Arol Vera)",
+    "birth date 2002-09-12 (born Venezuela)",
+    "register birth date 2002-09-12 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (2B)"
+   ],
+   "signing": {
+    "club": "LAA",
+    "date": "2019-07-02",
+    "description": "Los Angeles Angels signed free agent SS Arol Vera to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "USA",
+   "birth_date": "2003-04-26",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-04-26",
+     "club": "MIA",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Jose Salas",
+     "person_id": 691191
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "MIA",
+   "mlb_id": "691191",
+   "mlb_name": "Jose Salas",
+   "mlb_primary_position": "2B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "salas_jose",
+   "published_first_name": "Jose",
+   "published_last_name": "Salas",
+   "published_name": "Jose Salas",
+   "published_position": "SS",
+   "rank": 10,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-04-26",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (MIA): \"Miami Marlins signed free agent SS Jose Salas to a minor league contract.\"",
+    "the list names MIA",
+    "name identical to the MLB person record (Jose Salas)",
+    "birth date 2003-04-26 (born USA)",
+    "register birth date 2003-04-26 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (2B)"
+   ],
+   "signing": {
+    "club": "MIA",
+    "date": "2019-07-02",
+    "description": "Miami Marlins signed free agent SS Jose Salas to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2002-09-10",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-09-10",
+     "club": "CHC",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Kevin Made",
+     "person_id": 691183
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "CHC",
+   "mlb_id": "691183",
+   "mlb_name": "Kevin Made",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "made_kevin",
+   "published_first_name": "Kevin",
+   "published_last_name": "Made",
+   "published_name": "Kevin Made",
+   "published_position": "SS",
+   "rank": 11,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-09-10",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (CHC): \"Chicago Cubs signed free agent SS Kevin Made to a minor league contract.\"",
+    "the list names CHC",
+    "name identical to the MLB person record (Kevin Made)",
+    "birth date 2002-09-10 (born Dominican Republic)",
+    "register birth date 2002-09-10 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "CHC",
+    "date": "2019-07-02",
+    "description": "Chicago Cubs signed free agent SS Kevin Made to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2003-04-11",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-04-11",
+     "club": "COL",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Adael Amador",
+     "person_id": 691182
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "COL",
+   "mlb_id": "691182",
+   "mlb_name": "Adael Amador",
+   "mlb_primary_position": "2B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "amador_adael",
+   "published_first_name": "Adael",
+   "published_last_name": "Amador",
+   "published_name": "Adael Amador",
+   "published_position": "SS",
+   "rank": 12,
+   "register_bbref_id": "amadoad01",
+   "register_birth_date": "2003-04-11",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (COL): \"Colorado Rockies signed free agent SS Adael Amador to a minor league contract.\"",
+    "the list names COL",
+    "name identical to the MLB person record (Adael Amador)",
+    "birth date 2003-04-11 (born Dominican Republic)",
+    "register birth date 2003-04-11 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (2B)"
+   ],
+   "signing": {
+    "club": "COL",
+    "date": "2019-07-02",
+    "description": "Colorado Rockies signed free agent SS Adael Amador to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2003-02-24",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-02-24",
+     "club": "MIL",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Luis Medina",
+     "person_id": 691189
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "MIL",
+   "mlb_id": "691189",
+   "mlb_name": "Luis Medina",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "medina_luis",
+   "published_first_name": "Luis",
+   "published_last_name": "Medina",
+   "published_name": "Luis Medina",
+   "published_position": "OF",
+   "rank": 13,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-02-24",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (MIL): \"Milwaukee Brewers signed free agent OF Luis Medina to a minor league contract.\"",
+    "the list names MIL",
+    "name identical to the MLB person record (Luis Medina)",
+    "birth date 2003-02-24 (born Venezuela)",
+    "register birth date 2003-02-24 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "MIL",
+    "date": "2019-07-02",
+    "description": "Milwaukee Brewers signed free agent OF Luis Medina to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2002-10-29",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-10-29",
+     "club": "HOU",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Dauri Lorenzo",
+     "person_id": 691184
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "HOU",
+   "mlb_id": "691184",
+   "mlb_name": "Dauri Lorenzo",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "lorenzo_dauri",
+   "published_first_name": "Dauri",
+   "published_last_name": "Lorenzo",
+   "published_name": "Dauri Lorenzo",
+   "published_position": "SS",
+   "rank": 14,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-10-29",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (HOU): \"Houston Astros signed free agent SS Dauri Lorenzo to a minor league contract.\"",
+    "the list names HOU",
+    "name identical to the MLB person record (Dauri Lorenzo)",
+    "birth date 2002-10-29 (born Dominican Republic)",
+    "register birth date 2002-10-29 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "HOU",
+    "date": "2019-07-02",
+    "description": "Houston Astros signed free agent SS Dauri Lorenzo to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2002-11-30",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-11-30",
+     "club": "SD",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Ismael Mena",
+     "person_id": 691190
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "691190",
+   "mlb_name": "Ismael Mena",
+   "mlb_primary_position": "CF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "mena_ismael",
+   "published_first_name": "Ismael",
+   "published_last_name": "Mena",
+   "published_name": "Ismael Mena",
+   "published_position": "OF",
+   "rank": 15,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-11-30",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (SD): \"San Diego Padres signed free agent OF Ismael Mena to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Ismael Mena)",
+    "birth date 2002-11-30 (born Dominican Republic)",
+    "register birth date 2002-11-30 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (CF)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2019-07-02",
+    "description": "San Diego Padres signed free agent OF Ismael Mena to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2003-01-06",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-01-06",
+     "club": "WSH",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Andry Lara",
+     "person_id": 691251
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "WSH",
+   "mlb_id": "691251",
+   "mlb_name": "Andry Lara",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "lara_andry",
+   "published_first_name": "Andry",
+   "published_last_name": "Lara",
+   "published_name": "Andry Lara",
+   "published_position": "RHP",
+   "rank": 16,
+   "register_bbref_id": "laraan01",
+   "register_birth_date": "2003-01-06",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (WSH): \"Washington Nationals signed free agent RHP Andry Lara to a minor league contract.\"",
+    "the list names WSH",
+    "name identical to the MLB person record (Andry Lara)",
+    "birth date 2003-01-06 (born Venezuela)",
+    "register birth date 2003-01-06 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "WSH",
+    "date": "2019-07-02",
+    "description": "Washington Nationals signed free agent RHP Andry Lara to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2002-10-29",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-10-29",
+     "club": "TEX",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Maximo Acosta",
+     "person_id": 691185
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "TEX",
+   "mlb_id": "691185",
+   "mlb_name": "Maximo Acosta",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "acosta_maximo",
+   "published_first_name": "Maximo",
+   "published_last_name": "Acosta",
+   "published_name": "Maximo Acosta",
+   "published_position": "SS",
+   "rank": 17,
+   "register_bbref_id": "acostma02",
+   "register_birth_date": "2002-10-29",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (TEX): \"Texas Rangers signed free agent SS Maximo Acosta to a minor league contract.\"",
+    "the list names TEX",
+    "name identical to the MLB person record (Maximo Acosta)",
+    "birth date 2002-10-29 (born Venezuela)",
+    "register birth date 2002-10-29 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "TEX",
+    "date": "2019-07-02",
+    "description": "Texas Rangers signed free agent SS Maximo Acosta to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2002-10-01",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-10-01",
+     "club": "TB",
+     "date": "2019-08-29",
+     "match": "EXACT",
+     "name": "Jhon Diaz",
+     "person_id": 691252
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "TB",
+   "mlb_id": "691252",
+   "mlb_name": "Jhon Diaz",
+   "mlb_primary_position": "OF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "diaz_jhon",
+   "published_first_name": "Jhon",
+   "published_last_name": "Diaz",
+   "published_name": "Jhon Diaz",
+   "published_position": "OF",
+   "rank": 18,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-10-01",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-08-29 (TB): \"Tampa Bay Rays signed free agent OF Jhon Diaz to a minor league contract.\"",
+    "the list names TB",
+    "name identical to the MLB person record (Jhon Diaz)",
+    "birth date 2002-10-01 (born Dominican Republic)",
+    "register birth date 2002-10-01 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (OF)"
+   ],
+   "signing": {
+    "club": "TB",
+    "date": "2019-08-29",
+    "description": "Tampa Bay Rays signed free agent OF Jhon Diaz to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2002-10-06",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-10-06",
+     "club": "SD",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Brayan Medina",
+     "person_id": 691259
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "691259",
+   "mlb_name": "Brayan Medina",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "medina_brayan",
+   "published_first_name": "Brayan",
+   "published_last_name": "Medina",
+   "published_name": "Brayan Medina",
+   "published_position": "RHP",
+   "rank": 19,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-10-06",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (SD): \"San Diego Padres signed free agent RHP Brayan Medina to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Brayan Medina)",
+    "birth date 2002-10-06 (born Venezuela)",
+    "register birth date 2002-10-06 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2019-07-02",
+    "description": "San Diego Padres signed free agent RHP Brayan Medina to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2003-01-06",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-01-06",
+     "club": "PIT",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Cristopher Cruz",
+     "person_id": 691260
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "PIT",
+   "mlb_id": "691260",
+   "mlb_name": "Cristopher Cruz",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "cruz_cristopher",
+   "published_first_name": "Cristopher",
+   "published_last_name": "Cruz",
+   "published_name": "Cristopher Cruz",
+   "published_position": "RHP",
+   "rank": 20,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-01-06",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (PIT): \"Pittsburgh Pirates signed free agent RHP Cristopher Cruz to a minor league contract.\"",
+    "the list names PIT",
+    "name identical to the MLB person record (Cristopher Cruz)",
+    "birth date 2003-01-06 (born Dominican Republic)",
+    "register birth date 2003-01-06 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "PIT",
+    "date": "2019-07-02",
+    "description": "Pittsburgh Pirates signed free agent RHP Cristopher Cruz to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2002-11-10",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-11-10",
+     "club": "LAD",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Kristian Cardozo",
+     "person_id": 691258
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "SEA",
+   "mlb_id": "691258",
+   "mlb_name": "Kristian Cardozo",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [
+    {
+     "club": "LAD",
+     "date": "2019-07-02",
+     "description": "Los Angeles Dodgers signed free agent RHP Kristian Cardozo to a minor league contract."
+    }
+   ],
+   "pipeline_slug": "cardozo_kristian",
+   "published_first_name": "Kristian",
+   "published_last_name": "Cardozo",
+   "published_name": "Kristian Cardozo",
+   "published_position": "RHP",
+   "rank": 21,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-11-10",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-08-01 (SEA): \"Seattle Mariners signed free agent RHP Kristian Cardozo to a minor league contract.\"",
+    "the list names SEA",
+    "name identical to the MLB person record (Kristian Cardozo)",
+    "birth date 2002-11-10 (born Venezuela)",
+    "register birth date 2002-11-10 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "SEA",
+    "date": "2019-08-01",
+    "description": "Seattle Mariners signed free agent RHP Kristian Cardozo to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Panama",
+   "birth_date": "2003-05-16",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-05-16",
+     "club": "SD",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Reginald Preciado",
+     "person_id": 691262
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "691262",
+   "mlb_name": "Reginald Preciado",
+   "mlb_primary_position": "LF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "preciado_reginald",
+   "published_first_name": "Reginald",
+   "published_last_name": "Preciado",
+   "published_name": "Reginald Preciado",
+   "published_position": "SS",
+   "rank": 22,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-05-16",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (SD): \"San Diego Padres signed free agent SS Reginald Preciado to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Reginald Preciado)",
+    "birth date 2003-05-16 (born Panama)",
+    "register birth date 2003-05-16 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (LF)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2019-07-02",
+    "description": "San Diego Padres signed free agent SS Reginald Preciado to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2003-01-31",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-01-31",
+     "club": "SFG",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Esmerlin Vinicio",
+     "person_id": 691263
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "SFG",
+   "mlb_id": "691263",
+   "mlb_name": "Esmerlin Vinicio",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "vinicio_esmerlin",
+   "published_first_name": "Esmerlin",
+   "published_last_name": "Vinicio",
+   "published_name": "Esmerlin Vinicio",
+   "published_position": "LHP",
+   "rank": 23,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-01-31",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (SFG): \"San Francisco Giants signed free agent LHP Esmerlin Vinicio to a minor league contract.\"",
+    "the list names SFG",
+    "name identical to the MLB person record (Esmerlin Vinicio)",
+    "birth date 2003-01-31 (born Dominican Republic)",
+    "register birth date 2003-01-31 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "SFG",
+    "date": "2019-07-02",
+    "description": "San Francisco Giants signed free agent LHP Esmerlin Vinicio to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2002-12-18",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-12-18",
+     "club": "MIA",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Junior Sanchez",
+     "person_id": 691265
+    },
+    {
+     "birth_date": "2003-07-05",
+     "club": "CLE",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Junior Caminero",
+     "person_id": 691406
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "MIA",
+   "mlb_id": "691265",
+   "mlb_name": "Junior Sanchez",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "sanchez_junior",
+   "published_first_name": "Junior",
+   "published_last_name": "Sanchez",
+   "published_name": "Junior Sanchez",
+   "published_position": "SS",
+   "rank": 24,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-12-18",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (MIA): \"Miami Marlins signed free agent SS Junior Sanchez to a minor league contract.\"",
+    "the list names MIA",
+    "name identical to the MLB person record (Junior Sanchez)",
+    "birth date 2002-12-18 (born Dominican Republic)",
+    "register birth date 2002-12-18 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "MIA",
+    "date": "2019-07-02",
+    "description": "Miami Marlins signed free agent SS Junior Sanchez to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2002-09-12",
+   "candidates_considered": [
+    {
+     "birth_date": "2002-09-12",
+     "club": "CLE",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Jose Pastrano",
+     "person_id": 691261
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "CLE",
+   "mlb_id": "691261",
+   "mlb_name": "Jose Pastrano",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "pastrano_jose",
+   "published_first_name": "Jose",
+   "published_last_name": "Pastrano",
+   "published_name": "Jose Pastrano",
+   "published_position": "SS",
+   "rank": 25,
+   "register_bbref_id": null,
+   "register_birth_date": "2002-09-12",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (CLE): \"Cleveland Indians signed free agent SS Jose Pastrano to a minor league contract.\"",
+    "the list names CLE",
+    "name identical to the MLB person record (Jose Pastrano)",
+    "birth date 2002-09-12 (born Venezuela)",
+    "register birth date 2002-09-12 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "CLE",
+    "date": "2019-07-02",
+    "description": "Cleveland Indians signed free agent SS Jose Pastrano to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2003-01-13",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-01-13",
+     "club": "NYM",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Alex Ramírez",
+     "person_id": 691267
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "NYM",
+   "mlb_id": "691267",
+   "mlb_name": "Alex Ramírez",
+   "mlb_primary_position": "OF",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "ramirez_alexander",
+   "published_first_name": "Alexander",
+   "published_last_name": "Ramirez",
+   "published_name": "Alexander Ramirez",
+   "published_position": "OF",
+   "rank": 26,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-01-13",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (NYM): \"New York Mets signed free agent OF Alexander Ramirez to a minor league contract.\"",
+    "the list names NYM",
+    "name identical to the MLB person record (Alex Ramírez)",
+    "birth date 2003-01-13 (born Dominican Republic)",
+    "register birth date 2003-01-13 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (OF)"
+   ],
+   "signing": {
+    "club": "NYM",
+    "date": "2019-07-02",
+    "description": "New York Mets signed free agent OF Alexander Ramirez to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2003-01-23",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-01-23",
+     "club": "TOR",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Rikelbin De Castro",
+     "person_id": 691264
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "TOR",
+   "mlb_id": "691264",
+   "mlb_name": "Rikelbin De Castro",
+   "mlb_primary_position": "SS",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "de_castro_rikelvin",
+   "published_first_name": "Rikelvin",
+   "published_last_name": "De Castro",
+   "published_name": "Rikelvin De Castro",
+   "published_position": "SS",
+   "rank": 27,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-01-23",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (TOR): \"Toronto Blue Jays signed free agent SS Rikelvin De Castro to a minor league contract.\"",
+    "the list names TOR",
+    "name identical to the MLB person record (Rikelbin De Castro)",
+    "birth date 2003-01-23 (born Dominican Republic)",
+    "register birth date 2003-01-23 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (SS)"
+   ],
+   "signing": {
+    "club": "TOR",
+    "date": "2019-07-02",
+    "description": "Toronto Blue Jays signed free agent SS Rikelvin De Castro to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Dominican Republic",
+   "birth_date": "2003-06-02",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-06-02",
+     "club": "LAA",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Adrian Placencia",
+     "person_id": 691269
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "LAA",
+   "mlb_id": "691269",
+   "mlb_name": "Adrian Placencia",
+   "mlb_primary_position": "2B",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "placencia_adrian",
+   "published_first_name": "Adrian",
+   "published_last_name": "Placencia",
+   "published_name": "Adrian Placencia",
+   "published_position": "SS",
+   "rank": 28,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-06-02",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (LAA): \"Los Angeles Angels signed free agent SS Adrian Placencia to a minor league contract.\"",
+    "the list names LAA",
+    "name identical to the MLB person record (Adrian Placencia)",
+    "birth date 2003-06-02 (born Dominican Republic)",
+    "register birth date 2003-06-02 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (2B)"
+   ],
+   "signing": {
+    "club": "LAA",
+    "date": "2019-07-02",
+    "description": "Los Angeles Angels signed free agent SS Adrian Placencia to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2003-07-31",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-07-31",
+     "club": "SD",
+     "date": "2019-07-31",
+     "match": "EXACT",
+     "name": "Luis Gutierrez",
+     "person_id": 692294
+    },
+    {
+     "birth_date": "2002-10-10",
+     "club": "CHC",
+     "date": "2019-09-20",
+     "match": "EXACT",
+     "name": "Luis Maza",
+     "person_id": 692571
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "SD",
+   "mlb_id": "692294",
+   "mlb_name": "Luis Gutierrez",
+   "mlb_primary_position": "P",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "gutierrez_luis",
+   "published_first_name": "Luis",
+   "published_last_name": "Gutierrez",
+   "published_name": "Luis Gutierrez",
+   "published_position": "LHP",
+   "rank": 29,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-07-31",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-31 (SD): \"San Diego Padres signed free agent LHP Luis Gutierrez to a minor league contract.\"",
+    "the list names SD",
+    "name identical to the MLB person record (Luis Gutierrez)",
+    "birth date 2003-07-31 (born Venezuela)",
+    "register birth date 2003-07-31 equals the person record",
+    "position family PITCHER agrees with the MLB record (P)"
+   ],
+   "signing": {
+    "club": "SD",
+    "date": "2019-07-31",
+    "description": "San Diego Padres signed free agent LHP Luis Gutierrez to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  },
+  {
+   "birth_country": "Venezuela",
+   "birth_date": "2003-01-22",
+   "candidates_considered": [
+    {
+     "birth_date": "2003-01-22",
+     "club": "CHC",
+     "date": "2019-07-02",
+     "match": "EXACT",
+     "name": "Brayan Altuve",
+     "person_id": 691266
+    }
+   ],
+   "class_year": 2019,
+   "cohort": "MLB-2019-PIPELINE-TOP30",
+   "list_club": "CHC",
+   "mlb_id": "691266",
+   "mlb_name": "Brayan Altuve",
+   "mlb_primary_position": "C",
+   "name_match": "EXACT",
+   "other_signings_in_window": [],
+   "pipeline_slug": "altuve_brayan",
+   "published_first_name": "Brayan",
+   "published_last_name": "Altuve",
+   "published_name": "Brayan Altuve",
+   "published_position": "C",
+   "rank": 30,
+   "register_bbref_id": null,
+   "register_birth_date": "2003-01-22",
+   "result": "RESOLVED",
+   "signals": [
+    "official signing transaction 2019-07-02 (CHC): \"Chicago Cubs signed free agent C Brayan Altuve to a minor league contract.\"",
+    "the list names CHC",
+    "name identical to the MLB person record (Brayan Altuve)",
+    "birth date 2003-01-22 (born Venezuela)",
+    "register birth date 2003-01-22 equals the person record",
+    "position family NON_PITCHER agrees with the MLB record (C)"
+   ],
+   "signing": {
+    "club": "CHC",
+    "date": "2019-07-02",
+    "description": "Chicago Cubs signed free agent C Brayan Altuve to a minor league contract."
+   },
+   "window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  }
+ ],
+ "generated_by": "database/research/056/derive-research.mjs",
+ "method": "The 050 rule, unchanged (database/research/050/identity-rules.mjs): an entry is RESOLVED only when exactly one person the official MLB transaction log shows signing (typeCode SFA, or SGN for some international amateurs) inside the class window matches the published name, the club agrees with the list (when it names one), the birth year fits the class, the position family agrees, and the register birth date (when held) equals the MLB person record. A spelling variant alone is never enough without the list naming the same club. Otherwise CONFLICT or INSUFFICIENT_EVIDENCE.",
+ "register": {
+  "files": [
+   "people-0.csv",
+   "people-1.csv",
+   "people-2.csv",
+   "people-3.csv",
+   "people-4.csv",
+   "people-5.csv",
+   "people-6.csv",
+   "people-7.csv",
+   "people-8.csv",
+   "people-9.csv",
+   "people-a.csv",
+   "people-b.csv",
+   "people-c.csv",
+   "people-d.csv",
+   "people-e.csv",
+   "people-f.csv"
+  ],
+  "sha256": "f82a14346b26ac5a65da0a9964c9db8d67d61376840622b0736a7d70983cb513",
+  "url": "https://github.com/chadwickbureau/register"
+ },
+ "retrieved_at": "2026-10-27"
+}
