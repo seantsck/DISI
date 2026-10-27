@@ -72,13 +72,14 @@ before(async () => {
 
 after(async () => { await chain?.close() })
 
-test('055 follows 054a in the manifest as the last file and is not frozen', () => {
+test('055 follows 054a in the manifest as the last file and is frozen at its released hash', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '054a_development_queue_performance.sql')
   assert.equal(i, manifest.canonical_sql.length - 1)
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
-  assert.ok(!(FILE in frozen))
+  assert.equal(frozen[FILE], crypto.createHash('sha1').update(sql055.replace(/\r\n/g, '\n')).digest('hex'))
+  assert.equal(frozen[FILE], '0e9483c89c9c2c14317fac16155beb90629e2596')
   assert.match(sql055, /^-- DISI v0\.40\n-- 055_international_benchmark_2017_2018\.sql\n/)
   assert.match(rollback055, /^-- DISI rollback of Migration 055/)
 })
