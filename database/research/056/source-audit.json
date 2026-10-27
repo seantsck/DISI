@@ -1,0 +1,116 @@
+{
+ "generated_by": "database/research/056/report.mjs",
+ "audit_through_date": "2026-10-05",
+ "classes": [
+  {
+   "class_year": 2019,
+   "population_key": "MLB-2019-PIPELINE-TOP30",
+   "official_source": {
+    "endpoint": "http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+    "capture": "https://web.archive.org/web/20190701214936id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+    "captured_at": "2019-07-01T21:49:36Z",
+    "last_updated": "2019-06-30T22:48:35.042Z",
+    "sha256": "9162c700163c1f40df0f75daccf5c68dfbde160e11000916456c75866379625f",
+    "internet_archive_digest": "MAQMR2BLWSWRPZCIL222OY36SNO3AJBI",
+    "list_path": "prospect_players.int",
+    "basis": "PRE_SIGNING_LIST",
+    "club_revision": {
+     "capture": "https://web.archive.org/web/20210906152435id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+     "last_updated": "2019-12-15T20:06:11.579Z",
+     "sha256": "2a4bd11a1fd92dd2b5fd6c4c84020b5037818d1fa0cc889fb785c97db0f17430"
+    },
+    "corroborating_captures": []
+   },
+   "ranked_source_players": 30,
+   "identities_resolved_automatically": 27,
+   "identities_unresolved": 3,
+   "sent_to_human_review": [
+    {
+     "rank": 2,
+     "name": "Robert Puason",
+     "decision": "IDENTITY_INSUFFICIENT_EVIDENCE",
+     "reason": "A name-matching signing exists in the window but the birth year or position family does not fit the published entry",
+     "candidates": [
+      {
+       "mlb_id": 691188,
+       "name": "Robert Puason",
+       "club": "OAK",
+       "signed": "2019-07-02",
+       "match": "EXACT"
+      }
+     ]
+    },
+    {
+     "rank": 7,
+     "name": "Yiddi Cappe",
+     "decision": "IDENTITY_INSUFFICIENT_EVIDENCE",
+     "reason": "No official signing transaction in the class window names a player matching the published name",
+     "candidates": []
+    },
+    {
+     "rank": 8,
+     "name": "Enmanuel Rodriguez",
+     "decision": "IDENTITY_INSUFFICIENT_EVIDENCE",
+     "reason": "Only a spelling variant matches and the list names no club to corroborate it",
+     "candidates": [
+      {
+       "mlb_id": 691181,
+       "name": "Emmanuel Rodriguez",
+       "club": "MIN",
+       "signed": "2019-07-02",
+       "match": "VARIANT"
+      }
+     ]
+    }
+   ],
+   "dodgers_overlaps": [
+    {
+     "rank": 4,
+     "name": "Luis Rodriguez",
+     "mlb_id": "691177",
+     "slug": "luis-rodriguez-2019",
+     "stored_dodgers_international_rank": 4,
+     "observed_rank_in_this_edition": 4,
+     "written": false
+    }
+   ],
+   "verified_not_added": [],
+   "benchmark_signings_added": 26,
+   "reach_mlb_within_7_seasons": {
+    "mature": true,
+    "horizon_end_season": 2026,
+    "positive": 4,
+    "negative": 22,
+    "unknown_or_censored": 0,
+    "not_labelled_because_not_added": 4
+   },
+   "ten_season_targets": {
+    "mature": false,
+    "horizon_end_season": 2029,
+    "labelled": 0,
+    "censored": 26,
+    "note": "The 10-season horizon (signing year + 10) has not elapsed; every 10-season label is CENSORED under the unchanged 041 rule."
+   },
+   "official_sources_written": 54,
+   "official_transaction_evidence": 26,
+   "reached_mlb_at_boundary": [
+    {
+     "name": "Jasson Domínguez",
+     "debut": "2023-09-01"
+    },
+    {
+     "name": "Adael Amador",
+     "debut": "2024-06-09"
+    },
+    {
+     "name": "Andry Lara",
+     "debut": "2025-07-02"
+    },
+    {
+     "name": "Maximo Acosta",
+     "debut": "2025-08-18"
+    }
+   ]
+  }
+ ]
+}

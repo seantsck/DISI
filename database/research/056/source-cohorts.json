@@ -1,0 +1,679 @@
+{
+ "cohorts": [
+  {
+   "class_year": 2019,
+   "club_capture": {
+    "bytes": 78813,
+    "captured_at": "2021-09-06T15:24:35Z",
+    "cdx_digest": "Q7EXICG3QWHUE5YNOF2SF5ATNPWPXKM6",
+    "last_updated": "2019-12-15T20:06:11.579Z",
+    "list_path": "prospect_players.int",
+    "original_url": "http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+    "sha256": "2a4bd11a1fd92dd2b5fd6c4c84020b5037818d1fa0cc889fb785c97db0f17430",
+    "url": "https://web.archive.org/web/20210906152435id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json"
+   },
+   "corroborating_captures": [],
+   "list_basis": "PRE_SIGNING_LIST",
+   "list_capture": {
+    "bytes": 680621,
+    "captured_at": "2019-07-01T21:49:36Z",
+    "cdx_digest": "MAQMR2BLWSWRPZCIL222OY36SNO3AJBI",
+    "last_updated": "2019-06-30T22:48:35.042Z",
+    "list_path": "prospect_players.int",
+    "original_url": "http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+    "sha256": "9162c700163c1f40df0f75daccf5c68dfbde160e11000916456c75866379625f",
+    "url": "https://web.archive.org/web/20190701214936id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json"
+   },
+   "list_size": 30,
+   "members": [
+    {
+     "list_club": "NYY",
+     "pipeline_slug": "dominguez_jasson",
+     "published_first_name": "Jasson",
+     "published_last_name": "Dominguez",
+     "published_name": "Jasson Dominguez",
+     "published_position": "OF",
+     "rank": 1
+    },
+    {
+     "list_club": "OAK",
+     "pipeline_slug": "puason_robert",
+     "published_first_name": "Robert",
+     "published_last_name": "Puason",
+     "published_name": "Robert Puason",
+     "published_position": "SS",
+     "rank": 2
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "lora_bayron",
+     "published_first_name": "Bayron",
+     "published_last_name": "Lora",
+     "published_name": "Bayron Lora",
+     "published_position": "OF",
+     "rank": 3
+    },
+    {
+     "list_club": "LAD",
+     "pipeline_slug": "rodriguez_luis",
+     "published_first_name": "Luis",
+     "published_last_name": "Rodriguez",
+     "published_name": "Luis Rodriguez",
+     "published_position": "OF",
+     "rank": 4
+    },
+    {
+     "list_club": "KC",
+     "pipeline_slug": "pena_erick",
+     "published_first_name": "Erick",
+     "published_last_name": "Pena",
+     "published_name": "Erick Pena",
+     "published_position": "OF",
+     "rank": 5
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "quintero_ronnier",
+     "published_first_name": "Ronnier",
+     "published_last_name": "Quintero",
+     "published_name": "Ronnier Quintero",
+     "published_position": "C",
+     "rank": 6
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "cappe_yiddi",
+     "published_first_name": "Yiddi",
+     "published_last_name": "Cappe",
+     "published_name": "Yiddi Cappe",
+     "published_position": "SS",
+     "rank": 7
+    },
+    {
+     "list_club": null,
+     "pipeline_slug": "rodriguez_enmanuel",
+     "published_first_name": "Enmanuel",
+     "published_last_name": "Rodriguez",
+     "published_name": "Enmanuel Rodriguez",
+     "published_position": "OF",
+     "rank": 8
+    },
+    {
+     "list_club": "LAA",
+     "pipeline_slug": "vera_arol",
+     "published_first_name": "Arol",
+     "published_last_name": "Vera",
+     "published_name": "Arol Vera",
+     "published_position": "SS",
+     "rank": 9
+    },
+    {
+     "list_club": "MIA",
+     "pipeline_slug": "salas_jose",
+     "published_first_name": "Jose",
+     "published_last_name": "Salas",
+     "published_name": "Jose Salas",
+     "published_position": "SS",
+     "rank": 10
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "made_kevin",
+     "published_first_name": "Kevin",
+     "published_last_name": "Made",
+     "published_name": "Kevin Made",
+     "published_position": "SS",
+     "rank": 11
+    },
+    {
+     "list_club": "COL",
+     "pipeline_slug": "amador_adael",
+     "published_first_name": "Adael",
+     "published_last_name": "Amador",
+     "published_name": "Adael Amador",
+     "published_position": "SS",
+     "rank": 12
+    },
+    {
+     "list_club": "MIL",
+     "pipeline_slug": "medina_luis",
+     "published_first_name": "Luis",
+     "published_last_name": "Medina",
+     "published_name": "Luis Medina",
+     "published_position": "OF",
+     "rank": 13
+    },
+    {
+     "list_club": "HOU",
+     "pipeline_slug": "lorenzo_dauri",
+     "published_first_name": "Dauri",
+     "published_last_name": "Lorenzo",
+     "published_name": "Dauri Lorenzo",
+     "published_position": "SS",
+     "rank": 14
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "mena_ismael",
+     "published_first_name": "Ismael",
+     "published_last_name": "Mena",
+     "published_name": "Ismael Mena",
+     "published_position": "OF",
+     "rank": 15
+    },
+    {
+     "list_club": "WSH",
+     "pipeline_slug": "lara_andry",
+     "published_first_name": "Andry",
+     "published_last_name": "Lara",
+     "published_name": "Andry Lara",
+     "published_position": "RHP",
+     "rank": 16
+    },
+    {
+     "list_club": "TEX",
+     "pipeline_slug": "acosta_maximo",
+     "published_first_name": "Maximo",
+     "published_last_name": "Acosta",
+     "published_name": "Maximo Acosta",
+     "published_position": "SS",
+     "rank": 17
+    },
+    {
+     "list_club": "TB",
+     "pipeline_slug": "diaz_jhon",
+     "published_first_name": "Jhon",
+     "published_last_name": "Diaz",
+     "published_name": "Jhon Diaz",
+     "published_position": "OF",
+     "rank": 18
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "medina_brayan",
+     "published_first_name": "Brayan",
+     "published_last_name": "Medina",
+     "published_name": "Brayan Medina",
+     "published_position": "RHP",
+     "rank": 19
+    },
+    {
+     "list_club": "PIT",
+     "pipeline_slug": "cruz_cristopher",
+     "published_first_name": "Cristopher",
+     "published_last_name": "Cruz",
+     "published_name": "Cristopher Cruz",
+     "published_position": "RHP",
+     "rank": 20
+    },
+    {
+     "list_club": "SEA",
+     "pipeline_slug": "cardozo_kristian",
+     "published_first_name": "Kristian",
+     "published_last_name": "Cardozo",
+     "published_name": "Kristian Cardozo",
+     "published_position": "RHP",
+     "rank": 21
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "preciado_reginald",
+     "published_first_name": "Reginald",
+     "published_last_name": "Preciado",
+     "published_name": "Reginald Preciado",
+     "published_position": "SS",
+     "rank": 22
+    },
+    {
+     "list_club": "SFG",
+     "pipeline_slug": "vinicio_esmerlin",
+     "published_first_name": "Esmerlin",
+     "published_last_name": "Vinicio",
+     "published_name": "Esmerlin Vinicio",
+     "published_position": "LHP",
+     "rank": 23
+    },
+    {
+     "list_club": "MIA",
+     "pipeline_slug": "sanchez_junior",
+     "published_first_name": "Junior",
+     "published_last_name": "Sanchez",
+     "published_name": "Junior Sanchez",
+     "published_position": "SS",
+     "rank": 24
+    },
+    {
+     "list_club": "CLE",
+     "pipeline_slug": "pastrano_jose",
+     "published_first_name": "Jose",
+     "published_last_name": "Pastrano",
+     "published_name": "Jose Pastrano",
+     "published_position": "SS",
+     "rank": 25
+    },
+    {
+     "list_club": "NYM",
+     "pipeline_slug": "ramirez_alexander",
+     "published_first_name": "Alexander",
+     "published_last_name": "Ramirez",
+     "published_name": "Alexander Ramirez",
+     "published_position": "OF",
+     "rank": 26
+    },
+    {
+     "list_club": "TOR",
+     "pipeline_slug": "de_castro_rikelvin",
+     "published_first_name": "Rikelvin",
+     "published_last_name": "De Castro",
+     "published_name": "Rikelvin De Castro",
+     "published_position": "SS",
+     "rank": 27
+    },
+    {
+     "list_club": "LAA",
+     "pipeline_slug": "placencia_adrian",
+     "published_first_name": "Adrian",
+     "published_last_name": "Placencia",
+     "published_name": "Adrian Placencia",
+     "published_position": "SS",
+     "rank": 28
+    },
+    {
+     "list_club": "SD",
+     "pipeline_slug": "gutierrez_luis",
+     "published_first_name": "Luis",
+     "published_last_name": "Gutierrez",
+     "published_name": "Luis Gutierrez",
+     "published_position": "LHP",
+     "rank": 29
+    },
+    {
+     "list_club": "CHC",
+     "pipeline_slug": "altuve_brayan",
+     "published_first_name": "Brayan",
+     "published_last_name": "Altuve",
+     "published_name": "Brayan Altuve",
+     "published_position": "C",
+     "rank": 30
+    }
+   ],
+   "note": "Published before the 2019-20 international signing period opened on 2 July 2019 (feed last_updated 2019-06-30); no club is named. Clubs are read from the final revision of the same list (last_updated 2019-12-15), which names the club each listed player signed with; the official MLB transaction log decides the signing club and date. The re-ranked edition of 2020-02-13 is not used.",
+   "population_key": "MLB-2019-PIPELINE-TOP30",
+   "signing_window": [
+    "2019-06-01",
+    "2020-06-30"
+   ]
+  }
+ ],
+ "generated_by": "database/research/056/derive-research.mjs",
+ "later_revisions": [
+  {
+   "added": [
+    {
+     "club": "MIN",
+     "name": "Emmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_emmanuel"
+    }
+   ],
+   "class_year": 2019,
+   "classification": "REVISION_SAME_RANKING",
+   "clubs_named": 29,
+   "cohort_capture": "https://web.archive.org/web/20190701214936id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "dropped": [
+    {
+     "name": "Enmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_enmanuel"
+    }
+   ],
+   "edition_capture": "https://web.archive.org/web/20190814230035id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "edition_captured_at": "2019-08-14T23:00:35Z",
+   "edition_cdx_digest": "IFBC4AVILFRRGXCIJO6KBGEFWJXEZXI6",
+   "edition_gzip_encoded": false,
+   "edition_last_updated": "2019-08-14T16:39:13.172Z",
+   "edition_sha256": "c6d439ea645cb2c6ff47563b56218dedc34ab9cc6557b295455187624ae05d38",
+   "members_without_revision_club": [
+    "Yiddi Cappe",
+    "Enmanuel Rodriguez"
+   ],
+   "rekeyed": [
+    {
+     "cohort_name": "Enmanuel Rodriguez",
+     "edition_name": "Emmanuel Rodriguez",
+     "edition_slug": "rodriguez_emmanuel",
+     "rank": 8
+    }
+   ],
+   "reranked": []
+  },
+  {
+   "added": [
+    {
+     "club": "MIN",
+     "name": "Emmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_emmanuel"
+    }
+   ],
+   "class_year": 2019,
+   "classification": "REVISION_SAME_RANKING",
+   "clubs_named": 29,
+   "cohort_capture": "https://web.archive.org/web/20190701214936id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "dropped": [
+    {
+     "name": "Enmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_enmanuel"
+    }
+   ],
+   "edition_capture": "https://web.archive.org/web/20190929004253id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "edition_captured_at": "2019-09-29T00:42:53Z",
+   "edition_cdx_digest": "UKXC6EUC34EAXRJG6RRAR5U3VU4NLOHF",
+   "edition_gzip_encoded": false,
+   "edition_last_updated": "2019-09-28T03:58:39.318Z",
+   "edition_sha256": "ba80bb8f3c756e9a221e2d310787967e1ee4834b21a82c065b3dba30486f324d",
+   "members_without_revision_club": [
+    "Yiddi Cappe",
+    "Enmanuel Rodriguez"
+   ],
+   "rekeyed": [
+    {
+     "cohort_name": "Enmanuel Rodriguez",
+     "edition_name": "Emmanuel Rodriguez",
+     "edition_slug": "rodriguez_emmanuel",
+     "rank": 8
+    }
+   ],
+   "reranked": []
+  },
+  {
+   "added": [
+    {
+     "club": "MIN",
+     "name": "Emmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_emmanuel"
+    }
+   ],
+   "class_year": 2019,
+   "classification": "REVISION_SAME_RANKING",
+   "clubs_named": 29,
+   "cohort_capture": "https://web.archive.org/web/20190701214936id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "dropped": [
+    {
+     "name": "Enmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_enmanuel"
+    }
+   ],
+   "edition_capture": "https://web.archive.org/web/20191026121203id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "edition_captured_at": "2019-10-26T12:12:03Z",
+   "edition_cdx_digest": "YXR7DQ74IQIL2HQMIV7VHRSJ2JIUCTNG",
+   "edition_gzip_encoded": true,
+   "edition_last_updated": "2019-10-24T23:35:42.492Z",
+   "edition_sha256": "3010676d99737e7c055d3d3fbc56919323b9a72b49114c5372dedf8b57bbec60",
+   "members_without_revision_club": [
+    "Yiddi Cappe",
+    "Enmanuel Rodriguez"
+   ],
+   "rekeyed": [
+    {
+     "cohort_name": "Enmanuel Rodriguez",
+     "edition_name": "Emmanuel Rodriguez",
+     "edition_slug": "rodriguez_emmanuel",
+     "rank": 8
+    }
+   ],
+   "reranked": []
+  },
+  {
+   "added": [
+    {
+     "club": null,
+     "name": "Pedro Leon",
+     "position": "OF",
+     "rank": 3,
+     "slug": "leon_pedro"
+    },
+    {
+     "club": null,
+     "name": "Norge Vera",
+     "position": "RHP",
+     "rank": 4,
+     "slug": "vera_norge"
+    },
+    {
+     "club": "MIN",
+     "name": "Emmanuel Rodriguez",
+     "position": "OF",
+     "rank": 10,
+     "slug": "rodriguez_emmanuel"
+    },
+    {
+     "club": null,
+     "name": "Dyan Jorge",
+     "position": "SS",
+     "rank": 15,
+     "slug": "jorge_dyan"
+    }
+   ],
+   "class_year": 2019,
+   "classification": "RE_RANKED_EDITION_NOT_USED",
+   "clubs_named": 26,
+   "cohort_capture": "https://web.archive.org/web/20190701214936id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "dropped": [
+    {
+     "name": "Enmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_enmanuel"
+    },
+    {
+     "name": "Adrian Placencia",
+     "position": "SS",
+     "rank": 28,
+     "slug": "placencia_adrian"
+    },
+    {
+     "name": "Luis Gutierrez",
+     "position": "LHP",
+     "rank": 29,
+     "slug": "gutierrez_luis"
+    },
+    {
+     "name": "Brayan Altuve",
+     "position": "C",
+     "rank": 30,
+     "slug": "altuve_brayan"
+    }
+   ],
+   "edition_capture": "https://web.archive.org/web/20200216195758id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "edition_captured_at": "2020-02-16T19:57:58Z",
+   "edition_cdx_digest": "VJZLNTLYSZB7K3TDWCUSZULLF6RPHGYM",
+   "edition_gzip_encoded": true,
+   "edition_last_updated": "2020-02-13T21:00:44.824Z",
+   "edition_sha256": "20c98818e6e4345631ca2d2182a237dd05695674a4ce7b1b233b346b997072bb",
+   "members_without_revision_club": [
+    "Yiddi Cappe",
+    "Enmanuel Rodriguez",
+    "Adrian Placencia",
+    "Luis Gutierrez",
+    "Brayan Altuve"
+   ],
+   "rekeyed": [],
+   "reranked": [
+    {
+     "cohort_rank": 3,
+     "edition_rank": 5,
+     "name": "Bayron Lora"
+    },
+    {
+     "cohort_rank": 4,
+     "edition_rank": 6,
+     "name": "Luis Rodriguez"
+    },
+    {
+     "cohort_rank": 5,
+     "edition_rank": 7,
+     "name": "Erick Pena"
+    },
+    {
+     "cohort_rank": 6,
+     "edition_rank": 8,
+     "name": "Ronnier Quintero"
+    },
+    {
+     "cohort_rank": 7,
+     "edition_rank": 9,
+     "name": "Yiddi Cappe"
+    },
+    {
+     "cohort_rank": 9,
+     "edition_rank": 11,
+     "name": "Arol Vera"
+    },
+    {
+     "cohort_rank": 10,
+     "edition_rank": 12,
+     "name": "Jose Salas"
+    },
+    {
+     "cohort_rank": 11,
+     "edition_rank": 13,
+     "name": "Kevin Made"
+    },
+    {
+     "cohort_rank": 12,
+     "edition_rank": 14,
+     "name": "Adael Amador"
+    },
+    {
+     "cohort_rank": 13,
+     "edition_rank": 16,
+     "name": "Luis Medina"
+    },
+    {
+     "cohort_rank": 14,
+     "edition_rank": 17,
+     "name": "Dauri Lorenzo"
+    },
+    {
+     "cohort_rank": 15,
+     "edition_rank": 18,
+     "name": "Ismael Mena"
+    },
+    {
+     "cohort_rank": 16,
+     "edition_rank": 19,
+     "name": "Andry Lara"
+    },
+    {
+     "cohort_rank": 17,
+     "edition_rank": 20,
+     "name": "Maximo Acosta"
+    },
+    {
+     "cohort_rank": 18,
+     "edition_rank": 21,
+     "name": "Jhon Diaz"
+    },
+    {
+     "cohort_rank": 19,
+     "edition_rank": 22,
+     "name": "Brayan Medina"
+    },
+    {
+     "cohort_rank": 20,
+     "edition_rank": 23,
+     "name": "Cristopher Cruz"
+    },
+    {
+     "cohort_rank": 21,
+     "edition_rank": 24,
+     "name": "Kristian Cardozo"
+    },
+    {
+     "cohort_rank": 22,
+     "edition_rank": 25,
+     "name": "Reginald Preciado"
+    },
+    {
+     "cohort_rank": 23,
+     "edition_rank": 26,
+     "name": "Esmerlin Vinicio"
+    },
+    {
+     "cohort_rank": 24,
+     "edition_rank": 27,
+     "name": "Junior Sanchez"
+    },
+    {
+     "cohort_rank": 25,
+     "edition_rank": 28,
+     "name": "Jose Pastrano"
+    },
+    {
+     "cohort_rank": 26,
+     "edition_rank": 29,
+     "name": "Alexander Ramirez"
+    },
+    {
+     "cohort_rank": 27,
+     "edition_rank": 30,
+     "name": "Rikelvin De Castro"
+    }
+   ]
+  },
+  {
+   "added": [
+    {
+     "club": "MIN",
+     "name": "Emmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_emmanuel"
+    }
+   ],
+   "class_year": 2019,
+   "classification": "FINAL_REVISION_CLUB_SOURCE",
+   "clubs_named": 29,
+   "cohort_capture": "https://web.archive.org/web/20190701214936id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "dropped": [
+    {
+     "name": "Enmanuel Rodriguez",
+     "position": "OF",
+     "rank": 8,
+     "slug": "rodriguez_enmanuel"
+    }
+   ],
+   "edition_capture": "https://web.archive.org/web/20210906152435id_/http://m.mlb.com/gen/players/prospects/2019/playerProspects.json",
+   "edition_captured_at": "2021-09-06T15:24:35Z",
+   "edition_cdx_digest": "Q7EXICG3QWHUE5YNOF2SF5ATNPWPXKM6",
+   "edition_gzip_encoded": true,
+   "edition_last_updated": "2019-12-15T20:06:11.579Z",
+   "edition_sha256": "2a4bd11a1fd92dd2b5fd6c4c84020b5037818d1fa0cc889fb785c97db0f17430",
+   "members_without_revision_club": [
+    "Yiddi Cappe",
+    "Enmanuel Rodriguez"
+   ],
+   "rekeyed": [
+    {
+     "cohort_name": "Enmanuel Rodriguez",
+     "edition_name": "Emmanuel Rodriguez",
+     "edition_slug": "rodriguez_emmanuel",
+     "rank": 8
+    }
+   ],
+   "reranked": []
+  }
+ ],
+ "retrieved_at": "2026-10-27",
+ "source_family": "MLB Pipeline (MLB.com) international Top 30 prospect list: the official data feed /gen/players/prospects/<year>/playerProspects.json, list \"int\", read through archived captures (www.mlb.com answers 403 to direct reads)"
+}
