@@ -511,7 +511,7 @@ test('the full verifier passes on the 030 state, and each financial check catche
   // the verifier now expects the 031 table total; this database is the 030 state (53 tables)
   const full = await checkInvariants(chain.query, { ...CANONICAL_EXPECTATIONS, public_tables_total: 53, public_views_total: 97 })
   assert.deepEqual(failedChecks(full).map((c) => c.name), [])
-  assert.equal(full.hard.length, 258, '137 from 030 plus the 031-041 checks, which pass trivially without their tables')
+  assert.equal(full.hard.length, 259, '137 from 030 plus the 031-041 checks, which pass trivially without their tables')
   await inTxn(async () => {
     await chain.db.exec(`set local session_replication_role = replica;
       update signing_environment_financial_reports set amount_usd = 1 where signing_environment_id = ${ENV(2019)} and metric_type = 'BASE_POOL';`)

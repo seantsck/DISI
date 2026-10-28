@@ -168,13 +168,13 @@ test('security: the queue stays security_invoker, SELECT-only for anon and authe
   try { assert.equal((await one(`select count(*)::int as n from public.${QUEUE}`)).n, 128) } finally { await chain.db.exec('rollback;') }
 })
 
-test('no snapshot moves: the same generation, zero drift; the verifier passes 258/258 with the canonical expectations', async () => {
+test('no snapshot moves: the same generation, zero drift; the verifier passes 259/259 with the canonical expectations', async () => {
   assert.equal((await one(`select max(generation_id)::int as g from public.product_executive_snapshot`)).g, preGeneration)
   for (const t of ALL_SNAPSHOT_TABLES) assert.equal((await one(`select count(*) filter (where generation_id <> $1)::int as n from public.${t}`, [preGeneration])).n, 0, t)
   assert.deepEqual(await q(`select snapshot from public.disi_product_snapshot_drift() where missing_rows + extra_rows <> 0`), [])
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 258)
+  assert.equal(full.hard.length, 259)
 })
 
 test('rerunnable: applying 054a again changes nothing', async () => {

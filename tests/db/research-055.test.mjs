@@ -259,16 +259,16 @@ test('product: one refresh, zero drift; readiness shows the benchmark row separa
   assert.deepEqual(cov.map((x) => [x.period_start_year, x.expected_signings, x.tracked_signings]), [[2013, 30, 20], [2014, 30, 28], [2015, 30, 27], [2016, 30, 27], [2017, 30, 28], [2018, 30, 22]])
 })
 
-test('verifier: 258/258 at the 055 head with no new check; the 054a pins fail exactly on the five counts 055 moves', async () => {
+test('verifier: 259/259 at the 055 head with no new check; the 054a pins fail exactly on the five counts 055 moves', async () => {
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 258)
+  assert.equal(full.hard.length, 259)
   const old = await checkInvariants(q, EXPECTATIONS_THROUGH_054A)
   assert.deepEqual(failedChecks(old).map((f) => f.name).sort(), ['league_benchmark_players', 'player_evaluations', 'players_total', 'scouting_legacy_ranks_backfilled', 'scouting_legacy_ranks_total'])
   const c = await clone(pre055Dump)
   try {
     const p = await checkInvariants(c.query, EXPECTATIONS_THROUGH_054A)
-    assert.deepEqual(failedChecks(p).map((f) => f.name), [], 'the pre-055 state passes its own pins 258/258')
+    assert.deepEqual(failedChecks(p).map((f) => f.name), [], 'the pre-055 state passes its own pins 259/259')
   } finally { await c.close() }
 })
 

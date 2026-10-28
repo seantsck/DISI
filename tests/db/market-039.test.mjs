@@ -159,7 +159,7 @@ test('verifier: the five market checks pass, each catches its own drift, and the
   assert.equal(MARKET_CHECK_NAMES.length, 5)
   const full = await checkInvariants(q, EXPECT039)
   assert.deepEqual(failedChecks(full), [])
-  assert.equal(full.hard.length, 258, '212 through 039 plus the five 040 and seven 041 checks, which pass trivially without their objects')
+  assert.equal(full.hard.length, 259, '212 through 039 plus the five 040 and seven 041 checks, which pass trivially without their objects')
   const f = 'v_signing_time_features'
   assert.ok((await drift(f, { position_family: `case when r.position_family = 'POSITION_UNKNOWN' then 'PITCHER' else r.position_family end` })).includes('market_feature_leakage_violations'))
   assert.ok((await drift(f, { market_group: `case when r.market_group = 'UNKNOWN' then 'VENEZUELA' else r.market_group end` })).includes('market_feature_row_violations'))

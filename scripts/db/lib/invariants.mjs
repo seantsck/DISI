@@ -46,6 +46,10 @@ export const CANONICAL_EXPECTATIONS = {
   dodgers_players: 220,
   league_benchmark_players: 178,
   verified_mlb_outcomes: 47,
+  // signing-role exclusivity (verifier hardening after 056): no canonical player holds both a Dodgers signing and a benchmark signing. A Dodgers
+  // signing may appear in a benchmark list (Cartaya, Rosario, Luis Rodriguez): it is mapped to the Dodgers record, never copied as a second
+  // signing. 050, 055 and 056 assert the same inside their own transactions; it held at every earlier state, so every historical layer inherits 0.
+  dodgers_benchmark_signing_overlap_players: 0,
   // development dataset (021 stints; 022 exact dates; 023 stint integrity)
   // `stints` is the RAW row count. 023 classifies the team-less season totals (56;
   // 047 adds 14 more, each proven equal to its component team stints) so analytics
@@ -419,6 +423,15 @@ export const EXPECTATIONS_THROUGH_046 = Object.freeze({
   progression_roles: { EARLY_CAMEO: 8, POST_ESTABLISHMENT_APPEARANCE: 3, REVIEW_REQUIRED: 9 },
 })
 
+/**
+ * RANKING APPEARANCE != NEW SIGNING: the number of canonical players (by players.id) that hold a signing by a Dodgers-franchise organization and also a
+ * Top-prospect benchmark signing (record_scope MLB_PIPELINE_TOP_PROSPECT). Only signings count: a Dodgers signing that carries a published rank or
+ * appears in a benchmark list, population or source is not an overlap. Expected 0.
+ */
+export const SIGNING_ROLE_OVERLAP_SQL = `select count(*)::int as n from public.players p
+  where exists (select 1 from public.signings s join public.organizations o on o.id = s.organization_id where s.player_id = p.id and o.franchise_key = 'DODGERS')
+    and exists (select 1 from public.signings s where s.player_id = p.id and s.record_scope = 'MLB_PIPELINE_TOP_PROSPECT')`
+
 const quoteList = (names) => names.map((n) => `'${n}'`).join(', ')
 const sorted = (arr) => [...arr].sort()
 
@@ -454,6 +467,9 @@ export async function checkInvariants(query, expectations = CANONICAL_EXPECTATIO
   check('population', 'dodgers_players', expectations.dodgers_players, status.d)
   check('population', 'league_benchmark_players', expectations.league_benchmark_players, status.b)
   check('population', 'verified_mlb_outcomes', expectations.verified_mlb_outcomes, status.v)
+
+  const [overlap] = await query(SIGNING_ROLE_OVERLAP_SQL)
+  check('population', 'dodgers_benchmark_signing_overlap_players', expectations.dodgers_benchmark_signing_overlap_players, overlap.n)
 
   // -- development dataset ---------------------------------------------------
   const [stints] = await query(
