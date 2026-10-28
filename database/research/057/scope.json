@@ -1,0 +1,32 @@
+{
+ "note": "The reviewed scope of Migration 057 (owner-approved after the feasibility pass): the benchmark MLB reachers whose 10-season bWAR horizon ends by 2025, the last season complete in the archived files. Every other mature benchmark row whose bWAR label is NULL stays NULL and is listed here with the reason. Identity is the existing DISI record (players.slug, mlb_id, bref_id); nothing here resolves an identity.",
+ "approved": [
+  { "slug": "emmanuel-dejesus", "mlb_id": "646241", "bref_id": "dejesen01", "population_key": "MLB-2013-PIPELINE-TOP30", "rank": 24, "signing_year": 2013, "horizon_end_season": 2023 },
+  { "slug": "vladimir-guerrero-jr", "mlb_id": "665489", "bref_id": "guerrvl02", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 2, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "gilberto-celestino", "mlb_id": "665482", "bref_id": "celesgi01", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 8, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "cristian-pache", "mlb_id": "665506", "bref_id": "pachecr01", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 10, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "andres-gimenez", "mlb_id": "665926", "bref_id": "gimenan01", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 12, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "leody-taveras", "mlb_id": "665750", "bref_id": "taverle01", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 15, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "juan-soto", "mlb_id": "665742", "bref_id": "sotoju01", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 19, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "miguel-amaya", "mlb_id": "665804", "bref_id": "amayami01", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 23, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "simon-muzziotti", "mlb_id": "665922", "bref_id": "muzzisi01", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 24, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "fernando-tatis-jr", "mlb_id": "665487", "bref_id": "tatisfe02", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 25, "signing_year": 2015, "horizon_end_season": 2025 },
+  { "slug": "rafael-marchan", "mlb_id": "665561", "bref_id": "marchra01", "population_key": "MLB-2015-PIPELINE-TOP30", "rank": 28, "signing_year": 2015, "horizon_end_season": 2025 }
+ ],
+ "deferred_incomplete_window": [
+  { "slug": "gabriel-arias", "mlb_id": "672356", "bref_id": "ariasga01", "signing_year": 2016, "horizon_end_season": 2026 },
+  { "slug": "jorge-ona", "mlb_id": "671250", "bref_id": "onajo01", "signing_year": 2016, "horizon_end_season": 2026 },
+  { "slug": "luis-garcia-jr", "mlb_id": "671277", "bref_id": "garcilu04", "signing_year": 2016, "horizon_end_season": 2026 },
+  { "slug": "francisco-morales", "mlb_id": "672839", "bref_id": "moralfr02", "signing_year": 2016, "horizon_end_season": 2026 }
+ ],
+ "deferred_reason": "The 10-season horizon ends with the 2026 season, which neither capture holds complete (the batting capture's 2026 rows are mid-season; the pitching capture ends with 2025). A partial 2026 season would make the window look complete when it is not, so no row of these players is loaded and their labels stay NULL until a capture taken after the 2026 season exists. PARTIAL SEASON != COMPLETE TEAM-SEASON EVIDENCE.",
+ "identity_unresolved": [
+  { "slug": "yeyson-yrizarry", "population_key": "MLB-2013-PIPELINE-TOP30", "rank": 23, "state": "CONFLICT", "note": "Unchanged since 050: the only matching official signing is Yeyson Yrizarri (MLB 650979, TEX 2013-07-02), born in Venezuela; the list records the Dominican Republic." },
+  { "slug": "yeremy-rosario", "population_key": "MLB-2014-PIPELINE-TOP30", "rank": 22, "state": "INSUFFICIENT_EVIDENCE", "note": "Unchanged since 050: no Colorado signing transaction in the 2014-15 window names a matching player; no MLB person record by that name." },
+  { "slug": "jonathan-amundaray", "population_key": "MLB-2014-PIPELINE-TOP30", "rank": 7, "state": "INSUFFICIENT_EVIDENCE", "note": "Owner decision 2026-10-28: KEEP UNRESOLVED. An official MLB person record now exists (660657, Jonathan Jonas Amundaray, born 1998-05-11 in Maturin, Venezuela, RF) with a Yankees DSL assignment on 2015-05-29, but there is still no signing (SFA) transaction, which the 050 rule requires. An official club assignment is corroborating evidence, not a signing transaction; the rule is not weakened." }
+ ],
+ "transaction_value_follow_up": {
+  "players": ["Jon Garland (garlajo01, 279782)", "Mudcat Grant (grantmu01, 115046)", "Zoilo Versalles (versazo01, 123713)", "Jim Leyritz (leyriji01, 117747)"],
+  "note": "The same captures hold their team-season rows, but they belong to the transaction / value domain (returned players, pinned transaction_war_unavailable_mlb_ids, the 1969 WSA team code has no bref_team_code_map row). Out of scope for 057: a separate follow-up migration."
+ }
+}
