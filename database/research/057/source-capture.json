@@ -1,0 +1,54 @@
+{
+ "note": "The two Baseball-Reference bulk WAR data files DISI already cites for team-season bWAR (war_daily_bat.txt, war_daily_pitch.txt; source type WAR_DATA_FILE, tier BASEBALL_REFERENCE), read as archived Internet Archive captures of the exact original URLs because the live files answer HTTP 403 (Cloudflare challenge). Archived original-source material, never a secondary WAR table: BWAR != FWAR. Each capture is pinned three ways: the Internet Archive CDX digest (SHA-1, base32) of the archived payload, the SHA-256 of that payload as served (gzip), and the SHA-256 of the decoded file the rows are read from. The decoded files are not committed (research-output/057-work/raw/, gitignored); fetch-sources.mjs retrieves and verifies them.",
+ "live_access": {
+  "checked_at": "2026-10-28",
+  "result": "HTTP 403 with cf-mitigated: challenge for https://www.baseball-reference.com/data/war_daily_bat.txt, https://www.baseball-reference.com/data/war_daily_pitch.txt and player pages; not worked around"
+ },
+ "observed_through_season": 2025,
+ "observed_through_rule": "2025 is the last season complete in both captures: the pitching capture ends with the 2025 season (original last-modified 2025-11-04), and the batting capture's 2026 rows are mid-season (captured 2026-09-11, before the 2026 season ended). No 2026 row is loaded. PARTIAL SEASON != COMPLETE TEAM-SEASON EVIDENCE.",
+ "files": [
+  {
+   "component": "BAT",
+   "original_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+   "wayback_timestamp": "20260911214553",
+   "url": "https://web.archive.org/web/20260911214553id_/https://www.baseball-reference.com/data/war_daily_bat.txt",
+   "captured_at": "2026-09-11T21:45:53Z",
+   "original_last_modified": "2026-09-11T04:57:41Z",
+   "archive_warc": "SPNOUTLINKS-20260911211609807-00013-zeno-k8s-spn-outlinks-9/SPNOUTLINKS-20260911213113419-00016-zeno-k8s-spn-outlinks-crawl.warc.gz",
+   "content_encoding": "gzip",
+   "cdx_digest": "CEBQTPXSHPR6RO2WZMQ7FK2LRRV575GV",
+   "cdx_length": 10507721,
+   "archived_payload_bytes": 10504501,
+   "archived_payload_sha256": "c0deabc49c28370e3b26a4a3339eb8333436ee0d65f952372208cc165c2f3df8",
+   "decoded_bytes": 35588605,
+   "decoded_sha256": "ec088b3ad7aa2f284f41d845f071c0644e43e753bae46ee45aab840b9cd51023",
+   "data_rows": 126529,
+   "max_season": 2026,
+   "rows_in_max_season": 812,
+   "max_season_state": "MID_SEASON: captured 2026-09-11, before the 2026 season ended; never loaded",
+   "retrieved_at": "2026-10-28T03:21:59Z",
+   "raw_file": "war_daily_bat.20260911214553.gz"
+  },
+  {
+   "component": "PITCH",
+   "original_url": "https://www.baseball-reference.com/data/war_daily_pitch.txt",
+   "wayback_timestamp": "20260210222101",
+   "url": "https://web.archive.org/web/20260210222101id_/https://www.baseball-reference.com/data/war_daily_pitch.txt",
+   "captured_at": "2026-02-10T22:21:01Z",
+   "original_last_modified": "2025-11-04T14:33:16Z",
+   "archive_warc": "SPNOUTLINKS-20260210222020530-00334-zeno-k8s-spn-crawl-2tpjn/SPNOUTLINKS-20260210222020530-00334-zeno-k8s-spn-crawl-768ff874b9.warc.gz",
+   "content_encoding": "gzip",
+   "cdx_digest": "HW43HICGDZB6V2QAOFETX36ZQOQBY6UW",
+   "archived_payload_bytes": 5841235,
+   "archived_payload_sha256": "f70322277fe7e007b8fa70854cb8426536a3f4457893ea4b1ac35a3746e16b05",
+   "decoded_bytes": 15090108,
+   "decoded_sha256": "3d80dcd5ae2cb442db52146bf569dbb6ee5de37846355c18e6b7937653af3825",
+   "data_rows": 56860,
+   "max_season": 2025,
+   "rows_in_max_season": 1015,
+   "max_season_state": "COMPLETE: the file was last modified 2025-11-04, after the 2025 season",
+   "retrieved_at": "2026-10-28T03:22:08Z",
+   "raw_file": "war_daily_pitch.20260210222101.gz"
+  }
+ ]
+}

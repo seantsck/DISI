@@ -58,7 +58,7 @@ export default async function PredictionReadinessPage() {
           </p>
           {benchmarkSupported.length > 0 && <p className="page-guardrail">
             <strong>Benchmark support is not Dodgers support.</strong> {benchmarkSupported.map((/** @type {any} */ t) => t.target_label).join(', ')} now
-            meets its support minimum in the MLB Pipeline Top 30 benchmark sample, a rank-selected reference population. That is an empirical result for those
+            {benchmarkSupported.length > 1 ? 'meet their support minimums' : 'meets its support minimum'} in the MLB Pipeline Top 30 benchmark sample, a rank-selected reference population. That is an empirical result for those
             ranked prospects only. It is not a rate of international signings, it is never pooled with the Dodgers population, and it does not produce a
             probability for any Dodgers player; the Dodgers targets below still need their own evidence.
           </p>}
