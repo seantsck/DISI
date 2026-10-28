@@ -3,15 +3,24 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 055 is released, production-verified and frozen)
+## Where DISI stands (after 056 is released, production-verified and frozen)
 
-- **v1.0.0** is in production through Migration 055 (international benchmark depth, applied once and committed 2026-10-25, PR #35 merged
-  2026-10-27 as `a0aae5f`; production deployment `dpl_EsmFskHorjgkhAY9EJa9Bgunbwxu`; production-verified **258/258**, generation **11**, drift **0**;
-  frozen). 054a was released 2026-10-25 (PR #33 merged as `8741e95`; frozen in PR #34). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
+- **v1.0.0** is in production through Migration 056 (international benchmark depth: the 2019 class, applied once and committed 2026-10-27, PR #37
+  merged as `3d51789`; production deployment `dpl_hocp8KJYd3JeusGmGoowamDMSKNn`; production-verified **258/258**, generation **12**, drift **0**;
+  frozen). 055 was released 2026-10-25 / 2026-10-27 (PR #35 merged as `a0aae5f`; frozen in PR #36). 054a was released 2026-10-25 (PR #33 merged as `8741e95`; frozen in PR #34). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
   2026-10-23 (PR #26 merged as `89742f2`; frozen in PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is
   released with no migration (PR #25 merged as `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical
-  `main` after 055 is `a0aae5f8e2593ab6c76e485deb5997ccbd3248f1`. Catalog: **79** tables, **156** views, **37** functions; **3328** sources.
+  `main` after 056 is `3d51789022fcfa7fc21623346b2f4d6250a3e0a8`. Catalog: **79** tables, **156** views, **37** functions; **3382** sources.
   The product reads eleven persisted snapshots; the analytical layer is internal.
+- International benchmark depth, 2019 (056, released and production-verified): the MLB Pipeline international Top 30 list of the mature 2019 class,
+  read from the archived official feed as published on 2019-06-30, before the signing period opened, with the 050 / 055 method and identity rules
+  unchanged. 30 listed, 27 resolved: 26 benchmark signings added and Luis Rodriguez (#4) mapped to his Dodgers signing, byte for byte (stored rank
+  4). Benchmark signings **152 -> 178**. `REACH_MLB_WITHIN_7_SEASONS` in the benchmark sample: **140 (30 / 110) -> 166 (34 / 132)**, supported
+  before and after; 2019: 4 TRUE (Domínguez, Amador, Lara, Acosta) / 22 FALSE; every 2019 10-season label is censored (horizon 2029). Three
+  identities wait for a person: Robert Puason (position family), Yiddi Cappe (official signing MIA 2021-01-15, outside the window), Enmanuel
+  Rodriguez (the official "Emmanuel", a variant with no list club). The re-run evaluation (173 rows, 34 positives, 7 folds) supports no model
+  (logistic +0.018 with 34 of 60 events; stratified -0.0065). Dodgers support, probabilities, expected values and recommendations do not move.
+  258 checks (five pins); one snapshot refresh.
 - International benchmark depth (055, released and production-verified): the MLB Pipeline international Top 30 lists of the mature 2017 and 2018
   classes, read from the archived official feed as published before each signing period opened, with the 050 method and identity rules unchanged.
   Benchmark signings **102 -> 152** (28 + 22). `REACH_MLB_WITHIN_7_SEASONS` in the benchmark sample: **90 (19 / 71) -> 140 (30 / 110)**, supported
@@ -241,11 +250,12 @@ What the 046 research showed about the bottlenecks:
 - **Support thresholds.** Unchanged. In the benchmark sample, reach within 7 seasons is supported (050); `POSITIVE_BWAR_WITHIN_10_SEASONS` has 75
   labelled rows and 7 positives, and its 18 unlabelled rows are 15 reachers whose Baseball-Reference team-season WAR is not loaded (the files answer 403 today) and 3 unresolved identities. No
   Dodgers target is close: reach within 7 seasons has 25 labelled rows and 2 positives.
-- **Benchmark depth.** 055 added the 2017 and 2018 lists. The 2019 list is the next class (its 7-season horizon ends with the 2026 season). Queued:
-  the four 055 identities for a person (Patino, Gomez, Guzman, Fernandez), the Cuban signees of 2016 (three) and 2018 (three) whose route no
+- **Benchmark depth.** 055 added the 2017 and 2018 lists and 056 the 2019 list. The 2020 class is not yet past its 7-season horizon (2027). Queued:
+  the three 056 identities for a person (Puason, Cappe, Enmanuel Rodriguez), the four 055 identities for a person (Patino, Gomez, Guzman, Fernandez), the Cuban signees of 2016 (three) and 2018 (three) whose route no
   readable source states, Christopher Martinez (2015), and the three remaining legacy identities.
 - **Verifier hardening (follow-up).** A hard check that no player holds both a Dodgers signing and a benchmark signing. 050 and 055 enforce it in
-  their own postconditions; a permanent check would catch a later write. Not added in 055 (it would move every suite's check count).
+  their own postconditions; a permanent check would catch a later write. Not added in 055 or 056 (it would move every suite's check count); a
+  standalone non-migration verifier PR.
 
 ## Not on the roadmap
 
