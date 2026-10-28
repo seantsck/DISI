@@ -82,14 +82,16 @@ before(async () => {
 
 after(async () => { await chain?.close() })
 
-test('057 follows 056 in the manifest as the last file and is not frozen', () => {
+test('057 follows 056 in the manifest as the last file and is frozen at its released hash', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '056_international_benchmark_2019.sql')
   assert.equal(i, manifest.canonical_sql.length - 1)
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
-  assert.equal(Object.keys(frozen).length, 60)
-  assert.equal(frozen[FILE], undefined, '057 is unreleased')
+  assert.equal(Object.keys(frozen).length, 61)
+  assert.equal(frozen[FILE], crypto.createHash('sha1').update(sql057.replace(/\r\n/g, '\n')).digest('hex'))
+  assert.equal(frozen[FILE], '48766350e1f60595167c5b977a4759041874b4ac')
+  assert.equal(crypto.createHash('sha256').update(rollback057).digest('hex'), 'f78599adb51fcaa887d1bc1e614c08cc1bc245e01adc4be8eb26d0967ee2f965')
   assert.match(sql057, /^-- DISI v0\.42\n-- 057_benchmark_bwar_evidence\.sql\n/)
   assert.match(rollback057, /^-- DISI rollback of Migration 057/)
 })

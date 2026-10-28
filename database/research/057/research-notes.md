@@ -37,8 +37,9 @@
 - **Rollback order.**
   - `rollback-057` retracts the 54 rows; the 032 guard forbids deleting a team-season fact. It sets the eleven career values back to NULL and
     removes the six bWAR evaluation rows.
-  - `rollback-050` refuses once any team-season row exists for a player it covers. It covers all eleven, retracted rows included, so it is no
-    longer available after 057 has been applied once. The ledger never deletes.
+  - `rollback-050` refuses once any team-season row exists for a player it covers, retracted rows included. It covers ten of the eleven (all but
+    Emmanuel DeJesus, who was in DISI before 050), so it is no longer available after 057 has been applied once. The ledger never deletes.
+  - Erratum: earlier text, including the comment in the released `rollback-057.sql` (left byte-identical), said "all eleven".
   - `rollback-055` and `rollback-056` are unaffected.
 - **Career bWAR runs through 2025.** For the ten active 2015-class players, `outcomes.career_war` is the sum of the loaded rows through 2025. The
   2026 season is not loaded.

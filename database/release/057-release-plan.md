@@ -136,7 +136,7 @@ The normalized (LF) SHA-1 of the migration is `48766350e1f60595167c5b977a4759041
    | `/prediction-readiness` | 2 benchmark reference baselines; positive bWAR benchmark row Supported; Dodgers targets not supported; no probability |
    | `/league` | The supported positive-bWAR statement, 86 / 15 / 71 |
    | `/methodology` | The new sentence |
-   | `/players/juan-soto` | A benchmark dossier with team-season bWAR |
+   | `/players/juan-soto` | The benchmark dossier renders (it shows career bWAR from `CAREER_BWAR` metric observations, which 057 does not write, so it reads "No Baseball-Reference observation recorded yet", as for the 035 players) |
    | `/players/gabriel-arias` | Deferred, no bWAR |
    | `/`, `/portfolio`, `/research` | Unchanged |
 
@@ -159,7 +159,12 @@ evidence: a superseding fact, a different career bWAR, or a later bWAR evaluatio
 The sources stay as provenance. **057 can be applied again after its rollback**: it inserts fresh active rows beside the retracted ones.
 
 Roll 057 back before any earlier benchmark rollback. `rollback-050` refuses once any team-season row, active or retracted, exists for a player it
-covers, and it covers all eleven. It is therefore unavailable after 057 has been applied once. `rollback-055` and `rollback-056` are unaffected.
+covers. It covers ten of the eleven (all but Emmanuel DeJesus, who was in DISI before 050), so it is unavailable after 057 has been applied once.
+`rollback-055` and `rollback-056` are unaffected.
+
+**Erratum (recorded at the freeze).** Earlier text said `rollback-050` covers all eleven 057 players; it covers ten. The operational conclusion is
+unchanged. The comment in `database/release/sql/rollback-057.sql` repeats the old wording; that file is a released, hash-pinned artifact
+(`f78599ad...`) and is left byte-identical.
 
 ## Evidence
 
