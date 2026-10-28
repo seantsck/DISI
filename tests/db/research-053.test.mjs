@@ -130,16 +130,16 @@ test('053 follows 052 in the manifest, and its rollback exists', () => {
   assert.match(rollback053, /^-- DISI rollback-053\.sql/)
 })
 
-test('verifier: 258/258 at the 052 boundary before 053 and at the 053 boundary after it; without the Leyritz pin the head fails exactly the identity check', async () => {
+test('verifier: 259/259 at the 052 boundary before 053 and at the 053 boundary after it; without the Leyritz pin the head fails exactly the identity check', async () => {
   const c = await open(pre053)
   try {
     const pre = await checkInvariants(c.query, EXPECTATIONS_THROUGH_052)
     assert.deepEqual(failedChecks(pre).map((f) => f.name), [])
-    assert.equal(pre.hard.length, 258)
+    assert.equal(pre.hard.length, 259)
   } finally { await c.close() }
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 258)
+  assert.equal(full.hard.length, 259)
   // KNOWN TRANSACTION != KNOWN RETURN VALUE: Leyritz is accepted only by name on the pinned list, never by relaxing the rule
   const old = await checkInvariants(q, EXPECTATIONS_THROUGH_052)
   assert.deepEqual(failedChecks(old).map((f) => f.name), ['transaction_asset_identity_consistency_violations'])

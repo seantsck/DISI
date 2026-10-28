@@ -128,16 +128,16 @@ test('054 follows 053 in the manifest, and its rollback exists', () => {
   assert.match(rollback054, /^-- DISI rollback-054\.sql/)
 })
 
-test('verifier: 258/258 at the 053 boundary before 054 and at the head after it; the 053 pins fail exactly on the one table and one view 054 adds', async () => {
+test('verifier: 259/259 at the 053 boundary before 054 and at the head after it; the 053 pins fail exactly on the one table and one view 054 adds', async () => {
   const c = await open(pre054)
   try {
     const pre = await checkInvariants(c.query, EXPECTATIONS_THROUGH_053)
     assert.deepEqual(failedChecks(pre).map((f) => f.name), [])
-    assert.equal(pre.hard.length, 258)
+    assert.equal(pre.hard.length, 259)
   } finally { await c.close() }
   const full = await checkInvariants(q, CANONICAL_EXPECTATIONS)
   assert.deepEqual(failedChecks(full).map((f) => f.name), [])
-  assert.equal(full.hard.length, 258)
+  assert.equal(full.hard.length, 259)
   const old = await checkInvariants(q, EXPECTATIONS_THROUGH_053)
   assert.deepEqual(failedChecks(old).map((f) => f.name).sort(), ['public_tables_total', 'public_views_total'])
 })

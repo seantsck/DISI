@@ -253,9 +253,10 @@ What the 046 research showed about the bottlenecks:
 - **Benchmark depth.** 055 added the 2017 and 2018 lists and 056 the 2019 list. The 2020 class is not yet past its 7-season horizon (2027). Queued:
   the three 056 identities for a person (Puason, Cappe, Enmanuel Rodriguez), the four 055 identities for a person (Patino, Gomez, Guzman, Fernandez), the Cuban signees of 2016 (three) and 2018 (three) whose route no
   readable source states, Christopher Martinez (2015), and the three remaining legacy identities.
-- **Verifier hardening (follow-up).** A hard check that no player holds both a Dodgers signing and a benchmark signing. 050 and 055 enforce it in
-  their own postconditions; a permanent check would catch a later write. Not added in 055 or 056 (it would move every suite's check count); a
-  standalone non-migration verifier PR.
+- **Verifier hardening (implemented, no migration).** The hard check `dodgers_benchmark_signing_overlap_players` (population group) counts canonical
+  players holding both a Dodgers-franchise signing and a `MLB_PIPELINE_TOP_PROSPECT` signing; it must be 0. A Dodgers signing that appears in a
+  benchmark list (Cartaya, Rosario, Luis Rodriguez) is mapped, not copied, and is not an overlap. 050, 055 and 056 still assert it in their own
+  postconditions; the verifier now catches a later write. 259 checks (one new); no data, schema or pin changes beyond the check count.
 
 ## Not on the roadmap
 
