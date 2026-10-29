@@ -3,15 +3,25 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 057 is released, production-verified and frozen)
+## Where DISI stands (after 058 is released and production-verified)
 
-- **v1.0.0** is in production through Migration 057 (benchmark bWAR evidence, applied once and committed 2026-10-28, PR #40 merged as
-  `b451809`; production deployment `dpl_FdiQE2EcmSCXrBLcD1v414TUQxZK`; production-verified **259/259**, generation **13**, drift **0**; frozen).
-  056 was released 2026-10-27 (PR #37 merged as `3d51789`; frozen in PR #38). 055 was released 2026-10-25 / 2026-10-27 (PR #35 merged as `a0aae5f`; frozen in PR #36). 054a was released 2026-10-25 (PR #33 merged as `8741e95`; frozen in PR #34). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
+- **v1.0.0** is in production through Migration 058 (transaction-return bWAR evidence, applied once and committed 2026-10-29, PR #42 merged as
+  `3182db1`; production deployment `dpl_u3P4hWGspx5Daq2DRto2ZCHeEjWL`; production-verified **259/259**, generation **14**, drift **0**; frozen).
+  057 was released 2026-10-28 (PR #40 merged as `b451809`; frozen in PR #41). 056 was released 2026-10-27 (PR #37 merged as `3d51789`; frozen in PR #38). 055 was released 2026-10-25 / 2026-10-27 (PR #35 merged as `a0aae5f`; frozen in PR #36). 054a was released 2026-10-25 (PR #33 merged as `8741e95`; frozen in PR #34). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
   2026-10-23 (PR #26 merged as `89742f2`; frozen in PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is
   released with no migration (PR #25 merged as `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical
-  `main` after 057 is `b451809989384df971c88b65dc5019bfd1d5cb28`. Catalog: **79** tables, **156** views, **37** functions; **3384** sources.
+  `main` after 058 is `3182db1ac24f4eadf10a330b3a44fb73acf6cf10`. Catalog: **79** tables, **156** views, **37** functions; **3384** sources.
   The product reads eleven persisted snapshots; the analytical layer is internal.
+- Transaction-return bWAR evidence (058, released and production-verified): Baseball-Reference team-season bWAR for the four returned players of
+  existing Dodgers trades whose value was unknown only because their WAR was not loaded (Garland, Leyritz, Grant, Versalles), from the two 057
+  captures (no new source, player, mapping or schema). **91** rows (28 / 15 / 36 / 12; active WAR **1934 -> 2025**); Versalles's 1969 WSA stint
+  is not loaded. The unchanged interval-bounded rules value them: Garland +0.17 is Tony Abreu's sole return (Abreu realized **1.40**); Leyritz
+  -0.61 is shared-package value of the Vizcaino trade (Vizcaino stays 0.09); Grant +1.39 and Versalles -1.12 are observable, not attributable,
+  value of the Fernández chain (Fernández stays 0.62). Realized organizational bWAR **297.60 -> 299.00** across **87 -> 88** signings; transaction
+  queue **58 -> 57**, value queue **93 -> 90**; `BWAR_MISSING` stays 50. Prediction outputs stay at zero (byte-identical). 259 checks (the
+  unavailable-WAR pins move to `EXPECTATIONS_THROUGH_057`); one snapshot refresh. Rollback: rollback-058 restores the logical pre-058 state;
+  rollback-057 is permanently unavailable once 058 has ever been applied (the retracted 058 rows still cite the shared 057 sources), accepted
+  before release (`database/release/058-release-plan.md`).
 - Benchmark bWAR evidence (057, released and production-verified): Baseball-Reference team-season bWAR for the eleven mature benchmark MLB
   reachers whose 10-season window ends by 2025, read from Internet Archive captures of the two Baseball-Reference data files DISI already cites
   (the live files answer 403), each pinned by archive digest and SHA-256; observed through 2025, no partial 2026. **54** team-season rows (53
@@ -81,13 +91,12 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
   (179 of 220 signings). No path is complete: 44 of 47 are partial. After 054, 128 detector rows are 104 distinct development needs across 62 players (0 transaction-blocked).
-- Transactions (after 053; 054 leaves the ledger unchanged): **223** events, **410** assets, **7** resolutions; the transaction queue holds **58** items and the value queue **93**.
+- Transactions (after 053; 054 leaves the ledger unchanged): **223** events, **410** assets, **7** resolutions; after 058 the transaction queue holds **57** items and the value queue **90**.
   Packages with an open issue: **21** (membership open **5**, terms open **18**). `KNOWN TRANSACTION != KNOWN RETURN VALUE`. 049 recorded two chains
-  whose history was open to their end with the value of what came back unavailable, so the seven incomplete chains it left read as **five** whose
-  transaction history is open and **two** whose history is recorded and whose returned players' Baseball-Reference WAR is not loaded; Abreu's return
-  is recorded with its WAR unknown, so the home page's realized organizational value reads 297.60 bWAR (signings with resolved value 87). 053 added
-  ten Dodgers transactions (14 assets); its Vizcaino trade adds one terms-open package (cash of unstated amount) and a returned player whose WAR is
-  not loaded (Leyritz). Nothing was valued and no unknown became zero.
+  whose history was open to their end with the value of what came back unavailable. 053 added ten Dodgers transactions (14 assets); its Vizcaino
+  trade adds one terms-open package (cash of unstated amount). 058 loaded the returned players' WAR (Garland, Leyritz, Grant, Versalles), so the
+  Abreu, Fernández and Vizcaino chains are complete and **five** incomplete chains remain, each with an open transaction history; the home page's
+  realized organizational value reads 299.00 bWAR (signings with resolved value 88). No unknown became zero.
 - Nothing is published that is not supported: **0** supported Dodgers probability targets, **0** supported expected values, **0** recommendations.
   After 050, one **benchmark reference baseline** is supported (reach within 7 seasons, in the rank-selected Top-prospect sample); it is shown on
   Prediction readiness and the League Benchmark page as a reference result and never produces a Dodgers probability.
@@ -120,7 +129,7 @@ TRANSACTION`, `ORGANIZATION CHANGE != TRANSACTION TYPE`, `KNOWN DESTINATION != K
    their return needs a sealed observation no rollback can remove.
 3. **Later organization history stays open.** A move between two other clubs is not a Dodgers transaction; recording it in the Dodgers ledger would
    read as a Dodgers exit in the asset views. Every remaining transaction-blocked need is one of these.
-4. **No unknown became a zero.** Leyritz's Dodgers bWAR is not loaded (RETURN_WAR_UNKNOWN); the Vizcaino trade's cash amount is unknown. No stint,
+4. **No unknown became a zero.** Leyritz's Dodgers bWAR was not loaded at 053 (RETURN_WAR_UNKNOWN; loaded by 058); the Vizcaino trade's cash amount is unknown. No stint,
    milestone, decision, audit, cost, WAR row, feature or probability moved.
 
 ## What 052 was for
@@ -252,13 +261,9 @@ What the 046 research showed about the bottlenecks:
 - **Transaction chains.** Five chains still have an open transaction history (Mondesí and Nomo: minor-league assets with no readable exit; Amorós:
   Gail Harris; Offerman: an unnamed conditional return; Frías: a player to be named or cash), and 20 trade packages have an open issue (cash, a
   player to be named, future considerations, pool space). The evidence that would close them is older-era club records or a human retrieval of
-  the blocked pages. Two more chains (Abreu, Fernández) are recorded to their end and wait only for Baseball-Reference team-season bWAR:
-  Garland, Grant and Versalles are the returned players whose value is unknown (Leyritz, in the Vizcaino trade, too). **Migration 058
-  (transaction-return bWAR evidence) is built and not yet released** (PR open): 91 rows for the four from the 057 captures, no new source,
-  player or mapping (Versalles's 1969 WSA stint, outside his Dodgers window, is not loaded). On release Abreu becomes realized (1.40), the
-  Fernández and Vizcaino chains complete, realized organizational bWAR goes 297.60 -> 299.00 across 87 -> 88 signings, and Garland's 2011
-  Dodgers stint is queued as a return without a recorded acquisition. Reusing the 057 sources makes rollback-057 unavailable once 058 is applied
-  (see `database/release/058-release-plan.md`).
+  the blocked pages. The Abreu and Fernández chains are complete since 058 (released); Garland's 2011 Dodgers stint, after his recorded exit, is
+  queued as a return without a recorded acquisition and credited to no trade. Four returned assets still have no loaded WAR (Roberts, Garcia,
+  Muegge, Juárez: no Baseball-Reference id); their value stays unknown, not zero.
 - **Audits as classes mature.** The 2021 class (22) is already mature: five players are active and need a decision rule once their careers
   end; the 2022 class matures in 2027.
 - **Support thresholds.** Unchanged. In the benchmark sample, reach within 7 seasons (050) and positive bWAR within 10 seasons (057) are
