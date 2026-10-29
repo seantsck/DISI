@@ -1,0 +1,205 @@
+{
+ "note": "bref_team_code_map as seeded by 032 (36 codes) and 033 (4 more), unchanged since; read-only export, equal to the replayed canonical chain (tests/unit and tests/db research-058). Only the code and season range matter for row selection; the organization is resolved by the migration from the database map itself. WSA has no row: no mapping is added by 058.",
+ "codes": [
+  {
+   "code": "ANA",
+   "from": 1997,
+   "to": 2004
+  },
+  {
+   "code": "ARI",
+   "from": 1998,
+   "to": null
+  },
+  {
+   "code": "ATL",
+   "from": 1966,
+   "to": null
+  },
+  {
+   "code": "BAL",
+   "from": 1954,
+   "to": null
+  },
+  {
+   "code": "BOS",
+   "from": 1901,
+   "to": null
+  },
+  {
+   "code": "BRO",
+   "from": 1884,
+   "to": 1957
+  },
+  {
+   "code": "CAL",
+   "from": 1965,
+   "to": 1996
+  },
+  {
+   "code": "CHC",
+   "from": 1876,
+   "to": null
+  },
+  {
+   "code": "CHW",
+   "from": 1901,
+   "to": null
+  },
+  {
+   "code": "CIN",
+   "from": 1890,
+   "to": null
+  },
+  {
+   "code": "CLE",
+   "from": 1901,
+   "to": null
+  },
+  {
+   "code": "COL",
+   "from": 1993,
+   "to": null
+  },
+  {
+   "code": "DET",
+   "from": 1901,
+   "to": null
+  },
+  {
+   "code": "FLA",
+   "from": 1993,
+   "to": 2011
+  },
+  {
+   "code": "HOU",
+   "from": 1962,
+   "to": null
+  },
+  {
+   "code": "KCA",
+   "from": 1955,
+   "to": 1967
+  },
+  {
+   "code": "KCR",
+   "from": 1969,
+   "to": null
+  },
+  {
+   "code": "LAA",
+   "from": 2005,
+   "to": null
+  },
+  {
+   "code": "LAD",
+   "from": 1958,
+   "to": null
+  },
+  {
+   "code": "MIA",
+   "from": 2012,
+   "to": null
+  },
+  {
+   "code": "MIL",
+   "from": 1970,
+   "to": null
+  },
+  {
+   "code": "MIN",
+   "from": 1961,
+   "to": null
+  },
+  {
+   "code": "MON",
+   "from": 1969,
+   "to": 2004
+  },
+  {
+   "code": "NYG",
+   "from": 1883,
+   "to": 1957
+  },
+  {
+   "code": "NYM",
+   "from": 1962,
+   "to": null
+  },
+  {
+   "code": "NYY",
+   "from": 1903,
+   "to": null
+  },
+  {
+   "code": "OAK",
+   "from": 1968,
+   "to": null
+  },
+  {
+   "code": "PHA",
+   "from": 1901,
+   "to": 1954
+  },
+  {
+   "code": "PHI",
+   "from": 1883,
+   "to": null
+  },
+  {
+   "code": "PIT",
+   "from": 1887,
+   "to": null
+  },
+  {
+   "code": "SDP",
+   "from": 1969,
+   "to": null
+  },
+  {
+   "code": "SEA",
+   "from": 1977,
+   "to": null
+  },
+  {
+   "code": "SFG",
+   "from": 1958,
+   "to": null
+  },
+  {
+   "code": "STL",
+   "from": 1892,
+   "to": null
+  },
+  {
+   "code": "TBD",
+   "from": 1998,
+   "to": 2007
+  },
+  {
+   "code": "TBR",
+   "from": 2008,
+   "to": null
+  },
+  {
+   "code": "TEX",
+   "from": 1972,
+   "to": null
+  },
+  {
+   "code": "TOR",
+   "from": 1977,
+   "to": null
+  },
+  {
+   "code": "WSH",
+   "from": 1901,
+   "to": 1960
+  },
+  {
+   "code": "WSN",
+   "from": 2005,
+   "to": null
+  }
+ ]
+}

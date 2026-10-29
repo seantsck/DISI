@@ -1,0 +1,1615 @@
+{
+ "counts": {
+  "players": 398,
+  "benchmark_players": 178,
+  "dodgers_players": 220,
+  "dodgers_signings": 220,
+  "dodgers_audits": 93,
+  "dodgers_verified_mlb": 47,
+  "dodgers_verified_no_mlb": 46,
+  "dodgers_not_audited": 127,
+  "known_costs": 56,
+  "known_spend_usd": "121700237.33",
+  "open_research_tasks": 349,
+  "outcome_audits": 268,
+  "outcomes": 97,
+  "player_evaluations": 181,
+  "signings": 398,
+  "benchmark_signings": 178,
+  "signing_populations": 22,
+  "population_members": 446,
+  "census_coverage_rows": 15,
+  "sources": 3384,
+  "war_rows": 1934,
+  "stints": 1859,
+  "milestones": 1084,
+  "transaction_events": 223,
+  "transaction_assets": 410,
+  "tables": 79,
+  "views": 156,
+  "functions": 37,
+  "snapshot_generation": "13"
+ },
+ "hashes": {
+  "dodgers_signings_hash": "dcdf515e6d40936f57c1c04063460888",
+  "dodgers_audits_hash": "22602c1fb315833ab16908a881358994",
+  "war_hash": "836fbf9e48b036fef071288b443e555a",
+  "financial_reports_hash": "5bd19c2ff5a6c12d831b42ae3d23bcdc",
+  "transactions_hash": "15791643d4ed55e17ed133d3f9e58764",
+  "development_hash": "980c0f0826f3e14f5f374878c19ad100",
+  "benchmark_signings_hash": "59b2ced5de05645ceda01b0f2c0f13fb"
+ },
+ "support": [
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "labelled_n": 11,
+   "positive_n": 1,
+   "negative_n": 10,
+   "censored_n": 157,
+   "unaudited_n": 0,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 9,
+   "additional_labels_needed": 39
+  },
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "labelled_n": 86,
+   "positive_n": 9,
+   "negative_n": 77,
+   "censored_n": 76,
+   "unaudited_n": 7,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 1,
+   "additional_labels_needed": 0
+  },
+  {
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "labelled_n": 11,
+   "positive_n": 0,
+   "negative_n": 11,
+   "censored_n": 157,
+   "unaudited_n": 0,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 10,
+   "additional_labels_needed": 39
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "labelled_n": 11,
+   "positive_n": 1,
+   "negative_n": 10,
+   "censored_n": 157,
+   "unaudited_n": 0,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 9,
+   "additional_labels_needed": 39
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "labelled_n": 86,
+   "positive_n": 15,
+   "negative_n": 71,
+   "censored_n": 76,
+   "unaudited_n": 7,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": true,
+   "support_state": "BASELINE_SUPPORTED",
+   "baseline_probability": "0.1744",
+   "baseline_probability_low_90": "0.1173",
+   "baseline_probability_high_90": "0.2514",
+   "additional_positives_needed": 0,
+   "additional_labels_needed": 0
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "labelled_n": 25,
+   "positive_n": 2,
+   "negative_n": 23,
+   "censored_n": 143,
+   "unaudited_n": 0,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": false,
+   "support_state": "BASELINE_NOT_SUPPORTED",
+   "baseline_probability": null,
+   "baseline_probability_low_90": null,
+   "baseline_probability_high_90": null,
+   "additional_positives_needed": 8,
+   "additional_labels_needed": 25
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "labelled_n": 166,
+   "positive_n": 34,
+   "negative_n": 132,
+   "censored_n": 0,
+   "unaudited_n": 3,
+   "min_reference_n": 50,
+   "min_positives": 10,
+   "min_negatives": 10,
+   "baseline_supported": true,
+   "support_state": "BASELINE_SUPPORTED",
+   "baseline_probability": "0.2048",
+   "baseline_probability_low_90": "0.1582",
+   "baseline_probability_high_90": "0.2609",
+   "additional_positives_needed": 0,
+   "additional_labels_needed": 0
+  }
+ ],
+ "evaluation": [
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "model_key": "BASE_RATE",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 88,
+   "positive_n": 9,
+   "folds": 4,
+   "brier_score": "0.099031",
+   "log_loss": "0.372934",
+   "auc": null,
+   "brier_skill_vs_base_rate": "0",
+   "decision": "BASELINE_REFERENCE",
+   "training_fingerprint": "1aa73185a9dab3071d4530ee670dd088",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 88
+  },
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "model_key": "LOGISTIC_L2",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 88,
+   "positive_n": 9,
+   "folds": 4,
+   "brier_score": "0.106562",
+   "log_loss": "0.43262",
+   "auc": "0.170183",
+   "brier_skill_vs_base_rate": "-0.076047",
+   "decision": "MODEL_NOT_SUPPORTED",
+   "training_fingerprint": "1aa73185a9dab3071d4530ee670dd088",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 88
+  },
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "model_key": "POPULATION_STRATIFIED_RATE",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 88,
+   "positive_n": 9,
+   "folds": 4,
+   "brier_score": "0.100137",
+   "log_loss": "0.377699",
+   "auc": "0.276371",
+   "brier_skill_vs_base_rate": "-0.011166",
+   "decision": "MODEL_NOT_SUPPORTED",
+   "training_fingerprint": "1aa73185a9dab3071d4530ee670dd088",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 88
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "model_key": "BASE_RATE",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 88,
+   "positive_n": 14,
+   "folds": 4,
+   "brier_score": "0.140938",
+   "log_loss": "0.46612",
+   "auc": null,
+   "brier_skill_vs_base_rate": "0",
+   "decision": "BASELINE_REFERENCE",
+   "training_fingerprint": "102c01a35d380d36493465cef1070c07",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 88
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "model_key": "LOGISTIC_L2",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 88,
+   "positive_n": 14,
+   "folds": 4,
+   "brier_score": "0.153014",
+   "log_loss": "0.525536",
+   "auc": "0.319981",
+   "brier_skill_vs_base_rate": "-0.085678",
+   "decision": "MODEL_NOT_SUPPORTED",
+   "training_fingerprint": "102c01a35d380d36493465cef1070c07",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 88
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "model_key": "POPULATION_STRATIFIED_RATE",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 88,
+   "positive_n": 14,
+   "folds": 4,
+   "brier_score": "0.142906",
+   "log_loss": "0.471954",
+   "auc": "0.357143",
+   "brier_skill_vs_base_rate": "-0.013963",
+   "decision": "MODEL_NOT_SUPPORTED",
+   "training_fingerprint": "102c01a35d380d36493465cef1070c07",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 88
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "BASE_RATE",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 173,
+   "positive_n": 34,
+   "folds": 7,
+   "brier_score": "0.159675",
+   "log_loss": "0.501203",
+   "auc": null,
+   "brier_skill_vs_base_rate": "0",
+   "decision": "BASELINE_REFERENCE",
+   "training_fingerprint": "86b58f473301e2425751d853abd88e94",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 173
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "LOGISTIC_L2",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 173,
+   "positive_n": 34,
+   "folds": 7,
+   "brier_score": "0.156826",
+   "log_loss": "0.492051",
+   "auc": "0.593737",
+   "brier_skill_vs_base_rate": "0.017844",
+   "decision": "MODEL_NOT_SUPPORTED",
+   "training_fingerprint": "86b58f473301e2425751d853abd88e94",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 173
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "model_key": "POPULATION_STRATIFIED_RATE",
+   "model_version": "outcome-probability-v1",
+   "evaluated_rows": 173,
+   "positive_n": 34,
+   "folds": 7,
+   "brier_score": "0.160719",
+   "log_loss": "0.626446",
+   "auc": "0.431549",
+   "brier_skill_vs_base_rate": "-0.006535",
+   "decision": "MODEL_NOT_SUPPORTED",
+   "training_fingerprint": "86b58f473301e2425751d853abd88e94",
+   "data_as_of_date": "2026-10-05",
+   "evaluation_current": true,
+   "live_rows": 173
+  }
+ ],
+ "probabilities": [
+  {
+   "training_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "rows": 684,
+   "non_null": 0
+  },
+  {
+   "training_population": "NONE",
+   "rows": 196,
+   "non_null": 0
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "rows": 712,
+   "non_null": 0
+  }
+ ],
+ "probability_reasons": [
+  {
+   "training_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "reason": "OUTCOME_ALREADY_OBSERVED",
+   "rows": 58
+  },
+  {
+   "training_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "reason": "PROFESSIONAL_ROUTE_NOT_MODELLED",
+   "rows": 12
+  },
+  {
+   "training_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "reason": "REFERENCE_POPULATION_NOT_SUPPORTED",
+   "rows": 614
+  },
+  {
+   "training_population": "NONE",
+   "reason": "OUTCOME_SELECTED_POPULATION",
+   "rows": 196
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "reason": "NO_REFERENCE_POPULATION_FOR_THIS_POPULATION",
+   "rows": 152
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "reason": "OUTCOME_ALREADY_OBSERVED",
+   "rows": 338
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "reason": "OUTCOME_UNAUDITED_PAST_HORIZON",
+   "rows": 17
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "reason": "PROFESSIONAL_ROUTE_NOT_MODELLED",
+   "rows": 36
+  },
+  {
+   "training_population": "TOP_PROSPECT_SAMPLE",
+   "reason": "TARGET_NOT_APPLICABLE",
+   "rows": 169
+  }
+ ],
+ "executive": {
+  "signings_with_resolved_value": 87,
+  "direct": "282.77",
+  "trade": "14.83",
+  "realized": "297.60",
+  "value_left": "432.44",
+  "open_research_tasks": 349
+ },
+ "release": {
+  "support_chain_state": "NO_PREDICTIVE_LAYER_SUPPORTED",
+  "supported_probability_targets": 0,
+  "supported_expected_value_models": 0,
+  "predictive_portfolio_recommendations": 0
+ },
+ "expected_value": [
+  {
+   "value_model_key": "EXPECTED_DIRECT_DODGERS_BWAR_V1",
+   "probability_supported": false,
+   "expected_value_supported": false,
+   "support_state": "PROBABILITY_NOT_SUPPORTED"
+  }
+ ],
+ "benchmark_classes": [
+  {
+   "population_key": "MLB-2013-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 20,
+   "members_identity_resolved": 19,
+   "members_audited": 19,
+   "members_reached": 7,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  },
+  {
+   "population_key": "MLB-2014-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 28,
+   "members_identity_resolved": 26,
+   "members_audited": 26,
+   "members_reached": 5,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  },
+  {
+   "population_key": "MLB-2015-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 27,
+   "members_identity_resolved": 27,
+   "members_audited": 27,
+   "members_reached": 10,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  },
+  {
+   "population_key": "MLB-2016-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 27,
+   "members_identity_resolved": 27,
+   "members_audited": 27,
+   "members_reached": 12,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  },
+  {
+   "population_key": "MLB-2017-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 28,
+   "members_identity_resolved": 28,
+   "members_audited": 28,
+   "members_reached": 6,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  },
+  {
+   "population_key": "MLB-2018-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 22,
+   "members_identity_resolved": 22,
+   "members_audited": 22,
+   "members_reached": 6,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  },
+  {
+   "population_key": "MLB-2019-PIPELINE-TOP30",
+   "expected_size": 30,
+   "members": 26,
+   "members_identity_resolved": 26,
+   "members_audited": 26,
+   "members_reached": 4,
+   "dodgers_members": 0,
+   "census_state": "TOP_PROSPECT_SAMPLE",
+   "comparison_label": "SAMPLE_COMPARISON"
+  }
+ ],
+ "benchmark_queue": [
+  {
+   "issue": "BENCHMARK_BONUS_UNKNOWN",
+   "items": 131
+  },
+  {
+   "issue": "BENCHMARK_IDENTITY_UNRESOLVED",
+   "items": 3
+  },
+  {
+   "issue": "BENCHMARK_REACHED_WITHOUT_TEAM_SEASON_FACTS",
+   "items": 28
+  },
+  {
+   "issue": "POPULATION_DENOMINATOR_NOT_SOURCED",
+   "items": 5
+  },
+  {
+   "issue": "POPULATION_MEMBERS_NOT_TRACKED",
+   "items": 10
+  },
+  {
+   "issue": "SAMPLE_HAS_NO_DODGERS_COMPARATOR",
+   "items": 7
+  }
+ ],
+ "executive_overview_body_md5": "c66602a042d2a5ae67f80c775624aed3",
+ "refresh_function_body_md5": "7f0151fdcd496c50e16dc91b7758b7c0",
+ "benchmark_labels": [
+  {
+   "population_key": "MLB-2013-PIPELINE-TOP30",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "rows": 20,
+   "positive": 3,
+   "negative": 16,
+   "censored": 0,
+   "unaudited": 1,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2013-PIPELINE-TOP30",
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "rows": 20,
+   "positive": 0,
+   "negative": 0,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 20
+  },
+  {
+   "population_key": "MLB-2013-PIPELINE-TOP30",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "rows": 20,
+   "positive": 5,
+   "negative": 14,
+   "censored": 0,
+   "unaudited": 1,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2013-PIPELINE-TOP30",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "rows": 20,
+   "positive": 4,
+   "negative": 15,
+   "censored": 0,
+   "unaudited": 1,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2014-PIPELINE-TOP30",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "rows": 28,
+   "positive": 0,
+   "negative": 26,
+   "censored": 0,
+   "unaudited": 2,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2014-PIPELINE-TOP30",
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "rows": 28,
+   "positive": 0,
+   "negative": 0,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 28
+  },
+  {
+   "population_key": "MLB-2014-PIPELINE-TOP30",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "rows": 28,
+   "positive": 2,
+   "negative": 24,
+   "censored": 0,
+   "unaudited": 2,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2014-PIPELINE-TOP30",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "rows": 28,
+   "positive": 2,
+   "negative": 24,
+   "censored": 0,
+   "unaudited": 2,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2015-PIPELINE-TOP30",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "rows": 27,
+   "positive": 6,
+   "negative": 21,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2015-PIPELINE-TOP30",
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "rows": 27,
+   "positive": 0,
+   "negative": 0,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 27
+  },
+  {
+   "population_key": "MLB-2015-PIPELINE-TOP30",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "rows": 27,
+   "positive": 8,
+   "negative": 19,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2015-PIPELINE-TOP30",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "rows": 27,
+   "positive": 9,
+   "negative": 18,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2016-PIPELINE-TOP30",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "rows": 27,
+   "positive": 0,
+   "negative": 15,
+   "censored": 0,
+   "unaudited": 4,
+   "out_of_scope": 9
+  },
+  {
+   "population_key": "MLB-2016-PIPELINE-TOP30",
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "rows": 27,
+   "positive": 0,
+   "negative": 0,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 27
+  },
+  {
+   "population_key": "MLB-2016-PIPELINE-TOP30",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "rows": 27,
+   "positive": 0,
+   "negative": 15,
+   "censored": 0,
+   "unaudited": 4,
+   "out_of_scope": 9
+  },
+  {
+   "population_key": "MLB-2016-PIPELINE-TOP30",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "rows": 27,
+   "positive": 12,
+   "negative": 15,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 9
+  },
+  {
+   "population_key": "MLB-2017-PIPELINE-TOP30",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "rows": 28,
+   "positive": 0,
+   "negative": 0,
+   "censored": 28,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2017-PIPELINE-TOP30",
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "rows": 28,
+   "positive": 0,
+   "negative": 0,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 28
+  },
+  {
+   "population_key": "MLB-2017-PIPELINE-TOP30",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "rows": 28,
+   "positive": 0,
+   "negative": 0,
+   "censored": 28,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2017-PIPELINE-TOP30",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "rows": 28,
+   "positive": 5,
+   "negative": 23,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2018-PIPELINE-TOP30",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "rows": 22,
+   "positive": 0,
+   "negative": 0,
+   "censored": 22,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2018-PIPELINE-TOP30",
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "rows": 22,
+   "positive": 0,
+   "negative": 0,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 22
+  },
+  {
+   "population_key": "MLB-2018-PIPELINE-TOP30",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "rows": 22,
+   "positive": 0,
+   "negative": 0,
+   "censored": 22,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2018-PIPELINE-TOP30",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "rows": 22,
+   "positive": 6,
+   "negative": 16,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2019-PIPELINE-TOP30",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "rows": 26,
+   "positive": 0,
+   "negative": 0,
+   "censored": 26,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2019-PIPELINE-TOP30",
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "rows": 26,
+   "positive": 0,
+   "negative": 0,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 26
+  },
+  {
+   "population_key": "MLB-2019-PIPELINE-TOP30",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "rows": 26,
+   "positive": 0,
+   "negative": 0,
+   "censored": 26,
+   "unaudited": 0,
+   "out_of_scope": 0
+  },
+  {
+   "population_key": "MLB-2019-PIPELINE-TOP30",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "rows": 26,
+   "positive": 4,
+   "negative": 22,
+   "censored": 0,
+   "unaudited": 0,
+   "out_of_scope": 0
+  }
+ ],
+ "war": {
+  "rows": 1934,
+  "active": 1934,
+  "retracted": 0,
+  "active_players": 140
+ },
+ "scoped_labels": [
+  {
+   "player_slug": "andres-gimenez",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "19.37",
+   "career_war": "19.370"
+  },
+  {
+   "player_slug": "andres-gimenez",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "19.37",
+   "career_war": "19.370"
+  },
+  {
+   "player_slug": "cristian-pache",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": false,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "-1.30",
+   "career_war": "-1.300"
+  },
+  {
+   "player_slug": "cristian-pache",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": false,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "-1.30",
+   "career_war": "-1.300"
+  },
+  {
+   "player_slug": "emmanuel-dejesus",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": false,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "-0.18",
+   "career_war": "-0.180"
+  },
+  {
+   "player_slug": "emmanuel-dejesus",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": false,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "-0.18",
+   "career_war": "-0.180"
+  },
+  {
+   "player_slug": "fernando-tatis-jr",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "27.34",
+   "career_war": "27.340"
+  },
+  {
+   "player_slug": "fernando-tatis-jr",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "27.34",
+   "career_war": "27.340"
+  },
+  {
+   "player_slug": "francisco-morales",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "francisco-morales",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "gabriel-arias",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "gabriel-arias",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "gilberto-celestino",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": false,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "0.24",
+   "career_war": "0.240"
+  },
+  {
+   "player_slug": "gilberto-celestino",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "0.24",
+   "career_war": "0.240"
+  },
+  {
+   "player_slug": "jonathan-amundaray",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "jonathan-amundaray",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "jorge-ona",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "jorge-ona",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "juan-soto",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "42.57",
+   "career_war": "42.570"
+  },
+  {
+   "player_slug": "juan-soto",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "42.57",
+   "career_war": "42.570"
+  },
+  {
+   "player_slug": "leody-taveras",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "4.70",
+   "career_war": "4.700"
+  },
+  {
+   "player_slug": "leody-taveras",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "4.70",
+   "career_war": "4.700"
+  },
+  {
+   "player_slug": "luis-garcia-jr",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "luis-garcia-jr",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "miguel-amaya",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "3.35",
+   "career_war": "3.350"
+  },
+  {
+   "player_slug": "miguel-amaya",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "3.35",
+   "career_war": "3.350"
+  },
+  {
+   "player_slug": "rafael-marchan",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": false,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "1.41",
+   "career_war": "1.410"
+  },
+  {
+   "player_slug": "rafael-marchan",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "1.41",
+   "career_war": "1.410"
+  },
+  {
+   "player_slug": "simon-muzziotti",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": false,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "-0.05",
+   "career_war": "-0.050"
+  },
+  {
+   "player_slug": "simon-muzziotti",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": false,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "-0.05",
+   "career_war": "-0.050"
+  },
+  {
+   "player_slug": "vladimir-guerrero-jr",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "25.73",
+   "career_war": "25.730"
+  },
+  {
+   "player_slug": "vladimir-guerrero-jr",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": true,
+   "training_state": "BENCHMARK_SAMPLE_ONLY",
+   "window_bwar": "25.73",
+   "career_war": "25.730"
+  },
+  {
+   "player_slug": "yeremy-rosario",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "yeremy-rosario",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "yeyson-yrizarry",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  },
+  {
+   "player_slug": "yeyson-yrizarry",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "label": null,
+   "training_state": "OUTCOME_UNAUDITED",
+   "window_bwar": null,
+   "career_war": null
+  }
+ ],
+ "research_tasks": [
+  {
+   "task_type": "BWAR_MISSING",
+   "items": 50
+  }
+ ],
+ "probability_queue": [
+  {
+   "issue": "LABEL_BLOCKED_BY_MISSING_AUDIT",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "items": 7
+  },
+  {
+   "issue": "LABEL_BLOCKED_BY_MISSING_AUDIT",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "items": 7
+  },
+  {
+   "issue": "LABEL_BLOCKED_BY_MISSING_AUDIT",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "items": 3
+  },
+  {
+   "issue": "TARGET_REFERENCE_NOT_SUPPORTED",
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "items": 2
+  },
+  {
+   "issue": "TARGET_REFERENCE_NOT_SUPPORTED",
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "items": 1
+  },
+  {
+   "issue": "TARGET_REFERENCE_NOT_SUPPORTED",
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "items": 1
+  },
+  {
+   "issue": "TARGET_REFERENCE_NOT_SUPPORTED",
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "items": 1
+  }
+ ],
+ "readiness": [
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "readiness_state": "NOT_SUPPORTED",
+   "labelled_n": 11,
+   "positive_n": 1,
+   "negative_n": 10,
+   "fitted_model_supported": false
+  },
+  {
+   "target_key": "BWAR_2_WITHIN_10_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "readiness_state": "NOT_SUPPORTED",
+   "labelled_n": 86,
+   "positive_n": 9,
+   "negative_n": 77,
+   "fitted_model_supported": false
+  },
+  {
+   "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "readiness_state": "NOT_SUPPORTED",
+   "labelled_n": 11,
+   "positive_n": 0,
+   "negative_n": 11,
+   "fitted_model_supported": false
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "readiness_state": "NOT_SUPPORTED",
+   "labelled_n": 11,
+   "positive_n": 1,
+   "negative_n": 10,
+   "fitted_model_supported": false
+  },
+  {
+   "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "readiness_state": "SUPPORTED",
+   "labelled_n": 86,
+   "positive_n": 15,
+   "negative_n": 71,
+   "fitted_model_supported": false
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+   "readiness_state": "NOT_SUPPORTED",
+   "labelled_n": 25,
+   "positive_n": 2,
+   "negative_n": 23,
+   "fitted_model_supported": false
+  },
+  {
+   "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+   "reference_population": "TOP_PROSPECT_SAMPLE",
+   "readiness_state": "SUPPORTED",
+   "labelled_n": 166,
+   "positive_n": 34,
+   "negative_n": 132,
+   "fitted_model_supported": false
+  }
+ ],
+ "scoped_war": [],
+ "lineage": [
+  {
+   "root_package_key": "BRO_PHI_1957_FERNANDEZ|chico-fernandez",
+   "hop_number": 3,
+   "asset_name": "Mudcat Grant",
+   "attribution_level": "CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE",
+   "value_resolution": "VALUE_NOT_LOADED",
+   "branch_status": "TERMINAL_NO_RETURN",
+   "war_state": "WAR_NOT_LOADED",
+   "bwar": null
+  },
+  {
+   "root_package_key": "BRO_PHI_1957_FERNANDEZ|chico-fernandez",
+   "hop_number": 3,
+   "asset_name": "Zoilo Versalles",
+   "attribution_level": "CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE",
+   "value_resolution": "VALUE_NOT_LOADED",
+   "branch_status": "TERMINAL_NO_RETURN",
+   "war_state": "WAR_NOT_LOADED",
+   "bwar": null
+  },
+  {
+   "root_package_key": "LAD_ARI_2009_TONY_ABREU|tony-abreu",
+   "hop_number": 1,
+   "asset_name": "Jon Garland",
+   "attribution_level": "PLAYER_ATTRIBUTABLE",
+   "value_resolution": "VALUE_NOT_LOADED",
+   "branch_status": "TERMINAL_NO_RETURN",
+   "war_state": "WAR_NOT_LOADED",
+   "bwar": null
+  },
+  {
+   "root_package_key": "LAD_NYY_2000_JOSE_VIZCAINO|jose-vizcaino",
+   "hop_number": 1,
+   "asset_name": "Jim Leyritz",
+   "attribution_level": "PACKAGE_ATTRIBUTABLE",
+   "value_resolution": "VALUE_NOT_LOADED",
+   "branch_status": "TERMINAL_NO_RETURN",
+   "war_state": "WAR_NOT_LOADED",
+   "bwar": null
+  }
+ ],
+ "war_not_loaded": [
+  {
+   "asset_name": "Apostol Garcia",
+   "mlb_id": "472796",
+   "bref_id": null
+  },
+  {
+   "asset_name": "Danny Muegge",
+   "mlb_id": "458260",
+   "bref_id": null
+  },
+  {
+   "asset_name": "Jim Leyritz",
+   "mlb_id": "117747",
+   "bref_id": "leyriji01"
+  },
+  {
+   "asset_name": "Jon Garland",
+   "mlb_id": "279782",
+   "bref_id": "garlajo01"
+  },
+  {
+   "asset_name": "Mudcat Grant",
+   "mlb_id": "115046",
+   "bref_id": "grantmu01"
+  },
+  {
+   "asset_name": "Rick Roberts",
+   "mlb_id": "425540",
+   "bref_id": null
+  },
+  {
+   "asset_name": "William Juárez",
+   "mlb_id": "452705",
+   "bref_id": null
+  },
+  {
+   "asset_name": "Zoilo Versalles",
+   "mlb_id": "123713",
+   "bref_id": "versazo01"
+  }
+ ],
+ "intervals": [
+  {
+   "interval_key": "LAD_ARI_2009_TONY_ABREU:279782",
+   "interval_status": "CLOSED_EXIT_RECORDED",
+   "war_state": "WAR_NOT_LOADED",
+   "bwar": null,
+   "timing_resolution_basis": null,
+   "exit_resolution_basis": null,
+   "dodgers_rows_in_interval": 0,
+   "dodgers_rows_outside_interval": 0,
+   "outside_bwar": null
+  },
+  {
+   "interval_key": "LAD_MIN_1967_BOB_MILLER:115046",
+   "interval_status": "CLOSED_EXIT_RECORDED",
+   "war_state": "WAR_NOT_LOADED",
+   "bwar": null,
+   "timing_resolution_basis": null,
+   "exit_resolution_basis": null,
+   "dodgers_rows_in_interval": 0,
+   "dodgers_rows_outside_interval": 0,
+   "outside_bwar": null
+  },
+  {
+   "interval_key": "LAD_MIN_1967_BOB_MILLER:123713",
+   "interval_status": "CLOSED_EXIT_RECORDED",
+   "war_state": "WAR_NOT_LOADED",
+   "bwar": null,
+   "timing_resolution_basis": null,
+   "exit_resolution_basis": null,
+   "dodgers_rows_in_interval": 0,
+   "dodgers_rows_outside_interval": 0,
+   "outside_bwar": null
+  },
+  {
+   "interval_key": "LAD_NYY_2000_JOSE_VIZCAINO:117747",
+   "interval_status": "CLOSED_EXIT_RECORDED",
+   "war_state": "WAR_NOT_LOADED",
+   "bwar": null,
+   "timing_resolution_basis": null,
+   "exit_resolution_basis": null,
+   "dodgers_rows_in_interval": 0,
+   "dodgers_rows_outside_interval": 0,
+   "outside_bwar": null
+  }
+ ],
+ "edges": [
+  {
+   "event_key": "LAD_ARI_2009_TONY_ABREU",
+   "incoming_asset_name": "Jon Garland",
+   "attribution_status": "SOLE_OUTGOING_ASSET",
+   "return_state": "RETURN_WAR_UNKNOWN",
+   "incoming_war_status": "NO_TEAM_SEASON_FACTS",
+   "acquisition_timing_status": null,
+   "edge_bwar": null
+  },
+  {
+   "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+   "incoming_asset_name": "Jim Leyritz",
+   "attribution_status": "SHARED_PACKAGE_RETURN",
+   "return_state": "RETURN_WAR_UNKNOWN",
+   "incoming_war_status": "NO_TEAM_SEASON_FACTS",
+   "acquisition_timing_status": null,
+   "edge_bwar": null
+  }
+ ],
+ "signings": [
+  {
+   "player_slug": "chico-fernandez",
+   "realized_value_state": "TO_DATE_CHAIN_INCOMPLETE",
+   "chain_status": "INCOMPLETE_WAR_NOT_LOADED",
+   "direct": "0.00",
+   "trade": "0.62",
+   "realized": "0.62",
+   "pkg_first": "0.62",
+   "pkg_down": null,
+   "observable": "4.90"
+  },
+  {
+   "player_slug": "jose-vizcaino",
+   "realized_value_state": "TO_DATE_CHAIN_INCOMPLETE",
+   "chain_status": "INCOMPLETE_WAR_NOT_LOADED",
+   "direct": "0.19",
+   "trade": "-0.10",
+   "realized": "0.09",
+   "pkg_first": null,
+   "pkg_down": null,
+   "observable": null
+  },
+  {
+   "player_slug": "tony-abreu",
+   "realized_value_state": "VALUE_UNRESOLVED",
+   "chain_status": "INCOMPLETE_WAR_NOT_LOADED",
+   "direct": "1.23",
+   "trade": null,
+   "realized": null,
+   "pkg_first": null,
+   "pkg_down": null,
+   "observable": null
+  }
+ ],
+ "older_view": [
+  {
+   "player_slug": "chico-fernandez",
+   "package_attribution_state": "RETURN_WAR_UNKNOWN",
+   "attributable_value_basis": "RETURN_WAR_UNKNOWN",
+   "trade": null,
+   "org": null
+  },
+  {
+   "player_slug": "jose-vizcaino",
+   "package_attribution_state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+   "attributable_value_basis": "DIRECT_ONLY_SHARED_PACKAGE_RETURN_EXCLUDED",
+   "trade": null,
+   "org": "0.19"
+  },
+  {
+   "player_slug": "tony-abreu",
+   "package_attribution_state": "RETURN_WAR_UNKNOWN",
+   "attributable_value_basis": "RETURN_WAR_UNKNOWN",
+   "trade": null,
+   "org": null
+  }
+ ],
+ "value_totals": {
+  "resolved": 87,
+  "realized": "297.60",
+  "realized_to_date": 80,
+  "chain_incomplete": 7,
+  "unresolved": 1,
+  "pkg_first": "96.39",
+  "pkg_down": "2.99",
+  "observable": "141.44"
+ },
+ "transaction_queue": [
+  {
+   "issue": "CASH_AMOUNT_UNKNOWN",
+   "items": 17
+  },
+  {
+   "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+   "items": 5
+  },
+  {
+   "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+   "items": 6
+  },
+  {
+   "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+   "items": 5
+  },
+  {
+   "issue": "EXIT_STATUS_UNVERIFIED",
+   "items": 16
+  },
+  {
+   "issue": "EXIT_TRANSACTION_MISSING",
+   "items": 2
+  },
+  {
+   "issue": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+   "items": 3
+  },
+  {
+   "issue": "POOL_SPACE_AMOUNT_UNKNOWN",
+   "items": 1
+  },
+  {
+   "issue": "PTBNL_UNRESOLVED",
+   "items": 2
+  },
+  {
+   "issue": "RETURN_ASSET_EXIT_MISSING",
+   "items": 1
+  }
+ ],
+ "value_queue": [
+  {
+   "issue": "ACQUISITION_COST_INCOMPLETE",
+   "items": 28
+  },
+  {
+   "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+   "items": 8
+  },
+  {
+   "issue": "LINEAGE_BOUNDARY_NOTED",
+   "items": 22
+  },
+  {
+   "issue": "OUTCOME_INCOMPLETE",
+   "items": 8
+  },
+  {
+   "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+   "items": 27
+  }
+ ],
+ "scoped_queue": [
+  {
+   "queue": "TRANSACTION",
+   "issue": "CASH_AMOUNT_UNKNOWN",
+   "key": "LAD_NYY_2000_JOSE_VIZCAINO",
+   "subject": "Cash",
+   "detail": "Cash moved on 2000-06-20 with no sourced amount"
+  },
+  {
+   "queue": "TRANSACTION",
+   "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+   "key": "LAD_MIN_1967_BOB_MILLER",
+   "subject": "Mudcat Grant",
+   "detail": "A downstream asset has no loaded team-season facts and no dated no-MLB-appearance observation; its value is unknown, not zero"
+  },
+  {
+   "queue": "TRANSACTION",
+   "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+   "key": "LAD_MIN_1967_BOB_MILLER",
+   "subject": "Zoilo Versalles",
+   "detail": "A downstream asset has no loaded team-season facts and no dated no-MLB-appearance observation; its value is unknown, not zero"
+  },
+  {
+   "queue": "VALUE",
+   "issue": "ACQUISITION_COST_INCOMPLETE",
+   "key": "chico-fernandez",
+   "subject": null,
+   "detail": "1951 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+  },
+  {
+   "queue": "VALUE",
+   "issue": "ACQUISITION_COST_INCOMPLETE",
+   "key": "jose-vizcaino",
+   "subject": null,
+   "detail": "1986 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+  },
+  {
+   "queue": "VALUE",
+   "issue": "ACQUISITION_COST_INCOMPLETE",
+   "key": "tony-abreu",
+   "subject": null,
+   "detail": "2002 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+  },
+  {
+   "queue": "VALUE",
+   "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+   "key": "chico-fernandez",
+   "subject": null,
+   "detail": "The downstream chain is INCOMPLETE_WAR_NOT_LOADED: incomplete data, not a known attribution boundary"
+  },
+  {
+   "queue": "VALUE",
+   "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+   "key": "jose-vizcaino",
+   "subject": null,
+   "detail": "The downstream chain is INCOMPLETE_WAR_NOT_LOADED: incomplete data, not a known attribution boundary"
+  },
+  {
+   "queue": "VALUE",
+   "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+   "key": "tony-abreu",
+   "subject": null,
+   "detail": "The downstream chain is INCOMPLETE_WAR_NOT_LOADED: incomplete data, not a known attribution boundary"
+  },
+  {
+   "queue": "VALUE",
+   "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+   "key": "jose-vizcaino",
+   "subject": null,
+   "detail": "Traded in a shared outgoing package; the package returned  Dodgers bWAR and no individual share is assigned"
+  }
+ ],
+ "research_task_types": [
+  {
+   "task_type": "ACQUISITION_COST_UNKNOWN",
+   "items": 295
+  },
+  {
+   "task_type": "BWAR_MISSING",
+   "items": 50
+  },
+  {
+   "task_type": "CLASS_MEMBERS_MISSING",
+   "items": 3
+  },
+  {
+   "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+   "items": 3
+  },
+  {
+   "task_type": "MARKET_MISSING",
+   "items": 36
+  },
+  {
+   "task_type": "OUTCOME_AUDIT",
+   "items": 130
+  },
+  {
+   "task_type": "SIGNING_DATE_MISSING",
+   "items": 71
+  }
+ ],
+ "prediction": {
+  "outcomes": "67f3f4458712171afa251ae548219fc5",
+  "outcome_audits": "a70b0000bcc7ecafd6c64e9a7c125d97",
+  "outcome_targets": "ae41d84e30a9eeda98ce6b02759ea5ec",
+  "evaluations": "e30028041fb1b760bde8464d1a44d9f9",
+  "support": "96f5f420e0a0e427704971699ba9162d",
+  "training_population": "e6cf6b9072eb4e1b5380920a2a54af82",
+  "feature_matrix": "1df69cd8284d646dfdadaf95a354a6ac",
+  "supported_models": 0,
+  "probabilities": 0,
+  "expected_values": 0,
+  "recommendations": 0,
+  "supported_targets": 0,
+  "evaluation_fingerprints": "102c01a35d380d36493465cef1070c07,1aa73185a9dab3071d4530ee670dd088,86b58f473301e2425751d853abd88e94"
+ },
+ "snapshots": {
+  "generation": 13,
+  "drifting": 0
+ }
+}
