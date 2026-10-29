@@ -15,7 +15,8 @@ import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildChainThrough, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
+// 058 emptied the head's unavailable-WAR pins; the 057 state (Garland and Leyritz still without WAR) is verified by the 057 layer
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_057 as CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 import { measure } from '../../database/research/057/measure.mjs'
 import { assemble, assembleRollback, research } from '../../database/research/057/build.mjs'
 import { benchmarkLabelCoverage } from '../../lib/research/benchmark-sample.js'
@@ -82,10 +83,10 @@ before(async () => {
 
 after(async () => { await chain?.close() })
 
-test('057 follows 056 in the manifest as the last file and is frozen at its released hash', () => {
+test('057 follows 056 in the manifest (058 follows it) and is frozen at its released hash', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '056_international_benchmark_2019.sql')
-  assert.equal(i, manifest.canonical_sql.length - 1)
+  assert.equal(manifest.canonical_sql[i + 1], '058_transaction_return_bwar_evidence.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
   assert.equal(Object.keys(frozen).length, 61)

@@ -253,8 +253,12 @@ What the 046 research showed about the bottlenecks:
   Gail Harris; Offerman: an unnamed conditional return; Frías: a player to be named or cash), and 20 trade packages have an open issue (cash, a
   player to be named, future considerations, pool space). The evidence that would close them is older-era club records or a human retrieval of
   the blocked pages. Two more chains (Abreu, Fernández) are recorded to their end and wait only for Baseball-Reference team-season bWAR:
-  Garland, Grant and Versalles are the returned players whose value is unknown. The archived captures 057 read hold their rows; loading them is a
-  separate transaction-value follow-up (Versalles's 1969 WSA stint has no team-code mapping).
+  Garland, Grant and Versalles are the returned players whose value is unknown (Leyritz, in the Vizcaino trade, too). **Migration 058
+  (transaction-return bWAR evidence) is built and not yet released** (PR open): 91 rows for the four from the 057 captures, no new source,
+  player or mapping (Versalles's 1969 WSA stint, outside his Dodgers window, is not loaded). On release Abreu becomes realized (1.40), the
+  Fernández and Vizcaino chains complete, realized organizational bWAR goes 297.60 -> 299.00 across 87 -> 88 signings, and Garland's 2011
+  Dodgers stint is queued as a return without a recorded acquisition. Reusing the 057 sources makes rollback-057 unavailable once 058 is applied
+  (see `database/release/058-release-plan.md`).
 - **Audits as classes mature.** The 2021 class (22) is already mature: five players are active and need a decision rule once their careers
   end; the 2022 class matures in 2027.
 - **Support thresholds.** Unchanged. In the benchmark sample, reach within 7 seasons (050) and positive bWAR within 10 seasons (057) are

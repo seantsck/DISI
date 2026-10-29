@@ -1,0 +1,887 @@
+{
+ "generated_by": "database/research/058/report.mjs",
+ "note": "Canonical replay. Production differs only in the snapshot generation (13 before 058, so 14 after) and in surrogate ids and timestamps; every value, queue and fingerprint here is logical.",
+ "summary": {
+  "war_active": [
+   1934,
+   2025
+  ],
+  "realized_org_value_bwar": [
+   "297.60",
+   "299.00"
+  ],
+  "signings_with_resolved_value": [
+   87,
+   88
+  ],
+  "realized_incomplete_unresolved": [
+   [
+    80,
+    7,
+    1
+   ],
+   [
+    83,
+    5,
+    0
+   ]
+  ],
+  "executive_direct_trade": [
+   [
+    "282.77",
+    "14.83"
+   ],
+   [
+    "284.00",
+    "15.00"
+   ]
+  ],
+  "package_first_hop_participation_bwar": [
+   "96.39",
+   "95.85"
+  ],
+  "observable_not_attributable_bwar": [
+   "141.44",
+   "141.71"
+  ],
+  "transaction_queue": [
+   58,
+   57
+  ],
+  "value_queue": [
+   93,
+   90
+  ],
+  "prediction_identical": true,
+  "snapshot_generation": [
+   12,
+   13
+  ],
+  "drift_after": 0
+ },
+ "before": {
+  "war": {
+   "rows": 1934,
+   "active": 1934,
+   "retracted": 0,
+   "active_players": 140
+  },
+  "scoped_war": [],
+  "lineage": [
+   {
+    "root_package_key": "BRO_PHI_1957_FERNANDEZ|chico-fernandez",
+    "hop_number": 3,
+    "asset_name": "Mudcat Grant",
+    "attribution_level": "CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE",
+    "value_resolution": "VALUE_NOT_LOADED",
+    "branch_status": "TERMINAL_NO_RETURN",
+    "war_state": "WAR_NOT_LOADED",
+    "bwar": null
+   },
+   {
+    "root_package_key": "BRO_PHI_1957_FERNANDEZ|chico-fernandez",
+    "hop_number": 3,
+    "asset_name": "Zoilo Versalles",
+    "attribution_level": "CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE",
+    "value_resolution": "VALUE_NOT_LOADED",
+    "branch_status": "TERMINAL_NO_RETURN",
+    "war_state": "WAR_NOT_LOADED",
+    "bwar": null
+   },
+   {
+    "root_package_key": "LAD_ARI_2009_TONY_ABREU|tony-abreu",
+    "hop_number": 1,
+    "asset_name": "Jon Garland",
+    "attribution_level": "PLAYER_ATTRIBUTABLE",
+    "value_resolution": "VALUE_NOT_LOADED",
+    "branch_status": "TERMINAL_NO_RETURN",
+    "war_state": "WAR_NOT_LOADED",
+    "bwar": null
+   },
+   {
+    "root_package_key": "LAD_NYY_2000_JOSE_VIZCAINO|jose-vizcaino",
+    "hop_number": 1,
+    "asset_name": "Jim Leyritz",
+    "attribution_level": "PACKAGE_ATTRIBUTABLE",
+    "value_resolution": "VALUE_NOT_LOADED",
+    "branch_status": "TERMINAL_NO_RETURN",
+    "war_state": "WAR_NOT_LOADED",
+    "bwar": null
+   }
+  ],
+  "intervals": [
+   {
+    "interval_key": "LAD_ARI_2009_TONY_ABREU:279782",
+    "interval_status": "CLOSED_EXIT_RECORDED",
+    "war_state": "WAR_NOT_LOADED",
+    "bwar": null,
+    "timing_resolution_basis": null,
+    "exit_resolution_basis": null,
+    "dodgers_rows_in_interval": 0,
+    "dodgers_rows_outside_interval": 0,
+    "outside_bwar": null
+   },
+   {
+    "interval_key": "LAD_MIN_1967_BOB_MILLER:115046",
+    "interval_status": "CLOSED_EXIT_RECORDED",
+    "war_state": "WAR_NOT_LOADED",
+    "bwar": null,
+    "timing_resolution_basis": null,
+    "exit_resolution_basis": null,
+    "dodgers_rows_in_interval": 0,
+    "dodgers_rows_outside_interval": 0,
+    "outside_bwar": null
+   },
+   {
+    "interval_key": "LAD_MIN_1967_BOB_MILLER:123713",
+    "interval_status": "CLOSED_EXIT_RECORDED",
+    "war_state": "WAR_NOT_LOADED",
+    "bwar": null,
+    "timing_resolution_basis": null,
+    "exit_resolution_basis": null,
+    "dodgers_rows_in_interval": 0,
+    "dodgers_rows_outside_interval": 0,
+    "outside_bwar": null
+   },
+   {
+    "interval_key": "LAD_NYY_2000_JOSE_VIZCAINO:117747",
+    "interval_status": "CLOSED_EXIT_RECORDED",
+    "war_state": "WAR_NOT_LOADED",
+    "bwar": null,
+    "timing_resolution_basis": null,
+    "exit_resolution_basis": null,
+    "dodgers_rows_in_interval": 0,
+    "dodgers_rows_outside_interval": 0,
+    "outside_bwar": null
+   }
+  ],
+  "edges": [
+   {
+    "event_key": "LAD_ARI_2009_TONY_ABREU",
+    "incoming_asset_name": "Jon Garland",
+    "attribution_status": "SOLE_OUTGOING_ASSET",
+    "return_state": "RETURN_WAR_UNKNOWN",
+    "incoming_war_status": "NO_TEAM_SEASON_FACTS",
+    "acquisition_timing_status": null,
+    "edge_bwar": null
+   },
+   {
+    "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+    "incoming_asset_name": "Jim Leyritz",
+    "attribution_status": "SHARED_PACKAGE_RETURN",
+    "return_state": "RETURN_WAR_UNKNOWN",
+    "incoming_war_status": "NO_TEAM_SEASON_FACTS",
+    "acquisition_timing_status": null,
+    "edge_bwar": null
+   }
+  ],
+  "signings": [
+   {
+    "player_slug": "chico-fernandez",
+    "realized_value_state": "TO_DATE_CHAIN_INCOMPLETE",
+    "chain_status": "INCOMPLETE_WAR_NOT_LOADED",
+    "direct": "0.00",
+    "trade": "0.62",
+    "realized": "0.62",
+    "pkg_first": "0.62",
+    "pkg_down": null,
+    "observable": "4.90"
+   },
+   {
+    "player_slug": "jose-vizcaino",
+    "realized_value_state": "TO_DATE_CHAIN_INCOMPLETE",
+    "chain_status": "INCOMPLETE_WAR_NOT_LOADED",
+    "direct": "0.19",
+    "trade": "-0.10",
+    "realized": "0.09",
+    "pkg_first": null,
+    "pkg_down": null,
+    "observable": null
+   },
+   {
+    "player_slug": "tony-abreu",
+    "realized_value_state": "VALUE_UNRESOLVED",
+    "chain_status": "INCOMPLETE_WAR_NOT_LOADED",
+    "direct": "1.23",
+    "trade": null,
+    "realized": null,
+    "pkg_first": null,
+    "pkg_down": null,
+    "observable": null
+   }
+  ],
+  "older_view": [
+   {
+    "player_slug": "chico-fernandez",
+    "package_attribution_state": "RETURN_WAR_UNKNOWN",
+    "attributable_value_basis": "RETURN_WAR_UNKNOWN",
+    "trade": null,
+    "org": null
+   },
+   {
+    "player_slug": "jose-vizcaino",
+    "package_attribution_state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "attributable_value_basis": "DIRECT_ONLY_SHARED_PACKAGE_RETURN_EXCLUDED",
+    "trade": null,
+    "org": "0.19"
+   },
+   {
+    "player_slug": "tony-abreu",
+    "package_attribution_state": "RETURN_WAR_UNKNOWN",
+    "attributable_value_basis": "RETURN_WAR_UNKNOWN",
+    "trade": null,
+    "org": null
+   }
+  ],
+  "value_totals": {
+   "resolved": 87,
+   "realized": "297.60",
+   "realized_to_date": 80,
+   "chain_incomplete": 7,
+   "unresolved": 1,
+   "pkg_first": "96.39",
+   "pkg_down": "2.99",
+   "observable": "141.44"
+  },
+  "executive": {
+   "signings_with_resolved_value": 87,
+   "direct": "282.77",
+   "trade": "14.83",
+   "realized": "297.60",
+   "value_left": "432.44",
+   "open_research_tasks": 349
+  },
+  "transaction_queue": [
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "items": 17
+   },
+   {
+    "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+    "items": 5
+   },
+   {
+    "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+    "items": 6
+   },
+   {
+    "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+    "items": 5
+   },
+   {
+    "issue": "EXIT_STATUS_UNVERIFIED",
+    "items": 16
+   },
+   {
+    "issue": "EXIT_TRANSACTION_MISSING",
+    "items": 2
+   },
+   {
+    "issue": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+    "items": 3
+   },
+   {
+    "issue": "POOL_SPACE_AMOUNT_UNKNOWN",
+    "items": 1
+   },
+   {
+    "issue": "PTBNL_UNRESOLVED",
+    "items": 2
+   },
+   {
+    "issue": "RETURN_ASSET_EXIT_MISSING",
+    "items": 1
+   }
+  ],
+  "value_queue": [
+   {
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "items": 28
+   },
+   {
+    "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+    "items": 8
+   },
+   {
+    "issue": "LINEAGE_BOUNDARY_NOTED",
+    "items": 22
+   },
+   {
+    "issue": "OUTCOME_INCOMPLETE",
+    "items": 8
+   },
+   {
+    "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+    "items": 27
+   }
+  ],
+  "scoped_queue": [
+   {
+    "queue": "TRANSACTION",
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "key": "LAD_NYY_2000_JOSE_VIZCAINO",
+    "subject": "Cash",
+    "detail": "Cash moved on 2000-06-20 with no sourced amount"
+   },
+   {
+    "queue": "TRANSACTION",
+    "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+    "key": "LAD_MIN_1967_BOB_MILLER",
+    "subject": "Mudcat Grant",
+    "detail": "A downstream asset has no loaded team-season facts and no dated no-MLB-appearance observation; its value is unknown, not zero"
+   },
+   {
+    "queue": "TRANSACTION",
+    "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+    "key": "LAD_MIN_1967_BOB_MILLER",
+    "subject": "Zoilo Versalles",
+    "detail": "A downstream asset has no loaded team-season facts and no dated no-MLB-appearance observation; its value is unknown, not zero"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "key": "chico-fernandez",
+    "subject": null,
+    "detail": "1951 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "key": "jose-vizcaino",
+    "subject": null,
+    "detail": "1986 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "key": "tony-abreu",
+    "subject": null,
+    "detail": "2002 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+    "key": "chico-fernandez",
+    "subject": null,
+    "detail": "The downstream chain is INCOMPLETE_WAR_NOT_LOADED: incomplete data, not a known attribution boundary"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+    "key": "jose-vizcaino",
+    "subject": null,
+    "detail": "The downstream chain is INCOMPLETE_WAR_NOT_LOADED: incomplete data, not a known attribution boundary"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+    "key": "tony-abreu",
+    "subject": null,
+    "detail": "The downstream chain is INCOMPLETE_WAR_NOT_LOADED: incomplete data, not a known attribution boundary"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+    "key": "jose-vizcaino",
+    "subject": null,
+    "detail": "Traded in a shared outgoing package; the package returned  Dodgers bWAR and no individual share is assigned"
+   }
+  ],
+  "war_not_loaded": [
+   {
+    "asset_name": "Apostol Garcia",
+    "mlb_id": "472796",
+    "bref_id": null
+   },
+   {
+    "asset_name": "Danny Muegge",
+    "mlb_id": "458260",
+    "bref_id": null
+   },
+   {
+    "asset_name": "Jim Leyritz",
+    "mlb_id": "117747",
+    "bref_id": "leyriji01"
+   },
+   {
+    "asset_name": "Jon Garland",
+    "mlb_id": "279782",
+    "bref_id": "garlajo01"
+   },
+   {
+    "asset_name": "Mudcat Grant",
+    "mlb_id": "115046",
+    "bref_id": "grantmu01"
+   },
+   {
+    "asset_name": "Rick Roberts",
+    "mlb_id": "425540",
+    "bref_id": null
+   },
+   {
+    "asset_name": "William Juárez",
+    "mlb_id": "452705",
+    "bref_id": null
+   },
+   {
+    "asset_name": "Zoilo Versalles",
+    "mlb_id": "123713",
+    "bref_id": "versazo01"
+   }
+  ],
+  "research_task_types": [
+   {
+    "task_type": "ACQUISITION_COST_UNKNOWN",
+    "items": 295
+   },
+   {
+    "task_type": "BWAR_MISSING",
+    "items": 50
+   },
+   {
+    "task_type": "CLASS_MEMBERS_MISSING",
+    "items": 3
+   },
+   {
+    "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+    "items": 3
+   },
+   {
+    "task_type": "MARKET_MISSING",
+    "items": 36
+   },
+   {
+    "task_type": "OUTCOME_AUDIT",
+    "items": 130
+   },
+   {
+    "task_type": "SIGNING_DATE_MISSING",
+    "items": 71
+   }
+  ],
+  "prediction": {
+   "outcomes": "dcfb5bbb7c80d034df876ec1eb75c0d4",
+   "outcome_audits": "cf267ddfd2b5e82dc616cfe543fb9441",
+   "outcome_targets": "f9c81b8df8ba1994daed69f9084334ab",
+   "evaluations": "8ce5ff3ae18e4c6b47fd08118d846d91",
+   "support": "96f5f420e0a0e427704971699ba9162d",
+   "training_population": "0e80a361ef719129b3d530e6a6cc33bd",
+   "feature_matrix": "247445262fedd6a986312e47f243179c",
+   "supported_models": 0,
+   "probabilities": 0,
+   "expected_values": 0,
+   "recommendations": 0,
+   "supported_targets": 0,
+   "evaluation_fingerprints": "102c01a35d380d36493465cef1070c07,1aa73185a9dab3071d4530ee670dd088,86b58f473301e2425751d853abd88e94"
+  },
+  "snapshots": {
+   "generation": 12,
+   "drifting": 0
+  }
+ },
+ "after": {
+  "war": {
+   "rows": 2025,
+   "active": 2025,
+   "retracted": 0,
+   "active_players": 144
+  },
+  "scoped_war": [
+   {
+    "bref_id": "garlajo01",
+    "rows": 28,
+    "bat": 14,
+    "pitch": 14,
+    "unmapped": 0,
+    "bwar": "22.51"
+   },
+   {
+    "bref_id": "grantmu01",
+    "rows": 36,
+    "bat": 18,
+    "pitch": 18,
+    "unmapped": 0,
+    "bwar": "21.08"
+   },
+   {
+    "bref_id": "leyriji01",
+    "rows": 15,
+    "bat": 15,
+    "pitch": 0,
+    "unmapped": 0,
+    "bwar": "7.94"
+   },
+   {
+    "bref_id": "versazo01",
+    "rows": 12,
+    "bat": 12,
+    "pitch": 0,
+    "unmapped": 0,
+    "bwar": "12.22"
+   }
+  ],
+  "lineage": [
+   {
+    "root_package_key": "BRO_PHI_1957_FERNANDEZ|chico-fernandez",
+    "hop_number": 3,
+    "asset_name": "Mudcat Grant",
+    "attribution_level": "CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE",
+    "value_resolution": "VALUE_RESOLVED",
+    "branch_status": "TERMINAL_NO_RETURN",
+    "war_state": "LOADED",
+    "bwar": "1.39"
+   },
+   {
+    "root_package_key": "BRO_PHI_1957_FERNANDEZ|chico-fernandez",
+    "hop_number": 3,
+    "asset_name": "Zoilo Versalles",
+    "attribution_level": "CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE",
+    "value_resolution": "VALUE_RESOLVED",
+    "branch_status": "TERMINAL_NO_RETURN",
+    "war_state": "LOADED",
+    "bwar": "-1.12"
+   },
+   {
+    "root_package_key": "LAD_ARI_2009_TONY_ABREU|tony-abreu",
+    "hop_number": 1,
+    "asset_name": "Jon Garland",
+    "attribution_level": "PLAYER_ATTRIBUTABLE",
+    "value_resolution": "VALUE_RESOLVED",
+    "branch_status": "TERMINAL_NO_RETURN",
+    "war_state": "LOADED",
+    "bwar": "0.17"
+   },
+   {
+    "root_package_key": "LAD_NYY_2000_JOSE_VIZCAINO|jose-vizcaino",
+    "hop_number": 1,
+    "asset_name": "Jim Leyritz",
+    "attribution_level": "PACKAGE_ATTRIBUTABLE",
+    "value_resolution": "VALUE_RESOLVED",
+    "branch_status": "TERMINAL_NO_RETURN",
+    "war_state": "LOADED",
+    "bwar": "-0.61"
+   }
+  ],
+  "intervals": [
+   {
+    "interval_key": "LAD_ARI_2009_TONY_ABREU:279782",
+    "interval_status": "CLOSED_EXIT_RECORDED",
+    "war_state": "LOADED",
+    "bwar": "0.17",
+    "timing_resolution_basis": "COUNTERPARTY_STINT_ORDER",
+    "exit_resolution_basis": "OFFSEASON_AFTER_SEASON",
+    "dodgers_rows_in_interval": 2,
+    "dodgers_rows_outside_interval": 2,
+    "outside_bwar": "0.14"
+   },
+   {
+    "interval_key": "LAD_MIN_1967_BOB_MILLER:115046",
+    "interval_status": "CLOSED_EXIT_RECORDED",
+    "war_state": "LOADED",
+    "bwar": "1.39",
+    "timing_resolution_basis": "NO_ACQUISITION_SEASON_DODGERS_STINT",
+    "exit_resolution_basis": "SINGLE_STINT_BEFORE_EXIT",
+    "dodgers_rows_in_interval": 2,
+    "dodgers_rows_outside_interval": 0,
+    "outside_bwar": null
+   },
+   {
+    "interval_key": "LAD_MIN_1967_BOB_MILLER:123713",
+    "interval_status": "CLOSED_EXIT_RECORDED",
+    "war_state": "LOADED",
+    "bwar": "-1.12",
+    "timing_resolution_basis": "NO_ACQUISITION_SEASON_DODGERS_STINT",
+    "exit_resolution_basis": "SINGLE_STINT_BEFORE_EXIT",
+    "dodgers_rows_in_interval": 1,
+    "dodgers_rows_outside_interval": 0,
+    "outside_bwar": null
+   },
+   {
+    "interval_key": "LAD_NYY_2000_JOSE_VIZCAINO:117747",
+    "interval_status": "CLOSED_EXIT_RECORDED",
+    "war_state": "LOADED",
+    "bwar": "-0.61",
+    "timing_resolution_basis": "COUNTERPARTY_STINT_ORDER",
+    "exit_resolution_basis": "OFFSEASON_AFTER_SEASON",
+    "dodgers_rows_in_interval": 1,
+    "dodgers_rows_outside_interval": 0,
+    "outside_bwar": null
+   }
+  ],
+  "edges": [
+   {
+    "event_key": "LAD_ARI_2009_TONY_ABREU",
+    "incoming_asset_name": "Jon Garland",
+    "attribution_status": "SOLE_OUTGOING_ASSET",
+    "return_state": "LOADED",
+    "incoming_war_status": "LOADED",
+    "acquisition_timing_status": "RESOLVED_BY_COUNTERPARTY_STINT_ORDER",
+    "edge_bwar": "0.31"
+   },
+   {
+    "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+    "incoming_asset_name": "Jim Leyritz",
+    "attribution_status": "SHARED_PACKAGE_RETURN",
+    "return_state": "LOADED",
+    "incoming_war_status": "LOADED",
+    "acquisition_timing_status": "RESOLVED_BY_COUNTERPARTY_STINT_ORDER",
+    "edge_bwar": "-0.61"
+   }
+  ],
+  "signings": [
+   {
+    "player_slug": "chico-fernandez",
+    "realized_value_state": "REALIZED_TO_DATE",
+    "chain_status": "COMPLETE_TERMINAL",
+    "direct": "0.00",
+    "trade": "0.62",
+    "realized": "0.62",
+    "pkg_first": "0.62",
+    "pkg_down": null,
+    "observable": "5.17"
+   },
+   {
+    "player_slug": "jose-vizcaino",
+    "realized_value_state": "REALIZED_TO_DATE",
+    "chain_status": "COMPLETE_TERMINAL",
+    "direct": "0.19",
+    "trade": "-0.10",
+    "realized": "0.09",
+    "pkg_first": "-0.71",
+    "pkg_down": null,
+    "observable": null
+   },
+   {
+    "player_slug": "tony-abreu",
+    "realized_value_state": "REALIZED_TO_DATE",
+    "chain_status": "COMPLETE_TERMINAL",
+    "direct": "1.23",
+    "trade": "0.17",
+    "realized": "1.40",
+    "pkg_first": "0.17",
+    "pkg_down": null,
+    "observable": null
+   }
+  ],
+  "older_view": [
+   {
+    "player_slug": "chico-fernandez",
+    "package_attribution_state": "RETURN_WAR_UNKNOWN",
+    "attributable_value_basis": "RETURN_WAR_UNKNOWN",
+    "trade": null,
+    "org": null
+   },
+   {
+    "player_slug": "jose-vizcaino",
+    "package_attribution_state": "SHARED_PACKAGE_NOT_ATTRIBUTABLE",
+    "attributable_value_basis": "DIRECT_ONLY_SHARED_PACKAGE_RETURN_EXCLUDED",
+    "trade": null,
+    "org": "0.19"
+   },
+   {
+    "player_slug": "tony-abreu",
+    "package_attribution_state": "SOLE_OUTGOING_ATTRIBUTABLE",
+    "attributable_value_basis": "DIRECT_PLUS_SOLE_OUTGOING_RETURN",
+    "trade": "0.31",
+    "org": "1.54"
+   }
+  ],
+  "value_totals": {
+   "resolved": 88,
+   "realized": "299.00",
+   "realized_to_date": 83,
+   "chain_incomplete": 5,
+   "unresolved": 0,
+   "pkg_first": "95.85",
+   "pkg_down": "2.99",
+   "observable": "141.71"
+  },
+  "executive": {
+   "signings_with_resolved_value": 88,
+   "direct": "284.00",
+   "trade": "15.00",
+   "realized": "299.00",
+   "value_left": "432.44",
+   "open_research_tasks": 349
+  },
+  "transaction_queue": [
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "items": 17
+   },
+   {
+    "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+    "items": 6
+   },
+   {
+    "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+    "items": 4
+   },
+   {
+    "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+    "items": 5
+   },
+   {
+    "issue": "EXIT_STATUS_UNVERIFIED",
+    "items": 16
+   },
+   {
+    "issue": "EXIT_TRANSACTION_MISSING",
+    "items": 2
+   },
+   {
+    "issue": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+    "items": 3
+   },
+   {
+    "issue": "POOL_SPACE_AMOUNT_UNKNOWN",
+    "items": 1
+   },
+   {
+    "issue": "PTBNL_UNRESOLVED",
+    "items": 2
+   },
+   {
+    "issue": "RETURN_ASSET_EXIT_MISSING",
+    "items": 1
+   }
+  ],
+  "value_queue": [
+   {
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "items": 28
+   },
+   {
+    "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+    "items": 5
+   },
+   {
+    "issue": "LINEAGE_BOUNDARY_NOTED",
+    "items": 22
+   },
+   {
+    "issue": "OUTCOME_INCOMPLETE",
+    "items": 8
+   },
+   {
+    "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+    "items": 27
+   }
+  ],
+  "scoped_queue": [
+   {
+    "queue": "TRANSACTION",
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "key": "LAD_NYY_2000_JOSE_VIZCAINO",
+    "subject": "Cash",
+    "detail": "Cash moved on 2000-06-20 with no sourced amount"
+   },
+   {
+    "queue": "TRANSACTION",
+    "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+    "key": "LAD_FREE_AGENCY_2009_JON_GARLAND",
+    "subject": "Jon Garland",
+    "detail": "The identity has Dodgers team-season rows after a recorded exit and no recorded acquisition event; the later stint is outside every interval and is not credited to any trade return"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "key": "chico-fernandez",
+    "subject": null,
+    "detail": "1951 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "key": "jose-vizcaino",
+    "subject": null,
+    "detail": "1986 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "key": "tony-abreu",
+    "subject": null,
+    "detail": "2002 LATAM_AMATEUR signing with a verified MLB outcome has UNKNOWN acquisition cost; no cost-aware ratio is computed"
+   },
+   {
+    "queue": "VALUE",
+    "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+    "key": "jose-vizcaino",
+    "subject": null,
+    "detail": "Traded in a shared outgoing package; the package returned -0.71 Dodgers bWAR and no individual share is assigned"
+   }
+  ],
+  "war_not_loaded": [
+   {
+    "asset_name": "Apostol Garcia",
+    "mlb_id": "472796",
+    "bref_id": null
+   },
+   {
+    "asset_name": "Danny Muegge",
+    "mlb_id": "458260",
+    "bref_id": null
+   },
+   {
+    "asset_name": "Rick Roberts",
+    "mlb_id": "425540",
+    "bref_id": null
+   },
+   {
+    "asset_name": "William Juárez",
+    "mlb_id": "452705",
+    "bref_id": null
+   }
+  ],
+  "research_task_types": [
+   {
+    "task_type": "ACQUISITION_COST_UNKNOWN",
+    "items": 295
+   },
+   {
+    "task_type": "BWAR_MISSING",
+    "items": 50
+   },
+   {
+    "task_type": "CLASS_MEMBERS_MISSING",
+    "items": 3
+   },
+   {
+    "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+    "items": 3
+   },
+   {
+    "task_type": "MARKET_MISSING",
+    "items": 36
+   },
+   {
+    "task_type": "OUTCOME_AUDIT",
+    "items": 130
+   },
+   {
+    "task_type": "SIGNING_DATE_MISSING",
+    "items": 71
+   }
+  ],
+  "prediction": {
+   "outcomes": "dcfb5bbb7c80d034df876ec1eb75c0d4",
+   "outcome_audits": "cf267ddfd2b5e82dc616cfe543fb9441",
+   "outcome_targets": "f9c81b8df8ba1994daed69f9084334ab",
+   "evaluations": "8ce5ff3ae18e4c6b47fd08118d846d91",
+   "support": "96f5f420e0a0e427704971699ba9162d",
+   "training_population": "0e80a361ef719129b3d530e6a6cc33bd",
+   "feature_matrix": "247445262fedd6a986312e47f243179c",
+   "supported_models": 0,
+   "probabilities": 0,
+   "expected_values": 0,
+   "recommendations": 0,
+   "supported_targets": 0,
+   "evaluation_fingerprints": "102c01a35d380d36493465cef1070c07,1aa73185a9dab3071d4530ee670dd088,86b58f473301e2425751d853abd88e94"
+  },
+  "snapshots": {
+   "generation": 13,
+   "drifting": 0
+  }
+ }
+}

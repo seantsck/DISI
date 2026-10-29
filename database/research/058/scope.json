@@ -1,0 +1,92 @@
+{
+ "note": "The reviewed scope of Migration 058 (owner-approved after the feasibility pass): Baseball-Reference team-season bWAR for the four returned players of existing Dodgers trades whose WAR was the only missing fact. They are transaction-return assets, not DISI signing players: no players row is created, their rows carry player_id NULL and join the value views by the asset's bref_id (the 032-035 returned-player pattern). The rows are read from the two archived captures 057 registered; no source row is added. Each player's complete mapped career row set is loaded (the partner team's acquisition-season stint is what places the Dodgers stint after the trade under the existing counterparty-stint rule); the one row excluded is listed with its reason.",
+ "sources_reused_from": "database/research/057/source-capture.json",
+ "players": [
+  {
+   "name": "Jon Garland", "bref_id": "garlajo01", "mlb_id": "279782", "rows": 28, "bat_rows": 14, "pitch_rows": 14,
+   "acquisition_event_key": "LAD_ARI_2009_TONY_ABREU", "acquisition_date": "2009-08-31", "counterparty": "ARI",
+   "exit_event_key": "LAD_FREE_AGENCY_2009_JON_GARLAND", "exit_date": "2009-11-05",
+   "originating_signing_slug": "tony-abreu", "hop": 1, "attribution": "PLAYER_ATTRIBUTABLE",
+   "attribution_reason": "Tony Abreu (the player to be named later) was the only outgoing asset: SOLE_OUTGOING_ASSET.",
+   "credited_rows": [["garlajo01", 2009, "LAD", 2, "BAT"], ["garlajo01", 2009, "LAD", 2, "PITCH"]],
+   "credited_bwar": "0.17",
+   "placement": "2009 ARI is stint 1 (the counterparty's single stint), LAD is stint 2 = cp_ord + 1: the first stint after the 2009-08-31 trade (COUNTERPARTY_STINT_ORDER). The exit is a 2009-11-05 free agency, after the season (OFFSEASON_AFTER_SEASON).",
+   "not_credited": "The 2011 LAD stint (BAT -0.11, PITCH +0.25) is after the recorded 2009 exit and no re-acquisition is recorded: it is outside every control interval, credited to no trade return, and is queued as DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION."
+  },
+  {
+   "name": "Jim Leyritz", "bref_id": "leyriji01", "mlb_id": "117747", "rows": 15, "bat_rows": 15, "pitch_rows": 0,
+   "acquisition_event_key": "LAD_NYY_2000_JOSE_VIZCAINO", "acquisition_date": "2000-06-20", "counterparty": "NYY",
+   "exit_event_key": "LAD_FREE_AGENCY_2000_JIM_LEYRITZ", "exit_date": "2000-11-01",
+   "originating_signing_slug": "jose-vizcaino", "hop": 1, "attribution": "PACKAGE_ATTRIBUTABLE",
+   "attribution_reason": "Jose Vizcaino and cash (amount not stated) went out: SHARED_PACKAGE_RETURN. The return is package value, never Vizcaino's individual value; CASH_AMOUNT_UNKNOWN stays open.",
+   "credited_rows": [["leyriji01", 2000, "LAD", 2, "BAT"]],
+   "credited_bwar": "-0.61",
+   "placement": "2000 NYY is stint 1 (the counterparty's single stint), LAD is stint 2 = cp_ord + 1 (COUNTERPARTY_STINT_ORDER). The exit is a 2000-11-01 free agency (OFFSEASON_AFTER_SEASON).",
+   "not_credited": "Every other season is before the trade or after the exit."
+  },
+  {
+   "name": "Mudcat Grant", "bref_id": "grantmu01", "mlb_id": "115046", "rows": 36, "bat_rows": 18, "pitch_rows": 18,
+   "acquisition_event_key": "LAD_MIN_1967_BOB_MILLER", "acquisition_date": "1967-11-28", "counterparty": "MIN",
+   "exit_event_key": "LAD_MON_1968_GRANT_EXPANSION", "exit_date": "1968-10-14",
+   "originating_signing_slug": "chico-fernandez", "hop": 3, "attribution": "CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE",
+   "attribution_reason": "The third hop of the Chico Fernandez chain (Fernandez -> Harkness -> Bob Miller); Miller, John Roseboro and Ron Perranoski went out together and none is a tracked signing. The value is observable in the chain and never attributable to Fernandez.",
+   "credited_rows": [["grantmu01", 1968, "LAD", 1, "BAT"], ["grantmu01", 1968, "LAD", 1, "PITCH"]],
+   "credited_bwar": "1.39",
+   "placement": "A November acquisition: the 1967 season is before it and 1968 is after it (NO_ACQUISITION_SEASON_DODGERS_STINT). The 1968-10-14 expansion-draft exit follows his single 1968 Dodgers stint (SINGLE_STINT_BEFORE_EXIT).",
+   "not_credited": "Every other season is before the trade or after the exit."
+  },
+  {
+   "name": "Zoilo Versalles", "bref_id": "versazo01", "mlb_id": "123713", "rows": 12, "bat_rows": 12, "pitch_rows": 0,
+   "acquisition_event_key": "LAD_MIN_1967_BOB_MILLER", "acquisition_date": "1967-11-28", "counterparty": "MIN",
+   "exit_event_key": "LAD_SD_1968_VERSALLES_EXPANSION", "exit_date": "1968-10-14",
+   "originating_signing_slug": "chico-fernandez", "hop": 3, "attribution": "CHAIN_OBSERVABLE_NOT_ATTRIBUTABLE",
+   "attribution_reason": "The same trade and chain as Mudcat Grant: observable, never attributable to Fernandez.",
+   "credited_rows": [["versazo01", 1968, "LAD", 1, "BAT"]],
+   "credited_bwar": "-1.12",
+   "placement": "A November acquisition: 1968 is after it (NO_ACQUISITION_SEASON_DODGERS_STINT); the 1968-10-14 expansion-draft exit follows his single 1968 Dodgers stint (SINGLE_STINT_BEFORE_EXIT).",
+   "not_credited": "Every other season is before the trade or after the exit."
+  }
+ ],
+ "excluded_rows": [
+  {
+   "bref_id": "versazo01", "mlb_id": "123713", "season": 1969, "team": "WSA", "stint": 2, "component": "BAT", "war": "0.36",
+   "reason": "OUTSIDE_DODGERS_VALUE_WINDOW_AND_UNMAPPED_TEAM",
+   "detail": "WSA is Baseball-Reference's code for the 1961-1971 expansion Washington Senators. bref_team_code_map has no WSA row (WSH is deliberately mapped only through 1960), and no mapping is added. The row is a non-Dodgers season after his 1968-10-14 exit, so it cannot change his Dodgers transaction value (-1.12 with or without it); loaded with a NULL organization it would only raise TEAM_HISTORY_UNRESOLVED and break the global no-unmapped-organization checks of 032-035."
+  }
+ ],
+ "not_in_scope": {
+  "war_not_loaded_assets": [
+   { "name": "Rick Roberts", "mlb_id": "425540", "chain": "hideo-nomo (LAD_DET_1999_DAVE_MLICKI)" },
+   { "name": "Apostol Garcia", "mlb_id": "472796", "chain": "hideo-nomo (LAD_DET_1999_DAVE_MLICKI)" },
+   { "name": "Danny Muegge", "mlb_id": "458260", "chain": "raul-mondesi (LAD_ARI_2005_SHAWN_GREEN)" },
+   { "name": "William Juarez", "mlb_id": "452705", "chain": "raul-mondesi (LAD_ARI_2005_SHAWN_GREEN)" }
+  ],
+  "note": "The other four WAR_NOT_LOADED assets have no verified Baseball-Reference id and no row in either capture. Their blocker is an unresearched exit and no dated no-MLB-appearance observation, not loadable WAR. Their value stays unknown: absence from a file is never zero, and no observation is created."
+ },
+ "reviewed_effect": {
+  "war_active": [1934, 2025],
+  "sources": [3384, 3384],
+  "realized_org_value_bwar": ["297.60", "299.00"],
+  "signings_with_resolved_value": [87, 88],
+  "realized_to_date": [80, 83],
+  "to_date_chain_incomplete": [7, 5],
+  "value_unresolved": [1, 0],
+  "realized_direct_dodgers_bwar": ["282.77", "284.00"],
+  "realized_individually_attributable_trade_bwar": ["14.83", "15.00"],
+  "package_first_hop_participation_bwar": ["96.39", "95.85"],
+  "observable_not_attributable_bwar": ["141.44", "141.71"],
+  "signings": {
+   "tony-abreu": { "before": ["VALUE_UNRESOLVED", "INCOMPLETE_WAR_NOT_LOADED", null], "after": ["REALIZED_TO_DATE", "COMPLETE_TERMINAL", "1.40"] },
+   "jose-vizcaino": { "before": ["TO_DATE_CHAIN_INCOMPLETE", "INCOMPLETE_WAR_NOT_LOADED", "0.09"], "after": ["REALIZED_TO_DATE", "COMPLETE_TERMINAL", "0.09"] },
+   "chico-fernandez": { "before": ["TO_DATE_CHAIN_INCOMPLETE", "INCOMPLETE_WAR_NOT_LOADED", "0.62"], "after": ["REALIZED_TO_DATE", "COMPLETE_TERMINAL", "0.62"] }
+  },
+  "transaction_queue_total": [58, 57],
+  "transaction_queue_moves": { "DOWNSTREAM_WAR_NOT_LOADED": [6, 4], "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION": [5, 6] },
+  "value_queue_total": [93, 90],
+  "value_queue_moves": { "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE": [8, 5] },
+  "bwar_missing": [50, 50],
+  "transaction_war_unavailable_mlb_ids": [["279782", "117747"], []],
+  "hard_checks": [259, 259],
+  "older_view_note": "OLDER VIEW != VALUE OF RECORD. The 033 edge view v_trade_realization_edges is not bounded by a later exit, so it shows Garland's return as 0.31 (it includes his 2011 Dodgers stint), and v_player_organizational_realization repeats that figure. The value of record is the 034 interval-bounded value (0.17) that v_player_realized_organizational_value, v_executive_overview and product_player_decision read. The same split already exists for Casey Blake (9.16 in the edge view, 0.94 interval-bounded). No application code reads the 033 figures; 058 does not redesign either view."
+ }
+}

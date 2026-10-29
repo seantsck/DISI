@@ -228,7 +228,9 @@ export const CANONICAL_EXPECTATIONS = {
   // loaded (the files answer 403): Jon Garland, acquired 2009-08-31 for Tony Abreu. The identity check accepts him ONLY while the model shows him as
   // RETURN_WAR_UNKNOWN with a NULL Dodgers bWAR; any other returned player without WAR is still a violation.
   // 053 adds Jim Leyritz (MLB 117747), acquired 2000-06-20 for Jose Vizcaino and cash; his Dodgers bWAR is not loaded either.
-  transaction_war_unavailable_mlb_ids: ['279782', '117747'],
+  // 058 loads both players' Baseball-Reference team-season rows (from the archived captures 057 registered), so no returned player is accepted
+  // without WAR any more; the two ids stay pinned in EXPECTATIONS_THROUGH_057 for every earlier state.
+  transaction_war_unavailable_mlb_ids: [],
   // transaction and asset-chain completion (033)
   transaction_event_shape_violations: 0,
   transaction_asset_shape_violations: 0,
@@ -288,12 +290,23 @@ export const CANONICAL_EXPECTATIONS = {
 }
 
 /**
+ * The pinned expectations as they stood through Migration 057 (056 and 057 moved no pin, so this is also the 056 head). Tests that verify a chain
+ * built only through 056 or 057 use this; CANONICAL_EXPECTATIONS is always the current head. Migration 058 (transaction-return bWAR evidence)
+ * loaded the Baseball-Reference team-season rows of the two returned players whose WAR had been knowingly unavailable (Jon Garland, Jim Leyritz),
+ * so it emptied the pinned list below; nothing else differs (its value and queue movements are data, not pins).
+ */
+export const EXPECTATIONS_THROUGH_057 = Object.freeze({
+  ...CANONICAL_EXPECTATIONS,
+  transaction_war_unavailable_mlb_ids: ['279782', '117747'],
+})
+
+/**
  * The pinned expectations as they stood through Migration 055. Tests that verify a chain built only through 055 use this; CANONICAL_EXPECTATIONS is
  * always the current head. Migration 056 (the 2019 international benchmark) added 26 benchmark players, each with one ranking, and moved the
  * population and scouting counts below; nothing else differs.
  */
 export const EXPECTATIONS_THROUGH_055 = Object.freeze({
-  ...CANONICAL_EXPECTATIONS,
+  ...EXPECTATIONS_THROUGH_057,
   players_total: 372,
   league_benchmark_players: 152,
   player_evaluations: 155,

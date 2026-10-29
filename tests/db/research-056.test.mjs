@@ -14,7 +14,8 @@ import { fileURLToPath } from 'node:url'
 import { PGlite } from '@electric-sql/pglite'
 import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'
 import { buildChainThrough, manifest } from './canonical-chain.mjs'
-import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS, EXPECTATIONS_THROUGH_055 } from '../../scripts/db/lib/invariants.mjs'
+// 058 emptied the head's unavailable-WAR pins; the 056 state is verified by the 057 layer (056 and 057 moved no pin)
+import { checkInvariants, failedChecks, EXPECTATIONS_THROUGH_057 as CANONICAL_EXPECTATIONS, EXPECTATIONS_THROUGH_055 } from '../../scripts/db/lib/invariants.mjs'
 import { measure } from '../../database/research/056/measure.mjs'
 import { assemble, assembleRollback, research } from '../../database/research/056/build.mjs'
 
