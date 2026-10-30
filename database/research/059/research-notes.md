@@ -34,3 +34,11 @@
 - **Rollback.** Metric observations have no ACTIVE / RETRACTED lifecycle; the rollback deletes exactly the eleven 059 rows, matched on every
   column, and refuses a later or changed observation. No source, ledger row or rollback dependency is created: no released rollback reads
   `player_metric_observations`, and 059 adds nothing on the 057 sources.
+
+## First production attempt and the timeout fix (2026-10-29)
+
+- The first candidate (sha256 `88d0ef1e…`) was cancelled on production by the hosted `statement_timeout = 2min` inside its postcondition `DO`
+  block (20:49:37Z → 20:53:47Z, exit 3) and rolled back whole; production was re-read byte-identical afterwards. 059 was not applied.
+- 059 and rollback-059 now `set local statement_timeout = '600s'` right after `begin;` (the `refresh-product-snapshots.sql` convention), scoped to
+  their own transaction. Nothing else changed: scope, values, as-of, provenance, guards and snapshot behaviour are as reviewed.
+- Rehearsals run with a 2min server default; a tighter outer limit proves the superseded bytes fail and the corrected ones commit.

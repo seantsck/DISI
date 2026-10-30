@@ -7,8 +7,10 @@
 -- player, value, observation date (2026-09-28), season (2026), source (the live batting data file), confidence and notes. It refuses when 059 is
 -- not applied, when any of the eleven has a CAREER_BWAR observation that is not exactly the 059 one (a later observation, or a changed 059 row),
 -- and when fewer than eleven 059 rows exist. No source, team-season row, outcome or other observation is touched; the refresh runs once.
+-- Like 059, it raises its own statement timeout for this transaction only (SET LOCAL, 600 s): hosted production defaults to 2min per statement.
 
 begin;
+set local statement_timeout = '600s';
 
 create temporary table _r059 on commit drop as
 select $r059${{payload_json}}$r059$::jsonb as j;

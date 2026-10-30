@@ -32,7 +32,10 @@ const EXPECTED = { 'rafael-devers': '30.6', 'gleyber-torres': '20.9', 'eloy-jime
   'lewin-diaz': '0.1', 'anderson-espinoza': '0.0', 'hyo-jun-park': '-0.6', 'jose-herrera': '-0.7', 'diego-castillo': '-0.8' }
 const ELEVEN = Object.keys(EXPECTED).sort()
 const SNAP_DROP = ['generation_id', 'refreshed_at', 'created_at', 'generated_at', 'snapshot_at', 'id', 'updated_at']
-const server = new EmbeddedPostgres({ databaseDir: dataDir, user: 'postgres', password: 'postgres', port, persistent: false, onLog: () => {} })
+// hosted parity: production sets statement_timeout = 2min for every session; the disposable server does the same (059 / rollback-059 raise their own
+// limit with SET LOCAL '600s', which must apply inside their transaction only)
+const HOSTED_STATEMENT_TIMEOUT = '2min'
+const server = new EmbeddedPostgres({ databaseDir: dataDir, user: 'postgres', password: 'postgres', port, persistent: false, onLog: () => {}, postgresFlags: ['-c', `statement_timeout=${HOSTED_STATEMENT_TIMEOUT}`] })
 await server.initialise()
 await server.start()
 const connect = async (db) => { const c = new pg.Client({ host: 'localhost', port, user: 'postgres', password: 'postgres', database: db }); c.on('error', () => {}); await c.connect(); return c }
@@ -51,10 +54,16 @@ async function freshDb(name) {
 const copyDb = async (from, to) => { const admin = await connect('postgres'); await admin.query(`create database ${to} template ${from}`); await admin.end() }
 async function apply(c, root, files) { for (const f of files) { try { await c.query(readSql(root, f)) } catch (e) { throw new Error(`${f}: ${e.message}`) } } }
 // runs a SQL file with psql -X -v ON_ERROR_STOP=1 against a database of the disposable server
+// in one session: SHOW statement_timeout, the file, SHOW statement_timeout (the session default before and after; a SET LOCAL must not leak)
 const psql = (db, file) => new Promise((resolve) => {
-  const p = spawn('psql', ['-X', '-v', 'ON_ERROR_STOP=1', '-h', 'localhost', '-p', String(port), '-U', 'postgres', '-d', db, '-f', file], { env: { ...process.env, PGPASSWORD: 'postgres' } })
+  const show = "select 'SESSION_STATEMENT_TIMEOUT=' || current_setting('statement_timeout') as t"
+  const p = spawn('psql', ['-X', '-v', 'ON_ERROR_STOP=1', '-h', 'localhost', '-p', String(port), '-U', 'postgres', '-d', db, '-c', show, '-f', file, '-c', show],
+    { env: { ...process.env, PGPASSWORD: 'postgres' } })
   let out = ''; p.stdout.on('data', (d) => { out += d }); p.stderr.on('data', (d) => { out += d })
-  p.on('close', (code) => resolve({ code, out }))
+  p.on('close', (code) => {
+    const seen = [...out.matchAll(/SESSION_STATEMENT_TIMEOUT=(\S+)/g)].map((m) => m[1])
+    resolve({ code, out, before: seen[0] ?? null, after: seen.length > 1 ? seen[seen.length - 1] : null })
+  })
 })
 const rowsOf = async (c, sql, params) => (await c.query(sql, params)).rows
 const q = (c) => async (sql, params) => rowsOf(c, sql, params)
@@ -152,6 +161,8 @@ try {
   t0 = Date.now()
   const ap = await psql('disi_a', F059)
   check(`apply 059 with psql -X -v ON_ERROR_STOP=1: exit ${ap.code}, COMMIT (${Date.now() - t0} ms)`, ap.code === 0 && /^COMMIT$/m.test(ap.out) && !/ROLLBACK|ERROR/.test(ap.out), ap.out.trim().split('\n').slice(-3).join(' | '))
+  check(`hosted parity on apply: session statement_timeout ${ap.before} before and ${ap.after} after (the migration's SET LOCAL 600s did not leak)`,
+    ap.before === HOSTED_STATEMENT_TIMEOUT && ap.after === HOSTED_STATEMENT_TIMEOUT && /^SET$/m.test(ap.out), `before=${ap.before} after=${ap.after}`)
   const S1 = await snapState(A)
 
   // 4: exactly 11 new rows, only for the 11 slugs, no other row changed
@@ -234,6 +245,8 @@ try {
       && lostB.length === 0 && SB.snap && equalJson(SB.snap, S0.snap) && SB.gen.every((x) => x.length === 1 && x[0] === S1.gen[0][0] + 1) && (await drift(B)).length === 0 && md5(SB.cat) === md5(S0.cat)
       && equalJson(SB.pred, S0.pred) && equalJson(SB.val, S0.val),
     `${rb.out.trim().split('\n').slice(-2).join(' | ')} diff:${lostB.join(',')}`)
+  check(`hosted parity on rollback: session statement_timeout ${rb.before} before and ${rb.after} after (rollback-059's SET LOCAL 600s did not leak)`,
+    rb.before === HOSTED_STATEMENT_TIMEOUT && rb.after === HOSTED_STATEMENT_TIMEOUT && /^SET$/m.test(rb.out), `before=${rb.before} after=${rb.after}`)
   const HB = hashes(await tableRows(B))
   const rb2 = await psql('disi_b', R059)
   const HB2 = hashes(await tableRows(B))

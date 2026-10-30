@@ -18,8 +18,14 @@
 -- It then runs the explicit snapshot refresh once, only when this run added an observation.
 --
 -- Rerunnable: every statement is idempotent; the refresh runs only when an observation was added.
+--
+-- Statement timeout. Hosted production sets statement_timeout = 2min at the session / database level, and each DO block below is one statement
+-- (the postcondition block re-derives every isolation fingerprint). The first production attempt of this migration (2026-10-29 20:49:37Z) was
+-- cancelled by that limit inside its postcondition block and rolled back whole, before any commit. The transaction therefore raises its own limit
+-- with SET LOCAL, the refresh-product-snapshots.sql convention: it applies to this transaction only and reverts at COMMIT or ROLLBACK.
 
 begin;
+set local statement_timeout = '600s';
 
 -- ===========================================================================
 -- 0. REVIEWED RESEARCH DATA

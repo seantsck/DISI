@@ -31,9 +31,11 @@ changing".
 
 ## Files
 
-- `database/sql/059_career_bwar_metric_reconciliation.sql`: 30681 bytes, sha256 `88d0ef1ee2d51a99f9683678e236e71b4a6c7fac64beaf47a71387a2970cf8b8`,
-  normalized sha1 `6d7e98f219d060f27b0e62bccc7742385ad9fdcf`.
-- `database/release/sql/rollback-059.sql`: 18622 bytes, sha256 `575d1617b5d3ba7916be4ce2ce5d19d0a1c60fa19d46befe078549bd6d273ccc`.
+- `database/sql/059_career_bwar_metric_reconciliation.sql`: 31292 bytes, sha256 `3734a39fe1f5150fb3ea28c424eaad5b9144375664bf84a7671d4ba348515a47`,
+  normalized sha1 `1c9b78ec66eef3cbcb8d419bba5e7c110d5ce89e`.
+- `database/release/sql/rollback-059.sql`: 18805 bytes, sha256 `0d22a10240e430c862e960147d27e7fc104591d242fb251371e8b6eb807138aa`.
+- Superseded (the failed first release candidate, see "First production attempt"): migration sha256 `88d0ef1e…8cf8b8` (normalized sha1
+  `6d7e98f2…`), rollback sha256 `575d1617…273ccc`. They are not release hashes.
 - `database/research/059/`: scope, baseline (replay and production), build, evidence, report, notes.
 - `database/release/pg17/run-059.sh`, `validate-059.mjs`: the independent PostgreSQL 17 validation.
 - `tests/db/research-059.test.mjs`, `tests/unit/research-059.test.mjs`.
@@ -73,9 +75,36 @@ retirement evidence and is not used.
 at 2025 and cite the archived captures the provider rule does not accept, and all played in 2026 (10-SEASON WINDOW COMPLETE != CAREER COMPLETE).
 The other 28 `BWAR_MISSING` players have no team-season WAR. After 059 the 39 remaining are these 11 + 28.
 
+## First production attempt (failed safely, 2026-10-29)
+
+- **Run:** the superseded candidate (sha256 `88d0ef1e…`) through the safe runner, 2026-10-29T20:49:37Z → 20:53:47Z, exit 3, pipeline exit 3.
+- **Failure:** `ERROR: canceling statement due to statement timeout`, in the postcondition `DO` block, after `INSERT 0 11` inside the transaction.
+- **Outcome:** there was no COMMIT; PostgreSQL rolled the whole transaction back. A read-only re-read of production afterwards was byte-identical
+  to the pre-059 baseline (CAREER_BWAR 47, BWAR_MISSING 50, generation 14, drift 0, 259/259). **059 was not applied.**
+- **Root cause:** hosted production sets `statement_timeout = 2min` at the session / database level, and a `DO` block is one statement; the
+  postcondition block (every isolation fingerprint, the table hashes and the queue checks) exceeded it. The PostgreSQL 17 rehearsal had no statement
+  timeout and could not reproduce it (a rehearsal-parity gap).
+- **Fix:** 059 and rollback-059 each run `set local statement_timeout = '600s';` right after `begin;`, the `refresh-product-snapshots.sql`
+  convention. `SET LOCAL` applies to that transaction only and reverts at COMMIT or ROLLBACK: no role, database or system setting changes, and
+  later sessions keep 2min. The substantive SQL is unchanged.
+
+## Statement timeout (hosted parity, required)
+
+| | Value |
+|---|---|
+| Hosted production default (session / database) | `2min` |
+| Inside 059 (`SET LOCAL`) | `600s` |
+| Inside rollback-059 (`SET LOCAL`) | `600s` |
+| Restored-copy rehearsal and `run-059.sh`: server default | `2min` (no longer limit supplied by the runner or `PGOPTIONS`) |
+
+Every rehearsal runs with the 2min default and records `SHOW statement_timeout` in the apply / rollback session before and after (2min both times).
+The rehearsal also proves sensitivity on disposable copies: under a far tighter outer limit the superseded bytes are cancelled and roll back whole,
+while the corrected bytes commit. A new production authorization is required for the corrected hash; the earlier one covered `88d0ef1e…` only.
+
 ## Order
 
-1. **Back up.** `pg_dump` through the safe runner, mode 600, SHA-256 sidecar. Restore-verify on PostgreSQL 17: on the restored copy the verifier
+1. **Back up.** `pg_dump` through the safe runner, mode 600, SHA-256 sidecar. Restore-verify on PostgreSQL 17 with a `statement_timeout = 2min`
+   server default (hosted parity): on the restored copy the verifier
    passes 259/259; 059 applies, reruns as a no-op, rolls back, refuses a guarded rollback, and reapplies (`run-059.sh` proves the same on a replay).
 2. **Read-only checks on production, before the apply:** verifier 259/259 (current expectations), catalog 79 / 156 / 37, sources 3384, players 398,
    active WAR 2025, generation **14** on all eleven snapshots, drift 0, CAREER_BWAR 47, `BWAR_MISSING` 50, none of the eleven or the 057 eleven with an
