@@ -37,12 +37,12 @@ test('manifest lists every canonical SQL file, in order', () => {
 })
 
 // Each migration replaces some views of the one before it, so rerunnability is
-// checked for the latest migration of the chain this file builds (046; 047, 048, 049, 050, 052, 053, 054, 054a, 055, 056, 057 and 058 prove their own reruns in
+// checked for the latest migration of the chain this file builds (046; 047, 048, 049, 050, 052, 053, 054, 054a, 055, 056, 057, 058 and 059 prove their own reruns in
 // tests/db/research-047.test.mjs, research-048.test.mjs, research-049.test.mjs, research-050.test.mjs, research-052.test.mjs, research-053.test.mjs,
-// research-054.test.mjs, research-054a.test.mjs, research-055.test.mjs, research-056.test.mjs, research-057.test.mjs and research-058.test.mjs).
+// research-054.test.mjs, research-054a.test.mjs, research-055.test.mjs, research-056.test.mjs, research-057.test.mjs, research-058.test.mjs and research-059.test.mjs).
 test('the latest migration is rerunnable without changing data', async () => {
   const latest = '046_outcome_cost_research_batch.sql'
-  assert.equal(manifest.canonical_sql.at(-13), latest)
+  assert.equal(manifest.canonical_sql.at(-14), latest)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
       (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
@@ -2172,7 +2172,8 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 056 (the 2019 international benchmark) was released to production on 2026-10-27 (applied; PR #37, 3d51789) and is frozen (PR #38, 47bb28a)
 // 057 (benchmark bWAR evidence from the archived Baseball-Reference data files) was released to production on 2026-10-28 (applied; PR #40, b451809) and is frozen (PR #41, af8c977)
 // 058 (transaction-return bWAR evidence for four returned players, from the archived Baseball-Reference data files) was released to production on 2026-10-29 (applied; PR #42, 3182db1) and is frozen
-const UNRELEASED_ADDITIONS = []
+// 059 (career bWAR metric reconciliation for eleven benchmark players, from the 2026 team-season ledger) is built and not yet released
+const UNRELEASED_ADDITIONS = ['059_career_bwar_metric_reconciliation.sql']
 
 test('frozen history: migrations 001-058 (with 043a and 054a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))

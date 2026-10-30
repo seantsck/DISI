@@ -1,0 +1,1313 @@
+{
+ "generated_by": "database/research/059/report.mjs",
+ "note": "Canonical replay. Production differs only in the snapshot generation (14 before 059, so 15 after) and in surrogate ids and timestamps; every value, queue and fingerprint here is logical.",
+ "summary": {
+  "career_bwar_observations": [
+   47,
+   58
+  ],
+  "bwar_missing": [
+   50,
+   39
+  ],
+  "removed_from_bwar_missing": [
+   "anderson-espinoza",
+   "dermis-garcia",
+   "diego-castillo",
+   "eloy-jimenez",
+   "gleyber-torres",
+   "huascar-ynoa",
+   "hyo-jun-park",
+   "jose-herrera",
+   "lewin-diaz",
+   "marcos-diplan",
+   "rafael-devers"
+  ],
+  "unchanged": {
+   "outcomes": true,
+   "team_season_war": true,
+   "sources": true,
+   "training_population": true,
+   "feature_matrix": true,
+   "support": true,
+   "evaluation_view": true,
+   "probabilities": true,
+   "expected_values": true,
+   "realized_outcome": true,
+   "realized_value": true,
+   "lineage": true,
+   "transaction_queue": true,
+   "value_queue": true,
+   "executive_overview": true,
+   "other_research_tasks": true
+  },
+  "prediction_identical": true,
+  "value_identical": true,
+  "war_active": [
+   2025,
+   2025
+  ],
+  "realized_org_value_bwar": [
+   "299.00",
+   "299.00"
+  ],
+  "transaction_queue": [
+   57,
+   57
+  ],
+  "value_queue": [
+   90,
+   90
+  ],
+  "snapshot_generation": [
+   13,
+   14
+  ],
+  "drift_after": 0
+ },
+ "before": {
+  "metric": [
+   {
+    "metric_key": "CAREER_BWAR",
+    "observations": 47,
+    "players": 47
+   }
+  ],
+  "scoped_metric": [],
+  "bwar_missing": [
+   {
+    "player_slug": "adael-amador",
+    "franchise_key": "COL",
+    "signing_year": 2019
+   },
+   {
+    "player_slug": "adrian-morejon",
+    "franchise_key": "SD",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "anderson-espinoza",
+    "franchise_key": "BOS",
+    "signing_year": 2014
+   },
+   {
+    "player_slug": "andres-gimenez",
+    "franchise_key": "NYM",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "andry-lara",
+    "franchise_key": "WSH",
+    "signing_year": 2019
+   },
+   {
+    "player_slug": "cionel-perez",
+    "franchise_key": "HOU",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "cristian-pache",
+    "franchise_key": "ATL",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "dermis-garcia",
+    "franchise_key": "NYY",
+    "signing_year": 2014
+   },
+   {
+    "player_slug": "diego-castillo",
+    "franchise_key": "NYY",
+    "signing_year": 2014
+   },
+   {
+    "player_slug": "eloy-jimenez",
+    "franchise_key": "CHC",
+    "signing_year": 2013
+   },
+   {
+    "player_slug": "emmanuel-dejesus",
+    "franchise_key": "BOS",
+    "signing_year": 2013
+   },
+   {
+    "player_slug": "everson-pereira",
+    "franchise_key": "NYY",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "fernando-tatis-jr",
+    "franchise_key": "CWS",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "francisco-alvarez",
+    "franchise_key": "NYM",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "francisco-morales",
+    "franchise_key": "PHI",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "gabriel-arias",
+    "franchise_key": "SD",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "george-valera",
+    "franchise_key": "CLE",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "gilberto-celestino",
+    "franchise_key": "HOU",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "gleyber-torres",
+    "franchise_key": "CHC",
+    "signing_year": 2013
+   },
+   {
+    "player_slug": "huascar-ynoa",
+    "franchise_key": "MIN",
+    "signing_year": 2014
+   },
+   {
+    "player_slug": "hyo-jun-park",
+    "franchise_key": "NYY",
+    "signing_year": 2014
+   },
+   {
+    "player_slug": "jasson-dominguez",
+    "franchise_key": "NYY",
+    "signing_year": 2019
+   },
+   {
+    "player_slug": "jorge-ona",
+    "franchise_key": "SD",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "jose-herrera",
+    "franchise_key": "ARI",
+    "signing_year": 2013
+   },
+   {
+    "player_slug": "juan-soto",
+    "franchise_key": "WSH",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "julio-rodriguez",
+    "franchise_key": "SEA",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "kevin-alcantara",
+    "franchise_key": "NYY",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "leody-taveras",
+    "franchise_key": "TEX",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "lewin-diaz",
+    "franchise_key": "MIN",
+    "signing_year": 2013
+   },
+   {
+    "player_slug": "lourdes-gurriel-jr",
+    "franchise_key": "TOR",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "luis-garcia-jr",
+    "franchise_key": "WSH",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "luis-matos",
+    "franchise_key": "SFG",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "luis-robert-jr",
+    "franchise_key": "CWS",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "marco-luciano",
+    "franchise_key": "SFG",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "marcos-diplan",
+    "franchise_key": "TEX",
+    "signing_year": 2013
+   },
+   {
+    "player_slug": "maximo-acosta",
+    "franchise_key": "TEX",
+    "signing_year": 2019
+   },
+   {
+    "player_slug": "miguel-amaya",
+    "franchise_key": "CHC",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "noelvi-marte",
+    "franchise_key": "SEA",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "norge-ruiz",
+    "franchise_key": "OAK",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "orelvis-martinez",
+    "franchise_key": "TOR",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "osleivis-basabe",
+    "franchise_key": "TEX",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "rafael-devers",
+    "franchise_key": "BOS",
+    "signing_year": 2013
+   },
+   {
+    "player_slug": "rafael-marchan",
+    "franchise_key": "PHI",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "randy-arozarena",
+    "franchise_key": "STL",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "ronald-bolanos",
+    "franchise_key": "SD",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "ronny-mauricio",
+    "franchise_key": "NYM",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "simon-muzziotti",
+    "franchise_key": "BOS",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "vladimir-guerrero-jr",
+    "franchise_key": "TOR",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "vladimir-gutierrez",
+    "franchise_key": "CIN",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "wander-franco",
+    "franchise_key": "TB",
+    "signing_year": 2017
+   }
+  ],
+  "tasks": [
+   {
+    "task_type": "ACQUISITION_COST_UNKNOWN",
+    "dodgers": false,
+    "items": 131
+   },
+   {
+    "task_type": "ACQUISITION_COST_UNKNOWN",
+    "dodgers": true,
+    "items": 164
+   },
+   {
+    "task_type": "BWAR_MISSING",
+    "dodgers": false,
+    "items": 50
+   },
+   {
+    "task_type": "CLASS_MEMBERS_MISSING",
+    "dodgers": true,
+    "items": 3
+   },
+   {
+    "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+    "dodgers": true,
+    "items": 3
+   },
+   {
+    "task_type": "MARKET_MISSING",
+    "dodgers": false,
+    "items": 7
+   },
+   {
+    "task_type": "MARKET_MISSING",
+    "dodgers": true,
+    "items": 29
+   },
+   {
+    "task_type": "OUTCOME_AUDIT",
+    "dodgers": false,
+    "items": 3
+   },
+   {
+    "task_type": "OUTCOME_AUDIT",
+    "dodgers": true,
+    "items": 127
+   },
+   {
+    "task_type": "SIGNING_DATE_MISSING",
+    "dodgers": false,
+    "items": 48
+   },
+   {
+    "task_type": "SIGNING_DATE_MISSING",
+    "dodgers": true,
+    "items": 23
+   }
+  ],
+  "dossier": [
+   {
+    "player_slug": "anderson-espinoza",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "andres-gimenez",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "cristian-pache",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "dermis-garcia",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": false
+   },
+   {
+    "player_slug": "diego-castillo",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "eloy-jimenez",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "emmanuel-dejesus",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "fernando-tatis-jr",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "gilberto-celestino",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "gleyber-torres",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "huascar-ynoa",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "hyo-jun-park",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": false
+   },
+   {
+    "player_slug": "jose-herrera",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "juan-soto",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "leody-taveras",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "lewin-diaz",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": false
+   },
+   {
+    "player_slug": "marcos-diplan",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "miguel-amaya",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "rafael-devers",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "rafael-marchan",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "simon-muzziotti",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "vladimir-guerrero-jr",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   }
+  ],
+  "isolation": {
+   "outcomes": "3bb240eedb6879f5e18ee15d0f4d4f0a",
+   "team_season_war": "79fe0bc69a3a23c9aecd44d30eccde27",
+   "sources": "51524f6c6cfb624aba4b1d02d1eb3035",
+   "training_population": "3f4dd2e084694de6ea52386402ea6e1d",
+   "feature_matrix": "a6bae420f4789f61ea29fe55c38f5681",
+   "support": "96f5f420e0a0e427704971699ba9162d",
+   "evaluation_view": "31d6a18bab830e5a7d5433ba0d8a5842",
+   "probabilities": "8dbd1ac17d3cfa3e3ba1c558216e8ad2",
+   "expected_values": "703a8ddcd716503641fc1d40b429ff40",
+   "realized_outcome": "a32e04e265b3253a3fc1e482aaeb965f",
+   "realized_value": "295c11029b134513f75b8d8f05ca9efc",
+   "lineage": "38ade5b21dbf9d5de267b2342a698c10",
+   "transaction_queue": "96664f0d6a206d48cbf960f7748d7416",
+   "value_queue": "48262469fbde6fb1fe324fe786514ece",
+   "executive_overview": "1d7a0cc096ca3c89a505d82b1353c89e",
+   "other_research_tasks": "8c8b985b78e59372df31a386a3ffe96e"
+  },
+  "war": {
+   "rows": 2025,
+   "active": 2025,
+   "retracted": 0,
+   "active_players": 144
+  },
+  "value_totals": {
+   "resolved": 88,
+   "realized": "299.00",
+   "realized_to_date": 83,
+   "chain_incomplete": 5,
+   "unresolved": 0,
+   "pkg_first": "95.85",
+   "pkg_down": "2.99",
+   "observable": "141.71"
+  },
+  "executive": {
+   "signings_with_resolved_value": 88,
+   "direct": "284.00",
+   "trade": "15.00",
+   "realized": "299.00",
+   "value_left": "432.44",
+   "open_research_tasks": 349
+  },
+  "transaction_queue": [
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "items": 17
+   },
+   {
+    "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+    "items": 6
+   },
+   {
+    "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+    "items": 4
+   },
+   {
+    "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+    "items": 5
+   },
+   {
+    "issue": "EXIT_STATUS_UNVERIFIED",
+    "items": 16
+   },
+   {
+    "issue": "EXIT_TRANSACTION_MISSING",
+    "items": 2
+   },
+   {
+    "issue": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+    "items": 3
+   },
+   {
+    "issue": "POOL_SPACE_AMOUNT_UNKNOWN",
+    "items": 1
+   },
+   {
+    "issue": "PTBNL_UNRESOLVED",
+    "items": 2
+   },
+   {
+    "issue": "RETURN_ASSET_EXIT_MISSING",
+    "items": 1
+   }
+  ],
+  "value_queue": [
+   {
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "items": 28
+   },
+   {
+    "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+    "items": 5
+   },
+   {
+    "issue": "LINEAGE_BOUNDARY_NOTED",
+    "items": 22
+   },
+   {
+    "issue": "OUTCOME_INCOMPLETE",
+    "items": 8
+   },
+   {
+    "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+    "items": 27
+   }
+  ],
+  "prediction": {
+   "outcomes": "3bb240eedb6879f5e18ee15d0f4d4f0a",
+   "outcome_audits": "082d853d936061d998cfedd8f629c745",
+   "outcome_targets": "47ac2dba60553f23b94dd5b6abecd190",
+   "evaluations": "c3aa98f495fc24c63563eb289c35024c",
+   "support": "96f5f420e0a0e427704971699ba9162d",
+   "training_population": "3f4dd2e084694de6ea52386402ea6e1d",
+   "feature_matrix": "a6bae420f4789f61ea29fe55c38f5681",
+   "supported_models": 0,
+   "probabilities": 0,
+   "expected_values": 0,
+   "recommendations": 0,
+   "supported_targets": 0,
+   "evaluation_fingerprints": "102c01a35d380d36493465cef1070c07,1aa73185a9dab3071d4530ee670dd088,86b58f473301e2425751d853abd88e94"
+  },
+  "snapshots": {
+   "generation": 13,
+   "drifting": 0
+  }
+ },
+ "after": {
+  "metric": [
+   {
+    "metric_key": "CAREER_BWAR",
+    "observations": 58,
+    "players": 58
+   }
+  ],
+  "scoped_metric": [
+   {
+    "slug": "anderson-espinoza",
+    "value": "0.000",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 659262 (espinan01), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "dermis-garcia",
+    "value": "0.500",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 660650 (garcide02), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "diego-castillo",
+    "value": "-0.800",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 660636 (castidi02), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "eloy-jimenez",
+    "value": "5.200",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 650391 (jimenel02), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "gleyber-torres",
+    "value": "20.900",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 650402 (torregl01), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "huascar-ynoa",
+    "value": "1.100",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 660623 (ynoahu01), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "hyo-jun-park",
+    "value": "-0.600",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 660829 (parkho01), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "jose-herrera",
+    "value": "-0.700",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 645444 (herrejo04), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "lewin-diaz",
+    "value": "0.100",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 650331 (diazle01), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "marcos-diplan",
+    "value": "0.400",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 650959 (diplama01), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   },
+   {
+    "slug": "rafael-devers",
+    "value": "30.600",
+    "observed_through_date": "2026-09-28",
+    "observed_through_season": 2026,
+    "source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "confidence": "VERIFIED",
+    "notes": "Migration 059: sum of the ACTIVE Baseball-Reference BWAR batting and pitching team-season WAR rows for mlb_ID 646240 (deverra01), rounded to one decimal; career-to-date through the 2026 season (data files of 2026-09-28). Batting file: https://www.baseball-reference.com/data/war_daily_bat.txt (sha256 ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8); pitching file: https://www.baseball-reference.com/data/war_daily_pitch.txt (sha256 061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5)."
+   }
+  ],
+  "bwar_missing": [
+   {
+    "player_slug": "adael-amador",
+    "franchise_key": "COL",
+    "signing_year": 2019
+   },
+   {
+    "player_slug": "adrian-morejon",
+    "franchise_key": "SD",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "andres-gimenez",
+    "franchise_key": "NYM",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "andry-lara",
+    "franchise_key": "WSH",
+    "signing_year": 2019
+   },
+   {
+    "player_slug": "cionel-perez",
+    "franchise_key": "HOU",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "cristian-pache",
+    "franchise_key": "ATL",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "emmanuel-dejesus",
+    "franchise_key": "BOS",
+    "signing_year": 2013
+   },
+   {
+    "player_slug": "everson-pereira",
+    "franchise_key": "NYY",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "fernando-tatis-jr",
+    "franchise_key": "CWS",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "francisco-alvarez",
+    "franchise_key": "NYM",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "francisco-morales",
+    "franchise_key": "PHI",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "gabriel-arias",
+    "franchise_key": "SD",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "george-valera",
+    "franchise_key": "CLE",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "gilberto-celestino",
+    "franchise_key": "HOU",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "jasson-dominguez",
+    "franchise_key": "NYY",
+    "signing_year": 2019
+   },
+   {
+    "player_slug": "jorge-ona",
+    "franchise_key": "SD",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "juan-soto",
+    "franchise_key": "WSH",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "julio-rodriguez",
+    "franchise_key": "SEA",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "kevin-alcantara",
+    "franchise_key": "NYY",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "leody-taveras",
+    "franchise_key": "TEX",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "lourdes-gurriel-jr",
+    "franchise_key": "TOR",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "luis-garcia-jr",
+    "franchise_key": "WSH",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "luis-matos",
+    "franchise_key": "SFG",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "luis-robert-jr",
+    "franchise_key": "CWS",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "marco-luciano",
+    "franchise_key": "SFG",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "maximo-acosta",
+    "franchise_key": "TEX",
+    "signing_year": 2019
+   },
+   {
+    "player_slug": "miguel-amaya",
+    "franchise_key": "CHC",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "noelvi-marte",
+    "franchise_key": "SEA",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "norge-ruiz",
+    "franchise_key": "OAK",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "orelvis-martinez",
+    "franchise_key": "TOR",
+    "signing_year": 2018
+   },
+   {
+    "player_slug": "osleivis-basabe",
+    "franchise_key": "TEX",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "rafael-marchan",
+    "franchise_key": "PHI",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "randy-arozarena",
+    "franchise_key": "STL",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "ronald-bolanos",
+    "franchise_key": "SD",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "ronny-mauricio",
+    "franchise_key": "NYM",
+    "signing_year": 2017
+   },
+   {
+    "player_slug": "simon-muzziotti",
+    "franchise_key": "BOS",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "vladimir-guerrero-jr",
+    "franchise_key": "TOR",
+    "signing_year": 2015
+   },
+   {
+    "player_slug": "vladimir-gutierrez",
+    "franchise_key": "CIN",
+    "signing_year": 2016
+   },
+   {
+    "player_slug": "wander-franco",
+    "franchise_key": "TB",
+    "signing_year": 2017
+   }
+  ],
+  "tasks": [
+   {
+    "task_type": "ACQUISITION_COST_UNKNOWN",
+    "dodgers": false,
+    "items": 131
+   },
+   {
+    "task_type": "ACQUISITION_COST_UNKNOWN",
+    "dodgers": true,
+    "items": 164
+   },
+   {
+    "task_type": "BWAR_MISSING",
+    "dodgers": false,
+    "items": 39
+   },
+   {
+    "task_type": "CLASS_MEMBERS_MISSING",
+    "dodgers": true,
+    "items": 3
+   },
+   {
+    "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+    "dodgers": true,
+    "items": 3
+   },
+   {
+    "task_type": "MARKET_MISSING",
+    "dodgers": false,
+    "items": 7
+   },
+   {
+    "task_type": "MARKET_MISSING",
+    "dodgers": true,
+    "items": 29
+   },
+   {
+    "task_type": "OUTCOME_AUDIT",
+    "dodgers": false,
+    "items": 3
+   },
+   {
+    "task_type": "OUTCOME_AUDIT",
+    "dodgers": true,
+    "items": 127
+   },
+   {
+    "task_type": "SIGNING_DATE_MISSING",
+    "dodgers": false,
+    "items": 48
+   },
+   {
+    "task_type": "SIGNING_DATE_MISSING",
+    "dodgers": true,
+    "items": 23
+   }
+  ],
+  "dossier": [
+   {
+    "player_slug": "anderson-espinoza",
+    "career_bwar": "0.000",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": true
+   },
+   {
+    "player_slug": "andres-gimenez",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "cristian-pache",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "dermis-garcia",
+    "career_bwar": "0.500",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": false
+   },
+   {
+    "player_slug": "diego-castillo",
+    "career_bwar": "-0.800",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": true
+   },
+   {
+    "player_slug": "eloy-jimenez",
+    "career_bwar": "5.200",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": true
+   },
+   {
+    "player_slug": "emmanuel-dejesus",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "fernando-tatis-jr",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "gilberto-celestino",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "gleyber-torres",
+    "career_bwar": "20.900",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": true
+   },
+   {
+    "player_slug": "huascar-ynoa",
+    "career_bwar": "1.100",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": true
+   },
+   {
+    "player_slug": "hyo-jun-park",
+    "career_bwar": "-0.600",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": false
+   },
+   {
+    "player_slug": "jose-herrera",
+    "career_bwar": "-0.700",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": true
+   },
+   {
+    "player_slug": "juan-soto",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "leody-taveras",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "lewin-diaz",
+    "career_bwar": "0.100",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": false
+   },
+   {
+    "player_slug": "marcos-diplan",
+    "career_bwar": "0.400",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": true
+   },
+   {
+    "player_slug": "miguel-amaya",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "rafael-devers",
+    "career_bwar": "30.600",
+    "bwar_observed_through_season": 2026,
+    "bwar_observed_through_date": "2026-09-28",
+    "is_active": true
+   },
+   {
+    "player_slug": "rafael-marchan",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "simon-muzziotti",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   },
+   {
+    "player_slug": "vladimir-guerrero-jr",
+    "career_bwar": null,
+    "bwar_observed_through_season": null,
+    "bwar_observed_through_date": null,
+    "is_active": true
+   }
+  ],
+  "isolation": {
+   "outcomes": "3bb240eedb6879f5e18ee15d0f4d4f0a",
+   "team_season_war": "79fe0bc69a3a23c9aecd44d30eccde27",
+   "sources": "51524f6c6cfb624aba4b1d02d1eb3035",
+   "training_population": "3f4dd2e084694de6ea52386402ea6e1d",
+   "feature_matrix": "a6bae420f4789f61ea29fe55c38f5681",
+   "support": "96f5f420e0a0e427704971699ba9162d",
+   "evaluation_view": "31d6a18bab830e5a7d5433ba0d8a5842",
+   "probabilities": "8dbd1ac17d3cfa3e3ba1c558216e8ad2",
+   "expected_values": "703a8ddcd716503641fc1d40b429ff40",
+   "realized_outcome": "a32e04e265b3253a3fc1e482aaeb965f",
+   "realized_value": "295c11029b134513f75b8d8f05ca9efc",
+   "lineage": "38ade5b21dbf9d5de267b2342a698c10",
+   "transaction_queue": "96664f0d6a206d48cbf960f7748d7416",
+   "value_queue": "48262469fbde6fb1fe324fe786514ece",
+   "executive_overview": "1d7a0cc096ca3c89a505d82b1353c89e",
+   "other_research_tasks": "8c8b985b78e59372df31a386a3ffe96e"
+  },
+  "war": {
+   "rows": 2025,
+   "active": 2025,
+   "retracted": 0,
+   "active_players": 144
+  },
+  "value_totals": {
+   "resolved": 88,
+   "realized": "299.00",
+   "realized_to_date": 83,
+   "chain_incomplete": 5,
+   "unresolved": 0,
+   "pkg_first": "95.85",
+   "pkg_down": "2.99",
+   "observable": "141.71"
+  },
+  "executive": {
+   "signings_with_resolved_value": 88,
+   "direct": "284.00",
+   "trade": "15.00",
+   "realized": "299.00",
+   "value_left": "432.44",
+   "open_research_tasks": 349
+  },
+  "transaction_queue": [
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "items": 17
+   },
+   {
+    "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+    "items": 6
+   },
+   {
+    "issue": "DOWNSTREAM_WAR_NOT_LOADED",
+    "items": 4
+   },
+   {
+    "issue": "EXIT_NOT_RESEARCHED_DOWNSTREAM",
+    "items": 5
+   },
+   {
+    "issue": "EXIT_STATUS_UNVERIFIED",
+    "items": 16
+   },
+   {
+    "issue": "EXIT_TRANSACTION_MISSING",
+    "items": 2
+   },
+   {
+    "issue": "FUTURE_CONSIDERATIONS_UNRESOLVED",
+    "items": 3
+   },
+   {
+    "issue": "POOL_SPACE_AMOUNT_UNKNOWN",
+    "items": 1
+   },
+   {
+    "issue": "PTBNL_UNRESOLVED",
+    "items": 2
+   },
+   {
+    "issue": "RETURN_ASSET_EXIT_MISSING",
+    "items": 1
+   }
+  ],
+  "value_queue": [
+   {
+    "issue": "ACQUISITION_COST_INCOMPLETE",
+    "items": 28
+   },
+   {
+    "issue": "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE",
+    "items": 5
+   },
+   {
+    "issue": "LINEAGE_BOUNDARY_NOTED",
+    "items": 22
+   },
+   {
+    "issue": "OUTCOME_INCOMPLETE",
+    "items": 8
+   },
+   {
+    "issue": "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED",
+    "items": 27
+   }
+  ],
+  "prediction": {
+   "outcomes": "3bb240eedb6879f5e18ee15d0f4d4f0a",
+   "outcome_audits": "082d853d936061d998cfedd8f629c745",
+   "outcome_targets": "47ac2dba60553f23b94dd5b6abecd190",
+   "evaluations": "c3aa98f495fc24c63563eb289c35024c",
+   "support": "96f5f420e0a0e427704971699ba9162d",
+   "training_population": "3f4dd2e084694de6ea52386402ea6e1d",
+   "feature_matrix": "a6bae420f4789f61ea29fe55c38f5681",
+   "supported_models": 0,
+   "probabilities": 0,
+   "expected_values": 0,
+   "recommendations": 0,
+   "supported_targets": 0,
+   "evaluation_fingerprints": "102c01a35d380d36493465cef1070c07,1aa73185a9dab3071d4530ee670dd088,86b58f473301e2425751d853abd88e94"
+  },
+  "snapshots": {
+   "generation": 14,
+   "drifting": 0
+  }
+ }
+}

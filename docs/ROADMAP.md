@@ -269,7 +269,11 @@ What the 046 research showed about the bottlenecks:
 - **Support thresholds.** Unchanged. In the benchmark sample, reach within 7 seasons (050) and positive bWAR within 10 seasons (057) are
   supported; `BWAR_2_WITHIN_10_SEASONS` is one positive short (86, 9 / 77). Its 7 unlabelled rows are the four 2016-class reachers, whose window
   needs a capture taken after the 2026 season, and 3 unresolved identities. No Dodgers target is close: reach within 7 seasons has 25 labelled rows
-  and 2 positives. `BWAR_MISSING` (50) reads `CAREER_BWAR` metric observations, which 057 does not write; closing it is a separate decision.
+  and 2 positives. `BWAR_MISSING` (50) reads `CAREER_BWAR` metric observations, which 057 does not write. **Migration 059 (career bWAR metric
+  reconciliation) is built and not yet released** (PR open): one dated career-to-date observation (through the 2026 season) for each of the eleven
+  benchmark players whose complete ledger 035 loaded from the 2026-09-28 files, by the 032 pattern; CAREER_BWAR 47 -> 58, `BWAR_MISSING` 50 -> 39;
+  no source, team-season row, outcome or prediction change. The 057 eleven (rows through 2025 on archived captures) and the 28 without
+  team-season WAR stay open.
 - **Benchmark depth.** 055 added the 2017 and 2018 lists and 056 the 2019 list. The 2020 class is not yet past its 7-season horizon (2027). Queued:
   the three 056 identities for a person (Puason, Cappe, Enmanuel Rodriguez), the four 055 identities for a person (Patino, Gomez, Guzman, Fernandez), the Cuban signees of 2016 (three) and 2018 (three) whose route no
   readable source states, Christopher Martinez (2015), and the three remaining legacy identities.
