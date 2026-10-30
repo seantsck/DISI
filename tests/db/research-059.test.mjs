@@ -18,6 +18,7 @@ import { buildChainThrough, manifest } from './canonical-chain.mjs'
 import { checkInvariants, failedChecks, CANONICAL_EXPECTATIONS } from '../../scripts/db/lib/invariants.mjs'
 import { measure } from '../../database/research/059/measure.mjs'
 import { assemble, assembleRollback, notesFor } from '../../database/research/059/build.mjs'
+import { capture, verifyApply, verifyNoop, verifyRollback, VIEW_FINGERPRINTS } from '../../database/research/059/release-evidence.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const FILE = '059_career_bwar_metric_reconciliation.sql'
@@ -43,6 +44,8 @@ let preTables
 let preSnap
 let preGen
 let preVerify
+let preEvidence
+let postEvidence
 const q = (sql, params) => chain.query(sql, params)
 const one = async (sql, params) => (await q(sql, params))[0]
 const R = (x) => (Array.isArray(x) ? x : x.rows)
@@ -80,8 +83,10 @@ before(async () => {
   preSnap = await tableHashes(chain, SNAP_DROP)
   preGen = await generation()
   preVerify = await verify()
+  preEvidence = (await capture(q)).evidence
   await chain.db.exec(sql059)
   post = await measure(q)
+  postEvidence = (await capture(q)).evidence
   post059Dump = await chain.db.dumpDataDir('none')
 }, { timeout: 900000 })
 
@@ -341,4 +346,83 @@ test('dependency: no new source, no team-season row, nothing on the 057 archived
   assert.equal(post.isolation.team_season_war, pre.isolation.team_season_war)
   for (const f of fs.readdirSync(path.join(root, 'database/release/sql')).filter((x) => /^rollback-0(4|5)/.test(x) && x !== 'rollback-059.sql'))
     assert.doesNotMatch(fs.readFileSync(path.join(root, 'database/release/sql', f), 'utf8'), /player_metric_observations/, `${f} does not read the metric layer`)
+})
+
+// ---- v3 release architecture: the transaction proves its direct result; the exhaustive isolation proof runs outside it (release-evidence.mjs)
+
+const HOLD = (r) => r.checks.filter((c) => !c.pass).map((c) => c.name)
+
+test('external evidence: the pre-apply capture and the post-commit capture verify the 059 transition (PASS), and a rerun as a no-op (PASS)', async () => {
+  const r = verifyApply(preEvidence, postEvidence)
+  assert.deepEqual(HOLD(r), [], JSON.stringify(r.checks.filter((c) => !c.pass)))
+  assert.equal(r.verdict, 'PASS')
+  assert.deepEqual(Object.keys(preEvidence.views).sort(), Object.keys(VIEW_FINGERPRINTS).sort())
+  assert.equal(Object.keys(preEvidence.tables).length + Object.keys(preEvidence.snapshots).length,
+    (await one(`select count(*)::int as n from pg_class where relnamespace = 'public'::regnamespace and relkind = 'r'`)).n, 'every public base table is captured')
+  const c = await clone(post059Dump)
+  try {
+    const before = (await capture(c.query)).evidence
+    await c.db.exec(sql059)
+    const after = (await capture(c.query)).evidence
+    const n = verifyNoop(before, after)
+    assert.deepEqual(HOLD(n), [])
+    // the rerun is not an apply: the apply verifier refuses a transition that added nothing
+    assert.equal(verifyApply(before, after).verdict, 'HOLD')
+  } finally { await c.close() }
+})
+
+test('external evidence: the isolation checks removed from the transaction are still enforced after the commit (each unexpected change -> HOLD)', async () => {
+  /** @type {[string, string, RegExp][]} */
+  const cases = [
+    ['an unrelated base table moved', `update public.development_milestones set evidence_basis = coalesce(evidence_basis, '') || ' v3 test' where id = (select id from public.development_milestones order by id limit 1);`,
+      /^base tables: only player_metric_observations changed/],
+    ['an earlier observation moved', `update public.player_metric_observations set notes = notes || ' v3 test' where id = (select id from public.player_metric_observations where notes not like 'Migration 059:%' order by id limit 1);`,
+      /^player_metric_observations: every pre-059 row present and unchanged/],
+    ['a snapshot business column moved', `update public.product_executive_snapshot set product_statement = product_statement || ' v3 test';`, /^snapshots: business content identical/],
+    ['the schema moved', `create view public.v_059_v3_test as select 1 as x;`, /^schema and security catalog identical/],
+  ]
+  for (const [label, mutation, pattern] of cases) {
+    const c = await clone(post059Dump)
+    try {
+      await c.db.exec(mutation)
+      const r = verifyApply(preEvidence, (await capture(c.query)).evidence)
+      assert.equal(r.verdict, 'HOLD', label)
+      assert.ok(HOLD(r).some((n) => pattern.test(n)), `${label}: ${HOLD(r).join(' | ')}`)
+    } finally { await c.close() }
+  }
+  // a view-level change with no base-table write of its own is caught by the view fingerprints and the measurement
+  const tampered = structuredClone(postEvidence)
+  tampered.views.evaluation_view = { ...tampered.views.evaluation_view, h: '0'.repeat(32) }
+  assert.ok(HOLD(verifyApply(preEvidence, tampered)).some((n) => /^view fingerprints identical/.test(n)))
+})
+
+test('external evidence: rollback-059 verifies against the original pre-059 capture (PASS), and a reapply verifies as an apply again', async () => {
+  const c = await clone(post059Dump)
+  try {
+    await c.db.exec(rollback059)
+    const rolled = (await capture(c.query)).evidence
+    assert.deepEqual(HOLD(verifyRollback(postEvidence, rolled, preEvidence)), [])
+    await c.db.exec(sql059)
+    const re = (await capture(c.query)).evidence
+    assert.deepEqual(HOLD(verifyApply(rolled, re)), [])
+  } finally { await c.close() }
+})
+
+test('incident regression: after the INSERT the migration runs no whole-database hash pass and no unrelated view fingerprint; the external verifier does', () => {
+  const body = (sql, tag) => sql.replace(new RegExp(`\\$${tag}\\$[\\s\\S]*?\\$${tag}\\$`, 'g'), "'payload'").replace(/--.*$/gm, '')
+  const isolationViews = ['v_outcome_target_support', 'v_outcome_training_population', 'v_outcome_feature_matrix', 'v_outcome_model_evaluation', 'v_player_outcome_probability',
+    'v_expected_value_support', 'v_player_realized_outcome', 'v_player_realized_organizational_value', 'v_transaction_asset_lineage', 'v_transaction_research_queue',
+    'v_value_research_queue', 'v_executive_overview']
+  for (const [sql, tag, write] of [[sql059, 'm059', /insert into public\.player_metric_observations/], [rollback059, 'r059', /delete from public\.player_metric_observations/]]) {
+    const b = body(sql, tag)
+    const after = b.slice(b.search(write))
+    assert.ok(after.length > 0 && after.length < b.length)
+    // no loop over the public base tables except the product_* generation check, and no row-hash EXECUTE
+    for (const m of b.matchAll(/for \w+ in select c\.relname from pg_class c where ([\s\S]*?) loop/g)) assert.match(m[1], /like 'product\\_%'/, 'the only pg_class loop is the snapshot generation check')
+    assert.doesNotMatch(b, /execute format\('select md5/, 'no dynamic per-table row hash anywhere in the transaction')
+    for (const v of isolationViews) assert.ok(!b.includes(`public.${v}`), `${tag}: ${v} is fingerprinted outside the transaction, not inside it`)
+    assert.doesNotMatch(b, /_[mr]059_(tables|untouched)\b/)
+    // the external verifier still fingerprints every one of them
+    for (const v of isolationViews) assert.ok(Object.values(VIEW_FINGERPRINTS).some((s) => s.includes(`public.${v} `)), `release-evidence fingerprints ${v}`)
+  }
 })

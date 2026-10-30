@@ -4,8 +4,9 @@ Migration `059_career_bwar_metric_reconciliation.sql` writes one dated career-to
 players, derived from the complete team-season ledger DISI already holds for them (the 2026-09-28 live Baseball-Reference data files 035 loaded).
 It is data only: no table, view, function, trigger, grant, policy, source, team-season row or outcome is added or changed.
 
-**Not applied to production.** Applying it, merging the PR and any deploy need explicit owner approval. Production is at 058 (generation 14,
-259/259), and 058 is frozen. Baseline `main` is `4747049cb662a6aec99b5fbb437f34d1df896ef0`.
+**Not applied to production.** Two production attempts were made; neither committed (see "Production attempts"). Production is exactly pre-059:
+at 058 (generation 14, 259/259), and 058 is frozen. Baseline `main` is `4747049cb662a6aec99b5fbb437f34d1df896ef0`. Any further apply needs a new
+explicit owner authorization for the v3 hash below; the two earlier authorizations covered `88d0ef1e…` and `3734a39f…` only and are exhausted.
 
 ## What changes
 
@@ -31,11 +32,14 @@ changing".
 
 ## Files
 
-- `database/sql/059_career_bwar_metric_reconciliation.sql`: 31292 bytes, sha256 `3734a39fe1f5150fb3ea28c424eaad5b9144375664bf84a7671d4ba348515a47`,
-  normalized sha1 `1c9b78ec66eef3cbcb8d419bba5e7c110d5ce89e`.
-- `database/release/sql/rollback-059.sql`: 18805 bytes, sha256 `0d22a10240e430c862e960147d27e7fc104591d242fb251371e8b6eb807138aa`.
-- Superseded (the failed first release candidate, see "First production attempt"): migration sha256 `88d0ef1e…8cf8b8` (normalized sha1
-  `6d7e98f2…`), rollback sha256 `575d1617…273ccc`. They are not release hashes.
+- `database/sql/059_career_bwar_metric_reconciliation.sql` (v3): 30868 bytes, sha256 `8598c5f158a56459f120e11cdb690302a062f2dabc90222cfcdc9ff844ed7dcc`,
+  normalized sha1 `e6f70db245fe407dff603f351a4b488a476d716a`.
+- `database/release/sql/rollback-059.sql` (v3): 18264 bytes, sha256 `b52298c3534e015cdc0b876d28bc43fe7d2d5aa314579a3c7ad993e137af0bdc`.
+- Superseded, incident history only (not release hashes):
+  - v1 (attempt 1): migration sha256 `88d0ef1e…8cf8b8` (normalized sha1 `6d7e98f2…`), rollback `575d1617…273ccc`.
+  - v2 (attempt 2): migration sha256 `3734a39f…a515a47` (normalized sha1 `1c9b78ec…`), rollback `0d22a102…7138aa`.
+- `database/research/059/release-evidence.mjs`: the external pre-apply capture and post-commit verifier (v3). `verification-architecture.md`:
+  every check classified.
 - `database/research/059/`: scope, baseline (replay and production), build, evidence, report, notes.
 - `database/release/pg17/run-059.sh`, `validate-059.mjs`: the independent PostgreSQL 17 validation.
 - `tests/db/research-059.test.mjs`, `tests/unit/research-059.test.mjs`.
@@ -75,50 +79,85 @@ retirement evidence and is not used.
 at 2025 and cite the archived captures the provider rule does not accept, and all played in 2026 (10-SEASON WINDOW COMPLETE != CAREER COMPLETE).
 The other 28 `BWAR_MISSING` players have no team-season WAR. After 059 the 39 remaining are these 11 + 28.
 
-## First production attempt (failed safely, 2026-10-29)
+## Production attempts (neither committed)
 
-- **Run:** the superseded candidate (sha256 `88d0ef1e…`) through the safe runner, 2026-10-29T20:49:37Z → 20:53:47Z, exit 3, pipeline exit 3.
-- **Failure:** `ERROR: canceling statement due to statement timeout`, in the postcondition `DO` block, after `INSERT 0 11` inside the transaction.
-- **Outcome:** there was no COMMIT; PostgreSQL rolled the whole transaction back. A read-only re-read of production afterwards was byte-identical
-  to the pre-059 baseline (CAREER_BWAR 47, BWAR_MISSING 50, generation 14, drift 0, 259/259). **059 was not applied.**
-- **Root cause:** hosted production sets `statement_timeout = 2min` at the session / database level, and a `DO` block is one statement; the
-  postcondition block (every isolation fingerprint, the table hashes and the queue checks) exceeded it. The PostgreSQL 17 rehearsal had no statement
-  timeout and could not reproduce it (a rehearsal-parity gap).
-- **Fix:** 059 and rollback-059 each run `set local statement_timeout = '600s';` right after `begin;`, the `refresh-product-snapshots.sql`
-  convention. `SET LOCAL` applies to that transaction only and reverts at COMMIT or ROLLBACK: no role, database or system setting changes, and
-  later sessions keep 2min. The substantive SQL is unchanged.
+### Attempt 1 (2026-10-29, v1 `88d0ef1e…`): statement timeout, no commit
+
+- **Run:** the safe runner, 2026-10-29T20:49:37Z → 20:53:47Z, exit 3.
+- **Failure:** `ERROR: canceling statement due to statement timeout`, in the postcondition `DO` block, after `INSERT 0 11`.
+- **Outcome:** no COMMIT; PostgreSQL rolled the transaction back. Production was re-read byte-identical to the pre-059 baseline.
+- **Cause:** hosted production sets `statement_timeout = 2min`, and a `DO` block is one statement.
+- **v2 response:** `set local statement_timeout = '600s'` right after `begin;` (kept in v3).
+
+### Attempt 2 (2026-10-30, v2 `3734a39f…`): server restart, no commit, cause unknown
+
+- **Run:** the safe runner, started 2026-10-30T11:50:06Z after a passing read-only pre-check.
+- **Progress:** the transaction again reached `INSERT 0 11` and entered the postcondition `DO` block.
+- **Restart:** at 11:55:15Z (`pg_postmaster_start_time()`) the whole PostgreSQL server restarted. The 059 backend disappeared, and no COMMIT occurred.
+- **Abrupt stop:** cumulative statistics were discarded at startup, which PostgreSQL does after a crash or an immediate stop, not after a clean shutdown.
+- **Outcome:** recovery discarded the transaction. Production was re-read exactly pre-059 (CAREER_BWAR 47, BWAR_MISSING 50, generation 14, drift 0, 259/259).
+- **Cause unknown:** the Supabase logs were not accessible. It is not established that the migration caused the restart, nor that the restart was external.
+- **Local client:** the `psql` process stayed blocked on the dead connection until it was terminated locally at 16:40Z. Its output was buffered, so the run left no per-statement timing.
+
+### What both attempts share
+
+The same phase failed twice: the postcondition `DO` block, after the insert, inside the open write transaction.
+- **What that block did:** v1 and v2 re-hashed every public base table (67 besides the metric table and the snapshots) and fifteen complex prediction / outcome / value / queue views there, a second time after the pre-insert pass.
+- **Local cost:** on a local restore with the hosted memory settings the whole v2 migration takes about 11 s.
+- **Production cost:** in production the block ran for minutes. Production executes ordinary read-only guards 2–4× slower than local, and the gap here was much larger and is unexplained.
+
+## v3 design: the exhaustive isolation proof moves outside the write transaction
+
+**The principle:**
+- The migration proves *"the requested write is valid and the expected immediate state exists"*.
+- The external release verifier proves *"nothing unrelated changed"*.
+
+Every v1 / v2 check is classified in `database/research/059/verification-architecture.md`.
+
+- **Inside the transaction (unchanged):** `set local statement_timeout = '600s'`, and every precondition: scope, identities, the registered sources, the complete ledger and its sums, `outcomes.career_war`, no conflicting or later observation, the 057 exclusion, CAREER_BWAR 47, the exact BWAR_MISSING 50, drift 0, partial-set refusal.
+- **Write:** the insert is unchanged (the eleven rows, derived from the ledger).
+- **Inside the transaction (minimal postcondition):**
+  - the eleven exact rows, every column, one per player, no conflict;
+  - CAREER_BWAR = 47 + 11, all observations = before + 11, every other player's observation rows unchanged, no 057 observation;
+  - `v_player_war` reads the eleven;
+  - BWAR_MISSING = exactly the reviewed 39 (the eleven gone, the 057 eleven still in it);
+  - unchanged counters for sources, team-season rows (all and ACTIVE), outcomes, and the eleven outcome rows.
+- **Refresh:** once, generation + 1, drift 0, and every `product_*` table at that single generation. A rerun is a no-op (no insert, no refresh, generation unchanged).
+- **Removed from the transaction, kept in the release:**
+  - the full table-hash pass (`_m059_tables`) and the fifteen view fingerprints (`_m059_untouched`), before and after the insert;
+  - the snapshot business-content comparison.
+
+  They now run in `release-evidence.mjs`: `capture` read-only before the apply and again after the commit, then `verify --kind apply` (or `rollback`, `noop`).
+- **rollback-059 (v3):** the same split.
+  - **Every refusal kept:** not applied, a later or changed observation (mandatory, unchanged), partial set, count not 58.
+  - **Then:** the exact delete; CAREER_BWAR 47; all observations − 11; the other rows unchanged; BWAR_MISSING the original 50; the counters; one refresh, generation + 1, drift 0, every snapshot table at that generation.
+- **Timing:** each phase raises a `NOTICE` with its elapsed time (preconditions, insert, postconditions, snapshots). The release runner applies with `\timing on` and must stream its output line by line, so a future log shows where the time goes.
 
 ## Statement timeout (hosted parity, required)
 
 | | Value |
 |---|---|
 | Hosted production default (session / database) | `2min` |
-| Inside 059 (`SET LOCAL`) | `600s` |
-| Inside rollback-059 (`SET LOCAL`) | `600s` |
-| Restored-copy rehearsal and `run-059.sh`: server default | `2min` (no longer limit supplied by the runner or `PGOPTIONS`) |
-
-Every rehearsal runs with the 2min default and records `SHOW statement_timeout` in the apply / rollback session before and after (2min both times).
-The rehearsal also proves sensitivity on disposable copies: under a far tighter outer limit the superseded bytes are cancelled and roll back whole,
-while the corrected bytes commit. A new production authorization is required for the corrected hash; the earlier one covered `88d0ef1e…` only.
+| Inside 059 / rollback-059 (`SET LOCAL`) | `600s` |
+| Restored-copy rehearsal and `run-059.sh`: server default | `2min`, plus the hosted memory settings on the restored copy (`work_mem` 2184kB, `shared_buffers` 224MB) |
 
 ## Order
 
-1. **Back up.** `pg_dump` through the safe runner, mode 600, SHA-256 sidecar. Restore-verify on PostgreSQL 17 with a `statement_timeout = 2min`
-   server default (hosted parity): on the restored copy the verifier
-   passes 259/259; 059 applies, reruns as a no-op, rolls back, refuses a guarded rollback, and reapplies (`run-059.sh` proves the same on a replay).
-2. **Read-only checks on production, before the apply:** verifier 259/259 (current expectations), catalog 79 / 156 / 37, sources 3384, players 398,
-   active WAR 2025, generation **14** on all eleven snapshots, drift 0, CAREER_BWAR 47, `BWAR_MISSING` 50, none of the eleven or the 057 eleven with an
-   observation, 299.00 / 88, queues 57 / 90, the three evaluation fingerprints, every output 0.
-3. **Apply** `059_career_bwar_metric_reconciliation.sql` through the safe runner, SHA-checked, `ON_ERROR_STOP`. One transaction, applied once. The
-   migration guards drift 0 and exactly one new generation; the absolute generation (14 → 15) is checked here, because a canonical replay starts one
-   refresh lower (13 → 14).
-4. **Verify, read-only:** verifier 259/259, generation 15 on all eleven, drift 0, CAREER_BWAR 58, `BWAR_MISSING` 39, the eleven values, sources 3384,
-   active WAR 2025, value, queues and prediction fingerprints unchanged.
-5. **Isolation.** Compare every table of the restored backup with live: only `player_metric_observations` changes (+11, no existing row changed);
-   every snapshot's business columns are unchanged (generation and timestamps only). Schema and security fingerprints are identical.
-6. **Merge and deploy** after the apply, as a normal merge commit with exact-head protection; the GitHub to Vercel production deploy follows. No
-   application change.
-7. **Smoke.**
+1. **Back up.** `pg_dump` through the safe runner, mode 600, SHA-256 sidecar. Restore-verify on PostgreSQL 17 with the 2min default and the hosted
+   memory settings: the restored copy passes 259/259, and the v3 sequence (capture, apply, verify, rerun, rollback, refusals, reapply) passes there.
+2. **Pre-apply evidence (read-only).** Run `release-evidence.mjs capture --out pre.json` against production through the safe runner. It must show:
+   - CAREER_BWAR 47, BWAR_MISSING 50, generation 14, drift 0, verifier 259/259;
+   - its tables, views, observations, measurement and snapshots equal to the restored backup's capture.
+
+   Keep `pre.json` with the release record.
+3. **Apply** `059_career_bwar_metric_reconciliation.sql` through the safe runner: SHA-checked, `ON_ERROR_STOP`, `\timing on`, output streamed with
+   timestamps. One transaction, applied once. The four phase `NOTICE`s and the `COMMIT` must appear.
+4. **Post-commit evidence (read-only).** Run `capture --out post.json`, then `verify --kind apply --pre pre.json --post post.json`.
+   - **PASS** requires exactly the allowed delta: +11 exact observations, BWAR_MISSING −11, generation 14 → 15, no snapshot business change.
+   - **Nothing else may move:** every other base table, the fifteen view fingerprints, every other measurement section and the catalog.
+   - **Also required:** verifier 259/259, sources 3384, WAR 2025, 299.00 / 88, queues 57 / 90, outputs 0.
+5. **Merge and deploy** only after a PASS: a normal merge commit with exact-head protection. No application change.
+6. **Smoke.**
 
    | Page | Expected |
    |---|---|
@@ -127,15 +166,26 @@ while the corrected bytes commit. A new production authorization is required for
    | `/`, `/asset-conversion`, `/research`, `/prediction-readiness`, `/portfolio`, `/league`, `/methodology` | Unchanged values; no probability, expected value or recommendation |
 
    Every page returns HTTP 200 with no "Data unavailable", and the deployment's logs are clean.
-8. **Freeze** on a bookkeeping-only branch: 62 → 63 frozen, `UNRELEASED_ADDITIONS = []`.
+7. **Freeze** on a bookkeeping-only branch: 62 → 63 frozen, `UNRELEASED_ADDITIONS = []`.
+
+## If the commit succeeds but the external verification fails (HOLD)
+
+1. **STOP.** No merge, no deploy, no freeze.
+2. **Inspect the exact mismatch.** `verify` names every failing check and the tables, views or sections that moved. Re-capture once, read-only, to rule out concurrent activity.
+3. **Roll back only with owner review.** Run the guarded `rollback-059.sql` only after the owner has reviewed the mismatch and authorized the rollback. No release policy allows an automatic rollback for 059.
+4. **Verify the restored state externally:** `capture --out rolled.json`, then `verify --kind rollback --pre post.json --post rolled.json --original pre.json`. It must PASS.
+
+If the apply itself fails (any error, or no `COMMIT`), PostgreSQL rolls the transaction back. Re-read production read-only, and stop.
 
 ## Rollback
 
 `rollback-059.sql` runs in one guarded transaction. Metric observations have no ACTIVE / RETRACTED lifecycle, so it **deletes** exactly the
 eleven 059 observations, each matched on player, value, date (2026-09-28), season (2026), source (the live batting file), confidence and notes. It
 refuses when 059 is not applied, when any of the eleven has a CAREER_BWAR observation that is not exactly the 059 one (a later observation or a
-changed 059 row), and when fewer than eleven 059 rows exist. It then proves CAREER_BWAR 47, `BWAR_MISSING` back to the reviewed 50, every other
-table and every other layer unchanged, and refreshes once (production 15 → 16). 059 can be applied again after its rollback (16 → 17).
+changed 059 row), and when fewer than eleven 059 rows exist. Inside the transaction it then proves CAREER_BWAR 47, every other observation
+unchanged, `BWAR_MISSING` back to the reviewed 50 and the unchanged-input counters, and refreshes once (production 15 → 16, every snapshot table
+at that generation, drift 0). That every other table and layer equals the original pre-059 state is proven outside it, read-only
+(`release-evidence.mjs verify --kind rollback`). 059 can be applied again after its rollback (16 → 17).
 
 **Dependency.** 059 creates no 057 / 058-style lock: no source is added, no team-season row is written, nothing cites the 057 archived sources, and
 no released rollback reads `player_metric_observations`. rollback-058 and rollback-057 behave exactly as before (rollback-057 is already
@@ -145,5 +195,6 @@ unavailable once 058 has been applied).
 
 - `database/research/059/`: `README.md`, `research-notes.md`, `scope.json`, `career-bwar-evidence.json`, `baseline.json` (canonical replay),
   `baseline-production.json` (read-only production measurement), `before-after.json`.
+- `database/research/059/release-evidence.mjs` and `verification-architecture.md` (v3).
 - `tests/unit/research-059.test.mjs` and `tests/db/research-059.test.mjs`.
 - The independent PostgreSQL 17 validation, `database/release/pg17/run-059.sh`.

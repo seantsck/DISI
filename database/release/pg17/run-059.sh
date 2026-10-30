@@ -16,6 +16,8 @@ if [ "$CANDIDATE" = "WORKTREE" ]; then
 else
   git -C "$REPO" archive "$CANDIDATE" | tar -x -C "$WORK/tcand"
 fi
+# the superseded v2 candidate (the second production attempt, not committed there): the incident-regression baseline for the scan comparison
+git -C "$REPO" show d4dd5727bfd56bf3003fe2e7efbf5cab8dc30ee5:database/sql/059_career_bwar_metric_reconciliation.sql > "$WORK/v2-059.sql"
 ln -sfn "$REPO/node_modules" "$WORK/tbase/node_modules"
 ln -sfn "$REPO/node_modules" "$WORK/tcand/node_modules"
 [ -f "$WORK/deps/package.json" ] || ( cd "$WORK/deps" && npm init -y >/dev/null )

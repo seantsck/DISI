@@ -17,6 +17,8 @@ is added or changed.
 | `059_template.sql`, `rollback_template.sql`, `build.mjs` | The migration, the rollback and their deterministic assembly; the build refuses unless the baseline reproduces the reviewed scope. |
 | `career-bwar-evidence.json` | The eleven as the baseline reads them: identity, ledger shape, seasons, teams, BAT / PITCH / raw / one-decimal values, stored `outcomes.career_war`, the exact notes; the 057 eleven; the BWAR_MISSING movement. |
 | `report.mjs` | Applies 059 to a replay and writes `before-after.json`. |
+| `release-evidence.mjs` | The release's external isolation proof (v3). `capture` reads one read-only snapshot: every base table, the snapshot business content and generations, the fifteen view fingerprints, every observation row, the measurement, the catalog and the verifier. `verify --kind apply / noop / rollback` compares two captures and returns PASS or HOLD. |
+| `verification-architecture.md` | Every v1 / v2 check classified: inside the transaction (A), pre-apply evidence (B), post-commit evidence (C) or redundant (D). |
 | `research-notes.md` | Decisions and findings. |
 
 ## Commands
@@ -25,6 +27,14 @@ is added or changed.
 node database/research/059/measure.mjs --chain 058_transaction_return_bwar_evidence.sql --baseline > /dev/null
 node database/research/059/build.mjs
 node database/research/059/report.mjs
+```
+
+Release evidence (read-only; never writes to the database):
+
+```
+DISI_VERIFY_DB_URL=... node database/research/059/release-evidence.mjs capture --out pre.json      # before the apply
+DISI_VERIFY_DB_URL=... node database/research/059/release-evidence.mjs capture --out post.json     # after the commit
+node database/research/059/release-evidence.mjs verify --kind apply --pre pre.json --post post.json   # exit 0 PASS, 2 HOLD
 ```
 
 `measure.mjs` and `report.mjs` accept `--dump <post-058 PGlite tar>` to skip the three-minute chain build.

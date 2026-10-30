@@ -92,6 +92,20 @@ test('SQL shape: data only (no DDL outside temporary objects, no trigger, grant,
   assert.equal((rb.match(/disi_refresh_product_snapshots/g) ?? []).length, 1)
 })
 
+test('v3 architecture: the transaction holds no whole-database hash pass and no unrelated view fingerprint; it keeps SET LOCAL and reports its phases', () => {
+  const mig = strip(assemble(), 'm059'), rb = strip(assembleRollback(), 'r059')
+  for (const body of [mig, rb]) {
+    assert.doesNotMatch(body, /execute format\('select md5/)
+    assert.doesNotMatch(body, /_[mr]059_(tables|untouched)\b/)
+    assert.doesNotMatch(body, /public\.v_(outcome_target_support|outcome_training_population|outcome_feature_matrix|outcome_model_evaluation|player_outcome_probability|expected_value_support|player_realized_outcome|player_realized_organizational_value|transaction_asset_lineage|transaction_research_queue|value_research_queue|executive_overview)\b/)
+    for (const m of body.matchAll(/from pg_class c where ([\s\S]*?) loop/g)) assert.match(m[1], /like ''/, 'the only pg_class loop is the product_* generation check')
+    assert.match(body, /^begin;\nset local statement_timeout = ''/m)
+    assert.match(body, /raise notice ''/)
+  }
+  assert.equal((assemble().match(/raise notice '059 phase /g) ?? []).length, 4)
+  assert.equal((assembleRollback().match(/raise notice 'rollback-059 phase /g) ?? []).length, 4)
+})
+
 test('build: the committed migration, rollback and evidence equal the build output', () => {
   assert.equal(fs.readFileSync(path.join(root, 'database/sql/059_career_bwar_metric_reconciliation.sql'), 'utf8'), assemble())
   assert.equal(fs.readFileSync(path.join(root, 'database/release/sql/rollback-059.sql'), 'utf8'), assembleRollback())

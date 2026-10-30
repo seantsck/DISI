@@ -42,3 +42,16 @@
 - 059 and rollback-059 now `set local statement_timeout = '600s'` right after `begin;` (the `refresh-product-snapshots.sql` convention), scoped to
   their own transaction. Nothing else changed: scope, values, as-of, provenance, guards and snapshot behaviour are as reviewed.
 - Rehearsals run with a 2min server default; a tighter outer limit proves the superseded bytes fail and the corrected ones commit.
+
+## Second production attempt and the v3 verification architecture (2026-10-30)
+
+- **Attempt 2 (v2, `3734a39f…`, with `SET LOCAL 600s`):** it again reached `INSERT 0 11` and entered the postcondition `DO` block.
+  - About five minutes after the start (11:50:06Z → 11:55:15Z), the whole PostgreSQL server restarted abruptly.
+  - No COMMIT occurred; recovery discarded the transaction, and production stayed exactly pre-059.
+  - The restart cause is unknown: no log access. Neither the migration nor an external event is established as the cause.
+- **The shared failure point:** both attempts failed in the same phase, the exhaustive isolation pass (every base table and fifteen views, hashed a second time) inside the open write transaction.
+- **v3 keeps every check but splits them:**
+  - **Inside the transaction:** the direct correctness of the write and its immediate result.
+  - **Outside, read-only:** the proof that nothing unrelated moved, as a pre-apply capture and a post-commit capture compared by `release-evidence.mjs`.
+  - The classification is in `verification-architecture.md`.
+- **Unchanged:** scope, values, as-of, provenance, identity guards, the unknown-is-not-zero rule, the later-observation refusal of the rollback and the snapshot refresh.

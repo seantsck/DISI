@@ -8,6 +8,9 @@
 -- not applied, when any of the eleven has a CAREER_BWAR observation that is not exactly the 059 one (a later observation, or a changed 059 row),
 -- and when fewer than eleven 059 rows exist. No source, team-season row, outcome or other observation is touched; the refresh runs once.
 -- Like 059, it raises its own statement timeout for this transaction only (SET LOCAL, 600 s): hosted production defaults to 2min per statement.
+-- Like 059 (v3), it proves its direct result only: the refusal guards, the exact delete, the pre-059 observation count and queue, inexpensive
+-- unchanged-input counters and one drift-free generation. The exhaustive isolation evidence (every base table, the view fingerprints, the snapshot
+-- business content, the catalog, the verifier) is compared read-only outside the transaction (database/research/059/release-evidence.mjs).
 
 begin;
 set local statement_timeout = '600s';
@@ -39,32 +42,16 @@ select m.* from public.player_metric_observations m
 join public.players pl on pl.id = m.player_id join _r059_players p on p.slug = pl.slug
 where m.metric_key = 'CAREER_BWAR' and m.id not in (select e.id from _r059_exact e);
 
-create temporary table _r059_tables (relname text primary key, h text) on commit drop;
-do $$
-declare tn text; hv text;
-begin
-  for tn in select c.relname from pg_class c where c.relnamespace = 'public'::regnamespace and c.relkind = 'r'
-             and c.relname <> 'player_metric_observations' and c.relname not like 'product\_%' order by 1 loop
-    execute format('select md5(coalesce(string_agg(md5((to_jsonb(t) - ''updated_at'')::text), '''' order by md5((to_jsonb(t) - ''updated_at'')::text)), '''')) from public.%I t', tn) into hv;
-    insert into _r059_tables values (tn, hv);
-  end loop;
-end $$;
-
-create temporary view _r059_untouched as
-select (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(s)::text) as h from public.v_outcome_target_support s) z) as support,
-  (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(t)::text) as h from public.v_outcome_training_population t) z) as training_population,
-  (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(f)::text) as h from public.v_outcome_feature_matrix f) z) as feature_matrix,
-  (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(e)::text) as h from public.v_outcome_model_evaluation e) z) as evaluation_view,
-  (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(r)::text) as h from public.v_player_realized_organizational_value r) z) as realized_value,
-  (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(x)::text) as h from public.v_transaction_research_queue x) z) as transaction_queue,
-  (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(x)::text) as h from public.v_value_research_queue x) z) as value_queue,
-  (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(t)::text) as h from public.v_research_tasks t
-     where t.task_type <> 'BWAR_MISSING' or t.franchise_key = 'DODGERS') z) as other_research_tasks,
+-- the inexpensive counters the postcondition compares (the exhaustive isolation evidence is compared outside this transaction)
+create temporary table _r059_before on commit drop as
+select (select max(generation_id) from public.product_executive_snapshot) as generation,
+  (select count(*) from public.player_metric_observations) as observations_all,
+  (select count(*) from public.sources) as sources,
+  (select count(*) from public.player_mlb_team_season_war) as war_rows,
+  (select count(*) from public.player_mlb_team_season_war where record_status = 'ACTIVE') as war_active,
+  (select count(*) from public.outcomes) as outcomes,
   (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(m)::text) as h from public.player_metric_observations m
      where m.player_id not in (select pl.id from public.players pl join _r059_players p on p.slug = pl.slug)) z) as other_metric_observations;
-
-create temporary table _r059_before on commit drop as
-select (select max(generation_id) from public.product_executive_snapshot) as generation, u.* from _r059_untouched u;
 
 do $$
 declare
@@ -83,6 +70,7 @@ begin
   if (select count(*) from public.player_metric_observations where metric_key = 'CAREER_BWAR') <> (select observations_before + 11 from _r059_const) then
     raise exception 'rollback-059: the CAREER_BWAR observation count is not the released post-059 count; rollback refused';
   end if;
+  raise notice 'rollback-059 phase guards: done at +%', clock_timestamp() - now();
 end $$;
 
 delete from public.player_metric_observations m where m.id in (select e.id from _r059_exact e);
@@ -90,37 +78,43 @@ delete from public.player_metric_observations m where m.id in (select e.id from 
 do $$
 declare
   b record;
-  u record;
-  t record;
-  hv text;
+  k record;
+  tn text;
+  g bigint[];
+  missing_now text[];
 begin
   select * into b from _r059_before;
-  select * into u from _r059_untouched;
+  select * into k from _r059_const;
+  raise notice 'rollback-059 phase delete: done at +%', clock_timestamp() - now();
   if exists (select 1 from public.player_metric_observations m join public.players pl on pl.id = m.player_id join _r059_players p on p.slug = pl.slug
              where m.metric_key = 'CAREER_BWAR')
-     or (select count(*) from public.player_metric_observations where metric_key = 'CAREER_BWAR') <> (select observations_before from _r059_const) then
+     or (select count(*) from public.player_metric_observations where metric_key = 'CAREER_BWAR') <> k.observations_before
+     or (select count(*) from public.player_metric_observations) <> b.observations_all - 11
+     or (select md5(coalesce(string_agg(h, '' order by h), '')) from (select md5(to_jsonb(m)::text) as h from public.player_metric_observations m
+           where m.player_id not in (select pl.id from public.players pl join _r059_players p on p.slug = pl.slug)) z) is distinct from b.other_metric_observations then
     raise exception 'rollback-059 postcondition: the CAREER_BWAR observations are not the pre-059 observations';
   end if;
-  if exists (select player_slug from public.v_research_tasks where task_type = 'BWAR_MISSING' except select slug from _r059_missing)
-     or exists (select slug from _r059_missing except select player_slug from public.v_research_tasks where task_type = 'BWAR_MISSING')
-     or (select count(*) from public.v_research_tasks where task_type = 'BWAR_MISSING') <> (select count(*) from _r059_missing) then
+  missing_now := (select coalesce(array_agg(t.player_slug order by t.player_slug), '{}') from public.v_research_tasks t where t.task_type = 'BWAR_MISSING');
+  if missing_now is distinct from (select coalesce(array_agg(slug order by slug), '{}') from _r059_missing) then
     raise exception 'rollback-059 postcondition: the BWAR_MISSING queue is not the pre-059 queue';
   end if;
-  for t in select * from _r059_tables order by relname loop
-    execute format('select md5(coalesce(string_agg(md5((to_jsonb(t) - ''updated_at'')::text), '''' order by md5((to_jsonb(t) - ''updated_at'')::text)), '''')) from public.%I t', t.relname) into hv;
-    if hv is distinct from t.h then
-      raise exception 'rollback-059 postcondition: table % changed', t.relname;
-    end if;
-  end loop;
-  if (u.support, u.training_population, u.feature_matrix, u.evaluation_view, u.realized_value, u.transaction_queue, u.value_queue, u.other_research_tasks, u.other_metric_observations)
-       is distinct from (b.support, b.training_population, b.feature_matrix, b.evaluation_view, b.realized_value, b.transaction_queue, b.value_queue, b.other_research_tasks, b.other_metric_observations) then
-    raise exception 'rollback-059 postcondition: a layer other than the eleven observations moved';
+  if (select count(*) from public.sources) <> b.sources or (select count(*) from public.player_mlb_team_season_war) <> b.war_rows
+     or (select count(*) from public.player_mlb_team_season_war where record_status = 'ACTIVE') <> b.war_active or (select count(*) from public.outcomes) <> b.outcomes then
+    raise exception 'rollback-059 postcondition: a source, team-season row or outcome moved';
   end if;
+  raise notice 'rollback-059 phase postconditions: done at +%', clock_timestamp() - now();
   perform * from public.disi_refresh_product_snapshots();
   if (select max(generation_id) from public.product_executive_snapshot) <> b.generation + 1
      or exists (select 1 from public.disi_product_snapshot_drift() where missing_rows + extra_rows <> 0) then
     raise exception 'rollback-059 postcondition: the refresh did not produce exactly one new drift-free generation';
   end if;
+  for tn in select c.relname from pg_class c where c.relnamespace = 'public'::regnamespace and c.relkind = 'r' and c.relname like 'product\_%' order by 1 loop
+    execute format('select array_agg(distinct generation_id) from public.%I', tn) into g;
+    if g is distinct from array[b.generation + 1] then
+      raise exception 'rollback-059 postcondition: snapshot % is not at the single generation %', tn, b.generation + 1;
+    end if;
+  end loop;
+  raise notice 'rollback-059 phase snapshots: done at +% (generation %)', clock_timestamp() - now(), b.generation + 1;
 end $$;
 
 commit;
