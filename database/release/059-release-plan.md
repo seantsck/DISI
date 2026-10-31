@@ -4,9 +4,9 @@ Migration `059_career_bwar_metric_reconciliation.sql` writes one dated career-to
 players, derived from the complete team-season ledger DISI already holds for them (the 2026-09-28 live Baseball-Reference data files 035 loaded).
 It is data only: no table, view, function, trigger, grant, policy, source, team-season row or outcome is added or changed.
 
-**Not applied to production.** Two production attempts were made; neither committed (see "Production attempts"). Production is exactly pre-059:
-at 058 (generation 14, 259/259), and 058 is frozen. Baseline `main` is `4747049cb662a6aec99b5fbb437f34d1df896ef0`. Any further apply needs a new
-explicit owner authorization for the v3 hash below; the two earlier authorizations covered `88d0ef1e…` and `3734a39f…` only and are exhausted.
+**Released.** 059 v3 was applied once to production on 2026-10-30 and committed, after two earlier attempts that did not commit (see "Release record"
+and "Production attempts 1 and 2"). PR #44 was merged as `9d4da66a10f96990a4818bec237c675a79d7d15e` and deployed as `dpl_5VAyprTMhmZuNm9HJFHCYB4Ug6xg`.
+The freeze of 059 is the bookkeeping PR that adds this text.
 
 ## What changes
 
@@ -79,7 +79,19 @@ retirement evidence and is not used.
 at 2025 and cite the archived captures the provider rule does not accept, and all played in 2026 (10-SEASON WINDOW COMPLETE != CAREER COMPLETE).
 The other 28 `BWAR_MISSING` players have no team-season WAR. After 059 the 39 remaining are these 11 + 28.
 
-## Production attempts (neither committed)
+## Release record
+
+**Attempt 3 (v3), sha256 `8598c5f1…`: committed.**
+- **Pre-apply capture:** 404.5 s, read-only; equal in every section to the reviewed capture of the restored backup. The post-capture health gate passed (server start unchanged, no release sessions, 0 ungranted locks, cheap probes 107–267 ms).
+- **Apply:** `2026-10-30T23:57:08.635Z → 2026-10-30T23:57:26.005Z`, **17.4 s**. `INSERT 0 11`, `COMMIT`, exit 0, pipeline exit 0. No restart and no connection interruption.
+- **Phases, elapsed inside the transaction:** preconditions +8.26 s, insert +8.53 s, postconditions +8.58 s (the phase itself about 41 ms), snapshots +16.35 s.
+- **Post-commit capture and verify:** 368.2 s, read-only. External verifier **17/17 PASS**. The only changes are +11 exact observations, `BWAR_MISSING` 50 → 39 and generation 14 → 15.
+- **Merge:** PR #44, regular merge commit `9d4da66a10f96990a4818bec237c675a79d7d15e` at 2026-10-31T20:38:25Z (parents `4747049…`, `880c6f2…`).
+- **Deployment:** `dpl_5VAyprTMhmZuNm9HJFHCYB4Ug6xg` at commit `9d4da66`, READY, production alias `disi-liart.vercel.app`.
+- **Smoke: PASS.** The eleven dossiers show their values through the 2026 season (Devers 30.6, Ynoa 1.1, Herrera -0.7, ...); Juan Soto still shows no observation; the core pages return 200 with no "Data unavailable", 299.0 realized value and no probability, expected value or recommendation. Runtime logs were empty and no statement timeout appears in the request logs.
+- **Production final state:** CAREER_BWAR 58, `BWAR_MISSING` 39, 11 exact 059 rows, generation 15, drift 0, verifier 259/259, sources 3384, active WAR 2025, 299.00 / 88, queues 57 / 90, outputs 0 / 0 / 0 / 0 / 0, none of the 057 eleven has a CAREER_BWAR observation.
+
+## Production attempts 1 and 2 (neither committed)
 
 ### Attempt 1 (2026-10-29, v1 `88d0ef1e…`): statement timeout, no commit
 

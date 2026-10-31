@@ -3,15 +3,21 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 058 is released and production-verified)
+## Where DISI stands (after 059 is released and production-verified)
 
-- **v1.0.0** is in production through Migration 058 (transaction-return bWAR evidence, applied once and committed 2026-10-29, PR #42 merged as
-  `3182db1`; production deployment `dpl_u3P4hWGspx5Daq2DRto2ZCHeEjWL`; production-verified **259/259**, generation **14**, drift **0**; frozen).
-  057 was released 2026-10-28 (PR #40 merged as `b451809`; frozen in PR #41). 056 was released 2026-10-27 (PR #37 merged as `3d51789`; frozen in PR #38). 055 was released 2026-10-25 / 2026-10-27 (PR #35 merged as `a0aae5f`; frozen in PR #36). 054a was released 2026-10-25 (PR #33 merged as `8741e95`; frozen in PR #34). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
+- **v1.0.0** is in production through Migration 059 (career bWAR metric reconciliation, v3 applied once and committed 2026-10-30, PR #44 merged as
+  `9d4da66`; production deployment `dpl_5VAyprTMhmZuNm9HJFHCYB4Ug6xg`; production-verified **259/259**, generation **15**, drift **0**; frozen).
+  058 was released 2026-10-29 (PR #42 merged as `3182db1`; frozen in PR #43). 057 was released 2026-10-28 (PR #40 merged as `b451809`; frozen in PR #41). 056 was released 2026-10-27 (PR #37 merged as `3d51789`; frozen in PR #38). 055 was released 2026-10-25 / 2026-10-27 (PR #35 merged as `a0aae5f`; frozen in PR #36). 054a was released 2026-10-25 (PR #33 merged as `8741e95`; frozen in PR #34). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
   2026-10-23 (PR #26 merged as `89742f2`; frozen in PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is
   released with no migration (PR #25 merged as `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical
-  `main` after 058 is `3182db1ac24f4eadf10a330b3a44fb73acf6cf10`. Catalog: **79** tables, **156** views, **37** functions; **3384** sources.
+  `main` after 059 is `9d4da66a10f96990a4818bec237c675a79d7d15e`. Catalog: **79** tables, **156** views, **37** functions; **3384** sources.
   The product reads eleven persisted snapshots; the analytical layer is internal.
+- Career bWAR metric reconciliation (059, released and production-verified): one dated career-to-date `CAREER_BWAR` observation (through the 2026
+  season) for each of the eleven benchmark players whose complete ledger 035 loaded from the 2026-09-28 files, by the 032 pattern. CAREER_BWAR
+  **47 -> 58**, `BWAR_MISSING` **50 -> 39**; no source, team-season row, outcome, value or prediction change; one snapshot refresh. Two production
+  attempts did not commit: v1 hit the hosted statement timeout, and during v2 the PostgreSQL server restarted, cause unknown. Both failed in a
+  postcondition that hashed every table and fifteen views inside the write transaction. v3 moved that proof to read-only captures around the
+  commit, applied in **17.4 s**, and passed external verification 17/17 (`database/release/059-release-plan.md`).
 - Transaction-return bWAR evidence (058, released and production-verified): Baseball-Reference team-season bWAR for the four returned players of
   existing Dodgers trades whose value was unknown only because their WAR was not loaded (Garland, Leyritz, Grant, Versalles), from the two 057
   captures (no new source, player, mapping or schema). **91** rows (28 / 15 / 36 / 12; active WAR **1934 -> 2025**); Versalles's 1969 WSA stint
@@ -269,10 +275,7 @@ What the 046 research showed about the bottlenecks:
 - **Support thresholds.** Unchanged. In the benchmark sample, reach within 7 seasons (050) and positive bWAR within 10 seasons (057) are
   supported; `BWAR_2_WITHIN_10_SEASONS` is one positive short (86, 9 / 77). Its 7 unlabelled rows are the four 2016-class reachers, whose window
   needs a capture taken after the 2026 season, and 3 unresolved identities. No Dodgers target is close: reach within 7 seasons has 25 labelled rows
-  and 2 positives. `BWAR_MISSING` (50) reads `CAREER_BWAR` metric observations, which 057 does not write. **Migration 059 (career bWAR metric
-  reconciliation) is built and not yet released** (PR open): one dated career-to-date observation (through the 2026 season) for each of the eleven
-  benchmark players whose complete ledger 035 loaded from the 2026-09-28 files, by the 032 pattern; CAREER_BWAR 47 -> 58, `BWAR_MISSING` 50 -> 39;
-  no source, team-season row, outcome or prediction change. The 057 eleven (rows through 2025 on archived captures) and the 28 without
+  and 2 positives. `BWAR_MISSING` (39 since 059) reads `CAREER_BWAR` metric observations, which 057 does not write. The 057 eleven (rows through 2025 on archived captures) and the 28 without
   team-season WAR stay open.
 - **Benchmark depth.** 055 added the 2017 and 2018 lists and 056 the 2019 list. The 2020 class is not yet past its 7-season horizon (2027). Queued:
   the three 056 identities for a person (Puason, Cappe, Enmanuel Rodriguez), the four 055 identities for a person (Patino, Gomez, Guzman, Fernandez), the Cuban signees of 2016 (three) and 2018 (three) whose route no
