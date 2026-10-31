@@ -1,0 +1,245 @@
+{
+ "note": "Migration 059: CAREER_BWAR (a dated career-to-date Baseball-Reference bWAR observation, as 017 defines it) for the eleven benchmark players whose complete mapped team-season ledger was loaded by 035 from the 2026-09-28 live Baseball-Reference data files. Each value is round(sum of ACTIVE BWAR BAT + PITCH team-season rows, 1), the 032 derived pattern. Active MLB status is not a blocker: the observation is career-to-date through the 2026 season, not a final career value.",
+ "semantics": {
+  "metric_key": "CAREER_BWAR",
+  "meaning": "CAREER_TO_DATE_AS_OF",
+  "observed_through_date": "2026-09-28",
+  "observed_through_season": 2026,
+  "rounding": "round(sum(war), 1) (PostgreSQL numeric round, as 032)",
+  "confidence": "VERIFIED"
+ },
+ "sources": {
+  "metric_source_url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+  "files": [
+   {
+    "component": "BAT",
+    "url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "sha256": "ef920800678570138871bbaca91c1069e31e77725074af44c417803ba58775e8",
+    "rows": 126547
+   },
+   {
+    "component": "PITCH",
+    "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt",
+    "sha256": "061df2f8a22e7240d725bb8949bba8c8445769b86d03dd0f37b461f4d582e8e5",
+    "rows": 57884
+   }
+  ],
+  "file_last_modified": "2026-09-28",
+  "retrieved_at": "2026-10-10T07:36:40Z",
+  "pinned_by": [
+   "database/research/032/scope-config.json",
+   "database/research/035/scope-config.json"
+  ]
+ },
+ "players": [
+  {
+   "slug": "rafael-devers",
+   "name": "Rafael Devers",
+   "bref_id": "deverra01",
+   "mlb_id": "646240",
+   "rows": 11,
+   "bat_rows": 11,
+   "pitch_rows": 0,
+   "bat_bwar": "30.62",
+   "pitch_bwar": "0",
+   "raw_bwar": "30.62",
+   "career_bwar": "30.6"
+  },
+  {
+   "slug": "gleyber-torres",
+   "name": "Gleyber Torres",
+   "bref_id": "torregl01",
+   "mlb_id": "650402",
+   "rows": 9,
+   "bat_rows": 9,
+   "pitch_rows": 0,
+   "bat_bwar": "20.91",
+   "pitch_bwar": "0",
+   "raw_bwar": "20.91",
+   "career_bwar": "20.9"
+  },
+  {
+   "slug": "eloy-jimenez",
+   "name": "Eloy Jiménez",
+   "bref_id": "jimenel02",
+   "mlb_id": "650391",
+   "rows": 8,
+   "bat_rows": 8,
+   "pitch_rows": 0,
+   "bat_bwar": "5.17",
+   "pitch_bwar": "0",
+   "raw_bwar": "5.17",
+   "career_bwar": "5.2"
+  },
+  {
+   "slug": "huascar-ynoa",
+   "name": "Huascar Ynoa",
+   "bref_id": "ynoahu01",
+   "mlb_id": "660623",
+   "rows": 8,
+   "bat_rows": 4,
+   "pitch_rows": 4,
+   "bat_bwar": "0.33",
+   "pitch_bwar": "0.73",
+   "raw_bwar": "1.06",
+   "career_bwar": "1.1"
+  },
+  {
+   "slug": "marcos-diplan",
+   "name": "Marcos Diplán",
+   "bref_id": "diplama01",
+   "mlb_id": "650959",
+   "rows": 4,
+   "bat_rows": 2,
+   "pitch_rows": 2,
+   "bat_bwar": "0.00",
+   "pitch_bwar": "0.38",
+   "raw_bwar": "0.38",
+   "career_bwar": "0.4"
+  },
+  {
+   "slug": "dermis-garcia",
+   "name": "Dérmis García",
+   "bref_id": "garcide02",
+   "mlb_id": "660650",
+   "rows": 1,
+   "bat_rows": 1,
+   "pitch_rows": 0,
+   "bat_bwar": "0.50",
+   "pitch_bwar": "0",
+   "raw_bwar": "0.50",
+   "career_bwar": "0.5"
+  },
+  {
+   "slug": "lewin-diaz",
+   "name": "Lewin Díaz",
+   "bref_id": "diazle01",
+   "mlb_id": "650331",
+   "rows": 3,
+   "bat_rows": 3,
+   "pitch_rows": 0,
+   "bat_bwar": "0.13",
+   "pitch_bwar": "0",
+   "raw_bwar": "0.13",
+   "career_bwar": "0.1"
+  },
+  {
+   "slug": "anderson-espinoza",
+   "name": "Anderson Espinoza",
+   "bref_id": "espinan01",
+   "mlb_id": "659262",
+   "rows": 2,
+   "bat_rows": 1,
+   "pitch_rows": 1,
+   "bat_bwar": "0",
+   "pitch_bwar": "-0.02",
+   "raw_bwar": "-0.02",
+   "career_bwar": "0.0"
+  },
+  {
+   "slug": "hyo-jun-park",
+   "name": "Hyo-Jun Park",
+   "bref_id": "parkho01",
+   "mlb_id": "660829",
+   "rows": 3,
+   "bat_rows": 3,
+   "pitch_rows": 0,
+   "bat_bwar": "-0.63",
+   "pitch_bwar": "0",
+   "raw_bwar": "-0.63",
+   "career_bwar": "-0.6"
+  },
+  {
+   "slug": "jose-herrera",
+   "name": "José Herrera",
+   "bref_id": "herrejo04",
+   "mlb_id": "645444",
+   "rows": 6,
+   "bat_rows": 4,
+   "pitch_rows": 2,
+   "bat_bwar": "-0.62",
+   "pitch_bwar": "-0.03",
+   "raw_bwar": "-0.65",
+   "career_bwar": "-0.7"
+  },
+  {
+   "slug": "diego-castillo",
+   "name": "Diego Castillo",
+   "bref_id": "castidi02",
+   "mlb_id": "660636",
+   "rows": 4,
+   "bat_rows": 3,
+   "pitch_rows": 1,
+   "bat_bwar": "-0.51",
+   "pitch_bwar": "-0.26",
+   "raw_bwar": "-0.77",
+   "career_bwar": "-0.8"
+  }
+ ],
+ "excluded_057": [
+  {
+   "slug": "emmanuel-dejesus",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "vladimir-guerrero-jr",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "gilberto-celestino",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "cristian-pache",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "andres-gimenez",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "leody-taveras",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "juan-soto",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "miguel-amaya",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "simon-muzziotti",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "fernando-tatis-jr",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  },
+  {
+   "slug": "rafael-marchan",
+   "reason": "Team-season rows stop at 2025 and cite the archived web.archive.org captures registered by 057; the player played in 2026. The CAREER_BWAR provider rule requires a Baseball-Reference URL, and citing the live file for rows not read from it would be false provenance. Not in 059."
+  }
+ ],
+ "excluded_no_war_reason": "The other 28 BWAR_MISSING benchmark players have no team-season WAR rows: their value stays unknown (never zero) and no observation is written.",
+ "reviewed_effect": {
+  "career_bwar_observations": [
+   47,
+   58
+  ],
+  "bwar_missing": [
+   50,
+   39
+  ],
+  "sources": [
+   3384,
+   3384
+  ],
+  "team_season_war_active": [
+   2025,
+   2025
+  ],
+  "generation_delta": 1
+ }
+}
