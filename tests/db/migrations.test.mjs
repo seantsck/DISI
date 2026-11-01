@@ -2171,13 +2171,13 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 055 (the 2017 / 2018 international benchmark) was released to production on 2026-10-25 (applied) and 2026-10-27 (PR #35, a0aae5f) and is frozen (PR #36, ea687a8)
 // 056 (the 2019 international benchmark) was released to production on 2026-10-27 (applied; PR #37, 3d51789) and is frozen (PR #38, 47bb28a)
 // 057 (benchmark bWAR evidence from the archived Baseball-Reference data files) was released to production on 2026-10-28 (applied; PR #40, b451809) and is frozen (PR #41, af8c977)
-// 058 (transaction-return bWAR evidence for four returned players, from the archived Baseball-Reference data files) was released to production on 2026-10-29 (applied; PR #42, 3182db1) and is frozen
-// 059 (career bWAR metric reconciliation for eleven benchmark players, from the 2026 team-season ledger) is built and not yet released
-const UNRELEASED_ADDITIONS = ['059_career_bwar_metric_reconciliation.sql']
+// 058 (transaction-return bWAR evidence for four returned players, from the archived Baseball-Reference data files) was released to production on 2026-10-29 (applied; PR #42, 3182db1) and is frozen (PR #43, 4747049)
+// 059 (career bWAR metric reconciliation for eleven benchmark players, from the 2026 team-season ledger) was released to production on 2026-10-30 (applied; PR #44, 9d4da66) and is frozen
+const UNRELEASED_ADDITIONS = []
 
-test('frozen history: migrations 001-058 (with 043a and 054a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
+test('frozen history: migrations 001-059 (with 043a and 054a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
-  assert.equal(files.length, 62)
+  assert.equal(files.length, 63)
   assert.deepEqual(manifest.canonical_sql.slice(files.length), UNRELEASED_ADDITIONS)
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {

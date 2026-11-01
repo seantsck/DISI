@@ -55,3 +55,8 @@
   - **Outside, read-only:** the proof that nothing unrelated moved, as a pre-apply capture and a post-commit capture compared by `release-evidence.mjs`.
   - The classification is in `verification-architecture.md`.
 - **Unchanged:** scope, values, as-of, provenance, identity guards, the unknown-is-not-zero rule, the later-observation refusal of the rollback and the snapshot refresh.
+
+## Production release of v3 (2026-10-30)
+
+- **Attempt 3 (v3, `8598c5f1…`):** committed in 17.4 s (23:57:08.635Z → 23:57:26.005Z), generation 14 → 15, with no restart. External verification passed 17/17. The postcondition phase, where attempts 1 and 2 failed, took about 41 ms. The cause of the attempt 2 restart remains unknown.
+- **Timing against the rehearsal:** production took about 2.4× the restored copy (17.4 s against about 7 s). The moved isolation work took 368–405 s as a read-only capture.

@@ -83,7 +83,6 @@ test('058 follows 057 in the manifest (059 follows it), is frozen at its release
   assert.equal(manifest.canonical_sql[i + 1], '059_career_bwar_metric_reconciliation.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
-  assert.equal(Object.keys(frozen).length, 62)
   assert.equal(frozen[FILE], crypto.createHash('sha1').update(sql058.replace(/\r\n/g, '\n')).digest('hex'))
   assert.equal(frozen[FILE], '0e58c9c269770cd3c4f2c6577cd68e382bb75708')
   assert.equal(crypto.createHash('sha256').update(sql058).digest('hex'), 'b65c0c4aa8759ee197bee789937fb529e195c5fd1ea02cf8ea32bb069c3807ae')

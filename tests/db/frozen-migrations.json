@@ -62,6 +62,7 @@
     "055_international_benchmark_2017_2018.sql": "0e9483c89c9c2c14317fac16155beb90629e2596",
     "056_international_benchmark_2019.sql": "e9a07cfe4338e098a60b22c0e6cee6b40b1cbcf6",
     "057_benchmark_bwar_evidence.sql": "48766350e1f60595167c5b977a4759041874b4ac",
-    "058_transaction_return_bwar_evidence.sql": "0e58c9c269770cd3c4f2c6577cd68e382bb75708"
+    "058_transaction_return_bwar_evidence.sql": "0e58c9c269770cd3c4f2c6577cd68e382bb75708",
+    "059_career_bwar_metric_reconciliation.sql": "e6f70db245fe407dff603f351a4b488a476d716a"
   }
 }
