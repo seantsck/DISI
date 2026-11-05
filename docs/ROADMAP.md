@@ -3,16 +3,16 @@
 DISI is a provenance-first research database of Dodgers international signings with a read-only product on top. This file records where it
 stands and what the next phases are *for*. Nothing here is scheduled work: each phase starts only on an explicit decision.
 
-## Where DISI stands (after 059 is released and production-verified)
+## Where DISI stands (after 060 is released and production-verified)
 
-- **v1.0.0** is in production through Migration 059 (career bWAR metric reconciliation, v3 applied once and committed 2026-10-30, PR #44 merged as
-  `9d4da66`; production deployment `dpl_5VAyprTMhmZuNm9HJFHCYB4Ug6xg`; production-verified **259/259**, generation **15**, drift **0**; frozen).
-  058 was released 2026-10-29 (PR #42 merged as `3182db1`; frozen in PR #43). 057 was released 2026-10-28 (PR #40 merged as `b451809`; frozen in PR #41). 056 was released 2026-10-27 (PR #37 merged as `3d51789`; frozen in PR #38). 055 was released 2026-10-25 / 2026-10-27 (PR #35 merged as `a0aae5f`; frozen in PR #36). 054a was released 2026-10-25 (PR #33 merged as `8741e95`; frozen in PR #34). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
+- **v1.0.0** is in production through Migration 060 (owner-reviewed acquisition costs, applied once and committed 2026-11-05, PR #46 merged as
+  `9ebb2d0`; production deployment `dpl_FKocKNoJuZgqVVKX12fgBKDcKL6i`; production-verified **259/259**, generation **16**, drift **0**; frozen).
+  059 was released 2026-10-30 (PR #44 merged as `9d4da66`; frozen in PR #45). 058 was released 2026-10-29 (PR #42 merged as `3182db1`; frozen in PR #43). 057 was released 2026-10-28 (PR #40 merged as `b451809`; frozen in PR #41). 056 was released 2026-10-27 (PR #37 merged as `3d51789`; frozen in PR #38). 055 was released 2026-10-25 / 2026-10-27 (PR #35 merged as `a0aae5f`; frozen in PR #36). 054a was released 2026-10-25 (PR #33 merged as `8741e95`; frozen in PR #34). 054 was released 2026-10-25 (PR #31 merged as `b73811c`; frozen in PR #32). 053 was released 2026-10-24 (PR #29 merged as `0d959ed`; frozen in PR #30). 052 was released
   2026-10-23 (PR #26 merged as `89742f2`; frozen in PR #28) with the dossier transaction-boundary hotfix (PR #27, `e36d2b8`; app only). 051 is
   released with no migration (PR #25 merged as `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical
-  `main` after 059 is `9d4da66a10f96990a4818bec237c675a79d7d15e`. Catalog: **79** tables, **156** views, **37** functions; **3384** sources.
+  `main` after 060 is `9ebb2d04018844eb3da82a9dc9ee7ccc5f762942`. Catalog: **79** tables, **156** views, **37** functions; **3384** sources.
   The product reads eleven persisted snapshots; the analytical layer is internal.
-- Owner-reviewed acquisition costs (**Migration 060, built and not yet released**, PR open; not applied): a reviewed owner-supplied
+- Owner-reviewed acquisition costs (**Migration 060, released and production-verified**; frozen): a reviewed owner-supplied
   acquisition-cost batch of **25** canonical Dodgers signing bonuses (owner input of 2026-11-04), **$5.932M** of newly known acquisition cost.
   Known-cost signings **56 -> 81**, unknown **164 -> 139**; every other unknown stays NULL. The 24 values that were unknown are recorded through
   the ledger's unsourced-canonical path and are not claimed as externally sourced (no source, URL or publisher is created). Pedro Astacio's
@@ -100,7 +100,7 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
   **127** are `NOT_AUDITED`. Of the **98** mature signings, **7** are not audited, and the audit policy correctly holds all seven (five are
   still playing affiliated ball in a class after 2020; two have no usable affiliated record). The other 120 `NOT_AUDITED` signings are in
   classes that are not yet five years old.
-- Acquisition cost is known for **56** signings (046), a lower bound of $121.7M; 060 (built, not released) makes it **81** and $127.6M.
+- Acquisition cost is known for **56** signings (046), a lower bound of $121.7M; 060 (released) makes it **81** and $127.6M (spend $127,632,237.33).
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
   (179 of 220 signings). No path is complete: 44 of 47 are partial. After 054, 128 detector rows are 104 distinct development needs across 62 players (0 transaction-blocked).

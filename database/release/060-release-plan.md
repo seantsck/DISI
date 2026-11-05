@@ -3,8 +3,25 @@
 Migration `060_owner_reviewed_acquisition_costs.sql` makes 25 owner-reviewed Dodgers signing bonuses (owner input of 2026-11-04) canonical. It is
 data only: no table, view, function, trigger, grant, policy, source, player or signing is added or changed.
 
-**Not applied to production. Not merged. Not frozen.** Production is at 059 (generation 15, 259/259; 059 frozen). Baseline `main` is
-`ab6677bb6e607c8551457239a3d1396c71512704`. Applying 060 needs an explicit owner authorization for the hash below.
+**Released and frozen.** 060 was applied to production on 2026-11-05 (PR #46 merged as `9ebb2d04018844eb3da82a9dc9ee7ccc5f762942`; frozen in
+the bookkeeping PR that records this section). The plan below is kept as the release procedure that was followed.
+
+## Release record
+
+| | |
+|---|---|
+| Production apply | 2026-11-05 04:34:12.363Z -> 04:34:31.985Z (19.6 s), one transaction, `COMMIT`, exit 0; all five phase NOTICEs |
+| External release check | `release-check.mjs` 18/18 PASS (exit 0) |
+| PR | #46, normal merge commit `9ebb2d04018844eb3da82a9dc9ee7ccc5f762942` (parents `ab6677bb6e607c8551457239a3d1396c71512704` and `127c43da3389ba474603b5ec9dbc4c5ae292349c`) |
+| Deployment | `dpl_FKocKNoJuZgqVVKX12fgBKDcKL6i`, deployed SHA `9ebb2d04018844eb3da82a9dc9ee7ccc5f762942`, production, READY |
+| Smoke | passed (dossiers, aggregate pages, unknown controls; request logs all 200, no runtime errors) |
+| Production after | generation 16, drift 0, verifier 259/259; known acquisition cost 81 / unknown 139; known spend `127632237.33` |
+| Migration sha256 / normalized sha1 | `525afef8fb91cc059ca2f338faaf9e6d37c89c0bc6d0f302c7dfa01ebf10db30` / `19a63a45ce75ab17e01154259035e52a932dbd7e` |
+| Rollback sha256 | `1bd46dcfcb003375a1edb2f0e3587c55614bfcdc75e368d755078a9c94b951b8` (not run) |
+
+The PG17 restored-backup rehearsal (fresh backup of generation 15) passed before the apply. Its two failed comparisons were the sort order of the
+`missing_cost` list only (production ICU `en-US` against the rehearsal's libc `en_US.UTF-8`); the row set was identical and the set-based release
+check passed.
 
 ## Files
 

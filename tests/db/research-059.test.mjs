@@ -98,7 +98,6 @@ test('059 follows 058 in the manifest (060 follows it), is frozen at its release
   assert.equal(manifest.canonical_sql[i + 1], '060_owner_reviewed_acquisition_costs.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
-  assert.equal(Object.keys(frozen).length, 63)
   assert.equal(frozen[FILE], crypto.createHash('sha1').update(sql059.replace(/\r\n/g, '\n')).digest('hex'))
   assert.equal(frozen[FILE], 'e6f70db245fe407dff603f351a4b488a476d716a')
   assert.equal(crypto.createHash('sha256').update(sql059).digest('hex'), '8598c5f158a56459f120e11cdb690302a062f2dabc90222cfcdc9ff844ed7dcc')
