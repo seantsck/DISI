@@ -1,0 +1,307 @@
+{
+  "migration": "060_owner_reviewed_acquisition_costs.sql",
+  "version": "DISI v0.45",
+  "organization_name": "Los Angeles Dodgers",
+  "reviewed_input": {
+    "basis": "OWNER_REVIEWED_INPUT",
+    "supplied_on": "2026-11-04",
+    "reviewed_by": "Sean Cannon",
+    "reviewed_at": "2026-11-04T00:00:00Z",
+    "expected_rows": 25,
+    "expected_total_usd": "5932000.00",
+    "component": "SIGNING_BONUS",
+    "currency_code": "USD",
+    "statement": "Owner-reviewed Dodgers signing-bonus values supplied on 2026-11-04. They are the accepted input of this batch: DISI did not independently research, corroborate, replace or reinterpret them, and no external citation is retained for them."
+  },
+  "ledger_mapping": {
+    "report_origin": "LEGACY_CARRYFORWARD",
+    "evidence_basis": "LEGACY_CANONICAL_VALUE",
+    "confidence": "UNVERIFIED",
+    "amount_basis": null,
+    "source": null,
+    "note": "Owner-reviewed acquisition-cost input supplied 2026-11-04; no external citation retained in this research batch.",
+    "known_zero_note": "Owner-reviewed acquisition-cost input supplied 2026-11-04; no external citation retained in this research batch. The reviewed amount is a known $0.00 bonus, not an unknown value.",
+    "bonus_publicly_reported": "UNCHANGED",
+    "explanation": "The 030 ledger has no owner-reviewed origin. Its unsourced-canonical representation (LEGACY_CARRYFORWARD: no source, no amount basis, evidence LEGACY_CANONICAL_VALUE) is the only honest one: it makes the value canonical without claiming external-source provenance, and v_signing_acquisition_financials reports it as LEGACY_CANONICAL_ONLY, never EXTERNALLY_SOURCED. Confidence is UNVERIFIED because nothing external was read. bonus_publicly_reported is not set: an owner-supplied value is not a public report."
+  },
+  "policy": [
+    "UNKNOWN STAYS NULL: only the 25 reviewed rows are written; every other unknown bonus stays NULL (no $9,999, <$10K or $0 placeholder).",
+    "KNOWN ZERO != UNKNOWN: Pedro Astacio 1987 is a reviewed known $0.00. It is not a rule for any other signing.",
+    "NO FABRICATED PROVENANCE: no source row, URL or publisher is created for the owner-reviewed values.",
+    "A RESOLUTION IS NOT A REPORT: Adrian Beltre gains no third report. His two existing ACTIVE 046 reports (SABR $23,000; ESPN.com / AP $17,000) stay ACTIVE and an explicit reviewed resolution selects the existing $23,000 report."
+  ],
+  "bonuses": [
+    {
+      "player_slug": "adrian-beltre",
+      "signing_year": 1994,
+      "signing_bonus_usd": "23000.00",
+      "treatment": "RESOLVE_EXISTING_CONFLICT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "carlos-santana",
+      "signing_year": 2004,
+      "signing_bonus_usd": "75000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "pedro-astacio",
+      "signing_year": 1987,
+      "signing_bonus_usd": "0.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "known_zero": true,
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "pedro-baez",
+      "signing_year": 2007,
+      "signing_bonus_usd": "200000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "willy-aybar",
+      "signing_year": 2000,
+      "signing_bonus_usd": "1400000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "roger-cedeno",
+      "signing_year": 1991,
+      "signing_bonus_usd": "3000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "victor-gonzalez",
+      "signing_year": 2012,
+      "signing_bonus_usd": "161000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "rubby-de-la-rosa",
+      "signing_year": 2007,
+      "signing_bonus_usd": "15000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "elian-herrera",
+      "signing_year": 2003,
+      "signing_bonus_usd": "15000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "jorbit-vivas",
+      "signing_year": 2017,
+      "signing_bonus_usd": "300000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "jose-dominguez",
+      "signing_year": 2007,
+      "signing_bonus_usd": "50000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "miguel-droz",
+      "signing_year": 2018,
+      "signing_bonus_usd": "600000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "kelvin-ramirez",
+      "signing_year": 2021,
+      "signing_bonus_usd": "10000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "thayron-liranzo",
+      "signing_year": 2021,
+      "signing_bonus_usd": "30000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "aldrin-batista",
+      "signing_year": 2022,
+      "signing_bonus_usd": "10000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "alexander-albertus",
+      "signing_year": 2022,
+      "signing_bonus_usd": "75000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "jeral-perez",
+      "signing_year": 2022,
+      "signing_bonus_usd": "397500.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "mairoshendrick-martinus",
+      "signing_year": 2022,
+      "signing_bonus_usd": "320000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "samuel-munoz",
+      "signing_year": 2022,
+      "signing_bonus_usd": "757500.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "sean-linan",
+      "signing_year": 2022,
+      "signing_bonus_usd": "17500.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "aneudy-almonte",
+      "signing_year": 2025,
+      "signing_bonus_usd": "50000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "samuel-savinon",
+      "signing_year": 2025,
+      "signing_bonus_usd": "225000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "shai-romero",
+      "signing_year": 2025,
+      "signing_bonus_usd": "200000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "arnaldo-lantigua",
+      "signing_year": 2023,
+      "signing_bonus_usd": "700000.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    },
+    {
+      "player_slug": "eduardo-quintero",
+      "signing_year": 2023,
+      "signing_bonus_usd": "297500.00",
+      "treatment": "OWNER_REVIEWED_LEDGER_FACT",
+      "before": {
+        "signing_bonus_usd": null,
+        "bonus_publicly_reported": false
+      }
+    }
+  ],
+  "beltre_resolution": {
+    "player_slug": "adrian-beltre",
+    "signing_year": 1994,
+    "component_type": "SIGNING_BONUS",
+    "basis": "OTHER_REVIEWED",
+    "reviewed_by": "Sean Cannon",
+    "reviewed_at": "2026-11-04T00:00:00Z",
+    "selected_report": {
+      "amount": "23000.00",
+      "source_url": "https://sabr.org/bioproj/person/adrian-beltre/",
+      "source_name": "SABR Biography Project",
+      "written_by": "046"
+    },
+    "competing_report": {
+      "amount": "17000.00",
+      "source_url": "https://a.espncdn.com/mlb/news/1999/1221/246027.html",
+      "source_name": "ESPN.com (Associated Press)",
+      "written_by": "046"
+    },
+    "rationale": "Owner-reviewed 060 acquisition-cost input (2026-11-04) accepts the existing $23,000 SABR Biography Project report for canonical DISI use. The $17,000 ESPN.com (Associated Press) report stays ACTIVE and the disagreement remains visible."
+  }
+}

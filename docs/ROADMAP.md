@@ -12,6 +12,13 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
   released with no migration (PR #25 merged as `9bf42da`). 050 was released 2026-10-22 (PR #23 merged as `459460d`; frozen in PR #24). Canonical
   `main` after 059 is `9d4da66a10f96990a4818bec237c675a79d7d15e`. Catalog: **79** tables, **156** views, **37** functions; **3384** sources.
   The product reads eleven persisted snapshots; the analytical layer is internal.
+- Owner-reviewed acquisition costs (**Migration 060, built and not yet released**, PR open; not applied): a reviewed owner-supplied
+  acquisition-cost batch of **25** canonical Dodgers signing bonuses (owner input of 2026-11-04), **$5.932M** of newly known acquisition cost.
+  Known-cost signings **56 -> 81**, unknown **164 -> 139**; every other unknown stays NULL. The 24 values that were unknown are recorded through
+  the ledger's unsourced-canonical path and are not claimed as externally sourced (no source, URL or publisher is created). Pedro Astacio's
+  reviewed **$0.00** is a known value, not an unknown placeholder. Adrian Beltre's existing $23K / $17K conflict is resolved to the existing
+  $23K report by an explicit reviewed resolution; neither original report is removed. ACQUISITION_COST_UNKNOWN research tasks (Dodgers)
+  164 -> 139; no outcome, WAR, transaction, development, benchmark or prediction output moves (`database/release/060-release-plan.md`).
 - Career bWAR metric reconciliation (059, released and production-verified): one dated career-to-date `CAREER_BWAR` observation (through the 2026
   season) for each of the eleven benchmark players whose complete ledger 035 loaded from the 2026-09-28 files, by the 032 pattern. CAREER_BWAR
   **47 -> 58**, `BWAR_MISSING` **50 -> 39**; no source, team-season row, outcome, value or prediction change; one snapshot refresh. Two production
@@ -93,7 +100,7 @@ stands and what the next phases are *for*. Nothing here is scheduled work: each 
   **127** are `NOT_AUDITED`. Of the **98** mature signings, **7** are not audited, and the audit policy correctly holds all seven (five are
   still playing affiliated ball in a class after 2020; two have no usable affiliated record). The other 120 `NOT_AUDITED` signings are in
   classes that are not yet five years old.
-- Acquisition cost is known for **56** signings (046), a lower bound of $121.7M.
+- Acquisition cost is known for **56** signings (046), a lower bound of $121.7M; 060 (built, not released) makes it **81** and $127.6M.
 - Development history (047 and 048, released): **1859** stints and **1073** milestones. Pre-MLB history exists for **42** of 47 verified MLB
   players, signing-to-MLB with both exact dates for **45** of 47, a verified first professional season for **19** of 47 under the pathway rule
   (179 of 220 signings). No path is complete: 44 of 47 are partial. After 054, 128 detector rows are 104 distinct development needs across 62 players (0 transaction-blocked).
