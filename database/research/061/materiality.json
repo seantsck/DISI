@@ -1,0 +1,365 @@
+{
+ "rule": "MATERIAL = the unresolved gap blocks package membership, return identity, a Dodgers-control interval, downstream WAR/value, individually attributable return value, or an executive/product output. LOW_MATERIALITY = it blocks a cash or pool amount only. No dollar amount is estimated.",
+ "finding": "Cash and pool-space amounts are read by v_transaction_event_complete and by the transaction research queue only. No organizational-value, realized-value, executive or prediction view reads them (checked through pg_depend on the replay through 060).",
+ "items": [
+  {
+   "id": "T01",
+   "subject": "Carlos Frías / Cleveland 2017",
+   "event_key": "LAD_CLE_2017_CARLOS_FRIAS",
+   "classification": "SCHEMA_PROVENANCE_BLOCKED",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T02",
+   "subject": "Jeral Pérez / White Sox 2024",
+   "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+   "classification": "SCHEMA_PROVENANCE_BLOCKED",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T03",
+   "subject": "Arnaldo Lantigua / Reds 2025",
+   "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+   "classification": "APPLY_EXACT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T04",
+   "subject": "Máximo Martínez / White Sox 2023",
+   "event_key": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+   "classification": "INSUFFICIENT_EVIDENCE",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T05",
+   "subject": "Cingrani / Gyorko / Cardinals 2019 (cash)",
+   "event_key": "LAD_STL_2019_TONY_CINGRANI",
+   "classification": "APPLY_EXACT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T06",
+   "subject": "Cingrani / Gyorko / Cardinals 2019 (pool space)",
+   "event_key": "LAD_STL_2019_TONY_CINGRANI",
+   "classification": "APPLY_EXACT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T07",
+   "subject": "Braves 2017 / González-Kemp",
+   "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+   "classification": "APPLY_EXACT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T08",
+   "subject": "Red Sox 2020 / Betts-Price",
+   "event_key": "LAD_BOS_2020_JETER_DOWNS",
+   "classification": "APPLY_EXACT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T09",
+   "subject": "Reds 2018 / Puig-Kemp-Wood-Farmer",
+   "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+   "classification": "APPLY_EXACT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T10",
+   "subject": "Cleveland 2008 / Santana-Blake",
+   "event_key": "LAD_CLE_2008_SANTANA_BLAKE",
+   "classification": "SCHEMA_PROVENANCE_BLOCKED",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T11",
+   "subject": "Twins 2024 / Doncon-Margot (guaranteed)",
+   "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+   "classification": "APPLY_EXACT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T12",
+   "subject": "Twins 2024 / Doncon-Margot (conditional)",
+   "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+   "classification": "APPLY_CONDITIONAL",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T13",
+   "subject": "Yankees 2000 / Vizcaíno-Leyritz",
+   "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+   "classification": "INSUFFICIENT_EVIDENCE",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T14",
+   "subject": "Blue Jays 2019 / Martin-Brito",
+   "event_key": "LAD_TOR_2019_RONNY_BRITO",
+   "classification": "APPLY_EXACT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T15",
+   "subject": "Aybar / Báez / Betemit 2006",
+   "event_key": "LAD_ATL_2006_AYBAR_BETEMIT",
+   "classification": "ALREADY_PRESENT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T16",
+   "subject": "Elio Campos / Braves 2024",
+   "event_key": "LAD_ATL_2024_ELIO_CAMPOS",
+   "classification": "ALREADY_PRESENT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T17",
+   "subject": "Greg McMichael / Mets 1998",
+   "event_key": "LAD_NYM_1998_GREG_MCMICHAEL",
+   "classification": "ALREADY_PRESENT",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T18",
+   "subject": "Eddys Leonard / Tigers 2023",
+   "event_key": "LAD_DET_2023_EDDYS_LEONARD",
+   "classification": "DOES_NOT_ANSWER_GAP",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T19",
+   "subject": "Mike Judd / José Offerman",
+   "event_key": "LAD_KCR_1995_OFFERMAN / LAD_NYY_1996_BILLY_BREWER",
+   "classification": "INSUFFICIENT_EVIDENCE",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [],
+   "blocks_value": false
+  },
+  {
+   "id": "T20",
+   "subject": "Gail Harris (Amorós trade 1960)",
+   "event_key": "LAD_DET_1960_AMOROS",
+   "classification": "DOES_NOT_ANSWER_GAP",
+   "materiality": "MATERIAL",
+   "blocks": [
+    "Dodgers-control interval",
+    "downstream WAR/value"
+   ],
+   "blocks_value": true
+  },
+  {
+   "id": "T21",
+   "subject": "Robinson Checo",
+   "event_key": "LAD_DET_1999_DAVE_MLICKI",
+   "classification": "DOES_NOT_ANSWER_GAP",
+   "materiality": "MATERIAL",
+   "blocks": [
+    "Dodgers-control interval",
+    "downstream WAR/value"
+   ],
+   "blocks_value": true
+  },
+  {
+   "id": "T22",
+   "subject": "Apostol Garcia",
+   "event_key": "LAD_DET_1999_DAVE_MLICKI",
+   "classification": "INSUFFICIENT_EVIDENCE",
+   "materiality": "MATERIAL",
+   "blocks": [
+    "Dodgers-control interval",
+    "downstream WAR/value"
+   ],
+   "blocks_value": true
+  },
+  {
+   "id": "T23",
+   "subject": "Rick Roberts",
+   "event_key": "LAD_DET_1999_DAVE_MLICKI",
+   "classification": "DOES_NOT_ANSWER_GAP",
+   "materiality": "MATERIAL",
+   "blocks": [
+    "Dodgers-control interval",
+    "downstream WAR/value"
+   ],
+   "blocks_value": true
+  },
+  {
+   "id": "T24",
+   "subject": "Danny Muegge",
+   "event_key": "LAD_ARI_2005_SHAWN_GREEN",
+   "classification": "DOES_NOT_ANSWER_GAP",
+   "materiality": "MATERIAL",
+   "blocks": [
+    "Dodgers-control interval",
+    "downstream WAR/value"
+   ],
+   "blocks_value": true
+  },
+  {
+   "id": "T25",
+   "subject": "William Juárez",
+   "event_key": "LAD_ARI_2005_SHAWN_GREEN",
+   "classification": "DOES_NOT_ANSWER_GAP",
+   "materiality": "MATERIAL",
+   "blocks": [
+    "Dodgers-control interval",
+    "downstream WAR/value"
+   ],
+   "blocks_value": true
+  },
+  {
+   "id": "T26",
+   "subject": "Jon Garland — 2010-11-26 free-agent signing",
+   "event_key": "(new) LAD_FREE_AGENT_SIGNING_2010_JON_GARLAND",
+   "classification": "APPLY_EXACT",
+   "materiality": "MATERIAL",
+   "blocks": [
+    "Dodgers-control interval"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T27",
+   "subject": "2012 Red Sox mega-trade (cash)",
+   "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+   "classification": "INSUFFICIENT_EVIDENCE",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T28",
+   "subject": "Carlos Valdez / Cubs (cash)",
+   "event_key": "CHC_LAD_2000_VALDEZ_REACQ",
+   "classification": "DEFER_LOW_MATERIALITY",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T29",
+   "subject": "Gary Majewski / White Sox (cash)",
+   "event_key": "LAD_CWS_2001_GARY_MAJEWSKI",
+   "classification": "DEFER_LOW_MATERIALITY",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T30",
+   "subject": "Dioner Navarro / Tampa Bay (cash)",
+   "event_key": "LAD_TB_2006_DIONER_NAVARRO",
+   "classification": "DEFER_LOW_MATERIALITY",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  },
+  {
+   "id": "T31",
+   "subject": "Billy McKinney / Rangers (cash)",
+   "event_key": "LAD_TEX_2021_BILLY_MCKINNEY",
+   "classification": "DEFER_LOW_MATERIALITY",
+   "materiality": "LOW_MATERIALITY",
+   "blocks": [
+    "cash/pool amount only"
+   ],
+   "blocks_value": false
+  }
+ ],
+ "material_unresolved": [
+  "T20",
+  "T21",
+  "T22",
+  "T23",
+  "T24",
+  "T25"
+ ],
+ "low_materiality_deferred": [
+  "T28",
+  "T29",
+  "T30",
+  "T31"
+ ]
+}
