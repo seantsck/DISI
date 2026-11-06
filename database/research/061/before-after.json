@@ -1,0 +1,886 @@
+{
+ "note": "Measured on the canonical replay (001-060) with 061 applied once. The replay is one snapshot generation behind production (15 against 16); every logical value is the same.",
+ "headline": {
+  "cost_counts": [
+   {
+    "signings": 220,
+    "known": 81,
+    "unknown": 139,
+    "known_usd": "127632237.33",
+    "zero_bonuses": 1,
+    "zero_costs": 1
+   },
+   {
+    "signings": 220,
+    "known": 81,
+    "unknown": 139,
+    "known_usd": "127632237.33",
+    "zero_bonuses": 1,
+    "zero_costs": 1
+   }
+  ],
+  "career_bwar": [
+   [
+    {
+     "metric_key": "CAREER_BWAR",
+     "observations": 58,
+     "players": 58
+    }
+   ],
+   [
+    {
+     "metric_key": "CAREER_BWAR",
+     "observations": 58,
+     "players": 58
+    }
+   ]
+  ],
+  "bwar_missing": [
+   39,
+   39
+  ],
+  "research_task_types": [
+   [
+    {
+     "task_type": "ACQUISITION_COST_UNKNOWN",
+     "items": 270
+    },
+    {
+     "task_type": "BWAR_MISSING",
+     "items": 39
+    },
+    {
+     "task_type": "CLASS_MEMBERS_MISSING",
+     "items": 3
+    },
+    {
+     "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+     "items": 3
+    },
+    {
+     "task_type": "MARKET_MISSING",
+     "items": 36
+    },
+    {
+     "task_type": "OUTCOME_AUDIT",
+     "items": 130
+    },
+    {
+     "task_type": "SIGNING_DATE_MISSING",
+     "items": 71
+    }
+   ],
+   [
+    {
+     "task_type": "ACQUISITION_COST_UNKNOWN",
+     "items": 270
+    },
+    {
+     "task_type": "BWAR_MISSING",
+     "items": 39
+    },
+    {
+     "task_type": "CLASS_MEMBERS_MISSING",
+     "items": 3
+    },
+    {
+     "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+     "items": 3
+    },
+    {
+     "task_type": "MARKET_MISSING",
+     "items": 36
+    },
+    {
+     "task_type": "OUTCOME_AUDIT",
+     "items": 130
+    },
+    {
+     "task_type": "SIGNING_DATE_MISSING",
+     "items": 71
+    }
+   ]
+  ],
+  "snapshots": [
+   {
+    "generation": 15,
+    "drifting": 0
+   },
+   {
+    "generation": 15,
+    "drifting": 0
+   }
+  ],
+  "prediction_unchanged": true,
+  "value_totals_unchanged": true,
+  "unchanged": {
+   "cost_counts": true,
+   "metric": true,
+   "bwar_missing": true,
+   "research_task_types": true,
+   "prediction": true,
+   "value_totals": true
+  }
+ },
+ "transaction_queue": {
+  "before": 57,
+  "after": 51,
+  "by_issue": [
+   {
+    "CASH_AMOUNT_UNKNOWN": 17,
+    "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION": 6,
+    "DOWNSTREAM_WAR_NOT_LOADED": 4,
+    "EXIT_NOT_RESEARCHED_DOWNSTREAM": 5,
+    "EXIT_STATUS_UNVERIFIED": 16,
+    "EXIT_TRANSACTION_MISSING": 2,
+    "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+    "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+    "PTBNL_UNRESOLVED": 2,
+    "RETURN_ASSET_EXIT_MISSING": 1
+   },
+   {
+    "CASH_AMOUNT_UNKNOWN": 11,
+    "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION": 5,
+    "DOWNSTREAM_WAR_NOT_LOADED": 4,
+    "EXIT_NOT_RESEARCHED_DOWNSTREAM": 5,
+    "EXIT_STATUS_UNVERIFIED": 16,
+    "EXIT_TRANSACTION_MISSING": 2,
+    "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+    "POOL_SPACE_AMOUNT_UNKNOWN": 2,
+    "PTBNL_UNRESOLVED": 2,
+    "RETURN_ASSET_EXIT_MISSING": 1
+   }
+  ],
+  "left": [
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "priority": 3,
+    "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+    "asset_name": "Cash",
+    "player_slug": null
+   },
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "priority": 3,
+    "event_key": "LAD_BOS_2020_JETER_DOWNS",
+    "asset_name": "Cash",
+    "player_slug": null
+   },
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "priority": 3,
+    "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+    "asset_name": "Cash",
+    "player_slug": null
+   },
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "priority": 3,
+    "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+    "asset_name": "Cash",
+    "player_slug": null
+   },
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "priority": 3,
+    "event_key": "LAD_STL_2019_TONY_CINGRANI",
+    "asset_name": "Cash",
+    "player_slug": null
+   },
+   {
+    "issue": "CASH_AMOUNT_UNKNOWN",
+    "priority": 3,
+    "event_key": "LAD_TOR_2019_RONNY_BRITO",
+    "asset_name": "Cash",
+    "player_slug": null
+   },
+   {
+    "issue": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION",
+    "priority": 3,
+    "event_key": "LAD_FREE_AGENCY_2009_JON_GARLAND",
+    "asset_name": "Jon Garland",
+    "player_slug": null
+   }
+  ],
+  "entered": [
+   {
+    "issue": "POOL_SPACE_AMOUNT_UNKNOWN",
+    "priority": 3,
+    "event_key": "LAD_STL_2019_TONY_CINGRANI",
+    "asset_name": "International cap space (2019/2020)",
+    "player_slug": null
+   }
+  ]
+ },
+ "value_queue": {
+  "before": 79,
+  "after": 79,
+  "by_issue": [
+   {
+    "ACQUISITION_COST_INCOMPLETE": 17,
+    "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE": 5,
+    "LINEAGE_BOUNDARY_NOTED": 22,
+    "OUTCOME_INCOMPLETE": 8,
+    "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED": 27
+   },
+   {
+    "ACQUISITION_COST_INCOMPLETE": 17,
+    "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE": 5,
+    "LINEAGE_BOUNDARY_NOTED": 22,
+    "OUTCOME_INCOMPLETE": 8,
+    "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED": 27
+   }
+  ],
+  "rows_unchanged": true
+ },
+ "counts": {
+  "before": {
+   "events": 223,
+   "assets": 410,
+   "cash_assets": 19,
+   "cash_unknown": 17,
+   "pool_assets": 1,
+   "pool_unknown": 1,
+   "future_considerations": 3,
+   "ptbn": 9,
+   "resolutions": 7,
+   "active_resolutions": 7,
+   "sources": 3384,
+   "evidence": 4490
+  },
+  "after": {
+   "events": 225,
+   "assets": 415,
+   "cash_assets": 20,
+   "cash_unknown": 11,
+   "pool_assets": 3,
+   "pool_unknown": 2,
+   "future_considerations": 3,
+   "ptbn": 9,
+   "resolutions": 7,
+   "active_resolutions": 7,
+   "sources": 3396,
+   "evidence": 4507
+  }
+ },
+ "transaction_rows": {
+  "targets": [
+   [
+    {
+     "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+     "transaction_date": "2017-12-16",
+     "asset_side": "OUTGOING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "Atlanta Braves",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=408236"
+    },
+    {
+     "event_key": "LAD_BOS_2020_JETER_DOWNS",
+     "transaction_date": "2020-02-10",
+     "asset_side": "INCOMING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "Boston Red Sox",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=657077"
+    },
+    {
+     "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+     "transaction_date": "2018-12-21",
+     "asset_side": "OUTGOING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "Cincinnati Reds",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=624577"
+    },
+    {
+     "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+     "transaction_date": "2025-01-17",
+     "asset_side": "INCOMING",
+     "asset_type": "FUTURE_CONSIDERATIONS",
+     "asset_name": "Future considerations",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "Cincinnati Reds",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=806984"
+    },
+    {
+     "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+     "transaction_date": "2024-02-26",
+     "asset_side": "OUTGOING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "Minnesota Twins",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=699061"
+    },
+    {
+     "event_key": "LAD_STL_2019_TONY_CINGRANI",
+     "transaction_date": "2019-07-31",
+     "asset_side": "INCOMING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "St. Louis Cardinals",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=571561"
+    },
+    {
+     "event_key": "LAD_STL_2019_TONY_CINGRANI",
+     "transaction_date": "2019-07-31",
+     "asset_side": "INCOMING",
+     "asset_type": "FUTURE_CONSIDERATIONS",
+     "asset_name": "Future considerations",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "St. Louis Cardinals",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=571561"
+    },
+    {
+     "event_key": "LAD_TOR_2019_RONNY_BRITO",
+     "transaction_date": "2019-01-11",
+     "asset_side": "INCOMING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "Toronto Blue Jays",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665798"
+    }
+   ],
+   [
+    {
+     "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+     "transaction_date": "2017-12-16",
+     "asset_side": "OUTGOING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": "4500000.00",
+     "pool_space_amount_usd": null,
+     "counterparty": "Atlanta Braves",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=408236"
+    },
+    {
+     "event_key": "LAD_BOS_2020_JETER_DOWNS",
+     "transaction_date": "2020-02-10",
+     "asset_side": "INCOMING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": "48000000.00",
+     "pool_space_amount_usd": null,
+     "counterparty": "Boston Red Sox",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=657077"
+    },
+    {
+     "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+     "transaction_date": "2018-12-21",
+     "asset_side": "OUTGOING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": "7000000.00",
+     "pool_space_amount_usd": null,
+     "counterparty": "Cincinnati Reds",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=624577"
+    },
+    {
+     "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+     "transaction_date": "2025-01-17",
+     "asset_side": "INCOMING",
+     "asset_type": "FUTURE_CONSIDERATIONS",
+     "asset_name": "Future considerations",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "Cincinnati Reds",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=806984"
+    },
+    {
+     "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+     "transaction_date": "2025-01-17",
+     "asset_side": "INCOMING",
+     "asset_type": "INTERNATIONAL_BONUS_POOL_SPACE",
+     "asset_name": "International bonus pool space",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": "1500000.00",
+     "counterparty": "Cincinnati Reds",
+     "role_note": "Reported $1.5 million of international bonus pool space received from Cincinnati. The event's Future Considerations placeholder is kept as the MLB transaction log recorded it.",
+     "source_url": "https://www.truebluela.com/2025/1/17/24346370/dodgers-reds-trade-arnaldo-lantigua-international-bonus-pool-roki-sasaki"
+    },
+    {
+     "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+     "transaction_date": "2024-02-26",
+     "asset_side": "OUTGOING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": "6000000.00",
+     "pool_space_amount_usd": null,
+     "counterparty": "Minnesota Twins",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=699061"
+    },
+    {
+     "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+     "transaction_date": "2024-02-26",
+     "asset_side": "OUTGOING",
+     "asset_type": "CASH",
+     "asset_name": "Cash (additional, Margot 2025 option declined)",
+     "cash_amount_usd": "2000000.00",
+     "pool_space_amount_usd": null,
+     "counterparty": "Minnesota Twins",
+     "role_note": "A second cash component of the trade, separate from the $6,000,000 guaranteed cash: an additional $2,000,000 the Dodgers owe Minnesota because the Twins declined Margot's 2025 option (declined 2024-11-01); the Associated Press reports it is payable 2026-12-01.",
+     "source_url": "https://www.cbsnews.com/minnesota/news/kyle-farmer-manuel-margot-free-agents-twins/"
+    },
+    {
+     "event_key": "LAD_STL_2019_TONY_CINGRANI",
+     "transaction_date": "2019-07-31",
+     "asset_side": "INCOMING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": "2938710.00",
+     "pool_space_amount_usd": null,
+     "counterparty": "St. Louis Cardinals",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=571561"
+    },
+    {
+     "event_key": "LAD_STL_2019_TONY_CINGRANI",
+     "transaction_date": "2019-07-31",
+     "asset_side": "INCOMING",
+     "asset_type": "FUTURE_CONSIDERATIONS",
+     "asset_name": "Future considerations",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "St. Louis Cardinals",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=571561"
+    },
+    {
+     "event_key": "LAD_STL_2019_TONY_CINGRANI",
+     "transaction_date": "2019-07-31",
+     "asset_side": "INCOMING",
+     "asset_type": "INTERNATIONAL_BONUS_POOL_SPACE",
+     "asset_name": "International cap space (2019/2020)",
+     "cash_amount_usd": null,
+     "pool_space_amount_usd": null,
+     "counterparty": "St. Louis Cardinals",
+     "role_note": "The Cardinals' announcement names 2019/2020 International Cap Space in the trade. It states no amount, so none is recorded: a known component with an unknown amount (unknown, never zero). The Future Considerations placeholder is kept.",
+     "source_url": "https://www.mlb.com/press-release/cardinals-announce-trade-with-dodgers"
+    },
+    {
+     "event_key": "LAD_TOR_2019_RONNY_BRITO",
+     "transaction_date": "2019-01-11",
+     "asset_side": "INCOMING",
+     "asset_type": "CASH",
+     "asset_name": "Cash",
+     "cash_amount_usd": "16400000.00",
+     "pool_space_amount_usd": null,
+     "counterparty": "Toronto Blue Jays",
+     "role_note": null,
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=665798"
+    }
+   ]
+  ],
+  "garland": [
+   [
+    {
+     "event_key": "LAD_ARI_2009_TONY_ABREU",
+     "transaction_date": "2009-08-31",
+     "transaction_type": "TRADE",
+     "asset_side": "INCOMING",
+     "asset_name": "Jon Garland",
+     "bref_id": "garlajo01",
+     "mlb_id": "279782",
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=279782"
+    },
+    {
+     "event_key": "LAD_FREE_AGENCY_2009_JON_GARLAND",
+     "transaction_date": "2009-11-05",
+     "transaction_type": "FREE_AGENCY",
+     "asset_side": "OUTGOING",
+     "asset_name": "Jon Garland",
+     "bref_id": "garlajo01",
+     "mlb_id": "279782",
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=279782"
+    }
+   ],
+   [
+    {
+     "event_key": "LAD_ARI_2009_TONY_ABREU",
+     "transaction_date": "2009-08-31",
+     "transaction_type": "TRADE",
+     "asset_side": "INCOMING",
+     "asset_name": "Jon Garland",
+     "bref_id": "garlajo01",
+     "mlb_id": "279782",
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=279782"
+    },
+    {
+     "event_key": "LAD_FREE_AGENCY_2009_JON_GARLAND",
+     "transaction_date": "2009-11-05",
+     "transaction_type": "FREE_AGENCY",
+     "asset_side": "OUTGOING",
+     "asset_name": "Jon Garland",
+     "bref_id": "garlajo01",
+     "mlb_id": "279782",
+     "source_url": "https://statsapi.mlb.com/api/v1/transactions?playerId=279782"
+    },
+    {
+     "event_key": "LAD_FREE_AGENT_SIGNING_2010_JON_GARLAND",
+     "transaction_date": "2010-11-26",
+     "transaction_type": "FREE_AGENT_SIGNING",
+     "asset_side": "INCOMING",
+     "asset_name": "Jon Garland",
+     "bref_id": "garlajo01",
+     "mlb_id": "279782",
+     "source_url": "https://www.mlb.com/player/jon-garland-279782"
+    },
+    {
+     "event_key": "LAD_FREE_AGENCY_2011_JON_GARLAND",
+     "transaction_date": "2011-10-30",
+     "transaction_type": "FREE_AGENCY",
+     "asset_side": "OUTGOING",
+     "asset_name": "Jon Garland",
+     "bref_id": "garlajo01",
+     "mlb_id": "279782",
+     "source_url": "https://www.mlb.com/player/jon-garland-279782"
+    }
+   ]
+  ],
+  "garland_intervals": [
+   [
+    {
+     "interval_key": "LAD_ARI_2009_TONY_ABREU:279782",
+     "start_event_key": "LAD_ARI_2009_TONY_ABREU",
+     "interval_start": "2009-08-31",
+     "exit_event_key": "LAD_FREE_AGENCY_2009_JON_GARLAND",
+     "exit_method": "FREE_AGENCY",
+     "interval_end": "2009-11-05",
+     "interval_status": "CLOSED_EXIT_RECORDED",
+     "is_lineage_interval": true,
+     "war_state": "LOADED",
+     "interval_bounded_dodgers_bwar": "0.17",
+     "dodgers_rows_in_interval": 2
+    }
+   ],
+   [
+    {
+     "interval_key": "LAD_ARI_2009_TONY_ABREU:279782",
+     "start_event_key": "LAD_ARI_2009_TONY_ABREU",
+     "interval_start": "2009-08-31",
+     "exit_event_key": "LAD_FREE_AGENCY_2009_JON_GARLAND",
+     "exit_method": "FREE_AGENCY",
+     "interval_end": "2009-11-05",
+     "interval_status": "CLOSED_EXIT_RECORDED",
+     "is_lineage_interval": true,
+     "war_state": "LOADED",
+     "interval_bounded_dodgers_bwar": "0.17",
+     "dodgers_rows_in_interval": 2
+    },
+    {
+     "interval_key": "LAD_FREE_AGENT_SIGNING_2010_JON_GARLAND:279782",
+     "start_event_key": "LAD_FREE_AGENT_SIGNING_2010_JON_GARLAND",
+     "interval_start": "2010-11-26",
+     "exit_event_key": "LAD_FREE_AGENCY_2011_JON_GARLAND",
+     "exit_method": "FREE_AGENCY",
+     "interval_end": "2011-10-30",
+     "interval_status": "CLOSED_EXIT_RECORDED",
+     "is_lineage_interval": false,
+     "war_state": "LOADED",
+     "interval_bounded_dodgers_bwar": "0.14",
+     "dodgers_rows_in_interval": 2
+    }
+   ]
+  ],
+  "sources": [
+   {
+    "url": "https://www.baseball-almanac.com/players/trades.php?p=garlajo01",
+    "source_name": "Baseball Almanac",
+    "source_type": "TRANSACTIONS",
+    "source_tier": "OTHER",
+    "title": "Jon Garland Trades and Transactions by Baseball Almanac",
+    "publication_date": null,
+    "accessed_at": "2026-11-05 23:10:11+00"
+   },
+   {
+    "url": "https://www.boston.com/sports/boston-red-sox/2020/02/12/red-sox-to-send-dodgers-48-million-in-18-installments-over-3-years/",
+    "source_name": "Boston.com (Associated Press)",
+    "source_type": "ARTICLE",
+    "source_tier": "OTHER",
+    "title": "Red Sox to send Dodgers $48 million in 18 installments over 3 years",
+    "publication_date": "2020-02-12",
+    "accessed_at": "2026-11-05 23:10:11+00"
+   },
+   {
+    "url": "https://www.cbsnews.com/minnesota/news/kyle-farmer-manuel-margot-free-agents-twins/",
+    "source_name": "CBS Minnesota (Associated Press)",
+    "source_type": "ARTICLE",
+    "source_tier": "OTHER",
+    "title": "Kyle Farmer and Manuel Margot become free agents after Twins decline options",
+    "publication_date": "2024-11-01",
+    "accessed_at": "2026-11-05 23:11:31+00"
+   },
+   {
+    "url": "https://www.mlb.com/amp/news/mookie-betts-trade-dodgers-red-sox.html",
+    "source_name": "MLB.com",
+    "source_type": "ARTICLE",
+    "source_tier": "MLB_COM_REPORTING",
+    "title": "Mookie Betts traded to Dodgers from Red Sox",
+    "publication_date": "2020-02-11",
+    "accessed_at": "2026-11-05 23:11:02+00"
+   },
+   {
+    "url": "https://www.mlb.com/news/blue-jays-trade-russell-martin-to-dodgers-c302623680",
+    "source_name": "MLB.com",
+    "source_type": "ARTICLE",
+    "source_tier": "MLB_COM_REPORTING",
+    "title": "Blue Jays trade Russell Martin to Dodgers",
+    "publication_date": null,
+    "accessed_at": "2026-11-05 23:11:18+00"
+   },
+   {
+    "url": "https://www.mlb.com/news/dodgers-trade-kemp-puig-wood-in-blockbuster-c302142414",
+    "source_name": "MLB.com",
+    "source_type": "ARTICLE",
+    "source_tier": "MLB_COM_REPORTING",
+    "title": "Dodgers trade Kemp, Puig, Wood in blockbuster",
+    "publication_date": null,
+    "accessed_at": "2026-11-05 23:11:25+00"
+   },
+   {
+    "url": "https://www.mlb.com/player/jon-garland-279782",
+    "source_name": "MLB.com",
+    "source_type": "TRANSACTIONS",
+    "source_tier": "MLB_TRANSACTION_LOG",
+    "title": "Jon Garland Stats, Age, Position, Height, Weight, Fantasy & News",
+    "publication_date": null,
+    "accessed_at": "2026-11-05 23:11:04+00"
+   },
+   {
+    "url": "https://www.mlb.com/press-release/cardinals-announce-trade-with-dodgers",
+    "source_name": "MLB.com (St. Louis Cardinals)",
+    "source_type": "PRESS_RELEASE",
+    "source_tier": "OFFICIAL_CLUB_RELEASE",
+    "title": "Cardinals announce trade with Dodgers",
+    "publication_date": "2019-07-31",
+    "accessed_at": "2026-11-05 23:10:59+00"
+   },
+   {
+    "url": "https://www.startribune.com/twins-trade-for-manuel-margot-los-angeles-dodgers-byron-buxton/600346254",
+    "source_name": "Star Tribune",
+    "source_type": "ARTICLE",
+    "source_tier": "OTHER",
+    "title": "Twins acquire outfielder Manuel Margot in trade with Dodgers",
+    "publication_date": "2024-02-27",
+    "accessed_at": "2026-11-05 23:11:35+00"
+   },
+   {
+    "url": "https://www.truebluela.com/2017/12/16/16785216/matt-kemp-trade-dodgers-braves-adrian-gonzalez-scott-kazmir-brandon-mccarthy-luxury-tax",
+    "source_name": "True Blue LA",
+    "source_type": "ARTICLE",
+    "source_tier": "OTHER",
+    "title": "Dodgers trade Adrian Gonzalez, Scott Kazmir, Brandon McCarthy & Charlie Culberson to Braves for Matt Kemp",
+    "publication_date": "2017-12-16",
+    "accessed_at": "2026-11-05 23:10:11+00"
+   },
+   {
+    "url": "https://www.truebluela.com/2017/8/5/16101678/dodgers-payroll-roster-service-time",
+    "source_name": "True Blue LA",
+    "source_type": "ARTICLE",
+    "source_tier": "OTHER",
+    "title": "Los Angeles Dodgers payroll worksheet",
+    "publication_date": "2019-09-26",
+    "accessed_at": "2026-11-05 23:10:11+00"
+   },
+   {
+    "url": "https://www.truebluela.com/2025/1/17/24346370/dodgers-reds-trade-arnaldo-lantigua-international-bonus-pool-roki-sasaki",
+    "source_name": "True Blue LA",
+    "source_type": "ARTICLE",
+    "source_tier": "OTHER",
+    "title": "Dodgers trade outfielder Arnaldo Lantigua to Reds for international bonus pool space",
+    "publication_date": null,
+    "accessed_at": "2026-11-05 23:10:11+00"
+   }
+  ],
+  "evidence": [
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+    "field_name": "cash_amount_usd",
+    "confidence": "MEDIUM",
+    "source_url": "https://www.truebluela.com/2017/12/16/16785216/matt-kemp-trade-dodgers-braves-adrian-gonzalez-scott-kazmir-brandon-mccarthy-luxury-tax",
+    "evidence_note": "Reported to be $4.5 million per Jon Heyman (FanRag Sports); the article's luxury-tax arithmetic lists Cash to Braves ($4.5 million). A reported figure, not a club announcement."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_BOS_2020_JETER_DOWNS",
+    "field_name": "cash_amount_usd",
+    "confidence": "HIGH",
+    "source_url": "https://www.boston.com/sports/boston-red-sox/2020/02/12/red-sox-to-send-dodgers-48-million-in-18-installments-over-3-years/",
+    "evidence_note": "Associated Press: Boston will send Los Angeles $48 million in 18 installments of $2,666,667 from April through September in 2020, 2021 and 2022."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_BOS_2020_JETER_DOWNS",
+    "field_name": "cash_amount_usd",
+    "confidence": "HIGH",
+    "source_url": "https://www.mlb.com/amp/news/mookie-betts-trade-dodgers-red-sox.html",
+    "evidence_note": "MLB.com: the $48 million sent by the Red Sox to the Dodgers, prorated over the three years remaining on the deal. One consideration recorded as a single amount; the payment schedule is not modelled."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+    "field_name": "cash_amount_usd",
+    "confidence": "HIGH",
+    "source_url": "https://www.mlb.com/news/dodgers-trade-kemp-puig-wood-in-blockbuster-c302142414",
+    "evidence_note": "MLB.com: the Dodgers sent Kemp, Puig, Wood and Farmer plus $7 million to the Reds."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+    "field_name": "cash_amount_usd",
+    "confidence": "MEDIUM",
+    "source_url": "https://www.truebluela.com/2017/8/5/16101678/dodgers-payroll-roster-service-time",
+    "evidence_note": "Payroll worksheet line: Cash to Reds (Kemp, etc) $7,000,000."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+    "field_name": "pool_space_amount_usd",
+    "confidence": "MEDIUM",
+    "source_url": "https://www.truebluela.com/2025/1/17/24346370/dodgers-reds-trade-arnaldo-lantigua-international-bonus-pool-roki-sasaki",
+    "evidence_note": "True Blue LA reports that MLB.com's Mark Sheldon reported the Dodgers received $1.5 million in international bonus pool space from Cincinnati."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_FREE_AGENCY_2011_JON_GARLAND",
+    "field_name": "transaction_date",
+    "confidence": "MEDIUM",
+    "source_url": "https://www.baseball-almanac.com/players/trades.php?p=garlajo01",
+    "evidence_note": "Baseball Almanac: 10-30-2011 Granted free agency."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_FREE_AGENCY_2011_JON_GARLAND",
+    "field_name": "transaction_date",
+    "confidence": "VERIFIED",
+    "source_url": "https://www.mlb.com/player/jon-garland-279782",
+    "evidence_note": "MLB.com transaction list: October 30, 2011 RHP Jon Garland elected free agency."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_FREE_AGENT_SIGNING_2010_JON_GARLAND",
+    "field_name": "transaction_date",
+    "confidence": "MEDIUM",
+    "source_url": "https://www.baseball-almanac.com/players/trades.php?p=garlajo01",
+    "evidence_note": "Baseball Almanac: 11-26-2010 Signed by Los Angeles Dodgers."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_FREE_AGENT_SIGNING_2010_JON_GARLAND",
+    "field_name": "transaction_date",
+    "confidence": "VERIFIED",
+    "source_url": "https://www.mlb.com/player/jon-garland-279782",
+    "evidence_note": "MLB.com transaction list: November 26, 2010 Los Angeles Dodgers signed free agent RHP Jon Garland. Contract terms are not recorded: a salary is not trade consideration."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+    "field_name": "cash_amount_usd",
+    "confidence": "HIGH",
+    "source_url": "https://www.cbsnews.com/minnesota/news/kyle-farmer-manuel-margot-free-agents-twins/",
+    "evidence_note": "Associated Press: as part of the trade the Dodgers agreed to pay the Twins $6 million."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+    "field_name": "cash_amount_usd",
+    "confidence": "HIGH",
+    "source_url": "https://www.startribune.com/twins-trade-for-manuel-margot-los-angeles-dodgers-byron-buxton/600346254",
+    "evidence_note": "Star Tribune: the Twins will receive $6 million to cover part of Margot's salary. This is the guaranteed component only; the option-dependent $2 million is a separate asset."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+    "field_name": "cash_amount_usd_additional_option_declined",
+    "confidence": "HIGH",
+    "source_url": "https://www.cbsnews.com/minnesota/news/kyle-farmer-manuel-margot-free-agents-twins/",
+    "evidence_note": "Associated Press, 2024-11-01: because the option was declined, Los Angeles will pay Minnesota an additional $2 million on Dec. 1, 2026. Owed under the trade; the payment date is later than the 2026-11-05 capture."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_STL_2019_TONY_CINGRANI",
+    "field_name": "cash_amount_usd",
+    "confidence": "MEDIUM",
+    "source_url": "https://www.truebluela.com/2017/8/5/16101678/dodgers-payroll-roster-service-time",
+    "evidence_note": "Payroll worksheet line: Cash from St. Louis (Gyorko) -$2,938,710. The Cardinals' club announcement names cash considerations without an amount."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_STL_2019_TONY_CINGRANI",
+    "field_name": "pool_space_component",
+    "confidence": "VERIFIED",
+    "source_url": "https://www.mlb.com/press-release/cardinals-announce-trade-with-dodgers",
+    "evidence_note": "Club announcement: Jedd Gyorko, 2019/2020 International Cap Space and cash considerations for Tony Cingrani and Jeffry Abreu. The amount of international cap space is not stated."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_TOR_2019_RONNY_BRITO",
+    "field_name": "cash_amount_usd",
+    "confidence": "HIGH",
+    "source_url": "https://www.mlb.com/news/blue-jays-trade-russell-martin-to-dodgers-c302623680",
+    "evidence_note": "MLB.com: Toronto agreed to pick up $16.4 million of Martin's $20 million salary to facilitate the deal. Recorded as the CASH consideration of the trade; it is not a Dodgers acquisition cost."
+   },
+   {
+    "entity_type": "transaction_event",
+    "event_key": "LAD_TOR_2019_RONNY_BRITO",
+    "field_name": "cash_amount_usd",
+    "confidence": "MEDIUM",
+    "source_url": "https://www.truebluela.com/2017/8/5/16101678/dodgers-payroll-roster-service-time",
+    "evidence_note": "Payroll worksheet line: Cash from Toronto (Martin) -$16,400,000."
+   }
+  ]
+ },
+ "fingerprints_held": {
+  "other_events": true,
+  "other_assets": true,
+  "target_event_players": true,
+  "resolutions": true,
+  "control_observations": true,
+  "timing_observations": true,
+  "other_sources": true,
+  "other_evidence": true
+ },
+ "isolation_060_unchanged": {
+  "ledger": true,
+  "resolutions": true,
+  "fingerprints": true,
+  "hashes": {
+   "dodgers_signings_hash": true,
+   "dodgers_audits_hash": true,
+   "war_hash": true,
+   "financial_reports_hash": true,
+   "transactions_hash": false,
+   "development_hash": true,
+   "benchmark_signings_hash": true
+  },
+  "executive_overview_body_md5": true
+ }
+}

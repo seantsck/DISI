@@ -1,0 +1,388 @@
+{
+ "migration": "061_transaction_research_closure.sql",
+ "reviewed_on": "2026-11-05",
+ "organization_name": "Los Angeles Dodgers",
+ "note": "The only copy of the 061 values. Each fact below was checked against the page named in `sources`, read by this build on the `accessed_at` shown (a page the live site refused, HTTP 403 / 406 / 429, was read through the Internet Archive snapshot named in its notes). `database/research/061/source-capture-amendment.json` holds the hashes and quotes. Not written: the Maximo Martinez, Jose Vizcaino, Casey Blake, Jeral Perez and Carlos Frias items, every identity / route item and every low-materiality residual.",
+ "sources": [
+  {
+   "key": "lantigua_tbla",
+   "url": "https://www.truebluela.com/2025/1/17/24346370/dodgers-reds-trade-arnaldo-lantigua-international-bonus-pool-roki-sasaki",
+   "source_name": "True Blue LA",
+   "source_type": "ARTICLE",
+   "source_tier": "OTHER",
+   "title": "Dodgers trade outfielder Arnaldo Lantigua to Reds for international bonus pool space",
+   "publication_date": null,
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "notes": "Read directly. Reports that MLB.com's Mark Sheldon reported the Dodgers received $1.5 million in international bonus pool space from Cincinnati (secondary reporting of a reported figure)."
+  },
+  {
+   "key": "kemp_tbla",
+   "url": "https://www.truebluela.com/2017/12/16/16785216/matt-kemp-trade-dodgers-braves-adrian-gonzalez-scott-kazmir-brandon-mccarthy-luxury-tax",
+   "source_name": "True Blue LA",
+   "source_type": "ARTICLE",
+   "source_tier": "OTHER",
+   "title": "Dodgers trade Adrian Gonzalez, Scott Kazmir, Brandon McCarthy & Charlie Culberson to Braves for Matt Kemp",
+   "publication_date": "2017-12-16",
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "notes": "Read directly. States the cash amount is unknown but reported to be $4.5 million per Jon Heyman of FanRag Sports, and lists Cash to Braves ($4.5 million) in its luxury-tax arithmetic (a reported figure, not a club announcement)."
+  },
+  {
+   "key": "payroll_tbla",
+   "url": "https://www.truebluela.com/2017/8/5/16101678/dodgers-payroll-roster-service-time",
+   "source_name": "True Blue LA",
+   "source_type": "ARTICLE",
+   "source_tier": "OTHER",
+   "title": "Los Angeles Dodgers payroll worksheet",
+   "publication_date": "2019-09-26",
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "notes": "Read directly. A payroll worksheet (the page shows Updated Sep 26, 2019) that lists Cash from Toronto (Martin) -$16,400,000, Cash from St. Louis (Gyorko) -$2,938,710 and Cash to Reds (Kemp, etc) $7,000,000. It is used as corroborating evidence replacing an inaccessible owner-supplied citation."
+  },
+  {
+   "key": "betts_boston",
+   "url": "https://www.boston.com/sports/boston-red-sox/2020/02/12/red-sox-to-send-dodgers-48-million-in-18-installments-over-3-years/",
+   "source_name": "Boston.com (Associated Press)",
+   "source_type": "ARTICLE",
+   "source_tier": "OTHER",
+   "title": "Red Sox to send Dodgers $48 million in 18 installments over 3 years",
+   "publication_date": "2020-02-12",
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "notes": "Read directly. Associated Press report (Ronald Blum): Boston will send Los Angeles $2,666,667 on the 15th of each month from April through September in 2020, 2021 and 2022. Corroborating evidence replacing an inaccessible owner-supplied citation."
+  },
+  {
+   "key": "betts_mlb",
+   "url": "https://www.mlb.com/amp/news/mookie-betts-trade-dodgers-red-sox.html",
+   "source_name": "MLB.com",
+   "source_type": "ARTICLE",
+   "source_tier": "MLB_COM_REPORTING",
+   "title": "Mookie Betts traded to Dodgers from Red Sox",
+   "publication_date": "2020-02-11",
+   "accessed_at": "2026-11-05T23:11:02Z",
+   "notes": "The live page answered HTTP 403 to a direct request at 2026-11-05T23:10:11Z, so it was read through the Internet Archive snapshot of 2026-10-04T05:25:55Z of this exact URL. States: The $48 million sent by the Red Sox to the Dodgers will count toward Boston's luxury tax payroll, prorated annually over the three years remaining on the deal."
+  },
+  {
+   "key": "puig_mlb",
+   "url": "https://www.mlb.com/news/dodgers-trade-kemp-puig-wood-in-blockbuster-c302142414",
+   "source_name": "MLB.com",
+   "source_type": "ARTICLE",
+   "source_tier": "MLB_COM_REPORTING",
+   "title": "Dodgers trade Kemp, Puig, Wood in blockbuster",
+   "publication_date": null,
+   "accessed_at": "2026-11-05T23:11:25Z",
+   "notes": "The live page answered HTTP 403 to a direct request at 2026-11-05T23:10:11Z, so it was read through the Internet Archive snapshot of 2025-10-08T15:33:13Z of this exact URL. States the Dodgers sent outfielders Matt Kemp and Yasiel Puig, pitcher Alex Wood, utility man James Farmer plus $7 million to the Reds."
+  },
+  {
+   "key": "martin_mlb",
+   "url": "https://www.mlb.com/news/blue-jays-trade-russell-martin-to-dodgers-c302623680",
+   "source_name": "MLB.com",
+   "source_type": "ARTICLE",
+   "source_tier": "MLB_COM_REPORTING",
+   "title": "Blue Jays trade Russell Martin to Dodgers",
+   "publication_date": null,
+   "accessed_at": "2026-11-05T23:11:18Z",
+   "notes": "The live page answered HTTP 403 to a direct request at 2026-11-05T23:10:11Z, so it was read through the Internet Archive snapshot of 2021-07-28T05:41:00Z of this exact URL. States Toronto agreed to pick up $16.4 million of Martin's $20 million salary to facilitate the deal; DISI records that coverage as the CASH consideration of the trade, not as a Dodgers acquisition cost."
+  },
+  {
+   "key": "margot_startribune",
+   "url": "https://www.startribune.com/twins-trade-for-manuel-margot-los-angeles-dodgers-byron-buxton/600346254",
+   "source_name": "Star Tribune",
+   "source_type": "ARTICLE",
+   "source_tier": "OTHER",
+   "title": "Twins acquire outfielder Manuel Margot in trade with Dodgers",
+   "publication_date": "2024-02-27",
+   "accessed_at": "2026-11-05T23:11:35Z",
+   "notes": "The live page answered HTTP 429 to a direct request at 2026-11-05T23:10:11Z, so it was read through the Internet Archive snapshot of 2025-07-23T16:12:32Z of this exact URL. States the Twins will receive $6 million to cover part of Margot's salary."
+  },
+  {
+   "key": "margot_cbs",
+   "url": "https://www.cbsnews.com/minnesota/news/kyle-farmer-manuel-margot-free-agents-twins/",
+   "source_name": "CBS Minnesota (Associated Press)",
+   "source_type": "ARTICLE",
+   "source_tier": "OTHER",
+   "title": "Kyle Farmer and Manuel Margot become free agents after Twins decline options",
+   "publication_date": "2024-11-01",
+   "accessed_at": "2026-11-05T23:11:31Z",
+   "notes": "The live page answered HTTP 406 to a direct request at 2026-11-05T23:10:11Z, so it was read through the Internet Archive snapshot of 2025-09-06T21:17:44Z of this exact URL. Associated Press report of 2024-11-01: as part of the trade the Dodgers agreed to pay the Twins $6 million; because the option was declined, Los Angeles will pay Minnesota an additional $2 million on Dec. 1, 2026."
+  },
+  {
+   "key": "cardinals_release",
+   "url": "https://www.mlb.com/press-release/cardinals-announce-trade-with-dodgers",
+   "source_name": "MLB.com (St. Louis Cardinals)",
+   "source_type": "PRESS_RELEASE",
+   "source_tier": "OFFICIAL_CLUB_RELEASE",
+   "title": "Cardinals announce trade with Dodgers",
+   "publication_date": "2019-07-31",
+   "accessed_at": "2026-11-05T23:10:59Z",
+   "notes": "The live page answered HTTP 403 to a direct request at 2026-11-05T23:10:11Z, so it was read through the Internet Archive snapshot of 2025-04-30T13:46:26Z of this exact URL. The club announcement names Jedd Gyorko, 2019/2020 International Cap Space and cash considerations; it states no international cap space amount."
+  },
+  {
+   "key": "garland_mlb",
+   "url": "https://www.mlb.com/player/jon-garland-279782",
+   "source_name": "MLB.com",
+   "source_type": "TRANSACTIONS",
+   "source_tier": "MLB_TRANSACTION_LOG",
+   "title": "Jon Garland Stats, Age, Position, Height, Weight, Fantasy & News",
+   "publication_date": null,
+   "accessed_at": "2026-11-05T23:11:04Z",
+   "notes": "The live page answered HTTP 403 to a direct request at 2026-11-05T23:10:11Z, so it was read through the Internet Archive snapshot of 2026-06-07T13:45:53Z of this exact URL. Its transaction list reads: November 26, 2010 Los Angeles Dodgers signed free agent RHP Jon Garland; October 30, 2011 RHP Jon Garland elected free agency."
+  },
+  {
+   "key": "garland_almanac",
+   "url": "https://www.baseball-almanac.com/players/trades.php?p=garlajo01",
+   "source_name": "Baseball Almanac",
+   "source_type": "TRANSACTIONS",
+   "source_tier": "OTHER",
+   "title": "Jon Garland Trades and Transactions by Baseball Almanac",
+   "publication_date": null,
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "notes": "Read directly; secondary corroboration of the MLB.com transaction list: 11-26-2010 Signed by Los Angeles Dodgers; 10-30-2011 Granted free agency. It states no contract terms."
+  }
+ ],
+ "amount_updates": [
+  {
+   "id": "cingrani_cash",
+   "event_key": "LAD_STL_2019_TONY_CINGRANI",
+   "side": "INCOMING",
+   "asset_name": "Cash",
+   "counterparty": "St. Louis Cardinals",
+   "amount": "2938710.00",
+   "field_name": "cash_amount_usd",
+   "evidence": [
+    {
+     "source": "payroll_tbla",
+     "confidence": "MEDIUM",
+     "note": "Payroll worksheet line: Cash from St. Louis (Gyorko) -$2,938,710. The Cardinals' club announcement names cash considerations without an amount."
+    }
+   ]
+  },
+  {
+   "id": "braves_cash",
+   "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+   "side": "OUTGOING",
+   "asset_name": "Cash",
+   "counterparty": "Atlanta Braves",
+   "amount": "4500000.00",
+   "field_name": "cash_amount_usd",
+   "evidence": [
+    {
+     "source": "kemp_tbla",
+     "confidence": "MEDIUM",
+     "note": "Reported to be $4.5 million per Jon Heyman (FanRag Sports); the article's luxury-tax arithmetic lists Cash to Braves ($4.5 million). A reported figure, not a club announcement."
+    }
+   ]
+  },
+  {
+   "id": "betts_cash",
+   "event_key": "LAD_BOS_2020_JETER_DOWNS",
+   "side": "INCOMING",
+   "asset_name": "Cash",
+   "counterparty": "Boston Red Sox",
+   "amount": "48000000.00",
+   "field_name": "cash_amount_usd",
+   "evidence": [
+    {
+     "source": "betts_mlb",
+     "confidence": "HIGH",
+     "note": "MLB.com: the $48 million sent by the Red Sox to the Dodgers, prorated over the three years remaining on the deal. One consideration recorded as a single amount; the payment schedule is not modelled."
+    },
+    {
+     "source": "betts_boston",
+     "confidence": "HIGH",
+     "note": "Associated Press: Boston will send Los Angeles $48 million in 18 installments of $2,666,667 from April through September in 2020, 2021 and 2022."
+    }
+   ]
+  },
+  {
+   "id": "puig_cash",
+   "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+   "side": "OUTGOING",
+   "asset_name": "Cash",
+   "counterparty": "Cincinnati Reds",
+   "amount": "7000000.00",
+   "field_name": "cash_amount_usd",
+   "evidence": [
+    {
+     "source": "puig_mlb",
+     "confidence": "HIGH",
+     "note": "MLB.com: the Dodgers sent Kemp, Puig, Wood and Farmer plus $7 million to the Reds."
+    },
+    {
+     "source": "payroll_tbla",
+     "confidence": "MEDIUM",
+     "note": "Payroll worksheet line: Cash to Reds (Kemp, etc) $7,000,000."
+    }
+   ]
+  },
+  {
+   "id": "margot_cash_guaranteed",
+   "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+   "side": "OUTGOING",
+   "asset_name": "Cash",
+   "counterparty": "Minnesota Twins",
+   "amount": "6000000.00",
+   "field_name": "cash_amount_usd",
+   "evidence": [
+    {
+     "source": "margot_startribune",
+     "confidence": "HIGH",
+     "note": "Star Tribune: the Twins will receive $6 million to cover part of Margot's salary. This is the guaranteed component only; the option-dependent $2 million is a separate asset."
+    },
+    {
+     "source": "margot_cbs",
+     "confidence": "HIGH",
+     "note": "Associated Press: as part of the trade the Dodgers agreed to pay the Twins $6 million."
+    }
+   ]
+  },
+  {
+   "id": "martin_cash",
+   "event_key": "LAD_TOR_2019_RONNY_BRITO",
+   "side": "INCOMING",
+   "asset_name": "Cash",
+   "counterparty": "Toronto Blue Jays",
+   "amount": "16400000.00",
+   "field_name": "cash_amount_usd",
+   "evidence": [
+    {
+     "source": "martin_mlb",
+     "confidence": "HIGH",
+     "note": "MLB.com: Toronto agreed to pick up $16.4 million of Martin's $20 million salary to facilitate the deal. Recorded as the CASH consideration of the trade; it is not a Dodgers acquisition cost."
+    },
+    {
+     "source": "payroll_tbla",
+     "confidence": "MEDIUM",
+     "note": "Payroll worksheet line: Cash from Toronto (Martin) -$16,400,000."
+    }
+   ]
+  }
+ ],
+ "asset_inserts": [
+  {
+   "id": "lantigua_pool",
+   "side": "INCOMING",
+   "asset_type": "INTERNATIONAL_BONUS_POOL_SPACE",
+   "asset_name": "International bonus pool space",
+   "counterparty": "Cincinnati Reds",
+   "amount": "1500000.00",
+   "field_name": "pool_space_amount_usd",
+   "source": "lantigua_tbla",
+   "role_note": "Reported $1.5 million of international bonus pool space received from Cincinnati. The event's Future Considerations placeholder is kept as the MLB transaction log recorded it.",
+   "keeps_asset": "Future considerations",
+   "evidence": [
+    {
+     "source": "lantigua_tbla",
+     "confidence": "MEDIUM",
+     "note": "True Blue LA reports that MLB.com's Mark Sheldon reported the Dodgers received $1.5 million in international bonus pool space from Cincinnati."
+    }
+   ],
+   "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA"
+  },
+  {
+   "id": "cingrani_pool",
+   "side": "INCOMING",
+   "asset_type": "INTERNATIONAL_BONUS_POOL_SPACE",
+   "asset_name": "International cap space (2019/2020)",
+   "counterparty": "St. Louis Cardinals",
+   "amount": null,
+   "field_name": "pool_space_component",
+   "source": "cardinals_release",
+   "role_note": "The Cardinals' announcement names 2019/2020 International Cap Space in the trade. It states no amount, so none is recorded: a known component with an unknown amount (unknown, never zero). The Future Considerations placeholder is kept.",
+   "keeps_asset": "Future considerations",
+   "evidence": [
+    {
+     "source": "cardinals_release",
+     "confidence": "VERIFIED",
+     "note": "Club announcement: Jedd Gyorko, 2019/2020 International Cap Space and cash considerations for Tony Cingrani and Jeffry Abreu. The amount of international cap space is not stated."
+    }
+   ],
+   "event_key": "LAD_STL_2019_TONY_CINGRANI"
+  },
+  {
+   "id": "margot_cash_triggered",
+   "side": "OUTGOING",
+   "asset_type": "CASH",
+   "asset_name": "Cash (additional, Margot 2025 option declined)",
+   "counterparty": "Minnesota Twins",
+   "amount": "2000000.00",
+   "field_name": "cash_amount_usd_additional_option_declined",
+   "source": "margot_cbs",
+   "role_note": "A second cash component of the trade, separate from the $6,000,000 guaranteed cash: an additional $2,000,000 the Dodgers owe Minnesota because the Twins declined Margot's 2025 option (declined 2024-11-01); the Associated Press reports it is payable 2026-12-01.",
+   "keeps_asset": "Cash",
+   "evidence": [
+    {
+     "source": "margot_cbs",
+     "confidence": "HIGH",
+     "note": "Associated Press, 2024-11-01: because the option was declined, Los Angeles will pay Minnesota an additional $2 million on Dec. 1, 2026. Owed under the trade; the payment date is later than the 2026-11-05 capture."
+    }
+   ],
+   "event_key": "LAD_MIN_2024_RAYNE_DONCON"
+  }
+ ],
+ "events": [
+  {
+   "id": "garland_signing",
+   "event_key": "LAD_FREE_AGENT_SIGNING_2010_JON_GARLAND",
+   "transaction_date": "2010-11-26",
+   "transaction_type": "FREE_AGENT_SIGNING",
+   "description": "Los Angeles Dodgers signed free agent RHP Jon Garland (MLB.com transaction list, 2010-11-26).",
+   "historical_label": "Signed as a free agent",
+   "source": "garland_mlb",
+   "asset": {
+    "side": "INCOMING",
+    "asset_name": "Jon Garland",
+    "asset_type": "PLAYER",
+    "bref_id": "garlajo01",
+    "mlb_id": "279782"
+   },
+   "evidence": [
+    {
+     "source": "garland_mlb",
+     "confidence": "VERIFIED",
+     "note": "MLB.com transaction list: November 26, 2010 Los Angeles Dodgers signed free agent RHP Jon Garland. Contract terms are not recorded: a salary is not trade consideration."
+    },
+    {
+     "source": "garland_almanac",
+     "confidence": "MEDIUM",
+     "note": "Baseball Almanac: 11-26-2010 Signed by Los Angeles Dodgers."
+    }
+   ]
+  },
+  {
+   "id": "garland_exit",
+   "event_key": "LAD_FREE_AGENCY_2011_JON_GARLAND",
+   "transaction_date": "2011-10-30",
+   "transaction_type": "FREE_AGENCY",
+   "description": "Jon Garland elected free agency (MLB.com transaction list, 2011-10-30).",
+   "historical_label": "Granted free agency",
+   "source": "garland_mlb",
+   "asset": {
+    "side": "OUTGOING",
+    "asset_name": "Jon Garland",
+    "asset_type": "PLAYER",
+    "bref_id": "garlajo01",
+    "mlb_id": "279782"
+   },
+   "evidence": [
+    {
+     "source": "garland_mlb",
+     "confidence": "VERIFIED",
+     "note": "MLB.com transaction list: October 30, 2011 RHP Jon Garland elected free agency."
+    },
+    {
+     "source": "garland_almanac",
+     "confidence": "MEDIUM",
+     "note": "Baseball Almanac: 10-30-2011 Granted free agency."
+    }
+   ]
+  }
+ ],
+ "expected": {
+  "exact_financial_facts": 8,
+  "undisclosed_resolutions": 0,
+  "known_component_amount_unknown": 1,
+  "events_added": 2,
+  "assets_added": 5,
+  "assets_updated": 6,
+  "sources_added": 12,
+  "evidence_rows": 17
+ }
+}
