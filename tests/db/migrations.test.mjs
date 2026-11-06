@@ -2174,12 +2174,12 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 058 (transaction-return bWAR evidence for four returned players, from the archived Baseball-Reference data files) was released to production on 2026-10-29 (applied; PR #42, 3182db1) and is frozen (PR #43, 4747049)
 // 059 (career bWAR metric reconciliation for eleven benchmark players, from the 2026 team-season ledger) was released to production on 2026-10-30 (applied; PR #44, 9d4da66) and is frozen (PR #45, ab6677b)
 // 060 (owner-reviewed acquisition costs: 25 Dodgers signing bonuses supplied and reviewed by the owner on 2026-11-04) was released to production on 2026-11-05 (applied; PR #46, 9ebb2d0) and is frozen (PR #47, 318a724)
-// 061 (transaction research closure: reviewed cash and pool-space facts and Garland's 2011 control interval) is built and not yet released
-const UNRELEASED_ADDITIONS = ['061_transaction_research_closure.sql']
+// 061 (transaction research closure: reviewed cash and pool-space facts and Garland's 2011 control interval) was released to production on 2026-11-06 (applied; PR #48, b29d7cb) and is frozen
+const UNRELEASED_ADDITIONS = []
 
-test('frozen history: migrations 001-060 (with 043a and 054a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
+test('frozen history: migrations 001-061 (with 043a and 054a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
-  assert.equal(files.length, 64)
+  assert.equal(files.length, 65)
   assert.deepEqual(manifest.canonical_sql.slice(files.length), UNRELEASED_ADDITIONS)
   assert.deepEqual(Object.keys(frozen), files)
   for (const f of files) {

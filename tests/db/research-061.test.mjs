@@ -99,15 +99,18 @@ before(async () => {
 
 after(async () => { await chain?.close() })
 
-test('061 follows 060 in the manifest as the last file; it is the one unreleased addition and is not frozen; the migration and rollback are the deterministic build output', () => {
+test('061 follows 060 in the manifest as the last file, is frozen at its released hash; the migration and rollback are the deterministic build output', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '060_owner_reviewed_acquisition_costs.sql')
   assert.equal(i, manifest.canonical_sql.length - 1)
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
   assert.equal(manifest.canonical_sql.length, 65)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
-  assert.equal(Object.keys(frozen).length, 64)
-  assert.equal(frozen[FILE], undefined, '061 is not frozen')
+  assert.equal(Object.keys(frozen).length, 65)
+  assert.equal(frozen[FILE], crypto.createHash('sha1').update(sql061.replace(/\r\n/g, '\n')).digest('hex'))
+  assert.equal(frozen[FILE], 'dd59aa1c962efbc1315925c8c7feb7cf336c94ff')
+  assert.equal(crypto.createHash('sha256').update(sql061).digest('hex'), '63afb49e65188e4598aad83db6a5daf8836adf7e67e29f71f9fa0bd3a79dd01f')
+  assert.equal(crypto.createHash('sha256').update(rollback061).digest('hex'), '84ca0efcc8c5fb5b4a250cc18bebe6a5d058c0ee30274608cab2ac80958b7a70')
   assert.match(sql061, /^-- DISI v0\.46\n-- 061_transaction_research_closure\.sql\n/)
   assert.match(rollback061, /^-- DISI rollback of Migration 061/)
   const built = assemble()
@@ -117,12 +120,13 @@ test('061 follows 060 in the manifest as the last file; it is the one unreleased
   assert.ok(!/\bcreate (table|view|function|type|or replace view)\b/i.test(sql061.replace(/--.*$/gm, '')), 'data only: no table, view, function or enum is created')
 })
 
-test('frozen history 001-060 is byte-for-byte unchanged (line endings normalised)', () => {
+test('frozen history 001-061 is byte-for-byte unchanged (line endings normalised)', () => {
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
   for (const [f, sha1] of Object.entries(frozen)) {
     assert.equal(crypto.createHash('sha1').update(fs.readFileSync(path.join(root, 'database/sql', f), 'utf8').replace(/\r\n/g, '\n')).digest('hex'), sha1, f)
   }
   assert.equal(frozen['060_owner_reviewed_acquisition_costs.sql'], '19a63a45ce75ab17e01154259035e52a932dbd7e')
+  assert.equal(frozen['061_transaction_research_closure.sql'], 'dd59aa1c962efbc1315925c8c7feb7cf336c94ff')
   assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'database/sql/060_owner_reviewed_acquisition_costs.sql'))).digest('hex'), '525afef8fb91cc059ca2f338faaf9e6d37c89c0bc6d0f302c7dfa01ebf10db30')
   assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'database/release/sql/rollback-060.sql'))).digest('hex'), '1bd46dcfcb003375a1edb2f0e3587c55614bfcdc75e368d755078a9c94b951b8')
 })

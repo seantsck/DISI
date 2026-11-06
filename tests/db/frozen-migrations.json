@@ -64,6 +64,7 @@
     "057_benchmark_bwar_evidence.sql": "48766350e1f60595167c5b977a4759041874b4ac",
     "058_transaction_return_bwar_evidence.sql": "0e58c9c269770cd3c4f2c6577cd68e382bb75708",
     "059_career_bwar_metric_reconciliation.sql": "e6f70db245fe407dff603f351a4b488a476d716a",
-    "060_owner_reviewed_acquisition_costs.sql": "19a63a45ce75ab17e01154259035e52a932dbd7e"
+    "060_owner_reviewed_acquisition_costs.sql": "19a63a45ce75ab17e01154259035e52a932dbd7e",
+    "061_transaction_research_closure.sql": "dd59aa1c962efbc1315925c8c7feb7cf336c94ff"
   }
 }
