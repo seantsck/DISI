@@ -114,12 +114,11 @@ before(async () => {
 
 after(async () => { await chain?.close() })
 
-test('060 follows 059 in the manifest as the last file, is frozen at its released hash; the migration and rollback are the deterministic build output', () => {
+test('060 follows 059 in the manifest (061 follows it), is frozen at its released hash; the migration and rollback are the deterministic build output', () => {
   const i = manifest.canonical_sql.indexOf(FILE)
   assert.equal(manifest.canonical_sql[i - 1], '059_career_bwar_metric_reconciliation.sql')
-  assert.equal(i, manifest.canonical_sql.length - 1)
+  assert.equal(manifest.canonical_sql[i + 1], '061_transaction_research_closure.sql')
   assert.equal(manifest.notes.canonical_build_count, manifest.canonical_sql.length)
-  assert.equal(manifest.canonical_sql.length, 64)
   const frozen = JSON.parse(fs.readFileSync(path.join(root, 'tests/db/frozen-migrations.json'), 'utf8')).files
   assert.equal(Object.keys(frozen).length, 64)
   assert.equal(frozen[FILE], crypto.createHash('sha1').update(sql060.replace(/\r\n/g, '\n')).digest('hex'))

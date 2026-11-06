@@ -1,0 +1,118 @@
+{
+ "original_audit_commit": "60c6dc44125a6a9b7fc0bfd08f98510006c0ff22",
+ "reviewed_on": "2026-11-05",
+ "note": "A reviewed post-audit evidence amendment. The original audit (mapping.json, materiality.json, audit-report.md, baseline.json, owner-research-input.json) is preserved unchanged; this file and amendment.md record what changed after it and why.",
+ "decisions": {
+  "cingrani_cash": {
+   "before": "APPLY_EXACT, source unreachable",
+   "after": "APPLY_EXACT with accessible corroboration",
+   "amount": "2938710.00",
+   "source": "payroll_tbla",
+   "note": "The payroll worksheet lists Cash from St. Louis (Gyorko) -$2,938,710. It does not itself cite the Associated Press; only what the page shows is recorded. The existing CASH asset is the Cardinals' (INCOMING), amount NULL."
+  },
+  "cingrani_pool": {
+   "before": "APPLY_EXACT $250,000 (owner figure, source unreachable)",
+   "after": "known component, amount NULL",
+   "change": "REMOVED_250000_EXACT_AMOUNT_NOW_KNOWN_COMPONENT_AMOUNT_NULL",
+   "source": "cardinals_release",
+   "note": "The club announcement names 2019/2020 International Cap Space and states no amount. 250,000 would be inferred from the league's trading increments, which is not a sourced amount. An INTERNATIONAL_BONUS_POOL_SPACE asset is added with pool_space_amount_usd NULL; the Future Considerations placeholder stays."
+  },
+  "betts_price": {
+   "before": "APPLY_EXACT, source unreachable",
+   "after": "APPLY_EXACT with two readable sources",
+   "amount": "48000000.00",
+   "sources": [
+    "betts_mlb",
+    "betts_boston"
+   ],
+   "note": "MLB.com (read through its archive snapshot) and the Associated Press report on Boston.com (read directly). One consideration recorded as a single amount; the 18-installment schedule is not modelled."
+  },
+  "puig": {
+   "before": "APPLY_EXACT, source unreachable",
+   "after": "APPLY_EXACT",
+   "amount": "7000000.00",
+   "sources": [
+    "puig_mlb",
+    "payroll_tbla"
+   ],
+   "note": "MLB.com (archive snapshot) and the payroll worksheet line Cash to Reds (Kemp, etc) $7,000,000."
+  },
+  "martin_brito": {
+   "before": "APPLY_EXACT, source unreachable",
+   "after": "APPLY_EXACT",
+   "amount": "16400000.00",
+   "sources": [
+    "martin_mlb",
+    "payroll_tbla"
+   ],
+   "note": "MLB.com (archive snapshot): Toronto agreed to pick up $16.4 million of Martin's $20 million salary. Recorded as the CASH consideration of the trade, not as a Dodgers acquisition cost."
+  },
+  "gonzalez_kemp": {
+   "before": "APPLY_EXACT, confirmed",
+   "after": "unchanged",
+   "amount": "4500000.00",
+   "sources": [
+    "kemp_tbla"
+   ],
+   "note": "Reported to be $4.5 million per Jon Heyman; a reported figure, recorded as reported."
+  },
+  "lantigua": {
+   "before": "APPLY_EXACT, confirmed",
+   "after": "unchanged",
+   "amount": "1500000.00",
+   "sources": [
+    "lantigua_tbla"
+   ],
+   "note": "A pool-space asset is added; the Future Considerations placeholder is kept and not retyped."
+  },
+  "margot": {
+   "before": "guaranteed $6,000,000 exact; the $2,000,000 conditional with the trigger unproven",
+   "after": "two separate components; the condition is now triggered",
+   "guaranteed": "6000000.00",
+   "triggered_additional": "2000000.00",
+   "condition_triggered": true,
+   "sources": [
+    "margot_startribune",
+    "margot_cbs"
+   ],
+   "note": "The Associated Press reported on 2024-11-01 that the Twins declined Margot's 2025 option and that, because it was declined, Los Angeles will pay Minnesota an additional $2 million on Dec. 1, 2026. The event has one CASH asset and no Future Considerations placeholder, and the schema permits several CASH components with distinct names, so the guaranteed amount fills the existing asset and a distinct CASH asset carries the additional amount. The role note says it is owed, payable 2026-12-01; it does not claim it has been paid. Not stored as $8,000,000."
+  },
+  "frias": {
+   "before": "SCHEMA_PROVENANCE_BLOCKED (no source or date supplied)",
+   "after": "HELD: the named Cleveland announcement could not be read",
+   "outcome": "HOLD_SOURCE_UNREADABLE",
+   "note": "The official Cleveland press release answered HTTP 403 and has no archive snapshot, so it was never read and cannot be registered as a source. A CASH_SETTLEMENT resolution needs a real source and cannot take an unread one. The existing record reads Player To Be Named Later while the brief describes cash considerations, which the unreadable page would have had to reconcile. No write; the structure (CASH_SETTLEMENT, amount NULL, date 2017-01-30) is ready the moment a readable copy of the announcement exists."
+  },
+  "jeral_perez": {
+   "before": "SCHEMA_PROVENANCE_BLOCKED",
+   "after": "unchanged: unresolved",
+   "outcome": "UNRESOLVED_NO_WRITE",
+   "note": "The official record still reads player to be named later or cash considerations; no sourced final selection or date was found."
+  },
+  "garland": {
+   "before": "APPLY_EXACT: signing 2010-11-26 only",
+   "after": "signing 2010-11-26 and exit 2011-10-30",
+   "sources": [
+    "garland_mlb",
+    "garland_almanac"
+   ],
+   "note": "The MLB.com transaction list gives both ends of the 2011 Dodgers control interval. The 2011 exit closes the interval the signing opens and does not touch the 2009 interval. His contract is not recorded."
+  }
+ },
+ "unchanged_exclusions": [
+  "Maximo Martinez (cited page says the amount was not announced)",
+  "Jose Vizcaino (the $500,000 is not in the cited page)",
+  "Casey Blake ('about' $2MM; no amount-quality field)",
+  "Valdez, Majewski, Navarro, McKinney cash (low materiality)",
+  "every identity / route item",
+  "bWAR, signing bonuses"
+ ],
+ "payload_effect": {
+  "exact_financial_facts": 8,
+  "undisclosed_resolutions": 0,
+  "known_component_amount_unknown": 1,
+  "events_added": 2,
+  "measured_transaction_queue": "57 -> 51",
+  "measured_value_queue": "79 -> 79"
+ }
+}

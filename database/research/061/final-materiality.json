@@ -1,0 +1,115 @@
+{
+ "note": "Materiality of the final 061 payload and of what it leaves unresolved. MATERIAL = blocks package membership, return identity, a Dodgers-control interval, downstream WAR/value or an executive/product output; LOW_MATERIALITY = blocks a cash or pool amount only. No dollar amount is estimated. The original materiality.json is preserved.",
+ "finding": "Cash and pool-space amounts feed only v_transaction_event_complete and the transaction research queue; no value, realized-value, executive or prediction view reads them. The measured value queue is 79 before and after.",
+ "written": [
+  {
+   "fact": "Gyorko cash $2,938,710",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "CASH_AMOUNT_UNKNOWN -1"
+  },
+  {
+   "fact": "Gonzalez-Kemp cash $4,500,000",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "CASH_AMOUNT_UNKNOWN -1"
+  },
+  {
+   "fact": "Betts / Price cash $48,000,000",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "CASH_AMOUNT_UNKNOWN -1"
+  },
+  {
+   "fact": "Puig-Kemp-Wood-Farmer cash $7,000,000",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "CASH_AMOUNT_UNKNOWN -1"
+  },
+  {
+   "fact": "Margot guaranteed cash $6,000,000",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "CASH_AMOUNT_UNKNOWN -1"
+  },
+  {
+   "fact": "Margot triggered cash $2,000,000 (separate asset)",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "none (amount known)"
+  },
+  {
+   "fact": "Martin / Brito cash $16,400,000",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "CASH_AMOUNT_UNKNOWN -1"
+  },
+  {
+   "fact": "Lantigua pool space $1,500,000",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "none (the Future Considerations row stays)"
+  },
+  {
+   "fact": "Cingrani pool component, amount unknown",
+   "materiality": "LOW_MATERIALITY",
+   "effect": "POOL_SPACE_AMOUNT_UNKNOWN +1 (a known component whose amount is not stated)"
+  },
+  {
+   "fact": "Garland FREE_AGENT_SIGNING 2010-11-26 and FREE_AGENCY 2011-10-30",
+   "materiality": "MATERIAL",
+   "effect": "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION -1; the 2011 Dodgers control interval opens and closes (CLOSED_EXIT_RECORDED); no value or queue effect in the value layer (a free-agent signing is not a trade-package lineage)"
+  }
+ ],
+ "left_unresolved": [
+  {
+   "item": "Carlos Frias PTBNL",
+   "materiality": "LOW_MATERIALITY",
+   "reason": "HOLD: the named Cleveland announcement could not be read",
+   "blocks": [
+    "cash/pool amount only"
+   ]
+  },
+  {
+   "item": "Jeral Perez PTBNL or cash",
+   "materiality": "LOW_MATERIALITY",
+   "reason": "no sourced final selection or date",
+   "blocks": [
+    "cash/pool amount only"
+   ]
+  },
+  {
+   "item": "Maximo Martinez pool space",
+   "materiality": "LOW_MATERIALITY",
+   "reason": "cited page says the amount was not announced",
+   "blocks": [
+    "cash/pool amount only"
+   ]
+  },
+  {
+   "item": "Jose Vizcaino cash",
+   "materiality": "LOW_MATERIALITY",
+   "reason": "the cited page names no amount",
+   "blocks": [
+    "cash/pool amount only"
+   ]
+  },
+  {
+   "item": "Casey Blake cash",
+   "materiality": "LOW_MATERIALITY",
+   "reason": "'about' $2MM is approximate; the schema stores exact amounts",
+   "blocks": [
+    "cash/pool amount only"
+   ]
+  },
+  {
+   "item": "Valdez, Majewski, Navarro, McKinney cash; Aybar, Campos, McMichael, Leonard cash; 2012 Red Sox cash",
+   "materiality": "LOW_MATERIALITY",
+   "reason": "no sourced amount",
+   "blocks": [
+    "cash/pool amount only"
+   ]
+  },
+  {
+   "item": "Gail Harris, Robinson Checo, Apostol Garcia, Rick Roberts, Danny Muegge, William Juarez exits",
+   "materiality": "MATERIAL",
+   "reason": "no sourced exit; unchanged from the audit",
+   "blocks": [
+    "Dodgers-control interval",
+    "downstream WAR/value"
+   ]
+  }
+ ]
+}

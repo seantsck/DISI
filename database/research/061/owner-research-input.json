@@ -1,0 +1,357 @@
+{
+ "note": "The owner-reviewed findings exactly as supplied in the 061 brief (2026-11-05), with the candidate source each cites. Nothing here has been corroborated by the build; the audit reads each source and records the result in mapping.json.",
+ "supplied_on": "2026-11-05",
+ "transaction_findings": [
+  {
+   "id": "T01",
+   "event_key": "LAD_CLE_2017_CARLOS_FRIAS",
+   "subject": "Carlos Frías / Cleveland 2017",
+   "owner_finding": "The deferred PTBNL/cash outcome ultimately became cash, amount undisclosed.",
+   "candidate_source": null
+  },
+  {
+   "id": "T02",
+   "event_key": "LAD_CWS_2024_JERAL_PEREZ",
+   "subject": "Jeral Pérez / White Sox 2024",
+   "owner_finding": "The PTBNL/cash consideration ultimately became undisclosed cash.",
+   "candidate_source": null
+  },
+  {
+   "id": "T03",
+   "event_key": "LAD_CIN_2025_ARNALDO_LANTIGUA",
+   "subject": "Arnaldo Lantigua / Reds 2025",
+   "owner_finding": "$1.5 million international bonus-pool space",
+   "candidate_source": "https://www.truebluela.com/2025/1/17/24346370/dodgers-reds-trade-arnaldo-lantigua-international-bonus-pool-roki-sasaki"
+  },
+  {
+   "id": "T04",
+   "event_key": "LAD_CWS_2023_MAXIMO_MARTINEZ",
+   "subject": "Máximo Martínez / White Sox 2023",
+   "owner_finding": "roughly $1.4 million international bonus-pool money",
+   "candidate_source": "https://dodgerblue.com/dodgers-prospects-aldrin-batista-maximo-martinez-traded-to-white-sox/2023/08/05/"
+  },
+  {
+   "id": "T05",
+   "event_key": "LAD_STL_2019_TONY_CINGRANI",
+   "subject": "Cingrani / Gyorko / Cardinals 2019 (cash)",
+   "owner_finding": "Cardinals sent $2,938,710 cash",
+   "candidate_source": "https://www.seattletimes.com/sports/dodgers-add-inf-gyorko-lhp-kolarek-at-trade-deadline/"
+  },
+  {
+   "id": "T06",
+   "event_key": "LAD_STL_2019_TONY_CINGRANI",
+   "subject": "Cingrani / Gyorko / Cardinals 2019 (pool space)",
+   "owner_finding": "Cardinals sent $250,000 international bonus-pool space",
+   "candidate_source": "https://www.seattletimes.com/sports/dodgers-add-inf-gyorko-lhp-kolarek-at-trade-deadline/"
+  },
+  {
+   "id": "T07",
+   "event_key": "LAD_ATL_2017_ADRIAN_GONZALEZ",
+   "subject": "Braves 2017 / González-Kemp",
+   "owner_finding": "Dodgers sent $4.5 million cash",
+   "candidate_source": "https://www.truebluela.com/2017/12/16/16785216/matt-kemp-trade-dodgers-braves-adrian-gonzalez-scott-kazmir-brandon-mccarthy-luxury-tax"
+  },
+  {
+   "id": "T08",
+   "event_key": "LAD_BOS_2020_JETER_DOWNS",
+   "subject": "Red Sox 2020 / Betts-Price",
+   "owner_finding": "Boston sent the Dodgers $48 million",
+   "candidate_source": "https://www.espn.com/mlb/story/_/id/28690208/red-sox-pay-dodgers-48m-3-years-part-trade"
+  },
+  {
+   "id": "T09",
+   "event_key": "LAD_CIN_2018_YASIEL_PUIG",
+   "subject": "Reds 2018 / Puig-Kemp-Wood-Farmer",
+   "owner_finding": "Dodgers sent Cincinnati $7 million",
+   "candidate_source": "https://www.mlb.com/news/dodgers-trade-kemp-puig-wood-in-blockbuster-c302142414"
+  },
+  {
+   "id": "T10",
+   "event_key": "LAD_CLE_2008_SANTANA_BLAKE",
+   "subject": "Cleveland 2008 / Santana-Blake",
+   "owner_finding": "Cleveland sent the Dodgers $2 million",
+   "candidate_source": "https://www.mlbtraderumors.com/2011/02/make-or-break-year-casey-blake.html"
+  },
+  {
+   "id": "T11",
+   "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+   "subject": "Twins 2024 / Doncon-Margot (guaranteed)",
+   "owner_finding": "Guaranteed: Dodgers sent Minnesota $6 million",
+   "candidate_source": "https://www.mlb.com/press-release/press-release-dodgers-trade-manuel-margot"
+  },
+  {
+   "id": "T12",
+   "event_key": "LAD_MIN_2024_RAYNE_DONCON",
+   "subject": "Twins 2024 / Doncon-Margot (conditional)",
+   "owner_finding": "Conditional: an additional $2 million if Minnesota declined Margot's 2025 option",
+   "candidate_source": "https://www.mlb.com/press-release/press-release-dodgers-trade-manuel-margot"
+  },
+  {
+   "id": "T13",
+   "event_key": "LAD_NYY_2000_JOSE_VIZCAINO",
+   "subject": "Yankees 2000 / Vizcaíno-Leyritz",
+   "owner_finding": "Dodgers sent José Vizcaíno + $500,000 for Jim Leyritz",
+   "candidate_source": "https://www.baseball-almanac.com/players/trades.php?p=vizcajo01"
+  },
+  {
+   "id": "T14",
+   "event_key": "LAD_TOR_2019_RONNY_BRITO",
+   "subject": "Blue Jays 2019 / Martin-Brito",
+   "owner_finding": "Toronto sent the Dodgers $16.4 million",
+   "candidate_source": "https://www.mlb.com/press-release/blue-jays-complete-trade-with-dodgers-302621146"
+  },
+  {
+   "id": "T15",
+   "event_key": "LAD_ATL_2006_AYBAR_BETEMIT",
+   "subject": "Aybar / Báez / Betemit 2006",
+   "owner_finding": "cash included, amount undisclosed",
+   "candidate_source": null
+  },
+  {
+   "id": "T16",
+   "event_key": "LAD_ATL_2024_ELIO_CAMPOS",
+   "subject": "Elio Campos / Braves 2024",
+   "owner_finding": "cash undisclosed",
+   "candidate_source": null
+  },
+  {
+   "id": "T17",
+   "event_key": "LAD_NYM_1998_GREG_MCMICHAEL",
+   "subject": "Greg McMichael / Mets 1998",
+   "owner_finding": "cash undisclosed",
+   "candidate_source": null
+  },
+  {
+   "id": "T18",
+   "event_key": "LAD_DET_2023_EDDYS_LEONARD",
+   "subject": "Eddys Leonard / Tigers 2023",
+   "owner_finding": "A general deadline statement that deals were in the $1-$100,000 range",
+   "candidate_source": null
+  },
+  {
+   "id": "T19",
+   "event_key": "LAD_KCR_1995_OFFERMAN / LAD_NYY_1996_BILLY_BREWER",
+   "subject": "Mike Judd / José Offerman",
+   "owner_finding": "Conditional return remains unknown.",
+   "candidate_source": null
+  },
+  {
+   "id": "T20",
+   "event_key": "LAD_DET_1960_AMOROS",
+   "subject": "Gail Harris (Amorós trade 1960)",
+   "owner_finding": "The research does not clearly answer the later Dodgers exit (the Sandy Amorós transaction is known).",
+   "candidate_source": null
+  },
+  {
+   "id": "T21",
+   "event_key": "LAD_DET_1999_DAVE_MLICKI",
+   "subject": "Robinson Checo",
+   "owner_finding": "Acquisition from Detroit is established; later Dodgers exit unanswered.",
+   "candidate_source": null
+  },
+  {
+   "id": "T22",
+   "event_key": "LAD_DET_1999_DAVE_MLICKI",
+   "subject": "Apostol Garcia",
+   "owner_finding": "No later exit supplied.",
+   "candidate_source": null
+  },
+  {
+   "id": "T23",
+   "event_key": "LAD_DET_1999_DAVE_MLICKI",
+   "subject": "Rick Roberts",
+   "owner_finding": "NYT transactions page (2000-08-25) with a DFA",
+   "candidate_source": "https://www.nytimes.com/2000/08/25/sports/transactions-841684.html"
+  },
+  {
+   "id": "T24",
+   "event_key": "LAD_ARI_2005_SHAWN_GREEN",
+   "subject": "Danny Muegge",
+   "owner_finding": "The 2005 Shawn Green trade establishes acquisition; it does not establish a later exit.",
+   "candidate_source": null
+  },
+  {
+   "id": "T25",
+   "event_key": "LAD_ARI_2005_SHAWN_GREEN",
+   "subject": "William Juárez",
+   "owner_finding": "Same as Muegge.",
+   "candidate_source": null
+  },
+  {
+   "id": "T26",
+   "event_key": "(new) LAD_FREE_AGENT_SIGNING_2010_JON_GARLAND",
+   "subject": "Jon Garland — 2010-11-26 free-agent signing",
+   "owner_finding": "Dodgers signed Jon Garland on 2010-11-26 for the 2011 season (one year, $5M base, incentives, 2012 option).",
+   "candidate_source": "https://www.baseball-almanac.com/players/trades.php?p=garlajo01"
+  },
+  {
+   "id": "T27",
+   "event_key": "BOS_LAD_2012_GONZALEZ_BECKETT_CRAWFORD",
+   "subject": "2012 Red Sox mega-trade (cash)",
+   "owner_finding": "The research did not establish the exact financial figure.",
+   "candidate_source": null
+  },
+  {
+   "id": "T28",
+   "event_key": "CHC_LAD_2000_VALDEZ_REACQ",
+   "subject": "Carlos Valdez / Cubs (cash)",
+   "owner_finding": "Unknown cash; no figure supplied",
+   "candidate_source": null
+  },
+  {
+   "id": "T29",
+   "event_key": "LAD_CWS_2001_GARY_MAJEWSKI",
+   "subject": "Gary Majewski / White Sox (cash)",
+   "owner_finding": "Unknown cash; no figure supplied",
+   "candidate_source": null
+  },
+  {
+   "id": "T30",
+   "event_key": "LAD_TB_2006_DIONER_NAVARRO",
+   "subject": "Dioner Navarro / Tampa Bay (cash)",
+   "owner_finding": "Unknown cash; no figure supplied",
+   "candidate_source": null
+  },
+  {
+   "id": "T31",
+   "event_key": "LAD_TEX_2021_BILLY_MCKINNEY",
+   "subject": "Billy McKinney / Rangers (cash)",
+   "owner_finding": "Unknown cash; no figure supplied",
+   "candidate_source": null
+  }
+ ],
+ "identity_route_findings": [
+  {
+   "id": "I01",
+   "person": "Rick Roberts",
+   "owner_finding": "Candidate Register id robert001ric",
+   "candidate_source": "https://www.baseball-reference.com/register/player.fcgi?id=robert001ric"
+  },
+  {
+   "id": "I02",
+   "person": "Apostol Garcia",
+   "owner_finding": "Bullpen page Apostol_Garcia",
+   "candidate_source": "https://www.baseball-reference.com/bullpen/Apostol_Garcia"
+  },
+  {
+   "id": "I03",
+   "person": "Danny Muegge",
+   "owner_finding": "Candidate Register id muegge001dan",
+   "candidate_source": "https://www.baseball-reference.com/register/player.fcgi?id=muegge001dan"
+  },
+  {
+   "id": "I04",
+   "person": "William Juárez",
+   "owner_finding": "Bullpen page William_Juárez",
+   "candidate_source": "https://www.baseball-reference.com/bullpen/William_Ju%C3%A1rez"
+  },
+  {
+   "id": "I05",
+   "person": "Robert Puason",
+   "owner_finding": "Baseball America player page 6917",
+   "candidate_source": "https://www.baseballamerica.com/players/6917-robert-puason/"
+  },
+  {
+   "id": "I06",
+   "person": "Yiddi Cappe",
+   "owner_finding": "Signed with Miami on 2021-01-15 for $3.5M",
+   "candidate_source": "https://www.miamiherald.com/sports/mlb/miami-marlins/article248510475.html"
+  },
+  {
+   "id": "I07",
+   "person": "Enmanuel Rodríguez / Emmanuel Rodriguez",
+   "owner_finding": "\"I believe so\"",
+   "candidate_source": null
+  },
+  {
+   "id": "I08",
+   "person": "Wildred Patino / Wilderd Patiño",
+   "owner_finding": "Spelling / diacritic variants of one person",
+   "candidate_source": null
+  },
+  {
+   "id": "I09",
+   "person": "Antonio Gomez",
+   "owner_finding": "DOB 2001-11-13, Caracas, Venezuela (a Google Doc)",
+   "candidate_source": "https://docs.google.com/document/d/1L8Z28t6aJmCCuTRogKcbjW5TdAP393XEhRx_W2ZdHnE/edit?tab=t.0"
+  },
+  {
+   "id": "I10",
+   "person": "Alvin Guzman",
+   "owner_finding": "\"He is OF\"",
+   "candidate_source": null
+  },
+  {
+   "id": "I11",
+   "person": "Eduarqi / Eduarqui Fernandez",
+   "owner_finding": "Canonical spelling is Eduarqui Fernandez",
+   "candidate_source": null
+  },
+  {
+   "id": "I12",
+   "person": "Christopher Martinez (2015, #26, 3B)",
+   "owner_finding": "Still unknown",
+   "candidate_source": null
+  },
+  {
+   "id": "I13",
+   "person": "Yeyson Yrizarry",
+   "owner_finding": "Birth country Dominican Republic",
+   "candidate_source": "https://www.mlb.com/news/flurry-of-top-international-prospects-inked-on-first-day/c-52530782"
+  },
+  {
+   "id": "I14",
+   "person": "Yeremy Rosario",
+   "owner_finding": "Purple Row roundup",
+   "candidate_source": "https://www.purplerow.com/2014/7/4/5870591/prospect-roundup-rockies-sign-pedro-gonzalez-for-1-3m-yeremy-rosario-tyler-anderson"
+  },
+  {
+   "id": "I15",
+   "person": "Jonathan Amundaray",
+   "owner_finding": "MLB.com signing roundup",
+   "candidate_source": "https://www.mlb.com/news/clubs-agree-to-terms-with-top-international-prospects/c-82709266"
+  },
+  {
+   "id": "I16",
+   "person": "Jonathan Machado",
+   "owner_finding": "He was only 14",
+   "candidate_source": null
+  },
+  {
+   "id": "I17",
+   "person": "Lázaro Armenteros",
+   "owner_finding": "Youth prospect, Cuba U-15, defected young, Oakland 2016; no Serie Nacional history supplied",
+   "candidate_source": null
+  },
+  {
+   "id": "I18",
+   "person": "Yanio Pérez",
+   "owner_finding": "Played the 2013 and 2014 Cuban Serie Nacional, then signed with Texas",
+   "candidate_source": null
+  },
+  {
+   "id": "I19",
+   "person": "Osiel Rodríguez",
+   "owner_finding": "Signed by the Yankees at 16; Cuba U-15; defected before signing",
+   "candidate_source": null
+  },
+  {
+   "id": "I20",
+   "person": "Sandy Gastón",
+   "owner_finding": "16-year-old amateur",
+   "candidate_source": "https://www.espn.com/mlb/story/_/id/25073276/cuban-prospect-sandy-gaston-agrees-tampa-bay-rays"
+  },
+  {
+   "id": "I21",
+   "person": "Denny Larrondo",
+   "owner_finding": "17 years old",
+   "candidate_source": "https://nypost.com/2020/03/16/denny-larrondo-identified-as-yankees-prospect-with-positive-coronavirus-test/"
+  }
+ ],
+ "excluded_from_061": [
+  "the 39 BWAR_MISSING cases (Migration 062)",
+  "player_mlb_team_season_war",
+  "CAREER_BWAR observations",
+  "bWAR sources and queues"
+ ]
+}

@@ -1,0 +1,190 @@
+{
+ "note": "What this build read, when, and how. The captures themselves live outside the repository (a cache directory) and are not committed; their SHA-256 and sizes are recorded so a re-read can be compared. A quote is a short verbatim excerpt of the text that supports the fact. The Carlos Frias page was NOT readable and is not a source here.",
+ "capture_session": {
+  "direct_requests_started": "2026-11-05T23:10:11Z",
+  "method": "HTTP GET with a browser-style User-Agent for the first request of each URL; for a page the live site refused (HTTP 403 / 406 / 429) the Internet Archive availability API was asked for the closest snapshot of the exact URL and that snapshot was fetched once. No credential, header spoofing beyond the User-Agent, or retry loop was used; a second direct request with extra headers was not made.",
+  "archive_api": "https://archive.org/wayback/available"
+ },
+ "sources": [
+  {
+   "key": "lantigua_tbla",
+   "url": "https://www.truebluela.com/2025/1/17/24346370/dodgers-reds-trade-arnaldo-lantigua-international-bonus-pool-roki-sasaki",
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "read_via": "DIRECT",
+   "file_sha256": "1e3c8bc507b9f992eb1b3749a993bc5b161b062034c38d2f22029d1645b1c213",
+   "bytes": 360653,
+   "supporting_quotes": [
+    "Mark Sheldon of MLB.com reported the Dodgers received $1.5 million in international bonus pool space from Cincinnati"
+   ],
+   "direct_http_status": 200
+  },
+  {
+   "key": "kemp_tbla",
+   "url": "https://www.truebluela.com/2017/12/16/16785216/matt-kemp-trade-dodgers-braves-adrian-gonzalez-scott-kazmir-brandon-mccarthy-luxury-tax",
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "read_via": "DIRECT",
+   "file_sha256": "5a2844dfd72d5026f2cb50f56d6ab91f0b80206f553f197c9e72afb5c8609543",
+   "bytes": 408513,
+   "supporting_quotes": [
+    "The amount is unknown, but reported to be $4.5 million per Jon Heyman of FanRag Sports",
+    "Cash to Braves ($4.5 million)"
+   ],
+   "direct_http_status": 200
+  },
+  {
+   "key": "payroll_tbla",
+   "url": "https://www.truebluela.com/2017/8/5/16101678/dodgers-payroll-roster-service-time",
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "read_via": "DIRECT",
+   "file_sha256": "8dfff89a31b568d5f74c0c68865425240c4e955115c7972d2d91d8c8493b1f6d",
+   "bytes": 993624,
+   "supporting_quotes": [
+    "Cash from Toronto (Martin) -$16,400,000",
+    "Cash from St. Louis (Gyorko) -$2,938,710",
+    "Cash to Reds (Kemp, etc) $7,000,000"
+   ],
+   "direct_http_status": 200
+  },
+  {
+   "key": "betts_boston",
+   "url": "https://www.boston.com/sports/boston-red-sox/2020/02/12/red-sox-to-send-dodgers-48-million-in-18-installments-over-3-years/",
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "read_via": "DIRECT",
+   "file_sha256": "80ffa16e262bc5b797ce9b734c2b44a71716bbca524c2053cfb3cdf1b89931d9",
+   "bytes": 220952,
+   "supporting_quotes": [
+    "Boston will send Los Angeles $2,666,667 on the 15th of each month from April through September in 2020, 2021, and 2022."
+   ],
+   "direct_http_status": 200
+  },
+  {
+   "key": "betts_mlb",
+   "url": "https://www.mlb.com/amp/news/mookie-betts-trade-dodgers-red-sox.html",
+   "accessed_at": "2026-11-05T23:11:02Z",
+   "read_via": "INTERNET_ARCHIVE_SNAPSHOT",
+   "file_sha256": "0a3b2383c0a8749e0aabaed0c06df0ed7d41b50f8a8fc3b3c9c67bf2c71caf2a",
+   "bytes": 60074,
+   "supporting_quotes": [
+    "The $48 million sent by the Red Sox to the Dodgers will count toward Boston's luxury tax payroll, prorated annually over the three years remaining on the deal."
+   ],
+   "direct_http_status": 403,
+   "direct_request_at": "2026-11-05T23:10:11Z",
+   "archive_snapshot_timestamp": "20261004052555",
+   "archive_snapshot_url": "https://web.archive.org/web/20261004052555/https://www.mlb.com/amp/news/mookie-betts-trade-dodgers-red-sox.html"
+  },
+  {
+   "key": "puig_mlb",
+   "url": "https://www.mlb.com/news/dodgers-trade-kemp-puig-wood-in-blockbuster-c302142414",
+   "accessed_at": "2026-11-05T23:11:25Z",
+   "read_via": "INTERNET_ARCHIVE_SNAPSHOT",
+   "file_sha256": "c97589e14b65d66c97f013fedd550209e59f31beb17844633336ac828dce0e51",
+   "bytes": 197239,
+   "supporting_quotes": [
+    "the Dodgers sent outfielders Matt Kemp and Yasiel Puig, pitcher Alex Wood, utility man James Farmer plus $7 million to the Reds"
+   ],
+   "direct_http_status": 403,
+   "direct_request_at": "2026-11-05T23:10:11Z",
+   "archive_snapshot_timestamp": "20251008153313",
+   "archive_snapshot_url": "https://web.archive.org/web/20251008153313/https://www.mlb.com/news/dodgers-trade-kemp-puig-wood-in-blockbuster-c302142414"
+  },
+  {
+   "key": "martin_mlb",
+   "url": "https://www.mlb.com/news/blue-jays-trade-russell-martin-to-dodgers-c302623680",
+   "accessed_at": "2026-11-05T23:11:18Z",
+   "read_via": "INTERNET_ARCHIVE_SNAPSHOT",
+   "file_sha256": "4cad8d75c7f2d325f7d948a351db5cec8ddf7debc3f45548729186d904cea24b",
+   "bytes": 387409,
+   "supporting_quotes": [
+    "Toronto agreed to pick up $16.4 million of Martin's $20 million salary to facilitate the deal."
+   ],
+   "direct_http_status": 403,
+   "direct_request_at": "2026-11-05T23:10:11Z",
+   "archive_snapshot_timestamp": "20210728054100",
+   "archive_snapshot_url": "https://web.archive.org/web/20210728054100/https://www.mlb.com/news/blue-jays-trade-russell-martin-to-dodgers-c302623680"
+  },
+  {
+   "key": "margot_startribune",
+   "url": "https://www.startribune.com/twins-trade-for-manuel-margot-los-angeles-dodgers-byron-buxton/600346254",
+   "accessed_at": "2026-11-05T23:11:35Z",
+   "read_via": "INTERNET_ARCHIVE_SNAPSHOT",
+   "file_sha256": "821f52f9ca824db1ffb0d4ae627aabbc34ab371adbf41119e40406bd93f0a529",
+   "bytes": 161324,
+   "supporting_quotes": [
+    "The Twins will receive $6 million to cover part of Margot's salary"
+   ],
+   "direct_http_status": 429,
+   "direct_request_at": "2026-11-05T23:10:11Z",
+   "archive_snapshot_timestamp": "20250723161232",
+   "archive_snapshot_url": "https://web.archive.org/web/20250723161232/https://www.startribune.com/twins-trade-for-manuel-margot-los-angeles-dodgers-byron-buxton/600346254"
+  },
+  {
+   "key": "margot_cbs",
+   "url": "https://www.cbsnews.com/minnesota/news/kyle-farmer-manuel-margot-free-agents-twins/",
+   "accessed_at": "2026-11-05T23:11:31Z",
+   "read_via": "INTERNET_ARCHIVE_SNAPSHOT",
+   "file_sha256": "861b1cda6af187f4e579c258b162369bb7f896980aca39dddec02fa5fcb9cc38",
+   "bytes": 405571,
+   "supporting_quotes": [
+    "as part of this year's trade the Dodgers agreed to pay the Twins $6 million. Because the option was declined, Los Angeles will pay Minnesota an additional $2 million on Dec. 1, 2026",
+    "became free agents Friday after the their 2025 options were declined by the Minnesota Twins"
+   ],
+   "direct_http_status": 406,
+   "direct_request_at": "2026-11-05T23:10:11Z",
+   "archive_snapshot_timestamp": "20250906211744",
+   "archive_snapshot_url": "https://web.archive.org/web/20250906211744/https://www.cbsnews.com/minnesota/news/kyle-farmer-manuel-margot-free-agents-twins/"
+  },
+  {
+   "key": "cardinals_release",
+   "url": "https://www.mlb.com/press-release/cardinals-announce-trade-with-dodgers",
+   "accessed_at": "2026-11-05T23:10:59Z",
+   "read_via": "INTERNET_ARCHIVE_SNAPSHOT",
+   "file_sha256": "e2eb3c9b0902f6777eca698a122c86e694cefc0c2f2d75b60a761fb4d6f809b9",
+   "bytes": 174209,
+   "supporting_quotes": [
+    "in exchange for Jedd Gyorko, International Cap Space for 2019/2020 & cash considerations"
+   ],
+   "direct_http_status": 403,
+   "direct_request_at": "2026-11-05T23:10:11Z",
+   "archive_snapshot_timestamp": "20250430134626",
+   "archive_snapshot_url": "https://web.archive.org/web/20250430134626/https://www.mlb.com/press-release/cardinals-announce-trade-with-dodgers"
+  },
+  {
+   "key": "garland_mlb",
+   "url": "https://www.mlb.com/player/jon-garland-279782",
+   "accessed_at": "2026-11-05T23:11:04Z",
+   "read_via": "INTERNET_ARCHIVE_SNAPSHOT",
+   "file_sha256": "96b4627cc2eea0664e647795ce812cedd2778ab6ea982f5fb6ac721ad33146ec",
+   "bytes": 587625,
+   "supporting_quotes": [
+    "November 26, 2010 Los Angeles Dodgers signed free agent RHP Jon Garland.",
+    "October 30, 2011 RHP Jon Garland elected free agency."
+   ],
+   "direct_http_status": 403,
+   "direct_request_at": "2026-11-05T23:10:11Z",
+   "archive_snapshot_timestamp": "20260607134553",
+   "archive_snapshot_url": "https://web.archive.org/web/20260607134553/https://www.mlb.com/player/jon-garland-279782"
+  },
+  {
+   "key": "garland_almanac",
+   "url": "https://www.baseball-almanac.com/players/trades.php?p=garlajo01",
+   "accessed_at": "2026-11-05T23:10:11Z",
+   "read_via": "DIRECT",
+   "file_sha256": "2f7a5ceb15576757d75dfa789bf04e2ff5ce5f75182d8a6525550136fcb0da3f",
+   "bytes": 29985,
+   "supporting_quotes": [
+    "11-26-2010 Signed by Los Angeles Dodgers (November 26, 2010).",
+    "10-30-2011 Granted free agency (October 30, 2011)."
+   ],
+   "direct_http_status": 200
+  }
+ ],
+ "not_readable": [
+  {
+   "url": "https://www.mlb.com/amp/press-release/indians-acquire-rhp-carlos-frias-from-the-los-angeles-dodgers-214737106.html",
+   "direct_http_status": 403,
+   "direct_request_at": "2026-11-05T23:10:11Z",
+   "archive_snapshots": "none for four URL variants (amp and non-amp, with and without .html), asked at 2026-11-05T23:1x",
+   "consequence": "The page was never read, so it is not registered as a source and no accessed_at is invented. The Frias placeholder resolution is not written."
+  }
+ ]
+}

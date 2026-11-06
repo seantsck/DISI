@@ -1,0 +1,105 @@
+{
+ "purpose": "Baseline for the 061 audit: the canonical replay through 060 at main 318a724, plus the production figures recorded at the 060 release. No production connection was made in this pass.",
+ "repository": {
+  "main": "318a7243f33680ba7e8a9f1f4e6e50b99ffb968f",
+  "frozen_migrations": 64,
+  "unreleased_additions": [],
+  "last_migration": "060_owner_reviewed_acquisition_costs.sql",
+  "migration_061_exists": false,
+  "working_tree_clean": true,
+  "sha_060": {
+   "migration_sha256": "525afef8fb91cc059ca2f338faaf9e6d37c89c0bc6d0f302c7dfa01ebf10db30",
+   "rollback_sha256": "1bd46dcfcb003375a1edb2f0e3587c55614bfcdc75e368d755078a9c94b951b8",
+   "frozen_sha1": "19a63a45ce75ab17e01154259035e52a932dbd7e"
+  }
+ },
+ "replay_through_060": {
+  "known_acquisition_cost": 81,
+  "unknown_acquisition_cost": 139,
+  "dodgers_signings": 220,
+  "known_spend_usd": "127632237.33",
+  "career_bwar_observations": 58,
+  "bwar_missing_tasks": 39,
+  "snapshot_generation": 15,
+  "snapshot_drift": 0,
+  "supported_models": 0,
+  "probabilities": 0,
+  "open_research_tasks": 324,
+  "sources": 3384,
+  "players": 398,
+  "transaction_queue": {
+   "total": 57,
+   "by_issue": {
+    "CASH_AMOUNT_UNKNOWN": 17,
+    "DODGERS_RETURN_WITHOUT_RECORDED_ACQUISITION": 6,
+    "DOWNSTREAM_WAR_NOT_LOADED": 4,
+    "EXIT_NOT_RESEARCHED_DOWNSTREAM": 5,
+    "EXIT_STATUS_UNVERIFIED": 16,
+    "EXIT_TRANSACTION_MISSING": 2,
+    "FUTURE_CONSIDERATIONS_UNRESOLVED": 3,
+    "POOL_SPACE_AMOUNT_UNKNOWN": 1,
+    "PTBNL_UNRESOLVED": 2,
+    "RETURN_ASSET_EXIT_MISSING": 1
+   }
+  },
+  "value_queue": {
+   "total": 79,
+   "by_issue": {
+    "ACQUISITION_COST_INCOMPLETE": 17,
+    "DOWNSTREAM_ASSET_CHAIN_INCOMPLETE": 5,
+    "LINEAGE_BOUNDARY_NOTED": 22,
+    "OUTCOME_INCOMPLETE": 8,
+    "TRADE_PACKAGE_ATTRIBUTION_UNRESOLVED": 27
+   }
+  },
+  "benchmark_queue": {
+   "BENCHMARK_BONUS_UNKNOWN": 131,
+   "BENCHMARK_IDENTITY_UNRESOLVED": 3,
+   "BENCHMARK_REACHED_WITHOUT_TEAM_SEASON_FACTS": 28,
+   "POPULATION_DENOMINATOR_NOT_SOURCED": 5,
+   "POPULATION_MEMBERS_NOT_TRACKED": 10,
+   "SAMPLE_HAS_NO_DODGERS_COMPARATOR": 7
+  }
+ },
+ "production_recorded_at_060_release": {
+  "source": "database/release/060-release-plan.md and the 060 release evidence",
+  "snapshot_generation": 16,
+  "drift": 0,
+  "verifier": "259/259",
+  "known_acquisition_cost": 81,
+  "unknown_acquisition_cost": 139,
+  "known_spend_usd": "127632237.33",
+  "career_bwar": 58,
+  "bwar_missing": 39,
+  "prediction_outputs": "0/0/0/0/0",
+  "note": "The replay is one snapshot generation behind production (15 against 16), as in earlier releases; every logical value equals production. Production was not re-read for this audit."
+ },
+ "transaction_assets_through_060": {
+  "CASH": {
+   "total": 19,
+   "amount_known": 2,
+   "amount_null": 17
+  },
+  "INTERNATIONAL_BONUS_POOL_SPACE": {
+   "total": 1,
+   "amount_null": 1
+  },
+  "FUTURE_CONSIDERATIONS": {
+   "total": 3
+  },
+  "PLAYER_TO_BE_NAMED": {
+   "total": 9,
+   "resolved": 7,
+   "unresolved": 2
+  },
+  "note": "The two known cash amounts are 1954 and 1957 Brooklyn amounts. Resolution types allowed: NAMED_PLAYER and CASH_SETTLEMENT only."
+ },
+ "amount_quality_vocabulary": [
+  "EXACT",
+  "APPROXIMATE",
+  "UNDISCLOSED",
+  "CONDITIONAL",
+  "UNKNOWN"
+ ],
+ "amount_quality_in_schema": false
+}
