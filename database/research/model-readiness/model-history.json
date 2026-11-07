@@ -1,0 +1,761 @@
+{
+  "stored_evaluations_current": [
+    {
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "train_test": "Pooled DODGERS_TRACKED_AND_OPENING_CLASS + TOP_PROSPECT_SAMPLE labelled rows with complete signing-time features; leave-one-signing-year-out (every fold is out-of-time); no separate later OOT holdout exists.",
+      "evaluated_rows": 173,
+      "positives": 34,
+      "folds": 7,
+      "evaluation_current": true,
+      "training_fingerprint": "86b58f473301e2425751d853abd88e94",
+      "baseline": {
+        "model_key": "BASE_RATE",
+        "brier": 0.159675,
+        "log_loss": 0.501203
+      },
+      "models": [
+        {
+          "model_key": "LOGISTIC_L2",
+          "features": [
+            "is_top_prospect_sample",
+            "is_top_expectation_band",
+            "age_in_signing_year_minus_17",
+            "is_pitcher",
+            "is_dominican_republic",
+            "is_venezuela"
+          ],
+          "brier": 0.156826,
+          "log_loss": 0.492051,
+          "auc": 0.593737,
+          "brier_skill_vs_base_rate": 0.017844,
+          "events_needed": 60,
+          "events_available": 34,
+          "events_rule_pass": false,
+          "skill_rule_pass": true,
+          "decision": "MODEL_NOT_SUPPORTED",
+          "failure_reason": "INSUFFICIENT_EVENTS"
+        },
+        {
+          "model_key": "POPULATION_STRATIFIED_RATE",
+          "features": [
+            "population_class"
+          ],
+          "brier": 0.160719,
+          "log_loss": 0.626446,
+          "auc": 0.431549,
+          "brier_skill_vs_base_rate": -0.006535,
+          "events_needed": 10,
+          "events_available": 34,
+          "events_rule_pass": true,
+          "skill_rule_pass": false,
+          "decision": "MODEL_NOT_SUPPORTED",
+          "failure_reason": "NO_SKILL_OVER_BASELINE"
+        }
+      ]
+    },
+    {
+      "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+      "train_test": "Pooled DODGERS_TRACKED_AND_OPENING_CLASS + TOP_PROSPECT_SAMPLE labelled rows with complete signing-time features; leave-one-signing-year-out (every fold is out-of-time); no separate later OOT holdout exists.",
+      "evaluated_rows": 88,
+      "positives": 14,
+      "folds": 4,
+      "evaluation_current": true,
+      "training_fingerprint": "102c01a35d380d36493465cef1070c07",
+      "baseline": {
+        "model_key": "BASE_RATE",
+        "brier": 0.140938,
+        "log_loss": 0.46612
+      },
+      "models": [
+        {
+          "model_key": "LOGISTIC_L2",
+          "features": [
+            "is_top_prospect_sample",
+            "is_top_expectation_band",
+            "age_in_signing_year_minus_17",
+            "is_pitcher",
+            "is_dominican_republic",
+            "is_venezuela"
+          ],
+          "brier": 0.153014,
+          "log_loss": 0.525536,
+          "auc": 0.319981,
+          "brier_skill_vs_base_rate": -0.085678,
+          "events_needed": 60,
+          "events_available": 14,
+          "events_rule_pass": false,
+          "skill_rule_pass": false,
+          "decision": "MODEL_NOT_SUPPORTED",
+          "failure_reason": "INSUFFICIENT_EVENTS"
+        },
+        {
+          "model_key": "POPULATION_STRATIFIED_RATE",
+          "features": [
+            "population_class"
+          ],
+          "brier": 0.142906,
+          "log_loss": 0.471954,
+          "auc": 0.357143,
+          "brier_skill_vs_base_rate": -0.013963,
+          "events_needed": 10,
+          "events_available": 14,
+          "events_rule_pass": true,
+          "skill_rule_pass": false,
+          "decision": "MODEL_NOT_SUPPORTED",
+          "failure_reason": "NO_SKILL_OVER_BASELINE"
+        }
+      ]
+    },
+    {
+      "target_key": "BWAR_2_WITHIN_10_SEASONS",
+      "train_test": "Pooled DODGERS_TRACKED_AND_OPENING_CLASS + TOP_PROSPECT_SAMPLE labelled rows with complete signing-time features; leave-one-signing-year-out (every fold is out-of-time); no separate later OOT holdout exists.",
+      "evaluated_rows": 88,
+      "positives": 9,
+      "folds": 4,
+      "evaluation_current": true,
+      "training_fingerprint": "1aa73185a9dab3071d4530ee670dd088",
+      "baseline": {
+        "model_key": "BASE_RATE",
+        "brier": 0.099031,
+        "log_loss": 0.372934
+      },
+      "models": [
+        {
+          "model_key": "LOGISTIC_L2",
+          "features": [
+            "is_top_prospect_sample",
+            "is_top_expectation_band",
+            "age_in_signing_year_minus_17",
+            "is_pitcher",
+            "is_dominican_republic",
+            "is_venezuela"
+          ],
+          "brier": 0.106562,
+          "log_loss": 0.43262,
+          "auc": 0.170183,
+          "brier_skill_vs_base_rate": -0.076047,
+          "events_needed": 60,
+          "events_available": 9,
+          "events_rule_pass": false,
+          "skill_rule_pass": false,
+          "decision": "MODEL_NOT_SUPPORTED",
+          "failure_reason": "INSUFFICIENT_EVENTS"
+        },
+        {
+          "model_key": "POPULATION_STRATIFIED_RATE",
+          "features": [
+            "population_class"
+          ],
+          "brier": 0.100137,
+          "log_loss": 0.377699,
+          "auc": 0.276371,
+          "brier_skill_vs_base_rate": -0.011166,
+          "events_needed": 10,
+          "events_available": 9,
+          "events_rule_pass": false,
+          "skill_rule_pass": false,
+          "decision": "MODEL_NOT_SUPPORTED",
+          "failure_reason": "INSUFFICIENT_EVENTS"
+        }
+      ]
+    }
+  ],
+  "research_history": [
+    {
+      "migration": "041",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "BASE_RATE",
+      "feature_list": [],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (5 folds)",
+      "evaluated_rows": 59,
+      "positive_n": 8,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 38,
+          "positives": 6
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.124032,
+      "log_loss": 0.428292,
+      "auc": null,
+      "brier_skill_vs_base_rate": 0,
+      "decision": "BASELINE_REFERENCE",
+      "decision_reason": "Naive reference: the training-fold positive rate. 8 positives in 59 labelled rows of two reference populations; neither population reaches the 10-positive support minimum, so no baseline is shown for any player.",
+      "training_fingerprint": "683251fe2e7522fcd346cf6a26004e08"
+    },
+    {
+      "migration": "041",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "POPULATION_STRATIFIED_RATE",
+      "feature_list": [
+        "population_class"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (5 folds)",
+      "evaluated_rows": 59,
+      "positive_n": 8,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 38,
+          "positives": 6
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.142827,
+      "log_loss": 0.843747,
+      "auc": 0.355392,
+      "brier_skill_vs_base_rate": -0.151533,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "INSUFFICIENT_EVENTS: 8 positives for 1 feature(s); at least 10 are required (10 per feature). Out-of-time Brier skill against the base rate -0.151533.",
+      "training_fingerprint": "683251fe2e7522fcd346cf6a26004e08"
+    },
+    {
+      "migration": "041",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "LOGISTIC_L2",
+      "feature_list": [
+        "is_top_prospect_sample",
+        "is_top_expectation_band",
+        "age_in_signing_year_minus_17",
+        "is_pitcher",
+        "is_dominican_republic",
+        "is_venezuela"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (5 folds)",
+      "evaluated_rows": 59,
+      "positive_n": 8,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 38,
+          "positives": 6
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.13927,
+      "log_loss": 0.454953,
+      "auc": 0.564951,
+      "brier_skill_vs_base_rate": -0.12286,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "INSUFFICIENT_EVENTS: 8 positives for 6 feature(s); at least 60 are required (10 per feature). Out-of-time Brier skill against the base rate -0.12286.",
+      "training_fingerprint": "683251fe2e7522fcd346cf6a26004e08"
+    },
+    {
+      "migration": "050",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "BASE_RATE",
+      "feature_list": [],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (6 folds)",
+      "evaluated_rows": 101,
+      "positive_n": 19,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 80,
+          "positives": 17
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.159576,
+      "log_loss": 0.507326,
+      "auc": null,
+      "brier_skill_vs_base_rate": 0,
+      "decision": "BASELINE_REFERENCE",
+      "decision_reason": "Naive reference: the training-fold positive rate. 19 positives in 101 labelled rows of two reference populations, pooled for this out-of-time comparison only. A population's own reference baseline is shown for a player only when that population's support minimums are met, and only for the Dodgers population.",
+      "training_fingerprint": "af9ec05feb3ee1518cb7608193cd209a"
+    },
+    {
+      "migration": "050",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "POPULATION_STRATIFIED_RATE",
+      "feature_list": [
+        "population_class"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (6 folds)",
+      "evaluated_rows": 101,
+      "positive_n": 19,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 80,
+          "positives": 17
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.161933,
+      "log_loss": 0.720781,
+      "auc": 0.445443,
+      "brier_skill_vs_base_rate": -0.014767,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "NO_SKILL_OVER_BASELINE: out-of-time Brier skill -0.014767 is not above 0.",
+      "training_fingerprint": "af9ec05feb3ee1518cb7608193cd209a"
+    },
+    {
+      "migration": "050",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "LOGISTIC_L2",
+      "feature_list": [
+        "is_top_prospect_sample",
+        "is_top_expectation_band",
+        "age_in_signing_year_minus_17",
+        "is_pitcher",
+        "is_dominican_republic",
+        "is_venezuela"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (6 folds)",
+      "evaluated_rows": 101,
+      "positive_n": 19,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 80,
+          "positives": 17
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.165416,
+      "log_loss": 0.530401,
+      "auc": 0.47208,
+      "brier_skill_vs_base_rate": -0.036597,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "INSUFFICIENT_EVENTS: 19 positives for 6 feature(s); at least 60 are required (10 per feature). Out-of-time Brier skill against the base rate -0.036597.",
+      "training_fingerprint": "af9ec05feb3ee1518cb7608193cd209a"
+    },
+    {
+      "migration": "055",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "BASE_RATE",
+      "feature_list": [],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (7 folds)",
+      "evaluated_rows": 148,
+      "positive_n": 30,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 127,
+          "positives": 28
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.163821,
+      "log_loss": 0.510999,
+      "auc": null,
+      "brier_skill_vs_base_rate": 0,
+      "decision": "BASELINE_REFERENCE",
+      "decision_reason": "Naive reference: the training-fold positive rate. 30 positives in 148 labelled rows of two reference populations, pooled for this out-of-time comparison only. A population's own reference baseline is shown for a player only when that population's support minimums are met, and only for the Dodgers population.",
+      "training_fingerprint": "67f2f80cf330e1278095916314688eee"
+    },
+    {
+      "migration": "055",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "POPULATION_STRATIFIED_RATE",
+      "feature_list": [
+        "population_class"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (7 folds)",
+      "evaluated_rows": 148,
+      "positive_n": 30,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 127,
+          "positives": 28
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.165032,
+      "log_loss": 0.657152,
+      "auc": 0.443927,
+      "brier_skill_vs_base_rate": -0.007389,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "NO_SKILL_OVER_BASELINE: out-of-time Brier skill -0.007389 is not above 0.",
+      "training_fingerprint": "67f2f80cf330e1278095916314688eee"
+    },
+    {
+      "migration": "055",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "LOGISTIC_L2",
+      "feature_list": [
+        "is_top_prospect_sample",
+        "is_top_expectation_band",
+        "age_in_signing_year_minus_17",
+        "is_pitcher",
+        "is_dominican_republic",
+        "is_venezuela"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (7 folds)",
+      "evaluated_rows": 148,
+      "positive_n": 30,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 127,
+          "positives": 28
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.158062,
+      "log_loss": 0.495643,
+      "auc": 0.621751,
+      "brier_skill_vs_base_rate": 0.035157,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "INSUFFICIENT_EVENTS: 30 positives for 6 feature(s); at least 60 are required (10 per feature). Out-of-time Brier skill against the base rate 0.035157.",
+      "training_fingerprint": "67f2f80cf330e1278095916314688eee"
+    },
+    {
+      "migration": "056",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "BASE_RATE",
+      "feature_list": [],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (7 folds)",
+      "evaluated_rows": 173,
+      "positive_n": 34,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 152,
+          "positives": 32
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.159675,
+      "log_loss": 0.501203,
+      "auc": null,
+      "brier_skill_vs_base_rate": 0,
+      "decision": "BASELINE_REFERENCE",
+      "decision_reason": "Naive reference: the training-fold positive rate. 34 positives in 173 labelled rows of two reference populations, pooled for this out-of-time comparison only. A population's own reference baseline is shown for a player only when that population's support minimums are met, and only for the Dodgers population.",
+      "training_fingerprint": "86b58f473301e2425751d853abd88e94"
+    },
+    {
+      "migration": "056",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "POPULATION_STRATIFIED_RATE",
+      "feature_list": [
+        "population_class"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (7 folds)",
+      "evaluated_rows": 173,
+      "positive_n": 34,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 152,
+          "positives": 32
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.160719,
+      "log_loss": 0.626446,
+      "auc": 0.431549,
+      "brier_skill_vs_base_rate": -0.006535,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "NO_SKILL_OVER_BASELINE: out-of-time Brier skill -0.006535 is not above 0.",
+      "training_fingerprint": "86b58f473301e2425751d853abd88e94"
+    },
+    {
+      "migration": "056",
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "model_key": "LOGISTIC_L2",
+      "feature_list": [
+        "is_top_prospect_sample",
+        "is_top_expectation_band",
+        "age_in_signing_year_minus_17",
+        "is_pitcher",
+        "is_dominican_republic",
+        "is_venezuela"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (7 folds)",
+      "evaluated_rows": 173,
+      "positive_n": 34,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 152,
+          "positives": 32
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 21,
+          "positives": 2
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.156826,
+      "log_loss": 0.492051,
+      "auc": 0.593737,
+      "brier_skill_vs_base_rate": 0.017844,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "INSUFFICIENT_EVENTS: 34 positives for 6 feature(s); at least 60 are required (10 per feature). Out-of-time Brier skill against the base rate 0.017844.",
+      "training_fingerprint": "86b58f473301e2425751d853abd88e94"
+    },
+    {
+      "migration": "057",
+      "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+      "model_key": "BASE_RATE",
+      "feature_list": [],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (4 folds)",
+      "evaluated_rows": 88,
+      "positive_n": 14,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 77,
+          "positives": 13
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 11,
+          "positives": 1
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.140938,
+      "log_loss": 0.46612,
+      "auc": null,
+      "brier_skill_vs_base_rate": 0,
+      "decision": "BASELINE_REFERENCE",
+      "decision_reason": "Naive reference: the training-fold positive rate. 14 positives in 88 labelled rows of two reference populations, pooled for this out-of-time comparison only. A population's own reference baseline is shown for a player only when that population's support minimums are met, and only for the Dodgers population.",
+      "training_fingerprint": "102c01a35d380d36493465cef1070c07"
+    },
+    {
+      "migration": "057",
+      "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+      "model_key": "POPULATION_STRATIFIED_RATE",
+      "feature_list": [
+        "population_class"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (4 folds)",
+      "evaluated_rows": 88,
+      "positive_n": 14,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 77,
+          "positives": 13
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 11,
+          "positives": 1
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.142906,
+      "log_loss": 0.471954,
+      "auc": 0.357143,
+      "brier_skill_vs_base_rate": -0.013963,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "NO_SKILL_OVER_BASELINE: out-of-time Brier skill -0.013963 is not above 0.",
+      "training_fingerprint": "102c01a35d380d36493465cef1070c07"
+    },
+    {
+      "migration": "057",
+      "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+      "model_key": "LOGISTIC_L2",
+      "feature_list": [
+        "is_top_prospect_sample",
+        "is_top_expectation_band",
+        "age_in_signing_year_minus_17",
+        "is_pitcher",
+        "is_dominican_republic",
+        "is_venezuela"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (4 folds)",
+      "evaluated_rows": 88,
+      "positive_n": 14,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 77,
+          "positives": 13
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 11,
+          "positives": 1
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.153014,
+      "log_loss": 0.525536,
+      "auc": 0.319981,
+      "brier_skill_vs_base_rate": -0.085678,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "INSUFFICIENT_EVENTS: 14 positives for 6 feature(s); at least 60 are required (10 per feature). Out-of-time Brier skill against the base rate -0.085678.",
+      "training_fingerprint": "102c01a35d380d36493465cef1070c07"
+    },
+    {
+      "migration": "057",
+      "target_key": "BWAR_2_WITHIN_10_SEASONS",
+      "model_key": "BASE_RATE",
+      "feature_list": [],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (4 folds)",
+      "evaluated_rows": 88,
+      "positive_n": 9,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 77,
+          "positives": 8
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 11,
+          "positives": 1
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.099031,
+      "log_loss": 0.372934,
+      "auc": null,
+      "brier_skill_vs_base_rate": 0,
+      "decision": "BASELINE_REFERENCE",
+      "decision_reason": "Naive reference: the training-fold positive rate. 9 positives in 88 labelled rows of two reference populations, pooled for this out-of-time comparison only. A population's own reference baseline is shown for a player only when that population's support minimums are met, and only for the Dodgers population.",
+      "training_fingerprint": "1aa73185a9dab3071d4530ee670dd088"
+    },
+    {
+      "migration": "057",
+      "target_key": "BWAR_2_WITHIN_10_SEASONS",
+      "model_key": "POPULATION_STRATIFIED_RATE",
+      "feature_list": [
+        "population_class"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (4 folds)",
+      "evaluated_rows": 88,
+      "positive_n": 9,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 77,
+          "positives": 8
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 11,
+          "positives": 1
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.100137,
+      "log_loss": 0.377699,
+      "auc": 0.276371,
+      "brier_skill_vs_base_rate": -0.011166,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "INSUFFICIENT_EVENTS: 9 positives for 1 feature(s); at least 10 are required (10 per feature). Out-of-time Brier skill against the base rate -0.011166.",
+      "training_fingerprint": "1aa73185a9dab3071d4530ee670dd088"
+    },
+    {
+      "migration": "057",
+      "target_key": "BWAR_2_WITHIN_10_SEASONS",
+      "model_key": "LOGISTIC_L2",
+      "feature_list": [
+        "is_top_prospect_sample",
+        "is_top_expectation_band",
+        "age_in_signing_year_minus_17",
+        "is_pitcher",
+        "is_dominican_republic",
+        "is_venezuela"
+      ],
+      "validation": "LEAVE_ONE_SIGNING_YEAR_OUT (4 folds)",
+      "evaluated_rows": 88,
+      "positive_n": 9,
+      "by_population": {
+        "TOP_PROSPECT_SAMPLE": {
+          "rows": 77,
+          "positives": 8
+        },
+        "TRACKED_SAMPLE": {
+          "rows": 11,
+          "positives": 1
+        },
+        "OPENING_CLASS_CENSUS": {
+          "rows": 0,
+          "positives": 0
+        }
+      },
+      "brier_score": 0.106562,
+      "log_loss": 0.43262,
+      "auc": 0.170183,
+      "brier_skill_vs_base_rate": -0.076047,
+      "decision": "MODEL_NOT_SUPPORTED",
+      "decision_reason": "INSUFFICIENT_EVENTS: 9 positives for 6 feature(s); at least 60 are required (10 per feature). Out-of-time Brier skill against the base rate -0.076047.",
+      "training_fingerprint": "1aa73185a9dab3071d4530ee670dd088"
+    }
+  ],
+  "rule": "041 evaluate.mjs: MODEL_SUPPORTED requires positives >= events_per_feature x features AND out-of-time Brier skill > 0. Nothing was re-run for this audit.",
+  "supported_models": 0
+}

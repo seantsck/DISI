@@ -1,0 +1,241 @@
+{
+  "analysis_as_of_date": "2026-10-05",
+  "support_rule": "v_outcome_target_support: a reference baseline is supported when labelled_n >= min_reference_n, positives >= min_positives and negatives >= min_negatives. A fitted model additionally needs events_per_feature positives per model feature and positive out-of-time Brier skill (041 evaluate.mjs).",
+  "targets": [
+    {
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "label": "MLB debut by signing year + 7 seasons",
+      "horizon_seasons": 7,
+      "applies_to": "ALL",
+      "threshold_bwar": null,
+      "label_rule": "TRUE when the audited MLB debut season is at most signing year + 7; FALSE when the audited outcome is no MLB debut, or a debut after the horizon; NULL when unaudited.",
+      "thresholds": {
+        "min_reference_n": 50,
+        "min_positives": 10,
+        "min_negatives": 10,
+        "events_per_feature": 10
+      },
+      "populations": [
+        {
+          "population": "DODGERS",
+          "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+          "applicable": true,
+          "in_scope_rows": 168,
+          "usable_labelled_n": 25,
+          "usable_labelled_n_features_complete": 21,
+          "positives": 2,
+          "negatives": 23,
+          "censored": 143,
+          "missing_label_past_horizon": 0,
+          "positive_rate": 0.08,
+          "baseline_supported": false,
+          "support_state": "BASELINE_NOT_SUPPORTED",
+          "baseline_probability": null,
+          "baseline_90": null,
+          "additional_labels_needed": 25,
+          "additional_positives_needed": 8,
+          "additional_negatives_needed": 0,
+          "positives_needed_for_6_feature_logistic": 58
+        },
+        {
+          "population": "BENCHMARK",
+          "reference_population": "TOP_PROSPECT_SAMPLE",
+          "applicable": true,
+          "in_scope_rows": 169,
+          "usable_labelled_n": 166,
+          "usable_labelled_n_features_complete": 152,
+          "positives": 34,
+          "negatives": 132,
+          "censored": 0,
+          "missing_label_past_horizon": 3,
+          "positive_rate": 0.2048,
+          "baseline_supported": true,
+          "support_state": "BASELINE_SUPPORTED",
+          "baseline_probability": 0.2048,
+          "baseline_90": [
+            0.1582,
+            0.2609
+          ],
+          "additional_labels_needed": 0,
+          "additional_positives_needed": 0,
+          "additional_negatives_needed": 0,
+          "positives_needed_for_6_feature_logistic": 26
+        }
+      ]
+    },
+    {
+      "target_key": "POSITIVE_BWAR_WITHIN_10_SEASONS",
+      "label": "Positive bWAR by signing year + 10 seasons",
+      "horizon_seasons": 10,
+      "applies_to": "ALL",
+      "threshold_bwar": 0,
+      "label_rule": "TRUE when the Baseball-Reference team-season bWAR of seasons up to signing year + 10 sums above 0; FALSE for an audited no-MLB outcome, a debut after the horizon, or a sum at or below 0; NULL when unaudited or a reacher has no loaded season.",
+      "thresholds": {
+        "min_reference_n": 50,
+        "min_positives": 10,
+        "min_negatives": 10,
+        "events_per_feature": 10
+      },
+      "populations": [
+        {
+          "population": "DODGERS",
+          "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+          "applicable": true,
+          "in_scope_rows": 168,
+          "usable_labelled_n": 11,
+          "usable_labelled_n_features_complete": 11,
+          "positives": 1,
+          "negatives": 10,
+          "censored": 157,
+          "missing_label_past_horizon": 0,
+          "positive_rate": 0.0909,
+          "baseline_supported": false,
+          "support_state": "BASELINE_NOT_SUPPORTED",
+          "baseline_probability": null,
+          "baseline_90": null,
+          "additional_labels_needed": 39,
+          "additional_positives_needed": 9,
+          "additional_negatives_needed": 0,
+          "positives_needed_for_6_feature_logistic": 59
+        },
+        {
+          "population": "BENCHMARK",
+          "reference_population": "TOP_PROSPECT_SAMPLE",
+          "applicable": true,
+          "in_scope_rows": 169,
+          "usable_labelled_n": 86,
+          "usable_labelled_n_features_complete": 77,
+          "positives": 15,
+          "negatives": 71,
+          "censored": 76,
+          "missing_label_past_horizon": 7,
+          "positive_rate": 0.1744,
+          "baseline_supported": true,
+          "support_state": "BASELINE_SUPPORTED",
+          "baseline_probability": 0.1744,
+          "baseline_90": [
+            0.1173,
+            0.2514
+          ],
+          "additional_labels_needed": 0,
+          "additional_positives_needed": 0,
+          "additional_negatives_needed": 0,
+          "positives_needed_for_6_feature_logistic": 45
+        }
+      ]
+    },
+    {
+      "target_key": "BWAR_2_WITHIN_10_SEASONS",
+      "label": "2+ bWAR by signing year + 10 seasons",
+      "horizon_seasons": 10,
+      "applies_to": "ALL",
+      "threshold_bwar": 2,
+      "label_rule": "TRUE when the team-season bWAR of seasons up to signing year + 10 sums to 2 or more; otherwise as POSITIVE_BWAR_WITHIN_10_SEASONS.",
+      "thresholds": {
+        "min_reference_n": 50,
+        "min_positives": 10,
+        "min_negatives": 10,
+        "events_per_feature": 10
+      },
+      "populations": [
+        {
+          "population": "DODGERS",
+          "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+          "applicable": true,
+          "in_scope_rows": 168,
+          "usable_labelled_n": 11,
+          "usable_labelled_n_features_complete": 11,
+          "positives": 1,
+          "negatives": 10,
+          "censored": 157,
+          "missing_label_past_horizon": 0,
+          "positive_rate": 0.0909,
+          "baseline_supported": false,
+          "support_state": "BASELINE_NOT_SUPPORTED",
+          "baseline_probability": null,
+          "baseline_90": null,
+          "additional_labels_needed": 39,
+          "additional_positives_needed": 9,
+          "additional_negatives_needed": 0,
+          "positives_needed_for_6_feature_logistic": 59
+        },
+        {
+          "population": "BENCHMARK",
+          "reference_population": "TOP_PROSPECT_SAMPLE",
+          "applicable": true,
+          "in_scope_rows": 169,
+          "usable_labelled_n": 86,
+          "usable_labelled_n_features_complete": 77,
+          "positives": 9,
+          "negatives": 77,
+          "censored": 76,
+          "missing_label_past_horizon": 7,
+          "positive_rate": 0.1047,
+          "baseline_supported": false,
+          "support_state": "BASELINE_NOT_SUPPORTED",
+          "baseline_probability": null,
+          "baseline_90": null,
+          "additional_labels_needed": 0,
+          "additional_positives_needed": 1,
+          "additional_negatives_needed": 0,
+          "positives_needed_for_6_feature_logistic": 51
+        }
+      ]
+    },
+    {
+      "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+      "label": "Dodgers MLB bWAR above 0 by signing year + 10 seasons",
+      "horizon_seasons": 10,
+      "applies_to": "DODGERS_ONLY",
+      "threshold_bwar": 0,
+      "label_rule": "Dodgers signings only: TRUE when the team-season bWAR with the Dodgers franchise in seasons up to signing year + 10 sums above 0; FALSE for no MLB, a debut after the horizon, or no positive Dodgers bWAR; NULL when unaudited.",
+      "thresholds": {
+        "min_reference_n": 50,
+        "min_positives": 10,
+        "min_negatives": 10,
+        "events_per_feature": 10
+      },
+      "populations": [
+        {
+          "population": "DODGERS",
+          "reference_population": "DODGERS_TRACKED_AND_OPENING_CLASS",
+          "applicable": true,
+          "in_scope_rows": 168,
+          "usable_labelled_n": 11,
+          "usable_labelled_n_features_complete": 11,
+          "positives": 0,
+          "negatives": 11,
+          "censored": 157,
+          "missing_label_past_horizon": 0,
+          "positive_rate": 0,
+          "baseline_supported": false,
+          "support_state": "BASELINE_NOT_SUPPORTED",
+          "baseline_probability": null,
+          "baseline_90": null,
+          "additional_labels_needed": 39,
+          "additional_positives_needed": 10,
+          "additional_negatives_needed": 0,
+          "positives_needed_for_6_feature_logistic": 60
+        },
+        {
+          "population": "BENCHMARK",
+          "reference_population": "TOP_PROSPECT_SAMPLE",
+          "applicable": false
+        }
+      ]
+    }
+  ],
+  "limiting_target": {
+    "dodgers_nearest_to_support": {
+      "target_key": "REACH_MLB_WITHIN_7_SEASONS",
+      "gap": "25 more labels, 8 more positives"
+    },
+    "dodgers_furthest_from_support": {
+      "target_key": "DODGERS_MLB_VALUE_WITHIN_10_SEASONS",
+      "gap": "39 more labels, 10 more positives (0 positives today)"
+    },
+    "statement": "No Dodgers target is supported. The limiting target is REACH_MLB_WITHIN_7_SEASONS: it is the nearest to support and every other Dodgers target needs strictly more labels and positives. The 10-season targets (positive bWAR, 2+ bWAR, Dodgers MLB value) can only label 2016-and-earlier signings, of which the tracked Dodgers population holds 11 amateur rows; DODGERS_MLB_VALUE_WITHIN_10_SEASONS has 0 positives and gates the only expected-value model.",
+    "benchmark": "Benchmark reach and positive-bWAR baselines are BASELINE_SUPPORTED for the benchmark population only (never shown for a Dodgers player); BWAR_2 is one positive short. BASELINE SUPPORTED is not MODEL SUPPORTED."
+  },
+  "effect_of_062": "Not verified (062 is not applied to the audited state). Owner-observed career bWAR adds CAREER_BWAR metric observations; the bWAR labels read team-season WAR rows (player_mlb_team_season_war) inside the horizon window, not CAREER_BWAR, so 062 as described changes BWAR_MISSING and the CAREER_BWAR count but no label, support count or evaluation fingerprint."
+}
