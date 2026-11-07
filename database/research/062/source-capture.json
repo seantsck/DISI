@@ -1,0 +1,332 @@
+{
+ "note": "The evidence the 062 audit reads. Numeric bWAR comes only from the two archived Baseball-Reference WAR data files 057 pinned (database/research/057/source-capture.json; verified three ways by readCapture before a row is read). The official MLB Stats API person records below are used only to corroborate identity (MLBAM id, name, birth date, debut) and to list which MLB seasons exist, so the audit can tell whether a capture holds the complete career. No statistic from them is used as, or converted into, a bWAR value. The responses are saved under research-output/062-work/statsapi/ (gitignored) and pinned by SHA-256.",
+ "live_access": {
+  "checked_at": "2026-11-06",
+  "result": "HTTP 403 for https://www.baseball-reference.com/data/war_daily_bat.txt (unchanged since 057's 2026-10-28 check); not worked around"
+ },
+ "archive_index": {
+  "checked_at": "2026-11-06",
+  "result": "Internet Archive CDX lists no capture of war_daily_bat.txt after 20260911214553 and none of war_daily_pitch.txt after 20260210222101; no post-2026-season capture exists"
+ },
+ "pinned_live_files": {
+  "note": "The 2026-09-28 live files 032 / 035 / 059 read (bat ef920800..., pitch 061df2f8...) are the only WAR data sources the CAREER_BWAR provider rule accepts. Their bytes are not on this machine (research-output/032-work/raw is gone) and the live URL answers 403, so no value can be read from them."
+ },
+ "statsapi": {
+  "url_template": "https://statsapi.mlb.com/api/v1/people/{mlb_id}?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+  "retrieved_at": "2026-11-06T21:25:47Z",
+  "files": [
+   {
+    "slug": "adael-amador",
+    "mlb_id": "691182",
+    "url": "https://statsapi.mlb.com/api/v1/people/691182?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "691182.json",
+    "bytes": 4118,
+    "sha256": "1d0f66c4d5c6e6e688f37eceab0c7bebe03d6be69ca421c7cc78784215306618"
+   },
+   {
+    "slug": "adrian-morejon",
+    "mlb_id": "670970",
+    "url": "https://statsapi.mlb.com/api/v1/people/670970?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "670970.json",
+    "bytes": 14767,
+    "sha256": "b61f7aa417256cf075d3542cc4499cef2ed1c3582a5c88aedd76f169cd91b92b"
+   },
+   {
+    "slug": "andres-gimenez",
+    "mlb_id": "665926",
+    "url": "https://statsapi.mlb.com/api/v1/people/665926?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665926.json",
+    "bytes": 8019,
+    "sha256": "b7932017faa19652aa2349d647e8ebf2088fe2deac072b1a1094b0b693843944"
+   },
+   {
+    "slug": "andry-lara",
+    "mlb_id": "691251",
+    "url": "https://statsapi.mlb.com/api/v1/people/691251?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "691251.json",
+    "bytes": 2673,
+    "sha256": "d1fe57fa26c4a161313ba56786dd855474be7bb8e16356f1b9fceda0dc84518b"
+   },
+   {
+    "slug": "cionel-perez",
+    "mlb_id": "672335",
+    "url": "https://statsapi.mlb.com/api/v1/people/672335?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "672335.json",
+    "bytes": 22742,
+    "sha256": "0beda2581a408cc25822e7843e2705d46d87c55354a1f9d5a0ef0b3d3a17fb84"
+   },
+   {
+    "slug": "cristian-pache",
+    "mlb_id": "665506",
+    "url": "https://statsapi.mlb.com/api/v1/people/665506?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665506.json",
+    "bytes": 9637,
+    "sha256": "80cb0153713a9dcdbe749bd4279d0a2bee08bd4321ab14a911698b332f820f57"
+   },
+   {
+    "slug": "emmanuel-dejesus",
+    "mlb_id": "646241",
+    "url": "https://statsapi.mlb.com/api/v1/people/646241?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "646241.json",
+    "bytes": 4177,
+    "sha256": "0a09ad6dda03d4961b219f6be01e1a4d1bca94ceffbbbc6b6082e268ced8a71b"
+   },
+   {
+    "slug": "everson-pereira",
+    "mlb_id": "677592",
+    "url": "https://statsapi.mlb.com/api/v1/people/677592?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "677592.json",
+    "bytes": 5887,
+    "sha256": "6d822c3948f2eaa355cc6cadbeb41a0b572705a1eef835dc06aa206031492606"
+   },
+   {
+    "slug": "fernando-tatis-jr",
+    "mlb_id": "665487",
+    "url": "https://statsapi.mlb.com/api/v1/people/665487?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665487.json",
+    "bytes": 8141,
+    "sha256": "ba61702f121b50beb0295c6fef457772355a146fd74f6bba23bedc115816c9c5"
+   },
+   {
+    "slug": "francisco-alvarez",
+    "mlb_id": "682626",
+    "url": "https://statsapi.mlb.com/api/v1/people/682626?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "682626.json",
+    "bytes": 6039,
+    "sha256": "852bc3edf9d1e405731ac6e1700abee65864844a3e5e6bc9708c45f65f7f271c"
+   },
+   {
+    "slug": "francisco-morales",
+    "mlb_id": "672839",
+    "url": "https://statsapi.mlb.com/api/v1/people/672839?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "672839.json",
+    "bytes": 2784,
+    "sha256": "2fc1e9b30390fc867f4b059c30dc76833815b264e3c83261ce4e3e5f1216f147"
+   },
+   {
+    "slug": "gabriel-arias",
+    "mlb_id": "672356",
+    "url": "https://statsapi.mlb.com/api/v1/people/672356?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "672356.json",
+    "bytes": 8681,
+    "sha256": "6ce110beedf104b256453f514e0a42506b1d965e06087d4061a41ada146ad3b5"
+   },
+   {
+    "slug": "george-valera",
+    "mlb_id": "671655",
+    "url": "https://statsapi.mlb.com/api/v1/people/671655?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "671655.json",
+    "bytes": 3103,
+    "sha256": "672b003808208c02c9f005f6ee9e62bc5bb099846e101a4a0413e9736db24637"
+   },
+   {
+    "slug": "gilberto-celestino",
+    "mlb_id": "665482",
+    "url": "https://statsapi.mlb.com/api/v1/people/665482?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665482.json",
+    "bytes": 3197,
+    "sha256": "e45667670c35759189690860537a66f5ca0fb1d8263658e1fa1de364d24e0169"
+   },
+   {
+    "slug": "jasson-dominguez",
+    "mlb_id": "691176",
+    "url": "https://statsapi.mlb.com/api/v1/people/691176?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "691176.json",
+    "bytes": 5096,
+    "sha256": "45664d42a085db042df3134ec2698cdf6b4d6a1cb630d487fff26ad9d34c9e91"
+   },
+   {
+    "slug": "jorge-ona",
+    "mlb_id": "671250",
+    "url": "https://statsapi.mlb.com/api/v1/people/671250?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "671250.json",
+    "bytes": 2144,
+    "sha256": "e61ae3eb82b01b638fd56fb186adc94ac529a330ace938616c68d2328e0fd74f"
+   },
+   {
+    "slug": "juan-soto",
+    "mlb_id": "665742",
+    "url": "https://statsapi.mlb.com/api/v1/people/665742?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665742.json",
+    "bytes": 11599,
+    "sha256": "5d170c60b6824d6726583d6f2bd2ac999f8452681ca11718ed3a3b89a9ad7405"
+   },
+   {
+    "slug": "julio-rodriguez",
+    "mlb_id": "677594",
+    "url": "https://statsapi.mlb.com/api/v1/people/677594?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "677594.json",
+    "bytes": 6107,
+    "sha256": "351c2342ea407c5523d5b71424849782c915d9c45d29ca9860ac14fd6536f85f"
+   },
+   {
+    "slug": "kevin-alcantara",
+    "mlb_id": "682634",
+    "url": "https://statsapi.mlb.com/api/v1/people/682634?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "682634.json",
+    "bytes": 4077,
+    "sha256": "582adf7a8e39cfe85479734bf8242704bfcc4c83fdcc869cdbc1850b6b940aff"
+   },
+   {
+    "slug": "leody-taveras",
+    "mlb_id": "665750",
+    "url": "https://statsapi.mlb.com/api/v1/people/665750?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665750.json",
+    "bytes": 9704,
+    "sha256": "b35efd79b5045fd1c7524ed45c9ee47f1cb6a015cfed10de3710d6696de81feb"
+   },
+   {
+    "slug": "lourdes-gurriel-jr",
+    "mlb_id": "666971",
+    "url": "https://statsapi.mlb.com/api/v1/people/666971?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "666971.json",
+    "bytes": 10098,
+    "sha256": "fdce4747ce33944eb1d09aa2f73a8721ab1a506faaee45e4cba06106ffab782a"
+   },
+   {
+    "slug": "luis-garcia-jr",
+    "mlb_id": "671277",
+    "url": "https://statsapi.mlb.com/api/v1/people/671277?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "671277.json",
+    "bytes": 9807,
+    "sha256": "1e9f81282029a325bf4f00ff710842a1b4f797cb21d2ce578bc3c94e41784a45"
+   },
+   {
+    "slug": "luis-matos",
+    "mlb_id": "682641",
+    "url": "https://statsapi.mlb.com/api/v1/people/682641?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "682641.json",
+    "bytes": 4998,
+    "sha256": "f320de6ddca37e23e7c1120b82773706b8f6cd1a958246e8e089e6857ba923d4"
+   },
+   {
+    "slug": "luis-robert-jr",
+    "mlb_id": "673357",
+    "url": "https://statsapi.mlb.com/api/v1/people/673357?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "673357.json",
+    "bytes": 9737,
+    "sha256": "6d80fb452091b9af4292821669af1f2b23debf302995b61572c9ef5261db1a6e"
+   },
+   {
+    "slug": "marco-luciano",
+    "mlb_id": "682617",
+    "url": "https://statsapi.mlb.com/api/v1/people/682617?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "682617.json",
+    "bytes": 3163,
+    "sha256": "60c9a70f9d7ec95863b0e2788001e744da6ecb9582f6f0efea79d8efacfe0d20"
+   },
+   {
+    "slug": "maximo-acosta",
+    "mlb_id": "691185",
+    "url": "https://statsapi.mlb.com/api/v1/people/691185?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "691185.json",
+    "bytes": 2202,
+    "sha256": "ccbe79dc80f7adb4f2fa5e661e3f2be2f23d1a85bc0a465885eeeab7b330c48a"
+   },
+   {
+    "slug": "miguel-amaya",
+    "mlb_id": "665804",
+    "url": "https://statsapi.mlb.com/api/v1/people/665804?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665804.json",
+    "bytes": 5010,
+    "sha256": "5d979fc44ec8ddacdf7d024c35799651e6dc7c0db8ff740d8de433a0a03eb4c2"
+   },
+   {
+    "slug": "noelvi-marte",
+    "mlb_id": "682622",
+    "url": "https://statsapi.mlb.com/api/v1/people/682622?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "682622.json",
+    "bytes": 4969,
+    "sha256": "acd4a9c1f028126ce7d909eb4c5e3356a7d182be04cc1a08ebf5490f48a35a45"
+   },
+   {
+    "slug": "norge-ruiz",
+    "mlb_id": "650204",
+    "url": "https://statsapi.mlb.com/api/v1/people/650204?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "650204.json",
+    "bytes": 2644,
+    "sha256": "7f3e3c6b00bd48b609946403541185eecad3331dd1c29c219ae3d857e24d93bc"
+   },
+   {
+    "slug": "orelvis-martinez",
+    "mlb_id": "682619",
+    "url": "https://statsapi.mlb.com/api/v1/people/682619?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "682619.json",
+    "bytes": 2264,
+    "sha256": "a579368df4628ee833008c79941ee9017f45c8354dd8f32089c9430f7af950c4"
+   },
+   {
+    "slug": "osleivis-basabe",
+    "mlb_id": "678545",
+    "url": "https://statsapi.mlb.com/api/v1/people/678545?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "678545.json",
+    "bytes": 3153,
+    "sha256": "4bba178d3a5be17dacf9d17471d34dce1f6f16705cb91e6a3dfc70ccde5020db"
+   },
+   {
+    "slug": "rafael-marchan",
+    "mlb_id": "665561",
+    "url": "https://statsapi.mlb.com/api/v1/people/665561?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665561.json",
+    "bytes": 6041,
+    "sha256": "a196e05647cb3d5b5c4f2b4c6f31d3df7f98aa470e366e8d27abdd32ad643a02"
+   },
+   {
+    "slug": "randy-arozarena",
+    "mlb_id": "668227",
+    "url": "https://statsapi.mlb.com/api/v1/people/668227?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "668227.json",
+    "bytes": 10758,
+    "sha256": "144b65d7f98ba1b71ce4fa4ed625301d92d62957439c375700d5de98885361ff"
+   },
+   {
+    "slug": "ronald-bolanos",
+    "mlb_id": "671790",
+    "url": "https://statsapi.mlb.com/api/v1/people/671790?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "671790.json",
+    "bytes": 9011,
+    "sha256": "146c201a1dcbe7fd24ccdcb4f0ca4a463f680997177ea3c028acc905dc8cec1e"
+   },
+   {
+    "slug": "ronny-mauricio",
+    "mlb_id": "677595",
+    "url": "https://statsapi.mlb.com/api/v1/people/677595?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "677595.json",
+    "bytes": 4072,
+    "sha256": "56e2fe89179bc10a76043a79707bcac12d42093b9f7ffc41e6adc202c6852dab"
+   },
+   {
+    "slug": "simon-muzziotti",
+    "mlb_id": "665922",
+    "url": "https://statsapi.mlb.com/api/v1/people/665922?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665922.json",
+    "bytes": 2253,
+    "sha256": "a5a4ae6bb847b0ed60578c9990efd549a464c95ea0fcad89999e28c6bb956599"
+   },
+   {
+    "slug": "vladimir-guerrero-jr",
+    "mlb_id": "665489",
+    "url": "https://statsapi.mlb.com/api/v1/people/665489?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "665489.json",
+    "bytes": 9129,
+    "sha256": "f6f4c4e3c4243415a056d9822daec780d923c90f2a905dcc21c271f17376e9e0"
+   },
+   {
+    "slug": "vladimir-gutierrez",
+    "mlb_id": "661269",
+    "url": "https://statsapi.mlb.com/api/v1/people/661269?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "661269.json",
+    "bytes": 6643,
+    "sha256": "ddc51800a3723b96166ef3b284c542df2969cb92587190dcba54cc1238d0922c"
+   },
+   {
+    "slug": "wander-franco",
+    "mlb_id": "677551",
+    "url": "https://statsapi.mlb.com/api/v1/people/677551?hydrate=stats(group=%5Bhitting,pitching%5D,type=%5ByearByYear%5D,sportId=1)",
+    "file": "677551.json",
+    "bytes": 4141,
+    "sha256": "441500b0713ffbd2db1054943b0dddfc7d42dc855e9a582a661dd07f95581b21"
+   }
+  ]
+ }
+}

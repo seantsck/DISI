@@ -1,0 +1,424 @@
+{
+ "generated_by": "database/research/062/build.mjs",
+ "note": "The 39 owner-observed rows: what 062 writes (ACCEPTED) and what it holds back (HELD, NULL, with the reason). archived_value is the first 062 audit's value from the archived captures (only for the twelve whose career was complete there); it is a cross-check, superseded by the owner value.",
+ "input_kind": "OWNER_OBSERVED_BASEBALL_REFERENCE_PLAYER_PAGE",
+ "supplied_on": "2026-11-06",
+ "confidence": "UNVERIFIED",
+ "rows": [
+  {
+   "slug": "adael-amador",
+   "name": "Adael Amador",
+   "bref_id": "amadoad01",
+   "mlb_id": "691182",
+   "career_bwar": "0.7",
+   "url": "https://www.baseball-reference.com/players/a/amadoad01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "adrian-morejon",
+   "name": "Adrián Morejón",
+   "bref_id": "morejad01",
+   "mlb_id": "670970",
+   "career_bwar": "-1.1",
+   "url": "https://www.baseball-reference.com/players/m/morejad01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "andres-gimenez",
+   "name": "Andrés Giménez",
+   "bref_id": "gimenan01",
+   "mlb_id": "665926",
+   "career_bwar": "20.5",
+   "url": "https://www.baseball-reference.com/players/g/gimenan01.shtml",
+   "status": "HELD",
+   "archived_value": null,
+   "reason": "DISI holds a loaded team-season ledger for this player (6 rows through 2025, sum 19.37; outcomes.career_war 19.370). The owner's current career value 20.5 differs from it by more than the verifier's 0.1 career reconciliation tolerance (value_career_reconciliation_violations), so writing it would fail the verifier and leave two career stores disagreeing. It stays NULL until the missing team-season rows are loaded from a readable source, or the owner decides how the reconciliation rule should treat a ledger that ends before the career does."
+  },
+  {
+   "slug": "andry-lara",
+   "name": "Andry Lara",
+   "bref_id": "laraan01",
+   "mlb_id": "691251",
+   "career_bwar": "-0.4",
+   "url": "https://www.baseball-reference.com/players/l/laraan01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "-0.4"
+  },
+  {
+   "slug": "cionel-perez",
+   "name": "Cionel Pérez",
+   "bref_id": "perezci01",
+   "mlb_id": "672335",
+   "career_bwar": "0.9",
+   "url": "https://www.baseball-reference.com/players/p/perezci01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "cristian-pache",
+   "name": "Cristian Pache",
+   "bref_id": "pachecr01",
+   "mlb_id": "665506",
+   "career_bwar": "-1.4",
+   "url": "https://www.baseball-reference.com/players/p/pachecr01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "emmanuel-dejesus",
+   "name": "Enmanuel De Jesus",
+   "bref_id": "dejesen01",
+   "mlb_id": "646241",
+   "career_bwar": "0.0",
+   "url": "https://www.baseball-reference.com/players/d/dejesen01.shtml",
+   "status": "HELD",
+   "archived_value": null,
+   "reason": "DISI holds a loaded team-season ledger for this player (2 rows through 2023, sum -0.18; outcomes.career_war -0.180). The owner's current career value 0.0 differs from it by more than the verifier's 0.1 career reconciliation tolerance (value_career_reconciliation_violations), so writing it would fail the verifier and leave two career stores disagreeing. It stays NULL until the missing team-season rows are loaded from a readable source, or the owner decides how the reconciliation rule should treat a ledger that ends before the career does."
+  },
+  {
+   "slug": "everson-pereira",
+   "name": "Everson Pereira",
+   "bref_id": "pereiev01",
+   "mlb_id": "677592",
+   "career_bwar": "-0.9",
+   "url": "https://www.baseball-reference.com/players/p/pereiev01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "fernando-tatis-jr",
+   "name": "Fernando Tatis Jr.",
+   "bref_id": "tatisfe02",
+   "mlb_id": "665487",
+   "career_bwar": "31.7",
+   "url": "https://www.baseball-reference.com/players/t/tatisfe02.shtml",
+   "status": "HELD",
+   "archived_value": null,
+   "reason": "DISI holds a loaded team-season ledger for this player (6 rows through 2025, sum 27.34; outcomes.career_war 27.340). The owner's current career value 31.7 differs from it by more than the verifier's 0.1 career reconciliation tolerance (value_career_reconciliation_violations), so writing it would fail the verifier and leave two career stores disagreeing. It stays NULL until the missing team-season rows are loaded from a readable source, or the owner decides how the reconciliation rule should treat a ledger that ends before the career does."
+  },
+  {
+   "slug": "francisco-alvarez",
+   "name": "Francisco Álvarez",
+   "bref_id": "alvarfr01",
+   "mlb_id": "682626",
+   "career_bwar": "4.1",
+   "url": "https://www.baseball-reference.com/players/a/alvarfr01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "francisco-morales",
+   "name": "Francisco Morales",
+   "bref_id": "moralfr02",
+   "mlb_id": "672839",
+   "career_bwar": "-0.1",
+   "url": "https://www.baseball-reference.com/players/m/moralfr02.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "-0.1"
+  },
+  {
+   "slug": "gabriel-arias",
+   "name": "Gabriel Arias",
+   "bref_id": "ariasga01",
+   "mlb_id": "672356",
+   "career_bwar": "1.0",
+   "url": "https://www.baseball-reference.com/players/a/ariasga01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "george-valera",
+   "name": "George Valera",
+   "bref_id": "valerge01",
+   "mlb_id": "671655",
+   "career_bwar": "-0.3",
+   "url": "https://www.baseball-reference.com/players/v/valerge01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "gilberto-celestino",
+   "name": "Gilberto Celestino",
+   "bref_id": "celesgi01",
+   "mlb_id": "665482",
+   "career_bwar": "0.3",
+   "url": "https://www.baseball-reference.com/players/c/celesgi01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "0.2"
+  },
+  {
+   "slug": "jasson-dominguez",
+   "name": "Jasson Domínguez",
+   "bref_id": "dominja01",
+   "mlb_id": "691176",
+   "career_bwar": "0.5",
+   "url": "https://www.baseball-reference.com/players/d/dominja01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "jorge-ona",
+   "name": "Jorge Oña",
+   "bref_id": "onajo01",
+   "mlb_id": "671250",
+   "career_bwar": "0.2",
+   "url": "https://www.baseball-reference.com/players/o/onajo01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "0.2"
+  },
+  {
+   "slug": "juan-soto",
+   "name": "Juan Soto",
+   "bref_id": "sotoju01",
+   "mlb_id": "665742",
+   "career_bwar": "45.6",
+   "url": "https://www.baseball-reference.com/players/s/sotoju01.shtml",
+   "status": "HELD",
+   "archived_value": null,
+   "reason": "DISI holds a loaded team-season ledger for this player (9 rows through 2025, sum 42.57; outcomes.career_war 42.570). The owner's current career value 45.6 differs from it by more than the verifier's 0.1 career reconciliation tolerance (value_career_reconciliation_violations), so writing it would fail the verifier and leave two career stores disagreeing. It stays NULL until the missing team-season rows are loaded from a readable source, or the owner decides how the reconciliation rule should treat a ledger that ends before the career does."
+  },
+  {
+   "slug": "julio-rodriguez",
+   "name": "Julio Rodríguez",
+   "bref_id": "rodriju01",
+   "mlb_id": "677594",
+   "career_bwar": "25.4",
+   "url": "https://www.baseball-reference.com/players/r/rodriju01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "kevin-alcantara",
+   "name": "Kevin Alcántara",
+   "bref_id": "alcanke01",
+   "mlb_id": "682634",
+   "career_bwar": "-0.3",
+   "url": "https://www.baseball-reference.com/players/a/alcanke01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "leody-taveras",
+   "name": "Leody Taveras",
+   "bref_id": "taverle01",
+   "mlb_id": "665750",
+   "career_bwar": "4.7",
+   "url": "https://www.baseball-reference.com/players/t/taverle01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "lourdes-gurriel-jr",
+   "name": "Lourdes Gurriel Jr.",
+   "bref_id": "gurrilo01",
+   "mlb_id": "666971",
+   "career_bwar": "12.5",
+   "url": "https://www.baseball-reference.com/players/g/gurrilo01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "luis-garcia-jr",
+   "name": "Luis García Jr.",
+   "bref_id": "garcilu04",
+   "mlb_id": "671277",
+   "career_bwar": "6.1",
+   "url": "https://www.baseball-reference.com/players/g/garcilu04.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "luis-matos",
+   "name": "Luis Matos",
+   "bref_id": "matoslu02",
+   "mlb_id": "682641",
+   "career_bwar": "-0.9",
+   "url": "https://www.baseball-reference.com/players/m/matoslu02.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "luis-robert-jr",
+   "name": "Luis Robert Jr.",
+   "bref_id": "roberlu01",
+   "mlb_id": "673357",
+   "career_bwar": "16.7",
+   "url": "https://www.baseball-reference.com/players/r/roberlu01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "marco-luciano",
+   "name": "Marco Luciano",
+   "bref_id": "luciama01",
+   "mlb_id": "682617",
+   "career_bwar": "-0.3",
+   "url": "https://www.baseball-reference.com/players/l/luciama01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "-0.3"
+  },
+  {
+   "slug": "maximo-acosta",
+   "name": "Máximo Acosta",
+   "bref_id": "acostma02",
+   "mlb_id": "691185",
+   "career_bwar": "0.0",
+   "url": "https://www.baseball-reference.com/players/a/acostma02.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "0.0"
+  },
+  {
+   "slug": "miguel-amaya",
+   "name": "Miguel Amaya",
+   "bref_id": "amayami01",
+   "mlb_id": "665804",
+   "career_bwar": "4.7",
+   "url": "https://www.baseball-reference.com/players/a/amayami01.shtml",
+   "status": "HELD",
+   "archived_value": null,
+   "reason": "DISI holds a loaded team-season ledger for this player (3 rows through 2025, sum 3.35; outcomes.career_war 3.350). The owner's current career value 4.7 differs from it by more than the verifier's 0.1 career reconciliation tolerance (value_career_reconciliation_violations), so writing it would fail the verifier and leave two career stores disagreeing. It stays NULL until the missing team-season rows are loaded from a readable source, or the owner decides how the reconciliation rule should treat a ledger that ends before the career does."
+  },
+  {
+   "slug": "noelvi-marte",
+   "name": "Noelvi Marte",
+   "bref_id": "marteno01",
+   "mlb_id": "682622",
+   "career_bwar": "-1.0",
+   "url": "https://www.baseball-reference.com/players/m/marteno01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "norge-ruiz",
+   "name": "Norge Ruiz",
+   "bref_id": "ruizno01",
+   "mlb_id": "650204",
+   "career_bwar": "-0.4",
+   "url": "https://www.baseball-reference.com/players/r/ruizno01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "-0.4"
+  },
+  {
+   "slug": "orelvis-martinez",
+   "name": "Orelvis Martínez",
+   "bref_id": "martior01",
+   "mlb_id": "682619",
+   "career_bwar": "0.0",
+   "url": "https://www.baseball-reference.com/players/m/martior01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "0.0"
+  },
+  {
+   "slug": "osleivis-basabe",
+   "name": "Osleivis Basabe",
+   "bref_id": "basabos01",
+   "mlb_id": "678545",
+   "career_bwar": "-0.1",
+   "url": "https://www.baseball-reference.com/players/b/basabos01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "rafael-marchan",
+   "name": "Rafael Marchán",
+   "bref_id": "marchra01",
+   "mlb_id": "665561",
+   "career_bwar": "0.7",
+   "url": "https://www.baseball-reference.com/players/m/marchra01.shtml",
+   "status": "HELD",
+   "archived_value": null,
+   "reason": "DISI holds a loaded team-season ledger for this player (4 rows through 2025, sum 1.41; outcomes.career_war 1.410). The owner's current career value 0.7 differs from it by more than the verifier's 0.1 career reconciliation tolerance (value_career_reconciliation_violations), so writing it would fail the verifier and leave two career stores disagreeing. It stays NULL until the missing team-season rows are loaded from a readable source, or the owner decides how the reconciliation rule should treat a ledger that ends before the career does."
+  },
+  {
+   "slug": "randy-arozarena",
+   "name": "Randy Arozarena",
+   "bref_id": "arozara01",
+   "mlb_id": "668227",
+   "career_bwar": "22.6",
+   "url": "https://www.baseball-reference.com/players/a/arozara01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "ronald-bolanos",
+   "name": "Ronald Bolaños",
+   "bref_id": "bolanro01",
+   "mlb_id": "671790",
+   "career_bwar": "-0.1",
+   "url": "https://www.baseball-reference.com/players/b/bolanro01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "-0.1"
+  },
+  {
+   "slug": "ronny-mauricio",
+   "name": "Ronny Mauricio",
+   "bref_id": "mauriro01",
+   "mlb_id": "677595",
+   "career_bwar": "0.9",
+   "url": "https://www.baseball-reference.com/players/m/mauriro01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": null
+  },
+  {
+   "slug": "simon-muzziotti",
+   "name": "Simón Muzziotti",
+   "bref_id": "muzzisi01",
+   "mlb_id": "665922",
+   "career_bwar": "-0.1",
+   "url": "https://www.baseball-reference.com/players/m/muzzisi01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "-0.1"
+  },
+  {
+   "slug": "vladimir-guerrero-jr",
+   "name": "Vladimir Guerrero Jr.",
+   "bref_id": "guerrvl02",
+   "mlb_id": "665489",
+   "career_bwar": "26.9",
+   "url": "https://www.baseball-reference.com/players/g/guerrvl02.shtml",
+   "status": "HELD",
+   "archived_value": null,
+   "reason": "DISI holds a loaded team-season ledger for this player (7 rows through 2025, sum 25.73; outcomes.career_war 25.730). The owner's current career value 26.9 differs from it by more than the verifier's 0.1 career reconciliation tolerance (value_career_reconciliation_violations), so writing it would fail the verifier and leave two career stores disagreeing. It stays NULL until the missing team-season rows are loaded from a readable source, or the owner decides how the reconciliation rule should treat a ledger that ends before the career does."
+  },
+  {
+   "slug": "vladimir-gutierrez",
+   "name": "Vladimir Gutiérrez",
+   "bref_id": "gutievl01",
+   "mlb_id": "661269",
+   "career_bwar": "1.0",
+   "url": "https://www.baseball-reference.com/players/g/gutievl01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "1.0"
+  },
+  {
+   "slug": "wander-franco",
+   "name": "Wander Franco",
+   "bref_id": "francwa01",
+   "mlb_id": "677551",
+   "career_bwar": "11.3",
+   "url": "https://www.baseball-reference.com/players/f/francwa01.shtml",
+   "status": "ACCEPTED",
+   "archived_value": "11.3"
+  }
+ ],
+ "effect": {
+  "career_bwar_observations": [
+   58,
+   90
+  ],
+  "bwar_missing": [
+   39,
+   7
+  ],
+  "sources": [
+   3396,
+   3428
+  ],
+  "evidence": [
+   4507,
+   4507
+  ]
+ }
+}

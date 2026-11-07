@@ -1,0 +1,1958 @@
+{
+ "note": "The 062 audit of the 39 BWAR_MISSING players on the canonical 001-061 state. Numeric evidence is read only from the two archived Baseball-Reference WAR data files 057 pinned; the MLB Stats API is used only for identity and to list which MLB seasons exist. No value is inferred, estimated or zero-filled.",
+ "inputs": {
+  "baseline": "database/research/062/baseline-build.json",
+  "captures": [
+   {
+    "component": "BAT",
+    "url": "https://web.archive.org/web/20260911214553id_/https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "captured_at": "2026-09-11T21:45:53Z",
+    "decoded_sha256": "ec088b3ad7aa2f284f41d845f071c0644e43e753bae46ee45aab840b9cd51023",
+    "data_rows": 126529,
+    "complete_through_season": 2025,
+    "max_season": 2026
+   },
+   {
+    "component": "PITCH",
+    "url": "https://web.archive.org/web/20260210222101id_/https://www.baseball-reference.com/data/war_daily_pitch.txt",
+    "captured_at": "2026-02-10T22:21:01Z",
+    "decoded_sha256": "3d80dcd5ae2cb442db52146bf569dbb6ee5de37846355c18e6b7937653af3825",
+    "data_rows": 56860,
+    "complete_through_season": 2025,
+    "max_season": 2025
+   }
+  ],
+  "statsapi": {
+   "retrieved_at": "2026-11-06T21:25:47Z",
+   "records": 39
+  },
+  "accepted_career_bwar_sources": [
+   "https://www.baseball-reference.com/data/war_daily_bat.txt",
+   "https://www.baseball-reference.com/data/war_daily_pitch.txt"
+  ],
+  "capture_sources_accepted": false
+ },
+ "counts": {
+  "APPLY_NUMERIC": 0,
+  "NO_MLB_BUT_SEMANTICS_SUPPORTED": 0,
+  "IDENTITY_BLOCKED": 0,
+  "SOURCE_BLOCKED": 12,
+  "NOT_CURRENTLY_ASSESSABLE": 27,
+  "ALREADY_PRESENT": 0
+ },
+ "schema_change_required": {
+  "answer": "YES",
+  "detail": "No numeric write is supported under the existing schema. The SOURCE_BLOCKED players could be written only if the CAREER_BWAR provider rule (017 player_metric_observations_check_provider) also accepted a web.archive.org capture of a baseball-reference.com URL, which is a schema change and an owner decision (059 left it as \"a separate decision\"). The NOT_CURRENTLY_ASSESSABLE players need a post-2026-season capture of both files whatever the rule."
+ },
+ "proposed_writes": [],
+ "players": [
+  {
+   "slug": "adael-amador",
+   "full_name": "Adael Amador",
+   "bref_id": "amadoad01",
+   "mlb_id": "691182",
+   "franchise_key": "COL",
+   "signing_year": 2019,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (95 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Adael Amador",
+    "api_birth_date": "2003-04-11",
+    "api_mlb_debut": "2024-06-09",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2024": 36,
+     "2025": 128,
+     "2026": 95
+    },
+    "pitching": {}
+   },
+   "capture_rows": 3,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "adrian-morejon",
+   "full_name": "Adrian Morejon",
+   "bref_id": "morejad01",
+   "mlb_id": "670970",
+   "franchise_key": "SD",
+   "signing_year": 2016,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB pitching 2026 (76 G): the pitching capture ends with 2025",
+   "identity": {
+    "api_full_name": "Adrian Morejon",
+    "api_birth_date": "1999-02-27",
+    "api_mlb_debut": "2019-07-21",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2019": 1,
+     "2021": 1
+    },
+    "pitching": {
+     "2019": 5,
+     "2020": 9,
+     "2021": 2,
+     "2022": 26,
+     "2023": 8,
+     "2024": 60,
+     "2025": 75,
+     "2026": 76
+    }
+   },
+   "capture_rows": 14,
+   "capture_null_war_rows": 5,
+   "capture_seasons": {
+    "BAT": [
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025
+    ],
+    "PITCH": [
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025
+    ]
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "andres-gimenez",
+   "full_name": "Andrés Giménez",
+   "bref_id": "gimenan01",
+   "mlb_id": "665926",
+   "franchise_key": "NYM",
+   "signing_year": 2015,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (508 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Andrés Giménez",
+    "api_birth_date": "1998-09-04",
+    "api_mlb_debut": "2020-07-24",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2020": 132,
+     "2021": 210,
+     "2022": 557,
+     "2023": 616,
+     "2024": 633,
+     "2025": 369,
+     "2026": 508
+    },
+    "pitching": {}
+   },
+   "capture_rows": 7,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 6
+  },
+  {
+   "slug": "andry-lara",
+   "full_name": "Andry Lara",
+   "bref_id": "laraan01",
+   "mlb_id": "691251",
+   "franchise_key": "WSH",
+   "signing_year": 2019,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Andry Lara",
+    "api_birth_date": "2003-01-06",
+    "api_mlb_debut": "2025-07-02",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {},
+    "pitching": {
+     "2025": 9
+    }
+   },
+   "capture_rows": 2,
+   "capture_null_war_rows": 1,
+   "capture_seasons": {
+    "BAT": [
+     2025
+    ],
+    "PITCH": [
+     2025
+    ]
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "0.00",
+    "pitch": "-0.40",
+    "raw": "-0.40",
+    "one_decimal": "-0.4",
+    "as_of": "2026-09-11 (BAT) / 2026-02-10 (PITCH, ends with 2025)",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2025,
+      "team": "WSN",
+      "stint": 1,
+      "war": null,
+      "games": 0
+     },
+     {
+      "component": "PITCH",
+      "season": 2025,
+      "team": "WSN",
+      "stint": 1,
+      "war": "-0.40",
+      "games": 9
+     }
+    ]
+   }
+  },
+  {
+   "slug": "cionel-perez",
+   "full_name": "Cionel Pérez",
+   "bref_id": "perezci01",
+   "mlb_id": "672335",
+   "franchise_key": "HOU",
+   "signing_year": 2016,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB pitching 2026 (40 G): the pitching capture ends with 2025",
+   "identity": {
+    "api_full_name": "Cionel Pérez",
+    "api_birth_date": "1996-04-21",
+    "api_mlb_debut": "2018-07-11",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2018": 0,
+     "2019": 0,
+     "2021": 2,
+     "2022": 0,
+     "2023": 0,
+     "2025": 0
+    },
+    "pitching": {
+     "2018": 8,
+     "2019": 5,
+     "2020": 7,
+     "2021": 25,
+     "2022": 66,
+     "2023": 65,
+     "2024": 62,
+     "2025": 19,
+     "2026": 40
+    }
+   },
+   "capture_rows": 16,
+   "capture_null_war_rows": 2,
+   "capture_seasons": {
+    "BAT": [
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025
+    ],
+    "PITCH": [
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025
+    ]
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "cristian-pache",
+   "full_name": "Cristian Pache",
+   "bref_id": "pachecr01",
+   "mlb_id": "665506",
+   "franchise_key": "ATL",
+   "signing_year": 2015,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (8 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Cristian Pache",
+    "api_birth_date": "1998-11-19",
+    "api_mlb_debut": "2020-08-21",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2020": 4,
+     "2021": 68,
+     "2022": 260,
+     "2023": 95,
+     "2024": 183,
+     "2026": 8
+    },
+    "pitching": {}
+   },
+   "capture_rows": 8,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 7
+  },
+  {
+   "slug": "emmanuel-dejesus",
+   "full_name": "Emmanuel DeJesus",
+   "bref_id": "dejesen01",
+   "mlb_id": "646241",
+   "franchise_key": "BOS",
+   "signing_year": 2013,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB pitching 2026 (30 G): the pitching capture ends with 2025",
+   "identity": {
+    "api_full_name": "Enmanuel De Jesus",
+    "api_birth_date": "1996-12-10",
+    "api_mlb_debut": "2023-09-09",
+    "checks_failed": [],
+    "notes": [
+     "spelling variant: API Enmanuel De Jesus / DISI Emmanuel DeJesus"
+    ]
+   },
+   "mlb_seasons": {
+    "hitting": {},
+    "pitching": {
+     "2023": 2,
+     "2026": 30
+    }
+   },
+   "capture_rows": 2,
+   "capture_null_war_rows": 1,
+   "capture_seasons": {
+    "BAT": [
+     2023
+    ],
+    "PITCH": [
+     2023
+    ]
+   },
+   "disi_team_season_rows": 2
+  },
+  {
+   "slug": "everson-pereira",
+   "full_name": "Everson Pereira",
+   "bref_id": "pereiev01",
+   "mlb_id": "677592",
+   "franchise_key": "NYY",
+   "signing_year": 2017,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (111 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Everson Pereira",
+    "api_birth_date": "2001-04-10",
+    "api_mlb_debut": "2023-08-22",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2023": 103,
+     "2025": 73,
+     "2026": 111
+    },
+    "pitching": {}
+   },
+   "capture_rows": 4,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2023,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "fernando-tatis-jr",
+   "full_name": "Fernando Tatis Jr.",
+   "bref_id": "tatisfe02",
+   "mlb_id": "665487",
+   "franchise_key": "CWS",
+   "signing_year": 2015,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (704 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Fernando Tatis Jr.",
+    "api_birth_date": "1999-01-02",
+    "api_mlb_debut": "2019-03-28",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2019": 372,
+     "2020": 257,
+     "2021": 546,
+     "2023": 635,
+     "2024": 438,
+     "2025": 691,
+     "2026": 704
+    },
+    "pitching": {}
+   },
+   "capture_rows": 7,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2019,
+     2020,
+     2021,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 6
+  },
+  {
+   "slug": "francisco-alvarez",
+   "full_name": "Francisco Alvarez",
+   "bref_id": "alvarfr01",
+   "mlb_id": "682626",
+   "franchise_key": "NYM",
+   "signing_year": 2018,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (420 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Francisco Alvarez",
+    "api_birth_date": "2001-11-19",
+    "api_mlb_debut": "2022-09-30",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2022": 14,
+     "2023": 423,
+     "2024": 342,
+     "2025": 277,
+     "2026": 420
+    },
+    "pitching": {}
+   },
+   "capture_rows": 5,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "francisco-morales",
+   "full_name": "Francisco Morales",
+   "bref_id": "moralfr02",
+   "mlb_id": "672839",
+   "franchise_key": "PHI",
+   "signing_year": 2016,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Francisco Morales",
+    "api_birth_date": "1999-10-27",
+    "api_mlb_debut": "2022-05-09",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {},
+    "pitching": {
+     "2022": 3
+    }
+   },
+   "capture_rows": 2,
+   "capture_null_war_rows": 1,
+   "capture_seasons": {
+    "BAT": [
+     2022
+    ],
+    "PITCH": [
+     2022
+    ]
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "0.00",
+    "pitch": "-0.12",
+    "raw": "-0.12",
+    "one_decimal": "-0.1",
+    "as_of": "2026-09-11 (BAT) / 2026-02-10 (PITCH, ends with 2025)",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2022,
+      "team": "PHI",
+      "stint": 1,
+      "war": null,
+      "games": 0
+     },
+     {
+      "component": "PITCH",
+      "season": 2022,
+      "team": "PHI",
+      "stint": 1,
+      "war": "-0.12",
+      "games": 3
+     }
+    ]
+   }
+  },
+  {
+   "slug": "gabriel-arias",
+   "full_name": "Gabriel Arias",
+   "bref_id": "ariasga01",
+   "mlb_id": "672356",
+   "franchise_key": "SD",
+   "signing_year": 2016,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (149 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Gabriel Arias",
+    "api_birth_date": "2000-02-27",
+    "api_mlb_debut": "2022-04-20",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2022": 57,
+     "2023": 345,
+     "2024": 161,
+     "2025": 471,
+     "2026": 149
+    },
+    "pitching": {}
+   },
+   "capture_rows": 7,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "george-valera",
+   "full_name": "George Valera",
+   "bref_id": "valerge01",
+   "mlb_id": "671655",
+   "franchise_key": "CLE",
+   "signing_year": 2017,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (38 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "George Valera",
+    "api_birth_date": "2000-11-13",
+    "api_mlb_debut": "2025-09-01",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2025": 48,
+     "2026": 38
+    },
+    "pitching": {}
+   },
+   "capture_rows": 2,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "gilberto-celestino",
+   "full_name": "Gilberto Celestino",
+   "bref_id": "celesgi01",
+   "mlb_id": "665482",
+   "franchise_key": "HOU",
+   "signing_year": 2015,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Gilberto Celestino",
+    "api_birth_date": "1999-02-13",
+    "api_mlb_debut": "2021-06-02",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2021": 62,
+     "2022": 347
+    },
+    "pitching": {}
+   },
+   "capture_rows": 2,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2021,
+     2022
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 2,
+   "evidence_value": {
+    "bat": "0.24",
+    "pitch": null,
+    "raw": "0.24",
+    "one_decimal": "0.2",
+    "as_of": "2026-09-11",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2021,
+      "team": "MIN",
+      "stint": 1,
+      "war": "-0.29",
+      "games": 23
+     },
+     {
+      "component": "BAT",
+      "season": 2022,
+      "team": "MIN",
+      "stint": 1,
+      "war": "0.53",
+      "games": 122
+     }
+    ]
+   }
+  },
+  {
+   "slug": "jasson-dominguez",
+   "full_name": "Jasson Domínguez",
+   "bref_id": "dominja01",
+   "mlb_id": "691176",
+   "franchise_key": "NYY",
+   "signing_year": 2019,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (222 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Jasson Domínguez",
+    "api_birth_date": "2003-02-07",
+    "api_mlb_debut": "2023-09-01",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2023": 33,
+     "2024": 67,
+     "2025": 429,
+     "2026": 222
+    },
+    "pitching": {}
+   },
+   "capture_rows": 4,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "jorge-ona",
+   "full_name": "Jorge Ona",
+   "bref_id": "onajo01",
+   "mlb_id": "671250",
+   "franchise_key": "SD",
+   "signing_year": 2016,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Jorge Ona",
+    "api_birth_date": "1996-12-31",
+    "api_mlb_debut": "2020-09-07",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2020": 15
+    },
+    "pitching": {}
+   },
+   "capture_rows": 1,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2020
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "0.20",
+    "pitch": null,
+    "raw": "0.20",
+    "one_decimal": "0.2",
+    "as_of": "2026-09-11",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2020,
+      "team": "SDP",
+      "stint": 1,
+      "war": "0.20",
+      "games": 5
+     }
+    ]
+   }
+  },
+  {
+   "slug": "juan-soto",
+   "full_name": "Juan Soto",
+   "bref_id": "sotoju01",
+   "mlb_id": "665742",
+   "franchise_key": "WSH",
+   "signing_year": 2015,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (482 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Juan Soto",
+    "api_birth_date": "1998-10-25",
+    "api_mlb_debut": "2018-05-15",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2018": 494,
+     "2019": 659,
+     "2020": 196,
+     "2021": 654,
+     "2022": 664,
+     "2023": 708,
+     "2024": 713,
+     "2025": 715,
+     "2026": 482
+    },
+    "pitching": {}
+   },
+   "capture_rows": 10,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 9
+  },
+  {
+   "slug": "julio-rodriguez",
+   "full_name": "Julio Rodríguez",
+   "bref_id": "rodriju01",
+   "mlb_id": "677594",
+   "franchise_key": "SEA",
+   "signing_year": 2017,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (654 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Julio Rodríguez",
+    "api_birth_date": "2000-12-29",
+    "api_mlb_debut": "2022-04-08",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2022": 560,
+     "2023": 714,
+     "2024": 613,
+     "2025": 710,
+     "2026": 654
+    },
+    "pitching": {}
+   },
+   "capture_rows": 5,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "kevin-alcantara",
+   "full_name": "Kevin Alcántara",
+   "bref_id": "alcanke01",
+   "mlb_id": "682634",
+   "franchise_key": "NYY",
+   "signing_year": 2018,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (28 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Kevin Alcántara",
+    "api_birth_date": "2002-07-12",
+    "api_mlb_debut": "2024-09-25",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2024": 10,
+     "2025": 12,
+     "2026": 28
+    },
+    "pitching": {}
+   },
+   "capture_rows": 3,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "leody-taveras",
+   "full_name": "Leody Taveras",
+   "bref_id": "taverle01",
+   "mlb_id": "665750",
+   "franchise_key": "TEX",
+   "signing_year": 2015,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (482 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Leody Taveras",
+    "api_birth_date": "1998-09-08",
+    "api_mlb_debut": "2020-07-24",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2020": 134,
+     "2021": 185,
+     "2022": 341,
+     "2023": 554,
+     "2024": 529,
+     "2025": 180,
+     "2026": 482
+    },
+    "pitching": {}
+   },
+   "capture_rows": 8,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 7
+  },
+  {
+   "slug": "lourdes-gurriel-jr",
+   "full_name": "Lourdes Gurriel Jr.",
+   "bref_id": "gurrilo01",
+   "mlb_id": "666971",
+   "franchise_key": "TOR",
+   "signing_year": 2016,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (201 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Lourdes Gurriel Jr.",
+    "api_birth_date": "1993-10-10",
+    "api_mlb_debut": "2018-04-20",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2018": 263,
+     "2019": 343,
+     "2020": 224,
+     "2021": 541,
+     "2022": 493,
+     "2023": 592,
+     "2024": 553,
+     "2025": 546,
+     "2026": 201
+    },
+    "pitching": {}
+   },
+   "capture_rows": 9,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "luis-garcia-jr",
+   "full_name": "Luis García Jr.",
+   "bref_id": "garcilu04",
+   "mlb_id": "671277",
+   "franchise_key": "WSH",
+   "signing_year": 2016,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (543 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Luis García Jr.",
+    "api_birth_date": "2000-05-16",
+    "api_mlb_debut": "2020-08-14",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2020": 139,
+     "2021": 247,
+     "2022": 377,
+     "2023": 482,
+     "2024": 528,
+     "2025": 526,
+     "2026": 543
+    },
+    "pitching": {}
+   },
+   "capture_rows": 8,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "luis-matos",
+   "full_name": "Luis Matos",
+   "bref_id": "matoslu02",
+   "mlb_id": "682641",
+   "franchise_key": "SFG",
+   "signing_year": 2018,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (21 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Luis Matos",
+    "api_birth_date": "2002-01-28",
+    "api_mlb_debut": "2023-06-14",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2023": 253,
+     "2024": 156,
+     "2025": 184,
+     "2026": 21
+    },
+    "pitching": {}
+   },
+   "capture_rows": 4,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "luis-robert-jr",
+   "full_name": "Luis Robert Jr.",
+   "bref_id": "roberlu01",
+   "mlb_id": "673357",
+   "franchise_key": "CWS",
+   "signing_year": 2017,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (230 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Luis Robert Jr.",
+    "api_birth_date": "1997-08-03",
+    "api_mlb_debut": "2020-07-24",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2020": 227,
+     "2021": 296,
+     "2022": 401,
+     "2023": 595,
+     "2024": 425,
+     "2025": 431,
+     "2026": 230
+    },
+    "pitching": {}
+   },
+   "capture_rows": 8,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "marco-luciano",
+   "full_name": "Marco Luciano",
+   "bref_id": "luciama01",
+   "mlb_id": "682617",
+   "franchise_key": "SFG",
+   "signing_year": 2018,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Marco Luciano",
+    "api_birth_date": "2001-09-10",
+    "api_mlb_debut": "2023-07-26",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2023": 45,
+     "2024": 81
+    },
+    "pitching": {}
+   },
+   "capture_rows": 2,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2023,
+     2024
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "-0.30",
+    "pitch": null,
+    "raw": "-0.30",
+    "one_decimal": "-0.3",
+    "as_of": "2026-09-11",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2023,
+      "team": "SFG",
+      "stint": 1,
+      "war": "0.08",
+      "games": 14
+     },
+     {
+      "component": "BAT",
+      "season": 2024,
+      "team": "SFG",
+      "stint": 1,
+      "war": "-0.38",
+      "games": 27
+     }
+    ]
+   }
+  },
+  {
+   "slug": "maximo-acosta",
+   "full_name": "Maximo Acosta",
+   "bref_id": "acostma02",
+   "mlb_id": "691185",
+   "franchise_key": "TEX",
+   "signing_year": 2019,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Maximo Acosta",
+    "api_birth_date": "2002-10-29",
+    "api_mlb_debut": "2025-08-18",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2025": 61
+    },
+    "pitching": {}
+   },
+   "capture_rows": 1,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2025
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "-0.03",
+    "pitch": null,
+    "raw": "-0.03",
+    "one_decimal": "0.0",
+    "as_of": "2026-09-11",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2025,
+      "team": "MIA",
+      "stint": 1,
+      "war": "-0.03",
+      "games": 19
+     }
+    ]
+   }
+  },
+  {
+   "slug": "miguel-amaya",
+   "full_name": "Miguel Amaya",
+   "bref_id": "amayami01",
+   "mlb_id": "665804",
+   "franchise_key": "CHC",
+   "signing_year": 2015,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (254 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Miguel Amaya",
+    "api_birth_date": "1999-03-09",
+    "api_mlb_debut": "2023-05-04",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2023": 156,
+     "2024": 363,
+     "2025": 103,
+     "2026": 254
+    },
+    "pitching": {}
+   },
+   "capture_rows": 4,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 3
+  },
+  {
+   "slug": "noelvi-marte",
+   "full_name": "Noelvi Marte",
+   "bref_id": "marteno01",
+   "mlb_id": "682622",
+   "franchise_key": "SEA",
+   "signing_year": 2018,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (201 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Noelvi Marte",
+    "api_birth_date": "2001-10-16",
+    "api_mlb_debut": "2023-08-19",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2023": 123,
+     "2024": 242,
+     "2025": 360,
+     "2026": 201
+    },
+    "pitching": {}
+   },
+   "capture_rows": 4,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "norge-ruiz",
+   "full_name": "Norge Ruiz",
+   "bref_id": "ruizno01",
+   "mlb_id": "650204",
+   "franchise_key": "OAK",
+   "signing_year": 2016,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Norge Ruiz",
+    "api_birth_date": "1994-03-15",
+    "api_mlb_debut": "2022-08-19",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {},
+    "pitching": {
+     "2022": 14
+    }
+   },
+   "capture_rows": 2,
+   "capture_null_war_rows": 1,
+   "capture_seasons": {
+    "BAT": [
+     2022
+    ],
+    "PITCH": [
+     2022
+    ]
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "0.00",
+    "pitch": "-0.38",
+    "raw": "-0.38",
+    "one_decimal": "-0.4",
+    "as_of": "2026-09-11 (BAT) / 2026-02-10 (PITCH, ends with 2025)",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2022,
+      "team": "OAK",
+      "stint": 1,
+      "war": null,
+      "games": 0
+     },
+     {
+      "component": "PITCH",
+      "season": 2022,
+      "team": "OAK",
+      "stint": 1,
+      "war": "-0.38",
+      "games": 14
+     }
+    ]
+   }
+  },
+  {
+   "slug": "orelvis-martinez",
+   "full_name": "Orelvis Martinez",
+   "bref_id": "martior01",
+   "mlb_id": "682619",
+   "franchise_key": "TOR",
+   "signing_year": 2018,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Orelvis Martinez",
+    "api_birth_date": "2001-11-19",
+    "api_mlb_debut": "2024-06-21",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2024": 3
+    },
+    "pitching": {}
+   },
+   "capture_rows": 1,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2024
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "0.00",
+    "pitch": null,
+    "raw": "0.00",
+    "one_decimal": "0.0",
+    "as_of": "2026-09-11",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2024,
+      "team": "TOR",
+      "stint": 1,
+      "war": "0.00",
+      "games": 1
+     }
+    ]
+   }
+  },
+  {
+   "slug": "osleivis-basabe",
+   "full_name": "Osleivis Basabe",
+   "bref_id": "basabos01",
+   "mlb_id": "678545",
+   "franchise_key": "TEX",
+   "signing_year": 2017,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (143 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Osleivis Basabe",
+    "api_birth_date": "2000-09-13",
+    "api_mlb_debut": "2023-08-13",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2023": 94,
+     "2026": 143
+    },
+    "pitching": {}
+   },
+   "capture_rows": 2,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2023,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "rafael-marchan",
+   "full_name": "Rafael Marchán",
+   "bref_id": "marchra01",
+   "mlb_id": "665561",
+   "franchise_key": "PHI",
+   "signing_year": 2015,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (95 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Rafael Marchán",
+    "api_birth_date": "1999-02-25",
+    "api_mlb_debut": "2020-09-14",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2020": 9,
+     "2021": 56,
+     "2024": 56,
+     "2025": 118,
+     "2026": 95
+    },
+    "pitching": {}
+   },
+   "capture_rows": 5,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2020,
+     2021,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 4
+  },
+  {
+   "slug": "randy-arozarena",
+   "full_name": "Randy Arozarena",
+   "bref_id": "arozara01",
+   "mlb_id": "668227",
+   "franchise_key": "STL",
+   "signing_year": 2016,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (670 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Randy Arozarena",
+    "api_birth_date": "1995-02-28",
+    "api_mlb_debut": "2019-08-14",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2019": 23,
+     "2020": 76,
+     "2021": 604,
+     "2022": 645,
+     "2023": 654,
+     "2024": 648,
+     "2025": 709,
+     "2026": 670
+    },
+    "pitching": {}
+   },
+   "capture_rows": 9,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "ronald-bolanos",
+   "full_name": "Ronald Bolaños",
+   "bref_id": "bolanro01",
+   "mlb_id": "671790",
+   "franchise_key": "SD",
+   "signing_year": 2016,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Ronald Bolaños",
+    "api_birth_date": "1996-08-23",
+    "api_mlb_debut": "2019-09-03",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2019": 5,
+     "2022": 0
+    },
+    "pitching": {
+     "2019": 5,
+     "2020": 2,
+     "2021": 3,
+     "2022": 8
+    }
+   },
+   "capture_rows": 8,
+   "capture_null_war_rows": 2,
+   "capture_seasons": {
+    "BAT": [
+     2019,
+     2020,
+     2021,
+     2022
+    ],
+    "PITCH": [
+     2019,
+     2020,
+     2021,
+     2022
+    ]
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "-0.07",
+    "pitch": "-0.03",
+    "raw": "-0.10",
+    "one_decimal": "-0.1",
+    "as_of": "2026-09-11 (BAT) / 2026-02-10 (PITCH, ends with 2025)",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2019,
+      "team": "SDP",
+      "stint": 1,
+      "war": "-0.07",
+      "games": 5
+     },
+     {
+      "component": "BAT",
+      "season": 2020,
+      "team": "KCR",
+      "stint": 1,
+      "war": null,
+      "games": 0
+     },
+     {
+      "component": "BAT",
+      "season": 2021,
+      "team": "KCR",
+      "stint": 1,
+      "war": null,
+      "games": 0
+     },
+     {
+      "component": "BAT",
+      "season": 2022,
+      "team": "KCR",
+      "stint": 1,
+      "war": "0.00",
+      "games": 1
+     },
+     {
+      "component": "PITCH",
+      "season": 2019,
+      "team": "SDP",
+      "stint": 1,
+      "war": "-0.03",
+      "games": 5
+     },
+     {
+      "component": "PITCH",
+      "season": 2020,
+      "team": "KCR",
+      "stint": 1,
+      "war": "-0.37",
+      "games": 2
+     },
+     {
+      "component": "PITCH",
+      "season": 2021,
+      "team": "KCR",
+      "stint": 1,
+      "war": "0.16",
+      "games": 3
+     },
+     {
+      "component": "PITCH",
+      "season": 2022,
+      "team": "KCR",
+      "stint": 1,
+      "war": "0.21",
+      "games": 8
+     }
+    ]
+   }
+  },
+  {
+   "slug": "ronny-mauricio",
+   "full_name": "Ronny Mauricio",
+   "bref_id": "mauriro01",
+   "mlb_id": "677595",
+   "franchise_key": "NYM",
+   "signing_year": 2017,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (62 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Ronny Mauricio",
+    "api_birth_date": "2001-04-04",
+    "api_mlb_debut": "2023-09-01",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2023": 108,
+     "2025": 184,
+     "2026": 62
+    },
+    "pitching": {}
+   },
+   "capture_rows": 3,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2023,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0
+  },
+  {
+   "slug": "simon-muzziotti",
+   "full_name": "Símon Muzziotti",
+   "bref_id": "muzzisi01",
+   "mlb_id": "665922",
+   "franchise_key": "BOS",
+   "signing_year": 2015,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Símon Muzziotti",
+    "api_birth_date": "1998-12-27",
+    "api_mlb_debut": "2022-04-11",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2022": 9
+    },
+    "pitching": {}
+   },
+   "capture_rows": 1,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2022
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 1,
+   "evidence_value": {
+    "bat": "-0.05",
+    "pitch": null,
+    "raw": "-0.05",
+    "one_decimal": "-0.1",
+    "as_of": "2026-09-11",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2022,
+      "team": "PHI",
+      "stint": 1,
+      "war": "-0.05",
+      "games": 9
+     }
+    ]
+   }
+  },
+  {
+   "slug": "vladimir-guerrero-jr",
+   "full_name": "Vladimir Guerrero Jr.",
+   "bref_id": "guerrvl02",
+   "mlb_id": "665489",
+   "franchise_key": "TOR",
+   "signing_year": 2015,
+   "class": "NOT_CURRENTLY_ASSESSABLE",
+   "reason": "no reachable numeric source holds the current career: MLB hitting 2026 (609 PA): the batting capture (2026-09-11) is mid-season",
+   "identity": {
+    "api_full_name": "Vladimir Guerrero Jr.",
+    "api_birth_date": "1999-03-16",
+    "api_mlb_debut": "2019-04-26",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2019": 514,
+     "2020": 243,
+     "2021": 698,
+     "2022": 706,
+     "2023": 682,
+     "2024": 697,
+     "2025": 680,
+     "2026": 609
+    },
+    "pitching": {}
+   },
+   "capture_rows": 8,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 7
+  },
+  {
+   "slug": "vladimir-gutierrez",
+   "full_name": "Vladimir Gutierrez",
+   "bref_id": "gutievl01",
+   "mlb_id": "661269",
+   "franchise_key": "CIN",
+   "signing_year": 2016,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Vladimir Gutierrez",
+    "api_birth_date": "1995-09-18",
+    "api_mlb_debut": "2021-05-28",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2021": 42
+    },
+    "pitching": {
+     "2021": 22,
+     "2022": 10,
+     "2024": 1
+    }
+   },
+   "capture_rows": 6,
+   "capture_null_war_rows": 2,
+   "capture_seasons": {
+    "BAT": [
+     2021,
+     2022,
+     2024
+    ],
+    "PITCH": [
+     2021,
+     2022,
+     2024
+    ]
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "-0.13",
+    "pitch": "1.11",
+    "raw": "0.98",
+    "one_decimal": "1.0",
+    "as_of": "2026-09-11 (BAT) / 2026-02-10 (PITCH, ends with 2025)",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2021,
+      "team": "CIN",
+      "stint": 1,
+      "war": "-0.13",
+      "games": 21
+     },
+     {
+      "component": "BAT",
+      "season": 2022,
+      "team": "CIN",
+      "stint": 1,
+      "war": null,
+      "games": 0
+     },
+     {
+      "component": "BAT",
+      "season": 2024,
+      "team": "MIA",
+      "stint": 1,
+      "war": null,
+      "games": 0
+     },
+     {
+      "component": "PITCH",
+      "season": 2021,
+      "team": "CIN",
+      "stint": 1,
+      "war": "1.76",
+      "games": 22
+     },
+     {
+      "component": "PITCH",
+      "season": 2022,
+      "team": "CIN",
+      "stint": 1,
+      "war": "-0.58",
+      "games": 10
+     },
+     {
+      "component": "PITCH",
+      "season": 2024,
+      "team": "MIA",
+      "stint": 1,
+      "war": "-0.07",
+      "games": 1
+     }
+    ]
+   }
+  },
+  {
+   "slug": "wander-franco",
+   "full_name": "Wander Franco",
+   "bref_id": "francwa01",
+   "mlb_id": "677551",
+   "franchise_key": "TB",
+   "signing_year": 2017,
+   "class": "SOURCE_BLOCKED",
+   "reason": "the complete career is in the archived captures, but the CAREER_BWAR provider rule (017) accepts only a baseball-reference.com source URL: the capture sources cite web.archive.org, and the accepted live-file rows (pinned 2026-09-28 bytes) were not read, so citing them would be false provenance",
+   "identity": {
+    "api_full_name": "Wander Franco",
+    "api_birth_date": "2001-03-01",
+    "api_mlb_debut": "2021-06-22",
+    "checks_failed": [],
+    "notes": []
+   },
+   "mlb_seasons": {
+    "hitting": {
+     "2021": 308,
+     "2022": 344,
+     "2023": 491
+    },
+    "pitching": {}
+   },
+   "capture_rows": 3,
+   "capture_null_war_rows": 0,
+   "capture_seasons": {
+    "BAT": [
+     2021,
+     2022,
+     2023
+    ],
+    "PITCH": []
+   },
+   "disi_team_season_rows": 0,
+   "evidence_value": {
+    "bat": "11.25",
+    "pitch": null,
+    "raw": "11.25",
+    "one_decimal": "11.3",
+    "as_of": "2026-09-11",
+    "rows": [
+     {
+      "component": "BAT",
+      "season": 2021,
+      "team": "TBR",
+      "stint": 1,
+      "war": "3.45",
+      "games": 70
+     },
+     {
+      "component": "BAT",
+      "season": 2022,
+      "team": "TBR",
+      "stint": 1,
+      "war": "2.44",
+      "games": 83
+     },
+     {
+      "component": "BAT",
+      "season": 2023,
+      "team": "TBR",
+      "stint": 1,
+      "war": "5.36",
+      "games": 112
+     }
+    ]
+   }
+  }
+ ]
+}

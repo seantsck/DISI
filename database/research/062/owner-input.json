@@ -1,0 +1,211 @@
+{
+ "note": "OWNER-OBSERVED INPUT for Migration 062. The DISI owner manually read the current career WAR shown on each player's Baseball-Reference player page and supplied the 39 values below to DISI on 2026-11-06, as the owner's own observation. DISI and no automated process read those pages: the live site answers HTTP 403 to automated requests (062 audit, source-capture.json). The values are recorded exactly as supplied (one decimal, signs kept, 0.0 a known value). They supersede the archived partial-season values of the first 062 audit for the purposes of 062.",
+ "input_kind": "OWNER_OBSERVED_BASEBALL_REFERENCE_PLAYER_PAGE",
+ "supplied_on": "2026-11-06",
+ "observed_on": "2026-11-06",
+ "observed_on_note": "The owner supplied the values on 2026-11-06 as a current observation; no time of day was given, so accessed_at is stored as 2026-11-06 00:00:00 UTC and the notes say so.",
+ "metric_key": "CAREER_BWAR",
+ "meaning": "CAREER_TO_DATE_AS_OF: the current career WAR shown on the player page, after the 2026 regular season",
+ "observed_through_date": "2026-11-06",
+ "observed_through_season": 2026,
+ "confidence": "UNVERIFIED",
+ "confidence_rule": "The 060 convention for owner-supplied input: DISI did not read or corroborate the external page, so the observation is not marked VERIFIED. The provenance is the owner's observation of the named page.",
+ "url_rule": "https://www.baseball-reference.com/players/<first letter of the bref id>/<bref id>.shtml, from the bref_id the 062 audit verified (the 017 provider rule already accepts it)",
+ "rows": [
+  {
+   "name": "Enmanuel De Jesus",
+   "bref_id": "dejesen01",
+   "career_bwar": "0.0"
+  },
+  {
+   "name": "Vladimir Guerrero Jr.",
+   "bref_id": "guerrvl02",
+   "career_bwar": "26.9"
+  },
+  {
+   "name": "Gilberto Celestino",
+   "bref_id": "celesgi01",
+   "career_bwar": "0.3"
+  },
+  {
+   "name": "Cristian Pache",
+   "bref_id": "pachecr01",
+   "career_bwar": "-1.4"
+  },
+  {
+   "name": "Andrés Giménez",
+   "bref_id": "gimenan01",
+   "career_bwar": "20.5"
+  },
+  {
+   "name": "Leody Taveras",
+   "bref_id": "taverle01",
+   "career_bwar": "4.7"
+  },
+  {
+   "name": "Juan Soto",
+   "bref_id": "sotoju01",
+   "career_bwar": "45.6"
+  },
+  {
+   "name": "Miguel Amaya",
+   "bref_id": "amayami01",
+   "career_bwar": "4.7"
+  },
+  {
+   "name": "Simón Muzziotti",
+   "bref_id": "muzzisi01",
+   "career_bwar": "-0.1"
+  },
+  {
+   "name": "Fernando Tatis Jr.",
+   "bref_id": "tatisfe02",
+   "career_bwar": "31.7"
+  },
+  {
+   "name": "Rafael Marchán",
+   "bref_id": "marchra01",
+   "career_bwar": "0.7"
+  },
+  {
+   "name": "Adael Amador",
+   "bref_id": "amadoad01",
+   "career_bwar": "0.7"
+  },
+  {
+   "name": "Adrián Morejón",
+   "bref_id": "morejad01",
+   "career_bwar": "-1.1"
+  },
+  {
+   "name": "Andry Lara",
+   "bref_id": "laraan01",
+   "career_bwar": "-0.4"
+  },
+  {
+   "name": "Cionel Pérez",
+   "bref_id": "perezci01",
+   "career_bwar": "0.9"
+  },
+  {
+   "name": "Everson Pereira",
+   "bref_id": "pereiev01",
+   "career_bwar": "-0.9"
+  },
+  {
+   "name": "Francisco Álvarez",
+   "bref_id": "alvarfr01",
+   "career_bwar": "4.1"
+  },
+  {
+   "name": "Francisco Morales",
+   "bref_id": "moralfr02",
+   "career_bwar": "-0.1"
+  },
+  {
+   "name": "Gabriel Arias",
+   "bref_id": "ariasga01",
+   "career_bwar": "1.0"
+  },
+  {
+   "name": "George Valera",
+   "bref_id": "valerge01",
+   "career_bwar": "-0.3"
+  },
+  {
+   "name": "Jasson Domínguez",
+   "bref_id": "dominja01",
+   "career_bwar": "0.5"
+  },
+  {
+   "name": "Jorge Oña",
+   "bref_id": "onajo01",
+   "career_bwar": "0.2"
+  },
+  {
+   "name": "Julio Rodríguez",
+   "bref_id": "rodriju01",
+   "career_bwar": "25.4"
+  },
+  {
+   "name": "Kevin Alcántara",
+   "bref_id": "alcanke01",
+   "career_bwar": "-0.3"
+  },
+  {
+   "name": "Lourdes Gurriel Jr.",
+   "bref_id": "gurrilo01",
+   "career_bwar": "12.5"
+  },
+  {
+   "name": "Luis García Jr.",
+   "bref_id": "garcilu04",
+   "career_bwar": "6.1"
+  },
+  {
+   "name": "Luis Matos",
+   "bref_id": "matoslu02",
+   "career_bwar": "-0.9"
+  },
+  {
+   "name": "Luis Robert Jr.",
+   "bref_id": "roberlu01",
+   "career_bwar": "16.7"
+  },
+  {
+   "name": "Marco Luciano",
+   "bref_id": "luciama01",
+   "career_bwar": "-0.3"
+  },
+  {
+   "name": "Máximo Acosta",
+   "bref_id": "acostma02",
+   "career_bwar": "0.0"
+  },
+  {
+   "name": "Noelvi Marte",
+   "bref_id": "marteno01",
+   "career_bwar": "-1.0"
+  },
+  {
+   "name": "Norge Ruiz",
+   "bref_id": "ruizno01",
+   "career_bwar": "-0.4"
+  },
+  {
+   "name": "Orelvis Martínez",
+   "bref_id": "martior01",
+   "career_bwar": "0.0"
+  },
+  {
+   "name": "Osleivis Basabe",
+   "bref_id": "basabos01",
+   "career_bwar": "-0.1"
+  },
+  {
+   "name": "Randy Arozarena",
+   "bref_id": "arozara01",
+   "career_bwar": "22.6"
+  },
+  {
+   "name": "Ronald Bolaños",
+   "bref_id": "bolanro01",
+   "career_bwar": "-0.1"
+  },
+  {
+   "name": "Ronny Mauricio",
+   "bref_id": "mauriro01",
+   "career_bwar": "0.9"
+  },
+  {
+   "name": "Vladimir Gutiérrez",
+   "bref_id": "gutievl01",
+   "career_bwar": "1.0"
+  },
+  {
+   "name": "Wander Franco",
+   "bref_id": "francwa01",
+   "career_bwar": "11.3"
+  }
+ ]
+}

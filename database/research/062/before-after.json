@@ -1,0 +1,612 @@
+{
+ "note": "Measured on the canonical replay (001-061) with 062 applied once. The replay is one snapshot generation behind production (15 against 16); every logical value is the same.",
+ "headline": {
+  "career_bwar_observations": [
+   58,
+   90
+  ],
+  "bwar_missing": [
+   39,
+   7
+  ],
+  "cost_counts": [
+   {
+    "signings": 220,
+    "known": 81,
+    "unknown": 139,
+    "known_usd": "127632237.33",
+    "zero_bonuses": 1,
+    "zero_costs": 1
+   },
+   {
+    "signings": 220,
+    "known": 81,
+    "unknown": 139,
+    "known_usd": "127632237.33",
+    "zero_bonuses": 1,
+    "zero_costs": 1
+   }
+  ],
+  "snapshots": [
+   {
+    "generation": 15,
+    "drifting": 0
+   },
+   {
+    "generation": 15,
+    "drifting": 0
+   }
+  ],
+  "unchanged": {
+   "cost_counts": true,
+   "research_task_types": false,
+   "prediction": true,
+   "value_totals": true,
+   "transaction_queue": true,
+   "value_queue": true
+  }
+ },
+ "research_task_types": [
+  [
+   {
+    "task_type": "ACQUISITION_COST_UNKNOWN",
+    "items": 270
+   },
+   {
+    "task_type": "BWAR_MISSING",
+    "items": 39
+   },
+   {
+    "task_type": "CLASS_MEMBERS_MISSING",
+    "items": 3
+   },
+   {
+    "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+    "items": 3
+   },
+   {
+    "task_type": "MARKET_MISSING",
+    "items": 36
+   },
+   {
+    "task_type": "OUTCOME_AUDIT",
+    "items": 130
+   },
+   {
+    "task_type": "SIGNING_DATE_MISSING",
+    "items": 71
+   }
+  ],
+  [
+   {
+    "task_type": "ACQUISITION_COST_UNKNOWN",
+    "items": 270
+   },
+   {
+    "task_type": "BWAR_MISSING",
+    "items": 7
+   },
+   {
+    "task_type": "CLASS_MEMBERS_MISSING",
+    "items": 3
+   },
+   {
+    "task_type": "CLASS_SIZE_SOURCE_NOT_OFFICIAL",
+    "items": 3
+   },
+   {
+    "task_type": "MARKET_MISSING",
+    "items": 36
+   },
+   {
+    "task_type": "OUTCOME_AUDIT",
+    "items": 130
+   },
+   {
+    "task_type": "SIGNING_DATE_MISSING",
+    "items": 71
+   }
+  ]
+ ],
+ "provider_rule": [
+  {
+   "bwar_requires_baseball_reference_url": true,
+   "prosrc_md5": "0d64de295247da3bababfe71af444054",
+   "prosecdef": false,
+   "proconfig": "{\"search_path=\\\"\\\"\"}",
+   "triggers": 1
+  },
+  {
+   "bwar_requires_baseball_reference_url": true,
+   "prosrc_md5": "0d64de295247da3bababfe71af444054",
+   "prosecdef": false,
+   "proconfig": "{\"search_path=\\\"\\\"\"}",
+   "triggers": 1
+  }
+ ],
+ "bwar_missing_left": [
+  "adael-amador",
+  "adrian-morejon",
+  "andry-lara",
+  "cionel-perez",
+  "cristian-pache",
+  "everson-pereira",
+  "francisco-alvarez",
+  "francisco-morales",
+  "gabriel-arias",
+  "george-valera",
+  "gilberto-celestino",
+  "jasson-dominguez",
+  "jorge-ona",
+  "julio-rodriguez",
+  "kevin-alcantara",
+  "leody-taveras",
+  "lourdes-gurriel-jr",
+  "luis-garcia-jr",
+  "luis-matos",
+  "luis-robert-jr",
+  "marco-luciano",
+  "maximo-acosta",
+  "noelvi-marte",
+  "norge-ruiz",
+  "orelvis-martinez",
+  "osleivis-basabe",
+  "randy-arozarena",
+  "ronald-bolanos",
+  "ronny-mauricio",
+  "simon-muzziotti",
+  "vladimir-gutierrez",
+  "wander-franco"
+ ],
+ "bwar_missing_remaining": [
+  "andres-gimenez",
+  "emmanuel-dejesus",
+  "fernando-tatis-jr",
+  "juan-soto",
+  "miguel-amaya",
+  "rafael-marchan",
+  "vladimir-guerrero-jr"
+ ],
+ "written": [
+  {
+   "slug": "adael-amador",
+   "bref_id": "amadoad01",
+   "mlb_id": "691182",
+   "value": "0.700",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/a/amadoad01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "adrian-morejon",
+   "bref_id": "morejad01",
+   "mlb_id": "670970",
+   "value": "-1.100",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/m/morejad01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "andry-lara",
+   "bref_id": "laraan01",
+   "mlb_id": "691251",
+   "value": "-0.400",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/l/laraan01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "cionel-perez",
+   "bref_id": "perezci01",
+   "mlb_id": "672335",
+   "value": "0.900",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/p/perezci01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "cristian-pache",
+   "bref_id": "pachecr01",
+   "mlb_id": "665506",
+   "value": "-1.400",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/p/pachecr01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "everson-pereira",
+   "bref_id": "pereiev01",
+   "mlb_id": "677592",
+   "value": "-0.900",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/p/pereiev01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "francisco-alvarez",
+   "bref_id": "alvarfr01",
+   "mlb_id": "682626",
+   "value": "4.100",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/a/alvarfr01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "francisco-morales",
+   "bref_id": "moralfr02",
+   "mlb_id": "672839",
+   "value": "-0.100",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/m/moralfr02.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "gabriel-arias",
+   "bref_id": "ariasga01",
+   "mlb_id": "672356",
+   "value": "1.000",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/a/ariasga01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "george-valera",
+   "bref_id": "valerge01",
+   "mlb_id": "671655",
+   "value": "-0.300",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/v/valerge01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "gilberto-celestino",
+   "bref_id": "celesgi01",
+   "mlb_id": "665482",
+   "value": "0.300",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/c/celesgi01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "jasson-dominguez",
+   "bref_id": "dominja01",
+   "mlb_id": "691176",
+   "value": "0.500",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/d/dominja01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "jorge-ona",
+   "bref_id": "onajo01",
+   "mlb_id": "671250",
+   "value": "0.200",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/o/onajo01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "julio-rodriguez",
+   "bref_id": "rodriju01",
+   "mlb_id": "677594",
+   "value": "25.400",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/r/rodriju01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "kevin-alcantara",
+   "bref_id": "alcanke01",
+   "mlb_id": "682634",
+   "value": "-0.300",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/a/alcanke01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "leody-taveras",
+   "bref_id": "taverle01",
+   "mlb_id": "665750",
+   "value": "4.700",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/t/taverle01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "lourdes-gurriel-jr",
+   "bref_id": "gurrilo01",
+   "mlb_id": "666971",
+   "value": "12.500",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/g/gurrilo01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "luis-garcia-jr",
+   "bref_id": "garcilu04",
+   "mlb_id": "671277",
+   "value": "6.100",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/g/garcilu04.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "luis-matos",
+   "bref_id": "matoslu02",
+   "mlb_id": "682641",
+   "value": "-0.900",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/m/matoslu02.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "luis-robert-jr",
+   "bref_id": "roberlu01",
+   "mlb_id": "673357",
+   "value": "16.700",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/r/roberlu01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "marco-luciano",
+   "bref_id": "luciama01",
+   "mlb_id": "682617",
+   "value": "-0.300",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/l/luciama01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "maximo-acosta",
+   "bref_id": "acostma02",
+   "mlb_id": "691185",
+   "value": "0.000",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/a/acostma02.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "noelvi-marte",
+   "bref_id": "marteno01",
+   "mlb_id": "682622",
+   "value": "-1.000",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/m/marteno01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "norge-ruiz",
+   "bref_id": "ruizno01",
+   "mlb_id": "650204",
+   "value": "-0.400",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/r/ruizno01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "orelvis-martinez",
+   "bref_id": "martior01",
+   "mlb_id": "682619",
+   "value": "0.000",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/m/martior01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "osleivis-basabe",
+   "bref_id": "basabos01",
+   "mlb_id": "678545",
+   "value": "-0.100",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/b/basabos01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "randy-arozarena",
+   "bref_id": "arozara01",
+   "mlb_id": "668227",
+   "value": "22.600",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/a/arozara01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "ronald-bolanos",
+   "bref_id": "bolanro01",
+   "mlb_id": "671790",
+   "value": "-0.100",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/b/bolanro01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "ronny-mauricio",
+   "bref_id": "mauriro01",
+   "mlb_id": "677595",
+   "value": "0.900",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/m/mauriro01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "simon-muzziotti",
+   "bref_id": "muzzisi01",
+   "mlb_id": "665922",
+   "value": "-0.100",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/m/muzzisi01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "vladimir-gutierrez",
+   "bref_id": "gutievl01",
+   "mlb_id": "661269",
+   "value": "1.000",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/g/gutievl01.shtml",
+   "confidence": "UNVERIFIED"
+  },
+  {
+   "slug": "wander-franco",
+   "bref_id": "francwa01",
+   "mlb_id": "677551",
+   "value": "11.300",
+   "observed_through_date": "2026-11-06",
+   "observed_through_season": 2026,
+   "source_url": "https://www.baseball-reference.com/players/f/francwa01.shtml",
+   "confidence": "UNVERIFIED"
+  }
+ ],
+ "remaining_without_observation": true,
+ "war_sources": [
+  [
+   {
+    "url": "https://web.archive.org/web/20260210222101id_/https://www.baseball-reference.com/data/war_daily_pitch.txt",
+    "source_type": "WAR_DATA_FILE",
+    "source_tier": "BASEBALL_REFERENCE",
+    "accessed_at": "2026-10-28 03:22:08+00",
+    "publication_date": "2025-11-04",
+    "accepted_for_career_bwar": false,
+    "team_season_rows": 33,
+    "metric_rows": 0
+   },
+   {
+    "url": "https://web.archive.org/web/20260911214553id_/https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "source_type": "WAR_DATA_FILE",
+    "source_tier": "BASEBALL_REFERENCE",
+    "accessed_at": "2026-10-28 03:21:59+00",
+    "publication_date": "2026-09-11",
+    "accepted_for_career_bwar": false,
+    "team_season_rows": 112,
+    "metric_rows": 0
+   },
+   {
+    "url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "source_type": "WAR_DATA_FILE",
+    "source_tier": "BASEBALL_REFERENCE",
+    "accessed_at": "2026-10-05 21:22:01.003+00",
+    "publication_date": null,
+    "accepted_for_career_bwar": true,
+    "team_season_rows": 1271,
+    "metric_rows": 14
+   },
+   {
+    "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt",
+    "source_type": "WAR_DATA_FILE",
+    "source_tier": "BASEBALL_REFERENCE",
+    "accessed_at": "2026-10-05 21:22:01.003+00",
+    "publication_date": null,
+    "accepted_for_career_bwar": true,
+    "team_season_rows": 609,
+    "metric_rows": 0
+   }
+  ],
+  [
+   {
+    "url": "https://web.archive.org/web/20260210222101id_/https://www.baseball-reference.com/data/war_daily_pitch.txt",
+    "source_type": "WAR_DATA_FILE",
+    "source_tier": "BASEBALL_REFERENCE",
+    "accessed_at": "2026-10-28 03:22:08+00",
+    "publication_date": "2025-11-04",
+    "accepted_for_career_bwar": false,
+    "team_season_rows": 33,
+    "metric_rows": 0
+   },
+   {
+    "url": "https://web.archive.org/web/20260911214553id_/https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "source_type": "WAR_DATA_FILE",
+    "source_tier": "BASEBALL_REFERENCE",
+    "accessed_at": "2026-10-28 03:21:59+00",
+    "publication_date": "2026-09-11",
+    "accepted_for_career_bwar": false,
+    "team_season_rows": 112,
+    "metric_rows": 0
+   },
+   {
+    "url": "https://www.baseball-reference.com/data/war_daily_bat.txt",
+    "source_type": "WAR_DATA_FILE",
+    "source_tier": "BASEBALL_REFERENCE",
+    "accessed_at": "2026-10-05 21:22:01.003+00",
+    "publication_date": null,
+    "accepted_for_career_bwar": true,
+    "team_season_rows": 1271,
+    "metric_rows": 14
+   },
+   {
+    "url": "https://www.baseball-reference.com/data/war_daily_pitch.txt",
+    "source_type": "WAR_DATA_FILE",
+    "source_tier": "BASEBALL_REFERENCE",
+    "accessed_at": "2026-10-05 21:22:01.003+00",
+    "publication_date": null,
+    "accepted_for_career_bwar": true,
+    "team_season_rows": 609,
+    "metric_rows": 0
+   }
+  ]
+ ],
+ "team_season_war_unchanged": true,
+ "fingerprints_held": {
+  "metric_observations": false,
+  "team_season_war": true,
+  "outcomes": true,
+  "players": true,
+  "signings": true
+ },
+ "isolation_061_unchanged": {
+  "counts": false,
+  "fingerprints": false,
+  "queues": [
+   51,
+   51,
+   79,
+   79
+  ]
+ },
+ "isolation_060_unchanged": {
+  "ledger": true,
+  "resolutions": true,
+  "fingerprints": true,
+  "hashes": {
+   "dodgers_signings_hash": true,
+   "dodgers_audits_hash": true,
+   "war_hash": true,
+   "financial_reports_hash": true,
+   "transactions_hash": true,
+   "development_hash": true,
+   "benchmark_signings_hash": true
+  },
+  "executive_overview_body_md5": true
+ }
+}
