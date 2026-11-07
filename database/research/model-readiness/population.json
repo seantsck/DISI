@@ -1,0 +1,342 @@
+{
+  "analysis_as_of_date": "2026-10-05",
+  "last_complete_season": 2026,
+  "export_sha256": "1ff4da597b3e959c3a88fa771bc193809355f5925b0254f1d90d3f76e46ccdaa",
+  "pooling": "Dodgers and benchmark are reported separately. The architecture never pools them for support (v_outcome_target_support); it pools them only inside the out-of-time model comparison (outcome_model_evaluations), and predictions are made only for the Dodgers tracked / opening-class population.",
+  "maturity_rules": {
+    "outcome_maturity": "v_player_realized_outcome.outcome_maturity: Dodgers signing_date + 5 years <= analysis date (signing year + 5 when undated); benchmark signing year + 5.",
+    "target_horizon": "v_outcome_training_population.exposure_complete: signing_year + horizon_seasons <= last complete MLB season (2026). A row is CENSORED (never negative) before that.",
+    "final_outcome": "An outcome is final when outcome_state is REACHED_MLB or NO_MLB_CAREER_ENDED. NO_MLB_ACTIVE_IN_MINORS and NO_MLB_STATUS_UNKNOWN are audited but not final; UNAUDITED has no audit."
+  },
+  "groups": {
+    "DODGERS": {
+      "total_signings": 220,
+      "signing_years": {
+        "min": 1951,
+        "max": 2026,
+        "by_year": {
+          "1951": 2,
+          "1954": 1,
+          "1979": 1,
+          "1984": 1,
+          "1985": 1,
+          "1986": 2,
+          "1987": 1,
+          "1988": 2,
+          "1990": 1,
+          "1991": 4,
+          "1992": 1,
+          "1994": 2,
+          "1995": 1,
+          "1999": 1,
+          "2000": 1,
+          "2002": 2,
+          "2003": 2,
+          "2004": 2,
+          "2007": 4,
+          "2012": 7,
+          "2013": 5,
+          "2014": 1,
+          "2015": 12,
+          "2016": 1,
+          "2017": 4,
+          "2018": 10,
+          "2019": 4,
+          "2021": 22,
+          "2022": 56,
+          "2023": 13,
+          "2024": 19,
+          "2025": 29,
+          "2026": 5
+        }
+      },
+      "population_class": {
+        "OPENING_CLASS_CENSUS": 35,
+        "OUTCOME_SELECTED_SAMPLE": 49,
+        "TRACKED_SAMPLE": 136
+      },
+      "signing_route": {
+        "AMATEUR_OR_UNCLASSIFIED_SIGNING": 212,
+        "PROFESSIONAL_SIGNING": 8
+      },
+      "model_scope_n": 168,
+      "model_scope_by_year": {
+        "2015": 11,
+        "2018": 10,
+        "2019": 4,
+        "2021": 22,
+        "2022": 56,
+        "2023": 13,
+        "2024": 19,
+        "2025": 28,
+        "2026": 5
+      },
+      "outcome_maturity": {
+        "MATURE": 98,
+        "NOT_MATURE": 122
+      },
+      "outcome_maturity_in_model_scope": {
+        "MATURE": 47,
+        "NOT_MATURE": 121
+      },
+      "outcome_state": {
+        "NO_MLB_ACTIVE_IN_MINORS": 4,
+        "NO_MLB_CAREER_ENDED": 41,
+        "NO_MLB_STATUS_UNKNOWN": 1,
+        "REACHED_MLB": 47,
+        "UNAUDITED": 127
+      },
+      "outcome_state_by_maturity": {
+        "MATURE|NO_MLB_ACTIVE_IN_MINORS": 4,
+        "MATURE|NO_MLB_CAREER_ENDED": 41,
+        "MATURE|NO_MLB_STATUS_UNKNOWN": 1,
+        "MATURE|REACHED_MLB": 45,
+        "MATURE|UNAUDITED": 7,
+        "NOT_MATURE|REACHED_MLB": 2,
+        "NOT_MATURE|UNAUDITED": 120
+      },
+      "reached_mlb": {
+        "true": 47,
+        "false": 46,
+        "unaudited": 127
+      },
+      "unaudited_outcomes": 127,
+      "mature_without_final_outcome": 12,
+      "positive_bwar_labels_in_scope": {
+        "positive": 1,
+        "non_positive": 10,
+        "missing_past_horizon": 0,
+        "censored": 157
+      },
+      "model_features_complete": {
+        "all": 158,
+        "model_scope": 138,
+        "feature_gap": {
+          "MARKET_UNKNOWN": 29,
+          "POSITION_AT_SIGNING_UNKNOWN": 1
+        }
+      },
+      "by_target": {
+        "REACH_MLB_WITHIN_7_SEASONS": {
+          "horizon_end_season_rule": "signing_year + 7 <= 2026",
+          "exposure_complete": 76,
+          "training_state": {
+            "CENSORED": 143,
+            "OUT_OF_SCOPE": 52,
+            "TRAINING_ELIGIBLE": 25
+          },
+          "usable_labelled_n": 25,
+          "usable_labelled_n_features_complete": 21,
+          "positives": 2,
+          "negatives": 23,
+          "missing_label_past_horizon": 0,
+          "labels_out_of_scope": {
+            "true": 39,
+            "false": 12
+          }
+        },
+        "POSITIVE_BWAR_WITHIN_10_SEASONS": {
+          "horizon_end_season_rule": "signing_year + 10 <= 2026",
+          "exposure_complete": 58,
+          "training_state": {
+            "CENSORED": 157,
+            "OUT_OF_SCOPE": 52,
+            "TRAINING_ELIGIBLE": 11
+          },
+          "usable_labelled_n": 11,
+          "usable_labelled_n_features_complete": 11,
+          "positives": 1,
+          "negatives": 10,
+          "missing_label_past_horizon": 0,
+          "labels_out_of_scope": {
+            "true": 31,
+            "false": 16
+          }
+        },
+        "BWAR_2_WITHIN_10_SEASONS": {
+          "horizon_end_season_rule": "signing_year + 10 <= 2026",
+          "exposure_complete": 58,
+          "training_state": {
+            "CENSORED": 157,
+            "OUT_OF_SCOPE": 52,
+            "TRAINING_ELIGIBLE": 11
+          },
+          "usable_labelled_n": 11,
+          "usable_labelled_n_features_complete": 11,
+          "positives": 1,
+          "negatives": 10,
+          "missing_label_past_horizon": 0,
+          "labels_out_of_scope": {
+            "true": 27,
+            "false": 20
+          }
+        },
+        "DODGERS_MLB_VALUE_WITHIN_10_SEASONS": {
+          "horizon_end_season_rule": "signing_year + 10 <= 2026",
+          "exposure_complete": 58,
+          "training_state": {
+            "CENSORED": 157,
+            "OUT_OF_SCOPE": 52,
+            "TRAINING_ELIGIBLE": 11
+          },
+          "usable_labelled_n": 11,
+          "usable_labelled_n_features_complete": 11,
+          "positives": 0,
+          "negatives": 11,
+          "missing_label_past_horizon": 0,
+          "labels_out_of_scope": {
+            "true": 27,
+            "false": 20
+          }
+        }
+      }
+    },
+    "BENCHMARK": {
+      "total_signings": 178,
+      "signing_years": {
+        "min": 2013,
+        "max": 2019,
+        "by_year": {
+          "2013": 20,
+          "2014": 28,
+          "2015": 27,
+          "2016": 26,
+          "2017": 28,
+          "2018": 23,
+          "2019": 26
+        }
+      },
+      "population_class": {
+        "TOP_PROSPECT_SAMPLE": 178
+      },
+      "signing_route": {
+        "AMATEUR_OR_UNCLASSIFIED_SIGNING": 169,
+        "PROFESSIONAL_SIGNING": 9
+      },
+      "model_scope_n": 169,
+      "model_scope_by_year": {
+        "2013": 20,
+        "2014": 28,
+        "2015": 27,
+        "2016": 18,
+        "2017": 27,
+        "2018": 23,
+        "2019": 26
+      },
+      "outcome_maturity": {
+        "MATURE": 178
+      },
+      "outcome_maturity_in_model_scope": {
+        "MATURE": 169
+      },
+      "outcome_state": {
+        "NO_MLB_ACTIVE_IN_MINORS": 29,
+        "NO_MLB_STATUS_UNKNOWN": 96,
+        "REACHED_MLB": 50,
+        "UNAUDITED": 3
+      },
+      "outcome_state_by_maturity": {
+        "MATURE|NO_MLB_ACTIVE_IN_MINORS": 29,
+        "MATURE|NO_MLB_STATUS_UNKNOWN": 96,
+        "MATURE|REACHED_MLB": 50,
+        "MATURE|UNAUDITED": 3
+      },
+      "reached_mlb": {
+        "true": 50,
+        "false": 125,
+        "unaudited": 3
+      },
+      "unaudited_outcomes": 3,
+      "mature_without_final_outcome": 128,
+      "positive_bwar_labels_in_scope": {
+        "positive": 15,
+        "non_positive": 71,
+        "missing_past_horizon": 7,
+        "censored": 76
+      },
+      "model_features_complete": {
+        "all": 161,
+        "model_scope": 152,
+        "feature_gap": {
+          "AGE_UNKNOWN": 3,
+          "MARKET_UNKNOWN": 7,
+          "POSITION_AT_SIGNING_UNKNOWN": 7
+        }
+      },
+      "by_target": {
+        "REACH_MLB_WITHIN_7_SEASONS": {
+          "horizon_end_season_rule": "signing_year + 7 <= 2026",
+          "exposure_complete": 178,
+          "training_state": {
+            "BENCHMARK_SAMPLE_ONLY": 166,
+            "OUTCOME_UNAUDITED": 3,
+            "OUT_OF_SCOPE": 9
+          },
+          "usable_labelled_n": 166,
+          "usable_labelled_n_features_complete": 152,
+          "positives": 34,
+          "negatives": 132,
+          "missing_label_past_horizon": 3,
+          "labels_out_of_scope": {
+            "true": 8,
+            "false": 1
+          }
+        },
+        "POSITIVE_BWAR_WITHIN_10_SEASONS": {
+          "horizon_end_season_rule": "signing_year + 10 <= 2026",
+          "exposure_complete": 101,
+          "training_state": {
+            "BENCHMARK_SAMPLE_ONLY": 86,
+            "CENSORED": 76,
+            "OUTCOME_UNAUDITED": 7,
+            "OUT_OF_SCOPE": 9
+          },
+          "usable_labelled_n": 86,
+          "usable_labelled_n_features_complete": 77,
+          "positives": 15,
+          "negatives": 71,
+          "missing_label_past_horizon": 7,
+          "labels_out_of_scope": {
+            "true": 0,
+            "false": 1
+          }
+        },
+        "BWAR_2_WITHIN_10_SEASONS": {
+          "horizon_end_season_rule": "signing_year + 10 <= 2026",
+          "exposure_complete": 101,
+          "training_state": {
+            "BENCHMARK_SAMPLE_ONLY": 86,
+            "CENSORED": 76,
+            "OUTCOME_UNAUDITED": 7,
+            "OUT_OF_SCOPE": 9
+          },
+          "usable_labelled_n": 86,
+          "usable_labelled_n_features_complete": 77,
+          "positives": 9,
+          "negatives": 77,
+          "missing_label_past_horizon": 7,
+          "labels_out_of_scope": {
+            "true": 0,
+            "false": 1
+          }
+        },
+        "DODGERS_MLB_VALUE_WITHIN_10_SEASONS": {
+          "horizon_end_season_rule": "signing_year + 10 <= 2026",
+          "exposure_complete": 101,
+          "training_state": {
+            "OUT_OF_SCOPE": 178
+          },
+          "usable_labelled_n": 0,
+          "usable_labelled_n_features_complete": 0,
+          "positives": 0,
+          "negatives": 0,
+          "missing_label_past_horizon": 0,
+          "labels_out_of_scope": {
+            "true": 0,
+            "false": 0
+          }
+        }
+      }
+    }
+  }
+}
