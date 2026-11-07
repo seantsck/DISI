@@ -1,0 +1,318 @@
+{
+ "disi_total": 220,
+ "earliest": "1951-02-06",
+ "latest": "2025-01-30",
+ "by_year": {
+  "1951": 2,
+  "1954": 1,
+  "1979": 1,
+  "1984": 1,
+  "1985": 1,
+  "1986": 2,
+  "1987": 1,
+  "1988": 2,
+  "1990": 1,
+  "1991": 4,
+  "1992": 1,
+  "1994": 2,
+  "1995": 1,
+  "1999": 1,
+  "2000": 1,
+  "2002": 2,
+  "2003": 2,
+  "2004": 2,
+  "2007": 4,
+  "2012": 7,
+  "2013": 5,
+  "2014": 1,
+  "2015": 12,
+  "2016": 1,
+  "2017": 4,
+  "2018": 10,
+  "2019": 4,
+  "2021": 22,
+  "2022": 56,
+  "2023": 13,
+  "2024": 19,
+  "2025": 29,
+  "2026": 5
+ },
+ "by_period": [
+  {
+   "period": "1950-51",
+   "n": 1
+  },
+  {
+   "period": "1953-54",
+   "n": 1
+  },
+  {
+   "period": "1979-80",
+   "n": 1
+  },
+  {
+   "period": "1984-85",
+   "n": 2
+  },
+  {
+   "period": "1985-86",
+   "n": 1
+  },
+  {
+   "period": "1986-87",
+   "n": 1
+  },
+  {
+   "period": "1987-88",
+   "n": 3
+  },
+  {
+   "period": "1990-91",
+   "n": 5
+  },
+  {
+   "period": "1992-93",
+   "n": 1
+  },
+  {
+   "period": "1993-94",
+   "n": 1
+  },
+  {
+   "period": "1994-95",
+   "n": 2
+  },
+  {
+   "period": "1998-99",
+   "n": 1
+  },
+  {
+   "period": "1999-00",
+   "n": 1
+  },
+  {
+   "period": "2001-02",
+   "n": 1
+  },
+  {
+   "period": "2002-03",
+   "n": 3
+  },
+  {
+   "period": "2004-05",
+   "n": 2
+  },
+  {
+   "period": "2006-07",
+   "n": 2
+  },
+  {
+   "period": "2007-08",
+   "n": 2
+  },
+  {
+   "period": "2011-12",
+   "n": 1
+  },
+  {
+   "period": "2012-13",
+   "n": 6
+  },
+  {
+   "period": "2013-14",
+   "n": 5
+  },
+  {
+   "period": "2014-15",
+   "n": 1
+  },
+  {
+   "period": "2015-16",
+   "n": 13
+  },
+  {
+   "period": "2017-18",
+   "n": 4
+  },
+  {
+   "period": "2018-19",
+   "n": 10
+  },
+  {
+   "period": "2019-20",
+   "n": 4
+  },
+  {
+   "period": "2020-21",
+   "n": 22
+  },
+  {
+   "period": "2022",
+   "n": 56
+  },
+  {
+   "period": "2023",
+   "n": 13
+  },
+  {
+   "period": "2024",
+   "n": 19
+  },
+  {
+   "period": "2025",
+   "n": 29
+  },
+  {
+   "period": "2026",
+   "n": 5
+  },
+  {
+   "period": "pre-2009 (1951)",
+   "n": 1
+  }
+ ],
+ "by_pathway": {
+  "CUBAN_AMATEUR": 4,
+  "CUBAN_PRO": 3,
+  "JAPAN_AMATEUR": 1,
+  "JAPAN_PRO": 1,
+  "KOREA_AMATEUR": 1,
+  "LATAM_AMATEUR": 159,
+  "MEXICAN_LEAGUE_TRANSFER": 2,
+  "OTHER": 47,
+  "POSTED_PLAYER": 2
+ },
+ "by_country": {
+  "Aruba": 1,
+  "Australia": 1,
+  "Colombia": 5,
+  "Cuba": 9,
+  "Curacao": 5,
+  "Dominican Republic": 65,
+  "Japan": 3,
+  "Mexico": 19,
+  "Netherlands": 1,
+  "Nicaragua": 3,
+  "NULL": 29,
+  "Panama": 4,
+  "Puerto Rico": 1,
+  "Russia": 1,
+  "South Korea": 2,
+  "South Sudan": 1,
+  "Spain": 1,
+  "Taiwan": 2,
+  "Uganda": 1,
+  "Venezuela": 66
+ },
+ "by_amateur_or_pro": {
+  "AMATEUR": 165,
+  "FOREIGN_PROFESSIONAL": 8,
+  "OTHER": 47
+ },
+ "by_coverage_type": {
+  "FULL_PERIOD_PARTIAL": 28,
+  "HISTORICAL_VERIFIED_SET": 39,
+  "NULL": 24,
+  "OPENING_CLASS_COMPLETE": 83,
+  "OPENING_CLASS_PARTIAL": 41,
+  "OTHER_DEFINED_POPULATION": 5
+ },
+ "dated": 197,
+ "undated": 23,
+ "with_mlbam": 220,
+ "cost_state": {
+  "KNOWN": 81,
+  "UNKNOWN": 139
+ },
+ "zero_years_in_range": [
+  1952,
+  1953,
+  1955,
+  1956,
+  1957,
+  1958,
+  1959,
+  1960,
+  1961,
+  1962,
+  1963,
+  1964,
+  1965,
+  1966,
+  1967,
+  1968,
+  1969,
+  1970,
+  1971,
+  1972,
+  1973,
+  1974,
+  1975,
+  1976,
+  1977,
+  1978,
+  1980,
+  1981,
+  1982,
+  1983,
+  1989,
+  1993,
+  1996,
+  1997,
+  1998,
+  2001,
+  2005,
+  2006,
+  2008,
+  2009,
+  2010,
+  2011,
+  2020
+ ],
+ "external_in_scope_2009_2026": 576,
+ "by_route": {
+  "FOREIGN_PROFESSIONAL": 18,
+  "INTERNATIONAL_AMATEUR": 549,
+  "MEXICAN_LEAGUE_TRANSFER": 9
+ },
+ "status_counts": {
+  "DISI_EXTRA": 32,
+  "IDENTITY_AMBIGUOUS": 5,
+  "MATCHED": 188,
+  "MISSING_FROM_DISI": 389,
+  "OUT_OF_SCOPE_ROUTE": 9
+ },
+ "gap_class_counts": {
+  "CONFIRMED_MISSING": 332,
+  "HISTORICAL_OUT_OF_WINDOW": 32,
+  "LIST_NAME_WITHOUT_MLB_TRANSACTION": 1,
+  "NONE": 188,
+  "NOT_A_GAP": 9,
+  "PROBABLE_MISSING": 57,
+  "ROUTE_UNRESOLVED": 4
+ },
+ "confirmed_missing": 332,
+ "probable_missing": 57,
+ "authoritative_modern_census_start": "UNKNOWN",
+ "external_in_scope_closed_periods_2009_2025": 532,
+ "census_components": {
+  "disi_pre_2009_historical_rows": 32,
+  "mlb_recorded_in_scope_2009_2026": 576,
+  "of_which_probable_only": 57,
+  "us_born_carried_by_disi": 1,
+  "class_list_names_carried_by_disi_without_mlb_record": 0,
+  "class_list_names_without_mlb_record_not_in_disi": 1,
+  "us_born_route_unresolved_not_in_disi": 4
+ },
+ "CONFIRMED_MINIMUM_CENSUS": {
+  "value": 552,
+  "modern_2009_2026_only": 520,
+  "definition": "DISI pre-2009 historical rows (a verified sample, not a census) + MLB-recorded in-scope Dodgers signings 2009 through 2026-to-date excluding PROBABLE_MISSING + US-born players DISI already carries + class-list names DISI carries without an MLB record."
+ },
+ "ESTIMATED_CENSUS_IF_PROBABLE_INCLUDED": {
+  "value": 614,
+  "modern_2009_2026_only": 582,
+  "definition": "CONFIRMED_MINIMUM_CENSUS + PROBABLE_MISSING + class-list names with no MLB record + US-born route-unresolved players. Still a floor for 2009-10 through 2014-15, where the MLB transaction record is incomplete."
+ },
+ "disi_only_in_window": 0
+}

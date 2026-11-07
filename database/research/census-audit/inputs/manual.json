@@ -1,0 +1,302 @@
+{
+  "_comment": "Hand-entered research inputs for the Dodgers international signing census audit. Every list here is a transcription of a page that was actually read; pages that could not be read are recorded under unreadable_sources with the reason, never guessed.",
+  "accessed": "2026-11-07",
+  "period_rules": {
+    "pre_2019": "July 2 to June 15 periods (label YYYY-YY). Dates June 16 to July 1 are outside any window and are assigned to the period that just closed, flagged OUTSIDE_WINDOW.",
+    "2019-20": "Opened 2019-07-02; extended by MLB (COVID-19) to 2020-10-15.",
+    "2020-21": "Delayed open 2021-01-15, closed 2021-12-15.",
+    "2022+": "January 15 to December 15 periods (label YYYY). Dates December 16 to January 14 are assigned to the next period, flagged PRE_OPEN (this matches the 2025 class, whose seven 2024-12-16 transactions were announced as part of the 29-player 2025 class)."
+  },
+  "official_or_secondary_lists": [
+    {
+      "key": "2017-18-opening",
+      "period": "2017-18",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "stated_count": 26,
+      "official_url": "https://www.mlb.com/news/dodgers-sign-26-international-prospects-c240715336",
+      "official_readable": false,
+      "transcribed_from": "https://dodgerblue.com/2017-18-international-signing-period-dodgers-announce-26-prospects/2017/07/04/amp",
+      "source_type": "SECONDARY_TRANSCRIPTION_OF_CLUB_RELEASE",
+      "note": "The page says the period began July 2 (2017) and runs through June 15, 2018: the 26 is the 2017-18 opening wave, not the completed 2016-17 period.",
+      "names": [
+        "Jenderson Jardines",
+        "Yhostin Chirinos",
+        "Eddys Leonard",
+        "Vladimir Perez",
+        "Amin Valdez",
+        "Randy Rodriguez",
+        "Jesus Valdez",
+        "Jorbit Vivas",
+        "Mayron Cathalina",
+        "Julio Enrique",
+        "Jimmie Feliz",
+        "Gorge Heredia",
+        "Brayan Rodriguez",
+        "Rushenten Tomsjansen",
+        "Imanol Vargas",
+        "Jeffry Abreu",
+        "Axel Acevado",
+        "Jonathan Alvarez",
+        "Andrew Budier",
+        "Jeisson Cabrera",
+        "Darlin Camilo",
+        "Daniel Cruz",
+        "Carlos De Los Santos",
+        "Benony Robles",
+        "Martin Santana",
+        "Jonathan Vasquez"
+      ]
+    },
+    {
+      "key": "2024-opening",
+      "period": "2024",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "stated_count": 19,
+      "official_url": "https://www.mlb.com/press-release/press-release-dodgers-announce-2024-international-signings",
+      "official_readable": false,
+      "transcribed_from": "https://dodgerblue.com/dodgers-sign-19-international-prospects-including-emil-morales/2024/01/16/amp",
+      "source_type": "SECONDARY_TRANSCRIPTION_OF_CLUB_RELEASE",
+      "names": [
+        "Eduardo Rojas",
+        "Euri Rosa",
+        "Francisco Espinoza",
+        "Allan Atoji",
+        "Emil Morales",
+        "Yojackson Laya",
+        "Heudy Pena",
+        "Reyli Mariano",
+        "David Romero",
+        "Rafy Peguero",
+        "Leider Padilla",
+        "Erny Orellana",
+        "Michael Ramirez",
+        "Carlos Sardina",
+        "Angel Ramirez",
+        "Christian Muniz",
+        "Axel Perez",
+        "Alexis Dominguez",
+        "Jose Lopez"
+      ]
+    },
+    {
+      "key": "2025-class",
+      "period": "2025",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "stated_count": 29,
+      "official_url": "https://www.mlb.com/dodgers/press-release/press-release-dodgers-announce-2025-international-signings",
+      "official_readable": false,
+      "transcribed_from": "https://dodgerblue.com/2025-international-signing-period-dodgers-adrian-torres-roki-sasaki-more-prospects/2025/01/28/amp",
+      "source_type": "SECONDARY_TRANSCRIPTION_OF_CLUB_RELEASE",
+      "note": "Includes Roki Sasaki (pool-subject ex-NPB professional). Seven names carry 2024-12-16 MLB transaction dates.",
+      "names": [
+        "Moises Acacio",
+        "Aneudy Almonte",
+        "Ezequiel Aparicio",
+        "Derik Aquino",
+        "Hendry Arvelo",
+        "Devlyn Bautista",
+        "Degerson Diaz",
+        "Luis Gamez",
+        "Jhon Gil",
+        "Bryan Lara",
+        "Andres Luna",
+        "Luis Luna",
+        "Juan Macero",
+        "Ivan Pacheco",
+        "Carlos Ramirez",
+        "Moises Rangel",
+        "Alexis Reyes",
+        "Jose Rivas",
+        "Ricardo Roman",
+        "Shai Romero",
+        "Cesar Sanchez",
+        "Roki Sasaki",
+        "Samuel Savinon",
+        "Jhosman Theran",
+        "Joseph Deng Thon",
+        "Adrian Torres",
+        "Luis Tovar",
+        "Antoni Urena",
+        "Jose Villegas"
+      ]
+    },
+    {
+      "key": "2026-opening",
+      "period": "2026",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "stated_count": 22,
+      "official_url": "https://www.mlb.com/news/los-angeles-dodgers-2026-international-signings",
+      "official_readable": false,
+      "transcribed_from": "https://dodgerblue.com/dodgers-sign-22-international-free-agents-to-open-2026-signing-period/2026/01/16/amp",
+      "source_type": "SECONDARY_TRANSCRIPTION_OF_CLUB_RELEASE",
+      "names": [
+        "Oliver Chapman",
+        "Aaron Guzman",
+        "Haram Hernandez",
+        "Ricardo Pulles",
+        "Roberto Saucedo",
+        "Ezequiel Melburne",
+        "Jose Victorino",
+        "Willy Bergolla",
+        "Adrian Del Cid",
+        "Ariel Reynoso",
+        "Rubel Arias",
+        "Fran-Jean Haseth",
+        "Helvin Mendoza",
+        "Jose Requena",
+        "Jeibert Rondon",
+        "Anderson Carias",
+        "Diego Paez",
+        "Luis Ricart",
+        "Kenry Alvear",
+        "Tom Apfelbaum",
+        "Miguel Herrera",
+        "Victor Tovar"
+      ]
+    }
+  ],
+  "count_anchors": [
+    {
+      "period": "2015-16",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "count": 9,
+      "url": "https://www.mlb.com/news//c-134309538",
+      "readable": false,
+      "source_type": "OFFICIAL_CLUB_NEWS",
+      "note": "Search-result title only: 'Dodgers Sign Nine International Prospects'."
+    },
+    {
+      "period": "2015-16",
+      "scope": "FULL_PERIOD",
+      "count": 42,
+      "url": "https://baseballamerica.com/?p=38132",
+      "readable": false,
+      "source_type": "SECONDARY_ANALYST",
+      "note": "Baseball America international review, total signings 42; seen in search summary only."
+    },
+    {
+      "period": "2016-17",
+      "scope": "FULL_PERIOD",
+      "count": 34,
+      "url": "https://www.baseballamerica.com/?p=40204",
+      "readable": false,
+      "source_type": "SECONDARY_ANALYST",
+      "note": "Baseball America 2016-17 review, seen in search summary only."
+    },
+    {
+      "period": "2017-18",
+      "scope": "FULL_PERIOD",
+      "count": 63,
+      "url": "https://dodgersdigest.com/?p=43798",
+      "readable": false,
+      "source_type": "SECONDARY_ANALYST",
+      "note": "Dodgers Digest citing Baseball America; search summary only."
+    },
+    {
+      "period": "2018-19",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "count": 10,
+      "url": "https://www.mlb.com/news/dodgers-to-sign-catcher-diego-cartaya-c283475518",
+      "readable": false,
+      "source_type": "OFFICIAL_CLUB_NEWS",
+      "note": "Opening-day list only (Cartaya, Rosario, De Jesus plus seven). Page returned 403."
+    },
+    {
+      "period": "2018-19",
+      "scope": "FULL_PERIOD",
+      "count": 46,
+      "url": "https://dodgersdigest.com/2019/06/19/dodgers-sign-46-prospects-during-2018-19-international-signing-period/",
+      "readable": false,
+      "source_type": "SECONDARY_ANALYST",
+      "note": "Headline count; page returned 403. Baseball America review counts 37 for calendar 2018."
+    },
+    {
+      "period": "2019-20",
+      "scope": "FULL_PERIOD",
+      "count": 50,
+      "url": "https://www.mlb.com/news/international-signing-period-roundup-2019-2020",
+      "readable": false,
+      "source_type": "OFFICIAL_LEAGUE_NEWS",
+      "note": "Count as recorded by DISI (signing_census_coverage expected_signings) and the audit brief; page returned 403 to this audit."
+    },
+    {
+      "period": "2020-21",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "count": 22,
+      "url": "https://www.mlb.com/press-release/press-release-dodgers-announce-international-signings",
+      "readable": false,
+      "source_type": "OFFICIAL_CLUB_RELEASE",
+      "note": "Count only; the 22 MLB transactions dated 2021-01-15 reproduce it exactly."
+    },
+    {
+      "period": "2022",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "count": 30,
+      "url": "https://www.mlb.com/press-release/release-dodgers-announce-international-signings-1-16-22",
+      "readable": false,
+      "source_type": "OFFICIAL_CLUB_RELEASE",
+      "note": "Headline 30; DISI migration 018 records that the list carries 31 names."
+    },
+    {
+      "period": "2023",
+      "scope": "OPENING_ANNOUNCEMENT",
+      "count": 13,
+      "url": "https://www.mlb.com/press-release/press-release-dodgers-announce-2023-international-signings",
+      "readable": false,
+      "source_type": "OFFICIAL_CLUB_RELEASE",
+      "note": "Count only; the 13 MLB transactions dated 2023-01-15 reproduce it exactly."
+    }
+  ],
+  "unreadable_sources": [
+    {
+      "url": "https://www.mlb.com/*",
+      "status": "HTTP 403 to both curl and the WebFetch tool on 2026-11-07 (all nine anchor URLs). Not worked around."
+    },
+    {
+      "url": "https://www.truebluela.com/2025/1/27/24353426/dodgers-2025-international-signings",
+      "status": "HTTP 403"
+    },
+    {
+      "url": "https://dodgersdigest.com/2025/01/28/dodgers-sign-29-players-in-ifa-class-trade-two-prospects-for-bonus-pool-money/",
+      "status": "HTTP 403"
+    }
+  ],
+  "name_aliases": {
+    "Allan Atoji": "Allen Ajoti",
+    "Axel Acevado": "Axel Acevedo",
+    "Joseph Deng Thon": "Joseph Deng Thon"
+  },
+  "us_born_international": {
+    "_comment": "US-born players whom an official class list names as international signings. Other US-born, undrafted teenage Dodgers signings are routed to identity review, never counted.",
+    "800543": "Josue De Paula: Brooklyn-born, signed in the 2022 class (DISI already carries him).",
+    "821801": "Rafy Peguero: Newark-born, named in the 2024 class list."
+  },
+  "us_born_review": {
+    "666006": "Damaso Marte Jr.: Orlando-born, signed 2015-07-07 at 16.9; residence at signing unknown.",
+    "681621": "Fernando Villicana: San Diego-born, signed 2018-04-01 at 16.7; residence at signing unknown.",
+    "696010": "David Tiburcio: New York-born, signed 2020-09-28 at 18.7; residence at signing unknown.",
+    "815799": "Roman Camacho: Phoenix-born, signed 2023-08-08 at 18.7; residence at signing unknown.",
+    "816154": "Christian Oliveira: Cambridge-born, signed 2024-08-01 at 18.3; residence at signing unknown."
+  },
+  "date_overrides": {
+    "670541": {
+      "period": "2015-16",
+      "note": "Yordan Alvarez: agreement reported 2016-06-15 (True Blue LA, Dodgers Digest 2016-06-16); MLB transaction registered 2016-07-15. Counted in the 2015-16 period."
+    }
+  },
+  "stats_api_duplicate_people": {
+    "815674": {
+      "same_as": 815198,
+      "note": "Vicente Guaylapo (815674) and Vicente Guaylupo (815198): two MLB person ids, same 2023-07-02 Dodgers signing. 815674 has no person record; treated as one signing."
+    }
+  },
+  "additional_leads": [
+    {
+      "name": "Erisbel Arruebarrena",
+      "period": "2013-14",
+      "mlbam_id": 628326,
+      "evidence": "Pinned 2014 Dodgers transactions show the Dodgers optioning and recalling him from 2014-03-16, but the MLB record has no Dodgers SFA transaction for him. This is an example of missing signing records in the 2009-2014 era. Cuban professional; agreement widely reported in February 2014 (not verified by this audit).",
+      "query": "\"Erisbel Arruebarrena\" Dodgers signed 2014 Cuba contract"
+    }
+  ]
+}
