@@ -37,12 +37,12 @@ test('manifest lists every canonical SQL file, in order', () => {
 })
 
 // Each migration replaces some views of the one before it, so rerunnability is
-// checked for the latest migration of the chain this file builds (046; 047, 048, 049, 050, 052, 053, 054, 054a, 055, 056, 057, 058, 059, 060 and 061 prove their own reruns in
+// checked for the latest migration of the chain this file builds (046; 047, 048, 049, 050, 052, 053, 054, 054a, 055, 056, 057, 058, 059, 060, 061 and 062 prove their own reruns in
 // tests/db/research-047.test.mjs, research-048.test.mjs, research-049.test.mjs, research-050.test.mjs, research-052.test.mjs, research-053.test.mjs,
-// research-054.test.mjs, research-054a.test.mjs, research-055.test.mjs, research-056.test.mjs, research-057.test.mjs, research-058.test.mjs, research-059.test.mjs, research-060.test.mjs and research-061.test.mjs).
+// research-054.test.mjs, research-054a.test.mjs, research-055.test.mjs, research-056.test.mjs, research-057.test.mjs, research-058.test.mjs, research-059.test.mjs, research-060.test.mjs, research-061.test.mjs and research-062.test.mjs).
 test('the latest migration is rerunnable without changing data', async () => {
   const latest = '046_outcome_cost_research_batch.sql'
-  assert.equal(manifest.canonical_sql.at(-16), latest)
+  assert.equal(manifest.canonical_sql.at(-17), latest)
   const snapshot = async () => one(`select
       (select string_agg(slug || coalesce(mlb_id::text, ''), ',' order by id) from players) as players,
       (select string_agg(concat_ws('|', full_name, canonical_name, bref_id, fangraphs_id, birth_date, birth_city, birth_country, bats, throws, height_in, current_position), ',' order by id) from players) as identities,
@@ -2174,8 +2174,9 @@ const evaluationId = (slug, pub) => `(select e.id from player_evaluations e wher
 // 058 (transaction-return bWAR evidence for four returned players, from the archived Baseball-Reference data files) was released to production on 2026-10-29 (applied; PR #42, 3182db1) and is frozen (PR #43, 4747049)
 // 059 (career bWAR metric reconciliation for eleven benchmark players, from the 2026 team-season ledger) was released to production on 2026-10-30 (applied; PR #44, 9d4da66) and is frozen (PR #45, ab6677b)
 // 060 (owner-reviewed acquisition costs: 25 Dodgers signing bonuses supplied and reviewed by the owner on 2026-11-04) was released to production on 2026-11-05 (applied; PR #46, 9ebb2d0) and is frozen (PR #47, 318a724)
-// 061 (transaction research closure: reviewed cash and pool-space facts and Garland's 2011 control interval) was released to production on 2026-11-06 (applied; PR #48, b29d7cb) and is frozen
-const UNRELEASED_ADDITIONS = []
+// 061 (transaction research closure: reviewed cash and pool-space facts and Garland's 2011 control interval) was released to production on 2026-11-06 (applied; PR #48, b29d7cb) and is frozen (PR #49, 7e30624)
+// 062 (bWAR backlog closure: owner-observed current career bWAR for 32 of the 39 BWAR_MISSING players; data only) is built and not yet released
+const UNRELEASED_ADDITIONS = ['062_bwar_backlog_closure.sql']
 
 test('frozen history: migrations 001-061 (with 043a and 054a, no 051 SQL migration) are byte-for-byte unchanged (line endings normalised); only the unreleased additions follow', () => {
   const files = manifest.canonical_sql.filter((f) => !UNRELEASED_ADDITIONS.includes(f))
